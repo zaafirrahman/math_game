@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 1 · Asfa · Math Arena</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121c;
+    --card: #1a1a28;
+    --border: #2a2a40;
+    --neon: #00f5c4;
+    --neon2: #7c3aed;
+    --accent: #f59e0b;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 60% 10%, rgba(245,158,11,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(124,58,237,0.07) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  nav {
+    padding: 1.2rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+  }
+  nav a {
+    color: var(--muted); text-decoration: none;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem; letter-spacing: 1px;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--neon); }
+  nav span { color: var(--border); }
+  nav .current { color: var(--accent); }
+
+  .hero {
+    padding: 3.5rem 2rem 2.5rem;
+    text-align: center;
+    position: relative; z-index: 1;
+  }
+  .session-badge {
+    display: inline-block;
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.4);
+    color: var(--accent);
+    font-size: 0.75rem; letter-spacing: 3px;
+    text-transform: uppercase; padding: 0.3rem 1rem;
+    border-radius: 20px; margin-bottom: 1.2rem;
+    font-family: 'Orbitron', monospace;
+  }
+  .lesson-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 900;
+    color: var(--text);
+    margin-bottom: 0.8rem;
+    line-height: 1.3;
+  }
+  .lesson-title span { color: var(--accent); }
+  .lesson-desc {
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+  .objectives {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    text-align: left;
+  }
+  .obj-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--neon);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .obj-item {
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+    margin-bottom: 0.7rem;
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+  .obj-item span { font-size: 1rem; flex-shrink: 0; }
+
+  .section-label {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--neon);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0.7;
+    position: relative; z-index: 1;
+  }
+  .sections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    position: relative; z-index: 1;
+  }
+  .sec-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.6rem;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .sec-card.unlocked:hover {
+    transform: translateY(-3px);
+    border-color: var(--neon);
+    box-shadow: 0 0 25px rgba(0,245,196,0.1);
+  }
+  .sec-card.locked {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .sec-card .num {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--neon);
+    text-transform: uppercase;
+    margin-bottom: 0.7rem;
+  }
+  .sec-card .icon { font-size: 2rem; margin-bottom: 0.7rem; display: block; }
+  .sec-card .title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+  .sec-card .desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .type-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 20px;
+    margin-top: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
+  .type-learn { background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+  .type-game  { background: rgba(0,245,196,0.1);  color: var(--neon); border: 1px solid rgba(0,245,196,0.3); }
+  .type-boss  { background: rgba(245,158,11,0.1); color: var(--accent); border: 1px solid rgba(245,158,11,0.3); }
+  .lock-icon { position: absolute; top: 1rem; right: 1rem; opacity: 0.4; }
+  .progress-bar-wrap {
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    text-align: left;
+    padding: 0 2rem;
+    position: relative; z-index: 1;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .progress-track {
+    height: 6px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--neon2), var(--neon));
+    border-radius: 99px;
+    transition: width 1s ease;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa.html">ASFA</a>
+  <span>›</span>
+  <span class="current">LESSON 1</span>
+</nav>
+
+<div class="hero">
+  <div class="session-badge">Sesi 01</div>
+  <div class="lesson-title">Rahasia <span>Perkalian</span></div>
+  <div class="lesson-desc">
+    Perkalian bukan sekadar hafalan! Kamu bakal belajar cara berpikir fleksibel buat ngitung perkalian dengan cara yang masuk akal — bukan magic, tapi logika.
+  </div>
+
+  <div class="objectives">
+    <div class="obj-title">🎯 Yang akan kamu kuasai</div>
+    <div class="obj-item"><span>⚡</span> Perkalian = penjumlahan berulang (dan kenapa itu penting)</div>
+    <div class="obj-item"><span>🧩</span> Breakdown method: pecah angka besar jadi gampang</div>
+    <div class="obj-item"><span>🔥</span> Distributive thinking: strategi fleksibel di luar hafalan</div>
+  </div>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-label"><span>Progress</span><span id="pct">0%</span></div>
+  <div class="progress-track"><div class="progress-fill" id="fill"></div></div>
+</div>
+
+<div class="section-label">— Pilih Section —</div>
+
+<div class="sections-grid">
+
+  <a href="lesson1/section1.html" class="sec-card unlocked">
+    <div class="num">Section 01</div>
+    <span class="icon">💡</span>
+    <div class="title">Apa Itu Perkalian?</div>
+    <div class="desc">Mulai dari dasar: kenapa 7×3 itu sama dengan 7+7+7. Visual &amp; interaktif.</div>
+    <span class="type-badge type-learn">Learn</span>
+  </a>
+
+  <a href="lesson1/section2.html" class="sec-card unlocked">
+    <div class="num">Section 02</div>
+    <span class="icon">🧩</span>
+    <div class="title">Breakdown Besar → Kecil</div>
+    <div class="desc">Strategi pecah angka: 7×8 = 7×5 + 7×3. Game guided practice!</div>
+    <span class="type-badge type-game">Game</span>
+  </a>
+
+  <a href="lesson1/section3.html" class="sec-card unlocked">
+    <div class="num">Section 03</div>
+    <span class="icon">🎮</span>
+    <div class="title">Arena Tantangan</div>
+    <div class="desc">5 soal cepat, campur basic &amp; advanced. Berapa score kamu?</div>
+    <span class="type-badge type-boss">Boss Stage</span>
+  </a>
+
+</div>
+
+<script>
+  // Simulate 0% progress (no localStorage used)
+  setTimeout(() => {
+    document.getElementById('fill').style.width = '0%';
+    document.getElementById('pct').textContent = '0%';
+  }, 300);
+</script>
+</body>
+</html>

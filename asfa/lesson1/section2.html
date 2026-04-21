@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 2 · Breakdown Method</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --card: #1a1a28;
+    --border: #2a2a40;
+    --neon: #00f5c4;
+    --neon2: #7c3aed;
+    --accent: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Nunito', sans-serif; min-height: 100vh;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 30% 60%, rgba(0,245,196,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  nav {
+    padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.9); backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+    font-family: 'Orbitron', monospace; font-size: 0.72rem; letter-spacing: 1px;
+  }
+  nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--neon); }
+  nav span { color: var(--border); }
+  nav .current { color: var(--neon); }
+
+  .wrapper {
+    max-width: 720px; margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+    position: relative; z-index: 1;
+  }
+  .sec-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(0,245,196,0.08);
+    border: 1px solid rgba(0,245,196,0.3);
+    color: var(--neon);
+    font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.3rem 1rem; border-radius: 20px; margin-bottom: 1.5rem;
+    font-family: 'Orbitron', monospace;
+  }
+  h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.3rem, 4vw, 1.9rem); font-weight: 900;
+    margin-bottom: 0.8rem; line-height: 1.3;
+  }
+  h1 span { color: var(--neon); }
+  .intro { color: var(--muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 2.5rem; }
+
+  .progress-dots { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 2rem; }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--border); transition: all 0.3s;
+  }
+  .dot.active { background: var(--neon); box-shadow: 0 0 8px var(--neon); }
+  .dot.done { background: var(--neon2); }
+
+  .slide { display: none; animation: fadeUp 0.4s ease; }
+  .slide.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 2rem; margin-bottom: 1.2rem;
+  }
+  .card-label {
+    font-family: 'Orbitron', monospace; font-size: 0.65rem;
+    letter-spacing: 3px; color: var(--neon); text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .card h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.8rem; }
+  .card p { color: #94a3b8; line-height: 1.7; font-size: 0.93rem; }
+
+  /* Big equation display */
+  .eq-big {
+    text-align: center;
+    background: rgba(0,245,196,0.04);
+    border: 1px solid rgba(0,245,196,0.15);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin: 1.2rem 0;
+  }
+  .eq-big .main {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    color: var(--text); margin-bottom: 0.5rem;
+  }
+  .eq-big .split {
+    font-size: 1rem; color: var(--muted); margin: 0.3rem 0;
+  }
+  .eq-big .result {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.8rem, 6vw, 2.8rem);
+    color: var(--neon);
+    text-shadow: 0 0 20px rgba(0,245,196,0.4);
+  }
+  .step-flow {
+    display: flex; flex-direction: column; gap: 0.7rem; margin: 1.2rem 0;
+  }
+  .step {
+    display: flex; align-items: center; gap: 1rem;
+    background: #12121c; border: 1px solid var(--border);
+    border-radius: 12px; padding: 0.8rem 1.2rem;
+    font-size: 0.95rem;
+  }
+  .step-num {
+    font-family: 'Orbitron', monospace; font-size: 0.7rem;
+    color: var(--neon2); background: rgba(124,58,237,0.15);
+    border: 1px solid rgba(124,58,237,0.3);
+    border-radius: 50%; width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step strong { color: var(--neon); font-size: 1.05rem; }
+
+  /* Interactive breakdown game */
+  .game-area {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 2rem;
+  }
+  .game-q {
+    text-align: center;
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    color: var(--accent);
+    margin: 1rem 0;
+    text-shadow: 0 0 20px rgba(245,158,11,0.3);
+  }
+  .game-prompt {
+    text-align: center; color: var(--muted);
+    font-size: 0.9rem; margin-bottom: 1.5rem;
+  }
+  .split-options {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0.8rem; margin-bottom: 1.5rem;
+  }
+  @media (max-width: 480px) { .split-options { grid-template-columns: 1fr; } }
+  .split-btn {
+    background: #12121c; border: 1px solid var(--border);
+    color: var(--text); padding: 1rem;
+    border-radius: 14px; cursor: pointer;
+    font-family: 'Nunito', sans-serif; font-size: 0.9rem;
+    transition: all 0.2s; text-align: center; line-height: 1.5;
+  }
+  .split-btn:hover { border-color: var(--neon); background: rgba(0,245,196,0.05); }
+  .split-btn.chosen { border-color: var(--neon); background: rgba(0,245,196,0.08); }
+  .split-btn.wrong { border-color: #ef4444; background: rgba(239,68,68,0.08); }
+  .split-btn .split-top {
+    font-family: 'Orbitron', monospace; font-size: 0.85rem;
+    color: var(--neon); margin-bottom: 0.3rem;
+  }
+  .split-btn .split-sub { font-size: 0.8rem; color: var(--muted); }
+
+  .calc-reveal {
+    background: rgba(0,245,196,0.05);
+    border: 1px solid rgba(0,245,196,0.2);
+    border-radius: 14px; padding: 1.2rem 1.5rem;
+    margin-top: 1rem; display: none;
+  }
+  .calc-reveal.show { display: block; animation: fadeUp 0.4s ease; }
+  .calc-step { font-size: 1rem; margin: 0.4rem 0; }
+  .calc-step .hl { color: var(--neon); font-weight: 700; }
+  .calc-final {
+    font-family: 'Orbitron', monospace; font-size: 1.4rem;
+    color: var(--neon); text-align: center; margin-top: 0.8rem;
+    padding-top: 0.8rem; border-top: 1px solid rgba(0,245,196,0.2);
+  }
+
+  .feedback-box {
+    border-radius: 10px; padding: 0.8rem 1.2rem;
+    font-weight: 700; font-size: 0.9rem;
+    margin-top: 1rem; display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.ok { background: rgba(0,245,196,0.1); color: var(--neon); border: 1px solid rgba(0,245,196,0.3); }
+  .feedback-box.no { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+
+  .nav-btns {
+    display: flex; gap: 1rem; justify-content: space-between; margin-top: 2rem;
+  }
+  .btn {
+    padding: 0.8rem 1.8rem; border-radius: 10px; border: none;
+    font-family: 'Orbitron', monospace; font-size: 0.8rem;
+    letter-spacing: 2px; cursor: pointer; transition: all 0.2s;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+  .btn-ghost:hover { border-color: var(--neon); color: var(--neon); }
+  .btn-primary { background: linear-gradient(135deg, var(--neon2), #4f46e5); color: white; box-shadow: 0 4px 15px rgba(124,58,237,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+  .finish-card { text-align: center; padding: 3rem 2rem; }
+  .finish-icon { font-size: 4rem; display: block; margin-bottom: 1rem; }
+  .finish-title { font-family: 'Orbitron', monospace; font-size: 1.5rem; color: var(--neon); margin-bottom: 0.8rem; }
+  .finish-desc { color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
+  .xp-badge {
+    display: inline-block; background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.4); color: var(--accent);
+    padding: 0.4rem 1.2rem; border-radius: 20px;
+    font-family: 'Orbitron', monospace; font-size: 0.85rem; margin-bottom: 2rem;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../../asfa.html">ASFA</a><span>›</span>
+  <a href="../lesson1.html">LESSON 1</a><span>›</span>
+  <span class="current">SEC 2</span>
+</nav>
+
+<div class="wrapper">
+  <div class="sec-badge">🧩 Section 02 · Game</div>
+  <h1>Breakdown <span>Besar → Kecil</span></h1>
+  <p class="intro">Gimana cara ngitung 7×8 tanpa hafalan? Pecah! Kita bakal latih strategi distributive breakdown yang bikin perkalian gede jadi gampang.</p>
+
+  <div class="progress-dots" id="dots"></div>
+
+  <div class="slides" id="slidesWrap">
+
+    <!-- Slide 0: Intro konsep -->
+    <div class="slide active">
+      <div class="card">
+        <div class="card-label">🧠 Konsep</div>
+        <h2>Pecah dulu, hitung belakangan</h2>
+        <p>Distributive property bilang: <strong>a × (b + c) = a×b + a×c</strong>. Artinya kita bisa pecah salah satu angka jadi bagian yang lebih gampang dihitung!</p>
+      </div>
+      <div class="card">
+        <div class="card-label">📝 Contoh: 7 × 8</div>
+        <div class="eq-big">
+          <div class="main">7 × 8</div>
+          <div class="split">= 7 × (5 + 3)</div>
+          <div class="split">= (7 × 5) + (7 × 3)</div>
+          <div class="split">= 35 + 21</div>
+          <div class="result">= 56 ✓</div>
+        </div>
+        <div class="step-flow">
+          <div class="step"><div class="step-num">1</div> Lihat angkanya: <strong>8</strong> susah? Pecah jadi <strong>5 + 3</strong></div>
+          <div class="step"><div class="step-num">2</div> Hitung dua bagian: <strong>7×5 = 35</strong> dan <strong>7×3 = 21</strong></div>
+          <div class="step"><div class="step-num">3</div> Tambahkan: <strong>35 + 21 = 56</strong> ✅</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 1: Contoh ke-2 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label">📝 Contoh lain: 6 × 7</div>
+        <h2>Strategi "Kurang dari 10"</h2>
+        <p>Kalau kita pecah 7 jadi (10 - 3), perkalian jadi lebih simpel karena ×10 itu mudah!</p>
+        <div class="eq-big">
+          <div class="main">6 × 7</div>
+          <div class="split">= 6 × (10 − 3)</div>
+          <div class="split">= (6 × 10) − (6 × 3)</div>
+          <div class="split">= 60 − 18</div>
+          <div class="result">= 42 ✓</div>
+        </div>
+      </div>
+      <div class="card">
+        <p>💡 Dua strategi yang bisa dipakai: <br><br>
+        <strong style="color:var(--neon)">Tambah:</strong> Pecah ke angka kecil yang mudah, lalu jumlahkan. <br>
+        <strong style="color:var(--accent)">Kurang:</strong> Pecah ke angka bulat (×10), lalu kurangi.</p>
+      </div>
+    </div>
+
+    <!-- Slide 2: Game 1 — 7×6 -->
+    <div class="slide">
+      <div class="game-area">
+        <div class="card-label">🎮 Game · Soal 1 dari 3</div>
+        <div class="game-q">7 × 6 = ?</div>
+        <div class="game-prompt">Pilih cara breakdown yang paling masuk akal!</div>
+        <div class="split-options" id="g1opts">
+          <button class="split-btn" onclick="gameCheck(0, true, 'g1', 42, '7×(5+1)', '7×5 + 7×1 = 35 + 7')">
+            <div class="split-top">7 × (5 + 1)</div>
+            <div class="split-sub">Pecah 6 → 5 + 1</div>
+          </button>
+          <button class="split-btn" onclick="gameCheck(1, false, 'g1', 42, '', '')">
+            <div class="split-top">7 × (4 + 4)</div>
+            <div class="split-sub">Pecah 6 → 4 + 4</div>
+          </button>
+          <button class="split-btn" onclick="gameCheck(2, true, 'g1', 42, '6×(10−3)', '6×10 − 6×3 = 60 − 18')">
+            <div class="split-top">6 × (10 − 3)</div>
+            <div class="split-sub">Pecah 7 → 10 − 3</div>
+          </button>
+          <button class="split-btn" onclick="gameCheck(3, false, 'g1', 42, '', '')">
+            <div class="split-top">7 × (3 + 2)</div>
+            <div class="split-sub">Pecah 6 → 3 + 2</div>
+          </button>
+        </div>
+        <div class="calc-reveal" id="g1reveal"></div>
+        <div class="feedback-box" id="g1fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Game 2 — 8×9 -->
+    <div class="slide">
+      <div class="game-area">
+        <div class="card-label">🎮 Game · Soal 2 dari 3</div>
+        <div class="game-q">8 × 9 = ?</div>
+        <div class="game-prompt">Pilih breakdown yang valid!</div>
+        <div class="split-options" id="g2opts">
+          <button class="split-btn" onclick="gameCheck(0, false, 'g2', 72, '', '')">
+            <div class="split-top">8 × (6 + 2)</div>
+            <div class="split-sub">Pecah 9 → 6 + 2</div>
+          </button>
+          <button class="split-btn" onclick="gameCheck(1, true, 'g2', 72, '8×(10−1)', '8×10 − 8×1 = 80 − 8')">
+            <div class="split-top">8 × (10 − 1)</div>
+            <div class="split-sub">Pecah 9 → 10 − 1</div>
+          </button>
+          <button class="split-btn" onclick="gameCheck(2, true, 'g2', 72, '9×(5+3)', '9×5 + 9×3 = 45 + 27')">
+            <div class="split-top">9 × (5 + 3)</div>
+            <div class="split-sub">Pecah 8 → 5 + 3</div>
+          </button>
+          <button class="split-btn" onclick="gameCheck(3, false, 'g2', 72, '', '')">
+            <div class="split-top">8 × (5 + 5)</div>
+            <div class="split-sub">Pecah 9 → 5 + 5</div>
+          </button>
+        </div>
+        <div class="calc-reveal" id="g2reveal"></div>
+        <div class="feedback-box" id="g2fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Game 3 — 12×4 (level up) -->
+    <div class="slide">
+      <div class="game-area">
+        <div class="card-label">🎮 Game · Soal 3 dari 3 · Level Up!</div>
+        <div class="game-q">12 × 4 = ?</div>
+        <div class="game-prompt">Angka lebih besar — strategi mana yang work?</div>
+        <div class="split-options" id="g3opts">
+          <button class="split-btn" onclick="gameCheck(0, true, 'g3', 48, '(10+2)×4', '10×4 + 2×4 = 40 + 8')">
+            <div class="split-top">(10 + 2) × 4</div>
+            <div class="split-sub">Pecah 12 → 10 + 2</div>
+          </button>
+          <button class="split-btn" onclick="gameCheck(1, false, 'g3', 48, '', '')">
+            <div class="split-top">(6 + 4) × 4</div>
+            <div class="split-sub">Pecah 12 → 6 + 4</div>
+          </button>
+          <button class="split-btn" onclick="gameCheck(2, false, 'g3', 48, '', '')">
+            <div class="split-top">12 × (3 + 2)</div>
+            <div class="split-sub">Pecah 4 → 3 + 2</div>
+          </button>
+          <button class="split-btn" onclick="gameCheck(3, true, 'g3', 48, '12×(2+2)', '12×2 + 12×2 = 24 + 24')">
+            <div class="split-top">12 × (2 + 2)</div>
+            <div class="split-sub">Pecah 4 → 2 + 2</div>
+          </button>
+        </div>
+        <div class="calc-reveal" id="g3reveal"></div>
+        <div class="feedback-box" id="g3fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Finish -->
+    <div class="slide">
+      <div class="card finish-card">
+        <span class="finish-icon">🧩</span>
+        <div class="finish-title">Breakdown Master!</div>
+        <div class="finish-desc">
+          Kamu udah ngerti strategi inti: pecah angka yang susah jadi bagian yang gampang, hitung masing-masing, lalu gabungkan. Ini bukan trik — ini cara kerja matematika yang beneran!
+        </div>
+        <div class="xp-badge">✨ +75 XP — Breakdown Unlocked!</div>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+          <a href="../lesson1.html" class="btn btn-ghost">← Back</a>
+          <a href="section3.html" class="btn btn-primary">Boss Stage →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-btns" id="navbtns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="go(-1)" disabled>← Prev</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL = 6;
+  let cur = 0;
+  const gDone = {g1: false, g2: false, g3: false};
+  const gCorrect = {g1: false, g2: false, g3: false};
+  const gameSlides = {2:'g1', 3:'g2', 4:'g3'};
+
+  const dotsEl = document.getElementById('dots');
+  const allSlides = document.querySelectorAll('.slide');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const navbtns = document.getElementById('navbtns');
+
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    dotsEl.appendChild(d);
+  }
+
+  function updateUI() {
+    allSlides.forEach((s,i) => s.classList.toggle('active', i===cur));
+    dotsEl.querySelectorAll('.dot').forEach((d,i) => {
+      d.classList.remove('active','done');
+      if (i < cur) d.classList.add('done');
+      if (i === cur) d.classList.add('active');
+    });
+    prevBtn.disabled = cur === 0;
+    const isLast = cur === TOTAL - 1;
+    navbtns.style.display = isLast ? 'none' : 'flex';
+
+    const gKey = gameSlides[cur];
+    if (gKey) nextBtn.disabled = !gDone[gKey];
+    else nextBtn.disabled = false;
+  }
+
+  function go(dir) {
+    cur = Math.max(0, Math.min(TOTAL-1, cur+dir));
+    updateUI();
+  }
+
+  function gameCheck(idx, correct, gKey, answer, splitLabel, calcLine) {
+    if (gDone[gKey]) return;
+    gDone[gKey] = true;
+    gCorrect[gKey] = correct;
+
+    const opts = document.querySelectorAll(`#${gKey}opts .split-btn`);
+    opts.forEach(b => b.style.pointerEvents = 'none');
+    opts[idx].classList.add(correct ? 'chosen' : 'wrong');
+
+    if (!correct) {
+      // highlight a correct one
+      const firstCorrect = [0,1,2,3].find(i => {
+        const t = opts[i].querySelector('.split-top').textContent;
+        return (t.includes('5 + 1') || t.includes('5+1') || t.includes('10 −') || t.includes('10−') || t.includes('5 + 3') || t.includes('10 + 2') || t.includes('2 + 2'));
+      });
+      if (firstCorrect !== undefined) opts[firstCorrect].classList.add('chosen');
+    }
+
+    const reveal = document.getElementById(`${gKey}reveal`);
+    const fb = document.getElementById(`${gKey}fb`);
+
+    if (correct && splitLabel) {
+      reveal.className = 'calc-reveal show';
+      reveal.innerHTML = `
+        <div class="calc-step">Breakdown: <span class="hl">${splitLabel}</span></div>
+        <div class="calc-step">= ${calcLine}</div>
+        <div class="calc-final">= ${answer} ✅</div>
+      `;
+      fb.className = 'feedback-box show ok';
+      fb.textContent = `✅ Betul! Salah satu cara yang valid. Hasilnya = ${answer}`;
+    } else {
+      fb.className = 'feedback-box show no';
+      fb.textContent = `❌ Breakdown itu nggak valid — jumlahnya bukan ${answer}. Coba lihat yang benar!`;
+    }
+
+    nextBtn.disabled = false;
+  }
+
+  updateUI();
+</script>
+</body>
+</html>
