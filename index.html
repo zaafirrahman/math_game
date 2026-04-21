@@ -283,7 +283,7 @@
       class="pw-input"
       id="pwInput"
       type="password"
-      maxlength="10"
+      maxlength="20"
       placeholder="••••"
       onkeydown="if(event.key==='Enter') tryEnter()"
       oninput="clearError()"
@@ -324,7 +324,7 @@
   }
   function tryEnter() {
     const val = document.getElementById('pwInput').value;
-    if (val === '1195') {
+    if (val === 'ayokitabisa') {
       window.location.href = 'asfa_1195.html';
     } else {
       const inp = document.getElementById('pwInput');
