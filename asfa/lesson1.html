@@ -186,35 +186,7 @@
   .type-game  { background: rgba(0,245,196,0.1);  color: var(--neon); border: 1px solid rgba(0,245,196,0.3); }
   .type-boss  { background: rgba(245,158,11,0.1); color: var(--accent); border: 1px solid rgba(245,158,11,0.3); }
   .lock-icon { position: absolute; top: 1rem; right: 1rem; opacity: 0.4; }
-  .progress-bar-wrap {
-    max-width: 600px;
-    margin: 0 auto 1.5rem;
-    text-align: left;
-    padding: 0 2rem;
-    position: relative; z-index: 1;
-  }
-  .progress-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .progress-track {
-    height: 6px;
-    background: var(--border);
-    border-radius: 99px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--neon2), var(--neon));
-    border-radius: 99px;
-    transition: width 1s ease;
-  }
+
 </style>
 </head>
 <body>
@@ -240,11 +212,6 @@
     <div class="obj-item"><span>🧩</span> Breakdown method: pecah angka besar jadi gampang</div>
     <div class="obj-item"><span>🔥</span> Distributive thinking: strategi fleksibel di luar hafalan</div>
   </div>
-</div>
-
-<div class="progress-bar-wrap">
-  <div class="progress-label"><span>Progress</span><span id="pct">0%</span></div>
-  <div class="progress-track"><div class="progress-fill" id="fill"></div></div>
 </div>
 
 <div class="section-label">— Pilih Section —</div>
@@ -277,12 +244,5 @@
 
 </div>
 
-<script>
-  // Simulate 0% progress (no localStorage used)
-  setTimeout(() => {
-    document.getElementById('fill').style.width = '0%';
-    document.getElementById('pct').textContent = '0%';
-  }, 300);
-</script>
 </body>
 </html>

@@ -173,6 +173,82 @@
     letter-spacing: 2px;
     text-transform: uppercase;
   }
+  /* Modal */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: #1a1a28;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    width: 100%; max-width: 340px;
+    text-align: center;
+    transform: translateY(20px);
+    transition: transform 0.25s ease;
+    position: relative;
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-avatar { font-size: 3rem; margin-bottom: 0.8rem; }
+  .modal-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--text); margin-bottom: 0.3rem; letter-spacing: 2px;
+  }
+  .modal-sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.8rem; }
+  .pw-input {
+    width: 100%;
+    background: #12121c;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    color: var(--text);
+    font-family: 'Orbitron', monospace;
+    font-size: 1.3rem;
+    letter-spacing: 6px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 1rem;
+  }
+  .pw-input:focus { border-color: var(--neon); }
+  .pw-input.error { border-color: #ef4444; animation: shake 0.35s ease; }
+  @keyframes shake {
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-8px);}
+    40%{transform:translateX(8px);}
+    60%{transform:translateX(-5px);}
+    80%{transform:translateX(5px);}
+  }
+  .pw-error {
+    font-size: 0.8rem; color: #ef4444;
+    margin-bottom: 1rem; min-height: 1rem;
+  }
+  .enter-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--neon2), #4f46e5);
+    color: white; border: none;
+    padding: 0.85rem; border-radius: 10px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem; letter-spacing: 3px;
+    cursor: pointer; transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(124,58,237,0.3);
+  }
+  .enter-btn:hover { transform: translateY(-2px); }
+  .close-btn {
+    position: absolute; top: 1rem; right: 1rem;
+    background: none; border: none; color: var(--muted);
+    font-size: 1.2rem; cursor: pointer; transition: color 0.2s;
+    line-height: 1;
+  }
+  .close-btn:hover { color: var(--text); }
 </style>
 </head>
 <body>
@@ -185,16 +261,37 @@
 
   <div class="subtitle">— Select Player —</div>
   <div class="players-grid">
-    <a href="asfa.html" class="player-card">
+    <div class="player-card" onclick="openModal()">
       <span class="player-avatar">🎮</span>
       <div class="player-name">ASFA</div>
       <div class="player-grade">Kelas 8 · SMP</div>
       <div class="badge">Active</div>
-    </a>
+    </div>
   </div>
 </div>
 
 <div class="footer">Math Arena · Powered by Brain</div>
+
+<!-- Password Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal()">✕</button>
+    <div class="modal-avatar">🎮</div>
+    <div class="modal-title">ASFA</div>
+    <div class="modal-sub">Masukkan password untuk masuk</div>
+    <input
+      class="pw-input"
+      id="pwInput"
+      type="password"
+      maxlength="10"
+      placeholder="••••"
+      onkeydown="if(event.key==='Enter') tryEnter()"
+      oninput="clearError()"
+    />
+    <div class="pw-error" id="pwError"></div>
+    <button class="enter-btn" onclick="tryEnter()">ENTER →</button>
+  </div>
+</div>
 
 <script>
   const stars = document.getElementById('stars');
@@ -211,6 +308,36 @@
     `;
     stars.appendChild(s);
   }
+
+  function openModal() {
+    document.getElementById('modalOverlay').classList.add('open');
+    setTimeout(() => document.getElementById('pwInput').focus(), 250);
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.getElementById('pwInput').value = '';
+    clearError();
+  }
+  function clearError() {
+    document.getElementById('pwError').textContent = '';
+    document.getElementById('pwInput').classList.remove('error');
+  }
+  function tryEnter() {
+    const val = document.getElementById('pwInput').value;
+    if (val === '1195') {
+      window.location.href = 'asfa_1195.html';
+    } else {
+      const inp = document.getElementById('pwInput');
+      inp.classList.remove('error');
+      void inp.offsetWidth;
+      inp.classList.add('error');
+      document.getElementById('pwError').textContent = 'Password salah, coba lagi!';
+      inp.value = '';
+    }
+  }
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
 </script>
 </body>
 </html>
