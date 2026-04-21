@@ -185,6 +185,49 @@
     font-size: 1.2rem;
     opacity: 0.5;
   }
+  .progress-wrap {
+    max-width: 420px;
+    margin: 2rem auto 0;
+    padding: 0 1rem;
+  }
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+  }
+  .progress-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .progress-pct {
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--neon);
+  }
+  .progress-track {
+    height: 6px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--neon2), var(--neon));
+    border-radius: 99px;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .progress-sub {
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
 </style>
 </head>
 <body>
@@ -199,6 +242,17 @@
   <span class="player-icon">🎮</span>
   <div class="player-name">ASFA</div>
   <div class="player-info">Kelas 8 · SMP · Math Trainee</div>
+
+  <div class="progress-wrap">
+    <div class="progress-header">
+      <span class="progress-label">Progress</span>
+      <span class="progress-pct" id="pct">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="fill"></div>
+    </div>
+    <div class="progress-sub" id="progressSub"></div>
+  </div>
 </div>
 
 <div class="section-label">— Pilih Sesi —</div>
@@ -230,5 +284,18 @@
 
 </div>
 
+<script>
+  // ── UPDATE DI SINI TIAP NAMBAH LESSON ──
+  const DONE_LESSONS = 1;  // sesi yang udah selesai dibuat
+  const TOTAL_LESSONS = 40; // total sesi yang direncanakan
+  // ────────────────────────────────────────
+
+  const pct = Math.round((DONE_LESSONS / TOTAL_LESSONS) * 100);
+  document.getElementById('pct').textContent = pct + '%';
+  document.getElementById('progressSub').textContent = `Sesi ${DONE_LESSONS} dari ${TOTAL_LESSONS} pertemuan`;
+  setTimeout(() => {
+    document.getElementById('fill').style.width = pct + '%';
+  }, 200);
+</script>
 </body>
 </html>

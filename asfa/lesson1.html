@@ -34,14 +34,11 @@
     pointer-events: none;
   }
   nav {
-    padding: 1.2rem 2rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem;
     border-bottom: 1px solid var(--border);
-    background: rgba(10,10,15,0.85);
-    backdrop-filter: blur(12px);
+    background: rgba(10,10,15,0.9); backdrop-filter: blur(12px);
     position: sticky; top: 0; z-index: 100;
+    font-family: 'Orbitron', monospace; font-size: 0.72rem; letter-spacing: 1px;
   }
   nav a {
     color: var(--muted); text-decoration: none;
@@ -49,9 +46,10 @@
     font-size: 0.75rem; letter-spacing: 1px;
     transition: color 0.2s;
   }
+  nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
   nav a:hover { color: var(--neon); }
   nav span { color: var(--border); }
-  nav .current { color: var(--accent); }
+  nav .current { color: var(--neon); }
 
   .hero {
     padding: 3.5rem 2rem 2.5rem;
