@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tasya · Math Arena</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf6fb;
+    --surface: #fff0f8;
+    --card: #ffffff;
+    --border: #f0d6ea;
+    --border2: #e8c8e0;
+    --rose: #e8628a;
+    --rose-light: #f5a0bc;
+    --lavender: #9b7fc8;
+    --lavender-light: #c8b4e8;
+    --mint: #5fbfa0;
+    --mint-light: #a8dfd0;
+    --peach: #f0956a;
+    --text: #3d2b3d;
+    --text-mid: #7a5c78;
+    --text-muted: #b898b4;
+    --shadow: rgba(180, 100, 150, 0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Quicksand', sans-serif;
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 20%, rgba(232,98,138,0.08) 0%, transparent 45%),
+      radial-gradient(ellipse at 90% 10%, rgba(155,127,200,0.09) 0%, transparent 45%),
+      radial-gradient(ellipse at 80% 90%, rgba(95,191,160,0.07) 0%, transparent 45%);
+    pointer-events: none;
+  }
+
+  /* Floating petals */
+  .petal { position: fixed; pointer-events: none; z-index: 0; animation: petalFloat var(--d) ease-in-out infinite var(--dl); opacity: 0.18; font-size: var(--sz); }
+  @keyframes petalFloat {
+    0%,100% { transform: translateY(0) rotate(var(--r0)) scale(1); opacity: 0.18; }
+    50%      { transform: translateY(-14px) rotate(var(--r1)) scale(1.05); opacity: 0.28; }
+  }
+
+  nav {
+    padding: 1.1rem 2rem;
+    display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    background: rgba(253,246,251,0.88);
+    backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.5px;
+  }
+  nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--rose); }
+  nav span { color: var(--border2); }
+  nav .current { color: var(--rose); }
+
+  .hero {
+    padding: 3.5rem 2rem 2.5rem;
+    text-align: center;
+    position: relative; z-index: 1;
+  }
+  .avatar-wrap {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 90px; height: 90px;
+    background: linear-gradient(135deg, var(--rose-light), var(--lavender-light));
+    border-radius: 50%;
+    font-size: 3rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 8px 24px var(--shadow), 0 0 0 4px var(--border);
+    animation: avatarBob 3s ease-in-out infinite;
+  }
+  @keyframes avatarBob {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .player-name {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--rose), var(--lavender));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 2px;
+  }
+  .player-info {
+    color: var(--text-muted); font-size: 0.88rem;
+    margin-top: 0.4rem; letter-spacing: 1px;
+  }
+
+  /* Progress */
+  .prog-wrap {
+    max-width: 380px; margin: 1.8rem auto 0;
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 1rem 1.4rem;
+    box-shadow: 0 4px 16px var(--shadow);
+  }
+  .prog-header { display: flex; justify-content: space-between; margin-bottom: 0.4rem; }
+  .prog-label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); }
+  .prog-pct { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.9rem; color: var(--rose); }
+  .prog-track { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .prog-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--rose), var(--lavender));
+    border-radius: 99px;
+    transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  }
+  .prog-sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.3rem; text-align: right; }
+
+  .section-label {
+    text-align: center;
+    margin: 3rem 0 1.5rem;
+    position: relative; z-index: 1;
+  }
+  .section-label span {
+    font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--bg);
+    padding: 0 1rem;
+    position: relative; z-index: 1;
+  }
+  .section-label::before {
+    content: '';
+    position: absolute; left: 2rem; right: 2rem; top: 50%;
+    height: 1px; background: var(--border2);
+  }
+
+  /* Lesson grid */
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.2rem;
+    max-width: 900px; margin: 0 auto;
+    padding: 0 2rem 5rem;
+    position: relative; z-index: 1;
+  }
+  .lesson-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    padding: 1.5rem 1.6rem;
+    text-decoration: none; color: inherit;
+    display: block;
+    transition: all 0.25s ease;
+    position: relative; overflow: hidden;
+    box-shadow: 0 3px 12px var(--shadow);
+  }
+  .lesson-card.unlocked:hover {
+    transform: translateY(-4px);
+    border-color: var(--rose-light);
+    box-shadow: 0 10px 28px var(--shadow);
+  }
+  .lesson-card.locked { opacity: 0.45; pointer-events: none; }
+  .lesson-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(232,98,138,0.04), rgba(155,127,200,0.04));
+    border-radius: 18px;
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .lesson-card.unlocked:hover::after { opacity: 1; }
+
+  .lesson-num {
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--rose); margin-bottom: 0.7rem;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .lesson-num::before {
+    content: ''; display: block;
+    width: 18px; height: 2px;
+    background: var(--rose-light); border-radius: 2px;
+  }
+  .lesson-icon { font-size: 2.2rem; margin-bottom: 0.7rem; display: block; }
+  .lesson-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem; font-weight: 800;
+    color: var(--text); margin-bottom: 0.45rem; line-height: 1.35;
+  }
+  .lesson-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+  .lesson-meta { display: flex; gap: 0.4rem; margin-top: 1.1rem; flex-wrap: wrap; }
+  .tag {
+    font-size: 0.65rem; font-weight: 700;
+    padding: 0.2rem 0.6rem; border-radius: 20px;
+    border: 1.5px solid var(--border2); color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .tag.new { border-color: var(--rose-light); color: var(--rose); background: rgba(232,98,138,0.07); }
+  .tag.active { border-color: var(--lavender-light); color: var(--lavender); background: rgba(155,127,200,0.08); }
+  .lock-icon { position: absolute; top: 1.1rem; right: 1.1rem; opacity: 0.4; font-size: 1.1rem; }
+
+  /* Decorative bloom top-right */
+  .deco-bloom {
+    position: fixed; top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(232,98,138,0.12), transparent 70%);
+    border-radius: 50%; pointer-events: none; z-index: 0;
+  }
+  .deco-bloom2 {
+    position: fixed; bottom: -60px; left: -60px;
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(155,127,200,0.1), transparent 70%);
+    border-radius: 50%; pointer-events: none; z-index: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="deco-bloom"></div>
+<div class="deco-bloom2"></div>
+<div id="petals"></div>
+
+<nav>
+  <a href="index.html">MATH ARENA</a>
+  <span>›</span>
+  <span class="current">TASYA</span>
+</nav>
+
+<div class="hero">
+  <div class="avatar-wrap">🌸</div>
+  <div class="player-name">TASYA</div>
+  <div class="player-info">Kelas 7 · SMP · Math Explorer</div>
+
+  <div class="prog-wrap">
+    <div class="prog-header">
+      <span class="prog-label">Progress Pertemuan</span>
+      <span class="prog-pct" id="pct">0%</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="fill"></div></div>
+    <div class="prog-sub" id="sub"></div>
+  </div>
+</div>
+
+<div class="section-label"><span>Pilih Sesi</span></div>
+
+<div class="lessons-grid">
+
+  <a href="tasya/lesson17.html" class="lesson-card unlocked">
+    <div class="lesson-num">Sesi 17</div>
+    <span class="lesson-icon">📐</span>
+    <div class="lesson-title">Sistem Pertidaksamaan — Irisan Daerah</div>
+    <div class="lesson-desc">Dua kondisi sekaligus — daerah mana yang memenuhi semua syarat?</div>
+    <div class="lesson-meta">
+      <span class="tag new">New</span>
+      <span class="tag active">Aktif</span>
+      <span class="tag">Pertidaksamaan</span>
+    </div>
+  </a>
+
+  <div class="lesson-card locked">
+    <div class="lock-icon">🔒</div>
+    <div class="lesson-num">Sesi 18</div>
+    <span class="lesson-icon">✨</span>
+    <div class="lesson-title">Coming Soon</div>
+    <div class="lesson-desc">Selesaikan sesi 17 dulu, ya!</div>
+    <div class="lesson-meta"><span class="tag">Locked</span></div>
+  </div>
+
+</div>
+
+<script>
+  // ── Update tiap nambah lesson ──
+  const DONE = 17;
+  const TOTAL = 41;
+  // ──────────────────────────────
+  const pct = Math.round((DONE / TOTAL) * 100);
+  document.getElementById('pct').textContent = pct + '%';
+  document.getElementById('sub').textContent = `Sesi ${DONE} dari ${TOTAL} pertemuan`;
+  setTimeout(() => { document.getElementById('fill').style.width = pct + '%'; }, 250);
+
+  // Floating petals
+  const emojis = ['🌸','🌷','✿','❀','🌺','💮','🪷'];
+  const wrap = document.getElementById('petals');
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    const sz = 0.9 + Math.random() * 1.4;
+    p.style.cssText = `
+      left:${Math.random()*100}%; top:${Math.random()*100}%;
+      --sz:${sz}rem; font-size:${sz}rem;
+      --d:${4+Math.random()*6}s; --dl:${-Math.random()*6}s;
+      --r0:${-15+Math.random()*30}deg; --r1:${-15+Math.random()*30}deg;
+    `;
+    p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    wrap.appendChild(p);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Konsep Irisan · Tasya</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb; --card:#ffffff; --border:#f0d6ea; --border2:#e8c8e0;
+    --rose:#e8628a; --rose-light:#f5a0bc; --rose-bg:rgba(232,98,138,0.08);
+    --lavender:#9b7fc8; --lavender-light:#c8b4e8; --lav-bg:rgba(155,127,200,0.08);
+    --mint:#5fbfa0; --mint-light:#a8dfd0; --mint-bg:rgba(95,191,160,0.08);
+    --peach:#f0956a;
+    --text:#3d2b3d; --text-mid:#7a5c78; --text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 80% 10%,rgba(155,127,200,0.08) 0%,transparent 50%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--lavender);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--lavender);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--lavender);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  /* Progress dots */
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:all 0.3s;}
+  .dot.active{background:var(--rose);box-shadow:0 0 0 3px rgba(232,98,138,0.2);transform:scale(1.1);}
+  .dot.done{background:var(--lavender);}
+
+  /* Slides */
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);}
+  .card-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.lav{color:var(--lavender);}
+  .card-label.rose{color:var(--rose);}
+  .card-label.mint{color:var(--mint);}
+  .card h2{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.7rem;line-height:1.4;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  /* Visual canvas area */
+  .graph-wrap{
+    position:relative;background:#fafafa;border:1.5px solid var(--border2);
+    border-radius:16px;overflow:hidden;margin:1.1rem 0;
+  }
+  canvas{display:block;width:100%;height:auto;}
+
+  /* Step flow */
+  .steps{display:flex;flex-direction:column;gap:0.7rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:#fafafa;border:1.5px solid var(--border);border-radius:12px;padding:0.8rem 1rem;font-size:0.88rem;}
+  .step-n{font-family:'Nunito',sans-serif;font-weight:900;font-size:0.75rem;color:var(--lavender);background:var(--lav-bg);border:1.5px solid var(--lavender-light);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .step strong{color:var(--rose);}
+
+  /* Highlight box */
+  .hl-box{border-radius:14px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.9rem;line-height:1.6;}
+  .hl-rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .hl-lav{background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--text-mid);}
+  .hl-mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .hl-box strong{color:var(--rose);}
+  .hl-lav strong{color:var(--lavender);}
+  .hl-mint strong{color:var(--mint);}
+
+  /* Quiz */
+  .quiz-q{font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;margin-bottom:1.2rem;line-height:1.5;}
+  .opts{display:flex;flex-direction:column;gap:0.7rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.9rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--rose-light);background:rgba(232,98,138,0.05);}
+  .opt-btn.correct{border-color:var(--mint);background:rgba(95,191,160,0.1);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:rgba(232,98,138,0.08);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:rgba(95,191,160,0.12);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:rgba(232,98,138,0.1);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  /* Nav buttons */
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--rose-light);color:var(--rose);}
+  .btn-primary{background:linear-gradient(135deg,var(--rose),var(--lavender));color:#fff;box-shadow:0 4px 14px rgba(232,98,138,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(232,98,138,0.4);}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+
+  /* Finish */
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:var(--lavender);margin-bottom:0.7rem;}
+  .finish-desc{color:var(--text-muted);line-height:1.7;margin-bottom:1.8rem;font-size:0.92rem;}
+  .xp{display:inline-block;background:rgba(232,98,138,0.1);border:1.5px solid var(--rose-light);color:var(--rose);padding:0.35rem 1.1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;margin-bottom:1.8rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">ARENA</a><span>›</span>
+  <a href="../../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="../lesson17.html">LESSON 17</a><span>›</span>
+  <span class="cur">SEC 1</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">💡 Section 01 · Pemahaman</div>
+  <h1>Konsep <span>Irisan Daerah</span></h1>
+  <p class="intro">Kamu udah bisa nemuin daerah dari satu pertidaksamaan. Sekarang — gimana kalau ada dua syarat sekaligus yang harus dipenuhi?</p>
+
+  <div class="dots" id="dots"></div>
+
+  <div class="slides" id="slides">
+
+    <!-- Slide 0: Review 1 pertidaksamaan -->
+    <div class="slide active">
+      <div class="card">
+        <div class="card-label lav">📌 Review Dulu</div>
+        <h2>Satu pertidaksamaan = satu daerah</h2>
+        <p>Ingat: <strong>y &gt; x</strong> artinya semua titik yang berada di <em>atas</em> garis y = x. Daerahnya kita arsir.</p>
+        <div class="graph-wrap"><canvas id="c0" width="500" height="300"></canvas></div>
+        <div class="hl-box hl-lav">
+          <strong>Uji titik (0, 2):</strong> → 2 &gt; 0 ✅ masuk daerah<br>
+          <strong>Uji titik (3, 1):</strong> → 1 &gt; 3 ❌ tidak masuk
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 1: Tambah syarat kedua -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">➕ Tambah Syarat</div>
+        <h2>Sekarang ada dua syarat: y &gt; x <em>dan</em> y &lt; x + 3</h2>
+        <p>Pertanyaannya: titik mana yang memenuhi <strong>kedua syarat sekaligus</strong>?</p>
+        <div class="graph-wrap"><canvas id="c1" width="500" height="300"></canvas></div>
+        <p style="margin-top:0.8rem;">Daerah biru = memenuhi y &gt; x. Daerah merah = memenuhi y &lt; x + 3. Yang kita cari adalah <strong>bagian yang overlap</strong>.</p>
+      </div>
+    </div>
+
+    <!-- Slide 2: Irisan = jawaban -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label mint">✨ Ide Utama</div>
+        <h2>Irisan = daerah yang memenuhi SEMUA syarat</h2>
+        <div class="graph-wrap"><canvas id="c2" width="500" height="300"></canvas></div>
+        <div class="hl-box hl-mint">
+          <strong>Solusi sistem pertidaksamaan</strong> = daerah yang ada di arsiran pertidaksamaan pertama <em>sekaligus</em> di arsiran pertidaksamaan kedua. Bagian yang overlap itulah jawabannya!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Uji titik verifikasi -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label lav">✅ Verifikasi dengan Uji Titik</div>
+        <h2>Cek satu titik di area irisan</h2>
+        <p>Ambil titik <strong>(0, 1)</strong> — kelihatan ada di area overlap. Kita cek:</p>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div>Syarat 1: y &gt; x → <strong>1 &gt; 0</strong> ✅</div>
+          <div class="step"><div class="step-n">2</div>Syarat 2: y &lt; x + 3 → <strong>1 &lt; 0 + 3 = 3</strong> ✅</div>
+          <div class="step"><div class="step-n">3</div>Kedua syarat terpenuhi → titik (0,1) <strong>ada di daerah solusi</strong> ✅</div>
+        </div>
+        <div class="hl-box hl-rose" style="margin-top:0.8rem;">
+          Uji titik berguna untuk <strong>memverifikasi</strong> apakah daerah yang kita arsir sudah benar. Pilih titik yang gampang, cek ke semua pertidaksamaan.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Kasus tanpa solusi -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">🚫 Kasus Khusus: Tidak Ada Solusi</div>
+        <h2>Bagaimana kalau dua daerahnya tidak overlap?</h2>
+        <p>Contoh: <strong>y &gt; 2x + 1</strong> dan <strong>y &lt; 2x − 1</strong></p>
+        <div class="graph-wrap"><canvas id="c4" width="500" height="300"></canvas></div>
+        <div class="hl-box hl-rose">
+          Kedua garis <strong>sejajar</strong> (gradien sama = 2). Daerah solusinya tidak pernah ketemu → sistem ini <strong>tidak punya solusi</strong>!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Quiz -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">❓ Quick Check</div>
+        <div class="quiz-q">Titik (1, 3) diperiksa terhadap sistem: y &gt; x dan y &lt; x + 3. Hasilnya?</div>
+        <div class="opts" id="q1">
+          <button class="opt-btn" onclick="chk(this,'q1',false)">Memenuhi syarat pertama saja</button>
+          <button class="opt-btn" onclick="chk(this,'q1',true)">Memenuhi kedua syarat → ada di daerah solusi</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false)">Tidak memenuhi syarat mana pun</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false)">Memenuhi syarat kedua saja</button>
+        </div>
+        <div class="feedback" id="q1-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Quiz 2 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">❓ Satu Lagi</div>
+        <div class="quiz-q">Sistem y &gt; 3x + 2 dan y &lt; 3x − 1 memiliki daerah solusi?</div>
+        <div class="opts" id="q2">
+          <button class="opt-btn" onclick="chk2(this,false)">Ya, daerahnya ada di antara dua garis</button>
+          <button class="opt-btn" onclick="chk2(this,true)">Tidak, karena kedua garis sejajar dan daerahnya tidak overlap</button>
+          <button class="opt-btn" onclick="chk2(this,false)">Ya, daerahnya adalah seluruh bidang</button>
+          <button class="opt-btn" onclick="chk2(this,false)">Tidak cukup informasi untuk menentukan</button>
+        </div>
+        <div class="feedback" id="q2-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Finish -->
+    <div class="slide">
+      <div class="card finish">
+        <span class="finish-icon">🌸</span>
+        <div class="finish-title">Konsep Selesai!</div>
+        <div class="finish-desc">Kamu udah paham bahwa solusi sistem pertidaksamaan itu adalah <strong>irisan dari semua daerah</strong> — bagian yang memenuhi semua syarat sekaligus. Uji titik bisa dipakai untuk verifikasi. Lanjut ke contoh soal!</div>
+        <div class="xp">✨ +60 XP — Concept Clear!</div>
+        <div class="finish-btns">
+          <a href="../lesson17.html" class="btn btn-ghost">← Lesson Hub</a>
+          <a href="section2.html" class="btn btn-primary">Contoh Soal →</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+
+  <div class="nav-btns" id="navbtns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="go(-1)" disabled>← Prev</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL = 8;
+  let cur = 0;
+  let q1done = false, q2done = false;
+
+  const dotsEl = document.getElementById('dots');
+  const allSlides = document.querySelectorAll('.slide');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const navbtns = document.getElementById('navbtns');
+
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    dotsEl.appendChild(d);
+  }
+
+  function updateUI() {
+    allSlides.forEach((s,i) => s.classList.toggle('active', i===cur));
+    dotsEl.querySelectorAll('.dot').forEach((d,i) => {
+      d.classList.remove('active','done');
+      if (i < cur) d.classList.add('done');
+      if (i === cur) d.classList.add('active');
+    });
+    prevBtn.disabled = cur === 0;
+    const isLast = cur === TOTAL - 1;
+    navbtns.style.display = isLast ? 'none' : 'flex';
+    if (cur === 5) nextBtn.disabled = !q1done;
+    else if (cur === 6) nextBtn.disabled = !q2done;
+    else nextBtn.disabled = false;
+
+    // Draw graphs on demand
+    if (cur === 0) drawC0();
+    if (cur === 1) drawC1();
+    if (cur === 2) drawC2();
+    if (cur === 4) drawC4();
+  }
+
+  function go(dir) { cur = Math.max(0, Math.min(TOTAL-1, cur+dir)); updateUI(); }
+
+  // ── Graph helpers ──────────────────────────────────────────
+  function setupCanvas(id) {
+    const c = document.getElementById(id);
+    if (!c) return null;
+    const W = c.width, H = c.height;
+    const ctx = c.getContext('2d');
+    ctx.clearRect(0,0,W,H);
+    return {ctx, W, H, cx:W/2, cy:H/2, scale:40};
+  }
+  function drawAxes(ctx, W, H, cx, cy) {
+    ctx.strokeStyle = '#e0d0e0'; ctx.lineWidth = 1;
+    // grid
+    for (let x = cx % 40; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y = cy % 40; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+    // axes
+    ctx.strokeStyle = '#c0a8c0'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(0,cy); ctx.lineTo(W,cy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,H); ctx.stroke();
+    // labels
+    ctx.fillStyle = '#b898b4'; ctx.font = '11px Quicksand';
+    ctx.fillText('x', W-12, cy-6);
+    ctx.fillText('y', cx+5, 12);
+  }
+  function toScreen(x, y, cx, cy, sc) { return [cx + x*sc, cy - y*sc]; }
+
+  function drawC0() {
+    const g = setupCanvas('c0'); if (!g) return;
+    const {ctx,W,H,cx,cy,scale:sc} = g;
+    drawAxes(ctx,W,H,cx,cy);
+    // shade y > x (above y=x)
+    ctx.beginPath(); ctx.moveTo(0,H);
+    for (let px=0;px<=W;px++) { const x=(px-cx)/sc; const py=cy-x*sc; ctx.lineTo(px,py); }
+    ctx.lineTo(W,0); ctx.lineTo(0,0); ctx.closePath();
+    ctx.fillStyle='rgba(155,127,200,0.18)'; ctx.fill();
+    // line y=x
+    ctx.beginPath(); ctx.moveTo(0,H); ctx.lineTo(W,0);
+    ctx.strokeStyle='#9b7fc8'; ctx.lineWidth=2.5; ctx.setLineDash([6,4]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle='#9b7fc8'; ctx.font='bold 13px Nunito';
+    ctx.fillText('y = x',cx+8,cy-8);
+    // point labels
+    const [px1,py1]=toScreen(0,2,cx,cy,sc);
+    ctx.beginPath(); ctx.arc(px1,py1,5,0,Math.PI*2); ctx.fillStyle='#5fbfa0'; ctx.fill();
+    ctx.fillStyle='#3d2b3d'; ctx.font='12px Quicksand'; ctx.fillText('(0,2) ✅',px1+7,py1-4);
+    const [px2,py2]=toScreen(3,1,cx,cy,sc);
+    ctx.beginPath(); ctx.arc(px2,py2,5,0,Math.PI*2); ctx.fillStyle='#e8628a'; ctx.fill();
+    ctx.fillText('(3,1) ❌',px2+7,py2-4);
+  }
+
+  function drawC1() {
+    const g = setupCanvas('c1'); if (!g) return;
+    const {ctx,W,H,cx,cy,scale:sc} = g;
+    drawAxes(ctx,W,H,cx,cy);
+    // shade y > x (lavender)
+    ctx.beginPath(); ctx.moveTo(0,H);
+    for (let px=0;px<=W;px++) { const x=(px-cx)/sc; ctx.lineTo(px,cy-x*sc); }
+    ctx.lineTo(W,0); ctx.lineTo(0,0); ctx.closePath();
+    ctx.fillStyle='rgba(155,127,200,0.2)'; ctx.fill();
+    // shade y < x+3 (rose)
+    ctx.beginPath(); ctx.moveTo(0,H); ctx.lineTo(W,H);
+    for (let px=W;px>=0;px--) { const x=(px-cx)/sc; ctx.lineTo(px,cy-(x+3)*sc); }
+    ctx.closePath();
+    ctx.fillStyle='rgba(232,98,138,0.18)'; ctx.fill();
+    // lines
+    ctx.lineWidth=2.5; ctx.setLineDash([6,4]);
+    ctx.beginPath(); ctx.moveTo(0,H); ctx.lineTo(W,0); ctx.strokeStyle='#9b7fc8'; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,cy+3*sc); ctx.lineTo(W,cy-((W/sc-cx/sc)+3)*sc);
+    ctx.strokeStyle='#e8628a'; ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.font='bold 12px Nunito';
+    ctx.fillStyle='#9b7fc8'; ctx.fillText('y = x',cx+5,cy-5);
+    ctx.fillStyle='#e8628a'; ctx.fillText('y = x+3',cx+5,cy-3*sc-5);
+  }
+
+  function drawC2() {
+    const g = setupCanvas('c2'); if (!g) return;
+    const {ctx,W,H,cx,cy,scale:sc} = g;
+    drawAxes(ctx,W,H,cx,cy);
+    // Only the intersection: y > x AND y < x+3
+    // That's x < y < x+3, so between the two lines
+    ctx.beginPath();
+    // Left edge of canvas: y=x line starts at (0,H) if cx=W/2, cy=H/2
+    // Bottom of intersection: y=x
+    for (let px=0;px<=W;px++) { const x=(px-cx)/sc; if(px===0) ctx.moveTo(px,cy-x*sc); else ctx.lineTo(px,cy-x*sc); }
+    // Right to left along y=x+3
+    for (let px=W;px>=0;px--) { const x=(px-cx)/sc; ctx.lineTo(px,cy-(x+3)*sc); }
+    ctx.closePath();
+    ctx.fillStyle='rgba(95,191,160,0.35)'; ctx.fill();
+    ctx.strokeStyle='rgba(95,191,160,0.6)'; ctx.lineWidth=1; ctx.stroke();
+    // faded outer regions
+    ctx.beginPath(); ctx.moveTo(0,H);
+    for (let px=0;px<=W;px++) { const x=(px-cx)/sc; if(px===0) ctx.moveTo(px,cy-x*sc); else ctx.lineTo(px,cy-x*sc); }
+    ctx.lineTo(W,0); ctx.lineTo(0,0); ctx.closePath();
+    ctx.fillStyle='rgba(155,127,200,0.07)'; ctx.fill();
+    // lines dashed
+    ctx.lineWidth=2; ctx.setLineDash([6,4]);
+    ctx.beginPath(); ctx.moveTo(0,H); ctx.lineTo(W,0); ctx.strokeStyle='#9b7fc8'; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,cy+3*sc); ctx.lineTo(W,cy-((W/sc-cx/sc)+3)*sc); ctx.strokeStyle='#e8628a'; ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.font='bold 12px Nunito';
+    ctx.fillStyle='#5fbfa0'; ctx.fillText('✅ Daerah Solusi',cx-70,cy-1.5*sc);
+    ctx.fillStyle='#9b7fc8'; ctx.fillText('y = x',cx+5,cy-5);
+    ctx.fillStyle='#e8628a'; ctx.fillText('y = x+3',cx+5,cy-3*sc-5);
+  }
+
+  function drawC4() {
+    const g = setupCanvas('c4'); if (!g) return;
+    const {ctx,W,H,cx,cy,scale:sc} = g;
+    drawAxes(ctx,W,H,cx,cy);
+    // y > 2x+1 → shade above
+    ctx.beginPath();
+    for (let px=0;px<=W;px++) { const x=(px-cx)/sc; const py=cy-(2*x+1)*sc; if(px===0) ctx.moveTo(px,py); else ctx.lineTo(px,py); }
+    ctx.lineTo(W,0); ctx.lineTo(0,0); ctx.closePath();
+    ctx.fillStyle='rgba(155,127,200,0.18)'; ctx.fill();
+    // y < 2x-1 → shade below
+    ctx.beginPath();
+    for (let px=0;px<=W;px++) { const x=(px-cx)/sc; const py=cy-(2*x-1)*sc; if(px===0) ctx.moveTo(px,py); else ctx.lineTo(px,py); }
+    ctx.lineTo(W,H); ctx.lineTo(0,H); ctx.closePath();
+    ctx.fillStyle='rgba(232,98,138,0.18)'; ctx.fill();
+    // lines
+    ctx.lineWidth=2.5; ctx.setLineDash([6,4]);
+    ctx.beginPath();
+    ctx.moveTo(0,cy-(2*(0-cx/sc)+1)*sc); ctx.lineTo(W,cy-(2*((W-cx)/sc)+1)*sc);
+    ctx.strokeStyle='#9b7fc8'; ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0,cy-(2*(0-cx/sc)-1)*sc); ctx.lineTo(W,cy-(2*((W-cx)/sc)-1)*sc);
+    ctx.strokeStyle='#e8628a'; ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.font='bold 12px Nunito';
+    ctx.fillStyle='#9b7fc8'; ctx.fillText('y=2x+1',cx+5,cy-1*sc-5);
+    ctx.fillStyle='#e8628a'; ctx.fillText('y=2x−1',cx+5,cy+1*sc+15);
+    // NO SOLUTION label
+    ctx.fillStyle='rgba(100,80,100,0.3)'; ctx.font='bold 14px Nunito';
+    ctx.fillText('↔ GAP, tidak ada irisan',cx-90,cy+5);
+  }
+
+  function chk(btn, gid, correct) {
+    if (q1done) return; q1done=true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>{b.disabled=true;});
+    btn.classList.add(correct?'correct':'wrong');
+    if (!correct) document.querySelectorAll(`#${gid} .opt-btn`)[1].classList.add('correct');
+    const fb=document.getElementById('q1-fb');
+    fb.className='feedback show '+(correct?'ok':'no');
+    fb.textContent = correct
+      ? '✅ Tepat! (1,3): 3>1 ✓ dan 3<1+3=4 ✓ — memenuhi keduanya!'
+      : '❌ Coba cek lagi. y>x: 3>1 ✓. y<x+3: 3<4 ✓. Keduanya terpenuhi!';
+    nextBtn.disabled=false;
+  }
+
+  function chk2(btn, correct) {
+    if (q2done) return; q2done=true;
+    document.querySelectorAll('#q2 .opt-btn').forEach(b=>{b.disabled=true;});
+    btn.classList.add(correct?'correct':'wrong');
+    if (!correct) document.querySelectorAll('#q2 .opt-btn')[1].classList.add('correct');
+    const fb=document.getElementById('q2-fb');
+    fb.className='feedback show '+(correct?'ok':'no');
+    fb.textContent = correct
+      ? '✅ Benar! Gradien sama (3), garis sejajar, daerahnya tidak pernah overlap → tidak ada solusi.'
+      : '❌ Perhatikan gradiennya sama (3) → garis sejajar. Daerah solusinya tidak ada yang overlap!';
+    nextBtn.disabled=false;
+  }
+
+  updateUI();
+</script>
+</body>
+</html>

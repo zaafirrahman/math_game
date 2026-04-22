@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 2 · Contoh Soal · Tasya</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fdf6fb;--card:#fff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --lavender:#9b7fc8;--lavender-light:#c8b4e8;--lav-bg:rgba(155,127,200,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --peach:#f0956a;
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 80%,rgba(232,98,138,0.07) 0%,transparent 50%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--lavender);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--rose-bg);border:1.5px solid var(--rose-light);color:var(--rose);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--rose);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:all 0.3s;}
+  .dot.active{background:var(--rose);box-shadow:0 0 0 3px rgba(232,98,138,0.2);transform:scale(1.1);}
+  .dot.done{background:var(--lavender);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);}
+  .card-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.lav{color:var(--lavender);}
+  .card-label.rose{color:var(--rose);}
+  .card-label.mint{color:var(--mint);}
+  .card h2{font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:800;margin-bottom:0.7rem;line-height:1.4;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  /* Problem display */
+  .problem-box{
+    background:linear-gradient(135deg,var(--rose-bg),var(--lav-bg));
+    border:2px solid var(--rose-light); border-radius:16px;
+    padding:1.2rem 1.5rem; margin:1rem 0; text-align:center;
+  }
+  .problem-box .sys{font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;color:var(--text);line-height:1.8;}
+  .problem-box .sys span{color:var(--lavender);}
+
+  /* Steps */
+  .step-list{display:flex;flex-direction:column;gap:0.8rem;margin:1rem 0;}
+  .step-item{display:flex;gap:0.9rem;align-items:flex-start;background:#fafafa;border:1.5px solid var(--border);border-radius:14px;padding:0.9rem 1.1rem;font-size:0.88rem;line-height:1.6;}
+  .step-n{font-family:'Nunito',sans-serif;font-weight:900;font-size:0.72rem;color:#fff;background:var(--rose);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .step-item strong{color:var(--rose);}
+  .step-item .lav{color:var(--lavender);}
+  .step-item .mint{color:var(--mint);}
+
+  /* Graph */
+  .graph-wrap{position:relative;background:#fafafa;border:1.5px solid var(--border2);border-radius:16px;overflow:hidden;margin:1.1rem 0;}
+  canvas{display:block;width:100%;height:auto;}
+
+  /* Answer reveal */
+  .reveal-btn{width:100%;padding:0.8rem;border-radius:99px;border:2px dashed var(--lavender-light);background:var(--lav-bg);color:var(--lavender);font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;cursor:pointer;transition:all 0.2s;margin:0.8rem 0;}
+  .reveal-btn:hover{border-style:solid;background:rgba(155,127,200,0.12);}
+  .reveal-content{display:none;animation:fadeUp 0.3s ease;}
+  .reveal-content.show{display:block;}
+
+  .hl-box{border-radius:14px;padding:1rem 1.2rem;margin:0.8rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .hl-lav{background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--text-mid);}
+  .hl-mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .hl-box strong,.hl-rose strong{color:var(--rose);}
+  .hl-lav strong{color:var(--lavender);}
+  .hl-mint strong{color:var(--mint);}
+
+  /* Uji titik table */
+  .uji-table{width:100%;border-collapse:collapse;margin:0.8rem 0;font-size:0.85rem;}
+  .uji-table th{background:var(--lav-bg);color:var(--lavender);padding:0.5rem 0.8rem;text-align:left;font-weight:700;border-bottom:2px solid var(--lavender-light);}
+  .uji-table td{padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);color:var(--text-mid);}
+  .uji-table .ok{color:var(--mint);font-weight:700;}
+  .uji-table .no{color:var(--rose);font-weight:700;}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--rose-light);color:var(--rose);}
+  .btn-primary{background:linear-gradient(135deg,var(--rose),var(--lavender));color:#fff;box-shadow:0 4px 14px rgba(232,98,138,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:3.5rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900;color:var(--rose);margin-bottom:0.7rem;}
+  .finish-desc{color:var(--text-muted);line-height:1.7;margin-bottom:1.5rem;font-size:0.9rem;}
+  .xp{display:inline-block;background:rgba(232,98,138,0.1);border:1.5px solid var(--rose-light);color:var(--rose);padding:0.35rem 1.1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">ARENA</a><span>›</span>
+  <a href="../../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="../lesson17.html">LESSON 17</a><span>›</span>
+  <span class="cur">SEC 2</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📝 Section 02 · Contoh Soal</div>
+  <h1>Walkthrough <span>Soal Bareng</span></h1>
+  <p class="intro">Kita selesaikan 2 contoh soal lengkap — dari nulis sistemnya, gambar garis, arsir daerah, sampai nemuin irisannya dan verifikasi pakai uji titik.</p>
+
+  <div class="dots" id="dots"></div>
+
+  <div class="slides">
+
+    <!-- Slide 0: Soal 1 intro -->
+    <div class="slide active">
+      <div class="card">
+        <div class="card-label rose">📌 Contoh Soal 1</div>
+        <h2>Tentukan daerah solusi sistem berikut:</h2>
+        <div class="problem-box">
+          <div class="sys">y &gt; x − 1<br><span>y &lt; 2x + 2</span></div>
+        </div>
+        <p>Kita selesaikan langkah demi langkah. Ingat prosesnya: <strong>gambar garis → tentukan arsiran → cari irisan → uji titik</strong>.</p>
+      </div>
+    </div>
+
+    <!-- Slide 1: Langkah 1 & 2 - gambar garis -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label lav">Langkah 1 & 2 — Gambar kedua garis</div>
+        <h2>Ubah ke persamaan garis dulu</h2>
+        <div class="step-list">
+          <div class="step-item"><div class="step-n">1</div><div>Pertidaksamaan 1: <strong>y &gt; x − 1</strong><br>→ gambar garis <span class="lav">y = x − 1</span> (putus-putus karena &gt; bukan ≥)</div></div>
+          <div class="step-item"><div class="step-n">2</div><div>Pertidaksamaan 2: <span class="lav">y &lt; 2x + 2</span><br>→ gambar garis <strong>y = 2x + 2</strong> (putus-putus karena &lt; bukan ≤)</div></div>
+          <div class="step-item"><div class="step-n">3</div><div>Titik potong kedua garis: <strong>x − 1 = 2x + 2 → x = −3, y = −4</strong><br>Titik potong: <span class="mint">(−3, −4)</span></div></div>
+        </div>
+        <div class="graph-wrap"><canvas id="c1a" width="500" height="300"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Langkah 3 - arsiran -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label mint">Langkah 3 — Tentukan Arsiran</div>
+        <h2>Uji titik asal (0, 0) untuk tiap pertidaksamaan</h2>
+        <table class="uji-table">
+          <tr><th>Pertidaksamaan</th><th>Uji (0,0)</th><th>Hasil</th><th>Arsiran</th></tr>
+          <tr><td>y &gt; x − 1</td><td>0 &gt; 0 − 1 → 0 &gt; −1</td><td class="ok">✅ Benar</td><td>Di atas garis y = x−1</td></tr>
+          <tr><td>y &lt; 2x + 2</td><td>0 &lt; 2(0) + 2 → 0 &lt; 2</td><td class="ok">✅ Benar</td><td>Di bawah garis y = 2x+2</td></tr>
+        </table>
+        <div class="hl-box hl-lav">Titik (0,0) ada di kedua daerah arsiran → ini artinya titik asal termasuk ke dalam <strong>daerah irisan</strong>!</div>
+        <div class="graph-wrap"><canvas id="c1b" width="500" height="300"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Irisan soal 1 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label mint">Langkah 4 — Daerah Solusi</div>
+        <h2>Irisan: daerah yang memenuhi keduanya</h2>
+        <div class="graph-wrap"><canvas id="c1c" width="500" height="300"></canvas></div>
+        <div class="hl-box hl-mint">
+          <strong>Daerah solusi</strong> = area hijau = semua titik yang berada <em>di atas</em> y = x−1 <em>sekaligus di bawah</em> y = 2x+2.<br><br>
+          Verifikasi ulang dengan titik (0,0): ✅ 0 &gt; −1 dan ✅ 0 &lt; 2 → memenuhi keduanya!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Soal 2 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">📌 Contoh Soal 2 — Lebih Menantang</div>
+        <h2>Tentukan daerah solusi sistem:</h2>
+        <div class="problem-box">
+          <div class="sys">y ≥ −x + 1<br><span>y ≤ x + 3</span><br>x ≥ 0</div>
+        </div>
+        <p>Kali ini ada <strong>3 pertidaksamaan</strong>! Prosesnya sama, tapi kita arsir 3 daerah dan cari irisannya.</p>
+      </div>
+      <div class="card">
+        <p>Coba kamu pikirkan dulu: titik <strong>(1, 2)</strong> — apakah memenuhi ketiga syarat?</p>
+        <button class="reveal-btn" onclick="rev('r1',this)">👀 Lihat pengecekannya</button>
+        <div class="reveal-content" id="r1">
+          <table class="uji-table">
+            <tr><th>Syarat</th><th>Cek titik (1,2)</th><th>Status</th></tr>
+            <tr><td>y ≥ −x + 1</td><td>2 ≥ −1+1 = 0</td><td class="ok">✅</td></tr>
+            <tr><td>y ≤ x + 3</td><td>2 ≤ 1+3 = 4</td><td class="ok">✅</td></tr>
+            <tr><td>x ≥ 0</td><td>1 ≥ 0</td><td class="ok">✅</td></tr>
+          </table>
+          <div class="hl-box hl-mint">Titik (1,2) memenuhi semua syarat → ada di daerah solusi! ✅</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Soal 2 visualisasi -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label mint">Visualisasi Soal 2</div>
+        <h2>3 pertidaksamaan → daerah segitiga</h2>
+        <div class="graph-wrap"><canvas id="c2a" width="500" height="300"></canvas></div>
+        <div class="step-list">
+          <div class="step-item"><div class="step-n">1</div><div>y ≥ −x + 1 → <span class="lav">di atas garis y = −x+1</span></div></div>
+          <div class="step-item"><div class="step-n">2</div><div>y ≤ x + 3 → <strong>di bawah garis y = x+3</strong></div></div>
+          <div class="step-item"><div class="step-n">3</div><div>x ≥ 0 → <span class="mint">di kanan sumbu y (x positif)</span></div></div>
+        </div>
+        <div class="hl-box hl-rose">Irisan ketiga daerah ini membentuk sebuah <strong>segitiga</strong>. Semakin banyak syarat, semakin "sempit" daerah solusinya!</div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Rangkuman -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label lav">📋 Rangkuman Langkah</div>
+        <h2>Cara menyelesaikan sistem pertidaksamaan</h2>
+        <div class="step-list">
+          <div class="step-item"><div class="step-n">1</div><div>Tulis setiap pertidaksamaan sebagai persamaan garis</div></div>
+          <div class="step-item"><div class="step-n">2</div><div>Gambar semua garis (putus-putus jika &lt; atau &gt;, solid jika ≤ atau ≥)</div></div>
+          <div class="step-item"><div class="step-n">3</div><div>Uji titik (biasanya titik asal) ke tiap pertidaksamaan → tentukan sisi mana yang diarsir</div></div>
+          <div class="step-item"><div class="step-n">4</div><div>Temukan area yang arsiran semua pertidaksamaannya <strong>overlap</strong> → itu daerah solusinya</div></div>
+          <div class="step-item"><div class="step-n">5</div><div>Verifikasi satu titik di area irisan ke semua pertidaksamaan</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Finish -->
+    <div class="slide">
+      <div class="card finish">
+        <span class="finish-icon">📝</span>
+        <div class="finish-title">Contoh Soal Selesai!</div>
+        <div class="finish-desc">Kamu udah lihat cara kerjanya dari awal sampai akhir — dua contoh soal berbeda. Sekarang waktunya kamu coba sendiri. Siap sprint?</div>
+        <div class="xp">✨ +70 XP — Guided Expert!</div>
+        <div class="finish-btns">
+          <a href="../lesson17.html" class="btn btn-ghost">← Back</a>
+          <a href="section3.html" class="btn btn-primary">Sprint 5 Soal →</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+
+  <div class="nav-btns" id="navbtns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="go(-1)" disabled>← Prev</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL=8; let cur=0;
+  const dotsEl=document.getElementById('dots');
+  const allSlides=document.querySelectorAll('.slide');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  const navbtns=document.getElementById('navbtns');
+
+  for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
+  function updateUI(){
+    allSlides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+    dotsEl.querySelectorAll('.dot').forEach((d,i)=>{d.classList.remove('active','done');if(i<cur)d.classList.add('done');if(i===cur)d.classList.add('active');});
+    prevBtn.disabled=cur===0;
+    const isLast=cur===TOTAL-1;
+    navbtns.style.display=isLast?'none':'flex';
+    nextBtn.disabled=false;
+    if(cur===1)drawC1a();
+    if(cur===2)drawC1b();
+    if(cur===3)drawC1c();
+    if(cur===5)drawC2a();
+  }
+  function go(dir){cur=Math.max(0,Math.min(TOTAL-1,cur+dir));updateUI();}
+  function rev(id,btn){document.getElementById(id).classList.add('show');btn.style.display='none';}
+
+  function setup(id){const c=document.getElementById(id);if(!c)return null;const W=c.width,H=c.height,ctx=c.getContext('2d');ctx.clearRect(0,0,W,H);return{ctx,W,H,cx:W/2,cy:H/2,sc:40};}
+  function axes(ctx,W,H,cx,cy){
+    ctx.strokeStyle='#e8d8e8';ctx.lineWidth=1;
+    for(let x=cx%40;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=cy%40;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    ctx.strokeStyle='#d0b8d0';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.stroke();
+    ctx.fillStyle='#c0a0c0';ctx.font='11px Quicksand';
+    ctx.fillText('x',W-12,cy-6);ctx.fillText('y',cx+5,12);
+  }
+
+  function drawC1a(){
+    const g=setup('c1a');if(!g)return;
+    const{ctx,W,H,cx,cy,sc}=g;axes(ctx,W,H,cx,cy);
+    // y = x-1 (lavender dashed)
+    ctx.lineWidth=2.5;ctx.setLineDash([7,5]);
+    ctx.beginPath();ctx.moveTo(0,cy+sc);ctx.lineTo(W,cy-(W-cx)/sc*sc+sc);
+    ctx.strokeStyle='#9b7fc8';ctx.stroke();
+    // y = 2x+2 (rose dashed)
+    ctx.beginPath();
+    ctx.moveTo(0,cy-2*sc);
+    ctx.lineTo(W,cy-(2*((W-cx)/sc)+2)*sc);
+    ctx.strokeStyle='#e8628a';ctx.stroke();ctx.setLineDash([]);
+    ctx.font='bold 12px Nunito';
+    ctx.fillStyle='#9b7fc8';ctx.fillText('y = x−1',cx+5,cy+sc-5);
+    ctx.fillStyle='#e8628a';ctx.fillText('y = 2x+2',cx+5,cy-2*sc-5);
+    // intersection point
+    const ix=cx+(-3)*sc,iy=cy-(-4)*sc;
+    ctx.beginPath();ctx.arc(ix,iy,5,0,Math.PI*2);ctx.fillStyle='#f0956a';ctx.fill();
+    ctx.fillStyle='#3d2b3d';ctx.font='11px Quicksand';ctx.fillText('(−3,−4)',ix+6,iy-4);
+  }
+
+  function drawC1b(){
+    const g=setup('c1b');if(!g)return;
+    const{ctx,W,H,cx,cy,sc}=g;axes(ctx,W,H,cx,cy);
+    // shade y > x-1 (above) lavender
+    ctx.beginPath();
+    for(let px=0;px<=W;px++){const x=(px-cx)/sc;const py=cy-(x-1)*sc;if(px===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}
+    ctx.lineTo(W,0);ctx.lineTo(0,0);ctx.closePath();
+    ctx.fillStyle='rgba(155,127,200,0.2)';ctx.fill();
+    // shade y < 2x+2 (below) rose
+    ctx.beginPath();
+    for(let px=0;px<=W;px++){const x=(px-cx)/sc;const py=cy-(2*x+2)*sc;if(px===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}
+    ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();
+    ctx.fillStyle='rgba(232,98,138,0.18)';ctx.fill();
+    ctx.lineWidth=2.5;ctx.setLineDash([7,5]);
+    ctx.beginPath();ctx.moveTo(0,cy+sc);ctx.lineTo(W,cy-(W-cx)/sc*sc+sc);ctx.strokeStyle='#9b7fc8';ctx.stroke();
+    ctx.beginPath();ctx.moveTo(0,cy-2*sc);ctx.lineTo(W,cy-(2*((W-cx)/sc)+2)*sc);ctx.strokeStyle='#e8628a';ctx.stroke();
+    ctx.setLineDash([]);
+    // (0,0) point
+    ctx.beginPath();ctx.arc(cx,cy,6,0,Math.PI*2);ctx.fillStyle='#5fbfa0';ctx.fill();
+    ctx.fillStyle='#3d2b3d';ctx.font='bold 12px Quicksand';ctx.fillText('(0,0) ✅',cx+8,cy-6);
+  }
+
+  function drawC1c(){
+    const g=setup('c1c');if(!g)return;
+    const{ctx,W,H,cx,cy,sc}=g;axes(ctx,W,H,cx,cy);
+    // Draw intersection fill: y > x-1 AND y < 2x+2
+    // The region between the two lines where y > x-1 and y < 2x+2
+    // Intersection point at x=-3
+    // For x > -3: y=x-1 is lower, y=2x+2 is upper (when x>-3, 2x+2 > x-1)
+    // Fill between the two lines
+    ctx.beginPath();
+    for(let px=0;px<=W;px++){const x=(px-cx)/sc;const y=x-1;if(px===0)ctx.moveTo(px,cy-y*sc);else ctx.lineTo(px,cy-y*sc);}
+    for(let px=W;px>=0;px--){const x=(px-cx)/sc;const y=2*x+2;ctx.lineTo(px,cy-y*sc);}
+    ctx.closePath();ctx.fillStyle='rgba(95,191,160,0.35)';ctx.fill();
+    // faded outer
+    ctx.beginPath();
+    for(let px=0;px<=W;px++){const x=(px-cx)/sc;const py=cy-(x-1)*sc;if(px===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}
+    ctx.lineTo(W,0);ctx.lineTo(0,0);ctx.closePath();ctx.fillStyle='rgba(155,127,200,0.07)';ctx.fill();
+    ctx.lineWidth=2.5;ctx.setLineDash([7,5]);
+    ctx.beginPath();ctx.moveTo(0,cy+sc);ctx.lineTo(W,cy-(W-cx)/sc*sc+sc);ctx.strokeStyle='#9b7fc8';ctx.stroke();
+    ctx.beginPath();ctx.moveTo(0,cy-2*sc);ctx.lineTo(W,cy-(2*((W-cx)/sc)+2)*sc);ctx.strokeStyle='#e8628a';ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#5fbfa0';ctx.font='bold 13px Nunito';ctx.fillText('✅ Daerah Solusi',cx-30,cy-0.8*sc);
+  }
+
+  function drawC2a(){
+    const g=setup('c2a');if(!g)return;
+    const{ctx,W,H,cx,cy,sc}=g;axes(ctx,W,H,cx,cy);
+    // 3 inequalities: y>=-x+1, y<=x+3, x>=0
+    // Fill intersection
+    ctx.beginPath();
+    // Triangle vertices: (-x+1 = x+3 → x=1,y=2), x=0 → y>=1 and y<=3, ...
+    // Let's just shade using clipping approach: fill where all 3 hold
+    // We'll do a simple polygon: find vertices
+    // Intersect y=-x+1 and x=0: (0,1)
+    // Intersect y=x+3 and x=0: (0,3)
+    // Intersect y=-x+1 and y=x+3: x=1,y=2 → (1,2)
+    // Triangle: (0,1),(0,3),(1,2) — but this extends rightward
+    // Actually for x>=0: the region is bounded by x=0 on the left, opens to the right
+    // y >= -x+1 AND y <= x+3 AND x >= 0
+    // Let's shade a big region of the polygon
+    // For x from 0 to right edge: y from -x+1 to x+3
+    const x0=cx; // x=0 screen
+    ctx.beginPath();
+    ctx.moveTo(x0,cy-1*sc); // (0,1)
+    // along y=-x+1 going right... but we need to go up to canvas edge
+    // Actually shade up to x=3 for visibility
+    for(let px=x0;px<=W;px++){const x=(px-cx)/sc;ctx.lineTo(px,cy-(-x+1)*sc);}
+    for(let px=W;px>=x0;px--){const x=(px-cx)/sc;ctx.lineTo(px,cy-(x+3)*sc);}
+    ctx.closePath();
+    ctx.fillStyle='rgba(95,191,160,0.32)';ctx.fill();
+    ctx.strokeStyle='rgba(95,191,160,0.5)';ctx.lineWidth=1;ctx.stroke();
+    // Lines
+    ctx.lineWidth=2.5;
+    // y=-x+1 (lavender)
+    ctx.beginPath();
+    ctx.moveTo(0,cy-(-(-cx/sc)+1)*sc);ctx.lineTo(W,cy-(-(W-cx)/sc+1)*sc);
+    ctx.strokeStyle='#9b7fc8';ctx.setLineDash([]);ctx.stroke();
+    // y=x+3 (rose)
+    ctx.beginPath();
+    ctx.moveTo(0,cy-((-cx/sc)+3)*sc);ctx.lineTo(W,cy-(((W-cx)/sc)+3)*sc);
+    ctx.strokeStyle='#e8628a';ctx.stroke();
+    // x=0 (mint, solid)
+    ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.strokeStyle='#5fbfa0';ctx.lineWidth=2.5;ctx.stroke();
+    // labels
+    ctx.font='bold 12px Nunito';
+    ctx.fillStyle='#9b7fc8';ctx.fillText('y=−x+1',cx+5,cy-1*sc+15);
+    ctx.fillStyle='#e8628a';ctx.fillText('y=x+3',cx+5,cy-3*sc-5);
+    ctx.fillStyle='#5fbfa0';ctx.fillText('x=0',cx+4,30);
+    // points
+    [[0,1],[0,3],[1,2]].forEach(([x,y])=>{
+      ctx.beginPath();ctx.arc(cx+x*sc,cy-y*sc,5,0,Math.PI*2);ctx.fillStyle='#f0956a';ctx.fill();
+    });
+    ctx.fillStyle='#3d2b3d';ctx.font='11px Quicksand';
+    ctx.fillText('(0,1)',cx+6,cy-1*sc+4);
+    ctx.fillText('(0,3)',cx+6,cy-3*sc+4);
+    ctx.fillText('(1,2)',cx+1*sc+6,cy-2*sc+4);
+  }
+
+  updateUI();
+</script>
+</body>
+</html>
