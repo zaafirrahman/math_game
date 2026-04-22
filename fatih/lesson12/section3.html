@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 3 · Sprint · Fatih</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);
+    --red:#e85040;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(232,80,64,0.05) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--red);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  /* Intro */
+  #intro{text-align:center;}
+  .loco-icon{font-size:5rem;display:block;margin-bottom:1.2rem;animation:chug 0.6s ease-in-out infinite alternate;}
+  @keyframes chug{from{transform:translateX(-4px);}to{transform:translateX(4px);}}
+  .sprint-title{font-family:'Rajdhani',sans-serif;font-size:clamp(1.8rem,5vw,2.5rem);font-weight:700;color:var(--amber);letter-spacing:3px;margin-bottom:0.6rem;}
+  .sprint-sub{color:var(--text-muted);line-height:1.7;margin-bottom:2rem;font-size:0.9rem;}
+  .rules-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.4rem 1.8rem;text-align:left;margin-bottom:2rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .rules-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),var(--steel));}
+  .rules-title{font-family:'Rajdhani',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:1rem;}
+  .rule{display:flex;gap:0.8rem;font-size:0.88rem;margin-bottom:0.55rem;color:var(--text-mid);}
+  .rule span{flex-shrink:0;}
+  .start-btn{background:linear-gradient(135deg,var(--amber),#c07810);color:#000;border:none;padding:1rem 3rem;border-radius:6px;font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:3px;cursor:pointer;box-shadow:0 5px 18px rgba(240,168,48,0.35);transition:all 0.2s;}
+  .start-btn:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(240,168,48,0.45);}
+
+  /* Game */
+  #game{display:none;}
+
+  /* Speed gauge */
+  .gauge-wrap{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;gap:1rem;}
+  .hud-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.65rem 1.2rem;text-align:center;flex:1;box-shadow:0 2px 8px var(--shadow);}
+  .hud-val{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.3rem;}
+  .hud-val.sc{color:var(--amber);}
+  .hud-val.qn{color:var(--steel-light);}
+  .hud-lbl{font-size:0.62rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-top:0.1rem;font-family:'Rajdhani',sans-serif;}
+
+  /* Timer bar */
+  .timer-bar-wrap{margin-bottom:1.5rem;}
+  .timer-bar-bg{height:8px;background:var(--track);border-radius:2px;overflow:hidden;border:1px solid var(--border);}
+  .timer-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--amber));border-radius:2px;transition:width 1s linear,background 0.5s;}
+  .timer-bar-fill.warn{background:linear-gradient(90deg,var(--amber),var(--red));}
+  .timer-num{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;color:var(--text-muted);text-align:right;margin-top:0.3rem;}
+  .timer-num.warn{color:var(--red);}
+
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2rem;margin-bottom:1.2rem;box-shadow:0 4px 14px var(--shadow);animation:slideIn 0.3s ease;position:relative;overflow:hidden;}
+  .q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--steel),var(--amber));}
+  @keyframes slideIn{from{opacity:0;transform:translateX(16px);}to{opacity:1;transform:translateX(0);}}
+  .q-cat{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:0.9rem;}
+  .q-text{font-family:'Rajdhani',sans-serif;font-size:clamp(1.6rem,6vw,2.4rem);font-weight:700;color:var(--text);margin-bottom:0.5rem;letter-spacing:1px;}
+  .q-hint{font-size:0.82rem;color:var(--text-muted);margin-bottom:1.4rem;}
+
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;}
+  @media(max-width:420px){.opts-grid{grid-template-columns:1fr;}}
+  .opt{background:var(--track);border:1px solid var(--border2);color:var(--text);padding:0.9rem;border-radius:8px;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.2rem;text-align:center;transition:all 0.15s;letter-spacing:1px;}
+  .opt:hover{border-color:var(--amber);background:rgba(240,168,48,0.06);}
+  .opt.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt.wrong{border-color:var(--red);background:rgba(232,80,64,0.08);color:var(--red);}
+  .opt:disabled{cursor:default;}
+  .q-fb{margin-top:1rem;padding:0.75rem 1rem;border-radius:8px;font-size:0.88rem;font-weight:700;display:none;}
+  .q-fb.show{display:block;}
+  .q-fb.ok{background:var(--green-bg);color:var(--green);border:1px solid rgba(72,200,112,0.3);}
+  .q-fb.no{background:rgba(232,80,64,0.08);color:var(--red);border:1px solid rgba(232,80,64,0.25);}
+
+  .next-btn{width:100%;padding:0.9rem;border-radius:6px;border:none;background:linear-gradient(135deg,var(--steel),#3a7098);color:#fff;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:2px;cursor:pointer;margin-top:1rem;display:none;box-shadow:0 4px 12px rgba(74,144,184,0.3);transition:all 0.2s;}
+  .next-btn:hover{transform:translateY(-2px);}
+  .next-btn.show{display:block;animation:fadeUp 0.3s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  /* Results */
+  #results{display:none;text-align:center;}
+  .res-icon{font-size:5rem;display:block;margin-bottom:1rem;animation:chug 0.5s ease-in-out infinite alternate;}
+  .res-score{font-family:'Rajdhani',sans-serif;font-size:clamp(3rem,10vw,5rem);font-weight:700;margin-bottom:0.3rem;}
+  .res-label{font-family:'Rajdhani',sans-serif;font-size:0.9rem;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:2rem;}
+  .breakdown{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.4rem;margin-bottom:1.5rem;text-align:left;}
+  .br-row{display:flex;justify-content:space-between;padding:0.42rem 0;border-bottom:1px solid var(--border);font-size:0.88rem;}
+  .br-row:last-child{border-bottom:none;font-weight:800;}
+  .qtxt{color:var(--text-mid);font-family:'Rajdhani',sans-serif;}
+  .ok{color:var(--green);font-weight:700;font-family:'Rajdhani',sans-serif;}
+  .no{color:var(--red);font-weight:700;font-family:'Rajdhani',sans-serif;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);color:var(--amber);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.5rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--amber),#c07810);color:#000;font-weight:800;}
+  .btn-green{background:linear-gradient(135deg,var(--green),#38a058);color:#000;font-weight:800;}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+<nav>
+  <a href="../../index.html">ARENA</a><span>/</span>
+  <a href="../../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="../lesson12.html">LESSON 12</a><span>/</span>
+  <span class="cur">SEC 3 · SPRINT</span>
+</nav>
+
+<div class="wrap">
+  <div id="intro">
+    <span class="loco-icon">🚂</span>
+    <div class="sprint-title">⚡ SPRINT MODE</div>
+    <div class="sprint-sub">5 soal persen — timer 20 detik per soal. Kereta berangkat, nggak ada yang ketinggalan!</div>
+    <div class="rules-box">
+      <div class="rules-title">📋 Rules</div>
+      <div class="rule"><span>🎯</span> 5 soal pilihan ganda</div>
+      <div class="rule"><span>⏱️</span> 20 detik per soal</div>
+      <div class="rule"><span>⭐</span> Jawaban benar = +20 poin</div>
+      <div class="rule"><span>🚉</span> Waktu habis = 0 poin, soal tetap lanjut</div>
+    </div>
+    <button class="start-btn" onclick="startGame()">🚂 BERANGKAT!</button>
+  </div>
+
+  <div id="game">
+    <div class="gauge-wrap">
+      <div class="hud-box"><div class="hud-val sc" id="scoreD">0</div><div class="hud-lbl">Poin</div></div>
+      <div class="hud-box"><div class="hud-val qn" id="qD">1 / 5</div><div class="hud-lbl">Soal</div></div>
+    </div>
+    <div class="timer-bar-wrap">
+      <div class="timer-bar-bg"><div class="timer-bar-fill" id="timerBar"></div></div>
+      <div class="timer-num" id="timerNum">20</div>
+    </div>
+    <div class="q-card" id="qCard">
+      <div class="q-cat" id="qCat"></div>
+      <div class="q-text" id="qText"></div>
+      <div class="q-hint" id="qHint"></div>
+      <div class="opts-grid" id="optsGrid"></div>
+      <div class="q-fb" id="qFb"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQ()">SOAL BERIKUTNYA →</button>
+  </div>
+
+  <div id="results">
+    <span class="res-icon" id="resIcon"></span>
+    <div class="res-score" id="resScore"></div>
+    <div class="res-label" id="resLabel"></div>
+    <div class="breakdown" id="breakdown"></div>
+    <div class="xp" id="xpBadge"></div>
+    <div class="action-btns">
+      <button class="btn btn-ghost" onclick="restart()">🔄 Ulangi</button>
+      <a href="../lesson12.html" class="btn btn-ghost">← Back</a>
+      <a href="section4.html" class="btn btn-green">Latihan Santai 🛤️</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const QS=[
+    {cat:'🟢 Level 1',text:'50% dari 80 = ?',hint:'Ingat: 50% = ½',opts:[20,40,60,80],answer:40,explain:'50% = ½ → 80÷2 = 40 ✓'},
+    {cat:'🟢 Level 1',text:'25% dari 60 = ?',hint:'25% = ¼',opts:[10,15,20,25],answer:15,explain:'25% = ¼ → 60÷4 = 15 ✓'},
+    {cat:'🟡 Level 2',text:'30% dari 70 = ?',hint:'Cari 10% dulu!',opts:[14,21,28,35],answer:21,explain:'10% dari 70 = 7 → 30% = 3×7 = 21 ✓'},
+    {cat:'🟡 Level 2',text:'20% dari 45 = ?',hint:'10% dari 45 = 4.5',opts:[6,7,9,11],answer:9,explain:'10% dari 45 = 4.5 → 20% = 2×4.5 = 9 ✓'},
+    {cat:'🔴 Level 3',text:'75% dari 80 = ?',hint:'75% = 3×25%',opts:[40,50,60,70],answer:60,explain:'25% dari 80 = 20 → 75% = 3×20 = 60 ✓'},
+  ];
+
+  let cur=0,score=0,timer=null,timeLeft=20;
+  const log=[];
+  const MAXTIME=20;
+
+  function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+
+  function startGame(){
+    document.getElementById('intro').style.display='none';
+    document.getElementById('game').style.display='block';
+    loadQ();
+  }
+
+  function loadQ(){
+    const q=QS[cur];
+    document.getElementById('qD').textContent=`${cur+1} / 5`;
+    document.getElementById('qCat').textContent=q.cat;
+    document.getElementById('qText').textContent=q.text;
+    document.getElementById('qHint').textContent='💡 '+q.hint;
+    document.getElementById('qFb').className='q-fb';
+    document.getElementById('nextBtn').className='next-btn';
+    const grid=document.getElementById('optsGrid');
+    grid.innerHTML='';
+    shuffle(q.opts).forEach(o=>{
+      const b=document.createElement('button');
+      b.className='opt';b.textContent=o;
+      b.onclick=()=>answer(o,b,q);
+      grid.appendChild(b);
+    });
+    const card=document.getElementById('qCard');
+    card.style.animation='none';void card.offsetWidth;card.style.animation='';
+    startTimer();
+  }
+
+  function startTimer(){
+    timeLeft=MAXTIME;updateTimer();
+    clearInterval(timer);
+    timer=setInterval(()=>{timeLeft--;updateTimer();if(timeLeft<=0){clearInterval(timer);timeUp();}},1000);
+  }
+  function updateTimer(){
+    const pct=timeLeft/MAXTIME*100;
+    const bar=document.getElementById('timerBar');
+    bar.style.width=pct+'%';
+    bar.className='timer-bar-fill'+(timeLeft<=6?' warn':'');
+    const num=document.getElementById('timerNum');
+    num.textContent=timeLeft;
+    num.className='timer-num'+(timeLeft<=6?' warn':'');
+  }
+
+  function answer(val,btn,q){
+    clearInterval(timer);
+    const correct=val===q.answer;
+    document.querySelectorAll('.opt').forEach(b=>{b.disabled=true;if(b.textContent==q.answer)b.classList.add('correct');});
+    if(!correct)btn.classList.add('wrong');
+    else score+=20;
+    document.getElementById('scoreD').textContent=score;
+    log.push({text:q.text,correct});
+    const fb=document.getElementById('qFb');
+    fb.className='q-fb show '+(correct?'ok':'no');
+    fb.textContent=(correct?'✅ ':'❌ ')+q.explain;
+    document.getElementById('nextBtn').className='next-btn show';
+  }
+
+  function timeUp(){
+    const q=QS[cur];
+    document.querySelectorAll('.opt').forEach(b=>{b.disabled=true;if(b.textContent==q.answer)b.classList.add('correct');});
+    log.push({text:q.text,correct:false});
+    const fb=document.getElementById('qFb');
+    fb.className='q-fb show no';
+    fb.textContent='⏱️ Waktu habis! '+q.explain;
+    document.getElementById('nextBtn').className='next-btn show';
+  }
+
+  function nextQ(){cur++;if(cur>=QS.length)showResults();else loadQ();}
+
+  function showResults(){
+    document.getElementById('game').style.display='none';
+    const res=document.getElementById('results');
+    res.style.display='block';
+    const pct=score/100;
+    let icon,label,xp;
+    if(pct===1){icon='🏆';label='SEMPURNA!';xp='+200 XP — PERFECT RUN';}
+    else if(pct>=0.8){icon='🚂';label='KEREN BANGET!';xp='+150 XP — EXPRESS PASS';}
+    else if(pct>=0.6){icon='🚃';label='BAGUS!';xp='+100 XP — ON TRACK';}
+    else if(pct>=0.4){icon='🛤️';label='LUMAYAN!';xp='+60 XP — KEEP ROLLING';}
+    else{icon='⚙️';label='LATIHAN LAGI YUK!';xp='+30 XP — NEVER STOP';}
+    document.getElementById('resIcon').textContent=icon;
+    const sc=document.getElementById('resScore');
+    sc.textContent=score+'/100';
+    sc.style.color=pct>=0.6?'var(--amber)':'var(--text-muted)';
+    document.getElementById('resLabel').textContent=label;
+    document.getElementById('xpBadge').textContent='⚡ '+xp;
+    const bd=document.getElementById('breakdown');
+    bd.innerHTML=log.map((r,i)=>`
+      <div class="br-row"><span class="qtxt">Soal ${i+1}: ${QS[i].text}</span><span class="${r.correct?'ok':'no'}">${r.correct?'+20 ✓':'0 ✗'}</span></div>
+    `).join('')+`
+      <div class="br-row"><span><strong>Total</strong></span><span style="color:var(--amber);font-family:'Rajdhani',sans-serif;font-weight:700">${score}/100</span></div>
+    `;
+  }
+
+  function restart(){cur=0;score=0;log.length=0;document.getElementById('results').style.display='none';document.getElementById('scoreD').textContent='0';document.getElementById('game').style.display='block';loadQ();}
+</script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fatih · Math Arena</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1419;
+    --surface: #161d26;
+    --card: #1c2533;
+    --border: #2a3a4a;
+    --border2: #344858;
+    --steel: #4a90b8;
+    --steel-light: #7ab8d8;
+    --steel-bg: rgba(74,144,184,0.1);
+    --amber: #f0a830;
+    --amber-light: #f8c870;
+    --amber-bg: rgba(240,168,48,0.1);
+    --signal-green: #48c870;
+    --signal-red: #e85040;
+    --smoke: #8898a8;
+    --text: #dce8f0;
+    --text-mid: #9ab0c0;
+    --text-muted: #586878;
+    --shadow: rgba(0,0,0,0.4);
+    --track: #263545;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Rail track background pattern */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      repeating-linear-gradient(90deg, transparent 0, transparent 58px, rgba(74,144,184,0.04) 58px, rgba(74,144,184,0.04) 60px),
+      repeating-linear-gradient(transparent 0, transparent 28px, rgba(74,144,184,0.03) 28px, rgba(74,144,184,0.03) 30px);
+    pointer-events: none;
+  }
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(74,144,184,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Moving track at bottom */
+  .track-strip {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    height: 28px; background: var(--track); z-index: 5;
+    border-top: 3px solid var(--border2);
+    overflow: hidden;
+  }
+  .track-rail {
+    position: absolute; top: 8px; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--border2) 0%, var(--steel) 50%, var(--border2) 100%);
+  }
+  .track-rail:nth-child(2) { top: 16px; }
+  .sleepers {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(90deg,
+      transparent 0, transparent 18px,
+      var(--border) 18px, var(--border) 24px);
+    animation: roll 3s linear infinite;
+  }
+  @keyframes roll { from { background-position: 0 0; } to { background-position: -42px 0; } }
+
+  /* Floating train elements */
+  .train-deco {
+    position: fixed; pointer-events: none; z-index: 0;
+    opacity: 0.04; font-size: var(--sz, 3rem);
+    animation: trainFloat var(--d,20s) ease-in-out infinite var(--dl,0s);
+  }
+  @keyframes trainFloat {
+    0%,100% { transform: translateY(0) rotate(var(--r0,0deg)); }
+    50% { transform: translateY(-12px) rotate(var(--r1,3deg)); }
+  }
+
+  nav {
+    padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(15,20,25,0.9); backdrop-filter: blur(16px);
+    position: sticky; top: 0; z-index: 100;
+    font-family: 'Rajdhani', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 1px;
+  }
+  nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--amber); }
+  nav span { color: var(--border2); }
+  nav .cur { color: var(--amber); }
+
+  .hero {
+    padding: 3.5rem 2rem 2.5rem;
+    text-align: center; position: relative; z-index: 1;
+  }
+  .avatar-wrap {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 88px; height: 88px;
+    background: linear-gradient(135deg, var(--track), var(--card));
+    border-radius: 50%; font-size: 2.8rem;
+    border: 3px solid var(--steel);
+    box-shadow: 0 0 0 6px rgba(74,144,184,0.12), 0 8px 24px var(--shadow);
+    margin-bottom: 1.2rem;
+    animation: enginePulse 3s ease-in-out infinite;
+  }
+  @keyframes enginePulse {
+    0%,100% { box-shadow: 0 0 0 6px rgba(74,144,184,0.12), 0 8px 24px var(--shadow); }
+    50% { box-shadow: 0 0 0 10px rgba(74,144,184,0.18), 0 8px 30px var(--shadow); }
+  }
+  .player-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(2rem,5vw,2.8rem); font-weight: 700;
+    background: linear-gradient(135deg, var(--steel-light), var(--amber));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; letter-spacing: 4px;
+  }
+  .player-info {
+    color: var(--text-muted); font-size: 0.85rem;
+    margin-top: 0.4rem; letter-spacing: 2px; text-transform: uppercase;
+    font-family: 'Rajdhani', sans-serif;
+  }
+
+  /* Progress */
+  .prog-wrap {
+    max-width: 380px; margin: 1.8rem auto 0;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1rem 1.4rem;
+    box-shadow: 0 4px 16px var(--shadow);
+    position: relative; overflow: hidden;
+  }
+  .prog-wrap::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--steel), var(--amber));
+  }
+  .prog-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+  .prog-label { font-family: 'Rajdhani', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; }
+  .prog-pct { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--amber); }
+  .prog-track { height: 8px; background: var(--track); border-radius: 99px; overflow: hidden; border: 1px solid var(--border); }
+  .prog-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--steel), var(--amber));
+    border-radius: 99px;
+    transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  }
+  .prog-sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.4rem; text-align: right; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; }
+
+  /* Section label */
+  .section-label {
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+    margin: 2.8rem 2rem 1.8rem;
+    position: relative; z-index: 1;
+  }
+  .sec-line { height: 1px; flex: 1; background: linear-gradient(90deg, transparent, var(--border2)); }
+  .sec-line:last-child { background: linear-gradient(90deg, var(--border2), transparent); }
+  .sec-text {
+    font-family: 'Rajdhani', sans-serif; font-weight: 600;
+    font-size: 0.78rem; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Lessons grid */
+  .lessons-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.2rem; max-width: 900px; margin: 0 auto;
+    padding: 0 2rem 5rem; position: relative; z-index: 1;
+  }
+  .lesson-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.5rem 1.6rem;
+    text-decoration: none; color: inherit; display: block;
+    transition: all 0.22s ease; position: relative; overflow: hidden;
+    box-shadow: 0 4px 14px var(--shadow);
+  }
+  .lesson-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--steel);
+    border-radius: 12px 0 0 12px;
+  }
+  .lesson-card.unlocked:hover {
+    transform: translateY(-3px);
+    border-color: var(--steel); background: #222f3e;
+    box-shadow: 0 8px 24px var(--shadow), 0 0 0 1px var(--steel);
+  }
+  .lesson-card.locked { opacity: 0.35; pointer-events: none; }
+  .lesson-card.locked::before { background: var(--border2); }
+
+  .lesson-num {
+    font-family: 'Rajdhani', sans-serif; font-size: 0.68rem;
+    font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--steel); margin-bottom: 0.7rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .lesson-num::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .lesson-icon { font-size: 2.1rem; margin-bottom: 0.7rem; display: block; }
+  .lesson-title {
+    font-family: 'Rajdhani', sans-serif; font-size: 1.05rem; font-weight: 700;
+    color: var(--text); margin-bottom: 0.45rem; line-height: 1.35; letter-spacing: 0.5px;
+  }
+  .lesson-desc { font-size: 0.82rem; color: var(--text-mid); line-height: 1.6; }
+  .lesson-meta { display: flex; gap: 0.4rem; margin-top: 1rem; flex-wrap: wrap; }
+  .tag {
+    font-size: 0.62rem; font-weight: 700; font-family: 'Rajdhani', sans-serif;
+    padding: 0.18rem 0.55rem; border-radius: 4px;
+    border: 1px solid var(--border2); color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .tag.new { border-color: rgba(240,168,48,0.5); color: var(--amber); background: var(--amber-bg); }
+  .tag.active { border-color: rgba(74,144,184,0.5); color: var(--steel-light); background: var(--steel-bg); }
+  .lock-icon { position: absolute; top: 1rem; right: 1rem; opacity: 0.3; font-size: 1rem; }
+</style>
+</head>
+<body>
+
+<div class="track-strip">
+  <div class="sleepers"></div>
+  <div class="track-rail"></div>
+  <div class="track-rail"></div>
+</div>
+<div id="trainDeco"></div>
+
+<nav>
+  <a href="index.html">MATH ARENA</a>
+  <span>/</span>
+  <span class="cur">FATIH</span>
+</nav>
+
+<div class="hero">
+  <div class="avatar-wrap">🚂</div>
+  <div class="player-name">FATIH</div>
+  <div class="player-info">Kelas 5 · SD · Math Conductor</div>
+
+  <div class="prog-wrap">
+    <div class="prog-header">
+      <span class="prog-label">Progress Pertemuan</span>
+      <span class="prog-pct" id="pct">0%</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="fill"></div></div>
+    <div class="prog-sub" id="sub"></div>
+  </div>
+</div>
+
+<div class="section-label">
+  <div class="sec-line"></div>
+  <div class="sec-text">Pilih Sesi</div>
+  <div class="sec-line"></div>
+</div>
+
+<div class="lessons-grid">
+  <a href="fatih/lesson12.html" class="lesson-card unlocked">
+    <div class="lesson-num">Sesi 12</div>
+    <span class="lesson-icon">🚉</span>
+    <div class="lesson-title">Persen dari Suatu Nilai</div>
+    <div class="lesson-desc">Hitung berapa sebenarnya 50% dari 80, 25% dari 40, dan lebih banyak lagi — dengan cara cepat!</div>
+    <div class="lesson-meta">
+      <span class="tag new">New</span>
+      <span class="tag active">Active</span>
+      <span class="tag">Persen</span>
+    </div>
+  </a>
+
+  <div class="lesson-card locked">
+    <div class="lock-icon">🔒</div>
+    <div class="lesson-num">Sesi 13</div>
+    <span class="lesson-icon">🛤️</span>
+    <div class="lesson-title">Coming Soon</div>
+    <div class="lesson-desc">Selesaikan Sesi 12 dulu ya, Fatih!</div>
+    <div class="lesson-meta"><span class="tag">Locked</span></div>
+  </div>
+</div>
+
+<script>
+  const DONE = 12, TOTAL = 20;
+  const pct = Math.round((DONE/TOTAL)*100);
+  document.getElementById('pct').textContent = pct+'%';
+  document.getElementById('sub').textContent = `Sesi ${DONE} dari ${TOTAL} pertemuan`;
+  setTimeout(()=>{ document.getElementById('fill').style.width = pct+'%'; }, 250);
+
+  const decos = ['🚂','🚃','🛤️','🚉','⚙️','🔧','🛞'];
+  const wrap = document.getElementById('trainDeco');
+  for(let i=0;i<12;i++){
+    const el=document.createElement('div');
+    el.className='train-deco';
+    const sz=2+Math.random()*3;
+    el.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*90}%;--sz:${sz}rem;font-size:${sz}rem;--d:${12+Math.random()*18}s;--dl:${-Math.random()*15}s;--r0:${-8+Math.random()*16}deg;--r1:${-8+Math.random()*16}deg;`;
+    el.textContent=decos[Math.floor(Math.random()*decos.length)];
+    wrap.appendChild(el);
+  }
+</script>
+</body>
+</html>

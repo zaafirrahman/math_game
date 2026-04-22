@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 4 · Latihan Mandiri · Fatih</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(72,200,112,0.05) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--green);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  .page-header{text-align:center;margin-bottom:2.5rem;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);color:var(--green);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.2rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:700;margin-bottom:0.5rem;letter-spacing:1px;}
+  h1 span{color:var(--green);}
+  .intro{color:var(--text-muted);font-size:0.88rem;line-height:1.7;}
+
+  /* Progress */
+  .prog-section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.5rem;margin-bottom:2rem;box-shadow:0 3px 10px var(--shadow);position:relative;overflow:hidden;}
+  .prog-section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),var(--steel));}
+  .prog-header{display:flex;justify-content:space-between;margin-bottom:0.5rem;}
+  .prog-lbl{font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);}
+  .prog-num{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.9rem;color:var(--green);}
+  .prog-track{height:8px;background:var(--track);border-radius:2px;overflow:hidden;border:1px solid var(--border);}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--green),var(--steel));border-radius:2px;transition:width 0.5s ease;}
+  .prog-sub{font-family:'Rajdhani',sans-serif;font-size:0.7rem;color:var(--text-muted);margin-top:0.35rem;text-align:right;letter-spacing:1px;}
+
+  /* Question list */
+  .q-list{display:flex;flex-direction:column;gap:1.4rem;}
+
+  .q-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.6rem;box-shadow:0 3px 10px var(--shadow);transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .q-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--border2);transition:background 0.2s;}
+  .q-item.answered-ok{border-color:rgba(72,200,112,0.3);}
+  .q-item.answered-ok::before{background:var(--green);}
+  .q-item.answered-no{border-color:rgba(232,80,64,0.25);}
+  .q-item.answered-no::before{background:var(--red);}
+
+  .q-num{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.65rem;display:flex;align-items:center;gap:0.6rem;}
+  .q-status{font-size:0.85rem;}
+  .q-text{font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:0.35rem;line-height:1.4;letter-spacing:0.5px;}
+  .q-hint-txt{font-size:0.8rem;color:var(--text-muted);margin-bottom:1.2rem;}
+
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;}
+  @media(max-width:380px){.opts{grid-template-columns:1fr;}}
+  .opt-btn{background:var(--track);border:1px solid var(--border2);color:var(--text);padding:0.75rem;border-radius:6px;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1rem;text-align:center;transition:all 0.15s;letter-spacing:1px;}
+  .opt-btn:hover:not(:disabled){border-color:var(--amber);background:rgba(240,168,48,0.06);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(232,80,64,0.07);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+
+  .feedback{margin-top:0.75rem;padding:0.7rem 0.9rem;border-radius:6px;font-size:0.85rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid rgba(72,200,112,0.3);}
+  .feedback.no{background:rgba(232,80,64,0.07);color:var(--red);border:1px solid rgba(232,80,64,0.25);}
+
+  /* Done banner */
+  .done-banner{display:none;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2.5rem 2rem;margin-top:2rem;position:relative;overflow:hidden;}
+  .done-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--amber),var(--steel));}
+  .done-banner.show{display:block;animation:fadeUp 0.5s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .done-icon{font-size:4rem;display:block;margin-bottom:0.8rem;animation:chug 0.6s ease-in-out infinite alternate;}
+  @keyframes chug{from{transform:translateX(-4px);}to{transform:translateX(4px);}}
+  .done-title{font-family:'Rajdhani',sans-serif;font-size:1.4rem;font-weight:700;color:var(--green);letter-spacing:2px;margin-bottom:0.5rem;}
+  .done-desc{color:var(--text-muted);font-size:0.88rem;line-height:1.7;margin-bottom:1.2rem;}
+  .done-score{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;color:var(--amber);margin-bottom:1.2rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);color:var(--amber);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.5rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--amber),#c07810);color:#000;font-weight:800;}
+
+  .save-toast{position:fixed;bottom:2.5rem;right:1.5rem;background:var(--green);color:#000;padding:0.55rem 1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:1px;opacity:0;pointer-events:none;transition:opacity 0.3s;box-shadow:0 4px 12px rgba(72,200,112,0.4);z-index:200;}
+  .save-toast.show{opacity:1;}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+<nav>
+  <a href="../../index.html">ARENA</a><span>/</span>
+  <a href="../../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="../lesson12.html">LESSON 12</a><span>/</span>
+  <span class="cur">SEC 4 · MANDIRI</span>
+</nav>
+
+<div class="wrap">
+  <div class="page-header">
+    <div class="sec-badge">🛤️ Section 04 · Latihan Mandiri</div>
+    <h1>10 Soal <span>Tanpa Timer</span></h1>
+    <p class="intro">Santai, nggak ada yang kejar-kejar. Kerjain sebisanya sekarang, tutup, buka lagi besok — jawaban tersimpan otomatis!</p>
+  </div>
+
+  <div class="prog-section">
+    <div class="prog-header">
+      <span class="prog-lbl">Progress</span>
+      <span class="prog-num" id="progNum">0 / 10</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <div class="prog-sub" id="progSub">Mulai dari soal manapun!</div>
+  </div>
+
+  <div class="q-list" id="qList"></div>
+
+  <div class="done-banner" id="doneBanner">
+    <span class="done-icon">🚂</span>
+    <div class="done-title">SEMUA STASIUN TERLEWATI!</div>
+    <div class="done-desc">Kamu udah ngerjain semua 10 soal. Keren, Fatih! Lihat lagi jawabanmu di atas kapan pun mau.</div>
+    <div class="done-score" id="doneScore"></div>
+    <div class="xp" id="doneXP"></div>
+    <div class="action-btns">
+      <a href="../lesson12.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="../../fatih_0560.html" class="btn btn-primary">Student Hub 🚂</a>
+    </div>
+  </div>
+</div>
+
+<div class="save-toast" id="toast">✓ SAVED</div>
+
+<script>
+  const QS=[
+    {text:'10% dari 70 = ?',hint:'Bagi 10',opts:[5,7,10,14],answer:7,explain:'10% = bagi 10 → 70÷10 = 7 ✓'},
+    {text:'50% dari 36 = ?',hint:'50% = setengah',opts:[12,16,18,20],answer:18,explain:'50% = ½ → 36÷2 = 18 ✓'},
+    {text:'25% dari 48 = ?',hint:'25% = seperempat',opts:[8,10,12,16],answer:12,explain:'25% = ¼ → 48÷4 = 12 ✓'},
+    {text:'20% dari 80 = ?',hint:'Cari 10% dulu',opts:[12,14,16,18],answer:16,explain:'10% dari 80 = 8 → 20% = 2×8 = 16 ✓'},
+    {text:'30% dari 40 = ?',hint:'10% dari 40 = 4',opts:[8,10,12,14],answer:12,explain:'10% dari 40 = 4 → 30% = 3×4 = 12 ✓'},
+    {text:'40% dari 50 = ?',hint:'10% dari 50 = 5',opts:[15,20,25,30],answer:20,explain:'10% dari 50 = 5 → 40% = 4×5 = 20 ✓'},
+    {text:'75% dari 60 = ?',hint:'75% = 3×25%',opts:[35,40,45,50],answer:45,explain:'25% dari 60 = 15 → 75% = 3×15 = 45 ✓'},
+    {text:'60% dari 35 = ?',hint:'10% dari 35 = 3.5',opts:[18,21,24,27],answer:21,explain:'10% dari 35 = 3.5 → 60% = 6×3.5 = 21 ✓'},
+    {text:'80% dari 45 = ?',hint:'10% = 4.5, lalu ×8',opts:[28,32,36,40],answer:36,explain:'10% dari 45 = 4.5 → 80% = 8×4.5 = 36 ✓'},
+    {text:'50% dari 94 = ?',hint:'50% = setengah saja',opts:[40,44,47,52],answer:47,explain:'50% = ½ → 94÷2 = 47 ✓'},
+  ];
+
+  const KEY='fatih_sec4_lesson12';
+  let state=loadState();
+
+  function loadState(){try{const s=localStorage.getItem(KEY);if(s)return JSON.parse(s);}catch(e){}return{answers:{}};}
+  function saveState(){try{localStorage.setItem(KEY,JSON.stringify(state));showToast();}catch(e){}}
+  function showToast(){const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1600);}
+
+  function renderAll(){
+    const list=document.getElementById('qList');
+    list.innerHTML='';
+    QS.forEach((q,i)=>{
+      const done=state.answers[i];
+      const el=document.createElement('div');
+      el.className='q-item'+(done?' answered-'+(done.correct?'ok':'no'):'');
+      el.id='qi-'+i;
+      const shuf=shuffleArr([...q.opts]);
+      el.innerHTML=`
+        <div class="q-num">
+          <span class="q-status">${done?(done.correct?'✅':'❌'):'🔵'}</span>
+          SOAL ${i+1} ${done?`· ${done.correct?'BENAR':'SALAH'}`:''}
+        </div>
+        <div class="q-text">${q.text}</div>
+        <div class="q-hint-txt">💡 ${q.hint}</div>
+        <div class="opts" id="opts-${i}">
+          ${shuf.map(o=>`
+            <button class="opt-btn${done?(o===q.answer?' correct':(o===done.chosen&&!done.correct?' wrong':'')):''}
+              " ${done?'disabled':''} onclick="answer(${i},${o})">
+              ${o}
+            </button>
+          `).join('')}
+        </div>
+        <div class="feedback${done?' show '+(done.correct?'ok':'no'):''}" id="fb-${i}">
+          ${done?(done.correct?'✅ ':'❌ ')+q.explain:''}
+        </div>
+      `;
+      list.appendChild(el);
+    });
+    updateProgress();
+    checkAllDone();
+  }
+
+  function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+  function answer(idx,chosen){
+    const q=QS[idx];
+    const correct=chosen===q.answer;
+    state.answers[idx]={chosen,correct};
+    saveState();
+    document.querySelectorAll(`#opts-${idx} .opt-btn`).forEach(b=>{
+      const v=parseInt(b.textContent.trim());
+      b.disabled=true;
+      if(v===q.answer)b.classList.add('correct');
+      else if(v===chosen&&!correct)b.classList.add('wrong');
+    });
+    const fb=document.getElementById(`fb-${idx}`);
+    fb.className='feedback show '+(correct?'ok':'no');
+    fb.textContent=(correct?'✅ ':'❌ ')+q.explain;
+    const item=document.getElementById(`qi-${idx}`);
+    item.classList.add('answered-'+(correct?'ok':'no'));
+    item.querySelector('.q-status').textContent=correct?'✅':'❌';
+    item.querySelector('.q-num').innerHTML=`<span class="q-status">${correct?'✅':'❌'}</span> SOAL ${idx+1} · ${correct?'BENAR':'SALAH'}`;
+    updateProgress();
+    checkAllDone();
+    setTimeout(()=>{
+      const nextIdx=QS.findIndex((_,i)=>i>idx&&!state.answers[i]);
+      if(nextIdx!==-1){document.getElementById('qi-'+nextIdx).scrollIntoView({behavior:'smooth',block:'center'});}
+    },600);
+  }
+
+  function updateProgress(){
+    const done=Object.keys(state.answers).length;
+    const correct=Object.values(state.answers).filter(a=>a.correct).length;
+    document.getElementById('progNum').textContent=`${done} / 10`;
+    document.getElementById('progFill').style.width=(done/10*100)+'%';
+    document.getElementById('progSub').textContent=
+      done===0?'Mulai dari soal manapun!':
+      done===10?`Selesai! ${correct}/10 benar 🚂`:
+      `${10-done} soal lagi — lanjut kapan pun kamu siap!`;
+  }
+
+  function checkAllDone(){
+    if(Object.keys(state.answers).length<10)return;
+    const correct=Object.values(state.answers).filter(a=>a.correct).length;
+    const banner=document.getElementById('doneBanner');
+    banner.classList.add('show');
+    document.getElementById('doneScore').textContent=`${correct} / 10 Benar`;
+    const pct=correct/10;
+    let xp=pct===1?'+200 XP — PERFECT!':pct>=0.8?'+160 XP — EXCELLENT!':pct>=0.6?'+120 XP — GOOD JOB!':'+80 XP — KEEP TRAINING!';
+    document.getElementById('doneXP').textContent='⚡ '+xp;
+    banner.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+
+  renderAll();
+</script>
+</body>
+</html>

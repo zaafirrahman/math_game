@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo1.svg">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -17,10 +18,10 @@
     --chalk-dim: rgba(232,224,208,0.3);
 
     /* Per-student pastel card palettes */
-    --fatih-bg: #e8d9c4;
-    --fatih-mid: #d4c2a8;
-    --fatih-dark: #7a5c3a;
-    --fatih-text: #3d2a10;
+    --fatih-bg: #d0dff0;
+    --fatih-mid: #b0c8e8;
+    --fatih-dark: #2a5fa8;
+    --fatih-text: #0d2a54;
 
     --tasya-bg: #f2d4d4;
     --tasya-mid: #e8b8b8;
@@ -385,15 +386,45 @@
   }
   .close-btn:hover { color: var(--chalk); }
 
+  /* ── Footer ─────────────────────────────────── */
   footer {
     text-align: center;
-    padding: 1.5rem 0 1rem;
-    font-family: 'Patrick Hand', cursive;
-    font-size: 0.9rem;
-    color: var(--chalk-muted);
-    letter-spacing: 1px;
+    padding: 1.5rem 0 1.2rem;
     position: relative; z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.42rem;
   }
+
+  .footer-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.88rem;
+    color: var(--chalk-muted);
+    letter-spacing: 0.3px;
+    line-height: 1;
+  }
+
+  .footer-line img {
+    height: 1em;
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+    opacity: 0.75;
+    flex-shrink: 0;
+  }
+
+  .footer-line a {
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .footer-line a:hover { opacity: 0.8; }
+
+  .footer-zaa  { color: #f99c1c; }
+  .footer-algo { color: #875ca6; }
 </style>
 </head>
 <body>
@@ -416,7 +447,7 @@
 
   <div class="students-grid">
 
-    <!-- Fatih — coklat pastel -->
+    <!-- Fatih — biru pastel -->
     <div class="student-card"
       style="--c-bg:var(--fatih-bg);--c-mid:var(--fatih-mid);--c-dark:var(--fatih-dark);--c-text:var(--fatih-text);"
       onclick="openModal('fatih')">
@@ -488,7 +519,20 @@
   </div>
 </div>
 
-<footer>Math Arena · ✏️ Powered by Brain · Tutor-Crafted Lessons</footer>
+<footer>
+  <div class="footer-line">
+    <img src="assets/logo2.svg" alt="Math Arena logo">
+    Math Arena · Tutor Crafted Lessons
+  </div>
+  <div class="footer-line">
+    <img src="assets/zaa.svg" alt="Zaafirrahman">
+    Framework Designed by <a href="https://zaafirrahman.github.io/" target="_blank" rel="noopener"><span class="footer-zaa">Zaafirrahman ↗</span></a>
+  </div>
+  <div class="footer-line">
+    <img src="assets/algo.svg" alt="Algonova">
+    Project Supported by <a href="https://algonova.id/" target="_blank" rel="noopener"><span class="footer-algo">Algonova ↗</span></a>
+  </div>
+</footer>
 
 <!-- Password Modal -->
 <div class="modal-overlay" id="modalOverlay">
@@ -512,9 +556,9 @@
   const students = {
     fatih: {
       avatar: '🚂', name: 'Fatih',
-      password: '0000',
-      href: 'fatih_0000.html',
-      done: 11, total: 20,
+      password: '0560',
+      href: 'fatih_0560.html',
+      done: 12, total: 20,
     },
     tasya: {
       avatar: '🌸', name: 'Tasya',
