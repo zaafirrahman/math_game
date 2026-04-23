@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Hierarki & Operasi · Math Arena</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2a2a; --board-mid:#243030; --board-light:#2c3a3a;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.25);
+    --green:#4a9e69; --green-dark:#2c6e49; --green-bg:rgba(74,158,105,0.13); --green-border:rgba(74,158,105,0.38);
+    --amber:#f0c060; --amber-dark:#c97d2e; --amber-bg:rgba(240,192,96,0.1); --amber-border:rgba(240,192,96,0.38);
+    --navy:#6272b0; --navy-dark:#2c3560; --navy-bg:rgba(98,114,176,0.1); --navy-border:rgba(98,114,176,0.35);
+    --red:#e06060; --red-bg:rgba(224,96,96,0.1); --red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(232,224,208,0.15); --card-bg:rgba(255,255,255,0.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,42,42,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--green);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5.5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--green-bg);border:1px solid var(--green-border);color:var(--green);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1.3rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,2rem);margin-bottom:0.6rem;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,0.3);}
+  h1 span{color:var(--green);}
+  .intro{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(232,224,208,0.15);transition:all 0.3s;}
+  .dot.active{background:var(--green);box-shadow:0 0 0 3px rgba(74,158,105,0.22);transform:scale(1.15);}
+  .dot.done{background:var(--amber);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.06);}
+  .card-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.green{color:var(--green);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.navy{color:var(--navy);}
+  .card h2{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:0.7rem;line-height:1.35;color:var(--chalk);}
+  .card p{color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;}
+
+  .why-banner{background:linear-gradient(135deg,#1a4a30,#234a3a);border:1px solid var(--green-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;color:var(--chalk);position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.35);}
+  .why-banner::after{content:'?';position:absolute;right:1rem;bottom:-0.5rem;font-family:'Fredoka One',cursive;font-size:5rem;opacity:0.07;}
+  .why-banner h2{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:0.6rem;letter-spacing:0.5px;color:var(--chalk);}
+  .why-banner p{font-size:0.9rem;line-height:1.7;color:var(--chalk-muted);}
+  .why-list{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem;}
+  .why-item{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.88rem;color:var(--chalk-muted);}
+  .why-item span{flex-shrink:0;font-size:1.1rem;}
+
+  /* KABATAKU grid */
+  .kabataku-order{display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0;}
+  .kab-row{display:flex;gap:0.5rem;align-items:stretch;}
+  .kab-item{background:var(--board-light);border:1px solid var(--card-border);border-radius:10px;padding:0.75rem 0.6rem;text-align:center;flex:1;}
+  .kab-item.priority{border-color:rgba(240,192,96,0.3);background:rgba(240,192,96,0.06);}
+  .kab-num{font-family:'Fredoka One',cursive;font-size:1.25rem;color:var(--green);}
+  .kab-item.priority .kab-num{color:var(--amber);}
+  .kab-name{font-family:'Patrick Hand',cursive;font-size:0.8rem;color:var(--chalk-muted);margin-top:0.1rem;}
+  .kab-sym{font-size:1rem;margin-top:0.15rem;}
+  .kab-row-label{font-family:'Patrick Hand',cursive;font-size:0.7rem;color:var(--chalk-muted);text-align:center;letter-spacing:1px;margin-top:0.2rem;}
+  .kab-arrow{display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:var(--amber);opacity:0.6;padding:0 0.2rem;}
+
+  .big-eq{background:var(--board-light);border:1px solid var(--card-border);border-radius:12px;padding:1.2rem;margin:1rem 0;text-align:center;}
+  .eq-text{font-family:'Fredoka One',cursive;font-size:clamp(1.3rem,4vw,1.8rem);color:var(--chalk);line-height:1.6;}
+  .eq-step{font-size:0.9rem;color:var(--chalk-muted);margin:0.2rem 0;}
+  .eq-result{font-family:'Fredoka One',cursive;font-size:clamp(1.5rem,5vw,2.2rem);color:var(--green);}
+
+  .steps{display:flex;flex-direction:column;gap:0.65rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:var(--board-light);border:1px solid var(--card-border);border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;color:var(--chalk-muted);}
+  .step-n{font-family:'Fredoka One',cursive;font-size:0.8rem;color:var(--board);background:var(--green);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .step strong{color:var(--green);}
+  .step .am{color:var(--amber);}
+
+  .hl{border-radius:10px;padding:0.9rem 1.1rem;margin:0.8rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-green{background:var(--green-bg);border:1px solid var(--green-border);}
+  .hl-amber{background:var(--amber-bg);border:1px solid var(--amber-border);}
+  .hl-red{background:var(--red-bg);border:1px solid var(--red-border);}
+  .hl-green strong{color:var(--green);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-red strong{color:var(--red);}
+
+  .num-line{position:relative;margin:1.2rem 0;height:52px;}
+  .nl-track{position:absolute;top:50%;left:0;right:0;height:2px;background:var(--card-border);transform:translateY(-50%);}
+  .nl-nums{display:flex;justify-content:space-between;position:absolute;inset:0;align-items:center;}
+  .nl-n{font-family:'Patrick Hand',cursive;font-size:0.85rem;color:var(--chalk-muted);text-align:center;flex:1;position:relative;}
+  .nl-n::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:1px;height:6px;background:var(--card-border);}
+  .nl-n.neg{color:var(--red);}
+  .nl-n.zero{color:var(--amber);font-weight:900;}
+  .nl-n.pos{color:var(--green);}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:1rem 0;}
+  .cmp-item{border-radius:10px;padding:0.8rem 1rem;text-align:center;}
+  .cmp-wrong{background:var(--red-bg);border:1px solid var(--red-border);}
+  .cmp-right{background:var(--green-bg);border:1px solid var(--green-border);}
+  .cmp-label{font-family:'Patrick Hand',cursive;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .cmp-wrong .cmp-label{color:var(--red);}
+  .cmp-right .cmp-label{color:var(--green);}
+  .cmp-eq{font-family:'Fredoka One',cursive;font-size:1.05rem;}
+  .cmp-wrong .cmp-eq{color:var(--red);}
+  .cmp-right .cmp-eq{color:var(--green);}
+
+  .quiz-q{font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:1.2rem;line-height:1.4;color:var(--chalk);}
+  .opts{display:flex;flex-direction:column;gap:0.6rem;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.82rem 1rem;border-radius:10px;cursor:pointer;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:rgba(74,158,105,0.5);background:var(--green-bg);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.8rem;padding:0.75rem 1rem;border-radius:10px;font-size:0.88rem;font-weight:800;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:var(--green-dark);color:#fff;box-shadow:0 4px 14px rgba(44,110,73,0.35);}
+  .btn-primary:hover{background:var(--green);transform:translateY(-2px);}
+  .btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--green);margin-bottom:0.7rem;}
+  .finish-desc{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);line-height:1.7;margin-bottom:1.5rem;font-size:0.95rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber);padding:0.3rem 1rem;border-radius:20px;font-family:'Fredoka One',cursive;font-size:0.85rem;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level1.html">Level 1</a><span>›</span>
+  <span class="cur">Section 1</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">⚙️ Section 01 · Hierarki & Operasi</div>
+  <h1>Aturan Main <span>Matematika</span></h1>
+  <p class="intro">Sebelum bisa main game, harus tahu aturannya dulu. Matematika juga punya aturan main — dan kalau salah urutannya, jawabannya bisa beda total!</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- Slide 0: WHY -->
+    <div class="slide active">
+      <div class="why-banner">
+        <h2>Kenapa ini penting buat kamu?</h2>
+        <p>Pernah ngitung harga diskon tapi hasilnya aneh? Atau kalkulasi uang jajan tapi salah? Mungkin bukan salah hitung — tapi salah urutan.</p>
+        <div class="why-list">
+          <div class="why-item"><span>🛒</span><div>Kasir supermarket pakai urutan operasi tiap scan belanjaan</div></div>
+          <div class="why-item"><span>📱</span><div>Kalkulator di HP-mu ikuti aturan ini — makanya hasilnya konsisten</div></div>
+          <div class="why-item"><span>🏗️</span><div>Insinyur dan arsitek: satu salah urutan → bangunan bisa miring</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label green">📌 Masalah nyata</div>
+        <h2>2 + 3 × 4 = berapa?</h2>
+        <div class="compare">
+          <div class="cmp-item cmp-wrong"><div class="cmp-label">❌ Salah</div><div class="cmp-eq">2+3=5, ×4=20</div></div>
+          <div class="cmp-item cmp-right"><div class="cmp-label">✅ Benar</div><div class="cmp-eq">3×4=12, +2=14</div></div>
+        </div>
+        <p style="margin-top:0.5rem;">Dua orang, dua jawaban berbeda — padahal soalnya sama. Inilah kenapa urutan operasi harus disepakati!</p>
+      </div>
+    </div>
+
+    <!-- Slide 1: KABATAKU — fixed: KA=Kali, BA=Bagi, TA=Tambah, KU=Kurang -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">📚 Konsep</div>
+        <h2>KABATAKU — Urutan Operasi</h2>
+        <p style="margin-bottom:0.8rem;">Singkatan untuk mengingat urutan yang benar. Kerjakan dari atas ke bawah:</p>
+
+        <!-- Priority helpers -->
+        <div class="hl hl-amber" style="margin-bottom:0.8rem;">
+          <strong>Sebelum KABATAKU:</strong> Kerjakan <strong>Kurung ( )</strong> dan <strong>Pangkat (²)</strong> terlebih dahulu — keduanya dikerjakan sebelum KA-BA-TA-KU.
+        </div>
+
+        <div class="kabataku-order">
+          <!-- Kurung & Pangkat as prerequisite -->
+          <div class="kab-row">
+            <div class="kab-item priority"><div class="kab-num">( )</div><div class="kab-name">Kurung</div></div>
+            <div class="kab-item priority"><div class="kab-num">²</div><div class="kab-name">Pangkat</div></div>
+          </div>
+          <div class="kab-row-label">↓ dikerjakan lebih dulu ↓</div>
+          <!-- KABATAKU proper -->
+          <div class="kab-row">
+            <div class="kab-item"><div class="kab-num">KA</div><div class="kab-name">Kali</div><div class="kab-sym">×</div></div>
+            <div class="kab-arrow">↔</div>
+            <div class="kab-item"><div class="kab-num">BA</div><div class="kab-name">Bagi</div><div class="kab-sym">÷</div></div>
+          </div>
+          <div class="kab-row-label">setara — kerjakan kiri ke kanan</div>
+          <div class="kab-row">
+            <div class="kab-item"><div class="kab-num">TA</div><div class="kab-name">Tambah</div><div class="kab-sym">+</div></div>
+            <div class="kab-arrow">↔</div>
+            <div class="kab-item"><div class="kab-num">KU</div><div class="kab-name">Kurang</div><div class="kab-sym">−</div></div>
+          </div>
+          <div class="kab-row-label">setara — kerjakan kiri ke kanan</div>
+        </div>
+
+        <div class="hl hl-green"><strong>Ingat:</strong> KA·BA dikerjakan sebelum TA·KU. Kali & Bagi setara (kiri→kanan). Tambah & Kurang setara (kiri→kanan).</div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Contoh KABATAKU -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📝 Contoh Soal</div>
+        <h2>Hitung: (3 + 2) × 4 − 6 ÷ 2</h2>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div>Kurung dulu: <strong>(3+2) = 5</strong> → soal jadi: <span class="am">5 × 4 − 6 ÷ 2</span></div>
+          <div class="step"><div class="step-n">2</div><strong>KA</strong> — Kali: <strong>5×4 = 20</strong> → soal jadi: <span class="am">20 − 6 ÷ 2</span></div>
+          <div class="step"><div class="step-n">3</div><strong>BA</strong> — Bagi: <strong>6÷2 = 3</strong> → soal jadi: <span class="am">20 − 3</span></div>
+          <div class="step"><div class="step-n">4</div><strong>KU</strong> — Kurang: <strong>20 − 3 = <span style="color:var(--green)">17</span></strong></div>
+        </div>
+        <div class="big-eq">
+          <div class="eq-text">(3+2) × 4 − 6 ÷ 2</div>
+          <div class="eq-step">= 5 × 4 − 3</div>
+          <div class="eq-result">= 17 ✓</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Bilangan Negatif WHY -->
+    <div class="slide">
+      <div class="why-banner" style="background:linear-gradient(135deg,#1a1e3a,#222a50);border-color:var(--navy-border);">
+        <h2>Bilangan Negatif — Ada di mana?</h2>
+        <div class="why-list">
+          <div class="why-item"><span>🌡️</span><div>Suhu −5°C artinya 5 derajat di bawah nol</div></div>
+          <div class="why-item"><span>🏦</span><div>Saldo minus artinya kamu hutang ke bank</div></div>
+          <div class="why-item"><span>🗺️</span><div>Kedalaman laut dinyatakan sebagai angka negatif</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label navy">📌 Garis Bilangan</div>
+        <h2>Negatif di kiri nol, positif di kanan</h2>
+        <div class="num-line">
+          <div class="nl-track"></div>
+          <div class="nl-nums">
+            <div class="nl-n neg">−4</div><div class="nl-n neg">−3</div><div class="nl-n neg">−2</div><div class="nl-n neg">−1</div>
+            <div class="nl-n zero">0</div>
+            <div class="nl-n pos">1</div><div class="nl-n pos">2</div><div class="nl-n pos">3</div><div class="nl-n pos">4</div>
+          </div>
+        </div>
+        <div class="hl hl-amber"><strong>Aturan tanda:</strong> (−) × (−) = (+) &nbsp;|&nbsp; (+) × (−) = (−) &nbsp;|&nbsp; (−) ÷ (−) = (+)</div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Contoh bilangan negatif -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📝 Contoh Soal — Bilangan Negatif</div>
+        <h2>Hitung: −3 × (2 − 5)</h2>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div>Kurung dulu: <strong>2 − 5 = −3</strong> → soal jadi: <span class="am">−3 × (−3)</span></div>
+          <div class="step"><div class="step-n">2</div>Negatif × Negatif = Positif: <strong>(−3) × (−3) = <span style="color:var(--green)">+9</span></strong></div>
+        </div>
+        <div class="big-eq">
+          <div class="eq-text">−3 × (2 − 5)</div>
+          <div class="eq-step">= −3 × (−3)</div>
+          <div class="eq-result">= 9 ✓</div>
+        </div>
+        <div class="hl hl-green"><strong>Ingat:</strong> Dua negatif selalu jadi positif saat dikalikan atau dibagi!</div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Latihan soal -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">🎯 Soal Latihan</div>
+        <div class="quiz-q">Hitung: 10 − 2 × (−3) + 1 = ?</div>
+        <div class="opts" id="q1">
+          <button class="opt-btn" onclick="chk(this,'q1',false)">3</button>
+          <button class="opt-btn" onclick="chk(this,'q1',true)">17</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false)">25</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false)">−3</button>
+        </div>
+        <div class="feedback" id="q1-fb"></div>
+      </div>
+      <div class="card" style="border-style:dashed;background:transparent;">
+        <div class="card-label amber">💡 Hint</div>
+        <p>Ingat KABATAKU! Kerjakan <strong>KA</strong> (kali) dulu sebelum <strong>TA-KU</strong> (tambah-kurang). Hati-hati tanda negatifnya!</p>
+      </div>
+    </div>
+
+    <!-- Slide 6: Finish -->
+    <div class="slide">
+      <div class="card finish">
+        <span class="finish-icon">⚙️</span>
+        <div class="finish-title">Section 1 Selesai!</div>
+        <div class="finish-desc">Kamu udah paham KABATAKU dan cara kerja bilangan negatif. Ini fondasi yang akan terus kamu pakai di semua level berikutnya!</div>
+        <div class="xp">✨ +60 XP — Operasi Terkuasai!</div>
+        <div class="finish-btns">
+          <a href="level1.html" class="btn btn-ghost">← Level Hub</a>
+          <a href="section2.html" class="btn btn-primary">Section 2 →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-btns" id="navbtns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="go(-1)" disabled>← Prev</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL=7; let cur=0; let q1done=false;
+  const dotsEl=document.getElementById('dots');
+  const slides=document.querySelectorAll('.slide');
+  const prev=document.getElementById('prevBtn'),next=document.getElementById('nextBtn'),nav=document.getElementById('navbtns');
+  for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+  function updateUI(){
+    slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+    dotsEl.querySelectorAll('.dot').forEach((d,i)=>{d.classList.remove('active','done');if(i<cur)d.classList.add('done');if(i===cur)d.classList.add('active');});
+    prev.disabled=cur===0;
+    nav.style.display=cur===TOTAL-1?'none':'flex';
+    if(cur===5)next.disabled=!q1done; else next.disabled=false;
+  }
+  function go(dir){cur=Math.max(0,Math.min(TOTAL-1,cur+dir));updateUI();}
+  function chk(btn,gid,correct){
+    if(q1done)return; q1done=true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>b.disabled=true);
+    btn.classList.add(correct?'correct':'wrong');
+    if(!correct)document.querySelectorAll(`#${gid} .opt-btn`)[1].classList.add('correct');
+    const fb=document.getElementById(`${gid}-fb`);
+    fb.className='feedback show '+(correct?'ok':'no');
+    fb.textContent=correct
+      ?'✅ Betul! KA dulu: 2×(−3)=−6. Lalu 10−(−6)+1 = 10+6+1 = 17'
+      :'❌ Ingat KABATAKU — KA dulu: 2×(−3)=−6. Lalu 10−(−6) = 10+6 = 16. +1 = 17!';
+    next.disabled=false;
+  }
+  updateUI();
+</script>
+</body>
+</html>

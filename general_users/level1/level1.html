@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 1 · Fondasi Bilangan · Math Arena</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2a2a; --board-mid:#243030; --board-light:#2c3a3a;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.3);
+    --green:#4a9e69; --green-dark:#2c6e49; --green-bg:rgba(74,158,105,0.12); --green-border:rgba(74,158,105,0.35);
+    --amber:#f0c060; --amber-dark:#c97d2e; --amber-bg:rgba(240,192,96,0.1); --amber-border:rgba(240,192,96,0.35);
+    --navy:#6272b0; --navy-dark:#2c3560; --navy-bg:rgba(98,114,176,0.1);
+    --card-border:rgba(232,224,208,0.18); --card-bg:rgba(255,255,255,0.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+  .math-bg{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;}
+  .math-sym{position:absolute;font-family:'Patrick Hand',cursive;color:#fff;opacity:0.05;animation:floatSym var(--dur,20s) ease-in-out infinite var(--delay,0s);user-select:none;}
+  @keyframes floatSym{0%,100%{transform:translateY(0) rotate(var(--rot0));}50%{transform:translateY(-14px) rotate(var(--rot1));}}
+
+  nav{padding:1.1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,42,42,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--card-border);}
+
+  .page{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:2.8rem 2rem 5rem;}
+
+  .hero{text-align:center;margin-bottom:2.5rem;}
+  .lv-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--green-bg);border:1px solid var(--green-border);color:var(--green);font-family:'Patrick Hand',cursive;font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1.2rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.6rem,4vw,2.4rem);color:var(--chalk);margin-bottom:0.5rem;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,0.3);}
+  h1 span{color:var(--green);}
+  .hero-desc{font-family:'Patrick Hand',cursive;font-size:0.95rem;color:var(--chalk-muted);line-height:1.7;max-width:520px;margin:0 auto 2rem;}
+
+  .obj-box{background:rgba(255,255,255,0.04);border:1px solid var(--card-border);border-radius:12px;padding:1.3rem 1.8rem;max-width:560px;margin:0 auto 2.5rem;text-align:left;box-shadow:0 4px 20px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.06);position:relative;overflow:hidden;}
+  .obj-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--amber));}
+  .obj-title{font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:0.9rem;}
+  .obj-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.55rem;font-size:0.88rem;color:var(--chalk-muted);}
+  .obj-item span{flex-shrink:0;}
+
+  .sec-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:1.8rem;}
+  .sec-line{height:1px;flex:1;background:var(--chalk-dim);}
+  .sec-txt{font-family:'Patrick Hand',cursive;font-size:0.82rem;letter-spacing:2px;text-transform:uppercase;color:var(--chalk-muted);}
+
+  /* Max 3 cols on desktop, 1 col on mobile */
+  .cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+  @media(max-width:640px){.cards-grid{grid-template-columns:1fr;}}
+  @media(min-width:641px) and (max-width:800px){.cards-grid{grid-template-columns:repeat(2,1fr);}}
+
+  .sec-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:1.4rem 1.4rem 1.2rem;text-decoration:none;color:var(--chalk);display:block;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.06);position:relative;overflow:hidden;transition:all 0.2s ease;animation:cardIn 0.4s ease backwards;backdrop-filter:blur(4px);}
+  .sec-card:nth-child(1){animation-delay:0.05s;} .sec-card:nth-child(2){animation-delay:0.12s;}
+  .sec-card:nth-child(3){animation-delay:0.19s;} .sec-card:nth-child(4){animation-delay:0.26s;}
+  .sec-card:nth-child(5){animation-delay:0.33s;}
+  @keyframes cardIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+  .sec-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.09);}
+  .sec-card::before{content:'';position:absolute;top:0;left:0;right:0;height:38%;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 100%);border-radius:12px 12px 0 0;pointer-events:none;}
+  .sec-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--card-bottom,rgba(74,158,105,0.5));border-radius:0 0 10px 10px;}
+
+  .sec-num{font-family:'Patrick Hand',cursive;font-size:0.68rem;color:var(--card-color,var(--green));letter-spacing:2px;text-transform:uppercase;margin-bottom:0.6rem;position:relative;z-index:1;}
+  .sec-icon{font-size:1.9rem;margin-bottom:0.6rem;display:block;position:relative;z-index:1;}
+  .sec-title{font-family:'Fredoka One',cursive;font-size:0.98rem;color:var(--chalk);margin-bottom:0.35rem;line-height:1.3;position:relative;z-index:1;}
+  .sec-desc{font-size:0.8rem;color:var(--chalk-muted);line-height:1.55;position:relative;z-index:1;}
+  .sec-badge-el{display:inline-block;font-size:0.6rem;font-weight:900;padding:0.15rem 0.5rem;border-radius:20px;margin-top:0.8rem;text-transform:uppercase;letter-spacing:0.5px;position:relative;z-index:1;}
+  .badge-learn{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .badge-summary{background:var(--navy-bg);color:var(--navy);border:1px solid rgba(98,114,176,0.35);}
+  .badge-test{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
+  .badge-exercise{background:rgba(232,224,208,0.06);color:var(--chalk-muted);border:1px solid var(--card-border);}
+</style>
+</head>
+<body>
+<div class="math-bg" id="mathBg"></div>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <span>Level 1</span>
+</nav>
+
+<div class="page">
+  <div class="hero">
+    <div class="lv-badge">🔢 Level 01</div>
+    <h1>Fondasi <span>Bilangan</span></h1>
+    <p class="hero-desc">Semuanya berawal dari sini. Aturan operasi, bilangan negatif, pecahan, dan persen — fondasi yang kamu pakai setiap hari tanpa sadar.</p>
+
+    <div class="obj-box">
+      <div class="obj-title">🎯 Yang akan kamu kuasai</div>
+      <div class="obj-item"><span>➕</span>Aturan KABATAKU — urutan operasi yang benar</div>
+      <div class="obj-item"><span>➖</span>Bilangan negatif dan operasinya</div>
+      <div class="obj-item"><span>🍕</span>Pecahan — cara baca, operasi, dan aplikasinya</div>
+      <div class="obj-item"><span>💯</span>Persen — dari diskon sampai pembagian nyata</div>
+    </div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-line"></div>
+    <div class="sec-txt">Pilih Section</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="cards-grid">
+    <a href="section1.html" class="sec-card" style="--card-color:#4a9e69;--card-bottom:rgba(74,158,105,0.5);">
+      <div class="sec-num">Section 01</div>
+      <span class="sec-icon">⚙️</span>
+      <div class="sec-title">Hierarki & Operasi</div>
+      <div class="sec-desc">Aturan KABATAKU, bilangan negatif, kenapa urutannya penting.</div>
+      <span class="sec-badge-el badge-learn">Materi</span>
+    </a>
+
+    <a href="section2.html" class="sec-card" style="--card-color:#f0c060;--card-bottom:rgba(240,192,96,0.45);">
+      <div class="sec-num">Section 02</div>
+      <span class="sec-icon">🍕</span>
+      <div class="sec-title">Pecahan & Persen</div>
+      <div class="sec-desc">Dari angka pecah ke dunia nyata — diskon, resep, pembagian.</div>
+      <span class="sec-badge-el badge-learn">Materi</span>
+    </a>
+
+    <a href="summary.html" class="sec-card" style="--card-color:#6272b0;--card-bottom:rgba(98,114,176,0.45);">
+      <div class="sec-num">Summary</div>
+      <span class="sec-icon">📋</span>
+      <div class="sec-title">Cheat Sheet</div>
+      <div class="sec-desc">Semua rumus dan poin penting Level 1 dalam satu halaman.</div>
+      <span class="sec-badge-el badge-summary">Ringkasan</span>
+    </a>
+
+    <a href="quicktest.html" class="sec-card" style="--card-color:#f0c060;--card-bottom:rgba(240,192,96,0.45);">
+      <div class="sec-num">Quick Test</div>
+      <span class="sec-icon">⏱️</span>
+      <div class="sec-title">5 Soal Cepat</div>
+      <div class="sec-desc">Timer per soal. Campur dua topik. Seberapa siap kamu?</div>
+      <span class="sec-badge-el badge-test">Challenge</span>
+    </a>
+
+    <a href="exercise.html" class="sec-card" style="--card-color:rgba(232,224,208,0.6);--card-bottom:rgba(232,224,208,0.2);">
+      <div class="sec-num">Exercise</div>
+      <span class="sec-icon">✏️</span>
+      <div class="sec-title">10 Soal Latihan</div>
+      <div class="sec-desc">Santai tanpa timer. 5 soal tiap section. Simpan progres otomatis.</div>
+      <span class="sec-badge-el badge-exercise">Latihan</span>
+    </a>
+  </div>
+</div>
+
+<script>
+  const symbols=['×','÷','+','−','=','²','√','π','∑','%'];
+  const bg=document.getElementById('mathBg');
+  for(let i=0;i<22;i++){
+    const el=document.createElement('div');el.className='math-sym';
+    const sz=1.3+Math.random()*3;
+    el.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;font-size:${sz}rem;--dur:${13+Math.random()*15}s;--delay:${-Math.random()*13}s;--rot0:${-10+Math.random()*20}deg;--rot1:${-10+Math.random()*20}deg;`;
+    el.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    bg.appendChild(el);
+  }
+</script>
+</body>
+</html>

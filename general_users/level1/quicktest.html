@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Test · Level 1 · Math Arena</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2a2a; --board-light:#2c3a3a;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.25);
+    --green:#4a9e69; --green-dark:#2c6e49; --green-bg:rgba(74,158,105,0.13); --green-border:rgba(74,158,105,0.38);
+    --amber:#f0c060; --amber-dark:#c97d2e; --amber-bg:rgba(240,192,96,0.1); --amber-border:rgba(240,192,96,0.38);
+    --red:#e06060; --red-bg:rgba(224,96,96,0.1); --red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(232,224,208,0.14); --card-bg:rgba(255,255,255,0.05);
+    --timer-ok:#4a9e69; --timer-warn:#f0c060; --timer-danger:#e06060;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,42,42,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--amber);}
+
+  .wrap{max-width:600px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  /* Start screen */
+  #startScreen{text-align:center;}
+  .start-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .start-title{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--chalk);margin-bottom:0.5rem;}
+  .start-sub{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:1.5rem;}
+  .rules-box{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:1.2rem 1.5rem;text-align:left;margin-bottom:1.5rem;box-shadow:0 4px 18px rgba(0,0,0,0.3);}
+  .rule-item{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.88rem;color:var(--chalk-muted);margin-bottom:0.5rem;line-height:1.5;}
+  .rule-item:last-child{margin-bottom:0;}
+  .rule-item span{flex-shrink:0;}
+
+  /* Timer ring */
+  .timer-wrap{display:flex;justify-content:center;margin-bottom:1.5rem;}
+  .timer-ring-svg{transform:rotate(-90deg);}
+  .timer-ring-track{fill:none;stroke:rgba(232,224,208,0.1);stroke-width:6;}
+  .timer-ring-fill{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 0.9s linear, stroke 0.3s;}
+  .timer-num-wrap{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+  .timer-num{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--chalk);}
+  .timer-label{font-family:'Patrick Hand',cursive;font-size:0.68rem;color:var(--chalk-muted);letter-spacing:1px;}
+  .timer-relative{position:relative;width:90px;height:90px;}
+
+  /* Progress */
+  .progress-bar{background:rgba(232,224,208,0.08);border-radius:20px;height:6px;margin-bottom:1.5rem;overflow:hidden;}
+  .progress-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--green-dark),var(--green));transition:width 0.4s ease;}
+  .q-count{font-family:'Patrick Hand',cursive;font-size:0.8rem;color:var(--chalk-muted);text-align:right;margin-bottom:0.5rem;}
+
+  /* Question card */
+  .q-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.8rem;margin-bottom:1rem;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.06);}
+  .q-topic{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:0.8rem;}
+  .q-text{font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--chalk);margin-bottom:1.3rem;line-height:1.4;}
+  .opts{display:flex;flex-direction:column;gap:0.6rem;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.85rem 1.1rem;border-radius:10px;cursor:pointer;font-size:0.92rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;display:flex;align-items:center;gap:0.7rem;}
+  .opt-btn:hover:not(:disabled){border-color:rgba(240,192,96,0.5);background:var(--amber-bg);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-key{font-family:'Fredoka One',cursive;font-size:0.75rem;color:var(--chalk-muted);background:rgba(232,224,208,0.08);border-radius:5px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .feedback-bar{border-radius:10px;padding:0.75rem 1rem;font-size:0.88rem;font-weight:800;display:none;margin-top:0.8rem;}
+  .feedback-bar.show{display:block;}
+  .feedback-bar.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .feedback-bar.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+  .feedback-bar.timeout{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
+
+  .next-btn{width:100%;padding:0.9rem;border-radius:12px;border:none;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;background:var(--green-dark);color:#fff;box-shadow:0 4px 14px rgba(44,110,73,0.35);transition:all 0.2s;margin-top:1rem;display:none;letter-spacing:0.5px;}
+  .next-btn.show{display:block;}
+  .next-btn:hover{background:var(--green);transform:translateY(-2px);}
+
+  /* Score screen */
+  #scoreScreen{display:none;text-align:center;}
+  .score-icon{font-size:5rem;display:block;margin-bottom:1rem;}
+  .score-title{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--chalk);margin-bottom:0.4rem;}
+  .score-sub{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;margin-bottom:1.5rem;}
+  .score-big{font-family:'Fredoka One',cursive;font-size:4rem;color:var(--green);line-height:1;margin:0.5rem 0;}
+  .score-label{font-family:'Patrick Hand',cursive;font-size:0.85rem;color:var(--chalk-muted);}
+  .score-detail{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:1.2rem 1.5rem;margin:1.5rem 0;text-align:left;}
+  .score-row{display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0;border-bottom:1px solid rgba(232,224,208,0.06);font-size:0.88rem;}
+  .score-row:last-child{border-bottom:none;}
+  .score-row .qnum{font-family:'Fredoka One',cursive;color:var(--chalk-muted);font-size:0.8rem;}
+  .score-row .qtopic{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.78rem;flex:1;margin:0 0.5rem;}
+  .score-row .qresult{font-size:1rem;}
+  .score-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-amber{background:var(--amber-dark);color:#fff;box-shadow:0 4px 14px rgba(201,125,46,0.35);}
+  .btn-amber:hover{background:#e8a84a;transform:translateY(-2px);}
+  .btn-green{background:var(--green-dark);color:#fff;box-shadow:0 4px 14px rgba(44,110,73,0.35);}
+  .btn-green:hover{background:var(--green);transform:translateY(-2px);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level1.html">Level 1</a><span>›</span>
+  <span class="cur">Quick Test</span>
+</nav>
+
+<div class="wrap">
+
+  <!-- Start Screen -->
+  <div id="startScreen">
+    <span class="start-icon">⏱️</span>
+    <div class="start-title">Quick Test</div>
+    <div class="start-sub">5 soal campuran dari Section 1 & 2. Ada timer 20 detik per soal. Siap?</div>
+    <div class="rules-box">
+      <div class="rule-item"><span>⏱️</span><div><strong>20 detik</strong> per soal. Waktu habis = soal dianggap salah.</div></div>
+      <div class="rule-item"><span>🎯</span><div>5 soal dari dua topik: <strong>Hierarki & Operasi</strong> + <strong>Pecahan & Persen</strong>.</div></div>
+      <div class="rule-item"><span>📊</span><div>Lihat skor akhir dan review jawaban kamu di akhir.</div></div>
+    </div>
+    <button class="next-btn show" onclick="startTest()" style="margin-top:0;">🚀 Mulai Test!</button>
+  </div>
+
+  <!-- Quiz Screen -->
+  <div id="quizScreen" style="display:none;">
+    <div class="q-count" id="qCount">Soal 1 / 5</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+    <div class="timer-wrap">
+      <div class="timer-relative">
+        <svg class="timer-ring-svg" width="90" height="90" viewBox="0 0 90 90">
+          <circle class="timer-ring-track" cx="45" cy="45" r="38"/>
+          <circle class="timer-ring-fill" id="timerRing" cx="45" cy="45" r="38" stroke="var(--green)"
+            stroke-dasharray="238.76" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-num-wrap">
+          <div class="timer-num" id="timerNum">20</div>
+          <div class="timer-label">DETIK</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-topic" id="qTopic"></div>
+      <div class="q-text" id="qText"></div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback-bar" id="feedback"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Lanjut →</button>
+  </div>
+
+  <!-- Score Screen -->
+  <div id="scoreScreen">
+    <span class="score-icon" id="scoreIcon">🎉</span>
+    <div class="score-title" id="scoreTitle"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="score-big" id="scoreBig"></div>
+    <div class="score-label">dari 5 soal</div>
+    <div class="score-detail" id="scoreDetail"></div>
+    <div class="score-btns">
+      <button class="btn btn-ghost" onclick="retryTest()">🔄 Coba Lagi</button>
+      <a href="exercise.html" class="btn btn-green">✏️ Exercise</a>
+      <a href="level1.html" class="btn btn-amber">← Level Hub</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    topic:'⚙️ Hierarki & Operasi',
+    q:'Hitung: 3 + 4 × 2 − 1 = ?',
+    opts:['13','9','10','15'],
+    ans:0,
+    exp:'KA dulu: 4×2=8. Lalu 3+8−1 = 10. Jawaban: 10.'
+  },
+  {
+    topic:'⚙️ Hierarki & Operasi',
+    q:'Hitung: (−2) × (−5) + 3 = ?',
+    opts:['−7','13','7','−13'],
+    ans:1,
+    exp:'(−2)×(−5)=+10. Lalu 10+3=13.'
+  },
+  {
+    topic:'🍕 Pecahan & Persen',
+    q:'Berapakah ¾ + ⅙ ?',
+    opts:['4/10','11/12','5/6','1'],
+    ans:1,
+    exp:'KPK(4,6)=12. ¾=9/12, ⅙=2/12. 9+2=11. Jawaban: 11/12.'
+  },
+  {
+    topic:'🍕 Pecahan & Persen',
+    q:'Harga Rp 60.000, diskon 20%. Bayar berapa?',
+    opts:['Rp 40.000','Rp 48.000','Rp 50.000','Rp 42.000'],
+    ans:1,
+    exp:'20% dari 60.000 = 12.000. Bayar: 60.000−12.000 = 48.000.'
+  },
+  {
+    topic:'⚙️ Hierarki & Operasi',
+    q:'Hitung: 2² × (5 − 2) + 1 = ?',
+    opts:['13','49','11','37'],
+    ans:0,
+    exp:'Pangkat dulu: 2²=4. Kurung: 5−2=3. Kali: 4×3=12. Tambah: 12+1=13.'
+  }
+];
+
+let cur=0, score=0, timer=null, timeLeft=20;
+const TOTAL_TIME=20;
+const CIRCUMFERENCE=2*Math.PI*38; // 238.76
+const results=[];
+
+function startTest(){
+  document.getElementById('startScreen').style.display='none';
+  document.getElementById('quizScreen').style.display='block';
+  loadQuestion();
+}
+
+function loadQuestion(){
+  const q=QUESTIONS[cur];
+  document.getElementById('qCount').textContent=`Soal ${cur+1} / 5`;
+  document.getElementById('progressFill').style.width=`${cur/5*100}%`;
+  document.getElementById('qTopic').textContent=q.topic;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('feedback').className='feedback-bar';
+  document.getElementById('nextBtn').className='next-btn';
+
+  const optsEl=document.getElementById('opts');
+  optsEl.innerHTML='';
+  const keys=['A','B','C','D'];
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';
+    btn.innerHTML=`<span class="opt-key">${keys[i]}</span>${opt}`;
+    btn.onclick=()=>answer(i,btn);
+    optsEl.appendChild(btn);
+  });
+
+  startTimer();
+}
+
+function startTimer(){
+  timeLeft=TOTAL_TIME;
+  updateTimer();
+  timer=setInterval(()=>{
+    timeLeft--;
+    updateTimer();
+    if(timeLeft<=0){
+      clearInterval(timer);
+      timeOut();
+    }
+  },1000);
+}
+
+function updateTimer(){
+  const n=document.getElementById('timerNum');
+  const ring=document.getElementById('timerRing');
+  n.textContent=timeLeft;
+  const progress=timeLeft/TOTAL_TIME;
+  ring.style.strokeDashoffset=CIRCUMFERENCE*(1-progress);
+  if(timeLeft>10){ring.style.stroke='var(--timer-ok)';}
+  else if(timeLeft>5){ring.style.stroke='var(--timer-warn)';}
+  else{ring.style.stroke='var(--timer-danger)';}
+}
+
+function answer(idx,btn){
+  clearInterval(timer);
+  const q=QUESTIONS[cur];
+  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  const correct=idx===q.ans;
+  btn.classList.add(correct?'correct':'wrong');
+  if(!correct)document.querySelectorAll('.opt-btn')[q.ans].classList.add('correct');
+
+  const fb=document.getElementById('feedback');
+  fb.className='feedback-bar show '+(correct?'ok':'no');
+  fb.textContent=(correct?'✅ Betul! ':'❌ Kurang tepat. ')+q.exp;
+  if(correct)score++;
+  results.push({correct,timeout:false,topic:q.topic.replace(/[^\w\s]/g,'').trim()});
+
+  document.getElementById('nextBtn').className='next-btn show';
+}
+
+function timeOut(){
+  const q=QUESTIONS[cur];
+  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  document.querySelectorAll('.opt-btn')[q.ans].classList.add('correct');
+  const fb=document.getElementById('feedback');
+  fb.className='feedback-bar show timeout';
+  fb.textContent='⏰ Waktu habis! '+q.exp;
+  results.push({correct:false,timeout:true,topic:q.topic.replace(/[^\w\s]/g,'').trim()});
+  document.getElementById('nextBtn').className='next-btn show';
+}
+
+function nextQuestion(){
+  cur++;
+  if(cur>=QUESTIONS.length){showScore();}
+  else{loadQuestion();}
+}
+
+function showScore(){
+  document.getElementById('quizScreen').style.display='none';
+  const sc=document.getElementById('scoreScreen');
+  sc.style.display='block';
+
+  const icons=['😅','😐','🙂','😊','🎉','🏆'];
+  const titles=['Terus Berlatih!','Lumayan, Ulangi Lagi!','Cukup Bagus!','Bagus!','Hampir Sempurna!','Sempurna!'];
+  const subs=['Jangan menyerah — coba lagi!','Ada yang perlu diulang nih.','Setengah jalan, terus semangat!','Kamu sudah paham dasarnya!','Satu lagi dan sempurna!','Kamu master Level 1! 🔥'];
+
+  document.getElementById('scoreIcon').textContent=icons[score];
+  document.getElementById('scoreTitle').textContent=titles[score];
+  document.getElementById('scoreSub').textContent=subs[score];
+  document.getElementById('scoreBig').textContent=score;
+  document.getElementById('scoreBig').style.color=score>=4?'var(--green)':score>=2?'var(--amber)':'var(--red)';
+
+  const det=document.getElementById('scoreDetail');
+  det.innerHTML='<div style="font-family:\'Patrick Hand\',cursive;font-size:0.72rem;color:var(--chalk-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.8rem;">Review Jawaban</div>';
+  results.forEach((r,i)=>{
+    const row=document.createElement('div');
+    row.className='score-row';
+    row.innerHTML=`<span class="qnum">Soal ${i+1}</span><span class="qtopic">${QUESTIONS[i].topic}</span><span class="qresult">${r.timeout?'⏰':r.correct?'✅':'❌'}</span>`;
+    det.appendChild(row);
+  });
+}
+
+function retryTest(){
+  cur=0; score=0; results.length=0;
+  clearInterval(timer);
+  document.getElementById('scoreScreen').style.display='none';
+  document.getElementById('quizScreen').style.display='block';
+  loadQuestion();
+}
+</script>
+</body>
+</html>

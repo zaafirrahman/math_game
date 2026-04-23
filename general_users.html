@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>General Users · Math Arena</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --board:#1e2a2a; --board-mid:#243030; --board-light:#2c3a3a;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.3);
+    --green:#4a9e69; --green-dark:#2c6e49; --green-bg:rgba(74,158,105,0.12); --green-border:rgba(74,158,105,0.35);
+    --amber:#f0c060; --amber-dark:#c97d2e; --amber-bg:rgba(240,192,96,0.1); --amber-border:rgba(240,192,96,0.35);
+    --navy:#6272b0; --navy-dark:#2c3560;
+    --card-border:rgba(232,224,208,0.18); --card-bg:rgba(255,255,255,0.05);
+    --shadow:rgba(0,0,0,0.35);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background-color:var(--board);
+    background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:120px 120px,120px 120px,24px 24px,24px 24px;
+    color:var(--chalk); font-family:'Nunito',sans-serif; min-height:100vh;
+  }
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+  .math-bg{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;}
+  .math-sym{position:absolute;font-family:'Patrick Hand',cursive;color:#fff;opacity:0.05;animation:floatSym var(--dur,20s) ease-in-out infinite var(--delay,0s);user-select:none;}
+  @keyframes floatSym{0%,100%{transform:translateY(0) rotate(var(--rot0,-5deg));}50%{transform:translateY(-16px) rotate(var(--rot1,5deg));}}
+
+  nav{padding:1.1rem 2rem;display:flex;align-items:center;gap:0.6rem;border-bottom:1px solid var(--card-border);background:rgba(30,42,42,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--card-border);}
+
+  .page{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:3rem 2rem 5rem;}
+
+  header{text-align:center;margin-bottom:3rem;}
+  .title-wrap{display:inline-block;position:relative;margin-bottom:1rem;transform:rotate(-0.5deg);}
+  .title-wrap::before{content:'';position:absolute;inset:-4px;border:2px dashed rgba(232,224,208,0.25);border-radius:8px;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.8rem,5vw,2.8rem);letter-spacing:4px;line-height:1;padding:0.8rem 2.5rem;text-shadow:2px 2px 0 rgba(0,0,0,0.4);}
+  h1 span{color:var(--amber);}
+  .header-sub{font-family:'Patrick Hand',cursive;font-size:1rem;color:var(--chalk-muted);margin-top:0.8rem;}
+
+  .section-row{display:flex;align-items:center;justify-content:center;gap:0.8rem;margin-bottom:2.5rem;}
+  .section-line{height:1px;width:55px;background:var(--chalk-dim);}
+  .section-label{font-family:'Patrick Hand',cursive;font-size:0.9rem;color:var(--chalk-muted);letter-spacing:2px;}
+
+  .levels-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.3rem;}
+
+  .level-card{
+    background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;
+    padding:1.5rem 1.5rem 1.3rem;text-decoration:none;color:var(--chalk);display:block;
+    box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.06);
+    position:relative;overflow:hidden;transition:transform 0.18s ease,box-shadow 0.18s ease;
+    animation:cardIn 0.4s ease backwards;backdrop-filter:blur(4px);
+  }
+  .level-card:nth-child(1){animation-delay:0.04s;} .level-card:nth-child(2){animation-delay:0.09s;}
+  .level-card:nth-child(3){animation-delay:0.14s;} .level-card:nth-child(4){animation-delay:0.19s;}
+  .level-card:nth-child(5){animation-delay:0.24s;} .level-card:nth-child(6){animation-delay:0.29s;}
+  .level-card:nth-child(7){animation-delay:0.34s;} .level-card:nth-child(8){animation-delay:0.39s;}
+  @keyframes cardIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  .level-card::before{content:'';position:absolute;top:0;left:0;right:0;height:40%;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 100%);border-radius:12px 12px 0 0;pointer-events:none;}
+  .level-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--lv-color,var(--navy));border-radius:12px 0 0 12px;}
+  .level-card.unlocked:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.08);}
+  .level-card.locked{opacity:0.35;pointer-events:none;cursor:default;}
+
+  .lv-num{font-family:'Patrick Hand',cursive;font-size:0.72rem;color:var(--lv-color,var(--navy));letter-spacing:2px;text-transform:uppercase;margin-bottom:0.7rem;display:flex;align-items:center;gap:0.4rem;}
+  .lv-num::after{content:'';flex:1;height:1px;background:var(--card-border);}
+  .lv-icon{font-size:2rem;margin-bottom:0.6rem;display:block;}
+  .lv-title{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--chalk);margin-bottom:0.35rem;line-height:1.3;letter-spacing:0.3px;}
+  .lv-desc{font-size:0.82rem;color:var(--chalk-muted);line-height:1.6;}
+  .lv-meta{display:flex;gap:0.4rem;margin-top:0.9rem;flex-wrap:wrap;}
+  .tag{font-size:0.62rem;font-weight:900;padding:0.18rem 0.55rem;border-radius:20px;border:1px solid var(--card-border);color:var(--chalk-muted);text-transform:uppercase;letter-spacing:0.5px;}
+  .tag.active{border-color:rgba(74,158,105,0.5);color:var(--green);background:var(--green-bg);}
+  .tag.soon{border-color:rgba(232,224,208,0.1);color:rgba(232,224,208,0.3);}
+  .lock-icon{position:absolute;top:0.9rem;right:0.9rem;opacity:0.25;font-size:1rem;}
+  .corner-doodle{position:absolute;bottom:0.5rem;right:0.8rem;font-family:'Patrick Hand',cursive;font-size:3rem;opacity:0.06;color:var(--chalk);pointer-events:none;line-height:1;transform:rotate(8deg);}
+
+  footer{text-align:center;padding:1rem 0;font-family:'Patrick Hand',cursive;font-size:0.82rem;color:var(--chalk-muted);letter-spacing:1px;position:relative;z-index:1;}
+</style>
+</head>
+<body>
+<div class="math-bg" id="mathBg"></div>
+<nav>
+  <a href="index.html">Math Arena</a>
+  <span>›</span>
+  <span>General Users</span>
+</nav>
+
+<div class="page">
+  <header>
+    <div class="title-wrap">
+      <h1>MATH <span>ARENA</span></h1>
+    </div>
+    <div class="header-sub">🧮 Dari bilangan dasar sampai kalkulus — pilih level yang sesuai!</div>
+  </header>
+
+  <div class="section-row">
+    <div class="section-line"></div>
+    <div class="section-label">PILIH LEVEL</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="levels-grid">
+    <a href="general_users/level1/level1.html" class="level-card unlocked" style="--lv-color:#4a9e69;">
+      <div class="lv-num">Level 01</div>
+      <span class="lv-icon">🔢</span>
+      <div class="lv-title">Fondasi Bilangan</div>
+      <div class="lv-desc">Hierarki operasi, bilangan negatif, pecahan & persen.</div>
+      <div class="lv-meta"><span class="tag active">Tersedia</span><span class="tag">SD–SMP</span></div>
+      <div class="corner-doodle">+</div>
+    </a>
+    <div class="level-card locked" style="--lv-color:#5a6e8a;"><div class="lock-icon">🔒</div><div class="lv-num">Level 02</div><span class="lv-icon">🔍</span><div class="lv-title">Pola & Logika</div><div class="lv-desc">Barisan, deret, pola bilangan, dan penalaran logis.</div><div class="lv-meta"><span class="tag soon">Segera Hadir</span><span class="tag">SD–SMP</span></div><div class="corner-doodle">→</div></div>
+    <div class="level-card locked" style="--lv-color:#7a5ea0;"><div class="lock-icon">🔒</div><div class="lv-num">Level 03</div><span class="lv-icon">🔤</span><div class="lv-title">Bahasa Aljabar</div><div class="lv-desc">Variabel, persamaan linear, dan sistem persamaan.</div><div class="lv-meta"><span class="tag soon">Segera Hadir</span><span class="tag">SMP</span></div><div class="corner-doodle">x</div></div>
+    <div class="level-card locked" style="--lv-color:#a06030;"><div class="lock-icon">🔒</div><div class="lv-num">Level 04</div><span class="lv-icon">📐</span><div class="lv-title">Geometri & Ruang</div><div class="lv-desc">Bangun datar, bangun ruang, luas, keliling, dan volume.</div><div class="lv-meta"><span class="tag soon">Segera Hadir</span><span class="tag">SMP</span></div><div class="corner-doodle">△</div></div>
+    <div class="level-card locked" style="--lv-color:#2a7a8a;"><div class="lock-icon">🔒</div><div class="lv-num">Level 05</div><span class="lv-icon">📈</span><div class="lv-title">Relasi, Fungsi & Grafik</div><div class="lv-desc">Domain, kodomain, fungsi linear, dan grafik koordinat.</div><div class="lv-meta"><span class="tag soon">Segera Hadir</span><span class="tag">SMP–SMA</span></div><div class="corner-doodle">f(x)</div></div>
+    <div class="level-card locked" style="--lv-color:#8a3a50;"><div class="lock-icon">🔒</div><div class="lv-num">Level 06</div><span class="lv-icon">📏</span><div class="lv-title">Trigonometri</div><div class="lv-desc">Sin, cos, tan, identitas, dan aplikasi sudut.</div><div class="lv-meta"><span class="tag soon">Segera Hadir</span><span class="tag">SMA</span></div><div class="corner-doodle">θ</div></div>
+    <div class="level-card locked" style="--lv-color:#4a6a2a;"><div class="lock-icon">🔒</div><div class="lv-num">Level 07</div><span class="lv-icon">📊</span><div class="lv-title">Statistika & Peluang</div><div class="lv-desc">Mean, median, modus, distribusi, dan probabilitas.</div><div class="lv-meta"><span class="tag soon">Segera Hadir</span><span class="tag">SMA</span></div><div class="corner-doodle">σ</div></div>
+    <div class="level-card locked" style="--lv-color:#2a3a7a;"><div class="lock-icon">🔒</div><div class="lv-num">Level 08</div><span class="lv-icon">∫</span><div class="lv-title">Kalkulus Dasar</div><div class="lv-desc">Limit, turunan, integral, dan aplikasinya.</div><div class="lv-meta"><span class="tag soon">Segera Hadir</span><span class="tag">SMA</span></div><div class="corner-doodle">∫</div></div>
+  </div>
+</div>
+
+<footer>Math Arena · ✏️ Free & Open untuk Semua</footer>
+
+<script>
+  const symbols=['×','÷','+','−','=','²','√','π','∑','%','≠','≤','∞','Δ','α','β'];
+  const bg=document.getElementById('mathBg');
+  for(let i=0;i<28;i++){
+    const el=document.createElement('div');el.className='math-sym';
+    const sz=1.4+Math.random()*3.2;
+    el.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;font-size:${sz}rem;--dur:${13+Math.random()*16}s;--delay:${-Math.random()*14}s;--rot0:${-10+Math.random()*20}deg;--rot1:${-10+Math.random()*20}deg;`;
+    el.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    bg.appendChild(el);
+  }
+</script>
+</body>
+</html>
