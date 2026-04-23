@@ -1,0 +1,18 @@
+{
+  "name": "Math Arena",
+  "short_name": "Math Arena",
+  "description": "Tempat latihan matematika yang seru & nggak bikin ngantuk",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#1e2a2a",
+  "theme_color": "#1e2a2a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/math.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Math Arena</title>
 <link rel="icon" type="image/svg+xml" href="assets/logo1.svg">
+<link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -464,7 +465,7 @@
 
   <div class="section-row">
     <div class="section-line"></div>
-    <div class="section-label"><strong>CHOOSE ACCOUNT</strong></div>
+    <div class="section-label"><strong>PILIH AKUN</strong></div>
     <div class="section-line"></div>
   </div>
 
@@ -584,6 +585,12 @@
 </div>
 
 <script>
+  // Register service worker for PWA
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log('Math Arena PWA ready!'));
+  }
+
   const students = {
     fatih: {
       avatar: '🚂', name: 'Fatih',
