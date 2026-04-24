@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summary · Cheat Sheet Level 2 · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2228; --board-light:#262c38; --board-mid:#222830;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.25);
+    --navy:#6272b0; --navy-dark:#2c3560; --navy-bg:rgba(98,114,176,0.13); --navy-border:rgba(98,114,176,0.4);
+    --violet:#9b72cf; --violet-dark:#5c3a8a; --violet-bg:rgba(155,114,207,0.11); --violet-border:rgba(155,114,207,0.38);
+    --amber:#f0c060; --amber-dark:#c97d2e; --amber-bg:rgba(240,192,96,0.1); --amber-border:rgba(240,192,96,0.38);
+    --green:#4a9e69; --green-bg:rgba(74,158,105,0.12); --green-border:rgba(74,158,105,0.38);
+    --red:#e06060; --red-bg:rgba(224,96,96,0.1); --red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(232,224,208,0.14); --card-bg:rgba(255,255,255,0.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,34,40,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--violet);}
+
+  .wrap{max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  .page-header{text-align:center;margin-bottom:2.5rem;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--violet-bg);border:1px solid var(--violet-border);color:var(--violet);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.5rem,4vw,2.1rem);text-shadow:2px 2px 0 rgba(0,0,0,0.3);margin-bottom:0.4rem;}
+  h1 span{color:var(--violet);}
+  .page-sub{font-family:'Patrick Hand',cursive;font-size:0.9rem;color:var(--chalk-muted);}
+
+  .section-divider{display:flex;align-items:center;gap:0.8rem;margin:2rem 0 1.2rem;}
+  .sd-line{flex:1;height:1px;background:var(--chalk-dim);}
+  .sd-label{font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--chalk-muted);white-space:nowrap;}
+
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.5rem 1.6rem;margin-bottom:1rem;box-shadow:0 4px 18px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);}
+  .card-title{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--chalk);margin-bottom:0.9rem;display:flex;align-items:center;gap:0.5rem;}
+
+  /* KPK/FPB side-by-side */
+  .kfb-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:0.5rem 0;}
+  @media(max-width:480px){.kfb-grid{grid-template-columns:1fr;}}
+  .kfb-card{border-radius:11px;padding:1rem 1.1rem;}
+  .kfb-card.kpk{background:var(--navy-bg);border:1px solid var(--navy-border);}
+  .kfb-card.fpb{background:var(--violet-bg);border:1px solid var(--violet-border);}
+  .kfb-tag{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .kfb-card.kpk .kfb-tag{color:var(--navy);}
+  .kfb-card.fpb .kfb-tag{color:var(--violet);}
+  .kfb-rule{font-family:'Fredoka One',cursive;font-size:0.88rem;color:var(--chalk);margin-bottom:0.35rem;}
+  .kfb-note{font-family:'Patrick Hand',cursive;font-size:0.78rem;color:var(--chalk-muted);line-height:1.5;}
+  .kfb-example{font-family:'Fredoka One',cursive;font-size:0.95rem;margin-top:0.5rem;}
+  .kfb-card.kpk .kfb-example{color:var(--navy);}
+  .kfb-card.fpb .kfb-example{color:var(--violet);}
+
+  /* Steps compact */
+  .steps-compact{display:flex;flex-direction:column;gap:0.45rem;margin:0.7rem 0;}
+  .sc-row{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.85rem;color:var(--chalk-muted);line-height:1.55;}
+  .sc-n{font-family:'Fredoka One',cursive;font-size:0.72rem;color:var(--board);background:var(--navy);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+  .sc-n.vl{background:var(--violet);}
+  .sc-row strong{color:var(--chalk);}
+
+  /* Formula grid */
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.65rem;margin:0.6rem 0;}
+  @media(max-width:480px){.formula-grid{grid-template-columns:1fr;}}
+  .formula-box{border-radius:10px;padding:0.8rem 1rem;}
+  .formula-box.arith{background:var(--navy-bg);border:1px solid var(--navy-border);}
+  .formula-box.geo{background:var(--violet-bg);border:1px solid var(--violet-border);}
+  .fb-op{font-family:'Patrick Hand',cursive;font-size:0.68rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:0.3rem;}
+  .formula-box.arith .fb-op{color:var(--navy);}
+  .formula-box.geo .fb-op{color:var(--violet);}
+  .fb-eq{font-family:'Fredoka One',cursive;font-size:0.9rem;margin-bottom:0.3rem;}
+  .formula-box.arith .fb-eq{color:var(--navy);}
+  .formula-box.geo .fb-eq{color:var(--violet);}
+  .fb-note{font-family:'Patrick Hand',cursive;font-size:0.73rem;color:var(--chalk-muted);line-height:1.45;}
+
+  /* Sequence compare */
+  .seq-compare{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:0.7rem 0;}
+  @media(max-width:480px){.seq-compare{grid-template-columns:1fr;}}
+  .seq-box{border-radius:10px;padding:0.9rem 1rem;}
+  .seq-box.arith{background:var(--navy-bg);border:1px solid var(--navy-border);}
+  .seq-box.geo{background:var(--violet-bg);border:1px solid var(--violet-border);}
+  .seq-box-label{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.45rem;}
+  .seq-box.arith .seq-box-label{color:var(--navy);}
+  .seq-box.geo .seq-box-label{color:var(--violet);}
+  .seq-nums{font-family:'Fredoka One',cursive;font-size:0.95rem;color:var(--chalk);margin-bottom:0.3rem;}
+  .seq-key{font-family:'Patrick Hand',cursive;font-size:0.78rem;color:var(--chalk-muted);line-height:1.5;}
+
+  /* Highlight */
+  .hl{border-radius:10px;padding:0.75rem 1rem;font-size:0.85rem;line-height:1.6;margin:0.5rem 0;}
+  .hl-navy{background:var(--navy-bg);border:1px solid var(--navy-border);}
+  .hl-violet{background:var(--violet-bg);border:1px solid var(--violet-border);}
+  .hl-amber{background:var(--amber-bg);border:1px solid var(--amber-border);}
+  .hl-green{background:var(--green-bg);border:1px solid var(--green-border);}
+  .hl-red{background:var(--red-bg);border:1px solid var(--red-border);}
+  .hl-navy strong{color:var(--navy);}
+  .hl-violet strong{color:var(--violet);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+  .hl-red strong{color:var(--red);}
+
+  /* Tip table */
+  .tip-table{width:100%;border-collapse:collapse;margin:0.6rem 0;font-size:0.84rem;}
+  .tip-table th{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--chalk-muted);text-align:left;padding:0.4rem 0.6rem;border-bottom:1px solid var(--card-border);}
+  .tip-table td{padding:0.45rem 0.6rem;border-bottom:1px solid rgba(232,224,208,0.06);color:var(--chalk-muted);vertical-align:top;line-height:1.5;}
+  .tip-table td:first-child{font-weight:900;color:var(--chalk);white-space:nowrap;}
+  .tip-table td.kpk{color:var(--navy);font-family:'Fredoka One',cursive;}
+  .tip-table td.fpb{color:var(--violet);font-family:'Fredoka One',cursive;}
+  .tip-table tr:last-child td{border-bottom:none;}
+
+  /* Rules list */
+  .rules{display:flex;flex-direction:column;gap:0.5rem;margin:0.5rem 0;}
+  .rule{display:flex;gap:0.8rem;align-items:flex-start;font-size:0.85rem;color:var(--chalk-muted);line-height:1.6;}
+  .rule-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+  .rule strong{color:var(--chalk);}
+
+  /* Footer nav */
+  .footer-nav{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2.5rem;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:var(--navy-dark);color:#fff;box-shadow:0 4px 14px rgba(44,53,96,0.5);}
+  .btn-primary:hover{background:var(--navy);transform:translateY(-2px);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level2.html">Level 2</a><span>›</span>
+  <span class="cur">Cheat Sheet</span>
+</nav>
+
+<div class="wrap">
+  <div class="page-header">
+    <div class="page-badge">📋 Summary</div>
+    <h1>Level 2 <span>Cheat Sheet</span></h1>
+    <p class="page-sub">Semua rumus & poin penting dalam satu halaman. Simpan, screenshot, atau print!</p>
+  </div>
+
+  <!-- ── Section 1: Faktor & Kelipatan ── -->
+  <div class="section-divider">
+    <div class="sd-line"></div>
+    <div class="sd-label">🔗 Section 1 — Faktor & Kelipatan</div>
+    <div class="sd-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>📌</span> Konsep Dasar</div>
+    <div class="rules">
+      <div class="rule"><span class="rule-icon">🔹</span><div><strong>Faktor</strong> dari n = semua bilangan yang habis membagi n. Contoh: faktor 12 = {1, 2, 3, 4, 6, 12}</div></div>
+      <div class="rule"><span class="rule-icon">🔹</span><div><strong>Kelipatan</strong> dari n = hasil kali n dengan 1, 2, 3, … Contoh: kelipatan 5 = 5, 10, 15, 20 …</div></div>
+      <div class="rule"><span class="rule-icon">🔹</span><div><strong>Bilangan Prima</strong> = hanya punya 2 faktor: 1 dan dirinya sendiri. Contoh: 2, 3, 5, 7, 11, 13, 17, 19 …</div></div>
+      <div class="rule"><span class="rule-icon">🔹</span><div><strong>Faktorisasi Prima</strong> = pecah jadi perkalian bilangan prima. Contoh: 60 = 2² × 3 × 5</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>🔗</span> KPK & FPB — Rumus & Kapan Dipakai</div>
+    <div class="kfb-grid">
+      <div class="kfb-card kpk">
+        <div class="kfb-tag">KPK — Kelipatan Persekutuan Terkecil</div>
+        <div class="kfb-rule">Ambil SEMUA faktor prima, pangkat TERTINGGI</div>
+        <div class="kfb-note">Dipakai saat: menyamakan penyebut pecahan, menyatukan dua siklus/jadwal, mencari kapan dua hal bertemu kembali</div>
+        <div class="kfb-example">KPK(12,18) = 2² × 3² = 36</div>
+      </div>
+      <div class="kfb-card fpb">
+        <div class="kfb-tag">FPB — Faktor Persekutuan Terbesar</div>
+        <div class="kfb-rule">Ambil faktor prima BERSAMA, pangkat TERENDAH</div>
+        <div class="kfb-note">Dipakai saat: membagi rata tanpa sisa, memotong sesuatu jadi bagian terbesar yang sama ukurannya</div>
+        <div class="kfb-example">FPB(12,18) = 2¹ × 3¹ = 6</div>
+      </div>
+    </div>
+
+    <div style="margin-top:0.9rem;">
+      <div class="card-title" style="font-size:0.88rem;margin-bottom:0.6rem;"><span>📋</span> Langkah Faktorisasi Prima</div>
+      <div class="steps-compact">
+        <div class="sc-row"><div class="sc-n">1</div><div>Pecah setiap bilangan jadi perkalian bilangan prima (pohon faktor atau pembagian berulang)</div></div>
+        <div class="sc-row"><div class="sc-n">2</div><div>Tulis dalam bentuk a<sup>x</sup> × b<sup>y</sup> × …</div></div>
+        <div class="sc-row"><div class="sc-n">3</div><div><strong>KPK</strong>: ambil semua basis prima yang muncul, pakai pangkat tertinggi lalu kalikan</div></div>
+        <div class="sc-row"><div class="sc-n">4</div><div><strong>FPB</strong>: ambil basis prima yang muncul di KEDUA bilangan, pakai pangkat terendah lalu kalikan</div></div>
+      </div>
+    </div>
+
+    <div class="hl hl-amber" style="margin-top:0.8rem;"><strong>Trik Euclid (FPB cepat):</strong> FPB(a, b) = FPB(b, a mod b). Ulangi sampai sisa = 0. Contoh: FPB(48,18) → FPB(18,12) → FPB(12,6) → FPB(6,0) = <strong>6</strong></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>🗓️</span> Panduan Cepat: KPK atau FPB?</div>
+    <table class="tip-table">
+      <tr><th>Kata Kunci Soal</th><th>Gunakan</th><th>Alasan</th></tr>
+      <tr><td>"kapan bersamaan lagi"</td><td class="kpk">KPK</td><td>Menyatukan dua siklus/jadwal</td></tr>
+      <tr><td>"dibagi rata tanpa sisa"</td><td class="fpb">FPB</td><td>Pembagi terbesar yang bisa membagi keduanya</td></tr>
+      <tr><td>"menyamakan penyebut"</td><td class="kpk">KPK</td><td>Penyebut bersama terkecil</td></tr>
+      <tr><td>"ukuran terbesar yang muat"</td><td class="fpb">FPB</td><td>Potongan terbesar tanpa sisa</td></tr>
+      <tr><td>"maksimal berapa kelompok"</td><td class="fpb">FPB</td><td>Pembagi maksimum kedua bilangan</td></tr>
+    </table>
+  </div>
+
+  <!-- ── Section 2: Barisan & Deret ── -->
+  <div class="section-divider">
+    <div class="sd-line"></div>
+    <div class="sd-label">📈 Section 2 — Barisan & Deret</div>
+    <div class="sd-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>🔍</span> Identifikasi Jenis Barisan</div>
+    <div class="seq-compare">
+      <div class="seq-box arith">
+        <div class="seq-box-label">Barisan Aritmetika</div>
+        <div class="seq-nums">3, 7, 11, 15, 19 …</div>
+        <div class="seq-key">
+          Selisih antar suku selalu <strong style="color:var(--navy);">sama</strong><br>
+          Beda: <strong style="color:var(--navy);">b = Uₙ₊₁ − Uₙ</strong><br>
+          Cek: b = 7−3 = 11−7 = 15−11 = <strong style="color:var(--navy);">4 ✓</strong>
+        </div>
+      </div>
+      <div class="seq-box geo">
+        <div class="seq-box-label">Barisan Geometri</div>
+        <div class="seq-nums">2, 6, 18, 54, 162 …</div>
+        <div class="seq-key">
+          Rasio antar suku selalu <strong style="color:var(--violet);">sama</strong><br>
+          Rasio: <strong style="color:var(--violet);">r = Uₙ₊₁ ÷ Uₙ</strong><br>
+          Cek: r = 6÷2 = 18÷6 = 54÷18 = <strong style="color:var(--violet);">3 ✓</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>📐</span> Rumus Lengkap Barisan & Deret</div>
+    <div class="formula-grid">
+      <div class="formula-box arith">
+        <div class="fb-op">Suku ke-n — Aritmetika</div>
+        <div class="fb-eq">Uₙ = a + (n − 1) × b</div>
+        <div class="fb-note"><strong style="color:var(--navy);">a</strong> = suku pertama &nbsp;|&nbsp; <strong style="color:var(--navy);">b</strong> = beda</div>
+      </div>
+      <div class="formula-box geo">
+        <div class="fb-op">Suku ke-n — Geometri</div>
+        <div class="fb-eq">Uₙ = a × rⁿ⁻¹</div>
+        <div class="fb-note"><strong style="color:var(--violet);">a</strong> = suku pertama &nbsp;|&nbsp; <strong style="color:var(--violet);">r</strong> = rasio</div>
+      </div>
+      <div class="formula-box arith">
+        <div class="fb-op">Deret — Jumlah n suku Aritmetika</div>
+        <div class="fb-eq">Sₙ = n/2 × (a + Uₙ)</div>
+        <div class="fb-note">atau &nbsp; Sₙ = n/2 × (2a + (n−1)b)</div>
+      </div>
+      <div class="formula-box geo">
+        <div class="fb-op">Deret — Jumlah n suku Geometri</div>
+        <div class="fb-eq">Sₙ = a(rⁿ − 1) / (r − 1)</div>
+        <div class="fb-note">untuk r ≠ 1. Jika r = 1, maka Sₙ = n × a</div>
+      </div>
+    </div>
+
+    <div class="hl hl-navy" style="margin-top:0.8rem;"><strong>Mencari beda (b):</strong> Jika diketahui U₁ dan Uₙ → b = (Uₙ − a) / (n − 1)</div>
+    <div class="hl hl-violet"><strong>Mencari rasio (r):</strong> Jika diketahui U₁ dan Uₙ → r = ⁽ⁿ⁻¹⁾√(Uₙ / a)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>⚠️</span> Kesalahan Umum — Jangan Lakukan!</div>
+    <div class="rules">
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>KPK dianggap lebih kecil dari kedua bilangan:</strong> KPK(6,4) ≠ 2. KPK ≥ bilangan terbesar. Jawaban: 12.</div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>FPB dianggap hasil kali biasa:</strong> FPB(6,4) ≠ 24. FPB ≤ bilangan terkecil. Jawaban: 2.</div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>n dipakai langsung tanpa (n−1):</strong> U₅ bukan a + 5b, tapi a + (5−1)b = a + 4b.</div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>Beda bisa negatif:</strong> 10, 7, 4, 1, … itu Aritmetika dengan b = −3. Tidak harus selalu naik!</div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>Rasio bisa pecahan:</strong> 16, 8, 4, 2, … → r = ½. Barisan Geometri menurun juga valid.</div></div>
+    </div>
+  </div>
+
+  <div class="footer-nav">
+    <a href="level2.html" class="btn btn-ghost">← Level Hub</a>
+    <a href="quicktest.html" class="btn btn-primary">Quick Test →</a>
+  </div>
+</div>
+</body>
+</html>
