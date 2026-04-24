@@ -42,11 +42,11 @@
   .title-wrap::before{content:'';position:absolute;inset:-4px;border:2px dashed rgba(232,224,208,0.25);border-radius:8px;}
   h1{font-family:'Fredoka One',cursive;font-size:clamp(1.8rem,5vw,2.8rem);letter-spacing:4px;line-height:1;padding:0.8rem 2.5rem;text-shadow:2px 2px 0 rgba(0,0,0,0.4);}
   h1 span{color:var(--amber);}
-  .header-sub{font-family:'Patrick Hand',cursive;font-size:1rem;color:var(--chalk-muted);margin-top:0.8rem;}
+  .header-sub{font-family:'Patrick Hand',cursive;font-size:1rem;color:var(--chalk);margin-top:0.8rem;}
 
   .section-row{display:flex;align-items:center;justify-content:center;gap:0.8rem;margin-bottom:2.5rem;}
   .section-line{height:1px;width:55px;background:var(--chalk-dim);}
-  .section-label{font-family:'Patrick Hand',cursive;font-size:0.9rem;color:var(--chalk-muted);letter-spacing:2px;}
+  .section-label{font-family:'Patrick Hand',cursive;font-size:0.9rem;color:var(--chalk);letter-spacing:2px;}
 
   .levels-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.3rem;}
 
@@ -79,7 +79,13 @@
   .lock-icon{position:absolute;top:0.9rem;right:0.9rem;opacity:0.25;font-size:1rem;}
   .corner-doodle{position:absolute;bottom:0.5rem;right:0.8rem;font-family:'Patrick Hand',cursive;font-size:3rem;opacity:0.06;color:var(--chalk);pointer-events:none;line-height:1;transform:rotate(8deg);}
 
-  footer{text-align:center;padding:1rem 0;font-family:'Patrick Hand',cursive;font-size:0.82rem;color:var(--chalk-muted);letter-spacing:1px;position:relative;z-index:1;}
+  footer{text-align:center;padding:1.5rem 0 1.4rem;position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:0.42rem;}
+  .footer-line{display:inline-flex;align-items:center;gap:0.45rem;font-family:'Patrick Hand',cursive;font-size:0.88rem;color:var(--chalk-muted);letter-spacing:0.3px;line-height:1;}
+  .footer-line img{height:1em;width:auto;display:inline-block;vertical-align:middle;opacity:0.75;flex-shrink:0;}
+  .footer-line a{text-decoration:none;transition:opacity 0.15s;}
+  .footer-line a:hover{opacity:0.8;}
+  .footer-zaa{color:#f99c1c;}
+  .footer-algo{color:#875ca6;}
 </style>
 </head>
 <body>
@@ -123,7 +129,20 @@
   </div>
 </div>
 
-<footer>Math Arena · ✏️ Free & Open untuk Semua</footer>
+<footer>
+  <div class="footer-line">
+    <img src="assets/logo2.svg" alt="Math Arena logo">
+    Math Arena · Tutor Crafted Lessons
+  </div>
+  <div class="footer-line">
+    <img src="assets/zaa.svg" alt="Zaafirrahman">
+    Framework Designed by <a href="https://zaafirrahman.github.io/" target="_blank" rel="noopener"><span class="footer-zaa">Zaafirrahman ↗</span></a>
+  </div>
+  <div class="footer-line">
+    <img src="assets/algo.svg" alt="Algonova">
+    Project Supported by <a href="https://algonova.id/" target="_blank" rel="noopener"><span class="footer-algo">Algonova ↗</span></a>
+  </div>
+</footer>
 
 <script>
   const symbols=['×','÷','+','−','=','²','√','π','∑','%','≠','≤','∞','Δ','α','β'];
