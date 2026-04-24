@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 2 · Barisan & Deret · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2228; --board-light:#262c38; --board-mid:#222830;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.25);
+    --navy:#6272b0; --navy-dark:#2c3560; --navy-bg:rgba(98,114,176,0.13); --navy-border:rgba(98,114,176,0.4);
+    --violet:#9b72cf; --violet-bg:rgba(155,114,207,0.11); --violet-border:rgba(155,114,207,0.38);
+    --amber:#f0c060; --amber-dark:#c97d2e; --amber-bg:rgba(240,192,96,0.1); --amber-border:rgba(240,192,96,0.38);
+    --green:#4a9e69; --green-dark:#2c6e49; --green-bg:rgba(74,158,105,0.12); --green-border:rgba(74,158,105,0.38);
+    --red:#e06060; --red-bg:rgba(224,96,96,0.1); --red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(232,224,208,0.14); --card-bg:rgba(255,255,255,0.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,34,40,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--violet);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5.5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--violet-bg);border:1px solid var(--violet-border);color:var(--violet);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1.3rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,2rem);margin-bottom:0.6rem;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,0.3);}
+  h1 span{color:var(--violet);}
+  .intro{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(232,224,208,0.15);transition:all 0.3s;}
+  .dot.active{background:var(--violet);box-shadow:0 0 0 3px rgba(155,114,207,0.22);transform:scale(1.15);}
+  .dot.done{background:var(--navy);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.06);}
+  .card-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.navy{color:var(--navy);}
+  .card-label.violet{color:var(--violet);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:0.7rem;line-height:1.35;color:var(--chalk);}
+  .card p{color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;}
+
+  /* Why banner */
+  .why-banner{background:linear-gradient(135deg,#1e1228,#28143a);border:1px solid var(--violet-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.35);}
+  .why-banner::after{content:'…';position:absolute;right:1rem;bottom:-0.8rem;font-family:'Fredoka One',cursive;font-size:5rem;opacity:0.1;color:var(--violet);}
+  .why-banner h2{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:0.6rem;color:var(--chalk);}
+  .why-banner p{font-size:0.9rem;line-height:1.7;color:var(--chalk-muted);}
+  .why-list{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem;}
+  .why-item{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.88rem;color:var(--chalk-muted);}
+  .why-item span{flex-shrink:0;font-size:1.1rem;}
+
+  /* Sequence display */
+  .seq-display{display:flex;align-items:center;gap:0.35rem;flex-wrap:wrap;margin:1rem 0;}
+  .seq-chip{padding:0.4rem 0.7rem;border-radius:8px;font-family:'Fredoka One',cursive;font-size:1rem;}
+  .seq-chip.arith{background:var(--navy-bg);border:1px solid var(--navy-border);color:var(--navy);}
+  .seq-chip.geo{background:var(--violet-bg);border:1px solid var(--violet-border);color:var(--violet);}
+  .seq-chip.dots{background:none;border:none;color:var(--chalk-muted);font-size:1.2rem;padding:0 0.1rem;}
+  .seq-arrow{display:flex;flex-direction:column;align-items:center;padding:0 0.1rem;}
+  .seq-arrow-line{font-family:'Patrick Hand',cursive;font-size:0.68rem;color:var(--amber);white-space:nowrap;}
+  .seq-arrow-sym{color:var(--amber);font-size:0.9rem;}
+
+  /* Formula card */
+  .formula-2col{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1rem 0;}
+  @media(max-width:480px){.formula-2col{grid-template-columns:1fr;}}
+  .formula-box{border-radius:12px;padding:1.1rem 1.2rem;}
+  .formula-box.arith{background:var(--navy-bg);border:1px solid var(--navy-border);}
+  .formula-box.geo{background:var(--violet-bg);border:1px solid var(--violet-border);}
+  .fb-type{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;}
+  .formula-box.arith .fb-type{color:var(--navy);}
+  .formula-box.geo .fb-type{color:var(--violet);}
+  .fb-name{font-family:'Fredoka One',cursive;font-size:0.95rem;color:var(--chalk);margin-bottom:0.6rem;}
+  .fb-formula{background:rgba(0,0,0,0.2);border-radius:8px;padding:0.5rem 0.7rem;font-family:'Fredoka One',cursive;font-size:0.9rem;margin-bottom:0.4rem;}
+  .formula-box.arith .fb-formula{color:var(--navy);}
+  .formula-box.geo .fb-formula{color:var(--violet);}
+  .fb-note{font-family:'Patrick Hand',cursive;font-size:0.75rem;color:var(--chalk-muted);line-height:1.5;}
+
+  /* Steps */
+  .steps{display:flex;flex-direction:column;gap:0.65rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:var(--board-light);border:1px solid var(--card-border);border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;color:var(--chalk-muted);}
+  .step-n{font-family:'Fredoka One',cursive;font-size:0.8rem;color:var(--board);background:var(--violet);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .step strong{color:var(--violet);}
+  .step .nv{color:var(--navy);}
+  .step .am{color:var(--amber);}
+  .step .gr{color:var(--green);}
+
+  /* Big eq */
+  .big-eq{background:var(--board-light);border:1px solid var(--card-border);border-radius:12px;padding:1.2rem;margin:1rem 0;text-align:center;}
+  .eq-text{font-family:'Fredoka One',cursive;font-size:clamp(1.1rem,3.5vw,1.6rem);color:var(--chalk);line-height:1.6;}
+  .eq-step{font-size:0.88rem;color:var(--chalk-muted);margin:0.2rem 0;font-family:'Patrick Hand',cursive;}
+  .eq-result{font-family:'Fredoka One',cursive;font-size:clamp(1.3rem,4vw,1.9rem);color:var(--green);}
+
+  /* Highlight */
+  .hl{border-radius:10px;padding:0.9rem 1.1rem;margin:0.8rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-navy{background:var(--navy-bg);border:1px solid var(--navy-border);}
+  .hl-violet{background:var(--violet-bg);border:1px solid var(--violet-border);}
+  .hl-amber{background:var(--amber-bg);border:1px solid var(--amber-border);}
+  .hl-green{background:var(--green-bg);border:1px solid var(--green-border);}
+  .hl-red{background:var(--red-bg);border:1px solid var(--red-border);}
+  .hl-navy strong{color:var(--navy);}
+  .hl-violet strong{color:var(--violet);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+  .hl-red strong{color:var(--red);}
+
+  /* Deret sum visual */
+  .deret-bars{display:flex;align-items:flex-end;gap:0.3rem;height:80px;margin:1rem 0;}
+  .deret-bar{border-radius:4px 4px 0 0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;font-family:'Fredoka One',cursive;font-size:0.7rem;transition:all 0.3s;}
+
+  /* Quiz */
+  .quiz-q{font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:1.2rem;line-height:1.4;color:var(--chalk);}
+  .opts{display:flex;flex-direction:column;gap:0.6rem;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.82rem 1rem;border-radius:10px;cursor:pointer;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover:not(:disabled){border-color:rgba(155,114,207,0.5);background:var(--violet-bg);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.8rem;padding:0.75rem 1rem;border-radius:10px;font-size:0.88rem;font-weight:800;display:none;line-height:1.5;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+
+  /* Nav */
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:var(--navy-dark);color:#fff;box-shadow:0 4px 14px rgba(44,53,96,0.45);}
+  .btn-primary:hover{background:var(--navy);transform:translateY(-2px);}
+  .btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important;}
+
+  /* Finish */
+  .finish{text-align:center;padding:2.5rem 1rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--violet);margin-bottom:0.7rem;}
+  .finish-desc{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);line-height:1.7;margin-bottom:1.5rem;font-size:0.95rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber);padding:0.3rem 1rem;border-radius:20px;font-family:'Fredoka One',cursive;font-size:0.85rem;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level2.html">Level 2</a><span>›</span>
+  <span class="cur">Section 2</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📈 Section 02 · Barisan & Deret</div>
+  <h1>Pola dalam <span>Angka</span></h1>
+  <p class="intro">Di balik tumpukan angka yang kelihatan acak, selalu ada pola. Kalau kamu bisa melihat polanya, kamu bisa menebak angka ke-100 tanpa perlu menghitung satu per satu.</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- Slide 0: WHY -->
+    <div class="slide active">
+      <div class="why-banner">
+        <h2>Kenapa belajar Barisan & Deret?</h2>
+        <p>Pola bilangan ada di mana-mana — bukan cuma di buku matematika. Siapa yang bisa membaca polanya, dia yang bisa memprediksi masa depan.</p>
+        <div class="why-list">
+          <div class="why-item"><span>💰</span><div>Bunga tabungan bank yang tumbuh tiap bulan → Barisan Geometri</div></div>
+          <div class="why-item"><span>🏃</span><div>Atlet menambah jarak lari 500m tiap minggu → Barisan Aritmetika</div></div>
+          <div class="why-item"><span>🦠</span><div>Virus yang berlipat ganda tiap jam → Deret Geometri</div></div>
+          <div class="why-item"><span>🎵</span><div>Nada musik dan frekuensi harmoniknya → rasio geometri</div></div>
+          <div class="why-item"><span>🏗️</span><div>Hitung total bata yang dipakai untuk tembok bertingkat → Deret Aritmetika</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label violet">📌 Dua jenis pola utama</div>
+        <h2>Tambah tetap vs Kali tetap</h2>
+        <p style="margin-bottom:0.8rem;">Itulah perbedaan Aritmetika dan Geometri dalam satu kalimat.</p>
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <div class="hl hl-navy"><strong>Aritmetika:</strong> 2, 5, 8, 11, 14 … → selalu <strong>+3</strong> (beda tetap)</div>
+          <div class="hl hl-violet"><strong>Geometri:</strong> 3, 6, 12, 24, 48 … → selalu <strong>×2</strong> (rasio tetap)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 1: Barisan Aritmetika -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label navy">📚 Barisan Aritmetika</div>
+        <h2>Pola dengan beda tetap (b)</h2>
+        <p style="margin-bottom:0.9rem;">Setiap suku berikutnya didapat dengan <strong style="color:var(--chalk);">menambahkan</strong> bilangan yang sama, disebut <strong style="color:var(--navy);">beda (b)</strong>.</p>
+
+        <div class="seq-display">
+          <span class="seq-chip arith">3</span>
+          <div class="seq-arrow"><span class="seq-arrow-line">+4</span><span class="seq-arrow-sym">→</span></div>
+          <span class="seq-chip arith">7</span>
+          <div class="seq-arrow"><span class="seq-arrow-line">+4</span><span class="seq-arrow-sym">→</span></div>
+          <span class="seq-chip arith">11</span>
+          <div class="seq-arrow"><span class="seq-arrow-line">+4</span><span class="seq-arrow-sym">→</span></div>
+          <span class="seq-chip arith">15</span>
+          <div class="seq-arrow"><span class="seq-arrow-line">+4</span><span class="seq-arrow-sym">→</span></div>
+          <span class="seq-chip arith">19</span>
+          <span class="seq-chip dots">…</span>
+        </div>
+
+        <div class="formula-box arith" style="margin:0.8rem 0;">
+          <div class="fb-type">Rumus Suku ke-n</div>
+          <div class="fb-name">Barisan Aritmetika</div>
+          <div class="fb-formula">Uₙ = a + (n − 1) × b</div>
+          <div class="fb-note">
+            <strong style="color:var(--navy);">a</strong> = suku pertama &nbsp;|&nbsp;
+            <strong style="color:var(--navy);">b</strong> = beda (selisih antar suku) &nbsp;|&nbsp;
+            <strong style="color:var(--navy);">n</strong> = urutan suku yang dicari
+          </div>
+        </div>
+
+        <div class="hl hl-amber"><strong>Cara cek beda:</strong> b = U₂ − U₁ = U₃ − U₂ = … Kalau semua selisih sama → itu Barisan Aritmetika.</div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Barisan Geometri -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">📚 Barisan Geometri</div>
+        <h2>Pola dengan rasio tetap (r)</h2>
+        <p style="margin-bottom:0.9rem;">Setiap suku berikutnya didapat dengan <strong style="color:var(--chalk);">mengalikan</strong> bilangan yang sama, disebut <strong style="color:var(--violet);">rasio (r)</strong>.</p>
+
+        <div class="seq-display">
+          <span class="seq-chip geo">2</span>
+          <div class="seq-arrow"><span class="seq-arrow-line">×3</span><span class="seq-arrow-sym">→</span></div>
+          <span class="seq-chip geo">6</span>
+          <div class="seq-arrow"><span class="seq-arrow-line">×3</span><span class="seq-arrow-sym">→</span></div>
+          <span class="seq-chip geo">18</span>
+          <div class="seq-arrow"><span class="seq-arrow-line">×3</span><span class="seq-arrow-sym">→</span></div>
+          <span class="seq-chip geo">54</span>
+          <div class="seq-arrow"><span class="seq-arrow-line">×3</span><span class="seq-arrow-sym">→</span></div>
+          <span class="seq-chip geo">162</span>
+          <span class="seq-chip dots">…</span>
+        </div>
+
+        <div class="formula-box geo" style="margin:0.8rem 0;">
+          <div class="fb-type">Rumus Suku ke-n</div>
+          <div class="fb-name">Barisan Geometri</div>
+          <div class="fb-formula">Uₙ = a × rⁿ⁻¹</div>
+          <div class="fb-note">
+            <strong style="color:var(--violet);">a</strong> = suku pertama &nbsp;|&nbsp;
+            <strong style="color:var(--violet);">r</strong> = rasio (hasil bagi suku berurutan) &nbsp;|&nbsp;
+            <strong style="color:var(--violet);">n</strong> = urutan suku
+          </div>
+        </div>
+
+        <div class="hl hl-amber"><strong>Cara cek rasio:</strong> r = U₂ ÷ U₁ = U₃ ÷ U₂ = … Kalau semua hasil bagi sama → itu Barisan Geometri.</div>
+
+        <div class="formula-2col" style="margin-top:1rem;">
+          <div class="formula-box arith">
+            <div class="fb-type">Deret Aritmetika (Sₙ)</div>
+            <div class="fb-formula">Sₙ = n/2 × (a + Uₙ)</div>
+            <div class="fb-note">atau Sₙ = n/2 × (2a + (n−1)b)</div>
+          </div>
+          <div class="formula-box geo">
+            <div class="fb-type">Deret Geometri (Sₙ)</div>
+            <div class="fb-formula">Sₙ = a(rⁿ − 1)/(r − 1)</div>
+            <div class="fb-note">untuk r ≠ 1. Jika r = 1, Sₙ = n × a</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Contoh soal Aritmetika -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📝 Contoh — Barisan Aritmetika</div>
+        <h2>Barisan: 5, 9, 13, 17, … Tentukan suku ke-20 dan jumlah 20 suku pertama!</h2>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div>Identifikasi: <strong>a = 5</strong>, beda <strong>b = 9−5 = 4</strong></div>
+          <div class="step"><div class="step-n">2</div>Suku ke-20: <strong>U₂₀ = a + (n−1)b = 5 + (20−1)×4</strong></div>
+          <div class="step"><div class="step-n">3</div><strong>U₂₀ = 5 + 19×4 = 5 + 76 = <span class="am">81</span></strong></div>
+          <div class="step"><div class="step-n">4</div>Jumlah 20 suku: <strong>S₂₀ = 20/2 × (5 + 81) = 10 × 86 = <span class="gr">860</span></strong></div>
+        </div>
+        <div class="big-eq">
+          <div class="eq-text">U₂₀ = 5 + 19 × 4 = 81</div>
+          <div class="eq-step">S₂₀ = 10 × (5 + 81)</div>
+          <div class="eq-result">= 860 ✓</div>
+        </div>
+        <div class="hl hl-navy"><strong>Visualisasi deret:</strong> Gauss menemukan rumus ini saat SD! Total = pasang suku pertama & terakhir, lalu kali banyaknya pasang.</div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Contoh soal Geometri -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📝 Contoh — Barisan Geometri</div>
+        <h2>Bakteri berkembang biak: 1, 2, 4, 8, … Berapa jumlah bakteri setelah 10 generasi (total)?</h2>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div>Identifikasi: <strong>a = 1</strong>, rasio <strong>r = 2÷1 = 2</strong></div>
+          <div class="step"><div class="step-n">2</div>Suku ke-10: <strong>U₁₀ = 1 × 2⁹ = 512</strong> bakteri di generasi ke-10</div>
+          <div class="step"><div class="step-n">3</div>Total (deret): <strong>S₁₀ = 1×(2¹⁰ − 1)/(2 − 1)</strong></div>
+          <div class="step"><div class="step-n">4</div><strong>S₁₀ = (1024 − 1)/1 = <span class="am">1023</span></strong> total bakteri</div>
+        </div>
+        <div class="big-eq">
+          <div class="eq-text">S₁₀ = (2¹⁰ − 1) / (2 − 1)</div>
+          <div class="eq-step">= 1023 / 1</div>
+          <div class="eq-result">= 1.023 bakteri total ✓</div>
+        </div>
+        <div class="hl hl-violet"><strong>Perhatikan:</strong> Dari 1 bakteri jadi >1.000 hanya dalam 10 generasi! Inilah kenapa pertumbuhan geometri disebut <em>eksponensial</em> — sangat cepat.</div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Soal Pemanasan -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">🎯 Soal Pemanasan</div>
+        <div class="quiz-q">Barisan: 3, 7, 11, 15, … Berapa nilai suku ke-15?</div>
+        <div class="opts" id="q1">
+          <button class="opt-btn" onclick="chk(this,'q1',false)">55</button>
+          <button class="opt-btn" onclick="chk(this,'q1',true)">59</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false)">63</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false)">57</button>
+        </div>
+        <div class="feedback" id="q1-fb"></div>
+      </div>
+      <div class="card" style="border-style:dashed;background:transparent;">
+        <div class="card-label amber">💡 Hint</div>
+        <p>Ini barisan aritmetika (beda tetap). Cari nilai <strong style="color:var(--chalk);">a</strong> dan <strong style="color:var(--chalk);">b</strong>-nya, lalu pakai rumus <strong style="color:var(--chalk);">Uₙ = a + (n−1) × b</strong>.</p>
+      </div>
+    </div>
+
+    <!-- Slide 6: Finish -->
+    <div class="slide">
+      <div class="card finish">
+        <span class="finish-icon">📈</span>
+        <div class="finish-title">Section 2 Selesai!</div>
+        <div class="finish-desc">Kamu sudah bisa membaca pola barisan Aritmetika dan Geometri, menghitung suku ke-n, dan menjumlahkan deretnya. Level 2 hampir tuntas!</div>
+        <div class="xp">✨ +60 XP — Barisan & Deret Dikuasai!</div>
+        <div class="finish-btns">
+          <a href="level2.html" class="btn btn-ghost">← Level Hub</a>
+          <a href="summary.html" class="btn btn-primary">Cheat Sheet →</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+
+  <div class="nav-btns" id="navbtns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="go(-1)" disabled>← Prev</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL=7; let cur=0; let q1done=false;
+  const dotsEl=document.getElementById('dots');
+  const slides=document.querySelectorAll('.slide');
+  const prev=document.getElementById('prevBtn'),next=document.getElementById('nextBtn'),nav=document.getElementById('navbtns');
+  for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+  function updateUI(){
+    slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+    dotsEl.querySelectorAll('.dot').forEach((d,i)=>{d.classList.remove('active','done');if(i<cur)d.classList.add('done');if(i===cur)d.classList.add('active');});
+    prev.disabled=cur===0;
+    nav.style.display=cur===TOTAL-1?'none':'flex';
+    if(cur===5)next.disabled=!q1done; else next.disabled=false;
+  }
+  function go(dir){cur=Math.max(0,Math.min(TOTAL-1,cur+dir));updateUI();}
+  function chk(btn,gid,correct){
+    if(q1done)return; q1done=true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>b.disabled=true);
+    btn.classList.add(correct?'correct':'wrong');
+    if(!correct)document.querySelectorAll(`#${gid} .opt-btn`)[1].classList.add('correct');
+    const fb=document.getElementById(`${gid}-fb`);
+    fb.className='feedback show '+(correct?'ok':'no');
+    fb.textContent=correct
+      ?'✅ Betul! a=3, b=4. U₁₅ = 3 + (15−1)×4 = 3 + 56 = 59.'
+      :'❌ Pakai rumus Uₙ = a+(n−1)b. a=3, b=4. U₁₅ = 3+(14×4) = 3+56 = 59.';
+    next.disabled=false;
+  }
+  updateUI();
+</script>
+</body>
+</html>
