@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise · Level 3 · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2228; --board-light:#262c38;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.25);
+    --teal:#3eb8b8; --teal-dark:#1a6e6e; --teal-bg:rgba(62,184,184,0.11); --teal-border:rgba(62,184,184,0.38);
+    --coral:#e07850; --coral-dark:#9a3f1e; --coral-bg:rgba(224,120,80,0.11); --coral-border:rgba(224,120,80,0.38);
+    --amber:#f0c060; --amber-dark:#c97d2e; --amber-bg:rgba(240,192,96,0.1); --amber-border:rgba(240,192,96,0.38);
+    --green:#4a9e69; --green-dark:#2c6e49; --green-bg:rgba(74,158,105,0.12); --green-border:rgba(74,158,105,0.38);
+    --red:#e06060; --red-bg:rgba(224,96,96,0.1); --red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(232,224,208,0.14); --card-bg:rgba(255,255,255,0.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,34,40,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--teal);}
+
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  .page-header{margin-bottom:2rem;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--teal-bg);border:1px solid var(--teal-border);color:var(--teal);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,1.9rem);margin-bottom:0.4rem;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,0.3);}
+  h1 span{color:var(--teal);}
+  .page-sub{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.9rem;line-height:1.6;}
+
+  .overall-progress{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:1.1rem 1.4rem;margin-bottom:2rem;box-shadow:0 4px 18px rgba(0,0,0,0.28);}
+  .op-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.7rem;}
+  .op-title{font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--chalk-muted);}
+  .op-count{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--teal);}
+  .op-track{background:rgba(232,224,208,0.08);border-radius:20px;height:8px;overflow:hidden;}
+  .op-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--teal-dark),var(--teal));transition:width 0.5s ease;}
+  .op-sections{display:flex;gap:0.7rem;margin-top:0.8rem;flex-wrap:wrap;}
+  .op-sec{flex:1;min-width:80px;background:var(--board-light);border:1px solid var(--card-border);border-radius:8px;padding:0.5rem 0.7rem;text-align:center;}
+  .op-sec-label{font-family:'Patrick Hand',cursive;font-size:0.65rem;color:var(--chalk-muted);letter-spacing:1px;text-transform:uppercase;}
+  .op-sec-val{font-family:'Fredoka One',cursive;font-size:1rem;margin-top:0.1rem;}
+
+  .reset-btn{font-family:'Patrick Hand',cursive;font-size:0.75rem;color:var(--chalk-muted);background:none;border:1px solid var(--card-border);border-radius:20px;padding:0.2rem 0.7rem;cursor:pointer;transition:all 0.2s;margin-left:auto;display:block;margin-bottom:0.5rem;}
+  .reset-btn:hover{border-color:var(--red-border);color:var(--red);}
+
+  .section-divider{display:flex;align-items:center;gap:0.8rem;margin:1.8rem 0 1.2rem;}
+  .sd-line{flex:1;height:1px;background:var(--chalk-dim);}
+  .sd-label{font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--chalk-muted);}
+  .sd-done{font-family:'Patrick Hand',cursive;font-size:0.72rem;color:var(--teal);white-space:nowrap;}
+
+  .q-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.6rem;margin-bottom:0.9rem;box-shadow:0 4px 18px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);position:relative;overflow:hidden;transition:border-color 0.3s;}
+  .q-card.answered-correct{border-color:var(--teal-border);}
+  .q-card.answered-wrong{border-color:var(--red-border);}
+  .q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:transparent;transition:background 0.3s;border-radius:14px 14px 0 0;}
+  .q-card.answered-correct::before{background:var(--teal);}
+  .q-card.answered-wrong::before{background:var(--red);}
+
+  .q-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.9rem;}
+  .q-num{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--chalk-muted);}
+  .q-status{font-size:1.1rem;}
+
+  .q-text{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--chalk);margin-bottom:1.1rem;line-height:1.45;}
+
+  /* Multiple choice */
+  .opts{display:flex;flex-direction:column;gap:0.55rem;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.8rem 1rem;border-radius:10px;cursor:pointer;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;display:flex;align-items:center;gap:0.65rem;}
+  .opt-btn:hover:not(:disabled){border-color:rgba(62,184,184,0.45);background:var(--teal-bg);}
+  .opt-btn.correct{border-color:var(--teal);background:var(--teal-bg);color:var(--teal);}
+  .opt-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-key{font-family:'Fredoka One',cursive;font-size:0.72rem;color:var(--chalk-muted);background:rgba(232,224,208,0.08);border-radius:5px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+  /* Fill-in input */
+  .fill-wrap{display:flex;gap:0.6rem;align-items:center;margin-bottom:0.3rem;flex-wrap:wrap;}
+  .fill-input{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.7rem 1rem;border-radius:10px;font-size:1rem;font-family:'Fredoka One',cursive;width:120px;outline:none;transition:border-color 0.2s;}
+  .fill-input:focus{border-color:var(--teal);}
+  .fill-input.correct-input{border-color:var(--teal);background:var(--teal-bg);color:var(--teal);}
+  .fill-input.wrong-input{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .fill-input:disabled{cursor:default;}
+  .fill-btn{background:var(--teal-dark);border:none;color:#fff;padding:0.7rem 1.2rem;border-radius:10px;font-family:'Fredoka One',cursive;font-size:0.88rem;cursor:pointer;transition:all 0.18s;}
+  .fill-btn:hover:not(:disabled){background:var(--teal);}
+  .fill-btn:disabled{opacity:0.4;cursor:default;}
+
+  .q-feedback{border-radius:10px;padding:0.7rem 0.9rem;font-size:0.85rem;font-weight:800;display:none;margin-top:0.8rem;line-height:1.5;}
+  .q-feedback.show{display:block;}
+  .q-feedback.ok{background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-border);}
+  .q-feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+
+  #finishScreen{display:none;text-align:center;padding:1rem 0;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Fredoka One',cursive;font-size:1.7rem;color:var(--chalk);margin-bottom:0.4rem;}
+  .finish-sub{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:1.5rem;}
+  .score-display{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin:1.2rem 0;}
+  .score-box{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:1rem 1.5rem;min-width:110px;}
+  .score-box-num{font-family:'Fredoka One',cursive;font-size:2.2rem;line-height:1;}
+  .score-box-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;color:var(--chalk-muted);letter-spacing:1px;text-transform:uppercase;margin-top:0.2rem;}
+  .xp-badge{display:inline-block;background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber);padding:0.3rem 1.2rem;border-radius:20px;font-family:'Fredoka One',cursive;font-size:0.88rem;margin:0.5rem 0 1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-teal{background:var(--teal-dark);color:#fff;box-shadow:0 4px 14px rgba(26,110,110,0.35);}
+  .btn-teal:hover{background:var(--teal);transform:translateY(-2px);}
+  .btn-amber{background:var(--amber-dark);color:#fff;box-shadow:0 4px 14px rgba(201,125,46,0.35);}
+  .btn-amber:hover{background:#e8a84a;transform:translateY(-2px);}
+
+  .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--teal-dark);color:#fff;font-family:'Patrick Hand',cursive;font-size:0.85rem;padding:0.5rem 1.2rem;border-radius:20px;opacity:0;transition:all 0.3s;pointer-events:none;z-index:999;white-space:nowrap;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level3.html">Level 3</a><span>›</span>
+  <span class="cur">Exercise</span>
+</nav>
+
+<div class="wrap">
+  <div class="page-header">
+    <div class="page-badge">✏️ Exercise</div>
+    <h1>Latihan <span>Santai</span></h1>
+    <p class="page-sub">15 soal tanpa timer. Ada pilihan ganda dan isian. Progres tersimpan otomatis tiap selesai 1 soal.</p>
+  </div>
+
+  <div class="overall-progress">
+    <div class="op-header">
+      <div class="op-title">Progres Keseluruhan</div>
+      <div class="op-count" id="opCount">0 / 15</div>
+    </div>
+    <div class="op-track"><div class="op-fill" id="opFill" style="width:0%"></div></div>
+    <div class="op-sections">
+      <div class="op-sec">
+        <div class="op-sec-label">🔡 Sesi 1</div>
+        <div class="op-sec-val" id="s1Count" style="color:var(--teal);">0/5</div>
+      </div>
+      <div class="op-sec">
+        <div class="op-sec-label">⚖️ Sesi 2</div>
+        <div class="op-sec-val" id="s2Count" style="color:var(--teal);">0/5</div>
+      </div>
+      <div class="op-sec">
+        <div class="op-sec-label">🕵️ Sesi 3</div>
+        <div class="op-sec-val" id="s3Count" style="color:var(--coral);">0/5</div>
+      </div>
+      <div class="op-sec">
+        <div class="op-sec-label">✅ Benar</div>
+        <div class="op-sec-val" id="correctCount" style="color:var(--chalk);">0</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="reset-btn" onclick="confirmReset()">🗑️ Reset Progres</button>
+
+  <div id="questionsArea"></div>
+
+  <div id="finishScreen">
+    <span class="finish-icon" id="finishIcon">🎉</span>
+    <div class="finish-title">Exercise Selesai!</div>
+    <div class="finish-sub" id="finishSub">Semua 15 soal sudah dikerjakan!</div>
+    <div class="score-display">
+      <div class="score-box">
+        <div class="score-box-num" id="finalCorrect" style="color:var(--teal);">-</div>
+        <div class="score-box-label">Benar</div>
+      </div>
+      <div class="score-box">
+        <div class="score-box-num" id="finalWrong" style="color:var(--red);">-</div>
+        <div class="score-box-label">Salah</div>
+      </div>
+      <div class="score-box">
+        <div class="score-box-num" id="finalScore" style="color:var(--amber);">-</div>
+        <div class="score-box-label">Skor</div>
+      </div>
+    </div>
+    <div class="xp-badge" id="xpBadge">✨ +0 XP</div>
+    <div class="finish-btns">
+      <button class="btn btn-ghost" onclick="confirmReset()">🔄 Ulangi</button>
+      <a href="quicktest.html" class="btn btn-amber">⏱️ Quick Test</a>
+      <a href="level3.html" class="btn btn-teal">← Level Hub</a>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">💾 Progres tersimpan!</div>
+
+<script>
+const STORAGE_KEY = 'matharena_l3_exercise_v1';
+
+const QUESTIONS = [
+  // ── Section 1: Manipulasi Variabel (5 soal) ──
+  {
+    section:1, topic:'🔡 Section 1 — Manipulasi Variabel',
+    type:'mc',
+    q:'Sederhanakan: 3x + 2y − x + 5 − y',
+    opts:['2x + y + 5','4x + 3y + 5','2x + y − 5','2x − y + 5'],
+    ans:0,
+    exp:'Suku x: 3x−x=2x. Suku y: 2y−y=y. Konstanta: 5. Hasil: 2x+y+5.'
+  },
+  {
+    section:1, topic:'🔡 Section 1 — Manipulasi Variabel',
+    type:'mc',
+    q:'Manakah yang BUKAN suku sejenis dengan 5x²?',
+    opts:['−3x²','7x²','2x² + 0','4x'],
+    ans:3,
+    exp:'5x², −3x², 7x², 2x² semuanya punya variabel x dengan pangkat 2. 4x punya pangkat 1 — tidak sejenis.'
+  },
+  {
+    section:1, topic:'🔡 Section 1 — Manipulasi Variabel',
+    type:'fill',
+    q:'Jika x = −2, nilai dari 4x + 10 adalah?',
+    ans:'2',
+    exp:'4(−2) + 10 = −8 + 10 = 2.'
+  },
+  {
+    section:1, topic:'🔡 Section 1 — Manipulasi Variabel',
+    type:'mc',
+    q:'Hasil dari −3(2x − 4) adalah?',
+    opts:['−6x − 12','−6x + 12','6x − 12','6x + 12'],
+    ans:1,
+    exp:'−3 × 2x = −6x. −3 × (−4) = +12. Hasil: −6x + 12.'
+  },
+  {
+    section:1, topic:'🔡 Section 1 — Manipulasi Variabel',
+    type:'fill',
+    q:'Jika a = 3 dan b = 2, nilai dari a² − 2ab + b² adalah?',
+    ans:'1',
+    exp:'(3)² − 2(3)(2) + (2)² = 9 − 12 + 4 = 1. (Ini adalah (a−b)² = (3−2)² = 1²= 1)'
+  },
+
+  // ── Section 2: Persamaan Linear (5 soal) ──
+  {
+    section:2, topic:'⚖️ Section 2 — Persamaan Linear',
+    type:'mc',
+    q:'Selesaikan: 5x − 3 = 17',
+    opts:['x = 2','x = 4','x = 3','x = 5'],
+    ans:1,
+    exp:'5x = 17 + 3 = 20 → x = 20 ÷ 5 = 4. Cek: 5(4)−3 = 20−3 = 17 ✓'
+  },
+  {
+    section:2, topic:'⚖️ Section 2 — Persamaan Linear',
+    type:'fill',
+    q:'Selesaikan: 2x + 7 = 3x − 1. Nilai x = ?',
+    ans:'8',
+    exp:'2x + 7 = 3x − 1 → 7 + 1 = 3x − 2x → x = 8. Cek: 2(8)+7=23, 3(8)−1=23 ✓'
+  },
+  {
+    section:2, topic:'⚖️ Section 2 — Persamaan Linear',
+    type:'mc',
+    q:'Selesaikan: 3(2x + 1) = 4x + 11',
+    opts:['x = 2','x = 3','x = 4','x = 5'],
+    ans:2,
+    exp:'6x + 3 = 4x + 11 → 2x = 8 → x = 4. Cek: 3(9)=27, 4(4)+11=27 ✓'
+  },
+  {
+    section:2, topic:'⚖️ Section 2 — Persamaan Linear',
+    type:'mc',
+    q:'Tiga kali suatu bilangan ditambah 6 sama dengan dua kali bilangan itu ditambah 14. Bilangannya adalah?',
+    opts:['6','7','8','9'],
+    ans:2,
+    exp:'3x + 6 = 2x + 14 → x = 8. Cek: 3(8)+6=30, 2(8)+14=30 ✓'
+  },
+  {
+    section:2, topic:'⚖️ Section 2 — Persamaan Linear',
+    type:'fill',
+    q:'Selesaikan: (x + 3) / 2 = 5. Nilai x = ?',
+    ans:'7',
+    exp:'Kalikan kedua sisi dengan 2: x + 3 = 10 → x = 7. Cek: (7+3)/2 = 10/2 = 5 ✓'
+  },
+
+  // ── Section 3: SPLDV (5 soal) ──
+  {
+    section:3, topic:'🕵️ Section 3 — SPLDV',
+    type:'mc',
+    q:'Diketahui: x + y = 7 dan x − y = 3. Nilai x adalah?',
+    opts:['3','4','5','6'],
+    ans:2,
+    exp:'Eliminasi: 2x = 10 → x = 5. Substitusi: 5 + y = 7 → y = 2. Cek persamaan 2: 5−2=3 ✓'
+  },
+  {
+    section:3, topic:'🕵️ Section 3 — SPLDV',
+    type:'fill',
+    q:'Diketahui: 2x + y = 8 dan x − y = 1. Nilai y = ?',
+    ans:'2',
+    exp:'Dari (2): x = 1 + y. Substitusi ke (1): 2(1+y)+y=8 → 2+2y+y=8 → 3y=6 → y=2. Lalu x=3.'
+  },
+  {
+    section:3, topic:'🕵️ Section 3 — SPLDV',
+    type:'mc',
+    q:'Selesaikan: 3x + 2y = 12 dan x + y = 5. Nilai x adalah?',
+    opts:['1','2','3','4'],
+    ans:1,
+    exp:'Dari (2): y = 5 − x. Ke (1): 3x + 2(5−x) = 12 → 3x + 10 − 2x = 12 → x = 2. y = 3.'
+  },
+  {
+    section:3, topic:'🕵️ Section 3 — SPLDV',
+    type:'mc',
+    q:'Harga 2 pena + 1 buku = Rp13.000. Harga 1 pena + 1 buku = Rp9.000. Harga pena adalah?',
+    opts:['Rp2.000','Rp3.000','Rp4.000','Rp5.000'],
+    ans:2,
+    exp:'Eliminasi: (2p+b)−(p+b)=13.000−9.000 → p=4.000. Lalu b=9.000−4.000=5.000.'
+  },
+  {
+    section:3, topic:'🕵️ Section 3 — SPLDV',
+    type:'fill',
+    q:'Diketahui: x + 2y = 10 dan 3x − 2y = 6. Nilai x + y = ?',
+    ans:'7',
+    exp:'Eliminasi: 4x=16 → x=4. y=(10−4)/2=3. x+y=4+3=7.'
+  }
+];
+
+const KEYS=['A','B','C','D'];
+let state={};
+
+function loadState(){
+  try{const raw=localStorage.getItem(STORAGE_KEY);if(raw)state=JSON.parse(raw);else state={answered:[],results:{}};}
+  catch(e){state={answered:[],results:{}};}
+}
+
+function saveState(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){}
+  showToast();
+}
+
+function confirmReset(){
+  if(confirm('Reset semua progres exercise Level 3?')){
+    localStorage.removeItem(STORAGE_KEY);
+    state={answered:[],results:{}};
+    document.getElementById('finishScreen').style.display='none';
+    renderAll();
+  }
+}
+
+let toastTimer;
+function showToast(){
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),1800);
+}
+
+function renderAll(){updateProgressBar();renderQuestions();checkFinish();}
+
+function updateProgressBar(){
+  const answered=state.answered.length;
+  const correct=Object.values(state.results).filter(r=>r.correct).length;
+  const s1=state.answered.filter(i=>QUESTIONS[i].section===1).length;
+  const s2=state.answered.filter(i=>QUESTIONS[i].section===2).length;
+  const s3=state.answered.filter(i=>QUESTIONS[i].section===3).length;
+  document.getElementById('opCount').textContent=`${answered} / 15`;
+  document.getElementById('opFill').style.width=`${answered/15*100}%`;
+  document.getElementById('s1Count').textContent=`${s1}/5`;
+  document.getElementById('s2Count').textContent=`${s2}/5`;
+  document.getElementById('s3Count').textContent=`${s3}/5`;
+  document.getElementById('correctCount').textContent=correct;
+}
+
+function renderQuestions(){
+  const area=document.getElementById('questionsArea');
+  area.innerHTML='';
+  let lastSection=null;
+
+  QUESTIONS.forEach((q,idx)=>{
+    if(q.section!==lastSection){
+      lastSection=q.section;
+      const done=state.answered.filter(i=>QUESTIONS[i].section===q.section).length;
+      const div=document.createElement('div');
+      div.className='section-divider';
+      const secColor=q.section===3?'var(--coral)':'var(--teal)';
+      div.innerHTML=`
+        <div class="sd-line"></div>
+        <div class="sd-label">${q.topic.split('—')[0].trim()}</div>
+        <div class="sd-line"></div>
+        <div class="sd-done" style="color:${secColor}" id="secDone${q.section}">${done}/5 selesai</div>
+      `;
+      area.appendChild(div);
+    }
+
+    const alreadyAnswered=state.answered.includes(idx);
+    const result=state.results[idx];
+    const card=document.createElement('div');
+    card.className='q-card'+(alreadyAnswered?(result.correct?' answered-correct':' answered-wrong'):'');
+    card.id=`qcard-${idx}`;
+
+    const secLabel=q.section===1?'Sec 1':q.section===2?'Sec 2':'Sec 3';
+
+    if(q.type==='mc'){
+      const optsHTML=q.opts.map((opt,oi)=>{
+        let cls='opt-btn';
+        let disabled=alreadyAnswered?'disabled':'';
+        if(alreadyAnswered){
+          if(oi===q.ans)cls+=' correct';
+          else if(oi===result.chosen&&!result.correct)cls+=' wrong';
+        }
+        return `<button class="${cls}" ${disabled} onclick="answerMC(${idx},${oi})">
+          <span class="opt-key">${KEYS[oi]}</span>${opt}
+        </button>`;
+      }).join('');
+
+      let fbHTML='';
+      if(alreadyAnswered){
+        const fbCls=result.correct?'ok':'no';
+        fbHTML=`<div class="q-feedback show ${fbCls}">${result.correct?'✅':'❌'} ${result.correct?'Betul! ':'Kurang tepat. '}${q.exp}</div>`;
+      }
+
+      card.innerHTML=`
+        <div class="q-meta">
+          <div class="q-num">Soal ${idx+1} · ${secLabel}</div>
+          <div class="q-status">${alreadyAnswered?(result.correct?'✅':'❌'):'○'}</div>
+        </div>
+        <div class="q-text">${q.q}</div>
+        <div class="opts">${optsHTML}</div>
+        ${fbHTML}
+      `;
+    } else {
+      // Fill-in type
+      const isAnswered=alreadyAnswered;
+      const inputClass=isAnswered?(result.correct?'correct-input':'wrong-input'):'';
+      const inputVal=isAnswered?result.given:'';
+      const fbHTML=isAnswered?`<div class="q-feedback show ${result.correct?'ok':'no'}">${result.correct?'✅':'❌'} ${result.correct?'Betul! ':'Kurang tepat. Jawaban benar: <strong>'+q.ans+'</strong>. '}${q.exp}</div>`:'';
+
+      card.innerHTML=`
+        <div class="q-meta">
+          <div class="q-num">Soal ${idx+1} · ${secLabel} · Isian</div>
+          <div class="q-status">${isAnswered?(result.correct?'✅':'❌'):'○'}</div>
+        </div>
+        <div class="q-text">${q.q}</div>
+        <div class="fill-wrap">
+          <input type="text" class="fill-input ${inputClass}" id="fill-${idx}" placeholder="Jawaban…"
+            value="${inputVal}" ${isAnswered?'disabled':''} onkeydown="if(event.key==='Enter')answerFill(${idx})">
+          <button class="fill-btn" id="fillbtn-${idx}" onclick="answerFill(${idx})" ${isAnswered?'disabled':''}>Cek ✓</button>
+        </div>
+        ${fbHTML}
+      `;
+    }
+
+    area.appendChild(card);
+  });
+}
+
+function answerMC(idx,chosen){
+  if(state.answered.includes(idx))return;
+  const q=QUESTIONS[idx];
+  const correct=chosen===q.ans;
+  state.answered.push(idx);
+  state.results[idx]={correct,chosen};
+  saveState();
+
+  const card=document.getElementById(`qcard-${idx}`);
+  card.classList.add(correct?'answered-correct':'answered-wrong');
+  const btns=card.querySelectorAll('.opt-btn');
+  btns.forEach((b,oi)=>{
+    b.disabled=true;
+    if(oi===q.ans)b.classList.add('correct');
+    else if(oi===chosen&&!correct)b.classList.add('wrong');
+  });
+  const fb=document.createElement('div');
+  fb.className=`q-feedback show ${correct?'ok':'no'}`;
+  fb.textContent=`${correct?'✅':'❌'} ${correct?'Betul! ':'Kurang tepat. '}${q.exp}`;
+  card.appendChild(fb);
+  card.querySelector('.q-status').textContent=correct?'✅':'❌';
+  postAnswer(idx,q.section);
+}
+
+function answerFill(idx){
+  if(state.answered.includes(idx))return;
+  const q=QUESTIONS[idx];
+  const input=document.getElementById(`fill-${idx}`);
+  const given=input.value.trim();
+  if(!given)return;
+
+  const correct=given===q.ans;
+  state.answered.push(idx);
+  state.results[idx]={correct,given};
+  saveState();
+
+  input.disabled=true;
+  document.getElementById(`fillbtn-${idx}`).disabled=true;
+  input.classList.add(correct?'correct-input':'wrong-input');
+
+  const card=document.getElementById(`qcard-${idx}`);
+  card.classList.add(correct?'answered-correct':'answered-wrong');
+
+  const fb=document.createElement('div');
+  fb.className=`q-feedback show ${correct?'ok':'no'}`;
+  fb.innerHTML=`${correct?'✅ Betul! ':'❌ Kurang tepat. Jawaban benar: <strong>${q.ans}</strong>. '}${q.exp}`;
+  card.appendChild(fb);
+  card.querySelector('.q-status').textContent=correct?'✅':'❌';
+  postAnswer(idx,q.section);
+}
+
+function postAnswer(idx,sec){
+  updateProgressBar();
+  const secDone=state.answered.filter(i=>QUESTIONS[i].section===sec).length;
+  const el=document.getElementById(`secDone${sec}`);
+  if(el)el.textContent=`${secDone}/5 selesai`;
+  if(state.answered.length===QUESTIONS.length)setTimeout(checkFinish,600);
+}
+
+function checkFinish(){
+  if(state.answered.length<QUESTIONS.length)return;
+  const correct=Object.values(state.results).filter(r=>r.correct).length;
+  const wrong=QUESTIONS.length-correct;
+  const pct=Math.round(correct/QUESTIONS.length*100);
+  const xp=correct*20;
+  const icons=['😅','😐','🙂','😊','😄','🎉','🏆'];
+  const subs=[
+    'Review materi dari awal ya!','Ada beberapa yang perlu dipelajari lagi.',
+    'Lumayan! Coba lagi untuk hasil lebih baik.','Bagus! Kamu sudah paham banyak.',
+    'Hampir sempurna, kamu sudah hebat!','Sempurna! Aljabar adalah bahasamu! 🔥'
+  ];
+  const iconIdx=Math.min(Math.floor(correct/3),5);
+  document.getElementById('finishScreen').style.display='block';
+  document.getElementById('finishIcon').textContent=icons[iconIdx+1];
+  document.getElementById('finishSub').textContent=subs[iconIdx];
+  document.getElementById('finalCorrect').textContent=correct;
+  document.getElementById('finalWrong').textContent=wrong;
+  document.getElementById('finalScore').textContent=`${pct}%`;
+  document.getElementById('xpBadge').textContent=`✨ +${xp} XP — Exercise Level 3 Selesai!`;
+  document.getElementById('finishScreen').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+loadState();
+renderAll();
+</script>
+</body>
+</html>
