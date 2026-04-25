@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise Zone · Lesson 2 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --card: #1a1a28; --border: #2a2a40;
+    --neon: #00f5c4; --neon2: #7c3aed; --accent: #f59e0b;
+    --red: #ef4444; --text: #e2e8f0; --muted: #64748b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 20% 70%, rgba(0,245,196,0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(124,58,237,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  nav {
+    padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.9); backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+    font-family: 'Orbitron', monospace; font-size: 0.72rem; letter-spacing: 1px;
+  }
+  nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--neon); }
+  nav span { color: var(--border); }
+  nav .current { color: var(--neon); }
+  .wrapper { max-width: 760px; margin: 0 auto; padding: 2.5rem 1rem 6rem; position: relative; z-index: 1; }
+  @media (max-width: 480px) {
+    .wrapper { padding: 2rem 0.75rem 6rem; }
+  }
+
+  /* Header */
+  .page-header { margin-bottom: 2rem; }
+  .page-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(0,245,196,0.08); border: 1px solid rgba(0,245,196,0.25); color: var(--neon);
+    font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.3rem 1rem; border-radius: 20px; margin-bottom: 1.2rem;
+    font-family: 'Orbitron', monospace;
+  }
+  .page-title { font-family: 'Orbitron', monospace; font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 900; margin-bottom: 0.6rem; }
+  .page-title span { color: var(--neon); }
+  .page-desc { color: var(--muted); font-size: 0.92rem; line-height: 1.6; }
+
+  /* Progress bar */
+  .progress-panel {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.2rem 1.5rem; margin-bottom: 2rem;
+  }
+  .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+  .prog-label { font-family: 'Orbitron', monospace; font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .prog-count { font-family: 'Orbitron', monospace; font-size: 0.95rem; font-weight: 700; color: var(--neon); }
+  .prog-track { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 0.6rem; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--neon2), var(--neon)); border-radius: 99px; transition: width 0.6s ease; }
+  .prog-sub { font-size: 0.78rem; color: var(--muted); }
+  .reset-link { float: right; font-size: 0.72rem; color: var(--muted); cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+  .reset-link:hover { color: var(--red); }
+
+  /* Exercise grid */
+  .exercise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    max-width: 100%;
+  }
+  @media(max-width: 480px) {
+    .exercise-grid {
+      grid-template-columns: 1fr;
+      padding: 0 0.5rem;
+    }
+  }
+
+  .ex-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.2rem;
+    transition: border-color 0.2s;
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .ex-card.done-card {
+    border-color: rgba(0,245,196,0.3);
+    background: rgba(0,245,196,0.03);
+  }
+  .ex-num {
+    font-family: 'Orbitron', monospace; font-size: 0.6rem;
+    letter-spacing: 2px; color: var(--muted); text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .ex-q {
+    font-family: 'Orbitron', monospace; font-size: clamp(1.3rem, 5vw, 1.6rem); font-weight: 900;
+    color: var(--text); margin-bottom: 0.8rem; word-break: break-word;
+  }
+  .ex-card.done-card .ex-q { color: var(--neon); }
+  .ex-input-wrap { display: flex; flex-direction: column; gap: 0.5rem; }
+  .ex-input-row { display: flex; gap: 0.5rem; align-items: center; }
+  .ex-input {
+    flex: 1; background: #12121c; border: 2px solid var(--border); color: var(--text);
+    padding: 0.6rem 0.8rem; border-radius: 10px;
+    font-family: 'Orbitron', monospace; font-size: 1.1rem; text-align: center;
+    transition: border-color 0.2s; outline: none; min-width: 0; width: 100%;
+  }
+  .ex-input:focus { border-color: var(--neon2); }
+  .ex-input.correct { border-color: var(--neon); color: var(--neon); }
+  .ex-input.wrong-anim { border-color: var(--red); color: var(--red); animation: shake 0.4s ease; }
+  @keyframes shake {
+    0%,100%{transform:translateX(0);}
+    20%,60%{transform:translateX(-6px);}
+    40%,80%{transform:translateX(6px);}
+  }
+  .ex-btn {
+    background: rgba(124,58,237,0.2); border: 1px solid rgba(124,58,237,0.4);
+    color: #a78bfa; padding: 0.6rem 0.9rem; border-radius: 10px;
+    cursor: pointer; font-family: 'Orbitron', monospace; font-size: 0.65rem;
+    transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+  }
+  .ex-btn:hover { background: rgba(124,58,237,0.35); border-color: #a78bfa; }
+  .ex-btn:disabled { opacity: 0.3; cursor: default; }
+  @media (max-width: 360px) {
+    .ex-input-row { flex-direction: column; }
+    .ex-btn { width: 100%; }
+  }
+  .ex-feedback {
+    margin-top: 0.6rem; font-size: 0.82rem; font-weight: 700; display: none;
+  }
+  .ex-feedback.show { display: block; }
+  .ex-feedback.ok { color: var(--neon); }
+  .ex-feedback.no { color: var(--red); }
+  /* Done overlay */
+  .done-badge {
+    position: absolute; top: 1rem; right: 1rem;
+    background: rgba(0,245,196,0.15); border: 1px solid rgba(0,245,196,0.4);
+    color: var(--neon); font-family: 'Orbitron', monospace;
+    font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase;
+    padding: 0.2rem 0.5rem; border-radius: 8px;
+  }
+  /* attempts tracker */
+  .attempts-dot {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--red); margin-right: 2px; transition: background 0.2s;
+  }
+  .attempts-row { margin-top: 0.4rem; display: flex; gap: 2px; }
+
+  /* All done screen */
+  #allDone { display: none; text-align: center; padding: 3rem 2rem; }
+  .alldone-icon { font-size: 5rem; display: block; margin-bottom: 1.5rem; animation: bounce 1s ease infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+  .alldone-title { font-family: 'Orbitron', monospace; font-size: clamp(1.5rem,5vw,2rem); color: var(--neon); margin-bottom: 0.8rem; }
+  .alldone-desc { color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
+  .alldone-xp { display: inline-block; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.4); color: var(--accent); padding: 0.5rem 1.5rem; border-radius: 20px; font-family: 'Orbitron', monospace; font-size: 0.9rem; margin-bottom: 2rem; }
+  .action-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn { padding: 0.8rem 1.8rem; border-radius: 10px; border: none; font-family: 'Orbitron', monospace; font-size: 0.78rem; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+  .btn-ghost:hover { border-color: var(--neon); color: var(--neon); }
+  .btn-primary { background: linear-gradient(135deg,var(--neon2),#4f46e5); color: white; box-shadow: 0 4px 15px rgba(124,58,237,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); }
+  .btn-danger { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.4); color: var(--red); }
+  .btn-danger:hover { background: rgba(239,68,68,0.25); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson2.html">LESSON 2</a>
+  <span>›</span>
+  <span class="current">EXERCISE</span>
+</nav>
+
+<div class="wrapper">
+
+  <div class="page-header">
+    <div class="page-badge">🏋️ Exercise Zone</div>
+    <div class="page-title">Latihan <span>Santai</span></div>
+    <div class="page-desc">20 soal perkalian 2 digit — no timer, no pressure. Jawab kapanpun kamu siap. Progress tersimpan otomatis, jadi kamu bisa lanjut kapan saja!</div>
+  </div>
+
+  <!-- Progress panel -->
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress Latihan</span>
+      <span class="prog-count" id="progCount">0 / 20</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub" id="progSub">Belum ada yang diselesaikan — yuk mulai!</div>
+    <span class="reset-link" onclick="confirmReset()">🗑️ Reset progress</span>
+  </div>
+
+  <!-- Exercise grid -->
+  <div class="exercise-grid" id="exerciseGrid"></div>
+
+  <!-- All done -->
+  <div id="allDone">
+    <span class="alldone-icon">🏆</span>
+    <div class="alldone-title">Exercise Selesai!</div>
+    <div class="alldone-desc">
+      Kamu berhasil menyelesaikan semua 20 soal latihan perkalian 2 digit!<br>
+      Breakdown method sudah jadi senjata andalanmu sekarang.
+    </div>
+    <div class="alldone-xp">✨ +150 XP — Exercise Champion!</div>
+    <div class="action-btns">
+      <button class="btn btn-danger" onclick="confirmReset()">🔄 Reset & Ulangi</button>
+      <a href="lesson2.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="../asfa_1195.html" class="btn btn-primary">Student Hub →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson2_exercise_v1';
+
+// 20 soal: mix difficulty, mix strategi
+const exercises = [
+  // Puluhan kecil (< 50) — Strategi Tambah
+  { id: 0,  text: '12 × 4 = ?', answer: 48,  hint: '(10+2)×4 = 40+8' },
+  { id: 1,  text: '13 × 5 = ?', answer: 65,  hint: '(10+3)×5 = 50+15' },
+  { id: 2,  text: '14 × 6 = ?', answer: 84,  hint: '(10+4)×6 = 60+24' },
+  { id: 3,  text: '21 × 7 = ?', answer: 147, hint: '(20+1)×7 = 140+7' },
+  { id: 4,  text: '23 × 4 = ?', answer: 92,  hint: '(20+3)×4 = 80+12' },
+  { id: 5,  text: '32 × 3 = ?', answer: 96,  hint: '(30+2)×3 = 90+6' },
+  { id: 6,  text: '41 × 6 = ?', answer: 246, hint: '(40+1)×6 = 240+6' },
+  { id: 7,  text: '43 × 5 = ?', answer: 215, hint: '(40+3)×5 = 200+15' },
+  // Puluhan kecil — Strategi Kurang (satuan 8 atau 9)
+  { id: 8,  text: '19 × 3 = ?', answer: 57,  hint: '(20−1)×3 = 60−3' },
+  { id: 9,  text: '28 × 4 = ?', answer: 112, hint: '(30−2)×4 = 120−8' },
+  { id: 10, text: '39 × 5 = ?', answer: 195, hint: '(40−1)×5 = 200−5' },
+  { id: 11, text: '48 × 6 = ?', answer: 288, hint: '(50−2)×6 = 300−12' },
+  // Puluhan besar (≥ 50) — Strategi Tambah
+  { id: 12, text: '51 × 3 = ?', answer: 153, hint: '(50+1)×3 = 150+3' },
+  { id: 13, text: '54 × 4 = ?', answer: 216, hint: '(50+4)×4 = 200+16' },
+  { id: 14, text: '62 × 5 = ?', answer: 310, hint: '(60+2)×5 = 300+10' },
+  { id: 15, text: '73 × 6 = ?', answer: 438, hint: '(70+3)×6 = 420+18' },
+  { id: 16, text: '82 × 4 = ?', answer: 328, hint: '(80+2)×4 = 320+8' },
+  // Puluhan besar — Strategi Kurang
+  { id: 17, text: '59 × 3 = ?', answer: 177, hint: '(60−1)×3 = 180−3' },
+  { id: 18, text: '68 × 5 = ?', answer: 340, hint: '(70−2)×5 = 350−10' },
+  { id: 19, text: '79 × 6 = ?', answer: 474, hint: '(80−1)×6 = 480−6' },
+];
+
+// Load state from localStorage
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch { return {}; }
+}
+
+function saveState(state) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {}
+}
+
+let state = loadState(); // { [id]: { done: bool, attempts: number } }
+
+function getDoneCount() {
+  return exercises.filter(e => state[e.id]?.done).length;
+}
+
+function updateProgress() {
+  const done = getDoneCount();
+  const total = exercises.length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('progSub').textContent =
+    done === 0 ? 'Belum ada yang diselesaikan — yuk mulai!' :
+    done === total ? '🎉 Semua soal selesai! Mantap!' :
+    `${done} soal selesai, ${total - done} lagi!`;
+
+  if (done === total) {
+    setTimeout(() => {
+      document.getElementById('exerciseGrid').style.display = 'none';
+      document.getElementById('allDone').style.display = 'block';
+    }, 600);
+  }
+}
+
+function renderGrid() {
+  const grid = document.getElementById('exerciseGrid');
+  grid.innerHTML = '';
+
+  exercises.forEach(ex => {
+    const isDone = state[ex.id]?.done || false;
+    const attempts = state[ex.id]?.attempts || 0;
+
+    const card = document.createElement('div');
+    card.className = 'ex-card' + (isDone ? ' done-card' : '');
+    card.id = `card-${ex.id}`;
+
+    card.innerHTML = `
+      ${isDone ? '<div class="done-badge">✅ Selesai</div>' : ''}
+      <div class="ex-num">Soal ${(ex.id + 1).toString().padStart(2, '0')}</div>
+      <div class="ex-q">${ex.text}</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <input
+            type="number"
+            class="ex-input${isDone ? ' correct' : ''}"
+            id="inp-${ex.id}"
+            value="${isDone ? ex.answer : ''}"
+            placeholder="?"
+            inputmode="numeric"
+            ${isDone ? 'disabled' : ''}
+          >
+          <button
+            class="ex-btn"
+            id="btn-${ex.id}"
+            onclick="checkAnswer(${ex.id})"
+            ${isDone ? 'disabled' : ''}
+          >CEK</button>
+        </div>
+      </div>
+      ${attempts > 0 && !isDone ? `
+        <div class="attempts-row">
+          ${Array(attempts).fill('<span class="attempts-dot"></span>').join('')}
+          <span style="font-size:0.75rem;color:var(--muted);margin-left:4px">${attempts}/3 percobaan</span>
+        </div>
+      ` : ''}
+      <div class="ex-feedback ${isDone ? 'show ok' : ''}" id="fb-${ex.id}">
+        ${isDone ? `✅ ${ex.hint} = ${ex.answer}` : ''}
+      </div>
+    `;
+
+    // Attach enter key
+    grid.appendChild(card);
+  });
+
+  // Bind Enter keys after render
+  exercises.forEach(ex => {
+    const inp = document.getElementById(`inp-${ex.id}`);
+    if (inp && !state[ex.id]?.done) {
+      inp.addEventListener('keydown', e => {
+        if (e.key === 'Enter') checkAnswer(ex.id);
+      });
+    }
+  });
+}
+
+function checkAnswer(id) {
+  const ex = exercises.find(e => e.id === id);
+  const input = document.getElementById(`inp-${id}`);
+  const fb = document.getElementById(`fb-${id}`);
+  const btn = document.getElementById(`btn-${id}`);
+  const card = document.getElementById(`card-${id}`);
+
+  const val = parseInt(input.value);
+  if (isNaN(val) || input.value.trim() === '') return;
+
+  // Track attempts
+  if (!state[id]) state[id] = { done: false, attempts: 0 };
+  state[id].attempts++;
+
+  const correct = val === ex.answer;
+  const maxAttempts = 3;
+
+  if (correct) {
+    state[id].done = true;
+    saveState(state);
+
+    input.classList.add('correct');
+    input.disabled = true;
+    btn.disabled = true;
+    fb.className = 'ex-feedback show ok';
+    fb.textContent = `✅ ${ex.hint} = ${ex.answer}`;
+
+    // Add done badge
+    const badge = document.createElement('div');
+    badge.className = 'done-badge';
+    badge.textContent = '✅ Selesai';
+    card.classList.add('done-card');
+    card.querySelector('.ex-q').style.color = 'var(--neon)';
+    if (!card.querySelector('.done-badge')) card.prepend(badge);
+
+    updateProgress();
+  } else {
+    // Wrong
+    saveState(state);
+
+    // Check if max attempts reached
+    if (state[id].attempts >= maxAttempts) {
+      // Lock the card
+      input.disabled = true;
+      btn.disabled = true;
+      input.classList.add('wrong');
+      fb.className = 'ex-feedback show no';
+      fb.textContent = `❌ Sudah 3x percobaan. Jawabannya: ${ex.answer}`;
+
+      // Show all 3 dots as failed
+      const attRow = card.querySelector('.attempts-row');
+      const failedDots = '<span class="attempts-dot" style="background:#ef4444"></span>'.repeat(3);
+      if (attRow) {
+        attRow.innerHTML = failedDots + `<span style="font-size:0.75rem;color:var(--muted);margin-left:4px">Maksimal percobaan</span>`;
+      }
+    } else {
+      // Still has attempts left
+      input.classList.remove('wrong-anim');
+      void input.offsetWidth;
+      input.classList.add('wrong-anim');
+      fb.className = 'ex-feedback show no';
+      fb.textContent = `❌ Belum tepat. Coba lagi! (Hint: ${ex.hint})`;
+
+      // Remove shake class after animation
+      setTimeout(() => {
+        input.classList.remove('wrong-anim');
+        input.value = '';
+        input.focus();
+      }, 500);
+
+      // Update attempts display
+      const attRow = card.querySelector('.attempts-row');
+      const newDots = Array(state[id].attempts).fill('<span class="attempts-dot"></span>').join('');
+      if (attRow) {
+        attRow.innerHTML = newDots + `<span style="font-size:0.75rem;color:var(--muted);margin-left:4px">${state[id].attempts}/${maxAttempts} percobaan</span>`;
+      } else {
+        const row = document.createElement('div');
+        row.className = 'attempts-row';
+        row.innerHTML = newDots + `<span style="font-size:0.75rem;color:var(--muted);margin-left:4px">${state[id].attempts}/${maxAttempts} percobaan</span>`;
+        card.querySelector('.ex-input-row').after(row);
+      }
+      return; // Skip the updateProgress call for wrong answers
+    }
+  }
+}
+
+function confirmReset() {
+  if (confirm('Reset semua progress exercise? Ini tidak bisa dibatalkan.')) {
+    localStorage.removeItem(STORAGE_KEY);
+    state = {};
+    document.getElementById('allDone').style.display = 'none';
+    document.getElementById('exerciseGrid').style.display = 'grid';
+    renderGrid();
+    updateProgress();
+  }
+}
+
+// Init
+renderGrid();
+updateProgress();
+</script>
+</body>
+</html>

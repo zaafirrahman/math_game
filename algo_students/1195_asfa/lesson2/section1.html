@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Kenapa 2 Digit Bisa Dipecah?</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --card: #1a1a28; --border: #2a2a40;
+    --neon: #00f5c4; --neon2: #7c3aed; --accent: #f59e0b;
+    --text: #e2e8f0; --muted: #64748b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 70% 20%, rgba(124,58,237,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  nav {
+    padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.9); backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+    font-family: 'Orbitron', monospace; font-size: 0.72rem; letter-spacing: 1px;
+  }
+  nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--neon); }
+  nav span { color: var(--border); }
+  nav .current { color: var(--neon); }
+  .wrapper { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 6rem; position: relative; z-index: 1; }
+  .sec-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.35); color: #a78bfa;
+    font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.3rem 1rem; border-radius: 20px; margin-bottom: 1.5rem;
+    font-family: 'Orbitron', monospace;
+  }
+  h1 { font-family: 'Orbitron', monospace; font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 900; margin-bottom: 0.8rem; line-height: 1.3; }
+  h1 span { color: var(--neon); }
+  .intro { color: var(--muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 3rem; }
+  .progress-dots { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 2rem; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: all 0.3s; }
+  .dot.active { background: var(--neon); box-shadow: 0 0 8px var(--neon); }
+  .dot.done { background: var(--neon2); }
+  .slide { display: none; animation: slideIn 0.4s ease; }
+  .slide.active { display: block; }
+  @keyframes slideIn { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; margin-bottom: 1.5rem; }
+  .card-label { font-family: 'Orbitron', monospace; font-size: 0.65rem; letter-spacing: 3px; color: var(--neon); text-transform: uppercase; margin-bottom: 1rem; }
+  .card h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 0.8rem; line-height: 1.4; }
+  .card p { color: #94a3b8; line-height: 1.7; font-size: 0.95rem; }
+  .card p + p { margin-top: 0.8rem; }
+
+  /* Visual breakdown box */
+  .breakdown-vis {
+    background: rgba(0,245,196,0.04); border: 1px solid rgba(0,245,196,0.15);
+    border-radius: 16px; padding: 1.5rem; margin: 1.2rem 0; text-align: center;
+  }
+  .bv-main { font-family: 'Orbitron', monospace; font-size: clamp(1.6rem,5vw,2.4rem); color: var(--text); margin-bottom: 0.5rem; }
+  .bv-arrow { color: var(--muted); font-size: 1.2rem; margin: 0.4rem 0; }
+  .bv-split { font-size: 1rem; color: var(--neon); margin: 0.3rem 0; font-weight: 700; }
+  .bv-steps { font-size: 0.9rem; color: var(--muted); margin: 0.4rem 0; line-height: 1.8; }
+  .bv-result { font-family: 'Orbitron', monospace; font-size: clamp(1.8rem,6vw,3rem); color: var(--neon); text-shadow: 0 0 20px rgba(0,245,196,0.4); margin-top: 0.5rem; }
+
+  /* Place value table */
+  .place-table { width: 100%; border-collapse: collapse; margin: 1.2rem 0; font-size: 0.95rem; }
+  .place-table th { font-family: 'Orbitron', monospace; font-size: 0.65rem; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; padding: 0.5rem 0.8rem; text-align: center; border-bottom: 1px solid var(--border); }
+  .place-table td { padding: 0.7rem 0.8rem; text-align: center; border-bottom: 1px solid rgba(42,42,64,0.5); }
+  .place-table tr:last-child td { border-bottom: none; }
+  .hl-tens { color: var(--accent); font-weight: 700; }
+  .hl-ones { color: #60a5fa; font-weight: 700; }
+  .hl-neon { color: var(--neon); font-weight: 700; font-family: 'Orbitron', monospace; }
+
+  /* Two-column comparison */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.2rem 0; }
+  @media(max-width:480px){ .compare-grid { grid-template-columns: 1fr; } }
+  .compare-box { background: #12121c; border: 1px solid var(--border); border-radius: 14px; padding: 1.2rem; }
+  .compare-box .cb-title { font-family: 'Orbitron', monospace; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.8rem; }
+  .compare-box .cb-eq { font-size: 1.1rem; line-height: 2; }
+  .compare-box.a .cb-title { color: var(--accent); }
+  .compare-box.b .cb-title { color: #60a5fa; }
+  .compare-box.a .cb-eq strong { color: var(--accent); }
+  .compare-box.b .cb-eq strong { color: #60a5fa; }
+
+  /* Key insight box */
+  .insight {
+    background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 14px; padding: 1.2rem 1.5rem; margin: 1.2rem 0;
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .insight-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .insight-text { font-size: 0.92rem; color: var(--text); line-height: 1.6; }
+  .insight-text strong { color: var(--accent); }
+
+  /* Quiz */
+  .quiz-q { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.5rem; line-height: 1.5; }
+  .options { display: flex; flex-direction: column; gap: 0.8rem; }
+  .opt-btn {
+    background: #12121c; border: 1px solid var(--border); color: var(--text);
+    padding: 0.9rem 1.2rem; border-radius: 12px; cursor: pointer;
+    font-size: 0.95rem; font-family: 'Nunito', sans-serif;
+    text-align: left; transition: all 0.2s;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--neon); background: rgba(0,245,196,0.05); }
+  .opt-btn.correct { border-color: var(--neon); background: rgba(0,245,196,0.1); color: var(--neon); }
+  .opt-btn.wrong { border-color: #ef4444; background: rgba(239,68,68,0.1); color: #ef4444; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { margin-top: 1rem; padding: 0.8rem 1rem; border-radius: 10px; font-size: 0.9rem; font-weight: 700; display: none; }
+  .feedback.show { display: block; }
+  .feedback.ok { background: rgba(0,245,196,0.1); color: var(--neon); border: 1px solid rgba(0,245,196,0.3); }
+  .feedback.no { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+
+  /* Finish */
+  .finish-card { text-align: center; padding: 3rem 2rem; }
+  .finish-icon { font-size: 4rem; display: block; margin-bottom: 1rem; }
+  .finish-title { font-family: 'Orbitron', monospace; font-size: 1.5rem; color: var(--neon); margin-bottom: 0.8rem; }
+  .finish-desc { color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
+  .xp-badge { display: inline-block; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.4); color: var(--accent); padding: 0.4rem 1.2rem; border-radius: 20px; font-family: 'Orbitron', monospace; font-size: 0.85rem; margin-bottom: 1.5rem; display: block; }
+
+  /* Nav */
+  .nav-btns { display: flex; gap: 1rem; justify-content: space-between; margin-top: 2rem; }
+  .btn { padding: 0.8rem 1.8rem; border-radius: 10px; border: none; font-family: 'Orbitron', monospace; font-size: 0.8rem; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+  .btn-ghost:hover { border-color: var(--neon); color: var(--neon); }
+  .btn-primary { background: linear-gradient(135deg, var(--neon2), #4f46e5); color: white; box-shadow: 0 4px 15px rgba(124,58,237,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson2.html">LESSON 2</a>
+  <span>›</span>
+  <span class="current">SEC 1</span>
+</nav>
+
+<div class="wrapper">
+  <div class="sec-badge">💡 Section 01 · Learn</div>
+  <h1>Kenapa 2 Digit Bisa <span>Dipecah?</span></h1>
+  <p class="intro">Kamu udah paham breakdown untuk 1 digit. Sekarang kita buktiin bahwa prinsip yang sama berlaku persis untuk perkalian puluhan — dan kenapa itu logis, bukan cuma trik.</p>
+
+  <div class="progress-dots" id="dots"></div>
+  <div class="slides" id="slides">
+
+    <!-- Slide 0: Angka 2 digit itu apa? -->
+    <div class="slide active">
+      <div class="card">
+        <div class="card-label">📖 Fondasi</div>
+        <h2>Angka 2 Digit = Puluhan + Satuan</h2>
+        <p>Setiap angka 2 digit sebenarnya punya dua bagian: puluhan dan satuan. Ini namanya <strong>nilai tempat (place value)</strong>.</p>
+        <table class="place-table">
+          <tr><th>Angka</th><th>Puluhan</th><th>Satuan</th><th>Artinya</th></tr>
+          <tr><td>13</td><td class="hl-tens">10</td><td class="hl-ones">3</td><td class="hl-neon">10 + 3</td></tr>
+          <tr><td>24</td><td class="hl-tens">20</td><td class="hl-ones">4</td><td class="hl-neon">20 + 4</td></tr>
+          <tr><td>37</td><td class="hl-tens">30</td><td class="hl-ones">7</td><td class="hl-neon">30 + 7</td></tr>
+          <tr><td>56</td><td class="hl-tens">50</td><td class="hl-ones">6</td><td class="hl-neon">50 + 6</td></tr>
+        </table>
+        <p>Jadi kalau kita mau kalikan angka 2 digit, kita tinggal kalikan masing-masing bagiannya secara terpisah!</p>
+      </div>
+      <div class="insight">
+        <span class="insight-icon">💡</span>
+        <div class="insight-text">Breakdown itu bukan trik — itu <strong>definisi</strong> dari angka itu sendiri. 13 memang <strong>= 10 + 3</strong>. Jadi 13 × 4 sudah pasti boleh dipecah jadi (10 × 4) + (3 × 4).</div>
+      </div>
+    </div>
+
+    <!-- Slide 1: Distributive Property -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label">🧮 Aturan Matematika</div>
+        <h2>Distributive Property</h2>
+        <p>Ada aturan matematika resmi yang membolehkan kita memecah perkalian seperti ini. Namanya <strong>Sifat Distributif</strong>:</p>
+        <div class="breakdown-vis">
+          <div class="bv-main">a × (b + c)</div>
+          <div class="bv-arrow">↕</div>
+          <div class="bv-split">(a × b) + (a × c)</div>
+        </div>
+        <p>Kita udah pakai ini di Sesi 1 tanpa sadar! Sekarang kita pakai secara eksplisit untuk angka 2 digit.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">🔍 Contoh Langsung</div>
+        <h2>13 × 4 = ?</h2>
+        <div class="breakdown-vis">
+          <div class="bv-main">13 × 4</div>
+          <div class="bv-arrow">↓ pecah 13 = 10 + 3</div>
+          <div class="bv-split">(10 + 3) × 4</div>
+          <div class="bv-steps">= (10 × 4) + (3 × 4)<br>= 40 + 12</div>
+          <div class="bv-result">= 52 ✅</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Dua strategi -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label">⚔️ Dua Strategi Utama</div>
+        <h2>Tambah vs Kurang</h2>
+        <p>Untuk perkalian 2 digit × 1 digit, ada dua pendekatan breakdown yang sering dipakai:</p>
+        <div class="compare-grid">
+          <div class="compare-box a">
+            <div class="cb-title">➕ Strategi Tambah</div>
+            <div class="cb-eq">
+              Pecah ke <strong>puluhan + satuan</strong><br><br>
+              24 × 3<br>
+              = (20 + 4) × 3<br>
+              = 60 + 12<br>
+              = <strong>72</strong>
+            </div>
+          </div>
+          <div class="compare-box b">
+            <div class="cb-title">➖ Strategi Kurang</div>
+            <div class="cb-eq">
+              Pecah ke <strong>bulatan − lebih</strong><br><br>
+              29 × 3<br>
+              = (30 − 1) × 3<br>
+              = 90 − 3<br>
+              = <strong>87</strong>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top:1rem">Pilih strategi yang bikin angkanya paling gampang dihitung. Nggak ada yang salah!</p>
+      </div>
+    </div>
+
+    <!-- Slide 3: Kapan pakai mana? -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label">🎯 Kapan Pakai Strategi Mana?</div>
+        <h2>Pilih yang Paling Efisien</h2>
+        <table class="place-table">
+          <tr><th>Angka</th><th>Strategi Terbaik</th><th>Kenapa?</th></tr>
+          <tr><td>12 × 6</td><td class="hl-neon">Tambah</td><td style="color:var(--muted);font-size:0.85rem">(10+2)×6 → mudah</td></tr>
+          <tr><td>19 × 4</td><td class="hl-neon">Kurang</td><td style="color:var(--muted);font-size:0.85rem">(20−1)×4 → lebih ringkas</td></tr>
+          <tr><td>23 × 5</td><td class="hl-neon">Tambah</td><td style="color:var(--muted);font-size:0.85rem">(20+3)×5 → langsung</td></tr>
+          <tr><td>28 × 3</td><td class="hl-neon">Kurang</td><td style="color:var(--muted);font-size:0.85rem">(30−2)×3 → lebih simpel</td></tr>
+          <tr><td>35 × 4</td><td class="hl-neon">Tambah</td><td style="color:var(--muted);font-size:0.85rem">(30+5)×4 → clean</td></tr>
+        </table>
+        <div class="insight">
+          <span class="insight-icon">🧠</span>
+          <div class="insight-text">Angka yang satuannya <strong>8 atau 9</strong> → biasanya lebih enak pakai strategi <strong>Kurang</strong> (bulatkan ke puluhan berikutnya). Angka lainnya → <strong>Tambah</strong> lebih aman.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Quick Check -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label">❓ Quick Check</div>
+        <div class="quiz-q">Untuk menghitung 17 × 5, breakdown mana yang paling tepat?</div>
+        <div class="options" id="q1opts">
+          <button class="opt-btn" onclick="check1(this, false)">17 × 5 = (15 + 2) × 5 = 75 + 10 = 85</button>
+          <button class="opt-btn" onclick="check1(this, true)">17 × 5 = (10 + 7) × 5 = 50 + 35 = 85</button>
+          <button class="opt-btn" onclick="check1(this, false)">17 × 5 = (20 − 2) × 5 = 100 − 10 = 90</button>
+          <button class="opt-btn" onclick="check1(this, false)">17 × 5 = (17 + 0) × 5 = 85</button>
+        </div>
+        <div class="feedback" id="fb1"></div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Quick Check 2 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label">❓ Satu Lagi!</div>
+        <div class="quiz-q">Strategi <em>Kurang</em> paling cocok untuk soal mana?</div>
+        <div class="options" id="q2opts">
+          <button class="opt-btn" onclick="check2(this, false)">14 × 6</button>
+          <button class="opt-btn" onclick="check2(this, false)">22 × 7</button>
+          <button class="opt-btn" onclick="check2(this, true)">29 × 8</button>
+          <button class="opt-btn" onclick="check2(this, false)">31 × 3</button>
+        </div>
+        <div class="feedback" id="fb2"></div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Finish -->
+    <div class="slide">
+      <div class="card finish-card">
+        <span class="finish-icon">💡</span>
+        <div class="finish-title">Konsep Terkuasai!</div>
+        <div class="finish-desc">
+          Sekarang kamu paham <em>kenapa</em> breakdown works — bukan sekadar trik hafalan. Angka 2 digit itu sudah built-in bisa dipecah karena sifat place value dan distributive property. Selanjutnya kita latihan soal dengan bahasan detail!
+        </div>
+        <span class="xp-badge">✨ +60 XP — Concept Locked In!</span>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+          <a href="lesson2.html" class="btn btn-ghost">← Back to Lesson</a>
+          <a href="section2.html" class="btn btn-primary">Next: Contoh Soal →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-btns" id="navbtns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="go(-1)" disabled>← Prev</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL = 7;
+  let cur = 0, q1done = false, q2done = false;
+  const dotsEl = document.getElementById('dots');
+  const slides = document.querySelectorAll('.slide');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const navbtns = document.getElementById('navbtns');
+
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    dotsEl.appendChild(d);
+  }
+
+  function updateUI() {
+    slides.forEach((s,i) => s.classList.toggle('active', i===cur));
+    dotsEl.querySelectorAll('.dot').forEach((d,i) => {
+      d.classList.remove('active','done');
+      if (i < cur) d.classList.add('done');
+      if (i === cur) d.classList.add('active');
+    });
+    prevBtn.disabled = cur === 0;
+    const isLast = cur === TOTAL - 1;
+    navbtns.style.display = isLast ? 'none' : 'flex';
+    if (cur === 4) nextBtn.disabled = !q1done;
+    else if (cur === 5) nextBtn.disabled = !q2done;
+    else nextBtn.disabled = false;
+  }
+
+  function go(dir) {
+    cur = Math.max(0, Math.min(TOTAL-1, cur+dir));
+    updateUI();
+  }
+
+  function check1(btn, correct) {
+    if (q1done) return;
+    q1done = true;
+    document.querySelectorAll('#q1opts .opt-btn').forEach(b => {
+      b.disabled = true;
+      if (b.textContent.includes('(10 + 7)')) b.classList.add('correct');
+    });
+    if (!correct) btn.classList.add('wrong');
+    const fb = document.getElementById('fb1');
+    fb.className = 'feedback show ' + (correct?'ok':'no');
+    fb.textContent = correct
+      ? '✅ Tepat! (10+7)×5 = 50+35 = 85. Breakdown paling bersih untuk 17.'
+      : '❌ Hampir! Yang paling natural: pecah 17 = 10+7, lalu kalikan masing-masing dengan 5.';
+    nextBtn.disabled = false;
+  }
+
+  function check2(btn, correct) {
+    if (q2done) return;
+    q2done = true;
+    document.querySelectorAll('#q2opts .opt-btn').forEach(b => {
+      b.disabled = true;
+      if (b.textContent === '29 × 8') b.classList.add('correct');
+    });
+    if (!correct) btn.classList.add('wrong');
+    const fb = document.getElementById('fb2');
+    fb.className = 'feedback show ' + (correct?'ok':'no');
+    fb.textContent = correct
+      ? '✅ Betul! 29 punya satuan 9 → bulatkan ke 30, lalu (30−1)×8 = 240−8 = 232. Jauh lebih ringkas!'
+      : '❌ Ingat: Strategi Kurang paling efektif kalau satuannya 8 atau 9. Yang satuannya 9 adalah 29!';
+    nextBtn.disabled = false;
+  }
+
+  updateUI();
+</script>
+</body>
+</html>

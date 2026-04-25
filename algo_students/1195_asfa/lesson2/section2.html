@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 2 · Contoh Soal & Bahasan</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --card: #1a1a28; --border: #2a2a40;
+    --neon: #00f5c4; --neon2: #7c3aed; --accent: #f59e0b;
+    --blue: #60a5fa; --text: #e2e8f0; --muted: #64748b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 30% 60%, rgba(96,165,250,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  nav {
+    padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.9); backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+    font-family: 'Orbitron', monospace; font-size: 0.72rem; letter-spacing: 1px;
+  }
+  nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--neon); }
+  nav span { color: var(--border); }
+  nav .current { color: var(--blue); }
+  .wrapper { max-width: 720px; margin: 0 auto; padding: 3rem 1rem 6rem; position: relative; z-index: 1; }
+  @media (max-width: 480px) {
+    .wrapper { padding: 2rem 0.75rem 6rem; }
+  }
+  .sec-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); color: var(--blue);
+    font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.3rem 1rem; border-radius: 20px; margin-bottom: 1.5rem;
+    font-family: 'Orbitron', monospace;
+  }
+  h1 { font-family: 'Orbitron', monospace; font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 900; margin-bottom: 0.8rem; line-height: 1.3; }
+  h1 span { color: var(--blue); }
+  .intro { color: var(--muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 3rem; }
+  .progress-dots { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 2rem; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: all 0.3s; }
+  .dot.active { background: var(--blue); box-shadow: 0 0 8px var(--blue); }
+  .dot.done { background: var(--neon2); }
+  .slide { display: none; animation: fadeUp 0.4s ease; }
+  .slide.active { display: block; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:translateY(0);} }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; margin-bottom: 1.2rem; }
+  .card-label { font-family: 'Orbitron', monospace; font-size: 0.65rem; letter-spacing: 3px; color: var(--blue); text-transform: uppercase; margin-bottom: 1rem; }
+  .card p { color: #94a3b8; line-height: 1.7; font-size: 0.93rem; }
+
+  /* Soal header */
+  .soal-num {
+    font-family: 'Orbitron', monospace; font-size: 0.65rem; letter-spacing: 3px;
+    color: var(--muted); text-transform: uppercase; margin-bottom: 0.5rem;
+  }
+  .soal-q {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2rem, 8vw, 3.5rem); font-weight: 900;
+    color: var(--accent); text-align: center;
+    margin: 1rem 0; text-shadow: 0 0 20px rgba(245,158,11,0.3);
+  }
+  .soal-context { color: var(--muted); font-size: 0.88rem; text-align: center; margin-bottom: 1.5rem; }
+
+  /* Step flow */
+  .step-flow { display: flex; flex-direction: column; gap: 0.6rem; margin: 1rem 0; }
+  .step {
+    display: flex; align-items: flex-start; gap: 1rem;
+    background: #12121c; border: 1px solid var(--border);
+    border-radius: 12px; padding: 0.9rem 1.2rem;
+  }
+  .step-num {
+    font-family: 'Orbitron', monospace; font-size: 0.65rem;
+    color: var(--blue); background: rgba(96,165,250,0.12);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 50%; width: 24px; height: 24px; min-width: 24px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-content { font-size: 0.95rem; line-height: 1.6; }
+  .step-content .eq { font-family: 'Orbitron', monospace; color: var(--neon); font-size: 1rem; }
+  .step-content .sub { color: var(--muted); font-size: 0.82rem; margin-top: 0.2rem; }
+
+  /* Result reveal */
+  .result-box {
+    background: rgba(0,245,196,0.05); border: 1px solid rgba(0,245,196,0.2);
+    border-radius: 14px; padding: 1.2rem 1.5rem; text-align: center; margin-top: 1rem;
+  }
+  .result-box .rq { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.3rem; }
+  .result-box .ra { font-family: 'Orbitron', monospace; font-size: clamp(1.6rem,5vw,2.4rem); color: var(--neon); text-shadow: 0 0 20px rgba(0,245,196,0.4); }
+
+  /* Alternative strategy */
+  .alt-box {
+    background: rgba(245,158,11,0.04); border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 14px; padding: 1.2rem 1.5rem; margin-top: 1rem;
+  }
+  .alt-label {
+    font-family: 'Orbitron', monospace; font-size: 0.62rem;
+    letter-spacing: 2px; color: var(--accent); text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .alt-steps { font-size: 0.9rem; color: var(--muted); line-height: 1.9; }
+  .alt-steps strong { color: var(--accent); }
+
+  /* Try it yourself — interactive */
+  .try-area { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; max-width: 100%; }
+  .try-label { font-family: 'Orbitron', monospace; font-size: 0.65rem; letter-spacing: 3px; color: var(--accent); text-transform: uppercase; margin-bottom: 0.8rem; }
+  .try-q { font-family: 'Orbitron', monospace; font-size: clamp(1.8rem,7vw,2.5rem); color: var(--text); text-align: center; margin: 0.8rem 0 1rem; word-break: break-word; }
+  .try-prompt { color: var(--muted); font-size: 0.85rem; text-align: center; margin-bottom: 1.2rem; padding: 0 0.5rem; }
+  .answer-input-wrap { display: flex; flex-direction: column; gap: 0.6rem; max-width: 280px; margin: 0 auto 1rem; width: 100%; }
+  .answer-input-row { display: flex; gap: 0.6rem; align-items: center; }
+  .answer-input {
+    flex: 1; background: #12121c; border: 2px solid var(--border); color: var(--text);
+    padding: 0.8rem 1rem; border-radius: 12px;
+    font-family: 'Orbitron', monospace; font-size: 1.3rem; text-align: center;
+    transition: border-color 0.2s; outline: none; min-width: 0;
+  }
+  .answer-input:focus { border-color: var(--blue); }
+  .answer-input.correct { border-color: var(--neon); color: var(--neon); }
+  .answer-input.wrong { border-color: #ef4444; color: #ef4444; }
+  .check-btn {
+    background: linear-gradient(135deg, var(--blue), #3b82f6);
+    color: white; border: none; padding: 0.8rem 1.2rem;
+    border-radius: 12px; cursor: pointer;
+    font-family: 'Orbitron', monospace; font-size: 0.7rem; letter-spacing: 1px;
+    transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+  }
+  .check-btn:hover { transform: translateY(-2px); }
+  .check-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+  @media (max-width: 400px) {
+    .answer-input-row { flex-direction: column; }
+    .check-btn { width: 100%; }
+  }
+  .try-hint {
+    text-align: center; color: var(--muted); font-size: 0.82rem;
+    cursor: pointer; text-decoration: underline; text-decoration-style: dotted;
+    margin-top: 0.5rem;
+  }
+  .try-hint:hover { color: var(--accent); }
+  .hint-reveal {
+    background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 12px; padding: 1rem 1.2rem;
+    margin-top: 0.8rem; font-size: 0.88rem; color: var(--accent); display: none;
+    line-height: 1.7;
+  }
+  .hint-reveal.show { display: block; animation: fadeUp 0.3s ease; }
+  .try-feedback {
+    text-align: center; margin-top: 1rem; padding: 0.8rem;
+    border-radius: 12px; font-size: 0.9rem; font-weight: 700; display: none;
+  }
+  .try-feedback.show { display: block; }
+  .try-feedback.ok { background: rgba(0,245,196,0.1); color: var(--neon); border: 1px solid rgba(0,245,196,0.3); }
+  .try-feedback.no { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+
+  /* Finish */
+  .finish-card { text-align: center; padding: 3rem 2rem; }
+  .finish-icon { font-size: 4rem; display: block; margin-bottom: 1rem; }
+  .finish-title { font-family: 'Orbitron', monospace; font-size: 1.5rem; color: var(--blue); margin-bottom: 0.8rem; }
+  .finish-desc { color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
+  .xp-badge { display: inline-block; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.4); color: var(--accent); padding: 0.4rem 1.2rem; border-radius: 20px; font-family: 'Orbitron', monospace; font-size: 0.85rem; margin-bottom: 1.5rem; }
+
+  /* Nav */
+  .nav-btns { display: flex; gap: 1rem; justify-content: space-between; margin-top: 2rem; }
+  .btn { padding: 0.8rem 1.8rem; border-radius: 10px; border: none; font-family: 'Orbitron', monospace; font-size: 0.8rem; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+  .btn-ghost:hover { border-color: var(--neon); color: var(--neon); }
+  .btn-primary { background: linear-gradient(135deg, var(--neon2), #4f46e5); color: white; box-shadow: 0 4px 15px rgba(124,58,237,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson2.html">LESSON 2</a>
+  <span>›</span>
+  <span class="current">SEC 2</span>
+</nav>
+
+<div class="wrapper">
+  <div class="sec-badge">📐 Section 02 · Contoh Soal</div>
+  <h1>Contoh Soal <span>&amp; Bahasan</span></h1>
+  <p class="intro">Kita bahas 4 soal perkalian 2 digit secara step-by-step — dari yang straightforward sampai yang perlu sedikit trik. Di akhir ada soal buat kamu coba sendiri!</p>
+
+  <div class="progress-dots" id="dots"></div>
+  <div class="slides" id="slides">
+
+    <!-- Slide 0: Soal 1 — 13 × 6 (Tambah, mudah) -->
+    <div class="slide active">
+      <div class="card">
+        <div class="soal-num">Soal 1 dari 4 · 🟢 Mudah · Strategi Tambah</div>
+        <div class="soal-q">13 × 6 = ?</div>
+        <div class="soal-context">Angka satuannya kecil — cocok banget pakai Strategi Tambah</div>
+        <div class="step-flow">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <strong>Pecah angka 2 digit:</strong>
+              <div class="eq">13 = 10 + 3</div>
+              <div class="sub">Pisahkan puluhan dan satuan</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <strong>Kalikan bagian puluhan dulu:</strong>
+              <div class="eq">10 × 6 = 60</div>
+              <div class="sub">Mudah — tinggal tambah nol</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <strong>Kalikan bagian satuan:</strong>
+              <div class="eq">3 × 6 = 18</div>
+              <div class="sub">Perkalian 1 digit yang sudah kamu kuasai</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <strong>Jumlahkan hasilnya:</strong>
+              <div class="eq">60 + 18 = 78</div>
+            </div>
+          </div>
+        </div>
+        <div class="result-box">
+          <div class="rq">13 × 6</div>
+          <div class="ra">= 78 ✅</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 1: Soal 2 — 29 × 4 (Kurang) -->
+    <div class="slide">
+      <div class="card">
+        <div class="soal-num">Soal 2 dari 4 · 🟡 Medium · Strategi Kurang</div>
+        <div class="soal-q">29 × 4 = ?</div>
+        <div class="soal-context">Satuan = 9 → lebih efisien bulatkan ke 30 lalu kurangi</div>
+        <div class="step-flow">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <strong>Bulatkan ke atas:</strong>
+              <div class="eq">29 = 30 − 1</div>
+              <div class="sub">30 jauh lebih gampang dikali daripada 29</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <strong>Kalikan angka bulatnya:</strong>
+              <div class="eq">30 × 4 = 120</div>
+              <div class="sub">3 × 4 = 12, tambah nol → 120</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <strong>Kalikan kelebihannya:</strong>
+              <div class="eq">1 × 4 = 4</div>
+              <div class="sub">Tadi kita bulatkan "lebih" 1, jadi harus dikurangi</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <strong>Kurangi hasilnya:</strong>
+              <div class="eq">120 − 4 = 116</div>
+            </div>
+          </div>
+        </div>
+        <div class="result-box">
+          <div class="rq">29 × 4</div>
+          <div class="ra">= 116 ✅</div>
+        </div>
+        <div class="alt-box">
+          <div class="alt-label">💡 Cara Alternatif · Strategi Tambah</div>
+          <div class="alt-steps">
+            29 × 4 = (20 + 9) × 4<br>
+            = <strong>20 × 4</strong> + <strong>9 × 4</strong><br>
+            = 80 + 36 = <strong>116</strong> ✅<br>
+            <em style="font-size:0.8rem">Hasilnya sama — pilih yang paling nyaman!</em>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Soal 3 — 36 × 5 (Tambah) -->
+    <div class="slide">
+      <div class="card">
+        <div class="soal-num">Soal 3 dari 4 · 🟡 Medium · Strategi Tambah</div>
+        <div class="soal-q">36 × 5 = ?</div>
+        <div class="soal-context">Puluhan besar, satuan sedang — Strategi Tambah paling bersih</div>
+        <div class="step-flow">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <strong>Pecah 36:</strong>
+              <div class="eq">36 = 30 + 6</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <strong>Kalikan puluhan:</strong>
+              <div class="eq">30 × 5 = 150</div>
+              <div class="sub">3 × 5 = 15, tambah nol</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <strong>Kalikan satuan:</strong>
+              <div class="eq">6 × 5 = 30</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <strong>Jumlahkan:</strong>
+              <div class="eq">150 + 30 = 180</div>
+            </div>
+          </div>
+        </div>
+        <div class="result-box">
+          <div class="rq">36 × 5</div>
+          <div class="ra">= 180 ✅</div>
+        </div>
+        <div class="alt-box">
+          <div class="alt-label">⚡ Tips Cepat</div>
+          <div class="alt-steps">
+            Kalau salah satu angkanya <strong>5</strong>, coba lihat apakah yang lainnya genap. Kalau iya: <strong>bagi 2 dulu, kalikan 10</strong>.<br>
+            36 ÷ 2 = 18 → 18 × 10 = <strong>180</strong> ✅ — lebih cepet!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Soal 4 — 48 × 7 (Kurang, tricky) -->
+    <div class="slide">
+      <div class="card">
+        <div class="soal-num">Soal 4 dari 4 · 🔴 Tricky · Pilihan Strategi</div>
+        <div class="soal-q">48 × 7 = ?</div>
+        <div class="soal-context">48 satuannya 8 → Strategi Kurang lebih simpel</div>
+        <div class="step-flow">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <strong>Bulatkan 48 ke 50:</strong>
+              <div class="eq">48 = 50 − 2</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <strong>Kalikan 50:</strong>
+              <div class="eq">50 × 7 = 350</div>
+              <div class="sub">5 × 7 = 35, tambah nol</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <strong>Kalikan kelebihan 2:</strong>
+              <div class="eq">2 × 7 = 14</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <strong>Kurangi:</strong>
+              <div class="eq">350 − 14 = 336</div>
+            </div>
+          </div>
+        </div>
+        <div class="result-box">
+          <div class="rq">48 × 7</div>
+          <div class="ra">= 336 ✅</div>
+        </div>
+        <div class="alt-box">
+          <div class="alt-label">📊 Bandingkan · Strategi Tambah</div>
+          <div class="alt-steps">
+            (40 + 8) × 7 = <strong>40 × 7</strong> + <strong>8 × 7</strong><br>
+            = 280 + 56 = <strong>336</strong> ✅<br>
+            <em style="font-size:0.8rem">Hasilnya sama. Kali ini Strategi Tambah butuh hitung 8×7=56 dan 280+56 — sedikit lebih ribet dari 350−14.</em>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Coba sendiri! -->
+    <div class="slide">
+      <div class="try-area">
+        <div class="try-label">🎯 Giliran Kamu! · Soal 1 dari 2</div>
+        <div class="try-q">24 × 6 = ?</div>
+        <div class="try-prompt">Gunakan Strategi Tambah: pecah 24 = 20 + 4</div>
+        <div class="answer-input-wrap">
+          <div class="answer-input-row">
+            <input type="number" class="answer-input" id="try1" placeholder="?" inputmode="numeric">
+            <button class="check-btn" id="try1btn" onclick="tryCheck(1, 144, 'try1', 'try1fb', 'try1btn')">CEK</button>
+          </div>
+        </div>
+        <div class="try-hint" onclick="toggleHint('hint1')">💡 Butuh bantuan?</div>
+        <div class="hint-reveal" id="hint1">
+          Langkah: (20 × 6) + (4 × 6) = ? + ? = ?<br>
+          20 × 6 = 120 · · · 4 × 6 = 24 · · · 120 + 24 = ...
+        </div>
+        <div class="try-feedback" id="try1fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Coba sendiri 2 -->
+    <div class="slide">
+      <div class="try-area">
+        <div class="try-label">🎯 Giliran Kamu! · Soal 2 dari 2</div>
+        <div class="try-q">37 × 8 = ?</div>
+        <div class="try-prompt">Pilih strategimu sendiri! Strategi Tambah (30+7) atau Kurang (40−3)?</div>
+        <div class="answer-input-wrap">
+          <div class="answer-input-row">
+            <input type="number" class="answer-input" id="try2" placeholder="?" inputmode="numeric">
+            <button class="check-btn" id="try2btn" onclick="tryCheck(2, 296, 'try2', 'try2fb', 'try2btn')">CEK</button>
+          </div>
+        </div>
+        <div class="try-hint" onclick="toggleHint('hint2')">💡 Butuh bantuan?</div>
+        <div class="hint-reveal" id="hint2">
+          Strategi Tambah: (30 × 8) + (7 × 8) = 240 + 56 = ?<br>
+          Strategi Kurang: (40 − 3) × 8 = 320 − 24 = ?
+        </div>
+        <div class="try-feedback" id="try2fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Finish -->
+    <div class="slide">
+      <div class="card finish-card">
+        <span class="finish-icon">📐</span>
+        <div class="finish-title">Contoh Soal Selesai!</div>
+        <div class="finish-desc">
+          Kamu udah lihat dan coba berbagai strategi breakdown untuk 2 digit. Sekarang waktunya uji kecepatan di Quick Test — 5 soal dengan timer 20 detik!
+        </div>
+        <div class="xp-badge">✨ +80 XP — Problem Solver!</div>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+          <a href="lesson2.html" class="btn btn-ghost">← Back</a>
+          <a href="quicktest.html" class="btn btn-primary">Quick Test →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-btns" id="navbtns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="go(-1)" disabled>← Prev</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL = 7;
+  let cur = 0;
+  const tryDone = { 1: false, 2: false };
+
+  const dotsEl = document.getElementById('dots');
+  const slides = document.querySelectorAll('.slide');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const navbtns = document.getElementById('navbtns');
+
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    dotsEl.appendChild(d);
+  }
+
+  function updateUI() {
+    slides.forEach((s,i) => s.classList.toggle('active', i===cur));
+    dotsEl.querySelectorAll('.dot').forEach((d,i) => {
+      d.classList.remove('active','done');
+      if (i < cur) d.classList.add('done');
+      if (i === cur) d.classList.add('active');
+    });
+    prevBtn.disabled = cur === 0;
+    const isLast = cur === TOTAL - 1;
+    navbtns.style.display = isLast ? 'none' : 'flex';
+    if (cur === 4) nextBtn.disabled = !tryDone[1];
+    else if (cur === 5) nextBtn.disabled = !tryDone[2];
+    else nextBtn.disabled = false;
+  }
+
+  function go(dir) {
+    cur = Math.max(0, Math.min(TOTAL-1, cur+dir));
+    updateUI();
+  }
+
+  function toggleHint(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('show');
+  }
+
+  function tryCheck(num, answer, inputId, fbId, btnId) {
+    const input = document.getElementById(inputId);
+    const val = parseInt(input.value);
+    const fb = document.getElementById(fbId);
+    const btn = document.getElementById(btnId);
+
+    if (isNaN(val)) return;
+
+    tryDone[num] = true;
+    input.disabled = true;
+    btn.disabled = true;
+
+    const correct = val === answer;
+    input.classList.add(correct ? 'correct' : 'wrong');
+    fb.className = 'try-feedback show ' + (correct ? 'ok' : 'no');
+
+    if (correct) {
+      fb.textContent = `✅ Betul! Jawabannya memang ${answer}. Strategi breakdown works!`;
+    } else {
+      fb.textContent = `❌ Belum tepat. Jawabannya ${answer}. Coba cek lagi langkah-langkahnya!`;
+    }
+
+    nextBtn.disabled = false;
+  }
+
+  // Allow Enter key on inputs
+  ['try1','try2'].forEach((id,i) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        const num = i+1;
+        const answer = num===1 ? 144 : 296;
+        tryCheck(num, answer, id, id+'fb', id+'btn');
+      }
+    });
+  });
+
+  updateUI();
+</script>
+</body>
+</html>
