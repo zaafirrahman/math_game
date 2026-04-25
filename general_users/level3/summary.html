@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summary · Cheat Sheet Level 3 · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2228; --board-light:#262c38;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.25);
+    --teal:#3eb8b8; --teal-dark:#1a6e6e; --teal-bg:rgba(62,184,184,0.11); --teal-border:rgba(62,184,184,0.38);
+    --coral:#e07850; --coral-dark:#9a3f1e; --coral-bg:rgba(224,120,80,0.11); --coral-border:rgba(224,120,80,0.38);
+    --amber:#f0c060; --amber-dark:#c97d2e; --amber-bg:rgba(240,192,96,0.1); --amber-border:rgba(240,192,96,0.38);
+    --green:#4a9e69; --green-bg:rgba(74,158,105,0.12); --green-border:rgba(74,158,105,0.38);
+    --red:#e06060; --red-bg:rgba(224,96,96,0.1); --red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(232,224,208,0.14); --card-bg:rgba(255,255,255,0.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,34,40,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--coral);}
+
+  .wrap{max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  .page-header{text-align:center;margin-bottom:2.5rem;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--coral-bg);border:1px solid var(--coral-border);color:var(--coral);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.5rem,4vw,2.1rem);text-shadow:2px 2px 0 rgba(0,0,0,0.3);margin-bottom:0.4rem;}
+  h1 span{color:var(--coral);}
+  .page-sub{font-family:'Patrick Hand',cursive;font-size:0.9rem;color:var(--chalk-muted);}
+
+  .section-divider{display:flex;align-items:center;gap:0.8rem;margin:2rem 0 1.2rem;}
+  .sd-line{flex:1;height:1px;background:var(--chalk-dim);}
+  .sd-label{font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--chalk-muted);white-space:nowrap;}
+
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.5rem 1.6rem;margin-bottom:1rem;box-shadow:0 4px 18px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);}
+  .card-title{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--chalk);margin-bottom:0.9rem;display:flex;align-items:center;gap:0.5rem;}
+
+  /* Anatomy row */
+  .anatomy-row{display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center;margin:0.8rem 0;}
+  .anat-chip{padding:0.45rem 0.9rem;border-radius:8px;font-family:'Fredoka One',cursive;font-size:0.95rem;text-align:center;}
+  .anat-chip small{display:block;font-family:'Patrick Hand',cursive;font-size:0.62rem;color:var(--chalk-muted);letter-spacing:1px;text-transform:uppercase;}
+  .ac-coef{background:var(--teal-bg);border:1px solid var(--teal-border);color:var(--teal);}
+  .ac-var{background:var(--coral-bg);border:1px solid var(--coral-border);color:var(--coral);}
+  .ac-const{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber);}
+  .ac-op{background:none;font-size:1.1rem;color:var(--chalk-muted);padding:0 0.2rem;}
+
+  /* Rules compact */
+  .rules{display:flex;flex-direction:column;gap:0.45rem;margin:0.5rem 0;}
+  .rule{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.84rem;color:var(--chalk-muted);line-height:1.55;}
+  .rule strong{color:var(--chalk);}
+  .rule-icon{flex-shrink:0;margin-top:1px;}
+
+  /* Steps compact */
+  .sc{display:flex;flex-direction:column;gap:0.4rem;margin:0.6rem 0;}
+  .sc-row{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.83rem;color:var(--chalk-muted);line-height:1.55;}
+  .sc-n{font-family:'Fredoka One',cursive;font-size:0.72rem;color:var(--board);background:var(--teal);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+  .sc-n.co{background:var(--coral);}
+  .sc-row strong{color:var(--chalk);}
+
+  /* Method compare */
+  .method-compare{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:0.7rem 0;}
+  @media(max-width:480px){.method-compare{grid-template-columns:1fr;}}
+  .mc-box{border-radius:10px;padding:1rem;}
+  .mc-box.subst{background:var(--teal-bg);border:1px solid var(--teal-border);}
+  .mc-box.elim{background:var(--coral-bg);border:1px solid var(--coral-border);}
+  .mc-tag{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .mc-box.subst .mc-tag{color:var(--teal);}
+  .mc-box.elim .mc-tag{color:var(--coral);}
+  .mc-title{font-family:'Fredoka One',cursive;font-size:0.9rem;color:var(--chalk);margin-bottom:0.4rem;}
+  .mc-steps{font-family:'Patrick Hand',cursive;font-size:0.78rem;color:var(--chalk-muted);line-height:1.6;}
+
+  /* Highlight */
+  .hl{border-radius:10px;padding:0.75rem 1rem;font-size:0.84rem;line-height:1.6;margin:0.5rem 0;}
+  .hl-teal{background:var(--teal-bg);border:1px solid var(--teal-border);}
+  .hl-coral{background:var(--coral-bg);border:1px solid var(--coral-border);}
+  .hl-amber{background:var(--amber-bg);border:1px solid var(--amber-border);}
+  .hl-green{background:var(--green-bg);border:1px solid var(--green-border);}
+  .hl-red{background:var(--red-bg);border:1px solid var(--red-border);}
+  .hl-teal strong{color:var(--teal);}
+  .hl-coral strong{color:var(--coral);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+
+  /* Tip table */
+  .tip-table{width:100%;border-collapse:collapse;margin:0.6rem 0;font-size:0.83rem;}
+  .tip-table th{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--chalk-muted);text-align:left;padding:0.4rem 0.6rem;border-bottom:1px solid var(--card-border);}
+  .tip-table td{padding:0.4rem 0.6rem;border-bottom:1px solid rgba(232,224,208,0.06);color:var(--chalk-muted);vertical-align:top;line-height:1.5;}
+  .tip-table td:first-child{color:var(--chalk);font-weight:900;}
+  .tip-table tr:last-child td{border-bottom:none;}
+  .te{color:var(--teal);font-family:'Fredoka One',cursive;}
+  .co{color:var(--coral);font-family:'Fredoka One',cursive;}
+
+  .footer-nav{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2.5rem;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:var(--teal-dark);color:#fff;box-shadow:0 4px 14px rgba(26,110,110,0.5);}
+  .btn-primary:hover{background:var(--teal);transform:translateY(-2px);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level3.html">Level 3</a><span>›</span>
+  <span class="cur">Cheat Sheet</span>
+</nav>
+
+<div class="wrap">
+  <div class="page-header">
+    <div class="page-badge">📋 Summary</div>
+    <h1>Level 3 <span>Cheat Sheet</span></h1>
+    <p class="page-sub">Semua rumus & poin penting dalam satu halaman. Simpan, screenshot, atau print!</p>
+  </div>
+
+  <!-- Section 1: Manipulasi Variabel -->
+  <div class="section-divider">
+    <div class="sd-line"></div>
+    <div class="sd-label">🔡 Section 1 — Manipulasi Variabel</div>
+    <div class="sd-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>🔬</span> Anatomi Ekspresi Aljabar</div>
+    <div class="anatomy-row">
+      <div class="anat-chip ac-coef">5<small>Koefisien</small></div>
+      <div class="anat-chip ac-var">x<small>Variabel</small></div>
+      <div class="anat-chip ac-op">²</div>
+      <div class="anat-chip ac-op">+</div>
+      <div class="anat-chip ac-coef">3<small>Koefisien</small></div>
+      <div class="anat-chip ac-var">y<small>Variabel</small></div>
+      <div class="anat-chip ac-op">−</div>
+      <div class="anat-chip ac-const">8<small>Konstanta</small></div>
+    </div>
+    <div class="rules">
+      <div class="rule"><span class="rule-icon">🔹</span><div><strong>Variabel</strong>: huruf yang mewakili nilai yang belum diketahui (x, y, a, b, …)</div></div>
+      <div class="rule"><span class="rule-icon">🔹</span><div><strong>Koefisien</strong>: angka di depan variabel. Jika tidak ada angka, koefisiennya = 1 (contoh: x = 1x)</div></div>
+      <div class="rule"><span class="rule-icon">🔹</span><div><strong>Konstanta</strong>: angka tanpa variabel, nilainya tetap</div></div>
+      <div class="rule"><span class="rule-icon">🔹</span><div><strong>Suku (term)</strong>: bagian yang dipisahkan tanda + atau −. Ekspresi 3x+2y−5 punya 3 suku</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>🔗</span> Suku Sejenis & Penyederhanaan</div>
+    <div class="rules">
+      <div class="rule"><span class="rule-icon">✅</span><div><strong>Suku sejenis</strong>: variabel DAN pangkat sama. Contoh: 3x² dan −7x² adalah sejenis</div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>Tidak sejenis</strong>: variabel ATAU pangkat berbeda. 3x dan 3y tidak bisa digabung</div></div>
+    </div>
+    <div class="hl hl-teal" style="margin-top:0.8rem;">
+      <strong>Contoh penyederhanaan:</strong><br>
+      4x + 3y − 2x + 7 + y = <strong>(4x−2x) + (3y+y) + 7 = 2x + 4y + 7</strong>
+    </div>
+    <div class="hl hl-coral">
+      <strong>Sifat Distributif:</strong> a(b + c) = ab + ac &nbsp;|&nbsp; −2(x − 4) = −2x + 8<br>
+      <strong>Ingat:</strong> Negatif × negatif = positif!
+    </div>
+  </div>
+
+  <!-- Section 2: Persamaan Linear -->
+  <div class="section-divider">
+    <div class="sd-line"></div>
+    <div class="sd-label">⚖️ Section 2 — Persamaan Linear</div>
+    <div class="sd-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>⚖️</span> Prinsip Keseimbangan</div>
+    <div class="rules">
+      <div class="rule"><span class="rule-icon">🔹</span><div>Persamaan = timbangan. Operasi yang sama pada kedua sisi → keseimbangan terjaga</div></div>
+      <div class="rule"><span class="rule-icon">🔹</span><div><strong>Strategi:</strong> kumpulkan suku variabel ke satu sisi, konstanta ke sisi lain, lalu bagi koefisiennya</div></div>
+    </div>
+    <div class="hl hl-teal" style="margin-top:0.8rem;">
+      <strong>Langkah Standar — 3x − 4 = 11:</strong><br>
+      3x = 11 + 4 = 15 &nbsp;→&nbsp; x = 15 ÷ 3 = <strong>5</strong>
+    </div>
+    <div class="hl hl-amber">
+      <strong>Dengan distribusi — 2(x + 4) = 3x − 1:</strong><br>
+      2x + 8 = 3x − 1 &nbsp;→&nbsp; 8 + 1 = 3x − 2x &nbsp;→&nbsp; x = <strong>9</strong>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>⚠️</span> Tiga Kemungkinan Solusi</div>
+    <table class="tip-table">
+      <tr><th>Situasi</th><th>Tipe</th><th>Contoh</th></tr>
+      <tr><td>Variabel tersisa, nilainya spesifik</td><td class="te">Tepat satu solusi</td><td>x = 5</td></tr>
+      <tr><td>Variabel hilang, pernyataan salah</td><td style="color:var(--red);font-family:'Fredoka One',cursive;">Tidak ada solusi</td><td>3 = 7 (mustahil)</td></tr>
+      <tr><td>Variabel hilang, pernyataan benar</td><td class="co">Tak terhingga</td><td>3 = 3 (identitas)</td></tr>
+    </table>
+    <div class="hl hl-red"><strong>Selalu verifikasi!</strong> Substitusi nilai x kembali ke persamaan asal. Kalau kedua sisi sama → jawaban benar.</div>
+  </div>
+
+  <!-- Section 3: SPLDV -->
+  <div class="section-divider">
+    <div class="sd-line"></div>
+    <div class="sd-label">🕵️ Section 3 — SPLDV</div>
+    <div class="sd-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>🔀</span> Dua Metode Utama</div>
+    <div class="method-compare">
+      <div class="mc-box subst">
+        <div class="mc-tag">🔄 Substitusi</div>
+        <div class="mc-title">Ganti variabel</div>
+        <div class="mc-steps">
+          1. Nyatakan satu variabel dari persamaan 1<br>
+          2. Substitusi ke persamaan 2<br>
+          3. Selesaikan, lalu cari variabel pertama<br>
+          <em>Cocok bila ada koefisien = 1</em>
+        </div>
+      </div>
+      <div class="mc-box elim">
+        <div class="mc-tag">➖ Eliminasi</div>
+        <div class="mc-title">Hapus variabel</div>
+        <div class="mc-steps">
+          1. Samakan koefisien satu variabel<br>
+          2. Jumlahkan atau kurangi kedua persamaan<br>
+          3. Selesaikan variabel yang tersisa<br>
+          <em>Cocok bila koefisien mudah disamakan</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>📝</span> Contoh Cepat Kedua Metode</div>
+    <div class="hl hl-teal">
+      <strong>Substitusi:</strong> x+y=10, 2x−y=5<br>
+      x=10−y → 2(10−y)−y=5 → 20−3y=5 → y=5 → x=5
+    </div>
+    <div class="hl hl-coral">
+      <strong>Eliminasi:</strong> 3x+2y=16, x+2y=8<br>
+      Kurangi: (3x+2y)−(x+2y)=16−8 → 2x=8 → x=4. Lalu y=2.
+    </div>
+    <div class="hl hl-amber">
+      <strong>Perlu kalikan dulu:</strong> 2x+3y=13, 3x−y=3<br>
+      Kalikan (2) ×3: 9x−3y=9. Jumlahkan dengan (1): 11x=22 → x=2, y=3.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>🚨</span> Kesalahan Umum Level 3 — Jangan!</div>
+    <div class="rules">
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>Menggabungkan suku tidak sejenis:</strong> 3x + 2y ≠ 5xy. Hanya suku dengan variabel dan pangkat yang sama yang bisa digabung!</div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>Lupa distribusikan negatif:</strong> −(x−3) = −x+3, bukan −x−3. Tanda minus menyebar ke semua suku!</div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>Bagi hanya satu sisi:</strong> Jika 3x=12, bagi kedua sisi: x=4. Jangan hanya bagi salah satu sisi saja.</div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>Di SPLDV: cek hanya satu persamaan:</strong> Selalu substitusi ke KEDUA persamaan untuk memverifikasi solusi.</div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>Lupa nilai negatif saat substitusi:</strong> Jika y=−3 dan persamaannya 2y, hasilnya 2(−3)=−6, bukan +6.</div></div>
+    </div>
+  </div>
+
+  <div class="footer-nav">
+    <a href="level3.html" class="btn btn-ghost">← Level Hub</a>
+    <a href="quicktest.html" class="btn btn-primary">Quick Test →</a>
+  </div>
+</div>
+</body>
+</html>

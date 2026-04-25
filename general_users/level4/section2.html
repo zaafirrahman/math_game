@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 2 · Bangun Ruang · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2228; --board-light:#262c38;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.25);
+    --orange:#e8793a; --orange-dark:#a64d1c; --orange-bg:rgba(232,121,58,0.13); --orange-border:rgba(232,121,58,0.4);
+    --coral:#f09060; --coral-bg:rgba(240,144,96,0.12); --coral-border:rgba(240,144,96,0.38);
+    --amber:#f0c060; --amber-dark:#c97d2e; --amber-bg:rgba(240,192,96,0.1); --amber-border:rgba(240,192,96,0.38);
+    --green:#4a9e69; --green-dark:#2c6e49; --green-bg:rgba(74,158,105,0.12); --green-border:rgba(74,158,105,0.38);
+    --red:#e06060; --red-bg:rgba(224,96,96,0.1); --red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(232,224,208,0.14); --card-bg:rgba(255,255,255,0.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,34,40,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--orange);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--coral);}
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5.5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--coral-bg);border:1px solid var(--coral-border);color:var(--coral);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1.3rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,2rem);margin-bottom:0.6rem;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,0.3);}
+  h1 span{color:var(--coral);}
+  .intro{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem;}
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(232,224,208,0.15);transition:all 0.3s;}
+  .dot.active{background:var(--coral);box-shadow:0 0 0 3px rgba(240,144,96,0.25);transform:scale(1.15);}
+  .dot.done{background:var(--orange);}
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.06);}
+  .card-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.orange{color:var(--orange);}
+  .card-label.coral{color:var(--coral);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:0.7rem;line-height:1.35;color:var(--chalk);}
+  .card p{color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;}
+  .why-banner{background:linear-gradient(135deg,#281810,#3a1e10);border:1px solid var(--coral-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.35);}
+  .why-banner::after{content:'📦';position:absolute;right:1.2rem;bottom:-0.3rem;font-size:4rem;opacity:0.1;}
+  .why-banner h2{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:0.6rem;color:var(--chalk);}
+  .why-banner p{font-size:0.9rem;line-height:1.7;color:var(--chalk-muted);}
+  .why-list{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem;}
+  .why-item{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.88rem;color:var(--chalk-muted);}
+  .why-item span{flex-shrink:0;font-size:1.1rem;}
+
+  /* 3D formula grid */
+  .solid-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin:1rem 0;}
+  @media(max-width:460px){.solid-grid{grid-template-columns:1fr;}}
+  .solid-box{border-radius:11px;padding:1rem 1.1rem;position:relative;}
+  .solid-box.a{background:var(--orange-bg);border:1px solid var(--orange-border);}
+  .solid-box.b{background:var(--coral-bg);border:1px solid var(--coral-border);}
+  .solid-box.c{background:var(--amber-bg);border:1px solid var(--amber-border);}
+  .solid-box.d{background:var(--green-bg);border:1px solid var(--green-border);}
+  .solid-name{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;}
+  .solid-box.a .solid-name{color:var(--orange);}
+  .solid-box.b .solid-name{color:var(--coral);}
+  .solid-box.c .solid-name{color:var(--amber);}
+  .solid-box.d .solid-name{color:var(--green);}
+  .solid-vol{font-family:'Fredoka One',cursive;font-size:0.9rem;color:var(--chalk);margin-bottom:0.25rem;}
+  .solid-lp{font-family:'Fredoka One',cursive;font-size:0.82rem;color:var(--chalk-muted);}
+  .solid-note{font-family:'Patrick Hand',cursive;font-size:0.75rem;color:var(--chalk-muted);margin-top:0.3rem;line-height:1.4;}
+
+  /* Vol vs LP compare */
+  .compare-box{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:0.8rem 0;}
+  @media(max-width:460px){.compare-box{grid-template-columns:1fr;}}
+  .cmp{border-radius:10px;padding:0.9rem 1rem;}
+  .cmp.vol{background:var(--orange-bg);border:1px solid var(--orange-border);}
+  .cmp.lp{background:var(--coral-bg);border:1px solid var(--coral-border);}
+  .cmp-tag{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .cmp.vol .cmp-tag{color:var(--orange);}
+  .cmp.lp .cmp-tag{color:var(--coral);}
+  .cmp-title{font-family:'Fredoka One',cursive;font-size:0.95rem;color:var(--chalk);margin-bottom:0.3rem;}
+  .cmp-desc{font-family:'Patrick Hand',cursive;font-size:0.78rem;color:var(--chalk-muted);line-height:1.5;}
+  .cmp-unit{font-family:'Fredoka One',cursive;font-size:0.85rem;margin-top:0.5rem;}
+  .cmp.vol .cmp-unit{color:var(--orange);}
+  .cmp.lp .cmp-unit{color:var(--coral);}
+
+  .steps{display:flex;flex-direction:column;gap:0.65rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:var(--board-light);border:1px solid var(--card-border);border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;color:var(--chalk-muted);}
+  .step-n{font-family:'Fredoka One',cursive;font-size:0.8rem;color:var(--board);background:var(--coral);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .step strong{color:var(--coral);}
+  .step .or{color:var(--orange);}
+  .step .am{color:var(--amber);}
+  .step .gr{color:var(--green);}
+  .big-eq{background:var(--board-light);border:1px solid var(--card-border);border-radius:12px;padding:1.2rem;margin:1rem 0;text-align:center;}
+  .eq-text{font-family:'Fredoka One',cursive;font-size:clamp(1.1rem,3.5vw,1.5rem);color:var(--chalk);line-height:1.6;}
+  .eq-step{font-size:0.88rem;color:var(--chalk-muted);margin:0.2rem 0;font-family:'Patrick Hand',cursive;}
+  .eq-result{font-family:'Fredoka One',cursive;font-size:clamp(1.3rem,4vw,1.9rem);color:var(--green);}
+  .hl{border-radius:10px;padding:0.9rem 1.1rem;margin:0.8rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-orange{background:var(--orange-bg);border:1px solid var(--orange-border);}
+  .hl-coral{background:var(--coral-bg);border:1px solid var(--coral-border);}
+  .hl-amber{background:var(--amber-bg);border:1px solid var(--amber-border);}
+  .hl-green{background:var(--green-bg);border:1px solid var(--green-border);}
+  .hl-red{background:var(--red-bg);border:1px solid var(--red-border);}
+  .hl-orange strong{color:var(--orange);}
+  .hl-coral strong{color:var(--coral);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+  .hl-red strong{color:var(--red);}
+  .opts{display:flex;flex-direction:column;gap:0.6rem;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.82rem 1rem;border-radius:10px;cursor:pointer;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover:not(:disabled){border-color:rgba(240,144,96,0.5);background:var(--coral-bg);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.8rem;padding:0.75rem 1rem;border-radius:10px;font-size:0.88rem;font-weight:800;display:none;line-height:1.5;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:var(--orange-dark);color:#fff;box-shadow:0 4px 14px rgba(166,77,28,0.45);}
+  .btn-primary:hover{background:var(--orange);transform:translateY(-2px);}
+  .btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important;}
+  .finish{text-align:center;padding:2.5rem 1rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--coral);margin-bottom:0.7rem;}
+  .finish-desc{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);line-height:1.7;margin-bottom:1.5rem;font-size:0.95rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber);padding:0.3rem 1rem;border-radius:20px;font-family:'Fredoka One',cursive;font-size:0.85rem;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level4.html">Level 4</a><span>›</span>
+  <span class="cur">Section 2</span>
+</nav>
+<div class="wrap">
+  <div class="sec-badge">📦 Section 02 · Bangun Ruang</div>
+  <h1>Volume & <span>Luas Permukaan</span></h1>
+  <p class="intro">Bangun 3D bukan cuma gambar di buku — mereka ada di sekitarmu. Dari kaleng minuman (tabung) sampai es krim cone (kerucut), semuanya bisa diukur dengan rumus yang elegan.</p>
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- Slide 0: WHY -->
+    <div class="slide active">
+      <div class="why-banner">
+        <h2>Kenapa Bangun Ruang itu krusial?</h2>
+        <p>Dua pengukuran berbeda — Volume dan Luas Permukaan — menjawab dua pertanyaan yang sama pentingnya.</p>
+        <div class="why-list">
+          <div class="why-item"><span>🧃</span><div><strong>Volume</strong> → seberapa banyak yang bisa dimuat? Produsen minuman perlu tahu ini untuk menentukan isi kemasan.</div></div>
+          <div class="why-item"><span>🎁</span><div><strong>Luas Permukaan</strong> → seberapa banyak bahan yang dibutuhkan? Ini untuk kertas kado, cat, atau bungkus produk.</div></div>
+          <div class="why-item"><span>🏗️</span><div>Insinyur sipil menghitung volume beton untuk pondasi dan luas permukaan untuk pengecatan.</div></div>
+          <div class="why-item"><span>🌡️</span><div>Desainer AC menghitung volume ruangan untuk menentukan kapasitas pendingin yang dibutuhkan.</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label coral">📌 Volume vs Luas Permukaan</div>
+        <h2>Dua dimensi pengukuran yang berbeda</h2>
+        <div class="compare-box">
+          <div class="cmp vol">
+            <div class="cmp-tag">Volume</div>
+            <div class="cmp-title">Isi / Kapasitas</div>
+            <div class="cmp-desc">Seberapa banyak ruang di dalam objek 3D. Diukur dalam kubik.</div>
+            <div class="cmp-unit">cm³, m³, liter</div>
+          </div>
+          <div class="cmp lp">
+            <div class="cmp-tag">Luas Permukaan</div>
+            <div class="cmp-title">Selimut / Kulit</div>
+            <div class="cmp-desc">Total luas semua sisi yang membungkus objek. Diukur dalam persegi.</div>
+            <div class="cmp-unit">cm², m²</div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <span></span>
+        <button class="btn btn-primary" onclick="nextSlide()">Lanjut → Rumus Bangun Ruang</button>
+      </div>
+    </div>
+
+    <!-- Slide 1: Rumus -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label coral">📦 Rumus Lengkap</div>
+        <h2>Volume & Luas Permukaan — 5 bangun ruang</h2>
+        <div class="solid-grid">
+          <div class="solid-box a">
+            <div class="solid-name">Kubus (sisi s)</div>
+            <div class="solid-vol">V = s³</div>
+            <div class="solid-lp">LP = 6s²</div>
+            <div class="solid-note">6 sisi persegi yang sama</div>
+          </div>
+          <div class="solid-box b">
+            <div class="solid-name">Balok (p × l × t)</div>
+            <div class="solid-vol">V = p × l × t</div>
+            <div class="solid-lp">LP = 2(pl + pt + lt)</div>
+            <div class="solid-note">3 pasang persegi panjang</div>
+          </div>
+          <div class="solid-box c">
+            <div class="solid-name">Tabung (r, t)</div>
+            <div class="solid-vol">V = π r² t</div>
+            <div class="solid-lp">LP = 2πr(r + t)</div>
+            <div class="solid-note">2 lingkaran + 1 selimut</div>
+          </div>
+          <div class="solid-box d">
+            <div class="solid-name">Kerucut (r, t, s)</div>
+            <div class="solid-vol">V = ⅓ π r² t</div>
+            <div class="solid-lp">LP = πr(r + s)</div>
+            <div class="solid-note">s = garis pelukis = √(r²+t²)</div>
+          </div>
+          <div class="solid-box a" style="grid-column:span 2;">
+            <div class="solid-name">Bola (jari-jari r)</div>
+            <div class="solid-vol">V = 4/3 π r³</div>
+            <div class="solid-lp">LP = 4 π r²</div>
+            <div class="solid-note">Tidak ada sisi datar — murni lengkungan. Luas permukaan = 4× luas lingkaran dengan r sama.</div>
+          </div>
+        </div>
+        <div class="hl hl-amber"><strong>Kerucut:</strong> Garis pelukis (s) adalah jarak dari puncak ke tepi alas — ini sisi miring kalau dilihat dari samping! Hitung dengan Pythagoras: s = √(r² + t²).</div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Lanjut → Contoh Soal</button>
+      </div>
+    </div>
+
+    <!-- Slide 2: Contoh Soal -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">💡 Contoh Soal & Pembahasan</div>
+        <h2>Soal 1: Volume Tabung</h2>
+        <p style="font-size:0.9rem;color:var(--chalk-muted);margin-bottom:1rem;line-height:1.7;">Sebuah tabung memiliki jari-jari 7 cm dan tinggi 10 cm. Hitung volume tabung! (π = 22/7)</p>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div><div>Diketahui: <strong>r = 7 cm</strong>, <span class="am">t = 10 cm</span></div></div>
+          <div class="step"><div class="step-n">2</div><div>Rumus: <strong>V = π × r² × t</strong></div></div>
+          <div class="step"><div class="step-n">3</div><div>V = 22/7 × 7² × 10 = 22/7 × 49 × 10 = 22 × 7 × 10 = <span class="gr">1.540 cm³</span></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label amber">💡 Contoh Soal & Pembahasan</div>
+        <h2>Soal 2: Luas Permukaan Balok</h2>
+        <p style="font-size:0.9rem;color:var(--chalk-muted);margin-bottom:1rem;line-height:1.7;">Sebuah kotak hadiah berbentuk balok berukuran 20 cm × 15 cm × 10 cm. Berapa luas kertas kado yang dibutuhkan?</p>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div><div>Diketahui: <strong>p = 20</strong>, <span class="or">l = 15</span>, <span class="am">t = 10</span> (semua cm)</div></div>
+          <div class="step"><div class="step-n">2</div><div>LP = 2(pl + pt + lt) = 2(20×15 + 20×10 + 15×10)</div></div>
+          <div class="step"><div class="step-n">3</div><div>= 2(300 + 200 + 150) = 2 × 650 = <span class="gr">1.300 cm²</span></div></div>
+        </div>
+        <div class="hl hl-orange"><strong>Ingat:</strong> Luas Permukaan menjawab "berapa bahan yang diperlukan" → kertas kado, cat, pelapis. Volume menjawab "berapa yang bisa dimuat" → isi, kapasitas.</div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Lanjut → Latihan</button>
+      </div>
+    </div>
+
+    <!-- Slide 3: Quiz -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label coral">✏️ Soal Latihan</div>
+        <h2>Uji Pemahamanmu</h2>
+        <p class="quiz-q" style="font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:1.2rem;line-height:1.4;color:var(--chalk);">Sebuah bola memiliki jari-jari 6 cm. Berapakah volume bola tersebut? (π = 3,14)</p>
+        <div class="opts" id="opts3">
+          <button class="opt-btn" onclick="answer3(0,this)">A. 678,24 cm³</button>
+          <button class="opt-btn" onclick="answer3(1,this)">B. 904,32 cm³</button>
+          <button class="opt-btn" onclick="answer3(2,this)">C. 1.130,4 cm³</button>
+          <button class="opt-btn" onclick="answer3(3,this)">D. 452,16 cm³</button>
+        </div>
+        <div class="feedback" id="fb3"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+        <button class="btn btn-primary" id="btn3next" onclick="nextSlide()" disabled>Selesai →</button>
+      </div>
+    </div>
+
+    <!-- Slide 4: Finish -->
+    <div class="slide">
+      <div class="finish">
+        <span class="finish-icon">🎉</span>
+        <div class="finish-title">Section 2 Selesai!</div>
+        <div class="finish-desc">Volume mengukur isi, Luas Permukaan mengukur kulit — sekarang kamu bisa membedakan dan menghitung keduanya untuk semua bangun ruang!</div>
+        <div class="xp">✨ +120 XP — Bangun Ruang</div>
+        <div class="finish-btns">
+          <a href="level4.html" class="btn btn-ghost">← Level Hub</a>
+          <a href="section3.html" class="btn btn-primary">Section 3 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+let cur=0;const total=5;
+function renderDots(){const d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<total;i++){const dot=document.createElement('div');dot.className='dot'+(i===cur?' active':i<cur?' done':'');d.appendChild(dot);}}
+function showSlide(n){document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('active',i===n));cur=n;renderDots();window.scrollTo({top:0,behavior:'smooth'});}
+function nextSlide(){if(cur<total-1)showSlide(cur+1);}
+function prevSlide(){if(cur>0)showSlide(cur-1);}
+function answer3(idx,btn){
+  const opts=document.querySelectorAll('#opts3 .opt-btn');
+  opts.forEach(b=>b.disabled=true);
+  const correct=1; // 904,32
+  const fb=document.getElementById('fb3');
+  if(idx===correct){btn.classList.add('correct');fb.className='feedback show ok';fb.textContent='✅ Betul! V = 4/3 × π × r³ = 4/3 × 3,14 × 216 = 4/3 × 678,24 = 904,32 cm³.';}
+  else{btn.classList.add('wrong');opts[correct].classList.add('correct');fb.className='feedback show no';fb.textContent='❌ Kurang tepat. V = 4/3 × 3,14 × 6³ = 4/3 × 3,14 × 216 = 904,32 cm³.';}
+  document.getElementById('btn3next').disabled=false;
+}
+renderDots();
+</script>
+</body>
+</html>

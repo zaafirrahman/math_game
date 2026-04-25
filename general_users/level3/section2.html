@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 2 · Persamaan Linear · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2228; --board-light:#262c38;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.25);
+    --teal:#3eb8b8; --teal-dark:#1a6e6e; --teal-bg:rgba(62,184,184,0.11); --teal-border:rgba(62,184,184,0.38);
+    --coral:#e07850; --coral-dark:#9a3f1e; --coral-bg:rgba(224,120,80,0.11); --coral-border:rgba(224,120,80,0.38);
+    --amber:#f0c060; --amber-dark:#c97d2e; --amber-bg:rgba(240,192,96,0.1); --amber-border:rgba(240,192,96,0.38);
+    --green:#4a9e69; --green-dark:#2c6e49; --green-bg:rgba(74,158,105,0.12); --green-border:rgba(74,158,105,0.38);
+    --red:#e06060; --red-bg:rgba(224,96,96,0.1); --red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(232,224,208,0.14); --card-bg:rgba(255,255,255,0.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,34,40,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--teal);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5.5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--teal-bg);border:1px solid var(--teal-border);color:var(--teal);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1.3rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,2rem);margin-bottom:0.6rem;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,0.3);}
+  h1 span{color:var(--teal);}
+  .intro{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(232,224,208,0.15);transition:all 0.3s;}
+  .dot.active{background:var(--teal);box-shadow:0 0 0 3px rgba(62,184,184,0.22);transform:scale(1.15);}
+  .dot.done{background:var(--teal-dark);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.06);}
+  .card-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.teal{color:var(--teal);}
+  .card-label.coral{color:var(--coral);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:0.7rem;line-height:1.35;color:var(--chalk);}
+  .card p{color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;}
+
+  .why-banner{background:linear-gradient(135deg,#162424,#1e2c1e);border:1px solid var(--teal-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.35);}
+  .why-banner::after{content:'=';position:absolute;right:1.2rem;bottom:-0.8rem;font-family:'Fredoka One',cursive;font-size:7rem;opacity:0.07;color:var(--teal);}
+  .why-banner h2{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:0.6rem;color:var(--chalk);}
+  .why-banner p{font-size:0.9rem;line-height:1.7;color:var(--chalk-muted);}
+  .why-list{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem;}
+  .why-item{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.88rem;color:var(--chalk-muted);}
+  .why-item span{flex-shrink:0;font-size:1.1rem;}
+
+  /* Balance visual */
+  .balance{display:flex;align-items:flex-end;justify-content:center;gap:0;margin:1.2rem 0;font-family:'Fredoka One',cursive;}
+  .balance-side{text-align:center;padding:0.8rem 1.2rem;border-radius:12px;min-width:110px;}
+  .balance-side.left{background:var(--teal-bg);border:1px solid var(--teal-border);}
+  .balance-side.right{background:var(--coral-bg);border:1px solid var(--coral-border);}
+  .balance-val{font-size:1.4rem;color:var(--chalk);}
+  .balance-label{font-family:'Patrick Hand',cursive;font-size:0.7rem;color:var(--chalk-muted);margin-top:0.2rem;}
+  .balance-pivot{font-size:2rem;color:var(--amber);padding:0 0.8rem;align-self:center;}
+
+  /* Steps */
+  .steps{display:flex;flex-direction:column;gap:0.65rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:var(--board-light);border:1px solid var(--card-border);border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;color:var(--chalk-muted);}
+  .step-n{font-family:'Fredoka One',cursive;font-size:0.8rem;color:var(--board);background:var(--teal);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .step strong{color:var(--teal);}
+  .step .co{color:var(--coral);}
+  .step .am{color:var(--amber);}
+  .step .gr{color:var(--green);}
+
+  /* Big eq */
+  .big-eq{background:var(--board-light);border:1px solid var(--card-border);border-radius:12px;padding:1.2rem;margin:1rem 0;text-align:center;}
+  .eq-text{font-family:'Fredoka One',cursive;font-size:clamp(1.1rem,3.5vw,1.6rem);color:var(--chalk);line-height:1.6;}
+  .eq-step{font-size:0.88rem;color:var(--chalk-muted);margin:0.2rem 0;font-family:'Patrick Hand',cursive;}
+  .eq-result{font-family:'Fredoka One',cursive;font-size:clamp(1.3rem,4vw,1.9rem);color:var(--green);}
+
+  /* Equation steps with arrow */
+  .eq-steps-list{margin:1rem 0;display:flex;flex-direction:column;gap:0;background:var(--board-light);border:1px solid var(--card-border);border-radius:12px;overflow:hidden;}
+  .eq-row{display:flex;align-items:center;padding:0.7rem 1.1rem;border-bottom:1px solid rgba(232,224,208,0.06);}
+  .eq-row:last-child{border-bottom:none;}
+  .eq-expr{font-family:'Fredoka One',cursive;font-size:1rem;flex:1;color:var(--chalk);}
+  .eq-op{font-family:'Patrick Hand',cursive;font-size:0.75rem;color:var(--chalk-muted);background:rgba(255,255,255,0.04);border-radius:6px;padding:0.15rem 0.5rem;white-space:nowrap;margin-left:0.8rem;}
+
+  .hl{border-radius:10px;padding:0.9rem 1.1rem;margin:0.8rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-teal{background:var(--teal-bg);border:1px solid var(--teal-border);}
+  .hl-coral{background:var(--coral-bg);border:1px solid var(--coral-border);}
+  .hl-amber{background:var(--amber-bg);border:1px solid var(--amber-border);}
+  .hl-green{background:var(--green-bg);border:1px solid var(--green-border);}
+  .hl-red{background:var(--red-bg);border:1px solid var(--red-border);}
+  .hl-teal strong{color:var(--teal);}
+  .hl-coral strong{color:var(--coral);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+
+  /* Case types */
+  .case-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.7rem;margin:1rem 0;}
+  @media(max-width:500px){.case-grid{grid-template-columns:1fr;}}
+  .case-box{border-radius:10px;padding:1rem;text-align:center;}
+  .case-box.one{background:var(--teal-bg);border:1px solid var(--teal-border);}
+  .case-box.none{background:var(--red-bg);border:1px solid var(--red-border);}
+  .case-box.inf{background:var(--amber-bg);border:1px solid var(--amber-border);}
+  .case-title{font-family:'Fredoka One',cursive;font-size:0.88rem;margin-bottom:0.4rem;}
+  .case-box.one .case-title{color:var(--teal);}
+  .case-box.none .case-title{color:var(--red);}
+  .case-box.inf .case-title{color:var(--amber);}
+  .case-expr{font-family:'Patrick Hand',cursive;font-size:0.8rem;color:var(--chalk-muted);line-height:1.5;}
+
+  .quiz-q{font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:1.2rem;line-height:1.4;color:var(--chalk);}
+  .opts{display:flex;flex-direction:column;gap:0.6rem;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.82rem 1rem;border-radius:10px;cursor:pointer;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover:not(:disabled){border-color:rgba(62,184,184,0.5);background:var(--teal-bg);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.8rem;padding:0.75rem 1rem;border-radius:10px;font-size:0.88rem;font-weight:800;display:none;line-height:1.5;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:var(--teal-dark);color:#fff;box-shadow:0 4px 14px rgba(26,110,110,0.45);}
+  .btn-primary:hover{background:var(--teal);transform:translateY(-2px);}
+  .btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--teal);margin-bottom:0.7rem;}
+  .finish-desc{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);line-height:1.7;margin-bottom:1.5rem;font-size:0.95rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber);padding:0.3rem 1rem;border-radius:20px;font-family:'Fredoka One',cursive;font-size:0.85rem;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level3.html">Level 3</a><span>›</span>
+  <span class="cur">Section 2</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">⚖️ Section 02 · Persamaan Linear</div>
+  <h1>Mencari <span>Si Anu</span></h1>
+  <p class="intro">Persamaan adalah timbangan. Kiri = kanan. Selama kamu melakukan hal yang sama pada kedua sisi, timbangan tetap seimbang — dan "si anu" akhirnya terungkap.</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- Slide 0: WHY -->
+    <div class="slide active">
+      <div class="why-banner">
+        <h2>Kenapa harus bisa memecahkan persamaan?</h2>
+        <p>Setiap kali ada sesuatu yang "belum diketahui" tapi ada informasinya, kamu perlu persamaan. Ini adalah skill dasar yang dipakai di hampir semua bidang.</p>
+        <div class="why-list">
+          <div class="why-item"><span>💰</span><div>Hitung berapa kali kerja lembur yang dibutuhkan untuk beli barang impian → persamaan linear</div></div>
+          <div class="why-item"><span>⚗️</span><div>Kimia: berapa gram zat yang perlu ditambah agar konsentrasi menjadi tertentu</div></div>
+          <div class="why-item"><span>🏗️</span><div>Teknik: hitung kekuatan yang diperlukan agar bangunan tidak roboh</div></div>
+          <div class="why-item"><span>📈</span><div>Break-even point bisnis: berapa unit harus terjual agar balik modal</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label teal">📌 Persamaan vs Ekspresi</div>
+        <h2>Apa bedanya?</h2>
+        <div style="display:flex;flex-direction:column;gap:0.7rem;margin-top:0.5rem;">
+          <div class="hl hl-coral"><strong>Ekspresi:</strong> 3x + 5 &nbsp;— hanya menyatakan sesuatu, tidak ada tanda "="</div>
+          <div class="hl hl-teal"><strong>Persamaan:</strong> 3x + 5 = 14 &nbsp;— menyatakan bahwa dua hal <em>sama nilainya</em>, ada tanda "="</div>
+        </div>
+        <div class="balance" style="margin-top:1.2rem;">
+          <div class="balance-side left">
+            <div class="balance-val">3x + 5</div>
+            <div class="balance-label">Sisi kiri</div>
+          </div>
+          <div class="balance-pivot">=</div>
+          <div class="balance-side right">
+            <div class="balance-val">14</div>
+            <div class="balance-label">Sisi kanan</div>
+          </div>
+        </div>
+        <p style="font-size:0.88rem;color:var(--chalk-muted);margin-top:0.5rem;text-align:center;font-family:'Patrick Hand',cursive;">Misi kita: temukan nilai x yang membuat kedua sisi benar-benar sama.</p>
+      </div>
+    </div>
+
+    <!-- Slide 1: Prinsip dasar -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label teal">📚 Prinsip Dasar</div>
+        <h2>Aturan Timbangan — Satu Prinsip, Semua Soal</h2>
+        <p style="margin-bottom:1rem;">Persamaan seperti timbangan. Kalau kamu tambah, kurang, kali, atau bagi sesuatu — lakukan hal yang <strong style="color:var(--chalk);">sama persis</strong> pada kedua sisi.</p>
+
+        <div class="steps">
+          <div class="step"><div class="step-n">+</div><strong>Tambah</strong> bilangan yang sama ke kedua sisi → keseimbangan terjaga</div>
+          <div class="step"><div class="step-n">−</div><strong>Kurang</strong> bilangan yang sama dari kedua sisi → keseimbangan terjaga</div>
+          <div class="step"><div class="step-n">×</div><strong>Kali</strong> kedua sisi dengan bilangan yang sama → keseimbangan terjaga</div>
+          <div class="step"><div class="step-n">÷</div><strong>Bagi</strong> kedua sisi dengan bilangan yang sama (≠ 0) → keseimbangan terjaga</div>
+        </div>
+
+        <div class="hl hl-amber"><strong>Strategi umum:</strong> Geser semua suku variabel ke satu sisi, semua konstanta ke sisi lain, lalu bagi koefisiennya.</div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Contoh langkah demi langkah -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📝 Contoh 1 — Dasar</div>
+        <h2>Selesaikan: 3x − 4 = 11</h2>
+        <div class="eq-steps-list">
+          <div class="eq-row"><div class="eq-expr">3x − 4 = 11</div><div class="eq-op">awal</div></div>
+          <div class="eq-row"><div class="eq-expr">3x − 4 <strong style="color:var(--teal);">+ 4</strong> = 11 <strong style="color:var(--teal);">+ 4</strong></div><div class="eq-op">+ 4 kedua sisi</div></div>
+          <div class="eq-row"><div class="eq-expr">3x = 15</div><div class="eq-op">sederhanakan</div></div>
+          <div class="eq-row"><div class="eq-expr">3x <strong style="color:var(--coral);">÷ 3</strong> = 15 <strong style="color:var(--coral);">÷ 3</strong></div><div class="eq-op">÷ 3 kedua sisi</div></div>
+          <div class="eq-row" style="background:var(--teal-bg);"><div class="eq-expr" style="color:var(--teal);">x = 5 ✓</div><div class="eq-op">selesai!</div></div>
+        </div>
+        <div class="hl hl-green"><strong>Verifikasi:</strong> 3(5) − 4 = 15 − 4 = 11 ✓ Selalu cek jawaban dengan substitusi kembali!</div>
+      </div>
+
+      <div class="card">
+        <div class="card-label amber">📝 Contoh 2 — Variabel di dua sisi</div>
+        <h2>Selesaikan: 5x + 3 = 2x + 12</h2>
+        <div class="eq-steps-list">
+          <div class="eq-row"><div class="eq-expr">5x + 3 = 2x + 12</div><div class="eq-op">awal</div></div>
+          <div class="eq-row"><div class="eq-expr">5x <strong style="color:var(--teal);">− 2x</strong> + 3 = 12</div><div class="eq-op">− 2x kedua sisi</div></div>
+          <div class="eq-row"><div class="eq-expr">3x + 3 = 12</div><div class="eq-op">sederhanakan</div></div>
+          <div class="eq-row"><div class="eq-expr">3x = 12 <strong style="color:var(--teal);">− 3</strong> = 9</div><div class="eq-op">− 3 kedua sisi</div></div>
+          <div class="eq-row" style="background:var(--teal-bg);"><div class="eq-expr" style="color:var(--teal);">x = 3 ✓</div><div class="eq-op">÷ 3</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Dengan distribusi + pecahan -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label coral">📝 Contoh 3 — Distribusi</div>
+        <h2>Selesaikan: 2(x + 4) = 3x − 1</h2>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div>Distribusikan: <strong>2x + 8 = 3x − 1</strong></div>
+          <div class="step"><div class="step-n">2</div>Pindahkan x ke kanan: <strong>8 = 3x − 2x − 1 = x − 1</strong></div>
+          <div class="step"><div class="step-n">3</div>Tambah 1: <strong class="gr">9 = x → x = 9</strong></div>
+        </div>
+        <div class="big-eq">
+          <div class="eq-text">2(x + 4) = 3x − 1</div>
+          <div class="eq-step">→ 2x + 8 = 3x − 1 → 9 = x</div>
+          <div class="eq-result">x = 9 ✓</div>
+        </div>
+        <div class="hl hl-amber" style="margin-top:0.8rem;"><strong>Cek:</strong> 2(9+4) = 2×13 = 26. &nbsp; 3(9)−1 = 27−1 = 26. ✓ Keduanya sama!</div>
+      </div>
+
+      <div class="card" style="border-style:dashed;background:transparent;">
+        <div class="card-label teal">💡 Trik "Pindah Ruas"</div>
+        <p>Memindahkan suku ke sisi lain = melakukan operasi kebalikan. Suku positif jadi negatif saat pindah, dan sebaliknya. Ini bukan aturan ajaib — ini hanya singkatan dari "operasi ke kedua sisi".</p>
+        <div class="big-eq" style="margin-top:0.8rem;">
+          <div class="eq-text">3x + 5 = 20</div>
+          <div class="eq-step">→ 3x = 20 − 5 (5 pindah ruas, jadi negatif)</div>
+          <div class="eq-result">→ x = 15 ÷ 3 = 5</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Kasus khusus + aplikasi -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label teal">📚 Tiga Kemungkinan Solusi</div>
+        <h2>Tidak selalu ada satu jawaban</h2>
+        <div class="case-grid">
+          <div class="case-box one">
+            <div class="case-title">Tepat Satu Solusi</div>
+            <div class="case-expr">2x + 3 = 9<br>→ x = 3<br>Normal!</div>
+          </div>
+          <div class="case-box none">
+            <div class="case-title">Tidak Ada Solusi</div>
+            <div class="case-expr">2x + 3 = 2x + 7<br>→ 3 = 7 (mustahil!)<br>Kontradiksi</div>
+          </div>
+          <div class="case-box inf">
+            <div class="case-title">Tak Terhingga</div>
+            <div class="case-expr">2x + 3 = 2x + 3<br>→ 3 = 3 (selalu true)<br>Identitas</div>
+          </div>
+        </div>
+        <div class="hl hl-amber">Kalau variabel hilang dan kamu mendapat <strong>pernyataan salah</strong> → tidak ada solusi. Kalau <strong>selalu benar</strong> → tak terhingga solusi.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-label coral">📝 Aplikasi Nyata</div>
+        <h2>Soal cerita: Seorang penjual memiliki 40 buah apel dan jeruk. Jumlah apel 4 lebih banyak dari jeruk. Berapa apel dan jeruk?</h2>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div>Misal jeruk = <strong>x</strong>, maka apel = <strong>x + 4</strong></div>
+          <div class="step"><div class="step-n">2</div>Total: <strong>x + (x + 4) = 40</strong></div>
+          <div class="step"><div class="step-n">3</div>Sederhanakan: <strong>2x + 4 = 40 → 2x = 36 → x = 18</strong></div>
+          <div class="step"><div class="step-n">4</div>Jeruk = <strong class="co">18</strong>, Apel = <strong class="gr">18 + 4 = 22</strong>. Total: 22+18=40 ✓</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Soal Pemanasan -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">🎯 Soal Pemanasan</div>
+        <div class="quiz-q">Selesaikan: 4(x − 2) = 2x + 6. Nilai x adalah?</div>
+        <div class="opts" id="q1">
+          <button class="opt-btn" onclick="chk(this,'q1',false,0)">x = 5</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false,1)">x = 6</button>
+          <button class="opt-btn" onclick="chk(this,'q1',true,2)">x = 7</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false,3)">x = 8</button>
+        </div>
+        <div class="feedback" id="q1-fb"></div>
+      </div>
+      <div class="card" style="border-style:dashed;background:transparent;">
+        <div class="card-label amber">💡 Hint</div>
+        <p>Pertama distribusikan 4 ke dalam kurung, lalu kumpulkan suku x ke satu sisi dan konstanta ke sisi lain.</p>
+      </div>
+    </div>
+
+    <!-- Slide 6: Finish -->
+    <div class="slide">
+      <div class="card finish">
+        <span class="finish-icon">⚖️</span>
+        <div class="finish-title">Section 2 Selesai!</div>
+        <div class="finish-desc">Kamu sudah bisa memecahkan persamaan linear satu variabel — dengan distribusi, variabel di dua sisi, dan bahkan soal cerita. Siap buat level berikutnya: dua variabel sekaligus!</div>
+        <div class="xp">✨ +60 XP — Persamaan Linear Dikuasai!</div>
+        <div class="finish-btns">
+          <a href="level3.html" class="btn btn-ghost">← Level Hub</a>
+          <a href="section3.html" class="btn btn-primary">Section 3 →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-btns" id="navbtns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="go(-1)" disabled>← Prev</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL=7; let cur=0; let q1done=false;
+  const dotsEl=document.getElementById('dots');
+  const slides=document.querySelectorAll('.slide');
+  const prev=document.getElementById('prevBtn'),next=document.getElementById('nextBtn'),nav=document.getElementById('navbtns');
+  for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+  function updateUI(){
+    slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+    dotsEl.querySelectorAll('.dot').forEach((d,i)=>{d.classList.remove('active','done');if(i<cur)d.classList.add('done');if(i===cur)d.classList.add('active');});
+    prev.disabled=cur===0;
+    nav.style.display=cur===TOTAL-1?'none':'flex';
+    if(cur===5)next.disabled=!q1done; else next.disabled=false;
+  }
+  function go(dir){cur=Math.max(0,Math.min(TOTAL-1,cur+dir));updateUI();}
+  function chk(btn,gid,correct,idx){
+    if(q1done)return; q1done=true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>b.disabled=true);
+    btn.classList.add(correct?'correct':'wrong');
+    if(!correct)document.querySelectorAll(`#${gid} .opt-btn`)[2].classList.add('correct');
+    const fb=document.getElementById(`${gid}-fb`);
+    fb.className='feedback show '+(correct?'ok':'no');
+    fb.textContent=correct
+      ?'✅ Betul! 4(x−2)=2x+6 → 4x−8=2x+6 → 4x−2x=6+8 → 2x=14 → x=7. Cek: 4(5)=20, 2(7)+6=20 ✓'
+      :'❌ Distribusikan dulu: 4x−8=2x+6. Pindahkan: 2x=14. Maka x=7.';
+    next.disabled=false;
+  }
+  updateUI();
+</script>
+</body>
+</html>

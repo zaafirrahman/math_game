@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summary · Cheat Sheet Level 4 · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2228; --board-light:#262c38; --board-mid:#222830;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.25);
+    --orange:#e8793a; --orange-dark:#a64d1c; --orange-bg:rgba(232,121,58,0.13); --orange-border:rgba(232,121,58,0.4);
+    --coral:#f09060; --coral-bg:rgba(240,144,96,0.12); --coral-border:rgba(240,144,96,0.38);
+    --amber:#f0c060; --amber-dark:#c97d2e; --amber-bg:rgba(240,192,96,0.1); --amber-border:rgba(240,192,96,0.38);
+    --warm:#e8a060; --warm-bg:rgba(232,160,96,0.12); --warm-border:rgba(232,160,96,0.38);
+    --green:#4a9e69; --green-bg:rgba(74,158,105,0.12); --green-border:rgba(74,158,105,0.38);
+    --red:#e06060; --red-bg:rgba(224,96,96,0.1); --red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(232,224,208,0.14); --card-bg:rgba(255,255,255,0.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,34,40,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--orange);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--coral);}
+  .wrap{max-width:780px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .page-header{text-align:center;margin-bottom:2.5rem;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--orange-bg);border:1px solid var(--orange-border);color:var(--orange);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.5rem,4vw,2.1rem);text-shadow:2px 2px 0 rgba(0,0,0,0.3);margin-bottom:0.4rem;}
+  h1 span{color:var(--orange);}
+  .page-sub{font-family:'Patrick Hand',cursive;font-size:0.9rem;color:var(--chalk-muted);}
+  .section-divider{display:flex;align-items:center;gap:0.8rem;margin:2rem 0 1.2rem;}
+  .sd-line{flex:1;height:1px;background:var(--chalk-dim);}
+  .sd-label{font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--chalk-muted);white-space:nowrap;}
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.5rem 1.6rem;margin-bottom:1rem;box-shadow:0 4px 18px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);}
+  .card-title{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--chalk);margin-bottom:0.9rem;display:flex;align-items:center;gap:0.5rem;}
+
+  /* Formula grid — 2 cols */
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.65rem;margin:0.6rem 0;}
+  @media(max-width:500px){.formula-grid{grid-template-columns:1fr;}}
+  .fb{border-radius:10px;padding:0.8rem 1rem;}
+  .fb.a{background:var(--orange-bg);border:1px solid var(--orange-border);}
+  .fb.b{background:var(--coral-bg);border:1px solid var(--coral-border);}
+  .fb.c{background:var(--amber-bg);border:1px solid var(--amber-border);}
+  .fb.d{background:var(--warm-bg);border:1px solid var(--warm-border);}
+  .fb.e{background:var(--green-bg);border:1px solid var(--green-border);}
+  .fb-op{font-family:'Patrick Hand',cursive;font-size:0.68rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:0.3rem;}
+  .fb.a .fb-op{color:var(--orange);}
+  .fb.b .fb-op{color:var(--coral);}
+  .fb.c .fb-op{color:var(--amber);}
+  .fb.d .fb-op{color:var(--warm);}
+  .fb.e .fb-op{color:var(--green);}
+  .fb-eq{font-family:'Fredoka One',cursive;font-size:0.9rem;margin-bottom:0.25rem;}
+  .fb.a .fb-eq{color:var(--orange);}
+  .fb.b .fb-eq{color:var(--coral);}
+  .fb.c .fb-eq{color:var(--amber);}
+  .fb.d .fb-eq{color:var(--warm);}
+  .fb.e .fb-eq{color:var(--green);}
+  .fb-note{font-family:'Patrick Hand',cursive;font-size:0.73rem;color:var(--chalk-muted);line-height:1.45;}
+
+  /* Triple chips */
+  .triple-row{display:flex;gap:0.5rem;flex-wrap:wrap;margin:0.6rem 0;}
+  .triple-chip{background:var(--orange-bg);border:1px solid var(--orange-border);color:var(--orange);border-radius:8px;padding:0.3rem 0.7rem;font-family:'Fredoka One',cursive;font-size:0.82rem;}
+
+  /* Solid table */
+  .solid-table{width:100%;border-collapse:collapse;margin:0.7rem 0;font-size:0.84rem;}
+  .solid-table th{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--chalk-muted);text-align:left;padding:0.4rem 0.6rem;border-bottom:1px solid var(--card-border);}
+  .solid-table td{padding:0.4rem 0.6rem;border-bottom:1px solid rgba(232,224,208,0.06);color:var(--chalk-muted);vertical-align:top;line-height:1.5;}
+  .solid-table td:first-child{font-family:'Fredoka One',cursive;color:var(--coral);}
+  .solid-table td:nth-child(2){font-family:'Fredoka One',cursive;font-size:0.85rem;color:var(--chalk);}
+  .solid-table td:nth-child(3){font-family:'Fredoka One',cursive;font-size:0.85rem;color:var(--chalk);}
+  .solid-table tr:last-child td{border-bottom:none;}
+  @media(max-width:500px){.solid-table{font-size:0.76rem;}.solid-table td,.solid-table th{padding:0.3rem 0.4rem;}}
+
+  /* Transform table */
+  .trans-table{width:100%;border-collapse:collapse;margin:0.7rem 0;font-size:0.84rem;}
+  .trans-table th{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--chalk-muted);text-align:left;padding:0.4rem 0.6rem;border-bottom:1px solid var(--card-border);}
+  .trans-table td{padding:0.4rem 0.6rem;border-bottom:1px solid rgba(232,224,208,0.06);color:var(--chalk-muted);vertical-align:top;line-height:1.5;}
+  .trans-table td:first-child{font-family:'Fredoka One',cursive;color:var(--warm);white-space:nowrap;}
+  .trans-table td:nth-child(2){font-family:'Fredoka One',cursive;color:var(--chalk);}
+  .trans-table tr:last-child td{border-bottom:none;}
+
+  /* Highlight */
+  .hl{border-radius:10px;padding:0.75rem 1rem;font-size:0.85rem;line-height:1.6;margin:0.5rem 0;}
+  .hl-orange{background:var(--orange-bg);border:1px solid var(--orange-border);}
+  .hl-coral{background:var(--coral-bg);border:1px solid var(--coral-border);}
+  .hl-amber{background:var(--amber-bg);border:1px solid var(--amber-border);}
+  .hl-warm{background:var(--warm-bg);border:1px solid var(--warm-border);}
+  .hl-green{background:var(--green-bg);border:1px solid var(--green-border);}
+  .hl-red{background:var(--red-bg);border:1px solid var(--red-border);}
+  .hl-orange strong{color:var(--orange);}
+  .hl-coral strong{color:var(--coral);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-warm strong{color:var(--warm);}
+  .hl-green strong{color:var(--green);}
+  .hl-red strong{color:var(--red);}
+
+  /* Rules list */
+  .rules{display:flex;flex-direction:column;gap:0.5rem;margin:0.5rem 0;}
+  .rule{display:flex;gap:0.8rem;align-items:flex-start;font-size:0.85rem;color:var(--chalk-muted);line-height:1.6;}
+  .rule-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+  .rule strong{color:var(--chalk);}
+
+  .footer-nav{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2.5rem;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:var(--orange-dark);color:#fff;box-shadow:0 4px 14px rgba(166,77,28,0.5);}
+  .btn-primary:hover{background:var(--orange);transform:translateY(-2px);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level4.html">Level 4</a><span>›</span>
+  <span class="cur">Cheat Sheet</span>
+</nav>
+<div class="wrap">
+  <div class="page-header">
+    <div class="page-badge">📋 Summary</div>
+    <h1>Level 4 <span>Cheat Sheet</span></h1>
+    <p class="page-sub">Semua rumus geometri Level 4 dalam satu halaman. Screenshot, cetak, atau simpan!</p>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="section-divider"><div class="sd-line"></div><div class="sd-label">📐 Section 1 — Bangun Datar & Pythagoras</div><div class="sd-line"></div></div>
+
+  <div class="card">
+    <div class="card-title"><span>📐</span> Luas & Keliling Bangun Datar</div>
+    <div class="formula-grid">
+      <div class="fb a"><div class="fb-op">Persegi (sisi s)</div><div class="fb-eq">L = s² &nbsp;·&nbsp; K = 4s</div></div>
+      <div class="fb b"><div class="fb-op">Persegi Panjang (p × l)</div><div class="fb-eq">L = p×l &nbsp;·&nbsp; K = 2(p+l)</div></div>
+      <div class="fb c"><div class="fb-op">Segitiga (alas a, tinggi t)</div><div class="fb-eq">L = ½ × a × t</div><div class="fb-note">K = jumlah ketiga sisi</div></div>
+      <div class="fb d"><div class="fb-op">Lingkaran (jari-jari r)</div><div class="fb-eq">L = πr² &nbsp;·&nbsp; K = 2πr</div></div>
+      <div class="fb a"><div class="fb-op">Trapesium (a, b = sisi sejajar)</div><div class="fb-eq">L = ½(a+b) × t</div></div>
+      <div class="fb b"><div class="fb-op">Jajar Genjang (alas a, tinggi t)</div><div class="fb-eq">L = a × t</div></div>
+    </div>
+    <div class="hl hl-amber"><strong>π:</strong> Gunakan 22/7 jika r kelipatan 7, gunakan 3,14 jika tidak ada keterangan khusus.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>📏</span> Teorema Pythagoras & Triple</div>
+    <div class="hl hl-orange" style="font-size:1.1rem;text-align:center;"><strong>a² + b² = c²</strong> &nbsp; → &nbsp; c = sisi miring (hipotenusa)</div>
+    <div style="margin-top:0.8rem;">
+      <div class="card-title" style="font-size:0.88rem;margin-bottom:0.5rem;"><span>⚡</span> Triple Pythagoras — Hapal & Hemat Waktu!</div>
+      <div class="triple-row">
+        <span class="triple-chip">3 – 4 – 5</span>
+        <span class="triple-chip">5 – 12 – 13</span>
+        <span class="triple-chip">8 – 15 – 17</span>
+        <span class="triple-chip">7 – 24 – 25</span>
+        <span class="triple-chip">6 – 8 – 10</span>
+        <span class="triple-chip">9 – 12 – 15</span>
+        <span class="triple-chip">10 – 24 – 26</span>
+      </div>
+    </div>
+    <div class="hl hl-coral"><strong>Kelipatan triple valid!</strong> 3-4-5 → 6-8-10 → 9-12-15 → 12-16-20, dst. Jika soal punya dua sisi yang merupakan kelipatan triple, langsung ketahuan sisi ketiga.</div>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section-divider"><div class="sd-line"></div><div class="sd-label">📦 Section 2 — Bangun Ruang</div><div class="sd-line"></div></div>
+
+  <div class="card">
+    <div class="card-title"><span>📦</span> Volume & Luas Permukaan — 5 Bangun Ruang</div>
+    <table class="solid-table">
+      <tr><th>Bangun</th><th>Volume</th><th>Luas Permukaan</th></tr>
+      <tr><td>Kubus (s)</td><td>s³</td><td>6s²</td></tr>
+      <tr><td>Balok (p,l,t)</td><td>p × l × t</td><td>2(pl + pt + lt)</td></tr>
+      <tr><td>Tabung (r,t)</td><td>πr²t</td><td>2πr(r + t)</td></tr>
+      <tr><td>Kerucut (r,t,s)</td><td>⅓πr²t</td><td>πr(r + s) &nbsp; *s=garis pelukis</td></tr>
+      <tr><td>Bola (r)</td><td>4/3 πr³</td><td>4πr²</td></tr>
+    </table>
+    <div class="hl hl-orange"><strong>Garis pelukis kerucut:</strong> s = √(r² + t²). Ini sisi miring jika dilihat dari samping — pakai Pythagoras!</div>
+    <div class="hl hl-coral"><strong>Volume vs Luas Permukaan:</strong> V (dalam kubik cm³/m³) = isi/kapasitas. LP (dalam persegi cm²/m²) = bahan pembungkus.</div>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section-divider"><div class="sd-line"></div><div class="sd-label">🔄 Section 3 — Transformasi</div><div class="sd-line"></div></div>
+
+  <div class="card">
+    <div class="card-title"><span>🔄</span> Aturan Transformasi Titik (x, y)</div>
+    <table class="trans-table">
+      <tr><th>Transformasi</th><th>Rumus / Hasil</th><th>Catatan</th></tr>
+      <tr><td>Translasi (a,b)</td><td>(x+a, y+b)</td><td>Geser sejauh vektor (a,b)</td></tr>
+      <tr><td>Rotasi 90° CCW</td><td>(−y, x)</td><td>Berlawanan jarum jam</td></tr>
+      <tr><td>Rotasi 90° CW</td><td>(y, −x)</td><td>Searah jarum jam</td></tr>
+      <tr><td>Rotasi 180°</td><td>(−x, −y)</td><td>Sama CW dan CCW</td></tr>
+      <tr><td>Refleksi sumbu x</td><td>(x, −y)</td><td>Balik tanda y</td></tr>
+      <tr><td>Refleksi sumbu y</td><td>(−x, y)</td><td>Balik tanda x</td></tr>
+      <tr><td>Refleksi y = x</td><td>(y, x)</td><td>Tukar x dan y</td></tr>
+      <tr><td>Refleksi y = −x</td><td>(−y, −x)</td><td>Tukar dan balik tanda</td></tr>
+      <tr><td>Dilatasi k (pusat O)</td><td>(kx, ky)</td><td>k>1 membesar, 0&lt;k&lt;1 mengecil</td></tr>
+    </table>
+    <div class="hl hl-warm"><strong>Trik Rotasi 90° CCW:</strong> "Negatif y jadi x baru, x lama jadi y baru" → (x,y) → (−y, x). Untuk CW kebalikannya: (y, −x).</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>⚠️</span> Kesalahan Umum — Jangan Lakukan!</div>
+    <div class="rules">
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>Pythagoras: c bukan sembarang sisi.</strong> c SELALU sisi miring (hipotenusa) — sisi yang ada di hadapan sudut 90°. a² + b² = c², bukan c² + a² = b².</div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>Tinggi bukan sisi miring!</strong> Dalam rumus luas (½ × a × t), t adalah tinggi tegak lurus ke alas — bukan sisi miring trapesium/segitiga.</div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>Volume dan LP punya satuan berbeda.</strong> Volume = cm³ (kubik), Luas Permukaan = cm² (persegi). Jangan tertukar!</div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>Rotasi 90° CCW ≠ (y, −x).</strong> Itu 90° CW. Untuk CCW: (x,y) → (−y, x). Beda tanda!</div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>Refleksi sumbu x ≠ balik tanda x.</strong> Refleksi sumbu x → y yang berubah tanda: (x,y) → (x, −y). Balik tanda x itu refleksi sumbu y.</div></div>
+    </div>
+  </div>
+
+  <div class="footer-nav">
+    <a href="level4.html" class="btn btn-ghost">← Level Hub</a>
+    <a href="quicktest.html" class="btn btn-primary">Quick Test →</a>
+  </div>
+</div>
+</body>
+</html>

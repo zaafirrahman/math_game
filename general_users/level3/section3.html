@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 3 · SPLDV · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2228; --board-light:#262c38;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.25);
+    --teal:#3eb8b8; --teal-dark:#1a6e6e; --teal-bg:rgba(62,184,184,0.11); --teal-border:rgba(62,184,184,0.38);
+    --coral:#e07850; --coral-dark:#9a3f1e; --coral-bg:rgba(224,120,80,0.11); --coral-border:rgba(224,120,80,0.38);
+    --amber:#f0c060; --amber-dark:#c97d2e; --amber-bg:rgba(240,192,96,0.1); --amber-border:rgba(240,192,96,0.38);
+    --green:#4a9e69; --green-dark:#2c6e49; --green-bg:rgba(74,158,105,0.12); --green-border:rgba(74,158,105,0.38);
+    --red:#e06060; --red-bg:rgba(224,96,96,0.1); --red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(232,224,208,0.14); --card-bg:rgba(255,255,255,0.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,34,40,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--coral);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5.5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--coral-bg);border:1px solid var(--coral-border);color:var(--coral);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1.3rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,2rem);margin-bottom:0.6rem;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,0.3);}
+  h1 span{color:var(--coral);}
+  .intro{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(232,224,208,0.15);transition:all 0.3s;}
+  .dot.active{background:var(--coral);box-shadow:0 0 0 3px rgba(224,120,80,0.22);transform:scale(1.15);}
+  .dot.done{background:var(--coral-dark);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.06);}
+  .card-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.teal{color:var(--teal);}
+  .card-label.coral{color:var(--coral);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:0.7rem;line-height:1.35;color:var(--chalk);}
+  .card p{color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;}
+
+  .why-banner{background:linear-gradient(135deg,#241810,#302018);border:1px solid var(--coral-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.35);}
+  .why-banner::after{content:'🕵️';position:absolute;right:1rem;bottom:-0.3rem;font-size:4.5rem;opacity:0.12;}
+  .why-banner h2{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:0.6rem;color:var(--chalk);}
+  .why-banner p{font-size:0.9rem;line-height:1.7;color:var(--chalk-muted);}
+  .why-list{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem;}
+  .why-item{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.88rem;color:var(--chalk-muted);}
+  .why-item span{flex-shrink:0;font-size:1.1rem;}
+
+  /* System display */
+  .system-box{background:var(--board-light);border:1px solid var(--card-border);border-radius:12px;padding:1.2rem 1.5rem;margin:1rem 0;position:relative;}
+  .system-brace{position:absolute;left:0.6rem;top:50%;transform:translateY(-50%);font-size:2.5rem;color:var(--chalk-muted);font-family:serif;}
+  .system-eqs{margin-left:1.5rem;display:flex;flex-direction:column;gap:0.5rem;}
+  .sys-eq{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--chalk);}
+  .sys-eq .label{font-family:'Patrick Hand',cursive;font-size:0.7rem;color:var(--chalk-muted);margin-left:0.7rem;}
+
+  /* Method tabs */
+  .method-tabs{display:flex;gap:0.5rem;margin:1rem 0 0.5rem;flex-wrap:wrap;}
+  .mtab{padding:0.4rem 0.9rem;border-radius:20px;font-family:'Patrick Hand',cursive;font-size:0.78rem;border:1px solid;cursor:default;}
+  .mtab.subst{background:var(--teal-bg);border-color:var(--teal-border);color:var(--teal);}
+  .mtab.elim{background:var(--coral-bg);border-color:var(--coral-border);color:var(--coral);}
+  .mtab.graf{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber);}
+
+  /* Steps */
+  .steps{display:flex;flex-direction:column;gap:0.65rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:var(--board-light);border:1px solid var(--card-border);border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;color:var(--chalk-muted);}
+  .step-n{font-family:'Fredoka One',cursive;font-size:0.8rem;color:var(--board);background:var(--coral);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .step strong{color:var(--coral);}
+  .step .te{color:var(--teal);}
+  .step .am{color:var(--amber);}
+  .step .gr{color:var(--green);}
+
+  /* Eq row display */
+  .eq-steps-list{margin:1rem 0;display:flex;flex-direction:column;gap:0;background:var(--board-light);border:1px solid var(--card-border);border-radius:12px;overflow:hidden;}
+  .eq-row{display:flex;align-items:center;padding:0.7rem 1.1rem;border-bottom:1px solid rgba(232,224,208,0.06);}
+  .eq-row:last-child{border-bottom:none;}
+  .eq-expr{font-family:'Fredoka One',cursive;font-size:1rem;flex:1;color:var(--chalk);}
+  .eq-op{font-family:'Patrick Hand',cursive;font-size:0.75rem;color:var(--chalk-muted);background:rgba(255,255,255,0.04);border-radius:6px;padding:0.15rem 0.5rem;white-space:nowrap;margin-left:0.8rem;}
+
+  .big-eq{background:var(--board-light);border:1px solid var(--card-border);border-radius:12px;padding:1.2rem;margin:1rem 0;text-align:center;}
+  .eq-text{font-family:'Fredoka One',cursive;font-size:clamp(1.1rem,3.5vw,1.6rem);color:var(--chalk);line-height:1.6;}
+  .eq-step{font-size:0.88rem;color:var(--chalk-muted);margin:0.2rem 0;font-family:'Patrick Hand',cursive;}
+  .eq-result{font-family:'Fredoka One',cursive;font-size:clamp(1.2rem,4vw,1.7rem);color:var(--green);}
+
+  .hl{border-radius:10px;padding:0.9rem 1.1rem;margin:0.8rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-teal{background:var(--teal-bg);border:1px solid var(--teal-border);}
+  .hl-coral{background:var(--coral-bg);border:1px solid var(--coral-border);}
+  .hl-amber{background:var(--amber-bg);border:1px solid var(--amber-border);}
+  .hl-green{background:var(--green-bg);border:1px solid var(--green-border);}
+  .hl-red{background:var(--red-bg);border:1px solid var(--red-border);}
+  .hl-teal strong{color:var(--teal);}
+  .hl-coral strong{color:var(--coral);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+
+  .quiz-q{font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:1.2rem;line-height:1.4;color:var(--chalk);}
+  .opts{display:flex;flex-direction:column;gap:0.6rem;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.82rem 1rem;border-radius:10px;cursor:pointer;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover:not(:disabled){border-color:rgba(224,120,80,0.5);background:var(--coral-bg);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.8rem;padding:0.75rem 1rem;border-radius:10px;font-size:0.88rem;font-weight:800;display:none;line-height:1.5;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:var(--coral-dark);color:#fff;box-shadow:0 4px 14px rgba(154,63,30,0.45);}
+  .btn-primary:hover{background:var(--coral);transform:translateY(-2px);}
+  .btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--coral);margin-bottom:0.7rem;}
+  .finish-desc{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);line-height:1.7;margin-bottom:1.5rem;font-size:0.95rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber);padding:0.3rem 1rem;border-radius:20px;font-family:'Fredoka One',cursive;font-size:0.85rem;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level3.html">Level 3</a><span>›</span>
+  <span class="cur">Section 3</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🕵️ Section 03 · SPLDV</div>
+  <h1>Dua <span>Rahasia</span>, Dua Petunjuk</h1>
+  <p class="intro">Satu persamaan bisa dikirim untuk menemukan satu yang tak diketahui. Tapi dua variabel membutuhkan dua persamaan. Ini adalah seni memecahkan dua misteri sekaligus.</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- Slide 0: WHY -->
+    <div class="slide active">
+      <div class="why-banner">
+        <h2>Kenapa butuh sistem persamaan?</h2>
+        <p>Dunia nyata sering punya dua hal yang tidak diketahui sekaligus. Satu petunjuk saja tidak cukup — kamu butuh dua petunjuk yang saling melengkapi.</p>
+        <div class="why-list">
+          <div class="why-item"><span>☕</span><div>Harga 2 kopi + 1 teh = Rp35.000. Harga 1 kopi + 2 teh = Rp28.000. Berapa harga masing-masing? → SPLDV</div></div>
+          <div class="why-item"><span>🚢</span><div>Kapal memuat penumpang dan kargo. Total berat dan jumlah diketahui — berapa masing-masing? → SPLDV</div></div>
+          <div class="why-item"><span>⚗️</span><div>Campurkan dua larutan berbeda konsentrasi untuk dapat konsentrasi target</div></div>
+          <div class="why-item"><span>🏃</span><div>Dua pelari dengan kecepatan berbeda — kapan yang lebih cepat menyusul?</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label coral">📌 Apa itu SPLDV?</div>
+        <h2>Sistem Persamaan Linear Dua Variabel</h2>
+        <p style="margin-bottom:0.9rem;">Dua persamaan linear dengan dua variabel yang <strong style="color:var(--chalk);">harus dipenuhi secara bersamaan</strong>.</p>
+        <div class="system-box">
+          <div class="system-brace">{</div>
+          <div class="system-eqs">
+            <div class="sys-eq">x + y = 10 <span class="label">— Persamaan 1</span></div>
+            <div class="sys-eq">x − y = 4 &nbsp;<span class="label">— Persamaan 2</span></div>
+          </div>
+        </div>
+        <p style="font-size:0.88rem;color:var(--chalk-muted);margin-top:0.5rem;">Kita mencari nilai x dan y yang membuat <em>keduanya</em> benar sekaligus.</p>
+        <div class="method-tabs">
+          <span class="mtab subst">🔄 Substitusi</span>
+          <span class="mtab elim">➖ Eliminasi</span>
+          <span class="mtab graf">📈 Grafik</span>
+        </div>
+        <p style="font-size:0.82rem;color:var(--chalk-muted);">Tiga metode, satu tujuan. Pilih yang paling cocok dengan soalnya.</p>
+      </div>
+    </div>
+
+    <!-- Slide 1: Metode Substitusi -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label teal">📚 Metode Substitusi</div>
+        <h2>Nyatakan satu variabel, ganti ke persamaan lain</h2>
+        <p style="margin-bottom:0.8rem;">Cocok bila salah satu persamaan mudah dinyatakan dalam satu variabel.</p>
+
+        <div class="system-box">
+          <div class="system-brace">{</div>
+          <div class="system-eqs">
+            <div class="sys-eq" style="color:var(--teal);">x + y = 10 &nbsp;&nbsp;&nbsp;(1)</div>
+            <div class="sys-eq" style="color:var(--coral);">2x − y = 5 &nbsp;&nbsp;&nbsp;(2)</div>
+          </div>
+        </div>
+
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div>Dari (1): <strong>x = 10 − y</strong> (nyatakan x dalam y)</div>
+          <div class="step"><div class="step-n">2</div>Substitusi ke (2): <strong>2(10 − y) − y = 5</strong></div>
+          <div class="step"><div class="step-n">3</div>Distribusikan: <strong>20 − 2y − y = 5 → 20 − 3y = 5</strong></div>
+          <div class="step"><div class="step-n">4</div>Selesaikan: <strong>−3y = −15 → <span class="te">y = 5</span></strong></div>
+          <div class="step"><div class="step-n">5</div>Kembali ke (1): <strong>x = 10 − 5 = <span class="gr">x = 5</span></strong></div>
+        </div>
+
+        <div class="big-eq">
+          <div class="eq-result">Solusi: x = 5, y = 5 ✓</div>
+        </div>
+        <div class="hl hl-teal"><strong>Cek di (2):</strong> 2(5) − 5 = 10 − 5 = 5 ✓ Selalu verifikasi di KEDUA persamaan!</div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Metode Eliminasi -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label coral">📚 Metode Eliminasi</div>
+        <h2>Hapuskan satu variabel dengan menjumlah atau mengurangi persamaan</h2>
+        <p style="margin-bottom:0.8rem;">Cocok bila koefisien salah satu variabel sama atau mudah disamakan.</p>
+
+        <div class="system-box">
+          <div class="system-brace">{</div>
+          <div class="system-eqs">
+            <div class="sys-eq" style="color:var(--teal);">3x + 2y = 16 &nbsp;&nbsp;&nbsp;(1)</div>
+            <div class="sys-eq" style="color:var(--coral);">x + 2y = 8 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2)</div>
+          </div>
+        </div>
+
+        <div class="eq-steps-list">
+          <div class="eq-row"><div class="eq-expr">3x + 2y = 16</div><div class="eq-op">persamaan (1)</div></div>
+          <div class="eq-row"><div class="eq-expr">x + 2y &nbsp;= 8</div><div class="eq-op">persamaan (2)</div></div>
+          <div class="eq-row" style="background:rgba(224,120,80,0.08);"><div class="eq-expr" style="color:var(--coral);">(1) − (2):</div><div class="eq-op">koef 2y sama → kurang</div></div>
+          <div class="eq-row"><div class="eq-expr">2x = 8 → <strong style="color:var(--teal);">x = 4</strong></div><div class="eq-op">y tereleminasi!</div></div>
+          <div class="eq-row"><div class="eq-expr">Substitusi ke (2): 4 + 2y = 8</div><div class="eq-op">cari y</div></div>
+          <div class="eq-row" style="background:var(--teal-bg);"><div class="eq-expr" style="color:var(--teal);">y = 2 ✓</div><div class="eq-op">selesai</div></div>
+        </div>
+
+        <div class="big-eq">
+          <div class="eq-result">Solusi: x = 4, y = 2 ✓</div>
+        </div>
+
+        <div class="hl hl-coral"><strong>Kapan kali dulu?</strong> Jika koefisien variabel tidak sama, kalikan salah satu (atau kedua) persamaan dengan konstanta agar koefisiennya sama, baru eliminasi.</div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Eliminasi dengan kali koefisien -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📝 Eliminasi Lanjutan — Kali Dulu</div>
+        <h2>Soal: 2x + 3y = 13 dan 3x − y = 3</h2>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div>Koefisien y: <strong>3</strong> dan <strong>−1</strong>. Kalikan persamaan (2) dengan 3 agar koefisien y menjadi −3</div>
+          <div class="step"><div class="step-n">2</div>Hasil (2)×3: <strong>9x − 3y = 9</strong></div>
+          <div class="step"><div class="step-n">3</div>(1) + hasil (2)×3: <strong>2x + 3y + 9x − 3y = 13 + 9 → 11x = 22</strong></div>
+          <div class="step"><div class="step-n">4</div><strong class="te">x = 2</strong></div>
+          <div class="step"><div class="step-n">5</div>Substitusi ke (1): <strong>2(2) + 3y = 13 → 3y = 9 → <span class="gr">y = 3</span></strong></div>
+        </div>
+        <div class="big-eq">
+          <div class="eq-result">Solusi: x = 2, y = 3 ✓</div>
+        </div>
+        <div class="hl hl-amber"><strong>Strategi pilih metode:</strong><br>
+          Substitusi → cocok bila ada koefisien 1 (mudah dinyatakan)<br>
+          Eliminasi → cocok bila koefisien besar atau ada yang sama</div>
+      </div>
+
+      <div class="card" style="border-style:dashed;background:transparent;">
+        <div class="card-label teal">📈 Interpretasi Grafik (Bonus)</div>
+        <p>Setiap persamaan linear = garis lurus di koordinat. Solusi SPLDV = <strong style="color:var(--chalk);">titik potong kedua garis</strong>. Tidak ada solusi = garis sejajar. Tak hingga solusi = garis berimpit.</p>
+      </div>
+    </div>
+
+    <!-- Slide 4: Soal cerita aplikatif -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label coral">📝 Soal Cerita Lengkap</div>
+        <h2>Harga 3 pensil + 2 buku = Rp19.000. Harga 1 pensil + 4 buku = Rp23.000. Berapa harga pensil dan buku?</h2>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div>Misalkan: pensil = <strong>p</strong>, buku = <strong>b</strong></div>
+          <div class="step"><div class="step-n">2</div>Persamaan: <strong>3p + 2b = 19.000</strong> &nbsp;dan&nbsp; <strong>p + 4b = 23.000</strong></div>
+          <div class="step"><div class="step-n">3</div>Dari (2): <strong>p = 23.000 − 4b</strong> (substitusi)</div>
+          <div class="step"><div class="step-n">4</div>Ke (1): <strong>3(23.000 − 4b) + 2b = 19.000 → 69.000 − 12b + 2b = 19.000</strong></div>
+          <div class="step"><div class="step-n">5</div><strong>−10b = −50.000 → <span class="te">b = 5.000</span></strong></div>
+          <div class="step"><div class="step-n">6</div><strong>p = 23.000 − 4(5.000) = 23.000 − 20.000 = <span class="gr">p = 3.000</span></strong></div>
+        </div>
+        <div class="big-eq">
+          <div class="eq-text">Pensil = Rp3.000 &nbsp;|&nbsp; Buku = Rp5.000</div>
+          <div class="eq-step">Cek (1): 3(3.000) + 2(5.000) = 9.000 + 10.000 = 19.000 ✓</div>
+          <div class="eq-result">Cek (2): 3.000 + 4(5.000) = 3.000 + 20.000 = 23.000 ✓</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Soal Pemanasan -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">🎯 Soal Pemanasan</div>
+        <div class="quiz-q">Diketahui: x + y = 8 dan x − y = 2. Nilai x dan y adalah?</div>
+        <div class="opts" id="q1">
+          <button class="opt-btn" onclick="chk(this,'q1',false,0)">x = 4, y = 4</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false,1)">x = 6, y = 3</button>
+          <button class="opt-btn" onclick="chk(this,'q1',true,2)">x = 5, y = 3</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false,3)">x = 3, y = 5</button>
+        </div>
+        <div class="feedback" id="q1-fb"></div>
+      </div>
+      <div class="card" style="border-style:dashed;background:transparent;">
+        <div class="card-label amber">💡 Hint</div>
+        <p>Coba metode eliminasi: kedua persamaan punya koefisien y yang sama (1 dan −1). Jumlahkan keduanya untuk mengeliminasi y!</p>
+      </div>
+    </div>
+
+    <!-- Slide 6: Finish -->
+    <div class="slide">
+      <div class="card finish">
+        <span class="finish-icon">🕵️</span>
+        <div class="finish-title">Section 3 Selesai!</div>
+        <div class="finish-desc">Kamu sudah menguasai SPLDV dengan metode substitusi dan eliminasi. Dua petunjuk, dua rahasia — dan kamu berhasil memecahkannya. Level 3 hampir sempurna!</div>
+        <div class="xp">✨ +60 XP — SPLDV Dikuasai!</div>
+        <div class="finish-btns">
+          <a href="level3.html" class="btn btn-ghost">← Level Hub</a>
+          <a href="summary.html" class="btn btn-primary">Cheat Sheet →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-btns" id="navbtns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="go(-1)" disabled>← Prev</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL=7; let cur=0; let q1done=false;
+  const dotsEl=document.getElementById('dots');
+  const slides=document.querySelectorAll('.slide');
+  const prev=document.getElementById('prevBtn'),next=document.getElementById('nextBtn'),nav=document.getElementById('navbtns');
+  for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+  function updateUI(){
+    slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+    dotsEl.querySelectorAll('.dot').forEach((d,i)=>{d.classList.remove('active','done');if(i<cur)d.classList.add('done');if(i===cur)d.classList.add('active');});
+    prev.disabled=cur===0;
+    nav.style.display=cur===TOTAL-1?'none':'flex';
+    if(cur===5)next.disabled=!q1done; else next.disabled=false;
+  }
+  function go(dir){cur=Math.max(0,Math.min(TOTAL-1,cur+dir));updateUI();}
+  function chk(btn,gid,correct,idx){
+    if(q1done)return; q1done=true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>b.disabled=true);
+    btn.classList.add(correct?'correct':'wrong');
+    if(!correct)document.querySelectorAll(`#${gid} .opt-btn`)[2].classList.add('correct');
+    const fb=document.getElementById(`${gid}-fb`);
+    fb.className='feedback show '+(correct?'ok':'no');
+    fb.textContent=correct
+      ?'✅ Betul! Eliminasi: (x+y)+(x−y)=8+2 → 2x=10 → x=5. Substitusi: 5+y=8 → y=3.'
+      :'❌ Coba eliminasi: jumlahkan kedua persamaan. 2x=10 → x=5. Lalu y=8−5=3.';
+    next.disabled=false;
+  }
+  updateUI();
+</script>
+</body>
+</html>
