@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summary · Trigonometri · Level 6 · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#0f1420;--board-light:#161d2e;--board-mid:#131929;
+    --grid:rgba(255,255,255,0.03);--grid-major:rgba(255,255,255,0.055);
+    --chalk:#e8e4f0;--chalk-muted:rgba(232,228,240,0.55);--chalk-dim:rgba(232,228,240,0.22);
+    --gold:#f0c040;--gold-dark:#b8882a;--gold-bg:rgba(240,192,64,0.12);--gold-border:rgba(240,192,64,0.38);
+    --violet:#a87fe8;--violet-bg:rgba(168,127,232,0.1);--violet-border:rgba(168,127,232,0.35);
+    --sky:#60b8f0;--sky-bg:rgba(96,184,240,0.1);--sky-border:rgba(96,184,240,0.33);
+    --green:#4a9e69;--green-bg:rgba(74,158,105,0.12);--green-border:rgba(74,158,105,0.35);
+    --red:#e06060;
+    --card-border:rgba(232,228,240,0.12);--card-bg:rgba(255,255,255,0.045);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.7;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(15,20,32,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--gold);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--violet);}
+
+  .page{max-width:780px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .hero{text-align:center;margin-bottom:2.5rem;}
+  .sum-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--violet-bg);border:1px solid var(--violet-border);color:var(--violet);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,2rem);margin-bottom:0.5rem;text-shadow:2px 2px 0 rgba(0,0,0,0.4);}
+  h1 span{color:var(--gold);}
+  .sub{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.92rem;line-height:1.6;}
+
+  .sec-row{display:flex;align-items:center;gap:0.8rem;margin:2rem 0 1.2rem;}
+  .sec-line{height:1px;flex:1;background:var(--chalk-dim);}
+  .sec-txt{font-family:'Patrick Hand',cursive;font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;}
+  .sec-txt.gold{color:var(--gold);}
+  .sec-txt.violet{color:var(--violet);}
+  .sec-txt.sky{color:var(--sky);}
+
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.5rem 1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.045);position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+  .card.border-gold::before{background:linear-gradient(90deg,var(--gold),var(--gold2));}
+  .card.border-violet::before{background:linear-gradient(90deg,var(--violet),var(--sky));}
+  .card.border-sky::before{background:linear-gradient(90deg,var(--sky),var(--violet));}
+  .card-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.8rem;}
+  .card-label.gold{color:var(--gold);}
+  .card-label.violet{color:var(--violet);}
+  .card-label.sky{color:var(--sky);}
+  .card h2{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--chalk);margin-bottom:0.8rem;}
+
+  /* SOH-CAH-TOA display */
+  .sct-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;margin-bottom:0.9rem;}
+  @media(max-width:420px){.sct-row{grid-template-columns:1fr;}}
+  .sct-box{border-radius:10px;padding:0.8rem;text-align:center;}
+  .sct-box.gold{background:var(--gold-bg);border:1px solid var(--gold-border);}
+  .sct-box.violet{background:var(--violet-bg);border:1px solid var(--violet-border);}
+  .sct-box.sky{background:var(--sky-bg);border:1px solid var(--sky-border);}
+  .sct-label{font-family:'Fredoka One',cursive;font-size:1.1rem;margin-bottom:0.2rem;}
+  .sct-box.gold .sct-label{color:var(--gold);}
+  .sct-box.violet .sct-label{color:var(--violet);}
+  .sct-box.sky .sct-label{color:var(--sky);}
+  .sct-def{font-family:'Patrick Hand',cursive;font-size:0.76rem;color:var(--chalk-muted);line-height:1.4;}
+
+  /* Angle table */
+  .angle-table{width:100%;border-collapse:collapse;font-size:0.84rem;margin:0.8rem 0;}
+  .angle-table th{font-family:'Patrick Hand',cursive;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--chalk-muted);padding:0.45rem 0.6rem;border-bottom:1px solid var(--card-border);text-align:center;}
+  .angle-table td{padding:0.5rem 0.6rem;text-align:center;border-bottom:1px solid rgba(232,228,240,0.05);font-family:'Fredoka One',cursive;font-size:0.85rem;color:var(--chalk);}
+  .angle-table tr:last-child td{border-bottom:none;}
+  .angle-table .lbl{font-family:'Patrick Hand',cursive;font-size:0.78rem;color:var(--gold);font-weight:normal;}
+  .angle-table td.gd{color:var(--gold);}
+  .angle-table td.vi{color:var(--violet);}
+  .angle-table td.sk{color:var(--sky);}
+
+  /* Identity list */
+  .id-list{display:flex;flex-direction:column;gap:0.55rem;margin-top:0.5rem;}
+  .id-row{display:flex;align-items:center;gap:1rem;background:var(--board-light);border:1px solid var(--card-border);border-radius:9px;padding:0.65rem 1rem;justify-content:space-between;flex-wrap:wrap;}
+  .id-formula{font-family:'Fredoka One',cursive;font-size:0.9rem;color:var(--gold);}
+  .id-note{font-family:'Patrick Hand',cursive;font-size:0.76rem;color:var(--chalk-muted);}
+
+  /* Wave props */
+  .wave-props{display:grid;grid-template-columns:repeat(2,1fr);gap:0.6rem;margin-top:0.8rem;}
+  @media(max-width:400px){.wave-props{grid-template-columns:1fr;}}
+  .wp{background:var(--board-light);border:1px solid var(--card-border);border-radius:9px;padding:0.7rem 0.9rem;}
+  .wp-label{font-family:'Patrick Hand',cursive;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.3rem;}
+  .wp.gold .wp-label{color:var(--gold);}
+  .wp.violet .wp-label{color:var(--violet);}
+  .wp-val{font-family:'Fredoka One',cursive;font-size:0.88rem;color:var(--chalk);margin-bottom:0.15rem;}
+  .wp-note{font-family:'Patrick Hand',cursive;font-size:0.74rem;color:var(--chalk-muted);}
+
+  /* Tips */
+  .tip{border-radius:10px;padding:0.8rem 1rem;margin-bottom:0.6rem;font-size:0.86rem;line-height:1.6;display:flex;gap:0.7rem;}
+  .tip-icon{font-size:1.1rem;flex-shrink:0;}
+  .tip.gold{background:var(--gold-bg);border:1px solid var(--gold-border);}
+  .tip.violet{background:var(--violet-bg);border:1px solid var(--violet-border);}
+  .tip.sky{background:var(--sky-bg);border:1px solid var(--sky-border);}
+  .tip.gold strong{color:var(--gold);}
+  .tip.violet strong{color:var(--violet);}
+  .tip.sky strong{color:var(--sky);}
+
+  /* Bottom nav */
+  .bottom-nav{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+  .btn-gold{background:var(--gold-dark);color:#000;box-shadow:0 4px 14px rgba(184,136,42,0.4);}
+  .btn-gold:hover{background:var(--gold);transform:translateY(-2px);}
+  .btn-violet{background:#6a44c0;color:#fff;box-shadow:0 4px 14px rgba(106,68,192,0.35);}
+  .btn-violet:hover{background:var(--violet);transform:translateY(-2px);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level6.html">Level 6</a><span>›</span>
+  <span class="cur">Summary</span>
+</nav>
+
+<div class="page">
+  <div class="hero">
+    <div class="sum-badge">📋 Cheat Sheet</div>
+    <h1>Level 6 — <span>Trigonometri</span></h1>
+    <p class="sub">Semua rumus, tabel, identitas, dan tips dalam satu halaman. Bookmark ini!</p>
+  </div>
+
+  <!-- Section 1 Summary -->
+  <div class="sec-row">
+    <div class="sec-line"></div>
+    <div class="sec-txt gold">📐 Section 1 · Rasio Sudut</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="card border-gold">
+    <div class="card-label gold">SOH – CAH – TOA</div>
+    <h2>Tiga Rasio Dasar</h2>
+    <div class="sct-row">
+      <div class="sct-box gold">
+        <div class="sct-label">SOH</div>
+        <div class="sct-def"><strong style="color:var(--gold)">Sin θ</strong><br>= Opposite / Hypotenuse<br>= opp / hyp</div>
+      </div>
+      <div class="sct-box violet">
+        <div class="sct-label">CAH</div>
+        <div class="sct-def"><strong style="color:var(--violet)">Cos θ</strong><br>= Adjacent / Hypotenuse<br>= adj / hyp</div>
+      </div>
+      <div class="sct-box sky">
+        <div class="sct-label">TOA</div>
+        <div class="sct-def"><strong style="color:var(--sky)">Tan θ</strong><br>= Opposite / Adjacent<br>= opp / adj</div>
+      </div>
+    </div>
+    <p style="font-family:'Patrick Hand',cursive;font-size:0.82rem;color:var(--chalk-muted);">★ Sisi: <span style="color:var(--gold)">hyp</span> = sisi miring (terpanjang) · <span style="color:var(--violet)">opp</span> = sisi di depan θ · <span style="color:var(--sky)">adj</span> = sisi di samping θ</p>
+  </div>
+
+  <div class="card border-gold">
+    <div class="card-label gold">⭐ Tabel Sudut Istimewa</div>
+    <h2>Wajib Hafal</h2>
+    <table class="angle-table">
+      <thead>
+        <tr>
+          <th>θ</th>
+          <th style="color:var(--gold)">sin θ</th>
+          <th style="color:var(--violet)">cos θ</th>
+          <th style="color:var(--sky)">tan θ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="lbl">0°</td><td class="gd">0</td><td class="vi">1</td><td class="sk">0</td></tr>
+        <tr><td class="lbl">30°</td><td class="gd">½</td><td class="vi">½√3</td><td class="sk">⅓√3</td></tr>
+        <tr><td class="lbl">45°</td><td class="gd">½√2</td><td class="vi">½√2</td><td class="sk">1</td></tr>
+        <tr><td class="lbl">60°</td><td class="gd">½√3</td><td class="vi">½</td><td class="sk">√3</td></tr>
+        <tr><td class="lbl">90°</td><td class="gd">1</td><td class="vi">0</td><td class="sk">~∞</td></tr>
+      </tbody>
+    </table>
+    <div style="font-family:'Patrick Hand',cursive;font-size:0.8rem;color:var(--chalk-muted);margin-top:0.5rem;line-height:1.6;">
+      💡 <strong style="color:var(--gold)">Trik sin:</strong> sin 0°=√0/2, sin 30°=√1/2, sin 45°=√2/2, sin 60°=√3/2, sin 90°=√4/2<br>
+      💡 <strong style="color:var(--violet)">Trik cos:</strong> Nilai cos adalah kebalikan urutan nilai sin (cermin diagonal di tabel)
+    </div>
+  </div>
+
+  <div class="card border-gold">
+    <div class="card-label gold">🔧 Cara Pakai Rasio</div>
+    <h2>Template Penyelesaian</h2>
+    <div style="display:flex;flex-direction:column;gap:0.5rem;">
+      <div style="background:var(--board-light);border:1px solid var(--card-border);border-radius:9px;padding:0.7rem 1rem;font-size:0.85rem;">
+        <span style="color:var(--gold);font-family:'Fredoka One',cursive;">Cari opp:</span>
+        <span style="color:var(--chalk-muted);font-family:'Patrick Hand',cursive;"> opp = hyp × sin θ &nbsp;|&nbsp; opp = adj × tan θ</span>
+      </div>
+      <div style="background:var(--board-light);border:1px solid var(--card-border);border-radius:9px;padding:0.7rem 1rem;font-size:0.85rem;">
+        <span style="color:var(--violet);font-family:'Fredoka One',cursive;">Cari adj:</span>
+        <span style="color:var(--chalk-muted);font-family:'Patrick Hand',cursive;"> adj = hyp × cos θ &nbsp;|&nbsp; adj = opp / tan θ</span>
+      </div>
+      <div style="background:var(--board-light);border:1px solid var(--card-border);border-radius:9px;padding:0.7rem 1rem;font-size:0.85rem;">
+        <span style="color:var(--sky);font-family:'Fredoka One',cursive;">Cari hyp:</span>
+        <span style="color:var(--chalk-muted);font-family:'Patrick Hand',cursive;"> hyp = opp / sin θ &nbsp;|&nbsp; hyp = adj / cos θ</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2 Summary -->
+  <div class="sec-row">
+    <div class="sec-line"></div>
+    <div class="sec-txt violet">🌊 Section 2 · Identitas & Grafik</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="card border-violet">
+    <div class="card-label violet">🔑 Identitas Trigonometri</div>
+    <h2>Hubungan yang Selalu Benar</h2>
+    <div class="id-list">
+      <div class="id-row">
+        <div class="id-formula">sin²θ + cos²θ = 1</div>
+        <div class="id-note">Identitas Pythagorean — PALING PENTING</div>
+      </div>
+      <div class="id-row">
+        <div class="id-formula">sin²θ = 1 − cos²θ</div>
+        <div class="id-note">Turunan dari identitas utama</div>
+      </div>
+      <div class="id-row">
+        <div class="id-formula">cos²θ = 1 − sin²θ</div>
+        <div class="id-note">Turunan dari identitas utama</div>
+      </div>
+      <div class="id-row">
+        <div class="id-formula">tan θ = sin θ / cos θ</div>
+        <div class="id-note">Definisi tan lewat sin & cos</div>
+      </div>
+      <div class="id-row">
+        <div class="id-formula">sin(90° − θ) = cos θ</div>
+        <div class="id-note">Sudut komplementer saling bertukar</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card border-sky">
+    <div class="card-label sky">📈 Grafik Sin & Cos</div>
+    <!-- mini wave -->
+    <svg width="100%" height="90" viewBox="0 0 500 90" preserveAspectRatio="xMidYMid meet" style="margin-bottom:0.9rem;">
+      <line x1="0" y1="45" x2="500" y2="45" stroke="rgba(232,228,240,0.12)" stroke-width="1"/>
+      <path d="M 10,45 C 26,45 33,10 62,10 C 91,10 97,80 126,80 C 155,80 161,10 190,10 C 219,10 225,80 254,80 C 283,80 289,10 318,10 C 347,10 353,80 382,80 C 411,80 417,10 446,10 C 465,10 480,22 490,30" stroke="#f0c040" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M 10,10 C 36,10 46,80 62,80 C 90,80 100,10 126,10 C 152,10 162,80 190,80 C 218,80 228,10 254,10 C 280,10 290,80 318,80 C 346,80 356,10 382,10 C 408,10 418,80 446,80 C 464,80 478,68 490,60" stroke="#a87fe8" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="8,4"/>
+      <text x="62" y="88" font-family="Patrick Hand,cursive" font-size="10" fill="rgba(232,228,240,0.35)" text-anchor="middle">90°</text>
+      <text x="126" y="88" font-family="Patrick Hand,cursive" font-size="10" fill="rgba(232,228,240,0.35)" text-anchor="middle">180°</text>
+      <text x="190" y="88" font-family="Patrick Hand,cursive" font-size="10" fill="rgba(232,228,240,0.35)" text-anchor="middle">270°</text>
+      <text x="254" y="88" font-family="Patrick Hand,cursive" font-size="10" fill="rgba(232,228,240,0.35)" text-anchor="middle">360°</text>
+    </svg>
+    <div class="wave-props">
+      <div class="wp gold"><div class="wp-label">Amplitudo</div><div class="wp-val">1 (standar)</div><div class="wp-note">Maks = +1, min = −1</div></div>
+      <div class="wp violet"><div class="wp-label">Periode</div><div class="wp-val">360° (2π)</div><div class="wp-note">Pola berulang setiap 360°</div></div>
+      <div class="wp gold"><div class="wp-label">Titik Nol sin</div><div class="wp-val">0°, 180°, 360°</div><div class="wp-note">Mulai dan kembali ke 0</div></div>
+      <div class="wp violet"><div class="wp-label">Titik Nol cos</div><div class="wp-val">90°, 270°</div><div class="wp-note">Mulai dari +1 (maksimum)</div></div>
+    </div>
+    <div style="display:flex;gap:0.8rem;margin-top:0.9rem;font-family:'Patrick Hand',cursive;font-size:0.8rem;color:var(--chalk-muted);flex-wrap:wrap;">
+      <span>— <span style="color:var(--gold)">y = sin x</span></span>
+      <span>- - <span style="color:var(--violet)">y = cos x</span></span>
+      <span style="margin-left:auto;">cos x = sin(x + 90°)</span>
+    </div>
+  </div>
+
+  <!-- Key Tips -->
+  <div class="sec-row">
+    <div class="sec-line"></div>
+    <div class="sec-txt sky">✨ Tips & Trik</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="tip gold">
+    <span class="tip-icon">🧠</span>
+    <div><strong>SOH-CAH-TOA:</strong> Mnemonic paling wajib. Bila bingung, tulis ulang dan tandai sisi mana yang ada di soal sebelum pilih rumus.</div>
+  </div>
+  <div class="tip violet">
+    <span class="tip-icon">⚡</span>
+    <div><strong>Identitas Pythagorean:</strong> Jika soal memberi sin, gunakan sin²+cos²=1 untuk cari cos. Atau sebaliknya. Ini shortcut terkuat di trigonometri.</div>
+  </div>
+  <div class="tip sky">
+    <span class="tip-icon">📊</span>
+    <div><strong>Sudut istimewa:</strong> Hafal sin 30°=½, sin 45°=½√2, sin 60°=½√3. Cos adalah kebalikannya. Tan 45°=1, tan 60°=√3.</div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="level6.html" class="btn btn-ghost">← Level Hub</a>
+    <a href="quicktest.html" class="btn btn-gold">⏱️ Quick Test</a>
+    <a href="exercise.html" class="btn btn-violet">✏️ Exercise</a>
+  </div>
+</div>
+</body>
+</html>

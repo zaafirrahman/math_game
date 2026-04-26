@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise · Level 5 · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2228; --board-light:#262c38; --board-mid:#222830;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.25);
+    --rose:#e83a5a; --rose-dark:#a41c38; --rose-bg:rgba(232,58,90,0.1); --rose-border:rgba(232,58,90,0.35);
+    --crimson:#f06080; --crimson-dark:#b03050; --crimson-bg:rgba(240,96,128,0.11); --crimson-border:rgba(240,96,128,0.38);
+    --pink:#f090a8; --pink-dark:#a04060; --pink-bg:rgba(240,144,168,0.1); --pink-border:rgba(240,144,168,0.38);
+    --green:#4a9e69; --green-dark:#2c6e49; --green-bg:rgba(74,158,105,0.12); --green-border:rgba(74,158,105,0.38);
+    --red:#e06060; --red-bg:rgba(224,96,96,0.1); --red-border:rgba(224,96,96,0.35);
+    --amber:#f0c060; --amber-dark:#c97d2e; --amber-bg:rgba(240,192,96,0.1); --amber-border:rgba(240,192,96,0.38);
+    --card-border:rgba(232,224,208,0.14); --card-bg:rgba(255,255,255,0.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,34,40,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--rose);}
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  .page-header{margin-bottom:2rem;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--rose-bg);border:1px solid var(--rose-border);color:var(--rose);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,1.9rem);margin-bottom:0.4rem;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,0.3);}
+  h1 span{color:var(--rose);}
+  .page-sub{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.9rem;line-height:1.6;}
+
+  /* OVERALL PROGRESS */
+  .overall-progress{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:1.1rem 1.4rem;margin-bottom:1.5rem;box-shadow:0 4px 18px rgba(0,0,0,0.28);}
+  .op-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.7rem;}
+  .op-title{font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--chalk-muted);}
+  .op-count{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--rose);}
+  .op-track{background:rgba(232,224,208,0.08);border-radius:20px;height:8px;overflow:hidden;}
+  .op-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--rose-dark),var(--rose));transition:width 0.5s ease;}
+  .op-sections{display:flex;gap:0.7rem;margin-top:0.8rem;flex-wrap:wrap;}
+  .op-sec{flex:1;min-width:90px;background:var(--board-light);border:1px solid var(--card-border);border-radius:8px;padding:0.5rem 0.7rem;text-align:center;}
+  .op-sec-label{font-family:'Patrick Hand',cursive;font-size:0.65rem;color:var(--chalk-muted);letter-spacing:1px;text-transform:uppercase;}
+  .op-sec-val{font-family:'Fredoka One',cursive;font-size:1rem;margin-top:0.1rem;}
+
+  .reset-btn{font-family:'Patrick Hand',cursive;font-size:0.75rem;color:var(--chalk-muted);background:none;border:1px solid var(--card-border);border-radius:20px;padding:0.2rem 0.7rem;cursor:pointer;transition:all 0.2s;margin-left:auto;display:block;margin-bottom:0.5rem;}
+  .reset-btn:hover{border-color:var(--red-border);color:var(--red);}
+
+  /* SECTION DIVIDER */
+  .section-divider{display:flex;align-items:center;gap:0.8rem;margin:2rem 0 1.2rem;}
+  .sd-line{flex:1;height:1px;background:var(--chalk-dim);}
+  .sd-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--chalk-muted);}
+  .sd-done{font-family:'Patrick Hand',cursive;font-size:0.72rem;white-space:nowrap;}
+
+  /* Q CARD */
+  .q-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.6rem;margin-bottom:0.9rem;box-shadow:0 4px 18px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);position:relative;overflow:hidden;transition:border-color 0.3s;}
+  .q-card.answered-correct{border-color:var(--rose-border);}
+  .q-card.answered-wrong{border-color:var(--red-border);}
+  .q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:transparent;transition:background 0.3s;border-radius:14px 14px 0 0;}
+  .q-card.answered-correct::before{background:var(--rose);}
+  .q-card.answered-wrong::before{background:var(--red);}
+  .q-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.9rem;}
+  .q-num{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--chalk-muted);}
+  .q-status{font-size:1.1rem;}
+  .q-text{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--chalk);margin-bottom:1.1rem;line-height:1.45;}
+
+  /* FILL IN */
+  .fill-wrap{display:flex;gap:0.6rem;align-items:center;flex-wrap:wrap;}
+  .fill-input{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.6rem 0.9rem;border-radius:10px;font-size:1rem;font-family:'Fredoka One',cursive;width:160px;outline:none;transition:border-color 0.2s;}
+  .fill-input:focus{border-color:var(--rose-border);}
+  .fill-input:disabled{cursor:default;opacity:0.7;}
+  .fill-input.correct{border-color:var(--green);color:var(--green);}
+  .fill-input.wrong{border-color:var(--red);color:var(--red);}
+  .fill-unit{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.88rem;}
+  .fill-btn{background:var(--rose-dark);color:#fff;border:none;padding:0.6rem 1.2rem;border-radius:10px;font-family:'Fredoka One',cursive;font-size:0.88rem;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+  .fill-btn:hover:not(:disabled){background:var(--rose);}
+  .fill-btn:disabled{opacity:0.4;cursor:default;}
+
+  /* MCQ */
+  .opts{display:flex;flex-direction:column;gap:0.55rem;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.8rem 1rem;border-radius:10px;cursor:pointer;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;display:flex;align-items:center;gap:0.65rem;}
+  .opt-btn:hover:not(:disabled){border-color:var(--rose-border);background:var(--rose-bg);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-key{font-family:'Fredoka One',cursive;font-size:0.72rem;color:var(--chalk-muted);background:rgba(232,224,208,0.08);border-radius:5px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+  .q-feedback{border-radius:10px;padding:0.7rem 0.9rem;font-size:0.85rem;font-weight:800;display:none;margin-top:0.8rem;line-height:1.5;}
+  .q-feedback.show{display:block;}
+  .q-feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .q-feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+
+  /* FINISH */
+  #finishScreen{display:none;text-align:center;padding:1rem 0;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Fredoka One',cursive;font-size:1.7rem;color:var(--chalk);margin-bottom:0.4rem;}
+  .finish-sub{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:1.5rem;}
+  .score-display{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin:1.2rem 0;}
+  .score-box{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:1rem 1.5rem;min-width:110px;}
+  .score-box-num{font-family:'Fredoka One',cursive;font-size:2.2rem;line-height:1;}
+  .score-box-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;color:var(--chalk-muted);letter-spacing:1px;text-transform:uppercase;margin-top:0.2rem;}
+  .xp-badge{display:inline-block;background:var(--rose-bg);border:1px solid var(--rose-border);color:var(--rose);padding:0.3rem 1.2rem;border-radius:20px;font-family:'Fredoka One',cursive;font-size:0.88rem;margin:0.5rem 0 1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--pink-border);color:var(--pink);}
+  .btn-rose{background:var(--rose-dark);color:#fff;box-shadow:0 4px 14px rgba(164,28,56,0.35);}
+  .btn-rose:hover{background:var(--rose);transform:translateY(-2px);}
+  .btn-crimson{background:#9a2540;color:#fff;box-shadow:0 4px 14px rgba(154,37,64,0.35);}
+  .btn-crimson:hover{background:var(--crimson);transform:translateY(-2px);}
+
+  .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--rose-dark);color:#fff;font-family:'Patrick Hand',cursive;font-size:0.85rem;padding:0.5rem 1.2rem;border-radius:20px;opacity:0;transition:all 0.3s;pointer-events:none;z-index:999;white-space:nowrap;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level5.html">Level 5</a><span>›</span>
+  <span class="cur">Exercise</span>
+</nav>
+
+<div class="wrap">
+  <div class="page-header">
+    <div class="page-badge">✏️ Exercise</div>
+    <h1>15 Soal <span>Latihan Level 5</span></h1>
+    <p class="page-sub">Tanpa timer, tanpa tekanan. Jawab sesuai kemampuanmu — progres tersimpan otomatis.</p>
+  </div>
+
+  <!-- OVERALL PROGRESS -->
+  <div class="overall-progress">
+    <div class="op-header">
+      <div class="op-title">Progres Keseluruhan</div>
+      <div class="op-count" id="opCount">0 / 15</div>
+    </div>
+    <div class="op-track"><div class="op-fill" id="opFill" style="width:0%"></div></div>
+    <div class="op-sections">
+      <div class="op-sec"><div class="op-sec-label">Fungsi</div><div class="op-sec-val" id="sec1val" style="color:var(--rose)">0/5</div></div>
+      <div class="op-sec"><div class="op-sec-label">Garis</div><div class="op-sec-val" id="sec2val" style="color:var(--crimson)">0/5</div></div>
+      <div class="op-sec"><div class="op-sec-label">Kuadrat</div><div class="op-sec-val" id="sec3val" style="color:var(--pink)">0/5</div></div>
+    </div>
+  </div>
+  <button class="reset-btn" onclick="resetProgress()">🗑 Reset Progres</button>
+
+  <!-- SECTION 1 -->
+  <div class="section-divider">
+    <div class="sd-line"></div>
+    <div class="sd-label">⚙️ Section 01 · Fungsi Dasar</div>
+    <div class="sd-line"></div>
+    <div class="sd-done" id="done1" style="color:var(--rose)"></div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="q-card" id="qc1">
+    <div class="q-meta"><div class="q-num">Soal 01 · Pilihan Ganda</div><div class="q-status" id="st1">○</div></div>
+    <div class="q-text">Diketahui f(x) = 3x + 7. Nilai dari f(−2) adalah…</div>
+    <div class="opts" id="opts_1">
+      <button class="opt-btn" onclick="mcq(1,0,this,1)"><div class="opt-key">A</div>1</button>
+      <button class="opt-btn" onclick="mcq(1,1,this,1)"><div class="opt-key">B</div>13</button>
+      <button class="opt-btn" onclick="mcq(1,2,this,1)"><div class="opt-key">C</div>−1</button>
+      <button class="opt-btn" onclick="mcq(1,3,this,1)"><div class="opt-key">D</div>−13</button>
+    </div>
+    <div class="q-feedback" id="fb1"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="qc2">
+    <div class="q-meta"><div class="q-num">Soal 02 · Isian</div><div class="q-status" id="st2">○</div></div>
+    <div class="q-text">Jika g(x) = x² − 4, berapakah nilai g(5)?</div>
+    <div class="fill-wrap">
+      <input class="fill-input" id="fi2" type="number" placeholder="Jawaban..." onkeydown="if(event.key==='Enter') fill(2,'21',this,'fi2')">
+      <button class="fill-btn" id="fb2btn" onclick="fill(2,'21',document.getElementById('fi2'),'fi2')">Cek</button>
+    </div>
+    <div class="q-feedback" id="fb2"></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="qc3">
+    <div class="q-meta"><div class="q-num">Soal 03 · Pilihan Ganda</div><div class="q-status" id="st3">○</div></div>
+    <div class="q-text">Manakah yang BUKAN merupakan fungsi dari x ke y?</div>
+    <div class="opts" id="opts_3">
+      <button class="opt-btn" onclick="mcq(3,0,this,3)"><div class="opt-key">A</div>{(1,2), (2,4), (3,6)}</button>
+      <button class="opt-btn" onclick="mcq(3,1,this,3)"><div class="opt-key">B</div>{(1,3), (1,5), (2,4)}</button>
+      <button class="opt-btn" onclick="mcq(3,2,this,3)"><div class="opt-key">C</div>{(2,4), (3,4), (5,4)}</button>
+      <button class="opt-btn" onclick="mcq(3,3,this,3)"><div class="opt-key">D</div>{(0,0), (1,1), (2,2)}</button>
+    </div>
+    <div class="q-feedback" id="fb3"></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="qc4">
+    <div class="q-meta"><div class="q-num">Soal 04 · Isian</div><div class="q-status" id="st4">○</div></div>
+    <div class="q-text">Fungsi h(x) = 5x − 3. Jika h(x) = 22, maka nilai x adalah…</div>
+    <div class="fill-wrap">
+      <input class="fill-input" id="fi4" type="number" placeholder="x = ..." onkeydown="if(event.key==='Enter') fill(4,'5',document.getElementById('fi4'),'fi4')">
+      <button class="fill-btn" id="fb4btn" onclick="fill(4,'5',document.getElementById('fi4'),'fi4')">Cek</button>
+    </div>
+    <div class="q-feedback" id="fb4"></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="qc5">
+    <div class="q-meta"><div class="q-num">Soal 05 · Pilihan Ganda</div><div class="q-status" id="st5">○</div></div>
+    <div class="q-text">Diketahui f(x) = 2x + 1 dan g(x) = x − 3. Nilai dari (f∘g)(4) adalah…</div>
+    <div class="opts" id="opts_5">
+      <button class="opt-btn" onclick="mcq(5,0,this,3)"><div class="opt-key">A</div>3</button>
+      <button class="opt-btn" onclick="mcq(5,1,this,3)"><div class="opt-key">B</div>9</button>
+      <button class="opt-btn" onclick="mcq(5,2,this,3)"><div class="opt-key">C</div>5</button>
+      <button class="opt-btn" onclick="mcq(5,3,this,3)"><div class="opt-key">D</div>7</button>
+    </div>
+    <div class="q-feedback" id="fb5"></div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section-divider">
+    <div class="sd-line"></div>
+    <div class="sd-label">📏 Section 02 · Persamaan Garis</div>
+    <div class="sd-line"></div>
+    <div class="sd-done" id="done2" style="color:var(--crimson)"></div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card" id="qc6">
+    <div class="q-meta"><div class="q-num">Soal 06 · Pilihan Ganda</div><div class="q-status" id="st6">○</div></div>
+    <div class="q-text">Gradien garis 3x − 6y + 12 = 0 adalah…</div>
+    <div class="opts" id="opts_6">
+      <button class="opt-btn" onclick="mcq(6,0,this,0)"><div class="opt-key">A</div>½</button>
+      <button class="opt-btn" onclick="mcq(6,1,this,0)"><div class="opt-key">B</div>3</button>
+      <button class="opt-btn" onclick="mcq(6,2,this,0)"><div class="opt-key">C</div>−½</button>
+      <button class="opt-btn" onclick="mcq(6,3,this,0)"><div class="opt-key">D</div>2</button>
+    </div>
+    <div class="q-feedback" id="fb6"></div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card" id="qc7">
+    <div class="q-meta"><div class="q-num">Soal 07 · Isian</div><div class="q-status" id="st7">○</div></div>
+    <div class="q-text">Garis melalui titik (2, 5) dan (6, 13). Berapakah gradiennya?</div>
+    <div class="fill-wrap">
+      <input class="fill-input" id="fi7" type="number" placeholder="m = ..." onkeydown="if(event.key==='Enter') fill(7,'2',document.getElementById('fi7'),'fi7')">
+      <button class="fill-btn" id="fb7btn" onclick="fill(7,'2',document.getElementById('fi7'),'fi7')">Cek</button>
+    </div>
+    <div class="q-feedback" id="fb7"></div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card" id="qc8">
+    <div class="q-meta"><div class="q-num">Soal 08 · Pilihan Ganda</div><div class="q-status" id="st8">○</div></div>
+    <div class="q-text">Persamaan garis yang melalui (0, −3) dengan gradien 4 adalah…</div>
+    <div class="opts" id="opts_8">
+      <button class="opt-btn" onclick="mcq(8,0,this,1)"><div class="opt-key">A</div>y = −3x + 4</button>
+      <button class="opt-btn" onclick="mcq(8,1,this,1)"><div class="opt-key">B</div>y = 4x − 3</button>
+      <button class="opt-btn" onclick="mcq(8,2,this,1)"><div class="opt-key">C</div>y = 4x + 3</button>
+      <button class="opt-btn" onclick="mcq(8,3,this,1)"><div class="opt-key">D</div>y = −4x − 3</button>
+    </div>
+    <div class="q-feedback" id="fb8"></div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card" id="qc9">
+    <div class="q-meta"><div class="q-num">Soal 09 · Pilihan Ganda</div><div class="q-status" id="st9">○</div></div>
+    <div class="q-text">Garis y = 2x + 1 dan garis y = mx − 4 saling tegak lurus. Nilai m adalah…</div>
+    <div class="opts" id="opts_9">
+      <button class="opt-btn" onclick="mcq(9,0,this,2)"><div class="opt-key">A</div>2</button>
+      <button class="opt-btn" onclick="mcq(9,1,this,2)"><div class="opt-key">B</div>−2</button>
+      <button class="opt-btn" onclick="mcq(9,2,this,2)"><div class="opt-key">C</div>−½</button>
+      <button class="opt-btn" onclick="mcq(9,3,this,2)"><div class="opt-key">D</div>½</button>
+    </div>
+    <div class="q-feedback" id="fb9"></div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card" id="qc10">
+    <div class="q-meta"><div class="q-num">Soal 10 · Isian</div><div class="q-status" id="st10">○</div></div>
+    <div class="q-text">Garis y = 5x + c melalui titik (2, 3). Berapakah nilai c?</div>
+    <div class="fill-wrap">
+      <input class="fill-input" id="fi10" type="number" placeholder="c = ..." onkeydown="if(event.key==='Enter') fill(10,'-7',document.getElementById('fi10'),'fi10')">
+      <button class="fill-btn" id="fb10btn" onclick="fill(10,'-7',document.getElementById('fi10'),'fi10')">Cek</button>
+    </div>
+    <div class="q-feedback" id="fb10"></div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section-divider">
+    <div class="sd-line"></div>
+    <div class="sd-label">🎯 Section 03 · Grafik Kuadrat</div>
+    <div class="sd-line"></div>
+    <div class="sd-done" id="done3" style="color:var(--pink)"></div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="q-card" id="qc11">
+    <div class="q-meta"><div class="q-num">Soal 11 · Pilihan Ganda</div><div class="q-status" id="st11">○</div></div>
+    <div class="q-text">Parabola y = −3x² + 6x − 1 terbuka ke arah…</div>
+    <div class="opts" id="opts_11">
+      <button class="opt-btn" onclick="mcq(11,0,this,1)"><div class="opt-key">A</div>Atas (∪)</button>
+      <button class="opt-btn" onclick="mcq(11,1,this,1)"><div class="opt-key">B</div>Bawah (∩)</button>
+      <button class="opt-btn" onclick="mcq(11,2,this,1)"><div class="opt-key">C</div>Kanan (→)</button>
+      <button class="opt-btn" onclick="mcq(11,3,this,1)"><div class="opt-key">D</div>Kiri (←)</button>
+    </div>
+    <div class="q-feedback" id="fb11"></div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="q-card" id="qc12">
+    <div class="q-meta"><div class="q-num">Soal 12 · Isian</div><div class="q-status" id="st12">○</div></div>
+    <div class="q-text">Sumbu simetri dari parabola y = x² − 10x + 21 adalah x = …</div>
+    <div class="fill-wrap">
+      <input class="fill-input" id="fi12" type="number" placeholder="x = ..." onkeydown="if(event.key==='Enter') fill(12,'5',document.getElementById('fi12'),'fi12')">
+      <button class="fill-btn" id="fb12btn" onclick="fill(12,'5',document.getElementById('fi12'),'fi12')">Cek</button>
+    </div>
+    <div class="q-feedback" id="fb12"></div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="q-card" id="qc13">
+    <div class="q-meta"><div class="q-num">Soal 13 · Pilihan Ganda</div><div class="q-status" id="st13">○</div></div>
+    <div class="q-text">Akar-akar dari x² − 7x + 12 = 0 adalah…</div>
+    <div class="opts" id="opts_13">
+      <button class="opt-btn" onclick="mcq(13,0,this,1)"><div class="opt-key">A</div>x = 2 dan x = 6</button>
+      <button class="opt-btn" onclick="mcq(13,1,this,1)"><div class="opt-key">B</div>x = 3 dan x = 4</button>
+      <button class="opt-btn" onclick="mcq(13,2,this,1)"><div class="opt-key">C</div>x = −3 dan x = −4</button>
+      <button class="opt-btn" onclick="mcq(13,3,this,1)"><div class="opt-key">D</div>x = 1 dan x = 12</button>
+    </div>
+    <div class="q-feedback" id="fb13"></div>
+  </div>
+
+  <!-- Q14 -->
+  <div class="q-card" id="qc14">
+    <div class="q-meta"><div class="q-num">Soal 14 · Pilihan Ganda</div><div class="q-status" id="st14">○</div></div>
+    <div class="q-text">Titik puncak dari y = 2x² − 12x + 10 terletak di…</div>
+    <div class="opts" id="opts_14">
+      <button class="opt-btn" onclick="mcq(14,0,this,2)"><div class="opt-key">A</div>(3, 10)</button>
+      <button class="opt-btn" onclick="mcq(14,1,this,2)"><div class="opt-key">B</div>(6, −8)</button>
+      <button class="opt-btn" onclick="mcq(14,2,this,2)"><div class="opt-key">C</div>(3, −8)</button>
+      <button class="opt-btn" onclick="mcq(14,3,this,2)"><div class="opt-key">D</div>(−3, −8)</button>
+    </div>
+    <div class="q-feedback" id="fb14"></div>
+  </div>
+
+  <!-- Q15 -->
+  <div class="q-card" id="qc15">
+    <div class="q-meta"><div class="q-num">Soal 15 · Isian</div><div class="q-status" id="st15">○</div></div>
+    <div class="q-text">Parabola y = x² + 2x − 3 memotong sumbu y di titik (0, c). Berapakah nilai c?</div>
+    <div class="fill-wrap">
+      <input class="fill-input" id="fi15" type="number" placeholder="c = ..." onkeydown="if(event.key==='Enter') fill(15,'-3',document.getElementById('fi15'),'fi15')">
+      <button class="fill-btn" id="fb15btn" onclick="fill(15,'-3',document.getElementById('fi15'),'fi15')">Cek</button>
+    </div>
+    <div class="q-feedback" id="fb15"></div>
+  </div>
+
+  <!-- FINISH SCREEN -->
+  <div id="finishScreen">
+    <span class="finish-icon" id="finishIcon"></span>
+    <div class="finish-title" id="finishTitle"></div>
+    <p class="finish-sub" id="finishSub"></p>
+    <div class="score-display">
+      <div class="score-box"><div class="score-box-num" id="scoreCorrect" style="color:var(--rose)">0</div><div class="score-box-label">Benar</div></div>
+      <div class="score-box"><div class="score-box-num" id="scoreWrong" style="color:var(--red)">0</div><div class="score-box-label">Salah</div></div>
+      <div class="score-box"><div class="score-box-num" id="scorePct" style="color:var(--green)">0%</div><div class="score-box-label">Skor</div></div>
+    </div>
+    <div class="xp-badge" id="xpBadge"></div>
+    <div class="finish-btns">
+      <button class="btn btn-ghost" onclick="resetProgress()">🔁 Ulangi</button>
+      <a href="quicktest.html" class="btn btn-crimson">⏱️ Quick Test</a>
+      <a href="level5.html" class="btn btn-rose">← Level Hub</a>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'matharena_l5_exercise';
+const TOTAL = 15;
+
+// Feedback messages per question
+const FEEDBACKS = {
+  1: {ok:'✅ Betul! f(−2) = 3(−2) + 7 = −6 + 7 = 1.',no:'❌ f(−2) = 3(−2) + 7 = −6 + 7 = 1.'},
+  2: {ok:'✅ Betul! g(5) = 25 − 4 = 21.',no:'❌ g(5) = 5² − 4 = 25 − 4 = 21.'},
+  3: {ok:'✅ Betul! {(1,3),(1,5),(2,4)}: input 1 punya 2 output berbeda (3 dan 5). Bukan fungsi!',no:'❌ {(1,3),(1,5),(2,4)}: x=1 menghasilkan y=3 dan y=5. Ini melanggar syarat fungsi.'},
+  4: {ok:'✅ Betul! 5x − 3 = 22 → 5x = 25 → x = 5.',no:'❌ 5x − 3 = 22 → 5x = 25 → x = 5.'},
+  5: {ok:'✅ Betul! g(4)=4−3=1, lalu f(1)=2(1)+1=3.',no:'❌ (f∘g)(4)=f(g(4))=f(1)=2(1)+1=3.'},
+  6: {ok:'✅ Betul! Ubah: −6y = −3x − 12 → y = ½x + 2. Jadi m = ½.',no:'❌ Ubah ke y=mx+c: 3x−6y+12=0 → y=½x+2. Gradiennya ½.'},
+  7: {ok:'✅ Betul! m=(13−5)/(6−2)=8/4=2.',no:'❌ m=(13−5)/(6−2)=8/4=2.'},
+  8: {ok:'✅ Betul! m=4, (0,−3) → c=−3. Jadi y=4x−3.',no:'❌ m=4, titik (0,−3) artinya intersep-y = −3. Persamaannya y=4x−3.'},
+  9: {ok:'✅ Betul! m₁×m₂=−1 → 2×m=−1 → m=−½.',no:'❌ Tegak lurus: m₁×m₂=−1. Jadi 2×m=−1 → m=−½.'},
+  10:{ok:'✅ Betul! 3=5(2)+c → 3=10+c → c=−7.',no:'❌ Substitusi: 3=5(2)+c → c=3−10=−7.'},
+  11:{ok:'✅ Betul! Koefisien a=−3<0, maka parabola terbuka ke bawah (∩).',no:'❌ Koefisien x² adalah −3 < 0, jadi parabola terbuka ke bawah (∩), punya nilai maksimum.'},
+  12:{ok:'✅ Betul! x = −b/(2a) = −(−10)/(2×1) = 10/2 = 5.',no:'❌ Sumbu simetri: x = −b/(2a) = 10/2 = 5.'},
+  13:{ok:'✅ Betul! (x−3)(x−4)=0 → x=3 atau x=4.',no:'❌ Faktorkan: x²−7x+12=(x−3)(x−4)=0 → x=3 atau x=4.'},
+  14:{ok:'✅ Betul! h=−(−12)/(2×2)=3. k=2(9)−36+10=−8. Puncak=(3,−8).',no:'❌ h=12/(4)=3. k=2(3²)−12(3)+10=18−36+10=−8. Puncak=(3,−8).'},
+  15:{ok:'✅ Betul! Substitusi x=0: y=0+0−3=−3. Titik (0,−3).',no:'❌ Intersep-y: substitusi x=0 → y=−3. Jadi c=−3.'},
+};
+
+// Section correct answer index for MCQ
+const MCQ_CORRECT = {1:0, 3:1, 5:3, 6:0, 8:1, 9:2, 11:1, 13:1, 14:2};
+
+let progress = {};
+
+function loadProgress() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) progress = JSON.parse(saved);
+  } catch(e) { progress = {}; }
+  applyProgress();
+}
+
+function saveProgress() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); } catch(e){}
+}
+
+function applyProgress() {
+  Object.keys(progress).forEach(qid => {
+    const data = progress[qid];
+    const card = document.getElementById('qc' + qid);
+    const st = document.getElementById('st' + qid);
+    const fb = document.getElementById('fb' + qid);
+    if (!card) return;
+    card.classList.remove('answered-correct', 'answered-wrong');
+    card.classList.add(data.correct ? 'answered-correct' : 'answered-wrong');
+    st.textContent = data.correct ? '✅' : '❌';
+    fb.className = 'q-feedback show ' + (data.correct ? 'ok' : 'no');
+    fb.textContent = data.correct ? FEEDBACKS[qid].ok : FEEDBACKS[qid].no;
+
+    // Disable MCQ
+    const opts = document.querySelectorAll('#opts_' + qid + ' .opt-btn');
+    if (opts.length) {
+      opts.forEach(b => b.disabled = true);
+      const correctIdx = MCQ_CORRECT[+qid];
+      if (correctIdx !== undefined) opts[correctIdx].classList.add('correct');
+      if (!data.correct && data.chosen !== undefined) opts[data.chosen]?.classList.add('wrong');
+    }
+    // Disable fill
+    const fi = document.getElementById('fi' + qid);
+    const fiBtn = document.getElementById('fb' + qid + 'btn');
+    if (fi) {
+      fi.value = data.answer || '';
+      fi.disabled = true;
+      fi.classList.add(data.correct ? 'correct' : 'wrong');
+    }
+    if (fiBtn) fiBtn.disabled = true;
+  });
+  updateProgress();
+  checkFinish();
+}
+
+function updateProgress() {
+  const answered = Object.keys(progress).length;
+  const correct = Object.values(progress).filter(d => d.correct).length;
+  document.getElementById('opCount').textContent = `${answered} / ${TOTAL}`;
+  document.getElementById('opFill').style.width = `${(answered / TOTAL) * 100}%`;
+  const s1 = [1,2,3,4,5].filter(i => progress[i]).length;
+  const s2 = [6,7,8,9,10].filter(i => progress[i]).length;
+  const s3 = [11,12,13,14,15].filter(i => progress[i]).length;
+  document.getElementById('sec1val').textContent = s1 + '/5';
+  document.getElementById('sec2val').textContent = s2 + '/5';
+  document.getElementById('sec3val').textContent = s3 + '/5';
+  document.getElementById('done1').textContent = s1 === 5 ? '✅ Selesai' : '';
+  document.getElementById('done2').textContent = s2 === 5 ? '✅ Selesai' : '';
+  document.getElementById('done3').textContent = s3 === 5 ? '✅ Selesai' : '';
+}
+
+function mcq(qid, chosen, btn, correct) {
+  if (progress[qid]) return;
+  const opts = document.querySelectorAll('#opts_' + qid + ' .opt-btn');
+  opts.forEach(b => b.disabled = true);
+  const isCorrect = chosen === correct;
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) opts[correct].classList.add('correct');
+  const fb = document.getElementById('fb' + qid);
+  fb.className = 'q-feedback show ' + (isCorrect ? 'ok' : 'no');
+  fb.textContent = isCorrect ? FEEDBACKS[qid].ok : FEEDBACKS[qid].no;
+  const card = document.getElementById('qc' + qid);
+  card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+  document.getElementById('st' + qid).textContent = isCorrect ? '✅' : '❌';
+  progress[qid] = { correct: isCorrect, chosen };
+  saveProgress();
+  updateProgress();
+  showToast(isCorrect ? '✅ Benar!' : '❌ Salah');
+  checkFinish();
+}
+
+function fill(qid, answer, inputEl, inputId) {
+  if (progress[qid]) return;
+  const val = inputEl.value.trim();
+  if (!val) return;
+  const isCorrect = val === answer || parseFloat(val) === parseFloat(answer);
+  inputEl.disabled = true;
+  inputEl.classList.add(isCorrect ? 'correct' : 'wrong');
+  const fiBtn = document.getElementById('fb' + qid + 'btn');
+  if (fiBtn) fiBtn.disabled = true;
+  const fb = document.getElementById('fb' + qid);
+  fb.className = 'q-feedback show ' + (isCorrect ? 'ok' : 'no');
+  fb.textContent = isCorrect ? FEEDBACKS[qid].ok : FEEDBACKS[qid].no;
+  const card = document.getElementById('qc' + qid);
+  card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+  document.getElementById('st' + qid).textContent = isCorrect ? '✅' : '❌';
+  progress[qid] = { correct: isCorrect, answer: val };
+  saveProgress();
+  updateProgress();
+  showToast(isCorrect ? '✅ Benar!' : '❌ Salah');
+  checkFinish();
+}
+
+function checkFinish() {
+  if (Object.keys(progress).length < TOTAL) return;
+  const correct = Object.values(progress).filter(d => d.correct).length;
+  const wrong = TOTAL - correct;
+  const pct = Math.round((correct / TOTAL) * 100);
+  document.getElementById('finishScreen').style.display = 'block';
+  document.getElementById('finishIcon').textContent = pct >= 80 ? '🏆' : pct >= 60 ? '🎉' : '💪';
+  document.getElementById('finishTitle').textContent = pct >= 80 ? 'Luar Biasa!' : pct >= 60 ? 'Kerja Bagus!' : 'Terus Berlatih!';
+  document.getElementById('finishSub').textContent = pct >= 80
+    ? 'Kamu menguasai Level 5 dengan sangat baik. Siap ke level berikutnya!'
+    : pct >= 60 ? 'Hasil yang bagus! Coba review topik yang masih kurang.'
+    : 'Jangan menyerah — ulangi materi dan coba lagi!';
+  document.getElementById('scoreCorrect').textContent = correct;
+  document.getElementById('scoreWrong').textContent = wrong;
+  document.getElementById('scorePct').textContent = pct + '%';
+  const xp = correct * 20;
+  document.getElementById('xpBadge').textContent = `✨ +${xp} XP — Level 5 Exercise`;
+  document.getElementById('finishScreen').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetProgress() {
+  if (!confirm('Reset semua progres Level 5 Exercise? Ini tidak bisa dibatalkan.')) return;
+  progress = {};
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
+  location.reload();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+loadProgress();
+</script>
+</body>
+</html>

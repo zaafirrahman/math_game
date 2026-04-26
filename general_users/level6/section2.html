@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 2 · Identitas & Grafik · Level 6 · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#0f1420;--board-light:#161d2e;--board-mid:#131929;
+    --grid:rgba(255,255,255,0.03);--grid-major:rgba(255,255,255,0.055);
+    --chalk:#e8e4f0;--chalk-muted:rgba(232,228,240,0.55);--chalk-dim:rgba(232,228,240,0.22);
+    --gold:#f0c040;--gold-dark:#b8882a;--gold-bg:rgba(240,192,64,0.12);--gold-border:rgba(240,192,64,0.38);
+    --gold2:#f5d070;--gold2-bg:rgba(245,208,112,0.1);--gold2-border:rgba(245,208,112,0.35);
+    --violet:#a87fe8;--violet-bg:rgba(168,127,232,0.1);--violet-border:rgba(168,127,232,0.35);
+    --sky:#60b8f0;--sky-bg:rgba(96,184,240,0.1);--sky-border:rgba(96,184,240,0.33);
+    --green:#4a9e69;--green-bg:rgba(74,158,105,0.12);--green-border:rgba(74,158,105,0.35);
+    --red:#e06060;--red-bg:rgba(224,96,96,0.1);--red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(232,228,240,0.12);--card-bg:rgba(255,255,255,0.045);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.7;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(15,20,32,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--gold);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--violet);}
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5.5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--violet-bg);border:1px solid var(--violet-border);color:var(--violet);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1.3rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,2rem);margin-bottom:0.6rem;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,0.4);}
+  h1 span{color:var(--violet);}
+  .intro{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem;}
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(232,228,240,0.13);transition:all 0.3s;}
+  .dot.active{background:var(--violet);box-shadow:0 0 0 3px rgba(168,127,232,0.22);transform:scale(1.15);}
+  .dot.done{background:var(--gold);}
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 20px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.05);}
+  .card-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.gold{color:var(--gold);}
+  .card-label.violet{color:var(--violet);}
+  .card-label.sky{color:var(--sky);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:0.7rem;line-height:1.35;color:var(--chalk);}
+  .card p{color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;}
+  .why-banner{background:linear-gradient(135deg,#10102a,#1a1040);border:1px solid var(--violet-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.4);}
+  .why-banner::after{content:'🌊';position:absolute;right:1.2rem;bottom:-0.3rem;font-size:4rem;opacity:0.1;}
+  .why-banner h2{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:0.6rem;color:var(--chalk);}
+  .why-banner p{font-size:0.9rem;line-height:1.7;color:var(--chalk-muted);}
+  .why-list{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem;}
+  .why-item{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.88rem;color:var(--chalk-muted);}
+  .why-item span{flex-shrink:0;font-size:1.1rem;}
+
+  /* Identity cards */
+  .id-grid{display:flex;flex-direction:column;gap:0.7rem;margin:1rem 0;}
+  .id-card{border-radius:11px;padding:0.95rem 1.2rem;display:flex;align-items:center;gap:1rem;justify-content:space-between;flex-wrap:wrap;}
+  .id-card.gold{background:var(--gold-bg);border:1px solid var(--gold-border);}
+  .id-card.violet{background:var(--violet-bg);border:1px solid var(--violet-border);}
+  .id-card.sky{background:var(--sky-bg);border:1px solid var(--sky-border);}
+  .id-formula{font-family:'Fredoka One',cursive;font-size:1rem;}
+  .id-card.gold .id-formula{color:var(--gold);}
+  .id-card.violet .id-formula{color:var(--violet);}
+  .id-card.sky .id-formula{color:var(--sky);}
+  .id-note{font-family:'Patrick Hand',cursive;font-size:0.8rem;color:var(--chalk-muted);line-height:1.4;max-width:260px;text-align:right;}
+
+  /* Sine wave SVG graph */
+  .wave-graph{background:var(--board-light);border:1px solid var(--card-border);border-radius:12px;padding:1.2rem;margin:1rem 0;overflow:hidden;}
+  .wave-legend{display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.9rem;justify-content:center;}
+  .wave-leg{font-family:'Patrick Hand',cursive;font-size:0.78rem;display:flex;align-items:center;gap:0.4rem;}
+  .wave-dot{width:12px;height:3px;border-radius:2px;}
+
+  /* Props table */
+  .props-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:1rem 0;}
+  .prop-box{background:var(--board-light);border:1px solid var(--card-border);border-radius:10px;padding:0.9rem 1rem;}
+  .prop-name{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .prop-box.gold .prop-name{color:var(--gold);}
+  .prop-box.violet .prop-name{color:var(--violet);}
+  .prop-val{font-family:'Fredoka One',cursive;font-size:0.95rem;color:var(--chalk);margin-bottom:0.15rem;}
+  .prop-note{font-family:'Patrick Hand',cursive;font-size:0.76rem;color:var(--chalk-muted);line-height:1.4;}
+
+  .steps{display:flex;flex-direction:column;gap:0.65rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:var(--board-light);border:1px solid var(--card-border);border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;color:var(--chalk-muted);}
+  .step-n{font-family:'Fredoka One',cursive;font-size:0.8rem;color:var(--board);background:var(--violet);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .step strong{color:var(--violet);}
+  .step .gd{color:var(--gold);}
+  .step .sk{color:var(--sky);}
+  .step .gr{color:var(--green);}
+  .big-eq{background:var(--board-light);border:1px solid var(--card-border);border-radius:12px;padding:1.2rem;margin:1rem 0;text-align:center;}
+  .eq-text{font-family:'Fredoka One',cursive;font-size:clamp(1rem,3.5vw,1.5rem);color:var(--chalk);line-height:1.6;}
+  .eq-result{font-family:'Fredoka One',cursive;font-size:clamp(1.2rem,3.5vw,1.7rem);color:var(--green);}
+  .hl{border-radius:10px;padding:0.9rem 1.1rem;margin:0.8rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-gold{background:var(--gold-bg);border:1px solid var(--gold-border);}
+  .hl-violet{background:var(--violet-bg);border:1px solid var(--violet-border);}
+  .hl-sky{background:var(--sky-bg);border:1px solid var(--sky-border);}
+  .hl-green{background:var(--green-bg);border:1px solid var(--green-border);}
+  .hl-gold strong{color:var(--gold);}
+  .hl-violet strong{color:var(--violet);}
+  .hl-sky strong{color:var(--sky);}
+  .hl-green strong{color:var(--green);}
+  .quiz-q{font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:1.2rem;line-height:1.4;color:var(--chalk);}
+  .opts{display:flex;flex-direction:column;gap:0.6rem;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.82rem 1rem;border-radius:10px;cursor:pointer;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover:not(:disabled){border-color:rgba(168,127,232,0.45);background:var(--violet-bg);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.8rem;padding:0.75rem 1rem;border-radius:10px;font-size:0.88rem;font-weight:800;display:none;line-height:1.5;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--gold2);color:var(--gold2);}
+  .btn-primary{background:#6a44c0;color:#fff;box-shadow:0 4px 14px rgba(106,68,192,0.4);}
+  .btn-primary:hover{background:var(--violet);transform:translateY(-2px);}
+  .btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important;}
+  .finish{text-align:center;padding:2.5rem 1rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--violet);margin-bottom:0.7rem;}
+  .finish-desc{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);line-height:1.7;margin-bottom:1.5rem;font-size:0.95rem;}
+  .xp{display:inline-block;background:var(--violet-bg);border:1px solid var(--violet-border);color:var(--violet);padding:0.3rem 1rem;border-radius:20px;font-family:'Fredoka One',cursive;font-size:0.85rem;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level6.html">Level 6</a><span>›</span>
+  <span class="cur">Section 2</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🌊 Section 02 · Identitas & Grafik</div>
+  <h1>Gelombang, Identitas & <span>Hubungan Sudut</span></h1>
+  <p class="intro">Satu lingkaran, tak terbatas kemungkinan. Di sini trigonometri berubah dari alat hitung sederhana menjadi bahasa fisika, musik, dan alam semesta.</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- Slide 0: WHY -->
+    <div class="slide active">
+      <div class="why-banner">
+        <h2>Kenapa identitas dan grafik trigonometri penting?</h2>
+        <p>Saat sin dan cos digambar dalam grafik, mereka membentuk gelombang yang mendeskripsikan hampir semua fenomena berulang di alam.</p>
+        <div class="why-list">
+          <div class="why-item"><span>🎵</span><div>Suara adalah gelombang sinus. Engineer audio menggunakan sin & cos untuk filter, efek, dan equalizer.</div></div>
+          <div class="why-item"><span>⚡</span><div>Listrik AC (arus bolak-balik) bergerak persis seperti grafik sin — menaik dan menurun secara periodik.</div></div>
+          <div class="why-item"><span>🌊</span><div>Gelombang laut, cahaya, dan sinyal WiFi semuanya dijelaskan oleh fungsi sin dan cos.</div></div>
+          <div class="why-item"><span>🧮</span><div>Identitas seperti sin²θ + cos²θ = 1 adalah shortcut yang menyederhanakan perhitungan panjang di fisika dan teknik.</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label violet">📌 Dua topik besar section ini</div>
+        <h2>Identitas & Grafik</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-top:0.8rem;">
+          <div style="background:var(--gold-bg);border:1px solid var(--gold-border);border-radius:10px;padding:1rem;">
+            <div style="font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;">Identitas</div>
+            <div style="font-family:'Fredoka One',cursive;font-size:0.88rem;color:var(--chalk);">Hubungan matematika yang selalu benar untuk semua nilai θ</div>
+          </div>
+          <div style="background:var(--violet-bg);border:1px solid var(--violet-border);border-radius:10px;padding:1rem;">
+            <div style="font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--violet);margin-bottom:0.5rem;">Grafik</div>
+            <div style="font-family:'Fredoka One',cursive;font-size:0.88rem;color:var(--chalk);">Visualisasi fungsi sin & cos — periode, amplitudo, pergeseran</div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <span></span>
+        <button class="btn btn-primary" onclick="nextSlide()">Lanjut → Identitas Dasar</button>
+      </div>
+    </div>
+
+    <!-- Slide 1: Identitas -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label gold">🔑 Identitas Trigonometri Utama</div>
+        <h2>Hubungan yang selalu benar</h2>
+        <p style="margin-bottom:0.9rem;font-size:0.88rem;">Berbeda dengan persamaan biasa, identitas ini berlaku untuk SEMUA nilai θ — tanpa terkecuali.</p>
+        <div class="id-grid">
+          <div class="id-card gold">
+            <div class="id-formula">sin²θ + cos²θ = 1</div>
+            <div class="id-note">Identitas Pythagorean. Paling penting. Wajib hafal!</div>
+          </div>
+          <div class="id-card violet">
+            <div class="id-formula">tan θ = sin θ / cos θ</div>
+            <div class="id-note">Definisi tan lewat sin & cos</div>
+          </div>
+          <div class="id-card sky">
+            <div class="id-formula">sin(90° − θ) = cos θ</div>
+            <div class="id-note">Sudut komplementer saling bertukar</div>
+          </div>
+        </div>
+
+        <div class="hl hl-gold"><strong>Turunan dari sin²θ + cos²θ = 1:</strong><br>
+          → sin²θ = 1 − cos²θ<br>
+          → cos²θ = 1 − sin²θ<br>
+          Ini sangat berguna ketika soal memberi salah satu dan meminta yang lain!
+        </div>
+        <div class="hl hl-violet" style="margin-top:0;"><strong>Contoh pakai identitas:</strong> Jika sin θ = 3/5, maka cos²θ = 1 − (3/5)² = 1 − 9/25 = 16/25, sehingga cos θ = 4/5 (jika θ di kuadran I).</div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Lanjut → Grafik Sin & Cos</button>
+      </div>
+    </div>
+
+    <!-- Slide 2: Grafik -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">📈 Grafik Fungsi Sin & Cos</div>
+        <h2>Gelombang yang mengatur alam</h2>
+
+        <!-- SVG Sine & Cosine wave -->
+        <div class="wave-graph">
+          <svg width="100%" height="130" viewBox="0 0 560 130" preserveAspectRatio="xMidYMid meet">
+            <!-- grid -->
+            <line x1="0" y1="65" x2="560" y2="65" stroke="rgba(232,228,240,0.15)" stroke-width="1"/>
+            <line x1="0" y1="20" x2="560" y2="20" stroke="rgba(232,228,240,0.06)" stroke-width="1" stroke-dasharray="4,4"/>
+            <line x1="0" y1="110" x2="560" y2="110" stroke="rgba(232,228,240,0.06)" stroke-width="1" stroke-dasharray="4,4"/>
+            <!-- x axis ticks -->
+            <text x="70" y="128" font-family="Patrick Hand,cursive" font-size="11" fill="rgba(232,228,240,0.4)" text-anchor="middle">90°</text>
+            <text x="140" y="128" font-family="Patrick Hand,cursive" font-size="11" fill="rgba(232,228,240,0.4)" text-anchor="middle">180°</text>
+            <text x="210" y="128" font-family="Patrick Hand,cursive" font-size="11" fill="rgba(232,228,240,0.4)" text-anchor="middle">270°</text>
+            <text x="280" y="128" font-family="Patrick Hand,cursive" font-size="11" fill="rgba(232,228,240,0.4)" text-anchor="middle">360°</text>
+            <text x="350" y="128" font-family="Patrick Hand,cursive" font-size="11" fill="rgba(232,228,240,0.4)" text-anchor="middle">450°</text>
+            <text x="420" y="128" font-family="Patrick Hand,cursive" font-size="11" fill="rgba(232,228,240,0.4)" text-anchor="middle">540°</text>
+            <!-- y labels -->
+            <text x="0" y="23" font-family="Patrick Hand,cursive" font-size="10" fill="rgba(232,228,240,0.4)">+1</text>
+            <text x="0" y="68" font-family="Patrick Hand,cursive" font-size="10" fill="rgba(232,228,240,0.4)">0</text>
+            <text x="0" y="113" font-family="Patrick Hand,cursive" font-size="10" fill="rgba(232,228,240,0.4)">-1</text>
+            <!-- sin wave (gold) -->
+            <path d="M 14,65 C 31,65 38,20 70,20 C 102,20 108,110 140,110 C 172,110 178,20 210,20 C 242,20 248,110 280,110 C 312,110 318,20 350,20 C 382,20 388,110 420,110 C 452,110 458,20 490,20 C 510,20 520,35 530,45" stroke="#f0c040" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- cos wave (violet) -->
+            <path d="M 14,20 C 40,20 50,110 70,110 C 100,110 110,20 140,20 C 170,20 180,110 210,110 C 240,110 250,20 280,20 C 310,20 320,110 350,110 C 380,110 390,20 420,20 C 450,20 460,110 490,110 C 510,110 520,95 530,85" stroke="#a87fe8" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-dasharray="8,4"/>
+          </svg>
+          <div class="wave-legend">
+            <div class="wave-leg"><div class="wave-dot" style="background:#f0c040;"></div><span style="color:var(--chalk-muted);">y = sin x</span></div>
+            <div class="wave-leg"><div class="wave-dot" style="background:#a87fe8;height:2px;"></div><span style="color:var(--chalk-muted);">y = cos x (putus-putus)</span></div>
+          </div>
+        </div>
+
+        <div class="props-grid">
+          <div class="prop-box gold">
+            <div class="prop-name">Amplitudo</div>
+            <div class="prop-val">1 (standar)</div>
+            <div class="prop-note">Nilai maksimum & minimum = ±1</div>
+          </div>
+          <div class="prop-box violet">
+            <div class="prop-name">Periode</div>
+            <div class="prop-val">360° (2π)</div>
+            <div class="prop-note">Setelah 360°, pola berulang persis</div>
+          </div>
+          <div class="prop-box gold">
+            <div class="prop-name">sin vs cos</div>
+            <div class="prop-val">Geser 90°</div>
+            <div class="prop-note">cos x = sin(x + 90°)</div>
+          </div>
+          <div class="prop-box violet">
+            <div class="prop-name">Titik Nol</div>
+            <div class="prop-val">sin: 0°, 180°, 360°</div>
+            <div class="prop-note">cos: 90°, 270°</div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Lanjut → Contoh Soal</button>
+      </div>
+    </div>
+
+    <!-- Slide 3: Contoh Soal -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label sky">💡 Contoh Soal & Pembahasan</div>
+        <h2>Soal 1: Menggunakan Identitas Pythagorean</h2>
+        <p style="font-size:0.9rem;color:var(--chalk-muted);margin-bottom:1rem;line-height:1.7;">Diketahui sin θ = 5/13 dan θ berada di kuadran I. Tentukan nilai cos θ dan tan θ!</p>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div><div>Gunakan identitas: <strong>sin²θ + cos²θ = 1</strong><br>cos²θ = 1 − sin²θ = 1 − (5/13)² = 1 − 25/169 = <span class="gd">144/169</span></div></div>
+          <div class="step"><div class="step-n">2</div><div>cos θ = √(144/169) = <strong>12/13</strong> (positif karena kuadran I)</div></div>
+          <div class="step"><div class="step-n">3</div><div>tan θ = sin θ / cos θ = (5/13) / (12/13) = <span class="gr">5/12</span></div></div>
+        </div>
+        <div class="big-eq">
+          <div class="eq-text">sin θ = <span style="color:var(--gold)">5/13</span>, cos θ = <span style="color:var(--violet)">12/13</span>, tan θ = <span style="color:var(--sky)">5/12</span></div>
+          <div class="eq-result">✓ Triple 5-12-13!</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label sky">💡 Contoh Soal & Pembahasan</div>
+        <h2>Soal 2: Membaca Grafik</h2>
+        <p style="font-size:0.9rem;color:var(--chalk-muted);margin-bottom:1rem;line-height:1.7;">Fungsi y = sin x memiliki nilai maksimum berapa, dan terjadi di sudut berapa?</p>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div><div>Nilai maksimum sin x adalah <strong>1</strong> (amplitudo = 1).</div></div>
+          <div class="step"><div class="step-n">2</div><div>Maksimum terjadi ketika x = <strong>90°</strong> (atau π/2 radian) — di puncak pertama gelombang.</div></div>
+          <div class="step"><div class="step-n">3</div><div>Maksimum berikutnya di <strong>90° + 360° = 450°</strong>, dan seterusnya setiap kelipatan 360°.</div></div>
+        </div>
+        <div class="hl hl-violet"><strong>Ingat pola sin:</strong> mulai dari 0, naik ke +1 (di 90°), turun ke 0 (di 180°), turun ke −1 (di 270°), kembali ke 0 (di 360°).</div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Lanjut → Latihan</button>
+      </div>
+    </div>
+
+    <!-- Slide 4: Mini Quiz -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label gold">✏️ Soal Latihan</div>
+        <h2>Uji Pemahamanmu</h2>
+        <p class="quiz-q">Diketahui cos θ = 4/5. Nilai sin²θ adalah...</p>
+        <div class="opts" id="opts4">
+          <button class="opt-btn" onclick="answerQ(0,this)">A. 16/25</button>
+          <button class="opt-btn" onclick="answerQ(1,this)">B. 9/25</button>
+          <button class="opt-btn" onclick="answerQ(2,this)">C. 3/5</button>
+          <button class="opt-btn" onclick="answerQ(3,this)">D. 7/25</button>
+        </div>
+        <div class="feedback" id="fb4"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+        <button class="btn btn-primary" id="btn4next" onclick="nextSlide()" disabled>Selesai →</button>
+      </div>
+    </div>
+
+    <!-- Slide 5: Finish -->
+    <div class="slide">
+      <div class="finish">
+        <span class="finish-icon">🌊</span>
+        <div class="finish-title">Section 2 Selesai!</div>
+        <div class="finish-desc">Kamu sekarang paham identitas Pythagorean, cara menggunakannya untuk mencari nilai rasio yang belum diketahui, dan karakteristik grafik sin & cos. Gelombang tidak lagi misterius bagimu!</div>
+        <div class="xp">✨ +130 XP — Identitas & Grafik Trigonometri</div>
+        <div class="finish-btns">
+          <a href="level6.html" class="btn btn-ghost">← Level Hub</a>
+          <a href="summary.html" class="btn btn-primary">Summary →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let cur = 0;
+const total = 6;
+function renderDots(){
+  const d = document.getElementById('dots');
+  d.innerHTML = '';
+  for(let i=0;i<total;i++){
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i===cur?' active':i<cur?' done':'');
+    d.appendChild(dot);
+  }
+}
+function showSlide(n){
+  document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('active',i===n));
+  cur=n; renderDots(); window.scrollTo({top:0,behavior:'smooth'});
+}
+function nextSlide(){ if(cur<total-1) showSlide(cur+1); }
+function prevSlide(){ if(cur>0) showSlide(cur-1); }
+
+function answerQ(idx, btn){
+  const opts = document.querySelectorAll('#opts4 .opt-btn');
+  opts.forEach(b => b.disabled = true);
+  const correct = 1; // 9/25
+  const fb = document.getElementById('fb4');
+  if(idx === correct){
+    btn.classList.add('correct');
+    fb.className='feedback show ok';
+    fb.textContent='✅ Betul! sin²θ = 1 − cos²θ = 1 − (4/5)² = 1 − 16/25 = 9/25. Ini triple 3-4-5: sin θ = 3/5, cos θ = 4/5!';
+  } else {
+    btn.classList.add('wrong');
+    opts[correct].classList.add('correct');
+    fb.className='feedback show no';
+    fb.textContent='❌ Kurang tepat. Gunakan identitas: sin²θ = 1 − cos²θ = 1 − (4/5)² = 1 − 16/25 = 9/25.';
+  }
+  document.getElementById('btn4next').disabled = false;
+}
+renderDots();
+</script>
+</body>
+</html>

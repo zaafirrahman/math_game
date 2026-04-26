@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 2 · Persamaan Garis · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2228; --board-light:#262c38;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.25);
+    --rose:#e83a5a; --rose-dark:#a41c38; --rose-bg:rgba(232,58,90,0.13); --rose-border:rgba(232,58,90,0.4);
+    --crimson:#f06080; --crimson-bg:rgba(240,96,128,0.12); --crimson-border:rgba(240,96,128,0.38);
+    --pink:#f090a8; --pink-bg:rgba(240,144,168,0.1); --pink-border:rgba(240,144,168,0.38);
+    --ruby:#c0304a; --ruby-bg:rgba(192,48,74,0.12); --ruby-border:rgba(192,48,74,0.38);
+    --green:#4a9e69; --green-dark:#2c6e49; --green-bg:rgba(74,158,105,0.12); --green-border:rgba(74,158,105,0.38);
+    --red:#e06060; --red-bg:rgba(224,96,96,0.1); --red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(232,224,208,0.14); --card-bg:rgba(255,255,255,0.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,34,40,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--crimson);}
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5.5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--crimson-bg);border:1px solid var(--crimson-border);color:var(--crimson);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1.3rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,2rem);margin-bottom:0.6rem;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,0.3);}
+  h1 span{color:var(--crimson);}
+  .intro{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem;}
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(232,224,208,0.15);transition:all 0.3s;}
+  .dot.active{background:var(--crimson);box-shadow:0 0 0 3px rgba(240,96,128,0.25);transform:scale(1.15);}
+  .dot.done{background:var(--rose-dark);}
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.06);}
+  .card-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.rose{color:var(--rose);}
+  .card-label.crimson{color:var(--crimson);}
+  .card-label.pink{color:var(--pink);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:0.7rem;line-height:1.35;color:var(--chalk);}
+  .card p{color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;}
+  .why-banner{background:linear-gradient(135deg,#281018,#3a1225);border:1px solid var(--crimson-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.35);}
+  .why-banner::after{content:'📏';position:absolute;right:1.2rem;bottom:-0.3rem;font-size:4rem;opacity:0.1;}
+  .why-banner h2{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:0.6rem;color:var(--chalk);}
+  .why-banner p{font-size:0.9rem;line-height:1.7;color:var(--chalk-muted);}
+  .why-list{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem;}
+  .why-item{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.88rem;color:var(--chalk-muted);}
+  .why-item span{flex-shrink:0;font-size:1.1rem;}
+
+  /* Gradient box */
+  .slope-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin:1rem 0;}
+  @media(max-width:460px){.slope-grid{grid-template-columns:1fr;}}
+  .slope-box{border-radius:11px;padding:1rem 1.1rem;}
+  .slope-box.s1{background:var(--rose-bg);border:1px solid var(--rose-border);}
+  .slope-box.s2{background:var(--crimson-bg);border:1px solid var(--crimson-border);}
+  .slope-box.s3{background:var(--green-bg);border:1px solid var(--green-border);}
+  .slope-box.s4{background:rgba(232,224,208,0.06);border:1px solid var(--card-border);}
+  .slope-name{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;}
+  .slope-box.s1 .slope-name{color:var(--rose);}
+  .slope-box.s2 .slope-name{color:var(--crimson);}
+  .slope-box.s3 .slope-name{color:var(--green);}
+  .slope-box.s4 .slope-name{color:var(--chalk-muted);}
+  .slope-title{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--chalk);margin-bottom:0.25rem;}
+  .slope-rule{font-family:'Fredoka One',cursive;font-size:0.85rem;margin-bottom:0.3rem;}
+  .slope-box.s1 .slope-rule{color:var(--rose);}
+  .slope-box.s2 .slope-rule{color:var(--crimson);}
+  .slope-box.s3 .slope-rule{color:var(--green);}
+  .slope-box.s4 .slope-rule{color:var(--chalk-muted);}
+  .slope-note{font-family:'Patrick Hand',cursive;font-size:0.76rem;color:var(--chalk-muted);line-height:1.4;}
+
+  /* Rumus besar */
+  .big-formula{text-align:center;background:var(--rose-bg);border:2px solid var(--rose-border);border-radius:14px;padding:1.4rem;margin:1rem 0;}
+  .big-formula .formula-text{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--rose);letter-spacing:1px;}
+  .big-formula .formula-sub{font-family:'Patrick Hand',cursive;font-size:0.82rem;color:var(--chalk-muted);margin-top:0.5rem;}
+
+  /* Forms table */
+  .forms-table{width:100%;border-collapse:collapse;margin:0.8rem 0;font-size:0.85rem;}
+  .forms-table th{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--chalk-muted);text-align:left;padding:0.4rem 0.6rem;border-bottom:1px solid var(--card-border);}
+  .forms-table td{padding:0.45rem 0.6rem;border-bottom:1px solid rgba(232,224,208,0.06);color:var(--chalk-muted);line-height:1.5;}
+  .forms-table td:first-child{font-family:'Fredoka One',cursive;color:var(--crimson);white-space:nowrap;}
+  .forms-table td:nth-child(2){font-family:'Fredoka One',cursive;font-size:0.9rem;color:var(--chalk);}
+  .forms-table tr:last-child td{border-bottom:none;}
+
+  .steps{display:flex;flex-direction:column;gap:0.65rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:var(--board-light);border:1px solid var(--card-border);border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;color:var(--chalk-muted);}
+  .step-n{font-family:'Fredoka One',cursive;font-size:0.8rem;color:var(--board);background:var(--crimson);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .step strong{color:var(--crimson);}
+  .step .ro{color:var(--rose);}
+  .step .pk{color:var(--pink);}
+  .step .gr{color:var(--green);}
+  .hl{border-radius:10px;padding:0.9rem 1.1rem;margin:0.8rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-rose{background:var(--rose-bg);border:1px solid var(--rose-border);}
+  .hl-crimson{background:var(--crimson-bg);border:1px solid var(--crimson-border);}
+  .hl-green{background:var(--green-bg);border:1px solid var(--green-border);}
+  .hl-rose strong{color:var(--rose);}
+  .hl-crimson strong{color:var(--crimson);}
+  .hl-green strong{color:var(--green);}
+
+  .nav-btns{display:flex;gap:0.8rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--crimson-border);color:var(--crimson);}
+  .btn-primary{background:var(--rose-dark);color:#fff;box-shadow:0 4px 14px rgba(164,28,56,0.35);}
+  .btn-primary:hover{background:var(--rose);transform:translateY(-2px);}
+  .btn-primary:disabled{opacity:0.4;cursor:default;transform:none;}
+
+  .opts{display:flex;flex-direction:column;gap:0.6rem;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.85rem 1.1rem;border-radius:10px;cursor:pointer;font-size:0.92rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;display:flex;align-items:center;gap:0.7rem;}
+  .opt-btn:hover:not(:disabled){border-color:var(--crimson-border);background:var(--crimson-bg);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-key{font-family:'Fredoka One',cursive;font-size:0.75rem;color:var(--chalk-muted);background:rgba(232,224,208,0.08);border-radius:5px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .feedback{border-radius:10px;padding:0.75rem 1rem;font-size:0.87rem;font-weight:800;display:none;margin-top:0.8rem;line-height:1.5;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+
+  .finish{text-align:center;padding:2rem 0;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--chalk);margin-bottom:0.5rem;}
+  .finish-desc{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.93rem;line-height:1.7;margin-bottom:1.5rem;}
+  .xp{display:inline-block;background:var(--crimson-bg);border:1px solid var(--crimson-border);color:var(--crimson);padding:0.3rem 1.2rem;border-radius:20px;font-family:'Fredoka One',cursive;font-size:0.88rem;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level5.html">Level 5</a><span>›</span>
+  <span class="cur">Section 2 · Persamaan Garis</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📏 Section 02</div>
+  <h1>Persamaan Garis: <span>Gradien & Arah Masa Depan</span></h1>
+  <p class="intro">Setiap garis punya cerita — seberapa curam ia naik, di mana ia memotong sumbu, dan ke mana ia menuju. Gradien adalah kode rahasianya.</p>
+  <div class="dots" id="dots"></div>
+
+  <!-- SLIDE 0: WHY -->
+  <div class="slide active">
+    <div class="why-banner">
+      <h2>🤔 Kenapa Persamaan Garis Penting?</h2>
+      <p>Garis lurus adalah model paling sederhana dari hubungan dua variabel — dan ternyata itu sudah sangat powerful.</p>
+      <div class="why-list">
+        <div class="why-item"><span>📈</span>Grafik pertumbuhan startup: sumbu x = bulan, sumbu y = pengguna. Gradien = laju pertumbuhan per bulan.</div>
+        <div class="why-item"><span>🚗</span>Kecepatan konstan: jarak = kecepatan × waktu. Ini persamaan garis! Gradien = kecepatan.</div>
+        <div class="why-item"><span>💡</span>Tagihan listrik: bayar = (tarif × kWh) + biaya tetap. Lagi-lagi persamaan garis.</div>
+        <div class="why-item"><span>🎯</span>Machine learning: regresi linier adalah mencari "garis terbaik" melalui data — dasar dari AI/ML modern.</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <span></span>
+      <button class="btn btn-primary" onclick="nextSlide()">Mulai Belajar →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: MATERI -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label crimson">📖 Bentuk Umum</div>
+      <h2>y = mx + c — Bongkar Komponennya</h2>
+      <div class="big-formula">
+        <div class="formula-text">y = mx + c</div>
+        <div class="formula-sub">m = gradien (kemiringan) · c = intersep-y (titik potong sumbu y)</div>
+      </div>
+      <p>Ini adalah bentuk slope-intercept. Setiap garis lurus bisa ditulis dalam bentuk ini (kecuali garis vertikal).</p>
+    </div>
+    <div class="card">
+      <div class="card-label rose">📐 Memahami Gradien (m)</div>
+      <h2>Gradien = Naik ÷ Lari</h2>
+      <p style="margin-bottom:0.8rem;">Gradien mengukur seberapa curam sebuah garis. Rumusnya:</p>
+      <div class="big-formula" style="background:var(--crimson-bg);border-color:var(--crimson-border);">
+        <div class="formula-text" style="color:var(--crimson);font-size:1.4rem;">m = (y₂ − y₁) / (x₂ − x₁)</div>
+        <div class="formula-sub">Naik (perubahan y) dibagi Lari (perubahan x)</div>
+      </div>
+      <div class="slope-grid">
+        <div class="slope-box s1"><div class="slope-name">m &gt; 0</div><div class="slope-title">Naik ke Kanan ↗</div><div class="slope-rule">Contoh: m = 2</div><div class="slope-note">Setiap +1 di x, y naik 2</div></div>
+        <div class="slope-box s2"><div class="slope-name">m &lt; 0</div><div class="slope-title">Turun ke Kanan ↘</div><div class="slope-rule">Contoh: m = −3</div><div class="slope-note">Setiap +1 di x, y turun 3</div></div>
+        <div class="slope-box s3"><div class="slope-name">m = 0</div><div class="slope-title">Garis Mendatar →</div><div class="slope-rule">y = c (konstan)</div><div class="slope-note">Tidak ada kemiringan</div></div>
+        <div class="slope-box s4"><div class="slope-name">m = ∞</div><div class="slope-title">Garis Tegak ↑</div><div class="slope-rule">x = k</div><div class="slope-note">Gradien tak terdefinisi</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label crimson">📋 Bentuk-Bentuk Persamaan Garis</div>
+      <h2>Tiga Cara Menulis Persamaan Garis</h2>
+      <table class="forms-table">
+        <tr><th>Nama</th><th>Rumus</th><th>Kegunaan</th></tr>
+        <tr><td>Slope-Intercept</td><td>y = mx + c</td><td>Langsung baca m dan c</td></tr>
+        <tr><td>Point-Slope</td><td>y − y₁ = m(x − x₁)</td><td>Tahu 1 titik + gradien</td></tr>
+        <tr><td>Two-Point</td><td>m = (y₂−y₁)/(x₂−x₁)</td><td>Tahu 2 titik</td></tr>
+        <tr><td>Standard Form</td><td>ax + by + c = 0</td><td>Umum dipakai di soal</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-label rose">↔️ Hubungan Dua Garis</div>
+      <h2>Sejajar & Tegak Lurus</h2>
+      <div class="slope-grid">
+        <div class="slope-box s1"><div class="slope-name">Sejajar</div><div class="slope-title">Gradien Sama</div><div class="slope-rule">m₁ = m₂</div><div class="slope-note">Tidak pernah berpotongan</div></div>
+        <div class="slope-box s2"><div class="slope-name">Tegak Lurus</div><div class="slope-title">Gradien Negatif Kebalikan</div><div class="slope-rule">m₁ × m₂ = −1</div><div class="slope-note">Membentuk sudut 90°</div></div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Contoh Soal →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: CONTOH -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label crimson">💡 Contoh Soal & Pembahasan</div>
+      <h2>Soal 1: Gradien dari Dua Titik</h2>
+      <p style="font-size:0.9rem;color:var(--chalk-muted);margin-bottom:1rem;line-height:1.7;">Tentukan gradien garis yang melalui titik A(1, 3) dan B(4, 9)!</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div>Identifikasi: <strong>(x₁, y₁) = (1, 3)</strong> dan <span class="ro">(x₂, y₂) = (4, 9)</span></div></div>
+        <div class="step"><div class="step-n">2</div><div>Gunakan rumus: m = (y₂ − y₁) / (x₂ − x₁) = (9 − 3) / (4 − 1)</div></div>
+        <div class="step"><div class="step-n">3</div><div>m = 6 / 3 = <span class="gr">2</span></div></div>
+      </div>
+      <div class="hl hl-crimson"><strong>Artinya:</strong> Setiap maju 1 satuan ke kanan, garis naik 2 satuan ke atas.</div>
+    </div>
+    <div class="card">
+      <div class="card-label crimson">💡 Contoh Soal & Pembahasan</div>
+      <h2>Soal 2: Persamaan Garis dari Titik dan Gradien</h2>
+      <p style="font-size:0.9rem;color:var(--chalk-muted);margin-bottom:1rem;line-height:1.7;">Tentukan persamaan garis dengan gradien m = 3 yang melalui titik (2, 1)!</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div>Gunakan rumus point-slope: <strong>y − y₁ = m(x − x₁)</strong></div></div>
+        <div class="step"><div class="step-n">2</div><div>Substitusi: y − 1 = 3(x − 2)</div></div>
+        <div class="step"><div class="step-n">3</div><div>Ekspansi: y − 1 = 3x − 6</div></div>
+        <div class="step"><div class="step-n">4</div><div>Hasil: <span class="gr">y = 3x − 5</span></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label crimson">💡 Contoh Soal & Pembahasan</div>
+      <h2>Soal 3: Garis Tegak Lurus</h2>
+      <p style="font-size:0.9rem;color:var(--chalk-muted);margin-bottom:1rem;line-height:1.7;">Garis k memiliki persamaan y = 2x + 3. Tentukan persamaan garis yang tegak lurus k dan melalui titik (4, 1)!</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div>Gradien garis k: <strong>m₁ = 2</strong></div></div>
+        <div class="step"><div class="step-n">2</div><div>Gradien tegak lurus: m₂ = −1/m₁ = <span class="ro">−1/2</span></div></div>
+        <div class="step"><div class="step-n">3</div><div>Point-slope: y − 1 = −½(x − 4)</div></div>
+        <div class="step"><div class="step-n">4</div><div>Hasil: <span class="gr">y = −½x + 3</span></div></div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Soal Latihan →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: LATIHAN -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label pink">✏️ Soal Latihan</div>
+      <h2>Uji Pemahamanmu</h2>
+      <p style="font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:1.2rem;line-height:1.4;color:var(--chalk);">Garis yang melalui titik (0, 5) dan (3, 11) memiliki persamaan…</p>
+      <div class="opts" id="opts2">
+        <button class="opt-btn" onclick="answer2(0,this)"><div class="opt-key">A</div>y = 2x + 5</button>
+        <button class="opt-btn" onclick="answer2(1,this)"><div class="opt-key">B</div>y = 3x + 5</button>
+        <button class="opt-btn" onclick="answer2(2,this)"><div class="opt-key">C</div>y = 2x − 5</button>
+        <button class="opt-btn" onclick="answer2(3,this)"><div class="opt-key">D</div>y = 6x + 5</button>
+      </div>
+      <div class="feedback" id="fb2"></div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" id="btn2next" onclick="nextSlide()" disabled>Selesai →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: FINISH -->
+  <div class="slide">
+    <div class="finish">
+      <span class="finish-icon">🎉</span>
+      <div class="finish-title">Section 2 Selesai!</div>
+      <div class="finish-desc">Kamu sudah paham gradien, persamaan garis, dan hubungan antar garis. Ini adalah alat analitik yang powerful — dari regresi ML sampai analisis tren bisnis.</div>
+      <div class="xp">✨ +110 XP — Persamaan Garis</div>
+      <div class="finish-btns">
+        <a href="level5.html" class="btn btn-ghost">← Level Hub</a>
+        <a href="section3.html" class="btn btn-primary">Section 3 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let cur=0;const total=5;
+function renderDots(){const d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<total;i++){const dot=document.createElement('div');dot.className='dot'+(i===cur?' active':i<cur?' done':'');d.appendChild(dot);}}
+function showSlide(n){document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('active',i===n));cur=n;renderDots();window.scrollTo({top:0,behavior:'smooth'});}
+function nextSlide(){if(cur<total-1)showSlide(cur+1);}
+function prevSlide(){if(cur>0)showSlide(cur-1);}
+function answer2(idx,btn){
+  const opts=document.querySelectorAll('#opts2 .opt-btn');
+  opts.forEach(b=>b.disabled=true);
+  const correct=0;
+  const fb=document.getElementById('fb2');
+  if(idx===correct){btn.classList.add('correct');fb.className='feedback show ok';fb.textContent='✅ Betul! m = (11−5)/(3−0) = 6/3 = 2. Titik (0,5) → c = 5. Jadi y = 2x + 5.';}
+  else{btn.classList.add('wrong');opts[correct].classList.add('correct');fb.className='feedback show no';fb.textContent='❌ Kurang tepat. m = (11−5)/(3−0) = 2. Karena melalui (0,5), intersep c = 5. Persamaannya y = 2x + 5.';}
+  document.getElementById('btn2next').disabled=false;
+}
+renderDots();
+</script>
+</body>
+</html>

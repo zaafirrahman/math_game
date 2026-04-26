@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise · Level 6 · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#0f1420;--board-light:#161d2e;--board-mid:#131929;
+    --grid:rgba(255,255,255,0.03);--grid-major:rgba(255,255,255,0.055);
+    --chalk:#e8e4f0;--chalk-muted:rgba(232,228,240,0.55);--chalk-dim:rgba(232,228,240,0.22);
+    --gold:#f0c040;--gold-dark:#b8882a;--gold-bg:rgba(240,192,64,0.12);--gold-border:rgba(240,192,64,0.38);
+    --gold2:#f5d070;
+    --violet:#a87fe8;--violet-bg:rgba(168,127,232,0.1);--violet-border:rgba(168,127,232,0.35);
+    --sky:#60b8f0;--sky-bg:rgba(96,184,240,0.1);--sky-border:rgba(96,184,240,0.33);
+    --green:#4a9e69;--green-bg:rgba(74,158,105,0.12);--green-border:rgba(74,158,105,0.35);
+    --red:#e06060;--red-bg:rgba(224,96,96,0.1);--red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(232,228,240,0.12);--card-bg:rgba(255,255,255,0.045);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.7;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(15,20,32,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--gold);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--chalk-muted);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5.5rem;position:relative;z-index:1;}
+
+  /* Header */
+  .page-header{text-align:center;margin-bottom:2rem;}
+  .ex-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(232,228,240,0.06);border:1px solid var(--card-border);color:var(--chalk-muted);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,1.9rem);margin-bottom:0.5rem;text-shadow:2px 2px 0 rgba(0,0,0,0.4);}
+  h1 span{color:var(--gold);}
+  .page-sub{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.9rem;line-height:1.6;}
+
+  /* Overall progress */
+  .overall-progress{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:1.1rem 1.4rem;margin-bottom:2rem;box-shadow:0 4px 16px rgba(0,0,0,0.3);}
+  .op-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.7rem;}
+  .op-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+  .op-count{font-family:'Fredoka One',cursive;font-size:0.9rem;color:var(--chalk);}
+  .op-bar{background:rgba(232,228,240,0.07);border-radius:20px;height:8px;overflow:hidden;}
+  .op-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--gold-dark),var(--gold));transition:width 0.5s ease;}
+  .op-sections{display:flex;gap:0.5rem;margin-top:0.8rem;flex-wrap:wrap;}
+  .sec-pip{font-family:'Patrick Hand',cursive;font-size:0.72rem;padding:0.2rem 0.6rem;border-radius:6px;display:flex;align-items:center;gap:0.3rem;}
+  .sec-pip.gold{background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-border);}
+  .sec-pip.violet{background:var(--violet-bg);color:var(--violet);border:1px solid var(--violet-border);}
+
+  /* Section divider */
+  .sec-divider{display:flex;align-items:center;gap:0.8rem;margin:1.8rem 0 1.2rem;}
+  .sec-div-line{height:1px;flex:1;background:var(--chalk-dim);}
+  .sec-div-label{font-family:'Patrick Hand',cursive;font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;}
+  .sec-div-label.gold{color:var(--gold);}
+  .sec-div-label.violet{color:var(--violet);}
+
+  /* Question card */
+  .q-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.6rem;margin-bottom:1rem;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.045);transition:border-color 0.3s;}
+  .q-card.answered-ok{border-color:var(--green-border);}
+  .q-card.answered-no{border-color:var(--red-border);}
+  .q-num-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.8rem;}
+  .q-num{font-family:'Fredoka One',cursive;font-size:0.72rem;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-border);border-radius:6px;padding:0.15rem 0.5rem;}
+  .q-num.violet{background:var(--violet-bg);color:var(--violet);border-color:var(--violet-border);}
+  .q-type{font-family:'Patrick Hand',cursive;font-size:0.7rem;color:var(--chalk-muted);letter-spacing:1px;text-transform:uppercase;}
+  .q-text{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--chalk);margin-bottom:1.1rem;line-height:1.45;}
+
+  /* Multiple choice */
+  .mc-opts{display:flex;flex-direction:column;gap:0.5rem;}
+  .mc-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.75rem 1rem;border-radius:9px;cursor:pointer;font-size:0.88rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;display:flex;align-items:center;gap:0.6rem;}
+  .mc-btn:hover:not(:disabled){border-color:rgba(240,192,64,0.4);background:var(--gold-bg);}
+  .mc-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .mc-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .mc-btn:disabled{cursor:default;}
+  .mc-key{font-family:'Fredoka One',cursive;font-size:0.72rem;color:var(--chalk-muted);background:rgba(232,228,240,0.07);border-radius:4px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+  /* Fill in the blank */
+  .fill-row{display:flex;gap:0.6rem;align-items:center;flex-wrap:wrap;}
+  .fill-input{background:var(--board-light);border:1px solid var(--gold-border);color:var(--chalk);padding:0.65rem 0.9rem;border-radius:9px;font-size:0.92rem;font-family:'Fredoka One',cursive;width:160px;outline:none;transition:all 0.2s;}
+  .fill-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(240,192,64,0.15);}
+  .fill-input:disabled{opacity:0.6;cursor:default;}
+  .fill-input.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .fill-input.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .fill-btn{background:var(--gold-dark);color:#000;border:none;padding:0.65rem 1.2rem;border-radius:9px;font-family:'Fredoka One',cursive;font-size:0.88rem;cursor:pointer;transition:all 0.2s;}
+  .fill-btn:hover:not(:disabled){background:var(--gold);}
+  .fill-btn:disabled{opacity:0.4;cursor:default;}
+
+  /* Feedback */
+  .q-feedback{margin-top:0.8rem;padding:0.7rem 0.95rem;border-radius:9px;font-size:0.85rem;font-weight:800;display:none;line-height:1.55;}
+  .q-feedback.show{display:block;}
+  .q-feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .q-feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+
+  /* Status chip on answered */
+  .q-status{font-family:'Patrick Hand',cursive;font-size:0.7rem;padding:0.15rem 0.5rem;border-radius:6px;margin-left:auto;}
+  .q-status.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .q-status.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+
+  /* Completion banner */
+  .section-done{background:linear-gradient(135deg,rgba(74,158,105,0.1),rgba(74,158,105,0.05));border:1px solid var(--green-border);border-radius:12px;padding:1.2rem 1.5rem;margin:1rem 0;text-align:center;display:none;}
+  .section-done.show{display:block;}
+  .section-done-title{font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--green);margin-bottom:0.3rem;}
+  .section-done-sub{font-family:'Patrick Hand',cursive;font-size:0.85rem;color:var(--chalk-muted);}
+
+  /* Final result */
+  .final-result{background:var(--card-bg);border:1px solid var(--gold-border);border-radius:14px;padding:2rem;margin-top:2rem;text-align:center;box-shadow:0 4px 24px rgba(240,192,64,0.1);display:none;}
+  .final-result.show{display:block;}
+  .fr-icon{font-size:3.5rem;display:block;margin-bottom:0.8rem;}
+  .fr-title{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--gold);margin-bottom:0.5rem;}
+  .fr-score{font-family:'Fredoka One',cursive;font-size:3.5rem;color:var(--gold);line-height:1;margin:0.5rem 0;}
+  .fr-sub{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.9rem;margin-bottom:1.2rem;line-height:1.6;}
+  .reset-link{font-family:'Patrick Hand',cursive;font-size:0.82rem;color:var(--chalk-muted);text-decoration:underline;cursor:pointer;margin-top:1rem;display:inline-block;}
+  .reset-link:hover{color:var(--gold);}
+
+  /* Bottom nav btns */
+  .btns-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+  .btn-gold{background:var(--gold-dark);color:#000;box-shadow:0 4px 14px rgba(184,136,42,0.35);}
+  .btn-gold:hover{background:var(--gold);transform:translateY(-2px);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level6.html">Level 6</a><span>›</span>
+  <span class="cur">Exercise</span>
+</nav>
+
+<div class="wrap">
+  <div class="page-header">
+    <div class="ex-badge">✏️ Exercise</div>
+    <h1>Latihan <span>Trigonometri</span></h1>
+    <p class="page-sub">10 soal tanpa timer. Santai, pahami, dan cek progresmu. Progres tersimpan otomatis.</p>
+  </div>
+
+  <!-- Overall progress -->
+  <div class="overall-progress">
+    <div class="op-header">
+      <div class="op-label">Progress Keseluruhan</div>
+      <div class="op-count" id="opCount">0 / 10</div>
+    </div>
+    <div class="op-bar"><div class="op-fill" id="opFill" style="width:0%"></div></div>
+    <div class="op-sections">
+      <div class="sec-pip gold">📐 Section 1: <span id="s1count">0/5</span></div>
+      <div class="sec-pip violet">🌊 Section 2: <span id="s2count">0/5</span></div>
+    </div>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="sec-divider">
+    <div class="sec-div-line"></div>
+    <div class="sec-div-label gold">📐 Section 1 · Rasio Sudut: Sin, Cos, Tan</div>
+    <div class="sec-div-line"></div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="q-card" id="qcard-0">
+    <div class="q-num-row">
+      <div class="q-num">Soal 1</div>
+      <div class="q-type">Pilihan Ganda</div>
+      <div class="q-status" id="qstatus-0" style="display:none;"></div>
+    </div>
+    <div class="q-text">Dalam segitiga siku-siku, sudut θ = 30° dan panjang sisi miring (hyp) = 14 cm. Berapa panjang sisi depan (opp)?</div>
+    <div class="mc-opts" id="mc-0">
+      <button class="mc-btn" onclick="answerMC(0,0,this)"><span class="mc-key">A</span>7 cm</button>
+      <button class="mc-btn" onclick="answerMC(0,1,this)"><span class="mc-key">B</span>7√3 cm</button>
+      <button class="mc-btn" onclick="answerMC(0,2,this)"><span class="mc-key">C</span>14√3 cm</button>
+      <button class="mc-btn" onclick="answerMC(0,3,this)"><span class="mc-key">D</span>28 cm</button>
+    </div>
+    <div class="q-feedback" id="qfb-0"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="qcard-1">
+    <div class="q-num-row">
+      <div class="q-num">Soal 2</div>
+      <div class="q-type">Pilihan Ganda</div>
+      <div class="q-status" id="qstatus-1" style="display:none;"></div>
+    </div>
+    <div class="q-text">Nilai cos 60° adalah?</div>
+    <div class="mc-opts" id="mc-1">
+      <button class="mc-btn" onclick="answerMC(1,0,this)"><span class="mc-key">A</span>1</button>
+      <button class="mc-btn" onclick="answerMC(1,1,this)"><span class="mc-key">B</span>½√3</button>
+      <button class="mc-btn" onclick="answerMC(1,2,this)"><span class="mc-key">C</span>½√2</button>
+      <button class="mc-btn" onclick="answerMC(1,3,this)"><span class="mc-key">D</span>½</button>
+    </div>
+    <div class="q-feedback" id="qfb-1"></div>
+  </div>
+
+  <!-- Q3 (isian) -->
+  <div class="q-card" id="qcard-2">
+    <div class="q-num-row">
+      <div class="q-num">Soal 3</div>
+      <div class="q-type">Isian</div>
+      <div class="q-status" id="qstatus-2" style="display:none;"></div>
+    </div>
+    <div class="q-text">Seseorang berdiri 8 m dari pohon. Sudut elevasi puncak pohon = 45°. Berapa tinggi pohon (dalam meter)?</div>
+    <div class="fill-row">
+      <input type="number" class="fill-input" id="fill-2" placeholder="Jawaban...">
+      <button class="fill-btn" onclick="answerFill(2,'8','tan 45° = opp/adj = 1, jadi tinggi = adj × 1 = 8 m.')">Jawab</button>
+    </div>
+    <div class="q-feedback" id="qfb-2"></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="qcard-3">
+    <div class="q-num-row">
+      <div class="q-num">Soal 4</div>
+      <div class="q-type">Pilihan Ganda</div>
+      <div class="q-status" id="qstatus-3" style="display:none;"></div>
+    </div>
+    <div class="q-text">Sebuah tangga sepanjang 12 m bersandar ke dinding dengan sudut 60° terhadap tanah. Berapa jarak kaki tangga ke dinding?</div>
+    <div class="mc-opts" id="mc-3">
+      <button class="mc-btn" onclick="answerMC(3,0,this)"><span class="mc-key">A</span>4 m</button>
+      <button class="mc-btn" onclick="answerMC(3,1,this)"><span class="mc-key">B</span>6 m</button>
+      <button class="mc-btn" onclick="answerMC(3,2,this)"><span class="mc-key">C</span>6√3 m</button>
+      <button class="mc-btn" onclick="answerMC(3,3,this)"><span class="mc-key">D</span>12√3 m</button>
+    </div>
+    <div class="q-feedback" id="qfb-3"></div>
+  </div>
+
+  <!-- Q5 (isian) -->
+  <div class="q-card" id="qcard-4">
+    <div class="q-num-row">
+      <div class="q-num">Soal 5</div>
+      <div class="q-type">Isian</div>
+      <div class="q-status" id="qstatus-4" style="display:none;"></div>
+    </div>
+    <div class="q-text">Nilai tan 45° adalah? (tulis angka bulat)</div>
+    <div class="fill-row">
+      <input type="number" class="fill-input" id="fill-4" placeholder="Jawaban...">
+      <button class="fill-btn" onclick="answerFill(4,'1','tan 45° = opp/adj. Pada sudut 45°, opp = adj, sehingga tan 45° = 1.')">Jawab</button>
+    </div>
+    <div class="q-feedback" id="qfb-4"></div>
+  </div>
+
+  <div class="section-done" id="s1done">
+    <div class="section-done-title">✅ Section 1 Selesai!</div>
+    <div class="section-done-sub">Bagus! Kamu sudah menyelesaikan semua soal Rasio Sudut. Lanjut ke Section 2!</div>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="sec-divider">
+    <div class="sec-div-line"></div>
+    <div class="sec-div-label violet">🌊 Section 2 · Identitas & Grafik</div>
+    <div class="sec-div-line"></div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card" id="qcard-5">
+    <div class="q-num-row">
+      <div class="q-num violet">Soal 6</div>
+      <div class="q-type">Pilihan Ganda</div>
+      <div class="q-status" id="qstatus-5" style="display:none;"></div>
+    </div>
+    <div class="q-text">Jika sin θ = 5/13, maka cos θ = ? (θ di kuadran I)</div>
+    <div class="mc-opts" id="mc-5">
+      <button class="mc-btn" onclick="answerMC(5,0,this)"><span class="mc-key">A</span>8/13</button>
+      <button class="mc-btn" onclick="answerMC(5,1,this)"><span class="mc-key">B</span>12/13</button>
+      <button class="mc-btn" onclick="answerMC(5,2,this)"><span class="mc-key">C</span>5/12</button>
+      <button class="mc-btn" onclick="answerMC(5,3,this)"><span class="mc-key">D</span>13/5</button>
+    </div>
+    <div class="q-feedback" id="qfb-5"></div>
+  </div>
+
+  <!-- Q7 (isian) -->
+  <div class="q-card" id="qcard-6">
+    <div class="q-num-row">
+      <div class="q-num violet">Soal 7</div>
+      <div class="q-type">Isian</div>
+      <div class="q-status" id="qstatus-6" style="display:none;"></div>
+    </div>
+    <div class="q-text">Fungsi y = sin x mencapai nilai maksimum di sudut berapa? (dalam derajat, isi angka saja)</div>
+    <div class="fill-row">
+      <input type="number" class="fill-input" id="fill-6" placeholder="Jawaban...">
+      <button class="fill-btn" onclick="answerFill(6,'90','sin x mencapai nilai maksimum (+1) pertama kali di x = 90°, yaitu puncak pertama gelombang sinus.')">Jawab</button>
+    </div>
+    <div class="q-feedback" id="qfb-6"></div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card" id="qcard-7">
+    <div class="q-num-row">
+      <div class="q-num violet">Soal 8</div>
+      <div class="q-type">Pilihan Ganda</div>
+      <div class="q-status" id="qstatus-7" style="display:none;"></div>
+    </div>
+    <div class="q-text">Nilai dari sin²30° + cos²30° adalah?</div>
+    <div class="mc-opts" id="mc-7">
+      <button class="mc-btn" onclick="answerMC(7,0,this)"><span class="mc-key">A</span>½</button>
+      <button class="mc-btn" onclick="answerMC(7,1,this)"><span class="mc-key">B</span>¾</button>
+      <button class="mc-btn" onclick="answerMC(7,2,this)"><span class="mc-key">C</span>1</button>
+      <button class="mc-btn" onclick="answerMC(7,3,this)"><span class="mc-key">D</span>√3</button>
+    </div>
+    <div class="q-feedback" id="qfb-7"></div>
+  </div>
+
+  <!-- Q9 (isian) -->
+  <div class="q-card" id="qcard-8">
+    <div class="q-num-row">
+      <div class="q-num violet">Soal 9</div>
+      <div class="q-type">Isian</div>
+      <div class="q-status" id="qstatus-8" style="display:none;"></div>
+    </div>
+    <div class="q-text">Periode fungsi y = cos x adalah berapa derajat?</div>
+    <div class="fill-row">
+      <input type="number" class="fill-input" id="fill-8" placeholder="Jawaban...">
+      <button class="fill-btn" onclick="answerFill(8,'360','Fungsi cos x (juga sin x) memiliki periode 360°, artinya pola berulang setiap 360°.')">Jawab</button>
+    </div>
+    <div class="q-feedback" id="qfb-8"></div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card" id="qcard-9">
+    <div class="q-num-row">
+      <div class="q-num violet">Soal 10</div>
+      <div class="q-type">Pilihan Ganda</div>
+      <div class="q-status" id="qstatus-9" style="display:none;"></div>
+    </div>
+    <div class="q-text">Jika cos θ = 8/17, nilai sin θ di kuadran I adalah?</div>
+    <div class="mc-opts" id="mc-9">
+      <button class="mc-btn" onclick="answerMC(9,0,this)"><span class="mc-key">A</span>6/17</button>
+      <button class="mc-btn" onclick="answerMC(9,1,this)"><span class="mc-key">B</span>15/17</button>
+      <button class="mc-btn" onclick="answerMC(9,2,this)"><span class="mc-key">C</span>9/17</button>
+      <button class="mc-btn" onclick="answerMC(9,3,this)"><span class="mc-key">D</span>17/8</button>
+    </div>
+    <div class="q-feedback" id="qfb-9"></div>
+  </div>
+
+  <div class="section-done" id="s2done">
+    <div class="section-done-title">✅ Section 2 Selesai!</div>
+    <div class="section-done-sub">Hebat! Semua soal identitas dan grafik sudah dikerjakan!</div>
+  </div>
+
+  <!-- Final result -->
+  <div class="final-result" id="finalResult">
+    <span class="fr-icon" id="frIcon">🌟</span>
+    <div class="fr-title">Exercise Selesai!</div>
+    <div class="fr-score" id="frScore">10/10</div>
+    <div class="fr-sub" id="frSub">Semua soal terjawab. Trigonometri sudah dikuasai!</div>
+    <div class="btns-row">
+      <a href="level6.html" class="btn btn-ghost">← Level Hub</a>
+      <a href="quicktest.html" class="btn btn-gold">⏱️ Quick Test</a>
+    </div>
+    <span class="reset-link" onclick="resetAll()">🔄 Reset & Ulang dari awal</span>
+  </div>
+
+</div>
+
+<script>
+// ───────────────────────────────────────────
+// Answer key
+// ───────────────────────────────────────────
+const MC_ANSWERS = {
+  0: { correct: 0, exp: '✅ sin 30° = ½, opp = hyp × sin 30° = 14 × ½ = 7 cm.' },
+  1: { correct: 3, exp: '✅ cos 60° = ½. Ingat tabel sudut istimewa: cos 60° adalah kebalikan dari sin 30° = ½.' },
+  3: { correct: 1, exp: '✅ cos 60° = adj/hyp → adj = hyp × cos 60° = 12 × ½ = 6 m. Jarak kaki tangga = 6 m.' },
+  5: { correct: 1, exp: '✅ sin²θ + cos²θ = 1 → cos²θ = 1 − (5/13)² = 144/169 → cos θ = 12/13. Triple 5-12-13!' },
+  7: { correct: 2, exp: '✅ Identitas Pythagorean: sin²θ + cos²θ = 1 untuk SEMUA nilai θ. Jadi jawabannya selalu 1!' },
+  9: { correct: 1, exp: '✅ sin²θ = 1 − cos²θ = 1 − (8/17)² = 1 − 64/289 = 225/289 → sin θ = 15/17. Triple 8-15-17!' },
+};
+
+// ───────────────────────────────────────────
+// State
+// ───────────────────────────────────────────
+const LS_KEY = 'matharena_l6_exercise';
+let state = loadState();
+
+function loadState(){
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if(raw) return JSON.parse(raw);
+  } catch(e){}
+  return { answers: {} }; // answers: { qIdx: { ok: bool, answered: bool } }
+}
+
+function saveState(){
+  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e){}
+}
+
+// ───────────────────────────────────────────
+// Progress counter
+// ───────────────────────────────────────────
+function countAnswered(){
+  return Object.keys(state.answers).length;
+}
+function countSection(start, end){
+  let c=0;
+  for(let i=start;i<end;i++) if(state.answers[i]) c++;
+  return c;
+}
+function updateProgress(){
+  const total = countAnswered();
+  const s1 = countSection(0,5);
+  const s2 = countSection(5,10);
+  document.getElementById('opCount').textContent = `${total} / 10`;
+  document.getElementById('opFill').style.width = `${(total/10)*100}%`;
+  document.getElementById('s1count').textContent = `${s1}/5`;
+  document.getElementById('s2count').textContent = `${s2}/5`;
+  if(s1===5) document.getElementById('s1done').classList.add('show');
+  if(s2===5) document.getElementById('s2done').classList.add('show');
+  if(total===10) showFinal();
+}
+
+// ───────────────────────────────────────────
+// Answer handlers
+// ───────────────────────────────────────────
+function answerMC(qIdx, chosen, btn){
+  if(state.answers[qIdx]) return; // already answered
+  const conf = MC_ANSWERS[qIdx];
+  const opts = document.querySelectorAll(`#mc-${qIdx} .mc-btn`);
+  opts.forEach(b => b.disabled = true);
+  const ok = chosen === conf.correct;
+  if(ok){
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    opts[conf.correct].classList.add('correct');
+  }
+  showFeedback(qIdx, ok, conf.exp);
+  markCard(qIdx, ok);
+  state.answers[qIdx] = { ok, answered: true };
+  saveState();
+  updateProgress();
+}
+
+function answerFill(qIdx, correctStr, exp){
+  if(state.answers[qIdx]) return;
+  const inp = document.getElementById(`fill-${qIdx}`);
+  const val = inp.value.trim();
+  if(!val){ inp.focus(); return; }
+  const ok = val === correctStr;
+  inp.disabled = true;
+  inp.classList.add(ok?'correct':'wrong');
+  const btn = inp.nextElementSibling;
+  btn.disabled = true;
+  if(ok){
+    showFeedback(qIdx, true, '✅ ' + exp);
+  } else {
+    showFeedback(qIdx, false, `❌ Jawaban benar: ${correctStr}. ${exp}`);
+  }
+  markCard(qIdx, ok);
+  state.answers[qIdx] = { ok, answered: true };
+  saveState();
+  updateProgress();
+}
+
+function showFeedback(qIdx, ok, text){
+  const fb = document.getElementById(`qfb-${qIdx}`);
+  fb.className = `q-feedback show ${ok?'ok':'no'}`;
+  fb.textContent = text;
+}
+
+function markCard(qIdx, ok){
+  const card = document.getElementById(`qcard-${qIdx}`);
+  card.classList.add(ok?'answered-ok':'answered-no');
+  const status = document.getElementById(`qstatus-${qIdx}`);
+  status.style.display = '';
+  status.className = `q-status ${ok?'ok':'no'}`;
+  status.textContent = ok ? '✅ Benar' : '❌ Salah';
+}
+
+// ───────────────────────────────────────────
+// Final
+// ───────────────────────────────────────────
+function showFinal(){
+  const correct = Object.values(state.answers).filter(a=>a.ok).length;
+  const el = document.getElementById('finalResult');
+  el.classList.add('show');
+  document.getElementById('frScore').textContent = `${correct}/10`;
+  const icons = correct>=9?'🏆':correct>=7?'🌟':correct>=5?'😊':'📚';
+  document.getElementById('frIcon').textContent = icons;
+  const subs = correct>=9?'Luar biasa! Kamu benar-benar menguasai trigonometri!':
+    correct>=7?'Hasil sangat bagus! Sedikit lagi menuju sempurna.':
+    correct>=5?'Cukup baik. Review bagian yang salah dan ulangi!':
+    'Terus berlatih — setiap kesalahan adalah pelajaran!';
+  document.getElementById('frSub').textContent = subs;
+  el.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+// ───────────────────────────────────────────
+// Reset
+// ───────────────────────────────────────────
+function resetAll(){
+  if(!confirm('Reset semua progres exercise ini?')) return;
+  try { localStorage.removeItem(LS_KEY); } catch(e){}
+  location.reload();
+}
+
+// ───────────────────────────────────────────
+// Restore saved state on load
+// ───────────────────────────────────────────
+function restoreState(){
+  Object.entries(state.answers).forEach(([qIdxStr, data])=>{
+    const qIdx = parseInt(qIdxStr);
+    if(MC_ANSWERS[qIdx] !== undefined){
+      // MC restore
+      const opts = document.querySelectorAll(`#mc-${qIdx} .mc-btn`);
+      opts.forEach(b => b.disabled = true);
+      opts[MC_ANSWERS[qIdx].correct].classList.add('correct');
+      if(!data.ok){
+        // mark wrong one — we don't store which one was chosen, so just highlight correct
+      }
+      showFeedback(qIdx, data.ok, data.ok ? MC_ANSWERS[qIdx].exp : '❌ ' + MC_ANSWERS[qIdx].exp);
+    } else {
+      // Fill restore
+      const inp = document.getElementById(`fill-${qIdx}`);
+      if(inp){
+        inp.disabled = true;
+        inp.classList.add(data.ok?'correct':'wrong');
+        const btn = inp.nextElementSibling;
+        if(btn) btn.disabled = true;
+      }
+    }
+    markCard(qIdx, data.ok);
+  });
+  updateProgress();
+  // show final if all done
+  if(countAnswered() === 10) showFinal();
+}
+
+restoreState();
+</script>
+</body>
+</html>

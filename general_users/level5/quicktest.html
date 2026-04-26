@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Test · Level 5 · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2228; --board-light:#262c38;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.25);
+    --rose:#e83a5a; --rose-dark:#a41c38; --rose-bg:rgba(232,58,90,0.13); --rose-border:rgba(232,58,90,0.4);
+    --crimson:#f06080; --crimson-bg:rgba(240,96,128,0.12); --crimson-border:rgba(240,96,128,0.38);
+    --pink:#f090a8; --pink-bg:rgba(240,144,168,0.1); --pink-border:rgba(240,144,168,0.38);
+    --green:#4a9e69; --green-dark:#2c6e49; --green-bg:rgba(74,158,105,0.12); --green-border:rgba(74,158,105,0.38);
+    --red:#e06060; --red-bg:rgba(224,96,96,0.1); --red-border:rgba(224,96,96,0.35);
+    --amber:#f0c060; --amber-dark:#c97d2e; --amber-bg:rgba(240,192,96,0.1); --amber-border:rgba(240,192,96,0.38);
+    --card-border:rgba(232,224,208,0.14); --card-bg:rgba(255,255,255,0.05);
+    --timer-ok:#e83a5a; --timer-warn:#f090a8; --timer-danger:#e06060;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,34,40,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--pink);}
+  .wrap{max-width:600px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  /* START SCREEN */
+  #startScreen{text-align:center;}
+  .start-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .start-title{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--chalk);margin-bottom:0.5rem;}
+  .start-sub{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:1.5rem;}
+  .rules-box{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:1.2rem 1.5rem;text-align:left;margin-bottom:1.5rem;box-shadow:0 4px 18px rgba(0,0,0,0.3);}
+  .rule-item{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.88rem;color:var(--chalk-muted);margin-bottom:0.5rem;line-height:1.5;}
+  .rule-item:last-child{margin-bottom:0;}
+  .rule-item span{flex-shrink:0;}
+
+  /* TIMER */
+  .timer-wrap{display:flex;justify-content:center;margin-bottom:1.5rem;}
+  .timer-ring-svg{transform:rotate(-90deg);}
+  .timer-ring-track{fill:none;stroke:rgba(232,224,208,0.1);stroke-width:6;}
+  .timer-ring-fill{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 0.9s linear,stroke 0.3s;}
+  .timer-num-wrap{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+  .timer-num{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--chalk);}
+  .timer-label{font-family:'Patrick Hand',cursive;font-size:0.68rem;color:var(--chalk-muted);letter-spacing:1px;}
+  .timer-relative{position:relative;width:90px;height:90px;}
+
+  /* PROGRESS */
+  .progress-bar{background:rgba(232,224,208,0.08);border-radius:20px;height:6px;margin-bottom:1.5rem;overflow:hidden;}
+  .progress-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--rose-dark),var(--rose));transition:width 0.4s ease;}
+  .q-count{font-family:'Patrick Hand',cursive;font-size:0.8rem;color:var(--chalk-muted);text-align:right;margin-bottom:0.5rem;}
+
+  /* QUESTION CARD */
+  .q-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.8rem;margin-bottom:1rem;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.06);}
+  .q-topic{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:0.8rem;}
+  .q-text{font-family:'Fredoka One',cursive;font-size:1.15rem;color:var(--chalk);margin-bottom:1.3rem;line-height:1.4;}
+  .opts{display:flex;flex-direction:column;gap:0.6rem;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.85rem 1.1rem;border-radius:10px;cursor:pointer;font-size:0.92rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;display:flex;align-items:center;gap:0.7rem;}
+  .opt-btn:hover:not(:disabled){border-color:var(--rose-border);background:var(--rose-bg);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-key{font-family:'Fredoka One',cursive;font-size:0.75rem;color:var(--chalk-muted);background:rgba(232,224,208,0.08);border-radius:5px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .feedback-bar{border-radius:10px;padding:0.75rem 1rem;font-size:0.88rem;font-weight:800;display:none;margin-top:0.8rem;line-height:1.5;}
+  .feedback-bar.show{display:block;}
+  .feedback-bar.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .feedback-bar.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+  .feedback-bar.timeout{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
+
+  .next-btn{width:100%;padding:0.9rem;border-radius:12px;border:none;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;background:var(--rose-dark);color:#fff;box-shadow:0 4px 14px rgba(164,28,56,0.35);transition:all 0.2s;margin-top:1rem;display:none;letter-spacing:0.5px;}
+  .next-btn.show{display:block;}
+  .next-btn:hover{background:var(--rose);transform:translateY(-2px);}
+
+  /* SCORE SCREEN */
+  #scoreScreen{display:none;text-align:center;}
+  .score-icon{font-size:5rem;display:block;margin-bottom:1rem;}
+  .score-title{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--chalk);margin-bottom:0.4rem;}
+  .score-sub{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;margin-bottom:1.5rem;}
+  .score-big{font-family:'Fredoka One',cursive;font-size:4rem;color:var(--rose);line-height:1;margin:0.5rem 0;}
+  .score-label{font-family:'Patrick Hand',cursive;font-size:0.85rem;color:var(--chalk-muted);}
+  .score-detail{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:1.2rem 1.5rem;margin:1.5rem 0;text-align:left;}
+  .score-row{display:flex;justify-content:space-between;align-items:center;padding:0.45rem 0;border-bottom:1px solid rgba(232,224,208,0.06);font-size:0.88rem;}
+  .score-row:last-child{border-bottom:none;}
+  .score-row .qnum{font-family:'Fredoka One',cursive;color:var(--chalk-muted);font-size:0.8rem;}
+  .score-row .qtopic{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.78rem;flex:1;margin:0 0.5rem;}
+  .score-row .qresult{font-size:1rem;}
+  .score-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--pink-border);color:var(--pink);}
+  .btn-rose{background:var(--rose-dark);color:#fff;box-shadow:0 4px 14px rgba(164,28,56,0.35);}
+  .btn-rose:hover{background:var(--rose);transform:translateY(-2px);}
+  .btn-crimson{background:#9a2540;color:#fff;box-shadow:0 4px 14px rgba(154,37,64,0.35);}
+  .btn-crimson:hover{background:var(--crimson);transform:translateY(-2px);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level5.html">Level 5</a><span>›</span>
+  <span class="cur">Quick Test</span>
+</nav>
+
+<div class="wrap">
+  <!-- START SCREEN -->
+  <div id="startScreen">
+    <span class="start-icon">⏱️</span>
+    <div class="start-title">Quick Test — Level 5</div>
+    <p class="start-sub">5 soal dari tiga topik: Fungsi, Persamaan Garis, dan Grafik Kuadrat. Timer berjalan tiap soal!</p>
+    <div class="rules-box">
+      <div class="rule-item"><span>⏳</span>Setiap soal punya waktu <strong>25 detik</strong>. Habis = dianggap salah.</div>
+      <div class="rule-item"><span>✅</span>Pilih jawaban yang kamu yakin — tidak bisa diubah.</div>
+      <div class="rule-item"><span>📊</span>Di akhir ada rekap lengkap soal benar/salah beserta pembahasannya.</div>
+      <div class="rule-item"><span>🎯</span>Target: 4/5 benar. Bisa?</div>
+    </div>
+    <button class="btn btn-rose" style="width:100%;justify-content:center;padding:1rem;font-size:1.05rem;" onclick="startQuiz()">Mulai Sekarang →</button>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quizScreen" style="display:none;">
+    <div class="q-count" id="qCount">Soal 1 / 5</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="timer-wrap">
+      <div class="timer-relative">
+        <svg class="timer-ring-svg" width="90" height="90" viewBox="0 0 90 90">
+          <circle class="timer-ring-track" cx="45" cy="45" r="39"/>
+          <circle class="timer-ring-fill" id="timerRing" cx="45" cy="45" r="39" stroke="#e83a5a"
+            stroke-dasharray="245" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-num-wrap">
+          <div class="timer-num" id="timerNum">25</div>
+          <div class="timer-label">detik</div>
+        </div>
+      </div>
+    </div>
+    <div class="q-card">
+      <div class="q-topic" id="qTopic"></div>
+      <div class="q-text" id="qText"></div>
+      <div class="opts" id="qOpts"></div>
+      <div class="feedback-bar" id="feedbackBar"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Soal Berikutnya →</button>
+  </div>
+
+  <!-- SCORE SCREEN -->
+  <div id="scoreScreen">
+    <span class="score-icon" id="scoreIcon"></span>
+    <div class="score-title" id="scoreTitle"></div>
+    <p class="score-sub" id="scoreSub"></p>
+    <div class="score-big" id="scoreBig"></div>
+    <div class="score-label">soal benar dari 5</div>
+    <div class="score-detail" id="scoreDetail"></div>
+    <div class="score-btns">
+      <button class="btn btn-ghost" onclick="restartQuiz()">🔁 Ulangi</button>
+      <a href="exercise.html" class="btn btn-crimson">✏️ Exercise</a>
+      <a href="level5.html" class="btn btn-rose">← Level Hub</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    topic: '⚙️ Fungsi Dasar',
+    text: 'Jika f(x) = 2x² − 3x + 1, maka nilai f(3) adalah…',
+    opts: ['10', '8', '16', '12'],
+    correct: 0,
+    explanation: '✅ f(3) = 2(9) − 3(3) + 1 = 18 − 9 + 1 = 10.'
+  },
+  {
+    topic: '⚙️ Fungsi Dasar',
+    text: 'Fungsi f didefinisikan sebagai f : x → 5x − 2. Nilai x jika f(x) = 13 adalah…',
+    opts: ['3', '2', '4', '5'],
+    correct: 0,
+    explanation: '✅ 5x − 2 = 13 → 5x = 15 → x = 3.'
+  },
+  {
+    topic: '📏 Persamaan Garis',
+    text: 'Gradien garis yang melalui titik (−2, 3) dan (4, −9) adalah…',
+    opts: ['−2', '2', '−1/2', '1/2'],
+    correct: 0,
+    explanation: '✅ m = (−9 − 3) / (4 − (−2)) = −12 / 6 = −2.'
+  },
+  {
+    topic: '📏 Persamaan Garis',
+    text: 'Persamaan garis yang sejajar y = 3x − 1 dan melalui titik (0, 5) adalah…',
+    opts: ['y = 3x + 5', 'y = −3x + 5', 'y = 3x − 5', 'y = ⅓x + 5'],
+    correct: 0,
+    explanation: '✅ Sejajar → m sama = 3. Melalui (0, 5) → c = 5. Jadi y = 3x + 5.'
+  },
+  {
+    topic: '🎯 Grafik Kuadrat',
+    text: 'Titik puncak dari parabola y = x² − 8x + 15 terletak di…',
+    opts: ['(4, −1)', '(−4, −1)', '(4, 1)', '(8, 15)'],
+    correct: 0,
+    explanation: '✅ h = −(−8)/(2×1) = 4. k = 16 − 32 + 15 = −1. Puncak = (4, −1).'
+  }
+];
+
+const TIMER_SEC = 25;
+const CIRCUMFERENCE = 2 * Math.PI * 39;
+
+let currentQ = 0;
+let results = [];
+let timerInterval = null;
+let timeLeft = TIMER_SEC;
+let answered = false;
+
+function startQuiz() {
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'block';
+  loadQuestion();
+}
+
+function loadQuestion() {
+  answered = false;
+  const q = QUESTIONS[currentQ];
+  document.getElementById('qCount').textContent = `Soal ${currentQ + 1} / ${QUESTIONS.length}`;
+  document.getElementById('progressFill').style.width = `${(currentQ / QUESTIONS.length) * 100}%`;
+  document.getElementById('qTopic').textContent = q.topic;
+  document.getElementById('qText').textContent = q.text;
+  document.getElementById('feedbackBar').className = 'feedback-bar';
+  document.getElementById('nextBtn').className = 'next-btn';
+
+  const optsEl = document.getElementById('qOpts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = `<div class="opt-key">${['A','B','C','D'][i]}</div>${opt}`;
+    btn.onclick = () => selectAnswer(i, btn);
+    optsEl.appendChild(btn);
+  });
+
+  startTimer();
+}
+
+function startTimer() {
+  timeLeft = TIMER_SEC;
+  clearInterval(timerInterval);
+  updateTimerUI();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerUI();
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      if (!answered) timeoutQuestion();
+    }
+  }, 1000);
+}
+
+function updateTimerUI() {
+  const ring = document.getElementById('timerRing');
+  const num = document.getElementById('timerNum');
+  const ratio = timeLeft / TIMER_SEC;
+  const offset = CIRCUMFERENCE * (1 - ratio);
+  ring.style.strokeDasharray = CIRCUMFERENCE;
+  ring.style.strokeDashoffset = offset;
+  ring.style.stroke = timeLeft > 15 ? 'var(--timer-ok)' : timeLeft > 7 ? 'var(--timer-warn)' : 'var(--timer-danger)';
+  num.textContent = timeLeft;
+}
+
+function selectAnswer(idx, btn) {
+  if (answered) return;
+  answered = true;
+  clearInterval(timerInterval);
+  const q = QUESTIONS[currentQ];
+  const allBtns = document.querySelectorAll('#qOpts .opt-btn');
+  allBtns.forEach(b => b.disabled = true);
+  const fb = document.getElementById('feedbackBar');
+  if (idx === q.correct) {
+    btn.classList.add('correct');
+    fb.className = 'feedback-bar show ok';
+    fb.textContent = q.explanation;
+    results.push({ correct: true, timeout: false });
+  } else {
+    btn.classList.add('wrong');
+    allBtns[q.correct].classList.add('correct');
+    fb.className = 'feedback-bar show no';
+    fb.textContent = '❌ ' + q.explanation.slice(2);
+    results.push({ correct: false, timeout: false });
+  }
+  document.getElementById('nextBtn').className = 'next-btn show';
+  document.getElementById('nextBtn').textContent = currentQ < QUESTIONS.length - 1 ? 'Soal Berikutnya →' : 'Lihat Hasil →';
+}
+
+function timeoutQuestion() {
+  answered = true;
+  const q = QUESTIONS[currentQ];
+  const allBtns = document.querySelectorAll('#qOpts .opt-btn');
+  allBtns.forEach(b => b.disabled = true);
+  allBtns[q.correct].classList.add('correct');
+  const fb = document.getElementById('feedbackBar');
+  fb.className = 'feedback-bar show timeout';
+  fb.textContent = '⏰ Waktu habis! Jawaban benar: ' + q.opts[q.correct] + '. ' + q.explanation.slice(2);
+  results.push({ correct: false, timeout: true });
+  document.getElementById('nextBtn').className = 'next-btn show';
+  document.getElementById('nextBtn').textContent = currentQ < QUESTIONS.length - 1 ? 'Soal Berikutnya →' : 'Lihat Hasil →';
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ < QUESTIONS.length) {
+    loadQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    showScore();
+  }
+}
+
+function showScore() {
+  document.getElementById('quizScreen').style.display = 'none';
+  const scoreScreen = document.getElementById('scoreScreen');
+  scoreScreen.style.display = 'block';
+  const correct = results.filter(r => r.correct).length;
+  const icons = ['😢','😅','🙂','😊','🎉','🏆'];
+  const titles = ['Jangan Menyerah!', 'Terus Berlatih!', 'Lumayan Nih!', 'Bagus Banget!', 'Hampir Sempurna!', 'Sempurna! 🔥'];
+  const subs = [
+    'Yuk ulang materinya dulu, terus coba lagi.',
+    'Sudah ada progress! Coba lagi ya.',
+    'Beberapa topik perlu diulang sedikit.',
+    'Kamu sudah paham sebagian besar materi!',
+    'Tinggal satu lagi — kamu bisa!',
+    'Semua benar! Kamu siap ke Level 6!'
+  ];
+  document.getElementById('scoreIcon').textContent = icons[correct];
+  document.getElementById('scoreTitle').textContent = titles[correct];
+  document.getElementById('scoreSub').textContent = subs[correct];
+  document.getElementById('scoreBig').textContent = `${correct}/5`;
+
+  const detail = document.getElementById('scoreDetail');
+  detail.innerHTML = QUESTIONS.map((q, i) => {
+    const r = results[i];
+    const icon = r.correct ? '✅' : r.timeout ? '⏰' : '❌';
+    return `<div class="score-row"><span class="qnum">Q${i+1}</span><span class="qtopic">${q.topic}</span><span class="qresult">${icon}</span></div>`;
+  }).join('');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartQuiz() {
+  currentQ = 0;
+  results = [];
+  answered = false;
+  clearInterval(timerInterval);
+  document.getElementById('scoreScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'block';
+  loadQuestion();
+}
+</script>
+</body>
+</html>

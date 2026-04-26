@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summary · Cheat Sheet Level 5 · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2228; --board-light:#262c38; --board-mid:#222830;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.25);
+    --rose:#e83a5a; --rose-dark:#a41c38; --rose-bg:rgba(232,58,90,0.13); --rose-border:rgba(232,58,90,0.4);
+    --crimson:#f06080; --crimson-bg:rgba(240,96,128,0.12); --crimson-border:rgba(240,96,128,0.38);
+    --pink:#f090a8; --pink-bg:rgba(240,144,168,0.1); --pink-border:rgba(240,144,168,0.38);
+    --ruby:#c0304a; --ruby-bg:rgba(192,48,74,0.12); --ruby-border:rgba(192,48,74,0.38);
+    --green:#4a9e69; --green-bg:rgba(74,158,105,0.12); --green-border:rgba(74,158,105,0.38);
+    --red:#e06060; --red-bg:rgba(224,96,96,0.1); --red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(232,224,208,0.14); --card-bg:rgba(255,255,255,0.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,34,40,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--crimson);}
+  .wrap{max-width:780px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .page-header{text-align:center;margin-bottom:2.5rem;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--rose-bg);border:1px solid var(--rose-border);color:var(--rose);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.5rem,4vw,2.1rem);text-shadow:2px 2px 0 rgba(0,0,0,0.3);margin-bottom:0.4rem;}
+  h1 span{color:var(--rose);}
+  .page-sub{font-family:'Patrick Hand',cursive;font-size:0.9rem;color:var(--chalk-muted);}
+  .section-divider{display:flex;align-items:center;gap:0.8rem;margin:2rem 0 1.2rem;}
+  .sd-line{flex:1;height:1px;background:var(--chalk-dim);}
+  .sd-label{font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--chalk-muted);white-space:nowrap;}
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.5rem 1.6rem;margin-bottom:1rem;box-shadow:0 4px 18px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);}
+  .card-title{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--chalk);margin-bottom:0.9rem;display:flex;align-items:center;gap:0.5rem;}
+
+  /* Formula grid */
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.65rem;margin:0.6rem 0;}
+  @media(max-width:500px){.formula-grid{grid-template-columns:1fr;}}
+  .fb{border-radius:10px;padding:0.8rem 1rem;}
+  .fb.a{background:var(--rose-bg);border:1px solid var(--rose-border);}
+  .fb.b{background:var(--crimson-bg);border:1px solid var(--crimson-border);}
+  .fb.c{background:var(--pink-bg);border:1px solid var(--pink-border);}
+  .fb.d{background:var(--ruby-bg);border:1px solid var(--ruby-border);}
+  .fb.e{background:var(--green-bg);border:1px solid var(--green-border);}
+  .fb-op{font-family:'Patrick Hand',cursive;font-size:0.68rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:0.3rem;}
+  .fb.a .fb-op{color:var(--rose);}
+  .fb.b .fb-op{color:var(--crimson);}
+  .fb.c .fb-op{color:var(--pink);}
+  .fb.d .fb-op{color:var(--ruby);}
+  .fb.e .fb-op{color:var(--green);}
+  .fb-eq{font-family:'Fredoka One',cursive;font-size:0.9rem;margin-bottom:0.25rem;}
+  .fb.a .fb-eq{color:var(--rose);}
+  .fb.b .fb-eq{color:var(--crimson);}
+  .fb.c .fb-eq{color:var(--pink);}
+  .fb.d .fb-eq{color:var(--ruby);}
+  .fb.e .fb-eq{color:var(--green);}
+  .fb-note{font-family:'Patrick Hand',cursive;font-size:0.73rem;color:var(--chalk-muted);line-height:1.45;}
+
+  /* Key concepts */
+  .key-list{display:flex;flex-direction:column;gap:0.5rem;margin:0.6rem 0;}
+  .key-item{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.85rem;color:var(--chalk-muted);line-height:1.5;}
+  .key-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+  .key-dot.rose{background:var(--rose);}
+  .key-dot.crimson{background:var(--crimson);}
+  .key-dot.pink{background:var(--pink);}
+  .key-dot.green{background:var(--green);}
+
+  /* Slope table */
+  .slope-table{width:100%;border-collapse:collapse;margin:0.7rem 0;font-size:0.84rem;}
+  .slope-table th{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--chalk-muted);text-align:left;padding:0.4rem 0.6rem;border-bottom:1px solid var(--card-border);}
+  .slope-table td{padding:0.4rem 0.6rem;border-bottom:1px solid rgba(232,224,208,0.06);color:var(--chalk-muted);vertical-align:top;line-height:1.5;}
+  .slope-table td:first-child{font-family:'Fredoka One',cursive;color:var(--crimson);}
+  .slope-table td:nth-child(2){font-family:'Fredoka One',cursive;font-size:0.85rem;color:var(--chalk);}
+  .slope-table tr:last-child td{border-bottom:none;}
+
+  /* Discriminant row */
+  .disc-row{display:flex;gap:0.65rem;margin:0.6rem 0;flex-wrap:wrap;}
+  .disc-chip{flex:1;min-width:120px;border-radius:8px;padding:0.7rem 0.8rem;text-align:center;}
+  .disc-chip.d1{background:var(--green-bg);border:1px solid var(--green-border);}
+  .disc-chip.d2{background:var(--pink-bg);border:1px solid var(--pink-border);}
+  .disc-chip.d3{background:var(--crimson-bg);border:1px solid var(--crimson-border);}
+  .disc-val{font-family:'Fredoka One',cursive;font-size:0.95rem;margin-bottom:0.2rem;}
+  .disc-chip.d1 .disc-val{color:var(--green);}
+  .disc-chip.d2 .disc-val{color:var(--pink);}
+  .disc-chip.d3 .disc-val{color:var(--crimson);}
+  .disc-desc{font-family:'Patrick Hand',cursive;font-size:0.72rem;color:var(--chalk-muted);}
+
+  /* Bottom nav */
+  .bottom-nav{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--rose-border);color:var(--rose);}
+  .btn-rose{background:var(--rose-dark);color:#fff;box-shadow:0 4px 14px rgba(164,28,56,0.35);}
+  .btn-rose:hover{background:var(--rose);transform:translateY(-2px);}
+  .btn-crimson{background:#9a2540;color:#fff;box-shadow:0 4px 14px rgba(154,37,64,0.35);}
+  .btn-crimson:hover{background:var(--crimson);transform:translateY(-2px);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level5.html">Level 5</a><span>›</span>
+  <span class="cur">Summary</span>
+</nav>
+
+<div class="wrap">
+  <div class="page-header">
+    <div class="page-badge">📋 Level 05</div>
+    <h1>Cheat Sheet — <span>Relasi, Fungsi & Grafik</span></h1>
+    <p class="page-sub">Semua rumus dan konsep kunci Level 5 dalam satu halaman</p>
+  </div>
+
+  <!-- SECTION 1: FUNGSI -->
+  <div class="section-divider"><div class="sd-line"></div><div class="sd-label">⚙️ Section 01 · Fungsi Dasar</div><div class="sd-line"></div></div>
+
+  <div class="card">
+    <div class="card-title">📌 Konsep Inti</div>
+    <div class="key-list">
+      <div class="key-item"><div class="key-dot rose"></div><div><strong style="color:var(--rose)">Fungsi</strong> = aturan yang memetakan setiap input ke tepat satu output. Satu x → satu y.</div></div>
+      <div class="key-item"><div class="key-dot crimson"></div><div><strong style="color:var(--crimson)">Domain</strong> = himpunan semua nilai input (x) yang valid.</div></div>
+      <div class="key-item"><div class="key-dot pink"></div><div><strong style="color:var(--pink)">Kodomain</strong> = himpunan semua output yang mungkin secara teori.</div></div>
+      <div class="key-item"><div class="key-dot green"></div><div><strong style="color:var(--green)">Range</strong> = himpunan output yang benar-benar dihasilkan fungsi.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📐 Notasi & Evaluasi</div>
+    <div class="formula-grid">
+      <div class="fb a"><div class="fb-op">Notasi Fungsi</div><div class="fb-eq">f(x) = ekspresi</div><div class="fb-note">f(x) dibaca "f dari x"</div></div>
+      <div class="fb b"><div class="fb-op">Evaluasi</div><div class="fb-eq">f(a) = substitusi x=a</div><div class="fb-note">Ganti semua x dengan nilai a</div></div>
+      <div class="fb c"><div class="fb-op">Komposisi</div><div class="fb-eq">(f∘g)(x) = f(g(x))</div><div class="fb-note">Masukkan g(x) ke dalam f</div></div>
+      <div class="fb e"><div class="fb-op">Syarat Fungsi</div><div class="fb-eq">1 input → 1 output</div><div class="fb-note">1 input → 2 output berbeda BUKAN fungsi</div></div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: GARIS -->
+  <div class="section-divider"><div class="sd-line"></div><div class="sd-label">📏 Section 02 · Persamaan Garis</div><div class="sd-line"></div></div>
+
+  <div class="card">
+    <div class="card-title">📌 Rumus Utama</div>
+    <div class="formula-grid">
+      <div class="fb a"><div class="fb-op">Slope-Intercept</div><div class="fb-eq">y = mx + c</div><div class="fb-note">m = gradien, c = intersep-y</div></div>
+      <div class="fb b"><div class="fb-op">Point-Slope</div><div class="fb-eq">y−y₁ = m(x−x₁)</div><div class="fb-note">Diketahui 1 titik + gradien</div></div>
+      <div class="fb c"><div class="fb-op">Gradien 2 Titik</div><div class="fb-eq">m = (y₂−y₁)/(x₂−x₁)</div><div class="fb-note">Naik dibagi Lari</div></div>
+      <div class="fb d"><div class="fb-op">Bentuk Umum</div><div class="fb-eq">ax + by + c = 0</div><div class="fb-note">Semua suku di kiri = 0</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔄 Hubungan Antar Garis & Arti Gradien</div>
+    <table class="slope-table">
+      <tr><th>Kondisi</th><th>Aturan</th><th>Keterangan</th></tr>
+      <tr><td>Sejajar</td><td>m₁ = m₂</td><td>Gradien sama, tidak berpotongan</td></tr>
+      <tr><td>Tegak lurus</td><td>m₁ × m₂ = −1</td><td>Gradien negatif kebalikan</td></tr>
+      <tr><td>m &gt; 0</td><td>Naik ke kanan ↗</td><td>Hubungan positif</td></tr>
+      <tr><td>m &lt; 0</td><td>Turun ke kanan ↘</td><td>Hubungan negatif</td></tr>
+      <tr><td>m = 0</td><td>Garis mendatar</td><td>y = konstan</td></tr>
+      <tr><td>m tdk terdefinisi</td><td>Garis tegak</td><td>x = konstan</td></tr>
+    </table>
+  </div>
+
+  <!-- SECTION 3: KUADRAT -->
+  <div class="section-divider"><div class="sd-line"></div><div class="sd-label">🎯 Section 03 · Grafik Kuadrat</div><div class="sd-line"></div></div>
+
+  <div class="card">
+    <div class="card-title">📌 Anatomi Parabola y = ax² + bx + c</div>
+    <div class="formula-grid">
+      <div class="fb a"><div class="fb-op">Koefisien a</div><div class="fb-eq">a&gt;0 = ∪, a&lt;0 = ∩</div><div class="fb-note">Penentu arah bukaan parabola</div></div>
+      <div class="fb b"><div class="fb-op">Titik Puncak</div><div class="fb-eq">h = −b/(2a)</div><div class="fb-note">k = f(h). Vertex = (h, k)</div></div>
+      <div class="fb c"><div class="fb-op">Sumbu Simetri</div><div class="fb-eq">x = −b/(2a)</div><div class="fb-note">Garis vertikal membelah parabola simetris</div></div>
+      <div class="fb e"><div class="fb-op">Intersep-y</div><div class="fb-eq">titik (0, c)</div><div class="fb-note">Substitusi x = 0</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔍 Rumus ABC & Diskriminan</div>
+    <div class="fb a" style="margin-bottom:0.8rem;"><div class="fb-op">Rumus Kuadratik (ABC)</div><div class="fb-eq" style="font-size:1.05rem;">x = (−b ± √(b²−4ac)) / 2a</div><div class="fb-note">Mencari akar saat y = 0. D = b² − 4ac</div></div>
+    <div class="disc-row">
+      <div class="disc-chip d1"><div class="disc-val">D &gt; 0</div><div class="disc-desc">2 akar berbeda<br>Parabola potong sumbu x di 2 titik</div></div>
+      <div class="disc-chip d2"><div class="disc-val">D = 0</div><div class="disc-desc">1 akar kembar<br>Parabola singgung sumbu x</div></div>
+      <div class="disc-chip d3"><div class="disc-val">D &lt; 0</div><div class="disc-desc">Tidak ada akar real<br>Parabola tidak menyentuh sumbu x</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💡 Bentuk Vertex & Tips Cepat</div>
+    <div class="key-list">
+      <div class="key-item"><div class="key-dot rose"></div><div><strong style="color:var(--rose)">Bentuk vertex:</strong> y = a(x−h)² + k → langsung tahu titik puncak (h, k)</div></div>
+      <div class="key-item"><div class="key-dot crimson"></div><div><strong style="color:var(--crimson)">Pemfaktoran:</strong> ax² + bx + c = a(x−r₁)(x−r₂) di mana r₁, r₂ adalah akar-akarnya</div></div>
+      <div class="key-item"><div class="key-dot pink"></div><div><strong style="color:var(--pink)">Jumlah & hasil kali akar:</strong> r₁ + r₂ = −b/a dan r₁ × r₂ = c/a</div></div>
+      <div class="key-item"><div class="key-dot green"></div><div><strong style="color:var(--green)">Nilai optimum:</strong> Minimum jika a &gt; 0, maksimum jika a &lt; 0. Nilainya = k (y di titik puncak)</div></div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="level5.html" class="btn btn-ghost">← Level Hub</a>
+    <a href="quicktest.html" class="btn btn-rose">⏱️ Quick Test</a>
+    <a href="exercise.html" class="btn btn-crimson">✏️ Exercise</a>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 3 · Grafik Kuadrat · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1e2228; --board-light:#262c38;
+    --grid:rgba(255,255,255,0.04); --grid-major:rgba(255,255,255,0.07);
+    --chalk:#e8e0d0; --chalk-muted:rgba(232,224,208,0.55); --chalk-dim:rgba(232,224,208,0.25);
+    --rose:#e83a5a; --rose-dark:#a41c38; --rose-bg:rgba(232,58,90,0.13); --rose-border:rgba(232,58,90,0.4);
+    --crimson:#f06080; --crimson-bg:rgba(240,96,128,0.12); --crimson-border:rgba(240,96,128,0.38);
+    --pink:#f090a8; --pink-bg:rgba(240,144,168,0.1); --pink-border:rgba(240,144,168,0.38);
+    --ruby:#c0304a; --ruby-bg:rgba(192,48,74,0.12); --ruby-border:rgba(192,48,74,0.38);
+    --green:#4a9e69; --green-dark:#2c6e49; --green-bg:rgba(74,158,105,0.12); --green-border:rgba(74,158,105,0.38);
+    --red:#e06060; --red-bg:rgba(224,96,96,0.1); --red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(232,224,208,0.14); --card-bg:rgba(255,255,255,0.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(30,34,40,0.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--pink);}
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5.5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--pink-bg);border:1px solid var(--pink-border);color:var(--pink);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1.3rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,2rem);margin-bottom:0.6rem;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,0.3);}
+  h1 span{color:var(--pink);}
+  .intro{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem;}
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(232,224,208,0.15);transition:all 0.3s;}
+  .dot.active{background:var(--pink);box-shadow:0 0 0 3px rgba(240,144,168,0.25);transform:scale(1.15);}
+  .dot.done{background:var(--rose-dark);}
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.06);}
+  .card-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.rose{color:var(--rose);}
+  .card-label.crimson{color:var(--crimson);}
+  .card-label.pink{color:var(--pink);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:0.7rem;line-height:1.35;color:var(--chalk);}
+  .card p{color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;}
+  .why-banner{background:linear-gradient(135deg,#281018,#3a1225);border:1px solid var(--pink-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.35);}
+  .why-banner::after{content:'🎯';position:absolute;right:1.2rem;bottom:-0.3rem;font-size:4rem;opacity:0.1;}
+  .why-banner h2{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:0.6rem;color:var(--chalk);}
+  .why-banner p{font-size:0.9rem;line-height:1.7;color:var(--chalk-muted);}
+  .why-list{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem;}
+  .why-item{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.88rem;color:var(--chalk-muted);}
+  .why-item span{flex-shrink:0;font-size:1.1rem;}
+
+  /* Parabola SVG mini */
+  .parabola-wrap{display:flex;justify-content:center;gap:1.5rem;margin:1.2rem 0;flex-wrap:wrap;}
+  .para-fig{text-align:center;}
+  .para-label{font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:1px;margin-top:0.4rem;}
+  .para-label.up{color:var(--rose);}
+  .para-label.dn{color:var(--crimson);}
+
+  /* Components grid */
+  .comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin:1rem 0;}
+  @media(max-width:460px){.comp-grid{grid-template-columns:1fr;}}
+  .comp-box{border-radius:11px;padding:1rem 1.1rem;}
+  .comp-box.c1{background:var(--rose-bg);border:1px solid var(--rose-border);}
+  .comp-box.c2{background:var(--crimson-bg);border:1px solid var(--crimson-border);}
+  .comp-box.c3{background:var(--pink-bg);border:1px solid var(--pink-border);}
+  .comp-box.c4{background:var(--green-bg);border:1px solid var(--green-border);}
+  .comp-name{font-family:'Patrick Hand',cursive;font-size:0.68rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .comp-box.c1 .comp-name{color:var(--rose);}
+  .comp-box.c2 .comp-name{color:var(--crimson);}
+  .comp-box.c3 .comp-name{color:var(--pink);}
+  .comp-box.c4 .comp-name{color:var(--green);}
+  .comp-title{font-family:'Fredoka One',cursive;font-size:0.98rem;color:var(--chalk);margin-bottom:0.2rem;}
+  .comp-rule{font-family:'Fredoka One',cursive;font-size:0.82rem;margin-bottom:0.2rem;}
+  .comp-box.c1 .comp-rule{color:var(--rose);}
+  .comp-box.c2 .comp-rule{color:var(--crimson);}
+  .comp-box.c3 .comp-rule{color:var(--pink);}
+  .comp-box.c4 .comp-rule{color:var(--green);}
+  .comp-note{font-family:'Patrick Hand',cursive;font-size:0.76rem;color:var(--chalk-muted);line-height:1.4;}
+
+  /* Discriminant cards */
+  .disc-row{display:flex;gap:0.75rem;margin:1rem 0;flex-wrap:wrap;}
+  .disc-box{flex:1;min-width:130px;border-radius:10px;padding:0.9rem 1rem;text-align:center;}
+  .disc-box.d1{background:var(--green-bg);border:1px solid var(--green-border);}
+  .disc-box.d2{background:var(--pink-bg);border:1px solid var(--pink-border);}
+  .disc-box.d3{background:var(--crimson-bg);border:1px solid var(--crimson-border);}
+  .disc-val{font-family:'Fredoka One',cursive;font-size:1.1rem;margin-bottom:0.3rem;}
+  .disc-box.d1 .disc-val{color:var(--green);}
+  .disc-box.d2 .disc-val{color:var(--pink);}
+  .disc-box.d3 .disc-val{color:var(--crimson);}
+  .disc-desc{font-family:'Patrick Hand',cursive;font-size:0.76rem;color:var(--chalk-muted);line-height:1.4;}
+
+  .big-formula{text-align:center;background:var(--pink-bg);border:2px solid var(--pink-border);border-radius:14px;padding:1.2rem;margin:1rem 0;}
+  .big-formula .formula-text{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--pink);letter-spacing:1px;}
+  .big-formula .formula-sub{font-family:'Patrick Hand',cursive;font-size:0.8rem;color:var(--chalk-muted);margin-top:0.4rem;}
+
+  .steps{display:flex;flex-direction:column;gap:0.65rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:var(--board-light);border:1px solid var(--card-border);border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;color:var(--chalk-muted);}
+  .step-n{font-family:'Fredoka One',cursive;font-size:0.8rem;color:var(--board);background:var(--pink);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .step strong{color:var(--pink);}
+  .step .ro{color:var(--rose);}
+  .step .cr{color:var(--crimson);}
+  .step .gr{color:var(--green);}
+  .hl{border-radius:10px;padding:0.9rem 1.1rem;margin:0.8rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-rose{background:var(--rose-bg);border:1px solid var(--rose-border);}
+  .hl-pink{background:var(--pink-bg);border:1px solid var(--pink-border);}
+  .hl-green{background:var(--green-bg);border:1px solid var(--green-border);}
+  .hl-rose strong{color:var(--rose);}
+  .hl-pink strong{color:var(--pink);}
+  .hl-green strong{color:var(--green);}
+
+  .nav-btns{display:flex;gap:0.8rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--pink-border);color:var(--pink);}
+  .btn-primary{background:var(--rose-dark);color:#fff;box-shadow:0 4px 14px rgba(164,28,56,0.35);}
+  .btn-primary:hover{background:var(--rose);transform:translateY(-2px);}
+  .btn-primary:disabled{opacity:0.4;cursor:default;transform:none;}
+
+  .opts{display:flex;flex-direction:column;gap:0.6rem;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.85rem 1.1rem;border-radius:10px;cursor:pointer;font-size:0.92rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;display:flex;align-items:center;gap:0.7rem;}
+  .opt-btn:hover:not(:disabled){border-color:var(--pink-border);background:var(--pink-bg);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-key{font-family:'Fredoka One',cursive;font-size:0.75rem;color:var(--chalk-muted);background:rgba(232,224,208,0.08);border-radius:5px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .feedback{border-radius:10px;padding:0.75rem 1rem;font-size:0.87rem;font-weight:800;display:none;margin-top:0.8rem;line-height:1.5;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+
+  .finish{text-align:center;padding:2rem 0;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--chalk);margin-bottom:0.5rem;}
+  .finish-desc{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.93rem;line-height:1.7;margin-bottom:1.5rem;}
+  .xp{display:inline-block;background:var(--pink-bg);border:1px solid var(--pink-border);color:var(--pink);padding:0.3rem 1.2rem;border-radius:20px;font-family:'Fredoka One',cursive;font-size:0.88rem;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level5.html">Level 5</a><span>›</span>
+  <span class="cur">Section 3 · Grafik Kuadrat</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🎯 Section 03</div>
+  <h1>Grafik Kuadrat: <span>Titik Balik & Kurva</span></h1>
+  <p class="intro">Parabola ada di mana-mana — lintasan bola, antena parabola, jembatan gantung, bahkan cermin teleskop. Kurva yang cantik ini punya matematika yang elegan.</p>
+  <div class="dots" id="dots"></div>
+
+  <!-- SLIDE 0: WHY -->
+  <div class="slide active">
+    <div class="why-banner">
+      <h2>🤔 Kenapa Belajar Grafik Kuadrat?</h2>
+      <p>Persamaan kuadrat muncul kapanpun ada kuantitas yang berubah dengan laju yang tidak konstan — yaitu, hampir di semua tempat!</p>
+      <div class="why-list">
+        <div class="why-item"><span>⚽</span>Lintasan bola: ketinggian sebagai fungsi waktu adalah parabola. Kapan bola mencapai puncak? Kapan mendarat?</div>
+        <div class="why-item"><span>💰</span>Profit bisnis: terlalu murah (rugi) dan terlalu mahal (sepi) — titik puncak parabola adalah harga optimal.</div>
+        <div class="why-item"><span>📡</span>Antena parabola: bentuk parabolik memfokuskan sinyal ke satu titik — refleksi matematika nyata!</div>
+        <div class="why-item"><span>🎮</span>Fisika game: gravitasi membuat setiap lompatan karakter bergerak parabolis.</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <span></span>
+      <button class="btn btn-primary" onclick="nextSlide()">Mulai Belajar →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: MATERI -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label pink">📖 Bentuk Umum</div>
+      <h2>y = ax² + bx + c — Anatomi Parabola</h2>
+      <div class="comp-grid">
+        <div class="comp-box c1"><div class="comp-name">Koefisien a</div><div class="comp-title">Penentu Arah</div><div class="comp-rule">a &gt; 0 → ∪ (terbuka atas)</div><div class="comp-note">a &lt; 0 → ∩ (terbuka bawah). |a| besar = parabola lebih sempit</div></div>
+        <div class="comp-box c2"><div class="comp-name">Koefisien b</div><div class="comp-title">Penentu Posisi Horizontal</div><div class="comp-rule">−b/2a = sumbu simetri</div><div class="comp-note">x titik puncak = −b/(2a)</div></div>
+        <div class="comp-box c3"><div class="comp-name">Konstanta c</div><div class="comp-title">Intersep-y</div><div class="comp-rule">Titik (0, c)</div><div class="comp-note">Di mana parabola memotong sumbu y</div></div>
+        <div class="comp-box c4"><div class="comp-name">Titik Puncak</div><div class="comp-title">Vertex / Titik Balik</div><div class="comp-rule">(−b/2a, f(−b/2a))</div><div class="comp-note">Titik minimum (a&gt;0) atau maksimum (a&lt;0)</div></div>
+      </div>
+      <div class="parabola-wrap">
+        <div class="para-fig">
+          <svg width="120" height="90" viewBox="0 0 120 90">
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e83a5a" stop-opacity="0.3"/><stop offset="100%" stop-color="#e83a5a" stop-opacity="0"/></linearGradient></defs>
+            <path d="M10,80 Q60,10 110,80" fill="none" stroke="#e83a5a" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="10" r="4" fill="#e83a5a"/>
+            <text x="65" y="14" font-family="'Patrick Hand',cursive" font-size="9" fill="#e83a5a">Puncak</text>
+            <line x1="10" y1="85" x2="110" y2="85" stroke="rgba(232,224,208,0.2)" stroke-width="1"/>
+          </svg>
+          <div class="para-label up">a &gt; 0 (∪)</div>
+        </div>
+        <div class="para-fig">
+          <svg width="120" height="90" viewBox="0 0 120 90">
+            <path d="M10,10 Q60,80 110,10" fill="none" stroke="#f06080" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="80" r="4" fill="#f06080"/>
+            <text x="65" y="83" font-family="'Patrick Hand',cursive" font-size="9" fill="#f06080">Puncak</text>
+            <line x1="10" y1="5" x2="110" y2="5" stroke="rgba(232,224,208,0.2)" stroke-width="1"/>
+          </svg>
+          <div class="para-label dn">a &lt; 0 (∩)</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label rose">🔍 Diskriminan & Akar-akar</div>
+      <h2>Berapa Titik Potong dengan Sumbu x?</h2>
+      <p style="margin-bottom:0.8rem;">Diskriminan D = b² − 4ac menentukan jumlah akar (titik potong sumbu x):</p>
+      <div class="disc-row">
+        <div class="disc-box d1"><div class="disc-val">D &gt; 0</div><div class="disc-desc">Dua akar real berbeda. Parabola memotong sumbu x di 2 titik.</div></div>
+        <div class="disc-box d2"><div class="disc-val">D = 0</div><div class="disc-desc">Satu akar kembar. Parabola menyinggung sumbu x di 1 titik.</div></div>
+        <div class="disc-box d3"><div class="disc-val">D &lt; 0</div><div class="disc-desc">Tidak ada akar real. Parabola tidak menyentuh sumbu x.</div></div>
+      </div>
+      <div class="big-formula">
+        <div class="formula-text">x = (−b ± √(b²−4ac)) / 2a</div>
+        <div class="formula-sub">Rumus ABC / Kuadratik — mencari nilai x saat y = 0</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label pink">📐 Bentuk Vertex</div>
+      <h2>y = a(x − h)² + k</h2>
+      <p>Bentuk vertex langsung menunjukkan titik puncak <strong style="color:var(--pink)">(h, k)</strong> — berguna untuk langsung membaca posisi parabola.</p>
+      <div class="hl hl-rose"><strong>Konversi:</strong> Dari y = ax² + bx + c, titik puncak h = −b/(2a) dan k = f(h). Substitusi kembali untuk mendapat bentuk vertex.</div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Contoh Soal →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: CONTOH -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label crimson">💡 Contoh Soal & Pembahasan</div>
+      <h2>Soal 1: Titik Puncak Parabola</h2>
+      <p style="font-size:0.9rem;color:var(--chalk-muted);margin-bottom:1rem;line-height:1.7;">Tentukan titik puncak dari f(x) = x² − 6x + 8!</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div>Identifikasi: <strong>a = 1, b = −6, c = 8</strong></div></div>
+        <div class="step"><div class="step-n">2</div><div>x puncak: h = −b/(2a) = −(−6)/(2×1) = <span class="cr">6/2 = 3</span></div></div>
+        <div class="step"><div class="step-n">3</div><div>y puncak: k = f(3) = (3)² − 6(3) + 8 = 9 − 18 + 8 = <span class="gr">−1</span></div></div>
+        <div class="step"><div class="step-n">4</div><div>Titik puncak: <span class="gr">(3, −1)</span>. Karena a = 1 &gt; 0, ini adalah titik minimum.</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label crimson">💡 Contoh Soal & Pembahasan</div>
+      <h2>Soal 2: Mencari Akar-akar dengan Rumus ABC</h2>
+      <p style="font-size:0.9rem;color:var(--chalk-muted);margin-bottom:1rem;line-height:1.7;">Tentukan akar-akar dari x² − 5x + 6 = 0!</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div>a = 1, b = −5, c = 6. Hitung D: <strong>D = (−5)² − 4(1)(6) = 25 − 24 = 1</strong></div></div>
+        <div class="step"><div class="step-n">2</div><div>D = 1 &gt; 0 → dua akar berbeda. √D = 1</div></div>
+        <div class="step"><div class="step-n">3</div><div>x₁ = (5 + 1)/2 = <span class="gr">3</span>, x₂ = (5 − 1)/2 = <span class="gr">2</span></div></div>
+      </div>
+      <div class="hl hl-green"><strong>Cek pemfaktoran:</strong> x² − 5x + 6 = (x − 2)(x − 3) ✓. Jika D adalah kuadrat sempurna, pemfaktoran biasanya lebih cepat!</div>
+    </div>
+    <div class="card">
+      <div class="card-label crimson">💡 Contoh Soal & Pembahasan</div>
+      <h2>Soal 3: Analisis Lengkap Parabola</h2>
+      <p style="font-size:0.9rem;color:var(--chalk-muted);margin-bottom:1rem;line-height:1.7;">Untuk f(x) = −2x² + 4x + 6, tentukan: arah bukaan, titik puncak, dan intersep-y!</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><strong>Arah:</strong> a = −2 &lt; 0 → parabola terbuka ke bawah ∩ (punya nilai maksimum)</div></div>
+        <div class="step"><div class="step-n">2</div><div><strong>Titik puncak:</strong> h = −4/(2×−2) = −4/−4 = <span class="cr">1</span>. k = −2(1)² + 4(1) + 6 = <span class="gr">8</span>. Puncak = (1, 8)</div></div>
+        <div class="step"><div class="step-n">3</div><div><strong>Intersep-y:</strong> x = 0 → f(0) = 6. Titik (0, <span class="cr">6</span>)</div></div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Soal Latihan →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: LATIHAN -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label pink">✏️ Soal Latihan</div>
+      <h2>Uji Pemahamanmu</h2>
+      <p style="font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:1.2rem;line-height:1.4;color:var(--chalk);">Parabola y = x² − 4x + 3 memotong sumbu x di titik-titik…</p>
+      <div class="opts" id="opts3">
+        <button class="opt-btn" onclick="answer3(0,this)"><div class="opt-key">A</div>x = 1 dan x = 3</button>
+        <button class="opt-btn" onclick="answer3(1,this)"><div class="opt-key">B</div>x = −1 dan x = −3</button>
+        <button class="opt-btn" onclick="answer3(2,this)"><div class="opt-key">C</div>x = 2 (akar kembar)</button>
+        <button class="opt-btn" onclick="answer3(3,this)"><div class="opt-key">D</div>x = 0 dan x = 4</button>
+      </div>
+      <div class="feedback" id="fb3"></div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" id="btn3next" onclick="nextSlide()" disabled>Selesai →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: FINISH -->
+  <div class="slide">
+    <div class="finish">
+      <span class="finish-icon">🎉</span>
+      <div class="finish-title">Section 3 Selesai!</div>
+      <div class="finish-desc">Kamu sudah menguasai anatomi parabola — titik puncak, akar-akar, diskriminan, dan cara membaca grafik kuadrat. Level 5 hampir komplit!</div>
+      <div class="xp">✨ +120 XP — Grafik Kuadrat</div>
+      <div class="finish-btns">
+        <a href="level5.html" class="btn btn-ghost">← Level Hub</a>
+        <a href="summary.html" class="btn btn-primary">Lihat Summary →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let cur=0;const total=5;
+function renderDots(){const d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<total;i++){const dot=document.createElement('div');dot.className='dot'+(i===cur?' active':i<cur?' done':'');d.appendChild(dot);}}
+function showSlide(n){document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('active',i===n));cur=n;renderDots();window.scrollTo({top:0,behavior:'smooth'});}
+function nextSlide(){if(cur<total-1)showSlide(cur+1);}
+function prevSlide(){if(cur>0)showSlide(cur-1);}
+function answer3(idx,btn){
+  const opts=document.querySelectorAll('#opts3 .opt-btn');
+  opts.forEach(b=>b.disabled=true);
+  const correct=0;
+  const fb=document.getElementById('fb3');
+  if(idx===correct){btn.classList.add('correct');fb.className='feedback show ok';fb.textContent='✅ Betul! y = x² − 4x + 3 = (x−1)(x−3) = 0. Jadi x = 1 dan x = 3.';}
+  else{btn.classList.add('wrong');opts[correct].classList.add('correct');fb.className='feedback show no';fb.textContent='❌ Kurang tepat. Faktorkan: x² − 4x + 3 = (x−1)(x−3) = 0 → x = 1 atau x = 3. Bisa juga pakai rumus ABC dengan D = 16−12 = 4.';}
+  document.getElementById('btn3next').disabled=false;
+}
+renderDots();
+</script>
+</body>
+</html>
