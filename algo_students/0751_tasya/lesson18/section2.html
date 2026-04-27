@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 2 · Pertidaksamaan · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb; --card:#ffffff; --border:#f0d6ea; --border2:#e8c8e0;
+    --rose:#e8628a; --rose-light:#f5a0bc; --rose-bg:rgba(232,98,138,0.08);
+    --lavender:#9b7fc8; --lavender-light:#c8b4e8; --lav-bg:rgba(155,127,200,0.08);
+    --mint:#5fbfa0; --mint-light:#a8dfd0; --mint-bg:rgba(95,191,160,0.08);
+    --peach:#f0956a;
+    --text:#3d2b3d; --text-mid:#7a5c78; --text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 80% 10%,rgba(155,127,200,0.08) 0%,transparent 50%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--rose);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--rose-bg);border:1.5px solid var(--rose-light);color:var(--rose);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--rose);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:all 0.3s;}
+  .dot.active{background:var(--lavender);box-shadow:0 0 0 3px rgba(155,127,200,0.2);transform:scale(1.1);}
+  .dot.done{background:var(--rose);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);}
+  .card-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.lav{color:var(--lavender);}
+  .card-label.rose{color:var(--rose);}
+  .card-label.mint{color:var(--mint);}
+  .card h2{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.7rem;line-height:1.4;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  .hl-box{border-radius:14px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.9rem;line-height:1.6;}
+  .hl-rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .hl-lav{background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--text-mid);}
+  .hl-mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .hl-box strong{color:var(--rose);}
+  .hl-lav strong{color:var(--lavender);}
+  .hl-mint strong{color:var(--mint);}
+
+  .steps{display:flex;flex-direction:column;gap:0.7rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:#fafafa;border:1.5px solid var(--border);border-radius:12px;padding:0.8rem 1rem;font-size:0.88rem;}
+  .step-n{font-family:'Nunito',sans-serif;font-weight:900;font-size:0.75rem;color:var(--rose);background:var(--rose-bg);border:1.5px solid var(--rose-light);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+  .quiz-q{font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;margin-bottom:1.2rem;line-height:1.5;}
+  .opts{display:flex;flex-direction:column;gap:0.7rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.9rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--rose-light);background:rgba(232,98,138,0.05);}
+  .opt-btn.correct{border-color:var(--mint);background:rgba(95,191,160,0.1);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:rgba(232,98,138,0.08);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:rgba(95,191,160,0.12);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:rgba(232,98,138,0.1);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--rose-light);color:var(--rose);}
+  .btn-primary{background:linear-gradient(135deg,var(--rose),var(--lavender));color:#fff;box-shadow:0 4px 14px rgba(232,98,138,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(232,98,138,0.4);}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:var(--rose);margin-bottom:0.7rem;}
+  .finish-desc{color:var(--text-muted);line-height:1.7;margin-bottom:1.8rem;font-size:0.92rem;}
+  .xp{display:inline-block;background:rgba(155,127,200,0.1);border:1.5px solid var(--lavender-light);color:var(--lavender);padding:0.35rem 1.1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;margin-bottom:1.8rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson18.html">LESSON 18</a><span>›</span>
+  <span class="cur">SEC 2</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📐 Section 02 · Pertidaksamaan</div>
+  <h1>Pertidaksamaan & <span>Sistem Pertidaksamaan</span></h1>
+  <p class="intro">10 soal latihan tentang pertidaksamaan linear. Pahami konsep daerah solusi!</p>
+
+  <div class="dots" id="dots"></div>
+
+  <div class="slides" id="slides">
+
+    <!-- Slide 0: Intro -->
+    <div class="slide active">
+      <div class="card">
+        <div class="card-label lav">📌 Apa itu Pertidaksamaan?</div>
+        <h2>Pertidaksamaan = Pernyataan dengan tanda < > ≤ ≥</h2>
+        <p>Pertidaksamaan linear memiliki variabel dengan pangkat tertinggi = 1.</p>
+        <div class="hl-box hl-lav" style="margin-top:0.8rem;">
+          <strong>Contoh:</strong><br>
+          • 2x + 3 > 7 → pertidaksamaan linear<br>
+          • x ≤ 5 → semua x kurang dari atau sama dengan 5<br>
+          • 3x − 2 ≥ 4 → pertidaksamaan linear
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 1: Sifat pertidaksamaan -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">⚠️ Perhatikan!</div>
+        <h2>Kali/Bagi dengan negatif → tanda berbalik!</h2>
+        <div class="hl-box hl-rose" style="margin-top:0.8rem;">
+          <strong>Contoh:</strong><br>
+          −2x > 6 → bagi dengan −2<br>
+          x <strong><</strong> −3 ← tanda berbalik!<br><br>
+          <strong>Benar:</strong> −2 × (−4) = 8 > 6 ✅<br>
+          <strong>Salah:</strong> −2 × 4 = −8 > 6 ❌
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Daerah solusi -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label mint">📊 Daerah Solusi</div>
+        <h2>Pertidaksamaan = daerah, bukan satu titik</h2>
+        <p>x > 3 berarti semua nilai x yang lebih besar dari 3.</p>
+        <div class="hl-box hl-mint" style="margin-top:0.8rem;">
+          <strong>Garis bilangan:</strong><br>
+          ○━━━━━━━━━━> <br>
+          0 1 2 3 4 5 6<br>
+          Lingkaran terbuka = 3 tidak termasuk
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Sistem pertidaksamaan -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label lav">🔗 Sistem Pertidaksamaan</div>
+        <h2>Daerah irisan = solusi semua syarat</h2>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div>Gambar/gambarkan daerah masing-masing</div>
+          <div class="step"><div class="step-n">2</div>Cari daerah yang overlap (irisan)</div>
+          <div class="step"><div class="step-n">3</div>Daerah irisan = solusi sistem</div>
+        </div>
+        <div class="hl-box hl-lav" style="margin-top:0.8rem;">
+          <strong>Contoh:</strong> x > 2 dan x < 5<br>
+          Solusi: 2 < x < 5 (di antara 2 dan 5)
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Quiz 1 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">❓ Soal 1</div>
+        <div class="quiz-q">Penyelesaian dari x + 5 > 9 adalah...</div>
+        <div class="opts" id="q1">
+          <button class="opt-btn" onclick="chk(this,'q1',false)">x > 2</button>
+          <button class="opt-btn" onclick="chk(this,'q1',true)">x > 4</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false)">x < 4</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false)">x > 14</button>
+        </div>
+        <div class="feedback" id="q1-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Quiz 2 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">❓ Soal 2</div>
+        <div class="quiz-q">Jika 3x − 6 ≤ 9, maka nilai x adalah...</div>
+        <div class="opts" id="q2">
+          <button class="opt-btn" onclick="chk2(this,'q2',false)">x ≤ 3</button>
+          <button class="opt-btn" onclick="chk2(this,'q2',true)">x ≤ 5</button>
+          <button class="opt-btn" onclick="chk2(this,'q2',false)">x ≥ 5</button>
+          <button class="opt-btn" onclick="chk2(this,'q2',false)">x ≤ 15</button>
+        </div>
+        <div class="feedback" id="q2-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Quiz 3 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">❓ Soal 3</div>
+        <div class="quiz-q">Penyelesaian dari −2x < 8 adalah...</div>
+        <div class="opts" id="q3">
+          <button class="opt-btn" onclick="chk3(this,'q3',false)">x < −4</button>
+          <button class="opt-btn" onclick="chk3(this,'q3',true)">x > −4</button>
+          <button class="opt-btn" onclick="chk3(this,'q3',false)">x < 4</button>
+          <button class="opt-btn" onclick="chk3(this,'q3',false)">x > 4</button>
+        </div>
+        <div class="feedback" id="q3-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Quiz 4 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">❓ Soal 4</div>
+        <div class="quiz-q">Sistem x > 2 dan x < 7 memiliki solusi...</div>
+        <div class="opts" id="q4">
+          <button class="opt-btn" onclick="chk4(this,'q4',true)">2 < x < 7</button>
+          <button class="opt-btn" onclick="chk4(this,'q4',false)">x < 2 atau x > 7</button>
+          <button class="opt-btn" onclick="chk4(this,'q4',false)">x > 7</button>
+          <button class="opt-btn" onclick="chk4(this,'q4',false)">Tidak ada solusi</button>
+        </div>
+        <div class="feedback" id="q4-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Quiz 5 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">❓ Soal 5</div>
+        <div class="quiz-q">Manakah yang memenuhi pertidaksamaan 2x + 1 ≥ 7?</div>
+        <div class="opts" id="q5">
+          <button class="opt-btn" onclick="chk5(this,'q5',false)">x = 2</button>
+          <button class="opt-btn" onclick="chk5(this,'q5',true)">x = 3</button>
+          <button class="opt-btn" onclick="chk5(this,'q5',false)">x = 1</button>
+          <button class="opt-btn" onclick="chk5(this,'q5',false)">x = 0</button>
+        </div>
+        <div class="feedback" id="q5-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Quiz 6 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">❓ Soal 6</div>
+        <div class="quiz-q">Pertidaksamaan 5 − x > 2 setara dengan...</div>
+        <div class="opts" id="q6">
+          <button class="opt-btn" onclick="chk6(this,'q6',false)">x > 3</button>
+          <button class="opt-btn" onclick="chk6(this,'q6',true)">x < 3</button>
+          <button class="opt-btn" onclick="chk6(this,'q6',false)">x > −3</button>
+          <button class="opt-btn" onclick="chk6(this,'q6',false)">x < −3</button>
+        </div>
+        <div class="feedback" id="q6-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Quiz 7 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">❓ Soal 7</div>
+        <div class="quiz-q">Sistem x ≥ 1 dan x ≤ 6 memiliki solusi...</div>
+        <div class="opts" id="q7">
+          <button class="opt-btn" onclick="chk7(this,'q7',true)">1 ≤ x ≤ 6</button>
+          <button class="opt-btn" onclick="chk7(this,'q7',false)">x ≥ 6 atau x ≤ 1</button>
+          <button class="opt-btn" onclick="chk7(this,'q7',false)">x > 6</button>
+          <button class="opt-btn" onclick="chk7(this,'q7',false)">Tidak ada solusi</button>
+        </div>
+        <div class="feedback" id="q7-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Quiz 8 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">❓ Soal 8</div>
+        <div class="quiz-q">Nilai x yang memenuhi 4(x − 1) < 12 adalah...</div>
+        <div class="opts" id="q8">
+          <button class="opt-btn" onclick="chk8(this,'q8',false)">x < 2</button>
+          <button class="opt-btn" onclick="chk8(this,'q8',true)">x < 4</button>
+          <button class="opt-btn" onclick="chk8(this,'q8',false)">x > 4</button>
+          <button class="opt-btn" onclick="chk8(this,'q8',false)">x < 3</button>
+        </div>
+        <div class="feedback" id="q8-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Quiz 9 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">❓ Soal 9</div>
+        <div class="quiz-q">Sistem x + y < 5 dan x > 0, y > 0 memiliki solusi di...</div>
+        <div class="opts" id="q9">
+          <button class="opt-btn" onclick="chk9(this,'q9',false)">Kuadran I saja</button>
+          <button class="opt-btn" onclick="chk9(this,'q9',true)">Kuadran I, di bawah garis x+y=5</button>
+          <button class="opt-btn" onclick="chk9(this,'q9',false)">Semua kuadran</button>
+          <button class="opt-btn" onclick="chk9(this,'q9',false)">Kuadran II</button>
+        </div>
+        <div class="feedback" id="q9-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 13: Quiz 10 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label rose">❓ Soal 10</div>
+        <div class="quiz-q">Umur Toni tidak lebih dari 15 tahun. Jika x = umur Toni, maka...</div>
+        <div class="opts" id="q10">
+          <button class="opt-btn" onclick="chk10(this,'q10',false)">x > 15</button>
+          <button class="opt-btn" onclick="chk10(this,'q10',false)">x < 15</button>
+          <button class="opt-btn" onclick="chk10(this,'q10',true)">x ≤ 15</button>
+          <button class="opt-btn" onclick="chk10(this,'q10',false)">x ≥ 15</button>
+        </div>
+        <div class="feedback" id="q10-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 14: Finish -->
+    <div class="slide">
+      <div class="card finish">
+        <span class="finish-icon">🌺</span>
+        <div class="finish-title">Section 2 Selesai!</div>
+        <div class="finish-desc">Hebat! Kamu sudah memahami pertidaksamaan dan sistem pertidaksamaan. Siap untuk challenge dengan timer di section 3!</div>
+        <div class="xp">✨ +100 XP — Section 2 Complete!</div>
+        <div class="finish-btns">
+          <a href="lesson18.html" class="btn btn-ghost">← Lesson Hub</a>
+          <a href="section3.html" class="btn btn-primary">Section 3 →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-btns" id="navbtns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="go(-1)" disabled>← Prev</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL = 15;
+  let cur = 0;
+  let answers = {};
+
+  const dotsEl = document.getElementById('dots');
+  const allSlides = document.querySelectorAll('.slide');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const navbtns = document.getElementById('navbtns');
+
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    dotsEl.appendChild(d);
+  }
+
+  function updateUI() {
+    allSlides.forEach((s,i) => s.classList.toggle('active', i===cur));
+    dotsEl.querySelectorAll('.dot').forEach((d,i) => {
+      d.classList.remove('active','done');
+      if (i < cur) d.classList.add('done');
+      if (i === cur) d.classList.add('active');
+    });
+    prevBtn.disabled = cur === 0;
+    const isLast = cur === TOTAL - 1;
+    navbtns.style.display = isLast ? 'none' : 'flex';
+    if (cur >= 4 && cur <= 13) {
+      nextBtn.disabled = !answers[cur];
+    } else {
+      nextBtn.disabled = false;
+    }
+  }
+
+  function go(dir) { cur = Math.max(0, Math.min(TOTAL-1, cur+dir)); updateUI(); }
+
+  function chk(btn, gid, correct) {
+    if (answers[cur] !== undefined) return;
+    answers[cur] = true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>{b.disabled=true;});
+    btn.classList.add(correct?'correct':'wrong');
+    if (!correct) document.querySelectorAll(`#${gid} .opt-btn`)[1].classList.add('correct');
+    const fb = document.getElementById(gid+'-fb');
+    fb.className = 'feedback show ' + (correct?'ok':'no');
+    fb.textContent = correct
+      ? '✅ Benar! x+5>9 → x>4'
+      : '❌ Hitung: x+5>9 → x>9−5 → x>4';
+    updateUI();
+  }
+
+  function chk2(btn, gid, correct) {
+    if (answers[cur] !== undefined) return;
+    answers[cur] = true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>{b.disabled=true;});
+    btn.classList.add(correct?'correct':'wrong');
+    if (!correct) document.querySelectorAll(`#${gid} .opt-btn`)[1].classList.add('correct');
+    const fb = document.getElementById(gid+'-fb');
+    fb.className = 'feedback show ' + (correct?'ok':'no');
+    fb.textContent = correct
+      ? '✅ Tepat! 3x−6≤9 → 3x≤15 → x≤5'
+      : '❌ Hitung: 3x−6≤9 → 3x≤15 → x≤5';
+    updateUI();
+  }
+
+  function chk3(btn, gid, correct) {
+    if (answers[cur] !== undefined) return;
+    answers[cur] = true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>{b.disabled=true;});
+    btn.classList.add(correct?'correct':'wrong');
+    if (!correct) document.querySelectorAll(`#${gid} .opt-btn`)[1].classList.add('correct');
+    const fb = document.getElementById(gid+'-fb');
+    fb.className = 'feedback show ' + (correct?'ok':'no');
+    fb.textContent = correct
+      ? '✅ Benar! −2x<8 → x>−4 (tanda berbalik!)'
+      : '❌ Ingat: bagi negatif → tanda berbalik! −2x<8 → x>−4';
+    updateUI();
+  }
+
+  function chk4(btn, gid, correct) {
+    if (answers[cur] !== undefined) return;
+    answers[cur] = true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>{b.disabled=true;});
+    btn.classList.add(correct?'correct':'wrong');
+    if (!correct) document.querySelectorAll(`#${gid} .opt-btn`)[0].classList.add('correct');
+    const fb = document.getElementById(gid+'-fb');
+    fb.className = 'feedback show ' + (correct?'ok':'no');
+    fb.textContent = correct
+      ? '✅ Tepat! Irisan x>2 dan x<7 adalah 2<x<7'
+      : '❌ Irisan = yang memenuhi KEDUA syarat: 2<x<7';
+    updateUI();
+  }
+
+  function chk5(btn, gid, correct) {
+    if (answers[cur] !== undefined) return;
+    answers[cur] = true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>{b.disabled=true;});
+    btn.classList.add(correct?'correct':'wrong');
+    if (!correct) document.querySelectorAll(`#${gid} .opt-btn`)[1].classList.add('correct');
+    const fb = document.getElementById(gid+'-fb');
+    fb.className = 'feedback show ' + (correct?'ok':'no');
+    fb.textContent = correct
+      ? '✅ Benar! 2(3)+1=7 ≥ 7 ✓'
+      : '❌ Cek: 2x+1≥7 → 2x≥6 → x≥3. Jadi x=3 memenuhi.';
+    updateUI();
+  }
+
+  function chk6(btn, gid, correct) {
+    if (answers[cur] !== undefined) return;
+    answers[cur] = true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>{b.disabled=true;});
+    btn.classList.add(correct?'correct':'wrong');
+    if (!correct) document.querySelectorAll(`#${gid} .opt-btn`)[1].classList.add('correct');
+    const fb = document.getElementById(gid+'-fb');
+    fb.className = 'feedback show ' + (correct?'ok':'no');
+    fb.textContent = correct
+      ? '✅ Benar! 5−x>2 → −x>−3 → x<3 (berbalik!)'
+      : '❌ 5−x>2 → −x>−3 → x<3 (tanda berbalik!)';
+    updateUI();
+  }
+
+  function chk7(btn, gid, correct) {
+    if (answers[cur] !== undefined) return;
+    answers[cur] = true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>{b.disabled=true;});
+    btn.classList.add(correct?'correct':'wrong');
+    if (!correct) document.querySelectorAll(`#${gid} .opt-btn`)[0].classList.add('correct');
+    const fb = document.getElementById(gid+'-fb');
+    fb.className = 'feedback show ' + (correct?'ok':'no');
+    fb.textContent = correct
+      ? '✅ Tepat! Irisan x≥1 dan x≤6 adalah 1≤x≤6'
+      : '❌ Irisan = yang memenuhi keduanya: 1≤x≤6';
+    updateUI();
+  }
+
+  function chk8(btn, gid, correct) {
+    if (answers[cur] !== undefined) return;
+    answers[cur] = true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>{b.disabled=true;});
+    btn.classList.add(correct?'correct':'wrong');
+    if (!correct) document.querySelectorAll(`#${gid} .opt-btn`)[1].classList.add('correct');
+    const fb = document.getElementById(gid+'-fb');
+    fb.className = 'feedback show ' + (correct?'ok':'no');
+    fb.textContent = correct
+      ? '✅ Benar! 4(x−1)<12 → x−1<3 → x<4'
+      : '❌ Hitung: 4(x−1)<12 → x−1<3 → x<4';
+    updateUI();
+  }
+
+  function chk9(btn, gid, correct) {
+    if (answers[cur] !== undefined) return;
+    answers[cur] = true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>{b.disabled=true;});
+    btn.classList.add(correct?'correct':'wrong');
+    if (!correct) document.querySelectorAll(`#${gid} .opt-btn`)[1].classList.add('correct');
+    const fb = document.getElementById(gid+'-fb');
+    fb.className = 'feedback show ' + (correct?'ok':'no');
+    fb.textContent = correct
+      ? '✅ Tepat! x>0, y>0 = Kuadran I. Ditambah x+y<5 = di bawah garis.'
+      : '❌ x>0 & y>0 = Kuadran I. Irisan dengan x+y<5 = daerah di bawah garis.';
+    updateUI();
+  }
+
+  function chk10(btn, gid, correct) {
+    if (answers[cur] !== undefined) return;
+    answers[cur] = true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>{b.disabled=true;});
+    btn.classList.add(correct?'correct':'wrong');
+    if (!correct) document.querySelectorAll(`#${gid} .opt-btn`)[2].classList.add('correct');
+    const fb = document.getElementById(gid+'-fb');
+    fb.className = 'feedback show ' + (correct?'ok':'no');
+    fb.textContent = correct
+      ? '✅ Benar! "Tidak lebih dari" = ≤ (kurang dari atau sama dengan)'
+      : '❌ "Tidak lebih dari" artinya maksimum = ≤';
+    updateUI();
+  }
+
+  updateUI();
+</script>
+</body>
+</html>

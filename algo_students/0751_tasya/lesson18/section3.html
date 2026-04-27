@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 3 · Sprint Challenge · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fdf6fb;--card:#fff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --lavender:#9b7fc8;--lavender-light:#c8b4e8;--lav-bg:rgba(155,127,200,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --peach:#f0956a;
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 90% 80%,rgba(240,149,106,0.07) 0%,transparent 50%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--peach);}
+
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  /* Intro */
+  #intro{text-align:center;}
+  .sprint-icon{font-size:4.5rem;display:block;margin-bottom:1.2rem;animation:bounce 1s ease-in-out infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .sprint-title{font-family:'Nunito',sans-serif;font-size:clamp(1.6rem,5vw,2.2rem);font-weight:900;color:var(--peach);margin-bottom:0.6rem;}
+  .sprint-sub{color:var(--text-muted);line-height:1.7;margin-bottom:2rem;font-size:0.92rem;}
+  .rules-box{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.5rem 1.8rem;text-align:left;margin-bottom:2rem;box-shadow:0 3px 12px var(--shadow);}
+  .rules-title{font-size:0.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--peach);margin-bottom:1rem;}
+  .rule{display:flex;gap:0.8rem;align-items:flex-start;font-size:0.88rem;margin-bottom:0.6rem;color:var(--text-mid);}
+  .rule span{flex-shrink:0;}
+  .start-btn{background:linear-gradient(135deg,var(--peach),var(--rose));color:#fff;border:none;padding:1rem 3rem;border-radius:99px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:900;letter-spacing:2px;cursor:pointer;box-shadow:0 5px 18px rgba(240,149,106,0.35);transition:all 0.2s;}
+  .start-btn:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(240,149,106,0.45);}
+
+  /* Game */
+  #game{display:none;}
+  .hud{display:flex;justify-content:space-between;gap:1rem;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .hud-box{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:0.7rem 1.3rem;text-align:center;flex:1;min-width:80px;box-shadow:0 2px 8px var(--shadow);}
+  .hud-val{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.3rem;}
+  .hud-val.s{color:var(--lavender);}
+  .hud-val.q{color:var(--peach);}
+  .hud-val.t{color:var(--text);}
+  .hud-val.t.warn{color:var(--rose);animation:blink 0.5s infinite;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.4;}}
+  .hud-lbl{font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-top:0.1rem;}
+
+  /* Timer ring */
+  .timer-ring-wrap{display:flex;justify-content:center;margin-bottom:1.2rem;}
+  .timer-ring{position:relative;width:70px;height:70px;}
+  .timer-ring svg{transform:rotate(-90deg);}
+  .timer-ring circle{fill:none;stroke-width:5;}
+  .ring-bg{stroke:var(--border);}
+  .ring-fg{stroke:var(--rose);stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke 0.5s;}
+  .ring-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:1.4rem;color:var(--text);}
+  .ring-num.warn{color:var(--rose);}
+
+  .q-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:1.2rem;box-shadow:0 4px 14px var(--shadow);animation:fadeUp 0.35s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .q-cat{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--peach);margin-bottom:0.9rem;}
+  .q-text{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.4rem;line-height:1.5;color:var(--text);}
+  .q-hint{font-size:0.82rem;color:var(--text-muted);margin-bottom:1.4rem;font-style:italic;}
+
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;}
+  @media(max-width:420px){.opts-grid{grid-template-columns:1fr;}}
+  .opt{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.9rem 0.6rem;border-radius:14px;cursor:pointer;font-family:'Quicksand',sans-serif;font-weight:700;font-size:0.9rem;text-align:center;transition:all 0.15s;line-height:1.4;}
+  .opt:hover{border-color:var(--rose-light);background:var(--rose-bg);}
+  .opt.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt:disabled{cursor:default;}
+
+  .q-fb{margin-top:1rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;line-height:1.5;}
+  .q-fb.show{display:block;}
+  .q-fb.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .q-fb.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .next-btn{width:100%;padding:0.9rem;border-radius:99px;border:none;background:linear-gradient(135deg,var(--rose),var(--lavender));color:#fff;font-family:'Nunito',sans-serif;font-weight:900;font-size:0.9rem;letter-spacing:2px;cursor:pointer;margin-top:1rem;display:none;box-shadow:0 4px 14px rgba(232,98,138,0.3);transition:all 0.2s;}
+  .next-btn:hover{transform:translateY(-2px);}
+  .next-btn.show{display:block;animation:fadeUp 0.3s ease;}
+
+  /* Results */
+  #results{display:none;text-align:center;}
+  .res-icon{font-size:5rem;display:block;margin-bottom:1.2rem;animation:bounce 1s infinite;}
+  .res-score{font-family:'Nunito',sans-serif;font-size:clamp(2.5rem,8vw,4rem);font-weight:900;margin-bottom:0.3rem;}
+  .res-label{font-size:0.9rem;font-weight:700;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;margin-bottom:2rem;}
+  .breakdown{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:1.4rem;margin-bottom:1.8rem;text-align:left;box-shadow:0 3px 12px var(--shadow);}
+  .br-row{display:flex;justify-content:space-between;padding:0.45rem 0;border-bottom:1px solid var(--border);font-size:0.88rem;}
+  .br-row:last-child{border-bottom:none;font-weight:800;}
+  .br-row .qtxt{color:var(--text-mid);}
+  .br-row .ok{color:var(--mint);font-weight:700;font-family:'Nunito',sans-serif;}
+  .br-row .no{color:var(--rose);font-weight:700;font-family:'Nunito',sans-serif;}
+  .xp{display:inline-block;background:var(--rose-bg);border:1.5px solid var(--rose-light);color:var(--rose);padding:0.35rem 1.1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;margin-bottom:1.8rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--rose-light);color:var(--rose);}
+  .btn-primary{background:linear-gradient(135deg,var(--rose),var(--lavender));color:#fff;box-shadow:0 4px 14px rgba(232,98,138,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-mint{background:linear-gradient(135deg,var(--mint),#4aa890);color:#fff;box-shadow:0 4px 14px rgba(95,191,160,0.3);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson18.html">LESSON 18</a><span>›</span>
+  <span class="cur">SEC 3 · SPRINT</span>
+</nav>
+
+<div class="wrap">
+
+  <!-- Intro -->
+  <div id="intro">
+    <span class="sprint-icon">⏱️</span>
+    <div class="sprint-title">SPRINT MODE</div>
+    <div class="sprint-sub">8 soal gabungan persamaan & pertidaksamaan. Timer 30 detik per soal. Percaya instingmu!</div>
+    <div class="rules-box">
+      <div class="rules-title">⚡ Rules</div>
+      <div class="rule"><span>🎯</span> 8 soal pilihan ganda</div>
+      <div class="rule"><span>⏱️</span> 30 detik per soal</div>
+      <div class="rule"><span>⭐</span> Jawaban benar = +25 poin</div>
+      <div class="rule"><span>💡</span> Waktu habis atau salah = 0 poin, tetap lanjut</div>
+    </div>
+    <button class="start-btn" onclick="startGame()">✨ MULAI SPRINT</button>
+  </div>
+
+  <!-- Game -->
+  <div id="game">
+    <div class="hud">
+      <div class="hud-box"><div class="hud-val s" id="scoreD">0</div><div class="hud-lbl">Score</div></div>
+      <div class="hud-box"><div class="hud-val q" id="qD">1/8</div><div class="hud-lbl">Soal</div></div>
+    </div>
+    <div class="timer-ring-wrap">
+      <div class="timer-ring">
+        <svg width="70" height="70" viewBox="0 0 70 70">
+          <circle class="ring-bg" cx="35" cy="35" r="30"/>
+          <circle class="ring-fg" id="ringFg" cx="35" cy="35" r="30" stroke-dasharray="188.5" stroke-dashoffset="0"/>
+        </svg>
+        <div class="ring-num" id="ringNum">30</div>
+      </div>
+    </div>
+    <div class="q-card" id="qCard">
+      <div class="q-cat" id="qCat"></div>
+      <div class="q-text" id="qText"></div>
+      <div class="q-hint" id="qHint"></div>
+      <div class="opts-grid" id="optsGrid"></div>
+      <div class="q-fb" id="qFb"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQ()">Soal Berikutnya →</button>
+  </div>
+
+  <!-- Results -->
+  <div id="results">
+    <span class="res-icon" id="resIcon"></span>
+    <div class="res-score" id="resScore"></div>
+    <div class="res-label" id="resLabel"></div>
+    <div class="breakdown" id="breakdown"></div>
+    <div class="xp" id="xpBadge"></div>
+    <div class="action-btns">
+      <button class="btn btn-ghost" onclick="restart()">🔄 Ulangi</button>
+      <a href="lesson18.html" class="btn btn-ghost">← Back</a>
+      <a href="section4.html" class="btn btn-mint">Latihan Mandiri →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const Qs = [
+    {
+      cat:'🟢 Persamaan',
+      text:'Nilai x dari 3x + 7 = 22 adalah...',
+      hint:'Kurangi 7, lalu bagi 3',
+      opts:['3','4','5','6'],
+      answer:'5',
+      explain:'3x+7=22 → 3x=15 → x=5 ✅'
+    },
+    {
+      cat:'🟡 Pertidaksamaan',
+      text:'Penyelesaian dari 2x − 4 < 6 adalah...',
+      hint:'Tambah 4 ke kedua ruas, lalu bagi 2',
+      opts:['x < 3','x < 5','x > 5','x < 10'],
+      answer:'x < 5',
+      explain:'2x−4<6 → 2x<10 → x<5 ✅'
+    },
+    {
+      cat:'🟢 Sistem',
+      text:'Sistem x + y = 8 dan x − y = 2 memiliki solusi...',
+      hint:'Jumlahkan kedua persamaan',
+      opts:['x=4,y=4','x=5,y=3','x=6,y=2','x=3,y=5'],
+      answer:'x=5,y=3',
+      explain:'Jumlahkan: 2x=10→x=5. Maka y=8−5=3 ✅'
+    },
+    {
+      cat:'🟡 Negatif',
+      text:'Penyelesaian dari −3x > 12 adalah...',
+      hint:'Bagi dengan −3, tanda berbalik!',
+      opts:['x > −4','x < −4','x > 4','x < 4'],
+      answer:'x < −4',
+      explain:'−3x>12 → x<−4 (tanda berbalik!) ✅'
+    },
+    {
+      cat:'🟢 Cerita',
+      text:'Harga 2 buku dan 3 pensil Rp13.000. Harga 1 buku dan 1 pensil Rp5.500. Harga 1 pensil adalah...',
+      hint:'Misal buku=b, pensil=p. 2b+3p=13000, b+p=5500',
+      opts:['Rp1.000','Rp1.500','Rp2.000','Rp2.500'],
+      answer:'Rp2.000',
+      explain:'b+p=5500→2b+2p=11000. Kurangkan: p=2000 ✅'
+    },
+    {
+      cat:'🟡 Gabungan',
+      text:'Sistem x > 2 dan x < 6 memiliki solusi...',
+      hint:'Irisan kedua syarat',
+      opts:['x < 2','x > 6','2 < x < 6','Tidak ada solusi'],
+      answer:'2 < x < 6',
+      explain:'Irisan x>2 dan x<6 adalah 2<x<6 ✅'
+    },
+    {
+      cat:'🟢 Persamaan',
+      text:'Nilai x dari 5(x − 2) = 3x + 4 adalah...',
+      hint:'Buka kurung, kumpulkan x',
+      opts:['5','6','7','8'],
+      answer:'7',
+      explain:'5x−10=3x+4 → 2x=14 → x=7 ✅'
+    },
+    {
+      cat:'🟡 Analisis',
+      text:'Manakah yang memenuhi sistem x + y ≤ 6 dan x ≥ 1?',
+      hint:'Cek satu per satu',
+      opts:['(0,5)','(1,5)','(2,3)','(3,4)'],
+      answer:'(2,3)',
+      explain:'(2,3): 2+3=5≤6 ✓, 2≥1 ✓. Yang lain: (0,5) gagal x≥1, (1,5) 1+5=6✓ tapi (3,4) 3+4=7>6 ✗'
+    },
+  ];
+
+  let cur=0,score=0,timer=null,timeLeft=30;
+  const log=[];
+
+  function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+
+  function startGame(){
+    document.getElementById('intro').style.display='none';
+    document.getElementById('game').style.display='block';
+    loadQ();
+  }
+
+  function loadQ(){
+    const q=Qs[cur];
+    document.getElementById('qD').textContent=`${cur+1}/8`;
+    document.getElementById('qCat').textContent=q.cat;
+    document.getElementById('qText').textContent=q.text;
+    document.getElementById('qHint').textContent='💡 '+q.hint;
+    document.getElementById('qFb').className='q-fb';
+    document.getElementById('nextBtn').className='next-btn';
+
+    const grid=document.getElementById('optsGrid');
+    grid.innerHTML='';
+    shuffle(q.opts).forEach(o=>{
+      const b=document.createElement('button');
+      b.className='opt';b.textContent=o;
+      b.onclick=()=>answer(o,b,q);
+      grid.appendChild(b);
+    });
+
+    const card=document.getElementById('qCard');
+    card.style.animation='none';void card.offsetWidth;card.style.animation='';
+    startTimer();
+  }
+
+  const MAXTIME=30;
+  const CIRC=188.5;
+
+  function startTimer(){
+    timeLeft=MAXTIME;
+    updateRing();
+    clearInterval(timer);
+    timer=setInterval(()=>{
+      timeLeft--;updateRing();
+      if(timeLeft<=0){clearInterval(timer);timeUp();}
+    },1000);
+  }
+
+  function updateRing(){
+    const pct=timeLeft/MAXTIME;
+    const offset=CIRC*(1-pct);
+    const fg=document.getElementById('ringFg');
+    fg.style.strokeDashoffset=offset;
+    fg.style.stroke=timeLeft<=10?'#e8628a':timeLeft<=20?'#f0956a':'#9b7fc8';
+    const num=document.getElementById('ringNum');
+    num.textContent=timeLeft;
+    num.className='ring-num'+(timeLeft<=10?' warn':'');
+  }
+
+  function answer(val,btn,q){
+    clearInterval(timer);
+    const correct=val===q.answer;
+    document.querySelectorAll('.opt').forEach(b=>{
+      b.disabled=true;
+      if(b.textContent===q.answer)b.classList.add('correct');
+    });
+    if(!correct)btn.classList.add('wrong');
+    else score+=25;
+    document.getElementById('scoreD').textContent=score;
+    log.push({text:q.text,correct});
+    const fb=document.getElementById('qFb');
+    fb.className='q-fb show '+(correct?'ok':'no');
+    fb.textContent=(correct?'✅ ':'❌ ')+q.explain;
+    document.getElementById('nextBtn').className='next-btn show';
+  }
+
+  function timeUp(){
+    const q=Qs[cur];
+    document.querySelectorAll('.opt').forEach(b=>{b.disabled=true;if(b.textContent===q.answer)b.classList.add('correct');});
+    log.push({text:q.text,correct:false});
+    const fb=document.getElementById('qFb');
+    fb.className='q-fb show no';
+    fb.textContent='⏱️ Waktu habis! '+q.explain;
+    document.getElementById('nextBtn').className='next-btn show';
+  }
+
+  function nextQ(){
+    cur++;
+    if(cur>=Qs.length)showResults();
+    else loadQ();
+  }
+
+  function showResults(){
+    document.getElementById('game').style.display='none';
+    const res=document.getElementById('results');
+    res.style.display='block';
+    const pct=score/200;
+    let icon,label,xp;
+    if(pct===1){icon='🌺';label='PERFECT!';xp='+250 XP — Flawless!';}
+    else if(pct>=0.8){icon='🌸';label='KEREN BANGET!';xp='+180 XP — Excellent!';}
+    else if(pct>=0.6){icon='🌷';label='BAGUS!';xp='+120 XP — Keep Going!';}
+    else if(pct>=0.4){icon='✿';label='LUMAYAN!';xp='+80 XP — Terus Latihan!';}
+    else{icon='💪';label='NEXT TIME!';xp='+40 XP — Jangan Menyerah!';}
+
+    document.getElementById('resIcon').textContent=icon;
+    const sc=document.getElementById('resScore');
+    sc.textContent=score+'/200';
+    sc.style.color=pct>=0.6?'var(--lavender)':'var(--text-muted)';
+    document.getElementById('resLabel').textContent=label;
+    document.getElementById('xpBadge').textContent='✨ '+xp;
+
+    const bd=document.getElementById('breakdown');
+    bd.innerHTML=log.map((r,i)=>`
+      <div class="br-row">
+        <span class="qtxt">Soal ${i+1}</span>
+        <span class="${r.correct?'ok':'no'}">${r.correct?'+25 ✅':'0 ❌'}</span>
+      </div>
+    `).join('')+`
+      <div class="br-row">
+        <span><strong>Total</strong></span>
+        <span style="color:var(--lavender);font-family:'Nunito',sans-serif;font-weight:900">${score}/200</span>
+      </div>
+    `;
+  }
+
+  function restart(){
+    cur=0;score=0;log.length=0;
+    document.getElementById('results').style.display='none';
+    document.getElementById('scoreD').textContent='0';
+    document.getElementById('game').style.display='block';
+    loadQ();
+  }
+</script>
+</body>
+</html>
