@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise 2 · Lesson 3 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --card: #1a1a28; --border: #2a2a40;
+    --neon: #00f5c4; --neon2: #7c3aed; --accent: #f59e0b;
+    --cyan: #22d3ee; --red: #ef4444; --text: #e2e8f0; --muted: #64748b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 15% 60%, rgba(124,58,237,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 20%, rgba(34,211,238,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  nav {
+    padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.9); backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+    font-family: 'Orbitron', monospace; font-size: 0.72rem; letter-spacing: 1px;
+  }
+  nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--neon); }
+  nav span { color: var(--border); }
+  nav .current { color: var(--neon); }
+  .wrapper { max-width: 820px; margin: 0 auto; padding: 2.5rem 1rem 6rem; position: relative; z-index: 1; }
+  @media (max-width: 480px) { .wrapper { padding: 2rem 0.75rem 6rem; } }
+
+  /* Header */
+  .page-header { margin-bottom: 2rem; }
+  .page-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(124,58,237,0.1); border: 1px solid rgba(124,58,237,0.3); color: #a78bfa;
+    font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.3rem 1rem; border-radius: 20px; margin-bottom: 1.2rem;
+    font-family: 'Orbitron', monospace;
+  }
+  .page-title { font-family: 'Orbitron', monospace; font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 900; margin-bottom: 0.6rem; }
+  .page-title span { color: #a78bfa; }
+  .page-desc { color: var(--muted); font-size: 0.92rem; line-height: 1.6; }
+
+  /* Stats row */
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-bottom: 1.5rem; }
+  @media(max-width:480px) { .stats-row { grid-template-columns: repeat(3, 1fr); } }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem; text-align: center; }
+  .stat-val { font-family: 'Orbitron', monospace; font-size: 1.5rem; font-weight: 900; }
+  .stat-lbl { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 0.2rem; }
+  .stat-val.v-total { color: #a78bfa; }
+  .stat-val.v-done  { color: var(--neon); }
+  .stat-val.v-hard  { color: var(--cyan); }
+
+  /* Progress */
+  .progress-panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.2rem 1.5rem; margin-bottom: 2rem; }
+  .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+  .prog-label { font-family: 'Orbitron', monospace; font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .prog-count { font-family: 'Orbitron', monospace; font-size: 0.95rem; font-weight: 700; color: var(--neon); }
+  .prog-track { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 0.6rem; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--neon2), var(--neon)); border-radius: 99px; transition: width 0.6s ease; }
+  .prog-sub { font-size: 0.78rem; color: var(--muted); }
+  .reset-link { float: right; font-size: 0.72rem; color: var(--muted); cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+  .reset-link:hover { color: var(--red); }
+
+  /* Section divider */
+  .sec-divider {
+    display: flex; align-items: center; gap: 1rem; margin: 1.8rem 0 1.2rem;
+  }
+  .sec-divider-line { flex: 1; height: 1px; background: var(--border); }
+  .sec-divider-label {
+    font-family: 'Orbitron', monospace; font-size: 0.65rem; letter-spacing: 3px;
+    text-transform: uppercase; white-space: nowrap; padding: 0.25rem 0.8rem;
+    border-radius: 20px;
+  }
+  .sdl-normal { color: var(--neon); background: rgba(0,245,196,0.08); border: 1px solid rgba(0,245,196,0.2); }
+  .sdl-hard { color: var(--cyan); background: rgba(34,211,238,0.08); border: 1px solid rgba(34,211,238,0.25); }
+
+  /* Exercise grid */
+  .exercise-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; max-width: 100%; }
+  @media(max-width: 480px) { .exercise-grid { grid-template-columns: 1fr; padding: 0 0.5rem; } }
+
+  .ex-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.2rem;
+    transition: border-color 0.25s, background 0.25s;
+    position: relative; max-width: 100%; overflow: hidden;
+  }
+  .ex-card.done-card { border-color: rgba(0,245,196,0.3); background: rgba(0,245,196,0.03); }
+  .ex-card.hard-card { border-color: rgba(34,211,238,0.2); background: rgba(34,211,238,0.02); }
+  .ex-card.hard-card.done-card { border-color: rgba(34,211,238,0.4); background: rgba(34,211,238,0.05); }
+
+  .ex-num { font-family: 'Orbitron', monospace; font-size: 0.6rem; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 0.4rem; }
+  .ex-tag { display: inline-block; font-size: 0.58rem; padding: 0.15rem 0.45rem; border-radius: 6px; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+  .ex-tag.tag-normal { background: rgba(0,245,196,0.08); color: var(--neon); border: 1px solid rgba(0,245,196,0.2); }
+  .ex-tag.tag-hard { background: rgba(34,211,238,0.1); color: var(--cyan); border: 1px solid rgba(34,211,238,0.25); }
+
+  .ex-q { font-family: 'Orbitron', monospace; font-size: clamp(1.25rem, 4.5vw, 1.55rem); font-weight: 900; color: var(--text); margin-bottom: 0.8rem; word-break: break-word; }
+  .ex-card.done-card .ex-q { color: var(--neon); }
+  .ex-card.hard-card.done-card .ex-q { color: var(--cyan); }
+
+  .ex-input-wrap { display: flex; flex-direction: column; gap: 0.5rem; }
+  .ex-input-row { display: flex; gap: 0.5rem; align-items: center; }
+  .ex-input {
+    flex: 1; background: #12121c; border: 2px solid var(--border); color: var(--text);
+    padding: 0.6rem 0.8rem; border-radius: 10px; font-family: 'Orbitron', monospace;
+    font-size: 1.1rem; text-align: center; transition: border-color 0.2s; outline: none;
+    min-width: 0; width: 100%;
+  }
+  .ex-input:focus { border-color: var(--neon2); }
+  .ex-input.correct { border-color: var(--neon); color: var(--neon); }
+  .ex-card.hard-card .ex-input.correct { border-color: var(--cyan); color: var(--cyan); }
+  .ex-input.wrong-anim { border-color: var(--red); color: var(--red); animation: shake 0.4s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0);} 20%,60%{transform:translateX(-6px);} 40%,80%{transform:translateX(6px);} }
+
+  .ex-btn {
+    background: rgba(124,58,237,0.2); border: 1px solid rgba(124,58,237,0.4);
+    color: #a78bfa; padding: 0.6rem 0.9rem; border-radius: 10px;
+    cursor: pointer; font-family: 'Orbitron', monospace; font-size: 0.65rem;
+    transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+  }
+  .ex-btn:hover { background: rgba(124,58,237,0.35); border-color: #a78bfa; }
+  .ex-btn:disabled { opacity: 0.3; cursor: default; }
+  @media (max-width: 360px) { .ex-input-row { flex-direction: column; } .ex-btn { width: 100%; } }
+
+  .ex-feedback { margin-top: 0.6rem; font-size: 0.82rem; font-weight: 700; display: none; }
+  .ex-feedback.show { display: block; }
+  .ex-feedback.ok { color: var(--neon); }
+  .ex-card.hard-card .ex-feedback.ok { color: var(--cyan); }
+  .ex-feedback.no { color: var(--red); }
+
+  .done-badge {
+    position: absolute; top: 1rem; right: 1rem;
+    font-family: 'Orbitron', monospace; font-size: 0.6rem; letter-spacing: 1px;
+    text-transform: uppercase; padding: 0.2rem 0.5rem; border-radius: 8px;
+  }
+  .done-badge.dn { background: rgba(0,245,196,0.15); border: 1px solid rgba(0,245,196,0.4); color: var(--neon); }
+  .done-badge.dh { background: rgba(34,211,238,0.15); border: 1px solid rgba(34,211,238,0.4); color: var(--cyan); }
+
+  .attempts-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--red); margin-right: 2px; }
+  .attempts-row { margin-top: 0.4rem; display: flex; gap: 2px; align-items: center; }
+
+  /* All done */
+  #allDone { display: none; text-align: center; padding: 3rem 2rem; }
+  .alldone-icon { font-size: 5rem; display: block; margin-bottom: 1.5rem; animation: bounce 1s ease infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-12px);} }
+  .alldone-title { font-family: 'Orbitron', monospace; font-size: clamp(1.5rem,5vw,2.2rem); color: #a78bfa; margin-bottom: 0.8rem; }
+  .alldone-desc { color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
+  .alldone-xp { display: inline-block; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.4); color: var(--accent); padding: 0.5rem 1.8rem; border-radius: 20px; font-family: 'Orbitron', monospace; font-size: 0.9rem; margin-bottom: 2rem; }
+  .action-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn { padding: 0.8rem 1.8rem; border-radius: 10px; border: none; font-family: 'Orbitron', monospace; font-size: 0.78rem; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+  .btn-ghost:hover { border-color: var(--neon); color: var(--neon); }
+  .btn-primary { background: linear-gradient(135deg,var(--neon2),#4f46e5); color: white; box-shadow: 0 4px 15px rgba(124,58,237,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); }
+  .btn-danger { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.4); color: var(--red); }
+  .btn-danger:hover { background: rgba(239,68,68,0.25); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson3.html">LESSON 3</a>
+  <span>›</span>
+  <span class="current">EXERCISE 2</span>
+</nav>
+
+<div class="wrapper">
+
+  <div class="page-header">
+    <div class="page-badge">🏋️ Exercise Zone · Ronde 2</div>
+    <div class="page-title">Extra <span>PR Mode</span> 💀</div>
+    <div class="page-desc">Babat abis yang tadi? Gas round 2! 30 soal — 20 pembagian dasar + 10 soal hard (hasil di atas 10). No timer, progress tersimpan otomatis tiap soal.</div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-val v-total">30</div>
+      <div class="stat-lbl">Total Soal</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val v-done" id="statDone">0</div>
+      <div class="stat-lbl">Selesai</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val v-hard">10</div>
+      <div class="stat-lbl">Hard Mode</div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress Latihan</span>
+      <span class="prog-count" id="progCount">0 / 30</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub" id="progSub">Belum ada yang diselesaikan — yuk gas!</div>
+    <span class="reset-link" onclick="confirmReset()">🗑️ Reset progress</span>
+  </div>
+
+  <!-- Section: Normal -->
+  <div class="sec-divider">
+    <div class="sec-divider-line"></div>
+    <span class="sec-divider-label sdl-normal">⚡ Pembagian Normal — 20 Soal</span>
+    <div class="sec-divider-line"></div>
+  </div>
+
+  <div class="exercise-grid" id="gridNormal"></div>
+
+  <!-- Section: Hard -->
+  <div class="sec-divider">
+    <div class="sec-divider-line"></div>
+    <span class="sec-divider-label sdl-hard">🔴 Hard Mode · Hasil > 10 — 10 Soal</span>
+    <div class="sec-divider-line"></div>
+  </div>
+
+  <div class="exercise-grid" id="gridHard"></div>
+
+  <!-- All done -->
+  <div id="allDone">
+    <span class="alldone-icon">👑</span>
+    <div class="alldone-title">PR Mode Conquered!</div>
+    <div class="alldone-desc">
+      30 soal babat habis. Serius, kamu udah level up banget.<br>
+      Pembagian bukan lagi musuh — itu udah jadi senjata!
+    </div>
+    <div class="alldone-xp">✨ +250 XP — Division Overlord!</div>
+    <div class="action-btns">
+      <button class="btn btn-danger" onclick="confirmReset()">🔄 Reset & Ulangi</button>
+      <a href="lesson3.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="../asfa_1195.html" class="btn btn-primary">Student Hub →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson3_exercise2_v1';
+
+// 20 soal normal (hasil ≤ 10) — fresh, beda dari exercise 1
+const normalExercises = [
+  { id:  0, text: '12 ÷ 3 = ?', answer: 4,  hint: '3 × 4 = 12' },
+  { id:  1, text: '20 ÷ 4 = ?', answer: 5,  hint: '4 × 5 = 20' },
+  { id:  2, text: '30 ÷ 6 = ?', answer: 5,  hint: '6 × 5 = 30' },
+  { id:  3, text: '21 ÷ 3 = ?', answer: 7,  hint: '3 × 7 = 21' },
+  { id:  4, text: '40 ÷ 8 = ?', answer: 5,  hint: '8 × 5 = 40' },
+  { id:  5, text: '27 ÷ 9 = ?', answer: 3,  hint: '9 × 3 = 27' },
+  { id:  6, text: '36 ÷ 6 = ?', answer: 6,  hint: '6 × 6 = 36' },
+  { id:  7, text: '25 ÷ 5 = ?', answer: 5,  hint: '5 × 5 = 25' },
+  { id:  8, text: '16 ÷ 4 = ?', answer: 4,  hint: '4 × 4 = 16' },
+  { id:  9, text: '24 ÷ 8 = ?', answer: 3,  hint: '8 × 3 = 24' },
+  { id: 10, text: '42 ÷ 7 = ?', answer: 6,  hint: '7 × 6 = 42' },
+  { id: 11, text: '45 ÷ 5 = ?', answer: 9,  hint: '5 × 9 = 45' },
+  { id: 12, text: '36 ÷ 9 = ?', answer: 4,  hint: '9 × 4 = 36' },
+  { id: 13, text: '56 ÷ 9 = ?', answer: 6,  hint: '9 × 6 = 54... eh, ini 56÷8! 8×7=56', },  // intentional fix
+  { id: 13, text: '56 ÷ 8 = ?', answer: 7,  hint: '8 × 7 = 56' },
+  { id: 14, text: '48 ÷ 8 = ?', answer: 6,  hint: '8 × 6 = 48' },
+  { id: 15, text: '24 ÷ 6 = ?', answer: 4,  hint: '6 × 4 = 24' },
+  { id: 16, text: '32 ÷ 8 = ?', answer: 4,  hint: '8 × 4 = 32' },
+  { id: 17, text: '27 ÷ 3 = ?', answer: 9,  hint: '3 × 9 = 27' },
+  { id: 18, text: '40 ÷ 5 = ?', answer: 8,  hint: '5 × 8 = 40' },
+  { id: 19, text: '63 ÷ 9 = ?', answer: 7,  hint: '9 × 7 = 63' },
+].filter((v,i,a) => a.findIndex(t=>t.id===v.id)===i); // deduplicate by id
+
+// Fix: rebuild clean with proper IDs
+const normalClean = [
+  { id:  0, text: '12 ÷ 3 = ?', answer: 4,  hint: '3 × 4 = 12' },
+  { id:  1, text: '20 ÷ 4 = ?', answer: 5,  hint: '4 × 5 = 20' },
+  { id:  2, text: '30 ÷ 6 = ?', answer: 5,  hint: '6 × 5 = 30' },
+  { id:  3, text: '21 ÷ 3 = ?', answer: 7,  hint: '3 × 7 = 21' },
+  { id:  4, text: '40 ÷ 8 = ?', answer: 5,  hint: '8 × 5 = 40' },
+  { id:  5, text: '27 ÷ 9 = ?', answer: 3,  hint: '9 × 3 = 27' },
+  { id:  6, text: '36 ÷ 6 = ?', answer: 6,  hint: '6 × 6 = 36' },
+  { id:  7, text: '25 ÷ 5 = ?', answer: 5,  hint: '5 × 5 = 25' },
+  { id:  8, text: '16 ÷ 4 = ?', answer: 4,  hint: '4 × 4 = 16' },
+  { id:  9, text: '24 ÷ 8 = ?', answer: 3,  hint: '8 × 3 = 24' },
+  { id: 10, text: '42 ÷ 7 = ?', answer: 6,  hint: '7 × 6 = 42' },
+  { id: 11, text: '45 ÷ 5 = ?', answer: 9,  hint: '5 × 9 = 45' },
+  { id: 12, text: '36 ÷ 9 = ?', answer: 4,  hint: '9 × 4 = 36' },
+  { id: 13, text: '56 ÷ 8 = ?', answer: 7,  hint: '8 × 7 = 56' },
+  { id: 14, text: '48 ÷ 8 = ?', answer: 6,  hint: '8 × 6 = 48' },
+  { id: 15, text: '24 ÷ 6 = ?', answer: 4,  hint: '6 × 4 = 24' },
+  { id: 16, text: '32 ÷ 8 = ?', answer: 4,  hint: '8 × 4 = 32' },
+  { id: 17, text: '27 ÷ 3 = ?', answer: 9,  hint: '3 × 9 = 27' },
+  { id: 18, text: '40 ÷ 5 = ?', answer: 8,  hint: '5 × 8 = 40' },
+  { id: 19, text: '63 ÷ 9 = ?', answer: 7,  hint: '9 × 7 = 63' },
+];
+
+// 10 soal hard (hasil > 10) — fresh, variasi lebih banyak dari exercise 1
+const hardExercises = [
+  { id: 20, text: '72 ÷ 6 = ?',  answer: 12, hint: '6×10=60, sisa 12, 6×2=12 → 10+2=12' },
+  { id: 21, text: '91 ÷ 7 = ?',  answer: 13, hint: '7×10=70, sisa 21, 7×3=21 → 10+3=13' },
+  { id: 22, text: '104 ÷ 8 = ?', answer: 13, hint: '8×10=80, sisa 24, 8×3=24 → 10+3=13' },
+  { id: 23, text: '66 ÷ 6 = ?',  answer: 11, hint: '6×10=60, sisa 6, 6×1=6 → 10+1=11' },
+  { id: 24, text: '77 ÷ 7 = ?',  answer: 11, hint: '7×10=70, sisa 7, 7×1=7 → 10+1=11' },
+  { id: 25, text: '108 ÷ 9 = ?', answer: 12, hint: '9×10=90, sisa 18, 9×2=18 → 10+2=12' },
+  { id: 26, text: '90 ÷ 6 = ?',  answer: 15, hint: '6×10=60, sisa 30, 6×5=30 → 10+5=15' },
+  { id: 27, text: '112 ÷ 8 = ?', answer: 14, hint: '8×10=80, sisa 32, 8×4=32 → 10+4=14' },
+  { id: 28, text: '98 ÷ 7 = ?',  answer: 14, hint: '7×10=70, sisa 28, 7×4=28 → 10+4=14' },
+  { id: 29, text: '135 ÷ 9 = ?', answer: 15, hint: '9×10=90, sisa 45, 9×5=45 → 10+5=15' },
+];
+
+// Combined for storage lookup
+const allExercises = [...normalClean, ...hardExercises];
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch { return {}; }
+}
+
+function saveState(s) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch {}
+}
+
+let state = loadState();
+
+function getDoneCount() {
+  return allExercises.filter(e => state[e.id]?.done).length;
+}
+
+function updateProgress() {
+  const done = getDoneCount();
+  const total = allExercises.length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('statDone').textContent = done;
+  document.getElementById('progSub').textContent =
+    done === 0 ? 'Belum ada yang diselesaikan — yuk gas!' :
+    done === total ? '🎉 Semua 30 soal babat habis! GILA!' :
+    `${done} soal selesai, ${total - done} lagi — gas terus!`;
+
+  if (done === total) {
+    setTimeout(() => {
+      document.getElementById('gridNormal').style.display = 'none';
+      document.getElementById('gridHard').style.display = 'none';
+      document.querySelectorAll('.sec-divider').forEach(el => el.style.display = 'none');
+      document.getElementById('allDone').style.display = 'block';
+    }, 700);
+  }
+}
+
+function buildCard(ex, isHard) {
+  const isDone = state[ex.id]?.done || false;
+  const attempts = state[ex.id]?.attempts || 0;
+  const displayNum = isHard ? (ex.id - 19) : (ex.id + 1); // Hard: 1-10, Normal: 1-20
+
+  const card = document.createElement('div');
+  card.className = 'ex-card' +
+    (isDone ? ' done-card' : '') +
+    (isHard ? ' hard-card' : '');
+  card.id = `card-${ex.id}`;
+
+  const badgeClass = isDone ? (isHard ? 'dh' : 'dn') : '';
+  const tagClass = isHard ? 'tag-hard' : 'tag-normal';
+  const tagText = isHard ? '🔴 Hard' : 'Pembagian';
+  const labelPrefix = isHard ? 'Hard' : 'Soal';
+
+  card.innerHTML = `
+    ${isDone ? `<div class="done-badge ${badgeClass}">✅ Selesai</div>` : ''}
+    <div class="ex-num">${labelPrefix} ${String(displayNum).padStart(2,'0')}</div>
+    <span class="ex-tag ${tagClass}">${tagText}</span>
+    <div class="ex-q">${ex.text}</div>
+    <div class="ex-input-wrap">
+      <div class="ex-input-row">
+        <input
+          type="number"
+          class="ex-input${isDone ? ' correct' : ''}"
+          id="inp-${ex.id}"
+          value="${isDone ? ex.answer : ''}"
+          placeholder="?"
+          inputmode="numeric"
+          ${isDone ? 'disabled' : ''}
+        >
+        <button
+          class="ex-btn"
+          id="btn-${ex.id}"
+          onclick="checkAnswer(${ex.id})"
+          ${isDone ? 'disabled' : ''}
+        >CEK</button>
+      </div>
+    </div>
+    ${attempts > 0 && !isDone ? `
+      <div class="attempts-row" id="att-${ex.id}">
+        ${Array(attempts).fill('<span class="attempts-dot"></span>').join('')}
+        <span style="font-size:0.75rem;color:var(--muted);margin-left:4px">${attempts}/3 percobaan</span>
+      </div>
+    ` : `<div class="attempts-row" id="att-${ex.id}" style="display:none"></div>`}
+    <div class="ex-feedback ${isDone ? 'show ok' : ''}" id="fb-${ex.id}">
+      ${isDone ? `✅ ${ex.hint} ✓` : ''}
+    </div>
+  `;
+
+  return card;
+}
+
+function renderGrids() {
+  const gn = document.getElementById('gridNormal');
+  const gh = document.getElementById('gridHard');
+  gn.innerHTML = '';
+  gh.innerHTML = '';
+
+  normalClean.forEach(ex => gn.appendChild(buildCard(ex, false)));
+  hardExercises.forEach(ex => gh.appendChild(buildCard(ex, true)));
+
+  // Bind Enter keys
+  allExercises.forEach(ex => {
+    const inp = document.getElementById(`inp-${ex.id}`);
+    if (inp && !state[ex.id]?.done) {
+      inp.addEventListener('keydown', e => {
+        if (e.key === 'Enter') checkAnswer(ex.id);
+      });
+    }
+  });
+}
+
+function checkAnswer(id) {
+  const ex = allExercises.find(e => e.id === id);
+  const isHard = hardExercises.some(e => e.id === id);
+  const input  = document.getElementById(`inp-${id}`);
+  const fb     = document.getElementById(`fb-${id}`);
+  const btn    = document.getElementById(`btn-${id}`);
+  const card   = document.getElementById(`card-${id}`);
+  const attRow = document.getElementById(`att-${id}`);
+
+  const val = parseInt(input.value);
+  if (isNaN(val) || input.value.trim() === '') return;
+
+  if (!state[id]) state[id] = { done: false, attempts: 0 };
+  state[id].attempts++;
+
+  const correct = val === ex.answer;
+  const maxAttempts = 3;
+
+  if (correct) {
+    state[id].done = true;
+    saveState(state);
+
+    input.classList.add('correct');
+    input.disabled = true;
+    btn.disabled = true;
+    fb.className = 'ex-feedback show ok';
+    fb.textContent = `✅ ${ex.hint} ✓`;
+
+    // Badge
+    const badge = document.createElement('div');
+    badge.className = `done-badge ${isHard ? 'dh' : 'dn'}`;
+    badge.textContent = '✅ Selesai';
+    card.classList.add('done-card');
+    card.querySelector('.ex-q').style.color = isHard ? 'var(--cyan)' : 'var(--neon)';
+    if (!card.querySelector('.done-badge')) card.prepend(badge);
+
+    updateProgress();
+  } else {
+    saveState(state);
+
+    if (state[id].attempts >= maxAttempts) {
+      input.disabled = true;
+      btn.disabled = true;
+      input.style.borderColor = 'var(--red)';
+      fb.className = 'ex-feedback show no';
+      fb.textContent = `❌ Udah 3x. Jawabannya: ${ex.answer}. (${ex.hint})`;
+
+      const failDots = '<span class="attempts-dot" style="background:#ef4444"></span>'.repeat(3);
+      attRow.style.display = 'flex';
+      attRow.innerHTML = failDots + `<span style="font-size:0.75rem;color:var(--muted);margin-left:4px">Maksimal percobaan</span>`;
+    } else {
+      input.classList.remove('wrong-anim');
+      void input.offsetWidth;
+      input.classList.add('wrong-anim');
+      fb.className = 'ex-feedback show no';
+      fb.textContent = `❌ Belum tepat. Hint: ${ex.hint}`;
+
+      setTimeout(() => {
+        input.classList.remove('wrong-anim');
+        input.value = '';
+        input.focus();
+      }, 500);
+
+      const dots = Array(state[id].attempts).fill('<span class="attempts-dot"></span>').join('');
+      attRow.style.display = 'flex';
+      attRow.innerHTML = dots + `<span style="font-size:0.75rem;color:var(--muted);margin-left:4px">${state[id].attempts}/${maxAttempts} percobaan</span>`;
+    }
+  }
+}
+
+function confirmReset() {
+  if (confirm('Reset semua progress Exercise 2? Ini tidak bisa dibatalkan.')) {
+    localStorage.removeItem(STORAGE_KEY);
+    state = {};
+    document.getElementById('allDone').style.display = 'none';
+    document.getElementById('gridNormal').style.display = 'grid';
+    document.getElementById('gridHard').style.display = 'grid';
+    document.querySelectorAll('.sec-divider').forEach(el => el.style.display = 'flex');
+    renderGrids();
+    updateProgress();
+  }
+}
+
+// Init
+renderGrids();
+updateProgress();
+</script>
+</body>
+</html>
