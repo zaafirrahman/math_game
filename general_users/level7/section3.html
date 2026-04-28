@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 3 · Probabilitas · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1f0e14; --board-light:#2e1520;
+    --grid:rgba(255,255,255,0.03); --grid-major:rgba(255,255,255,0.06);
+    --chalk:#ede4d8; --chalk-muted:rgba(237,228,216,0.55); --chalk-dim:rgba(237,228,216,0.22);
+    --teal:#2dd4bf; --teal-dark:#0d9488; --teal-bg:rgba(45,212,191,0.1); --teal-border:rgba(45,212,191,0.38);
+    --teal2:#5eead4; --teal2-bg:rgba(94,234,212,0.1); --teal2-border:rgba(94,234,212,0.35);
+    --aqua:#99f6e4; --aqua-bg:rgba(153,246,228,0.08); --aqua-border:rgba(153,246,228,0.3);
+    --green:#4ade80; --green-bg:rgba(74,222,128,0.1); --green-border:rgba(74,222,128,0.35);
+    --red:#f87171; --red-bg:rgba(248,113,113,0.1); --red-border:rgba(248,113,113,0.35);
+    --card-border:rgba(237,228,216,0.12); --card-bg:rgba(255,255,255,0.04);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.7;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(31,14,20,0.94);backdrop-filter:blur(14px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--teal);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--aqua);}
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5.5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--aqua-bg);border:1px solid var(--aqua-border);color:var(--aqua);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1.3rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,2rem);margin-bottom:0.6rem;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,0.4);}
+  h1 span{color:var(--aqua);}
+  .intro{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem;}
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(237,228,216,0.13);transition:all 0.3s;}
+  .dot.active{background:var(--aqua);box-shadow:0 0 0 3px rgba(153,246,228,0.18);transform:scale(1.2);}
+  .dot.done{background:var(--teal-dark);}
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 20px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.05);}
+  .card-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.teal{color:var(--teal);}
+  .card-label.teal2{color:var(--teal2);}
+  .card-label.aqua{color:var(--aqua);}
+  .card h2{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:0.7rem;line-height:1.35;color:var(--chalk);}
+  .card p{color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;}
+
+  .why-banner{background:linear-gradient(135deg,#0a1f1c,#12342e);border:1px solid var(--aqua-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.4);}
+  .why-banner::after{content:'🍀';position:absolute;right:1.2rem;bottom:-0.4rem;font-size:4.5rem;opacity:0.12;}
+  .why-banner h2{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:0.6rem;color:var(--chalk);}
+  .why-banner p{font-size:0.9rem;line-height:1.7;color:var(--chalk-muted);}
+  .why-list{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem;}
+  .why-item{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.88rem;color:var(--chalk-muted);}
+  .why-item span{flex-shrink:0;}
+
+  /* Probability bar */
+  .prob-bar{width:100%;height:36px;border-radius:18px;background:var(--board-light);border:1px solid var(--card-border);overflow:hidden;margin:1rem 0;position:relative;}
+  .prob-fill{height:100%;border-radius:18px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:0.85rem;color:#0d1f1c;transition:width 0.8s ease;}
+  .prob-label{position:absolute;right:0.8rem;top:50%;transform:translateY(-50%);font-family:'Patrick Hand',cursive;font-size:0.72rem;color:var(--chalk-muted);}
+
+  /* Sample space visual */
+  .sample-grid{display:flex;flex-wrap:wrap;gap:5px;margin:1rem 0;}
+  .samp-el{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:0.85rem;border:1px solid var(--card-border);background:var(--board-light);color:var(--chalk-muted);}
+  .samp-el.ev{background:var(--teal-bg);border-color:var(--teal-border);color:var(--teal);}
+  .samp-el.ev2{background:var(--aqua-bg);border-color:var(--aqua-border);color:var(--aqua);}
+
+  /* Event type chips */
+  .ev-chips{display:flex;flex-wrap:wrap;gap:0.6rem;margin:0.8rem 0;}
+  .ev-chip{border-radius:10px;padding:0.6rem 1rem;flex:1;min-width:120px;}
+  .ev-chip.a{background:var(--teal-bg);border:1px solid var(--teal-border);}
+  .ev-chip.b{background:var(--teal2-bg);border:1px solid var(--teal2-border);}
+  .ev-chip.c{background:var(--aqua-bg);border:1px solid var(--aqua-border);}
+  .ev-chip-name{font-family:'Patrick Hand',cursive;font-size:0.68rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:0.3rem;}
+  .ev-chip.a .ev-chip-name{color:var(--teal);}
+  .ev-chip.b .ev-chip-name{color:var(--teal2);}
+  .ev-chip.c .ev-chip-name{color:var(--aqua);}
+  .ev-chip-val{font-family:'Fredoka One',cursive;font-size:0.95rem;color:var(--chalk);margin-bottom:0.2rem;}
+  .ev-chip-desc{font-family:'Patrick Hand',cursive;font-size:0.72rem;color:var(--chalk-muted);}
+
+  .steps{display:flex;flex-direction:column;gap:0.65rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:var(--board-light);border:1px solid var(--card-border);border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;color:var(--chalk-muted);}
+  .step-n{font-family:'Fredoka One',cursive;font-size:0.8rem;color:var(--board);background:var(--aqua);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .step strong{color:var(--aqua);}
+  .step .t{color:var(--teal);}
+  .step .t2{color:var(--teal2);}
+  .step .gr{color:var(--green);}
+
+  .hl{border-radius:10px;padding:0.9rem 1.1rem;margin:0.8rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-teal{background:var(--teal-bg);border:1px solid var(--teal-border);}
+  .hl-teal strong{color:var(--teal);}
+  .hl-aqua{background:var(--aqua-bg);border:1px solid var(--aqua-border);}
+  .hl-aqua strong{color:var(--aqua);}
+  .hl-teal2{background:var(--teal2-bg);border:1px solid var(--teal2-border);}
+  .hl-teal2 strong{color:var(--teal2);}
+
+  .opts{display:flex;flex-direction:column;gap:0.6rem;margin:1rem 0;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.85rem 1.1rem;border-radius:10px;cursor:pointer;font-size:0.92rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;display:flex;align-items:center;gap:0.7rem;}
+  .opt-btn:hover:not(:disabled){border-color:var(--aqua-border);background:var(--aqua-bg);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-key{font-family:'Fredoka One',cursive;font-size:0.75rem;color:var(--chalk-muted);background:rgba(237,228,216,0.08);border-radius:5px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .feedback{border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;font-weight:800;display:none;margin-top:0.8rem;line-height:1.5;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+
+  .nav-btns{display:flex;gap:0.8rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--aqua-border);color:var(--aqua);}
+  .btn-primary{background:var(--teal-dark);color:#fff;box-shadow:0 4px 14px rgba(13,148,136,0.35);}
+  .btn-primary:hover{background:var(--teal);color:#0d1f1c;transform:translateY(-2px);}
+  .btn-primary:disabled{opacity:0.45;cursor:not-allowed;transform:none;}
+
+  .finish{text-align:center;padding:2rem 0;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--aqua);margin-bottom:0.8rem;}
+  .finish-desc{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:1.5rem;}
+  .xp{display:inline-block;background:var(--aqua-bg);border:1px solid var(--aqua-border);color:var(--aqua);font-family:'Fredoka One',cursive;padding:0.5rem 1.2rem;border-radius:20px;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level7.html">Level 7</a><span>›</span>
+  <span class="cur">Section 3</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🍀 Section 03</div>
+  <h1><span>Probabilitas</span></h1>
+  <p class="intro">Dadu, kartu, lotere — semua bisa dianalisis dengan matematika. Probabilitas adalah cara mengukur ketidakpastian dengan angka yang presisi.</p>
+
+  <div class="dots" id="dots"></div>
+
+  <!-- SLIDE 0: WHY -->
+  <div class="slide active">
+    <div class="why-banner">
+      <h2>🤔 Kenapa ini penting?</h2>
+      <p>Pernah dengar "peluang hujan 70% besok"? Atau klaim "diskon ini hanya tersedia untuk 1 dari 10 pelanggan beruntung"? Probabilitas mengajarkan kamu untuk tidak mudah tertipu angka acak yang terdengar besar.</p>
+      <div class="why-list">
+        <div class="why-item"><span>🎰</span>Game dan gambling: pahami peluang sebenarnya sebelum ambil risiko</div>
+        <div class="why-item"><span>🏥</span>Dunia medis: uji klinis dan akurasi tes diagnostik menggunakan probabilitas</div>
+        <div class="why-item"><span>🤖</span>AI dan machine learning berbasis probabilitas — model prediksi adalah mesin probabilitas</div>
+        <div class="why-item"><span>📉</span>Investasi saham: return diharapkan adalah nilai probabilistik, bukan kepastian</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <span></span>
+      <button class="btn btn-primary" onclick="nextSlide()">Mulai Belajar →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: MATERI -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label aqua">📐 Konsep Dasar</div>
+      <h2>Ruang Sampel & Kejadian</h2>
+      <div class="ev-chips">
+        <div class="ev-chip a"><div class="ev-chip-name">Ruang Sampel (S)</div><div class="ev-chip-val">Semua hasil</div><div class="ev-chip-desc">Himpunan semua hasil yang mungkin dari suatu percobaan</div></div>
+        <div class="ev-chip b"><div class="ev-chip-name">Kejadian (A)</div><div class="ev-chip-val">Subset dari S</div><div class="ev-chip-desc">Himpunan hasil yang kita inginkan</div></div>
+        <div class="ev-chip c"><div class="ev-chip-name">P(A)</div><div class="ev-chip-val">|A| / |S|</div><div class="ev-chip-desc">Peluang = banyak kejadian / total hasil</div></div>
+      </div>
+      <div class="hl hl-aqua"><strong>P(A) = n(A) / n(S)</strong> &nbsp;→&nbsp; Nilai P selalu antara 0 sampai 1.<br>P=0 (mustahil) · P=1 (pasti terjadi)</div>
+    </div>
+    <div class="card">
+      <div class="card-label teal">🎲 Contoh Ruang Sampel</div>
+      <h2>Pelemparan Dadu 1 kali</h2>
+      <p style="margin-bottom:0.6rem;">S = {1, 2, 3, 4, 5, 6} → n(S) = 6</p>
+      <div class="sample-grid">
+        <div class="samp-el">1</div><div class="samp-el ev">2</div><div class="samp-el ev">4</div>
+        <div class="samp-el ev">6</div><div class="samp-el">3</div><div class="samp-el">5</div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--chalk-muted);">Kejadian A = angka genap = {2, 4, 6} → n(A) = 3</p>
+      <div class="hl hl-teal"><strong>P(genap)</strong> = 3/6 = <strong>1/2 = 0.5</strong></div>
+      <div class="prob-bar">
+        <div class="prob-fill" style="width:50%;background:linear-gradient(90deg,var(--teal-dark),var(--teal));">P = 0.5</div>
+        <span class="prob-label">50%</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label teal2">🔗 Kejadian Majemuk</div>
+      <h2>Gabungan & Irisan Kejadian</h2>
+      <div class="hl hl-teal"><strong>P(A ∪ B) = P(A) + P(B) − P(A ∩ B)</strong><br>Peluang A ATAU B terjadi</div>
+      <div class="hl hl-teal2" style="margin-top:0.6rem;"><strong>P(A ∩ B) = P(A) × P(B)</strong> &nbsp;← Hanya jika A dan B saling bebas (independent)<br>Peluang A DAN B terjadi bersamaan</div>
+      <div class="hl hl-aqua" style="margin-top:0.6rem;"><strong>Komplemen:</strong> P(Aᶜ) = 1 − P(A)<br>Peluang A TIDAK terjadi</div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Contoh Soal →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: CONTOH SOAL -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label teal2">💡 Contoh Soal & Pembahasan</div>
+      <h2>Soal 1: Kartu Remi</h2>
+      <p style="margin-bottom:0.8rem;color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;">Dari 52 kartu remi, diambil 1 kartu secara acak. Berapa peluang mendapat kartu As atau kartu Hati?</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div>n(S) = 52. P(As) = 4/52, P(Hati) = 13/52, P(As ∩ Hati) = 1/52 (As Hati)</div></div>
+        <div class="step"><div class="step-n">2</div><div><strong>P(As ∪ Hati) = 4/52 + 13/52 − 1/52</strong></div></div>
+        <div class="step"><div class="step-n">3</div><div>= 16/52 = <span class="gr">4/13 ≈ 0.308</span></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label teal2">💡 Contoh Soal & Pembahasan</div>
+      <h2>Soal 2: Peluang Komplemen</h2>
+      <p style="margin-bottom:0.8rem;color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;">Peluang seorang siswa lulus ujian adalah 0.75. Berapa peluang dia TIDAK lulus?</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div>P(lulus) = 0.75</div></div>
+        <div class="step"><div class="step-n">2</div><div><strong>P(tidak lulus) = 1 − P(lulus)</strong> = 1 − 0.75</div></div>
+        <div class="step"><div class="step-n">3</div><div>= <span class="gr">0.25</span></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label teal2">💡 Contoh Soal & Pembahasan</div>
+      <h2>Soal 3: Kejadian Bebas</h2>
+      <p style="margin-bottom:0.8rem;color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;">Melempar koin dan dadu secara bersamaan. Berapa peluang mendapat Angka (koin) DAN angka 5 (dadu)?</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div>P(Angka) = 1/2, P(dadu 5) = 1/6. Dua kejadian bebas (independen).</div></div>
+        <div class="step"><div class="step-n">2</div><div><strong>P(Angka DAN 5)</strong> = P(Angka) × P(5) = 1/2 × 1/6</div></div>
+        <div class="step"><div class="step-n">3</div><div>= <span class="gr">1/12 ≈ 0.083</span></div></div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Soal Latihan →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: LATIHAN -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label aqua">✏️ Soal Latihan</div>
+      <h2>Uji Pemahamanmu</h2>
+      <p style="font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:1.2rem;line-height:1.4;color:var(--chalk);">Dalam sebuah kantong terdapat 3 bola merah, 4 bola biru, dan 5 bola hijau. Jika diambil satu bola secara acak, berapa peluang terambil bola BUKAN biru?</p>
+      <div class="opts" id="opts3">
+        <button class="opt-btn" onclick="answer(0,this,'opts3','fb3',2)"><div class="opt-key">A</div>1/3</button>
+        <button class="opt-btn" onclick="answer(1,this,'opts3','fb3',2)"><div class="opt-key">B</div>4/12</button>
+        <button class="opt-btn" onclick="answer(2,this,'opts3','fb3',2)"><div class="opt-key">C</div>2/3</button>
+        <button class="opt-btn" onclick="answer(3,this,'opts3','fb3',2)"><div class="opt-key">D</div>5/12</button>
+      </div>
+      <div class="feedback" id="fb3"></div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" id="btn3next" onclick="nextSlide()" disabled>Selesai →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: FINISH -->
+  <div class="slide">
+    <div class="finish">
+      <span class="finish-icon">🎉</span>
+      <div class="finish-title">Section 3 Selesai!</div>
+      <div class="finish-desc">Luar biasa! Kamu sudah menguasai seluruh materi Level 7. Dari menganalisis data dengan Mean/Median/Modus, menghitung susunan dengan Permutasi/Kombinasi, hingga mengukur ketidakpastian dengan Probabilitas!</div>
+      <div class="xp">✨ +100 XP — Probabilitas</div>
+      <div class="finish-btns">
+        <a href="level7.html" class="btn btn-ghost">← Level Hub</a>
+        <a href="summary.html" class="btn btn-primary">Cheat Sheet →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let cur=0;const total=5;
+function renderDots(){const d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<total;i++){const dot=document.createElement('div');dot.className='dot'+(i===cur?' active':i<cur?' done':'');d.appendChild(dot);}}
+function showSlide(n){document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('active',i===n));cur=n;renderDots();window.scrollTo({top:0,behavior:'smooth'});}
+function nextSlide(){if(cur<total-1)showSlide(cur+1);}
+function prevSlide(){if(cur>0)showSlide(cur-1);}
+function answer(idx,btn,optsId,fbId,correct){
+  const opts=document.querySelectorAll('#'+optsId+' .opt-btn');
+  opts.forEach(b=>b.disabled=true);
+  const fb=document.getElementById(fbId);
+  if(idx===correct){
+    btn.classList.add('correct');fb.className='feedback show ok';
+    fb.textContent='✅ Betul! Total = 12 bola. P(biru) = 4/12 = 1/3. P(BUKAN biru) = 1 − 1/3 = 2/3.';
+  } else {
+    btn.classList.add('wrong');opts[correct].classList.add('correct');fb.className='feedback show no';
+    fb.textContent='❌ Kurang tepat. Pakai komplemen: P(bukan biru) = 1 − P(biru) = 1 − 4/12 = 1 − 1/3 = 2/3.';
+  }
+  document.getElementById('btn3next').disabled=false;
+}
+renderDots();
+</script>
+</body>
+</html>

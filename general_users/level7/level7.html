@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 7 · Statistika & Peluang · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1f0e14; --board-light:#2e1520; --board-mid:#271018;
+    --grid:rgba(255,255,255,0.03); --grid-major:rgba(255,255,255,0.06);
+    --chalk:#ede4d8; --chalk-muted:rgba(237,228,216,0.55); --chalk-dim:rgba(237,228,216,0.22);
+    --teal:#2dd4bf; --teal-dark:#0d9488; --teal-bg:rgba(45,212,191,0.1); --teal-border:rgba(45,212,191,0.38);
+    --teal2:#5eead4; --teal2-bg:rgba(94,234,212,0.1); --teal2-border:rgba(94,234,212,0.35);
+    --aqua:#99f6e4; --aqua-bg:rgba(153,246,228,0.08); --aqua-border:rgba(153,246,228,0.3);
+    --maroon:#c0354a; --maroon-bg:rgba(192,53,74,0.12); --maroon-border:rgba(192,53,74,0.38);
+    --card-border:rgba(237,228,216,0.12); --card-bg:rgba(255,255,255,0.04);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background-color:var(--board);
+    background-image:
+      linear-gradient(var(--grid-major) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:120px 120px,120px 120px,24px 24px,24px 24px;
+    color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;
+  }
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.7;}
+
+  .math-bg{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;}
+  .math-sym{position:absolute;font-family:'Patrick Hand',cursive;color:var(--teal);opacity:0.06;animation:floatSym var(--dur,20s) ease-in-out infinite var(--delay,0s);user-select:none;}
+  @keyframes floatSym{0%,100%{transform:translateY(0) rotate(var(--rot0));}50%{transform:translateY(-16px) rotate(var(--rot1));}}
+
+  nav{padding:1.1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(31,14,20,0.94);backdrop-filter:blur(14px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--teal);}
+  nav span{color:var(--card-border);}
+
+  .page{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:2.8rem 2rem 5rem;}
+
+  .hero{text-align:center;margin-bottom:2.5rem;}
+  .lv-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--teal-bg);border:1px solid var(--teal-border);color:var(--teal);font-family:'Patrick Hand',cursive;font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1.2rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.6rem,4vw,2.4rem);color:var(--chalk);margin-bottom:0.5rem;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,0.45);}
+  h1 span{color:var(--teal);}
+  .hero-desc{font-family:'Patrick Hand',cursive;font-size:0.95rem;color:var(--chalk-muted);line-height:1.7;max-width:540px;margin:0 auto 2rem;}
+
+  .obj-box{background:rgba(255,255,255,0.03);border:1px solid var(--card-border);border-radius:12px;padding:1.3rem 1.8rem;max-width:560px;margin:0 auto 2.5rem;text-align:left;box-shadow:0 4px 24px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.04);position:relative;overflow:hidden;}
+  .obj-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--teal-dark),var(--teal),var(--aqua));}
+  .obj-title{font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:0.9rem;}
+  .obj-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.55rem;font-size:0.88rem;color:var(--chalk-muted);}
+
+  .sec-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:1.8rem;}
+  .sec-line{height:1px;flex:1;background:var(--chalk-dim);}
+  .sec-txt{font-family:'Patrick Hand',cursive;font-size:0.82rem;letter-spacing:2px;text-transform:uppercase;color:var(--chalk-muted);}
+
+  .cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+  @media(max-width:640px){.cards-grid{grid-template-columns:1fr;}}
+  @media(min-width:641px) and (max-width:820px){.cards-grid{grid-template-columns:repeat(2,1fr);}}
+
+  .sec-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:1.4rem 1.4rem 1.2rem;text-decoration:none;color:var(--chalk);display:block;box-shadow:0 4px 20px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.05);position:relative;overflow:hidden;transition:all 0.22s ease;animation:cardIn 0.4s ease backwards;backdrop-filter:blur(4px);}
+  .sec-card:nth-child(1){animation-delay:0.05s;} .sec-card:nth-child(2){animation-delay:0.12s;}
+  .sec-card:nth-child(3){animation-delay:0.19s;} .sec-card:nth-child(4){animation-delay:0.26s;}
+  .sec-card:nth-child(5){animation-delay:0.33s;} .sec-card:nth-child(6){animation-delay:0.40s;}
+  @keyframes cardIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  .sec-card:hover{transform:translateY(-5px);box-shadow:0 16px 36px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.08);}
+  .sec-card::before{content:'';position:absolute;top:0;left:0;right:0;height:38%;background:linear-gradient(180deg,rgba(255,255,255,0.045) 0%,transparent 100%);border-radius:12px 12px 0 0;pointer-events:none;}
+  .sec-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--card-bottom,rgba(45,212,191,0.5));border-radius:0 0 10px 10px;}
+
+  .sec-num{font-family:'Patrick Hand',cursive;font-size:0.68rem;color:var(--card-color,var(--teal));letter-spacing:2px;text-transform:uppercase;margin-bottom:0.6rem;position:relative;z-index:1;}
+  .sec-icon{font-size:1.9rem;margin-bottom:0.6rem;display:block;position:relative;z-index:1;}
+  .sec-title{font-family:'Fredoka One',cursive;font-size:0.98rem;color:var(--chalk);margin-bottom:0.35rem;line-height:1.3;position:relative;z-index:1;}
+  .sec-desc{font-size:0.8rem;color:var(--chalk-muted);line-height:1.55;position:relative;z-index:1;}
+  .sec-badge-el{display:inline-block;font-size:0.6rem;font-weight:900;padding:0.15rem 0.5rem;border-radius:20px;margin-top:0.8rem;text-transform:uppercase;letter-spacing:0.5px;position:relative;z-index:1;}
+  .badge-learn{background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-border);}
+  .badge-summary{background:var(--teal2-bg);color:var(--teal2);border:1px solid var(--teal2-border);}
+  .badge-test{background:var(--aqua-bg);color:var(--aqua);border:1px solid var(--aqua-border);}
+  .badge-exercise{background:rgba(237,228,216,0.06);color:var(--chalk-muted);border:1px solid var(--card-border);}
+
+  /* Level advance glow */
+  .lv-glow{position:fixed;top:-120px;right:-120px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(13,148,136,0.08) 0%,transparent 70%);pointer-events:none;z-index:0;}
+</style>
+</head>
+<body>
+<div class="lv-glow"></div>
+<div class="math-bg" id="mathBg"></div>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <span>Level 7</span>
+</nav>
+
+<div class="page">
+  <div class="hero">
+    <div class="lv-badge">📊 Level 07</div>
+    <h1>Statistika & <span>Peluang</span></h1>
+    <p class="hero-desc">Data ada di mana-mana — survei, berita, prediksi cuaca, game. Belajar membaca angka dengan tepat dan menghitung kemungkinan seperti seorang analis data.</p>
+
+    <div class="obj-box">
+      <div class="obj-title">🎯 Yang akan kamu kuasai</div>
+      <div class="obj-item"><span>📈</span>Mean, Median, Modus — menemukan pusat data dan mendeteksi manipulasi statistik</div>
+      <div class="obj-item"><span>🎲</span>Permutasi & Kombinasi — menghitung susunan dan pilihan tanpa harus mencatat satu per satu</div>
+      <div class="obj-item"><span>🍀</span>Probabilitas — mengukur peluang kejadian dari eksperimen acak dengan presisi</div>
+    </div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-line"></div>
+    <div class="sec-txt">Pilih Section</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="cards-grid">
+    <a href="section1.html" class="sec-card" style="--card-color:#2dd4bf;--card-bottom:rgba(45,212,191,0.55);">
+      <div class="sec-num">Section 01</div>
+      <span class="sec-icon">📈</span>
+      <div class="sec-title">Pengolahan Data</div>
+      <div class="sec-desc">Mean, Median, Modus — menemukan nilai tengah agar tidak tertipu data.</div>
+      <span class="sec-badge-el badge-learn">Materi</span>
+    </a>
+
+    <a href="section2.html" class="sec-card" style="--card-color:#5eead4;--card-bottom:rgba(94,234,212,0.5);">
+      <div class="sec-num">Section 02</div>
+      <span class="sec-icon">🎲</span>
+      <div class="sec-title">Kaidah Pencacahan</div>
+      <div class="sec-desc">Permutasi & Kombinasi — menghitung kemungkinan susunan tanpa capek.</div>
+      <span class="sec-badge-el badge-learn">Materi</span>
+    </a>
+
+    <a href="section3.html" class="sec-card" style="--card-color:#99f6e4;--card-bottom:rgba(153,246,228,0.45);">
+      <div class="sec-num">Section 03</div>
+      <span class="sec-icon">🍀</span>
+      <div class="sec-title">Probabilitas</div>
+      <div class="sec-desc">Peluang hoki vs kenyataan — dari ruang sampel hingga kejadian majemuk.</div>
+      <span class="sec-badge-el badge-learn">Materi</span>
+    </a>
+
+    <a href="summary.html" class="sec-card" style="--card-color:#5eead4;--card-bottom:rgba(94,234,212,0.45);">
+      <div class="sec-num">Summary</div>
+      <span class="sec-icon">📋</span>
+      <div class="sec-title">Cheat Sheet</div>
+      <div class="sec-desc">Semua rumus dan poin penting Level 7 dalam satu halaman padat.</div>
+      <span class="sec-badge-el badge-summary">Ringkasan</span>
+    </a>
+
+    <a href="quicktest.html" class="sec-card" style="--card-color:#99f6e4;--card-bottom:rgba(153,246,228,0.4);">
+      <div class="sec-num">Quick Test</div>
+      <span class="sec-icon">⏱️</span>
+      <div class="sec-title">5 Soal Cepat</div>
+      <div class="sec-desc">Timer per soal. Campuran tiga topik. Seberapa cepat kamu bisa?</div>
+      <span class="sec-badge-el badge-test">Challenge</span>
+    </a>
+
+    <a href="exercise.html" class="sec-card" style="--card-color:rgba(237,228,216,0.55);--card-bottom:rgba(237,228,216,0.18);">
+      <div class="sec-num">Exercise</div>
+      <span class="sec-icon">✏️</span>
+      <div class="sec-title">15 Soal Latihan</div>
+      <div class="sec-desc">Santai tanpa timer. 5 soal tiap section. Progres tersimpan otomatis.</div>
+      <span class="sec-badge-el badge-exercise">Latihan</span>
+    </a>
+  </div>
+</div>
+
+<script>
+  const symbols=['μ','σ','P(A)','n!','C(n,r)','Σ','x̄','∩','∪','%','P(n,r)','≈','median'];
+  const bg=document.getElementById('mathBg');
+  for(let i=0;i<22;i++){
+    const el=document.createElement('div');el.className='math-sym';
+    const sz=0.9+Math.random()*2.5;
+    el.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;font-size:${sz}rem;--dur:${13+Math.random()*15}s;--delay:${-Math.random()*13}s;--rot0:${-10+Math.random()*20}deg;--rot1:${-10+Math.random()*20}deg;`;
+    el.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    bg.appendChild(el);
+  }
+</script>
+</body>
+</html>

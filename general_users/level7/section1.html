@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Pengolahan Data · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1f0e14; --board-light:#2e1520; --board-mid:#271018;
+    --grid:rgba(255,255,255,0.03); --grid-major:rgba(255,255,255,0.06);
+    --chalk:#ede4d8; --chalk-muted:rgba(237,228,216,0.55); --chalk-dim:rgba(237,228,216,0.22);
+    --teal:#2dd4bf; --teal-dark:#0d9488; --teal-bg:rgba(45,212,191,0.1); --teal-border:rgba(45,212,191,0.38);
+    --teal2:#5eead4; --teal2-bg:rgba(94,234,212,0.1); --teal2-border:rgba(94,234,212,0.35);
+    --aqua:#99f6e4; --aqua-bg:rgba(153,246,228,0.08); --aqua-border:rgba(153,246,228,0.3);
+    --maroon:#c0354a; --maroon-bg:rgba(192,53,74,0.12); --maroon-border:rgba(192,53,74,0.38);
+    --green:#4ade80; --green-bg:rgba(74,222,128,0.1); --green-border:rgba(74,222,128,0.35);
+    --red:#f87171; --red-bg:rgba(248,113,113,0.1); --red-border:rgba(248,113,113,0.35);
+    --card-border:rgba(237,228,216,0.12); --card-bg:rgba(255,255,255,0.04);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.7;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(31,14,20,0.94);backdrop-filter:blur(14px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--teal);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--teal);}
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5.5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--teal-bg);border:1px solid var(--teal-border);color:var(--teal);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1.3rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,2rem);margin-bottom:0.6rem;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,0.4);}
+  h1 span{color:var(--teal);}
+  .intro{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem;}
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(237,228,216,0.13);transition:all 0.3s;}
+  .dot.active{background:var(--teal);box-shadow:0 0 0 3px rgba(45,212,191,0.22);transform:scale(1.2);}
+  .dot.done{background:var(--teal-dark);}
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 20px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.05);}
+  .card-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.teal{color:var(--teal);}
+  .card-label.teal2{color:var(--teal2);}
+  .card-label.aqua{color:var(--aqua);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:0.7rem;line-height:1.35;color:var(--chalk);}
+  .card p{color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;}
+
+  /* WHY BANNER */
+  .why-banner{background:linear-gradient(135deg,#0a1f1c,#12342e);border:1px solid var(--teal-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.4);}
+  .why-banner::after{content:'📊';position:absolute;right:1.2rem;bottom:-0.4rem;font-size:4.5rem;opacity:0.12;}
+  .why-banner h2{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:0.6rem;color:var(--chalk);}
+  .why-banner p{font-size:0.9rem;line-height:1.7;color:var(--chalk-muted);}
+  .why-list{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem;}
+  .why-item{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.88rem;color:var(--chalk-muted);}
+  .why-item span{flex-shrink:0;font-size:1.1rem;}
+
+  /* Stats visual - 3 columns */
+  .stat-trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin:1rem 0;}
+  @media(max-width:480px){.stat-trio{grid-template-columns:1fr;}}
+  .stat-card{border-radius:12px;padding:1.1rem 1rem;text-align:center;}
+  .stat-card.a{background:var(--teal-bg);border:1px solid var(--teal-border);}
+  .stat-card.b{background:var(--teal2-bg);border:1px solid var(--teal2-border);}
+  .stat-card.c{background:var(--aqua-bg);border:1px solid var(--aqua-border);}
+  .stat-name{font-family:'Patrick Hand',cursive;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.35rem;}
+  .stat-card.a .stat-name{color:var(--teal);}
+  .stat-card.b .stat-name{color:var(--teal2);}
+  .stat-card.c .stat-name{color:var(--aqua);}
+  .stat-title{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--chalk);margin-bottom:0.25rem;}
+  .stat-note{font-family:'Patrick Hand',cursive;font-size:0.73rem;color:var(--chalk-muted);line-height:1.4;}
+
+  /* Data bar chart visual */
+  .data-bar{display:flex;align-items:flex-end;gap:6px;height:80px;margin:1rem 0;padding:0 0.5rem;}
+  .bar{flex:1;border-radius:4px 4px 0 0;transition:all 0.4s ease;position:relative;}
+  .bar-val{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-family:'Fredoka One',cursive;font-size:0.68rem;color:var(--chalk);}
+  .data-labels{display:flex;gap:6px;margin-top:4px;padding:0 0.5rem;}
+  .d-lbl{flex:1;text-align:center;font-family:'Patrick Hand',cursive;font-size:0.65rem;color:var(--chalk-muted);}
+
+  /* Steps */
+  .steps{display:flex;flex-direction:column;gap:0.65rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:var(--board-light);border:1px solid var(--card-border);border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;color:var(--chalk-muted);}
+  .step-n{font-family:'Fredoka One',cursive;font-size:0.8rem;color:var(--board);background:var(--teal);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .step strong{color:var(--teal);}
+  .step .t2{color:var(--teal2);}
+  .step .aq{color:var(--aqua);}
+  .step .gr{color:var(--green);}
+
+  /* Highlight box */
+  .hl{border-radius:10px;padding:0.9rem 1.1rem;margin:0.8rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-teal{background:var(--teal-bg);border:1px solid var(--teal-border);}
+  .hl-teal strong{color:var(--teal);}
+  .hl-teal2{background:var(--teal2-bg);border:1px solid var(--teal2-border);}
+  .hl-teal2 strong{color:var(--teal2);}
+  .hl-aqua{background:var(--aqua-bg);border:1px solid var(--aqua-border);}
+  .hl-aqua strong{color:var(--aqua);}
+  .hl-green{background:var(--green-bg);border:1px solid var(--green-border);}
+  .hl-green strong{color:var(--green);}
+
+  /* Data table */
+  .data-row{display:flex;gap:6px;flex-wrap:wrap;margin:0.8rem 0;}
+  .data-chip{background:var(--board-light);border:1px solid var(--card-border);border-radius:8px;padding:0.35rem 0.7rem;font-family:'Fredoka One',cursive;font-size:0.95rem;color:var(--chalk);}
+  .data-chip.median-hi{background:var(--teal2-bg);border-color:var(--teal2-border);color:var(--teal2);}
+  .data-chip.mode-hi{background:var(--aqua-bg);border-color:var(--aqua-border);color:var(--aqua);}
+
+  /* Quiz */
+  .opts{display:flex;flex-direction:column;gap:0.6rem;margin:1rem 0;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.85rem 1.1rem;border-radius:10px;cursor:pointer;font-size:0.92rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;display:flex;align-items:center;gap:0.7rem;}
+  .opt-btn:hover:not(:disabled){border-color:var(--teal-border);background:var(--teal-bg);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-key{font-family:'Fredoka One',cursive;font-size:0.75rem;color:var(--chalk-muted);background:rgba(237,228,216,0.08);border-radius:5px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .feedback{border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;font-weight:800;display:none;margin-top:0.8rem;line-height:1.5;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+
+  /* Nav buttons */
+  .nav-btns{display:flex;gap:0.8rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--teal-border);color:var(--teal);}
+  .btn-primary{background:var(--teal-dark);color:#fff;box-shadow:0 4px 14px rgba(13,148,136,0.35);}
+  .btn-primary:hover{background:var(--teal);color:#0d1f1c;transform:translateY(-2px);}
+  .btn-primary:disabled{opacity:0.45;cursor:not-allowed;transform:none;}
+
+  /* Finish */
+  .finish{text-align:center;padding:2rem 0;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--teal);margin-bottom:0.8rem;}
+  .finish-desc{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:1.5rem;}
+  .xp{display:inline-block;background:var(--teal-bg);border:1px solid var(--teal-border);color:var(--teal);font-family:'Fredoka One',cursive;padding:0.5rem 1.2rem;border-radius:20px;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level7.html">Level 7</a><span>›</span>
+  <span class="cur">Section 1</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📈 Section 01</div>
+  <h1>Pengolahan <span>Data</span></h1>
+  <p class="intro">Bagaimana kamu tahu apakah nilai rata-rata kelasmu benar-benar mewakili semua siswa? Pelajari tiga ukuran pusat data yang mengungkap kebenaran di balik angka.</p>
+
+  <div class="dots" id="dots"></div>
+
+  <!-- SLIDE 0: WHY -->
+  <div class="slide active">
+    <div class="why-banner">
+      <h2>🤔 Kenapa ini penting?</h2>
+      <p>Kamu pernah dengar "rata-rata gaji karyawan perusahaan ini Rp 8 juta"? Tapi ternyata bos bergaji Rp 60 juta dan kebanyakan karyawan cuma Rp 3 juta. Angka rata-ratanya benar, tapi <strong style="color:var(--teal)">menyesatkan</strong>.</p>
+      <div class="why-list">
+        <div class="why-item"><span>📰</span>Media sering pakai statistik yang dipilih-pilih untuk membentuk opini</div>
+        <div class="why-item"><span>🏥</span>Nilai ujian, survei kepuasan, data kesehatan — semuanya perlu diinterpretasi dengan benar</div>
+        <div class="why-item"><span>🎯</span>Mean, Median, Modus memberi perspektif yang BERBEDA dari data yang SAMA</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <span></span>
+      <button class="btn btn-primary" onclick="nextSlide()">Mulai Belajar →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: MATERI -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label teal">📖 Konsep Utama</div>
+      <h2>Tiga Ukuran Pusat Data</h2>
+      <div class="stat-trio">
+        <div class="stat-card a">
+          <div class="stat-name">Mean</div>
+          <div class="stat-title">Rata-rata</div>
+          <div class="stat-note">Jumlah semua data ÷ banyak data</div>
+        </div>
+        <div class="stat-card b">
+          <div class="stat-name">Median</div>
+          <div class="stat-title">Nilai Tengah</div>
+          <div class="stat-note">Nilai di posisi tengah setelah diurutkan</div>
+        </div>
+        <div class="stat-card c">
+          <div class="stat-name">Modus</div>
+          <div class="stat-title">Sering Muncul</div>
+          <div class="stat-note">Nilai yang paling sering muncul</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label teal">⚙️ Rumus Mean</div>
+      <h2>Mean (Rata-rata)</h2>
+      <div class="hl hl-teal"><strong>x̄ = (Σx) / n</strong> &nbsp;→&nbsp; Jumlahkan semua nilai, bagi dengan banyaknya data.</div>
+      <p>Contoh: Data nilai ulangan: 70, 80, 90, 60, 100</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div>Jumlahkan: 70 + 80 + 90 + 60 + 100 = <strong>400</strong></div></div>
+        <div class="step"><div class="step-n">2</div><div>Bagi dengan n = 5: <strong>400 / 5 = 80</strong></div></div>
+        <div class="step"><div class="step-n">3</div><div>Mean = <span class="gr">80</span></div></div>
+      </div>
+      <div class="hl hl-teal"><strong>Kelemahan mean:</strong> Sangat terpengaruh oleh nilai ekstrem (outlier). Satu data yang jauh besar/kecil bisa menggeser mean secara signifikan.</div>
+    </div>
+    <div class="card">
+      <div class="card-label teal2">📍 Median</div>
+      <h2>Median (Nilai Tengah)</h2>
+      <p style="margin-bottom:0.8rem;">Urutkan data terlebih dahulu, lalu cari posisi tengah.</p>
+      <div class="hl hl-teal2">
+        <strong>Jika n ganjil:</strong> Median = data ke-((n+1)/2)<br>
+        <strong>Jika n genap:</strong> Median = rata-rata data ke-(n/2) dan ke-(n/2 + 1)
+      </div>
+      <p style="margin:0.8rem 0 0.4rem;">Contoh n=5 (ganjil): Data diurutkan: 60, 70, <strong style="color:var(--teal2)">80</strong>, 90, 100 → Median = <strong style="color:var(--teal2)">80</strong></p>
+      <p>Contoh n=6 (genap): 60, 70, <strong style="color:var(--teal2)">80, 85</strong>, 90, 100 → Median = (80+85)/2 = <strong style="color:var(--teal2)">82.5</strong></p>
+    </div>
+    <div class="card">
+      <div class="card-label aqua">🎯 Modus</div>
+      <h2>Modus (Mode)</h2>
+      <p style="margin-bottom:0.8rem;">Nilai yang paling sering muncul. Data bisa punya lebih dari satu modus!</p>
+      <div class="data-row">
+        <span class="data-chip">4</span><span class="data-chip">7</span><span class="data-chip mode-hi">9</span><span class="data-chip">3</span><span class="data-chip mode-hi">9</span><span class="data-chip">5</span><span class="data-chip mode-hi">9</span><span class="data-chip">7</span>
+      </div>
+      <div class="hl hl-aqua"><strong>Modus = 9</strong> — muncul 3 kali, lebih sering dari yang lain.</div>
+      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--chalk-muted);">Jika dua nilai sama-sama paling sering: <strong style="color:var(--aqua)">Bimodal</strong>. Jika tidak ada yang berulang: tidak ada modus.</p>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Contoh Soal →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: CONTOH SOAL -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label teal2">💡 Contoh Soal & Pembahasan</div>
+      <h2>Soal 1: Data Nilai Kelas</h2>
+      <p style="margin-bottom:0.8rem;color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;">Nilai ulangan matematika 7 siswa adalah: 65, 72, 80, 72, 90, 55, 72. Cari Mean, Median, dan Modus!</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><strong>Urutkan:</strong> 55, 65, 72, <span class="t2">72</span>, 72, 80, 90</div></div>
+        <div class="step"><div class="step-n">2</div><div><strong>Mean:</strong> (55+65+72+72+72+80+90) / 7 = 506/7 = <span class="gr">72.3</span></div></div>
+        <div class="step"><div class="step-n">3</div><div><strong>Median:</strong> n=7 (ganjil), posisi ke-4 → <span class="t2">72</span></div></div>
+        <div class="step"><div class="step-n">4</div><div><strong>Modus:</strong> 72 muncul 3 kali → Modus = <span class="aq">72</span></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label teal2">💡 Contoh Soal & Pembahasan</div>
+      <h2>Soal 2: Pengaruh Outlier pada Mean</h2>
+      <p style="margin-bottom:0.8rem;color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;">Gaji 5 karyawan: Rp 3jt, Rp 3jt, Rp 3.5jt, Rp 4jt, Rp 50jt (direktur). Mana yang lebih jujur mewakili data?</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><strong>Mean:</strong> (3+3+3.5+4+50)/5 = 63.5/5 = <span style="color:var(--red)">Rp 12.7jt</span> ← TIDAK representatif!</div></div>
+        <div class="step"><div class="step-n">2</div><div><strong>Median:</strong> Urutan: 3, 3, <span class="t2">3.5</span>, 4, 50 → Median = <span class="t2">Rp 3.5jt</span> ← lebih jujur!</div></div>
+        <div class="step"><div class="step-n">3</div><div><strong>Modus:</strong> 3 muncul 2x → Modus = <span class="aq">Rp 3jt</span></div></div>
+      </div>
+      <div class="hl hl-teal"><strong>Kesimpulan:</strong> Ketika ada outlier, Median lebih representatif dari Mean!</div>
+    </div>
+    <div class="card">
+      <div class="card-label teal2">💡 Contoh Soal & Pembahasan</div>
+      <h2>Soal 3: n Genap</h2>
+      <p style="margin-bottom:0.8rem;color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;">Data: 4, 8, 3, 7, 9, 5. Cari median!</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><strong>Urutkan:</strong> 3, 4, <span class="t2">5, 7</span>, 8, 9 (n=6, genap)</div></div>
+        <div class="step"><div class="step-n">2</div><div>Data ke-3 dan ke-4: <span class="t2">5</span> dan <span class="t2">7</span></div></div>
+        <div class="step"><div class="step-n">3</div><div><strong>Median</strong> = (5+7)/2 = <span class="gr">6</span></div></div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Soal Latihan →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: LATIHAN -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label aqua">✏️ Soal Latihan</div>
+      <h2>Uji Pemahamanmu</h2>
+      <p style="font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:1.2rem;line-height:1.4;color:var(--chalk);">Data nilai: 6, 8, 7, 9, 6, 8, 6, 10. Berapakah nilai Modus dari data tersebut?</p>
+      <div class="opts" id="opts1">
+        <button class="opt-btn" onclick="answer(0,this,'opts1','fb1',0)"><div class="opt-key">A</div>6</button>
+        <button class="opt-btn" onclick="answer(1,this,'opts1','fb1',0)"><div class="opt-key">B</div>7</button>
+        <button class="opt-btn" onclick="answer(2,this,'opts1','fb1',0)"><div class="opt-key">C</div>8</button>
+        <button class="opt-btn" onclick="answer(3,this,'opts1','fb1',0)"><div class="opt-key">D</div>7.5</button>
+      </div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" id="btn1next" onclick="nextSlide()" disabled>Selesai →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: FINISH -->
+  <div class="slide">
+    <div class="finish">
+      <span class="finish-icon">🎉</span>
+      <div class="finish-title">Section 1 Selesai!</div>
+      <div class="finish-desc">Kamu sudah menguasai Mean, Median, dan Modus! Sekarang kamu tidak akan mudah tertipu oleh angka rata-rata yang menyesatkan. Ingat: pilih ukuran yang paling sesuai konteks datanya.</div>
+      <div class="xp">✨ +100 XP — Pengolahan Data</div>
+      <div class="finish-btns">
+        <a href="level7.html" class="btn btn-ghost">← Level Hub</a>
+        <a href="section2.html" class="btn btn-primary">Section 2 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let cur=0;const total=5;
+function renderDots(){const d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<total;i++){const dot=document.createElement('div');dot.className='dot'+(i===cur?' active':i<cur?' done':'');d.appendChild(dot);}}
+function showSlide(n){document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('active',i===n));cur=n;renderDots();window.scrollTo({top:0,behavior:'smooth'});}
+function nextSlide(){if(cur<total-1)showSlide(cur+1);}
+function prevSlide(){if(cur>0)showSlide(cur-1);}
+function answer(idx,btn,optsId,fbId,correct){
+  const opts=document.querySelectorAll('#'+optsId+' .opt-btn');
+  opts.forEach(b=>b.disabled=true);
+  const fb=document.getElementById(fbId);
+  if(idx===correct){btn.classList.add('correct');fb.className='feedback show ok';fb.textContent='✅ Betul! 6 muncul 3 kali (paling sering), sehingga Modus = 6.';}
+  else{btn.classList.add('wrong');opts[correct].classList.add('correct');fb.className='feedback show no';fb.textContent='❌ Kurang tepat. Hitung frekuensi: 6 muncul 3x, 8 muncul 2x, 7 dan 9 masing-masing 1x. Modus = 6.';}
+  document.getElementById('btn1next').disabled=false;
+}
+renderDots();
+</script>
+</body>
+</html>

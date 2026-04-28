@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise · Level 8 · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1a0e0e;--board-light:#241414;--board-mid:#1e1111;
+    --grid:rgba(255,210,100,0.03);--grid-major:rgba(255,210,100,0.055);
+    --chalk:#f5ecd7;--chalk-muted:rgba(245,236,215,0.55);--chalk-dim:rgba(245,236,215,0.22);
+    --amber:#f5c842;--amber-dark:#b8892a;--amber-bg:rgba(245,200,66,0.12);--amber-border:rgba(245,200,66,0.38);
+    --gold:#ffd966;--gold-bg:rgba(255,217,102,0.1);--gold-border:rgba(255,217,102,0.35);
+    --copper:#e8974a;--copper-bg:rgba(232,151,74,0.11);--copper-border:rgba(232,151,74,0.38);
+    --sienna:#c96a2a;--sienna-bg:rgba(201,106,42,0.12);--sienna-border:rgba(201,106,42,0.38);
+    --green:#4a9e69;--green-bg:rgba(74,158,105,0.12);--green-border:rgba(74,158,105,0.38);
+    --red:#e06060;--red-bg:rgba(224,96,96,0.1);--red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(245,200,66,0.13);--card-bg:rgba(255,255,255,0.04);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.7;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(26,14,14,0.94);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:rgba(245,200,66,0.25);}
+  nav .cur{color:var(--copper);}
+
+  .wrap{max-width:700px;margin:0 auto;padding:2.5rem 1.5rem 6rem;position:relative;z-index:1;}
+
+  /* Page header */
+  .page-header{margin-bottom:2rem;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--copper-bg);border:1px solid var(--copper-border);color:var(--copper);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:0.9rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,1.9rem);margin-bottom:0.4rem;}
+  h1 span{color:var(--copper);}
+  .page-sub{font-family:'Patrick Hand',cursive;font-size:0.88rem;color:var(--chalk-muted);}
+
+  /* Progress overview */
+  .progress-overview{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.2rem 1.5rem;margin-bottom:2rem;box-shadow:0 4px 18px rgba(0,0,0,0.35);}
+  .po-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem;}
+  .po-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--chalk-muted);}
+  .po-score{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--amber);}
+  .po-track{height:8px;background:rgba(245,200,66,0.1);border-radius:999px;overflow:hidden;margin-bottom:0.7rem;}
+  .po-fill{height:100%;background:linear-gradient(90deg,var(--amber-dark),var(--amber));border-radius:999px;transition:width 0.5s ease;}
+  .po-dots{display:flex;gap:0.45rem;flex-wrap:wrap;}
+  .po-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--card-border);background:var(--board-light);display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:0.72rem;color:var(--chalk-muted);transition:all 0.3s;cursor:pointer;}
+  .po-dot:hover{border-color:var(--amber-border);}
+  .po-dot.done-ok{background:var(--green-bg);border-color:var(--green);color:var(--green);}
+  .po-dot.done-no{background:var(--red-bg);border-color:var(--red);color:var(--red);}
+  .po-dot.active-dot{border-color:var(--amber);color:var(--amber);box-shadow:0 0 0 3px rgba(245,200,66,0.2);}
+  .reset-btn{font-family:'Patrick Hand',cursive;font-size:0.72rem;color:var(--chalk-muted);background:none;border:1px solid var(--card-border);padding:0.25rem 0.7rem;border-radius:20px;cursor:pointer;transition:all 0.2s;}
+  .reset-btn:hover{border-color:var(--red-border);color:var(--red);}
+
+  /* Section divider */
+  .sec-divider{display:flex;align-items:center;gap:0.8rem;margin:2rem 0 1.2rem;}
+  .sd-line{flex:1;height:1px;background:var(--chalk-dim);}
+  .sd-label{font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--chalk-muted);white-space:nowrap;}
+
+  /* Question card */
+  .q-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.6rem;margin-bottom:1rem;box-shadow:0 4px 20px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.04);transition:opacity 0.3s;}
+  .q-card.answered{opacity:0.75;}
+  .q-num-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.9rem;}
+  .q-num{font-family:'Fredoka One',cursive;font-size:0.75rem;color:var(--board);background:var(--amber-dark);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .q-num.sec2{background:var(--sienna);}
+  .q-topic-tag{font-family:'Patrick Hand',cursive;font-size:0.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--copper);background:var(--copper-bg);border:1px solid var(--copper-border);padding:0.12rem 0.55rem;border-radius:20px;}
+  .q-topic-tag.sec1{color:var(--amber);background:var(--amber-bg);border-color:var(--amber-border);}
+  .q-type-tag{font-family:'Patrick Hand',cursive;font-size:0.65rem;letter-spacing:1px;text-transform:uppercase;color:var(--chalk-muted);margin-left:auto;}
+  .q-text{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--chalk);line-height:1.45;margin-bottom:1rem;}
+
+  /* MC options */
+  .opts{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:0.8rem;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.75rem 0.95rem;border-radius:10px;cursor:pointer;font-size:0.88rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;display:flex;align-items:center;gap:0.6rem;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--amber-border);background:var(--amber-bg);}
+  .opt-btn.correct{border-color:var(--green)!important;background:var(--green-bg)!important;color:var(--green)!important;}
+  .opt-btn.wrong{border-color:var(--red)!important;background:var(--red-bg)!important;color:var(--red)!important;}
+  .opt-btn:disabled{cursor:default;}
+  .opt-key{font-family:'Fredoka One',cursive;font-size:0.7rem;color:var(--chalk-muted);background:rgba(245,236,215,0.08);border-radius:5px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+  /* Fill-in */
+  .fill-row{display:flex;gap:0.6rem;align-items:stretch;margin-bottom:0.8rem;}
+  .fill-input{flex:1;background:var(--board-mid);border:1px solid var(--card-border);color:var(--chalk);padding:0.75rem 1rem;border-radius:10px;font-family:'Fredoka One',cursive;font-size:0.95rem;outline:none;transition:border 0.2s;}
+  .fill-input::placeholder{color:var(--chalk-muted);font-family:'Patrick Hand',cursive;font-size:0.85rem;font-weight:400;}
+  .fill-input:focus{border-color:var(--amber-border);}
+  .fill-input:disabled{opacity:0.7;cursor:default;}
+  .fill-input.correct{border-color:var(--green);color:var(--green);}
+  .fill-input.wrong{border-color:var(--red);color:var(--red);}
+  .fill-submit{background:var(--amber-dark);color:#fff;border:none;padding:0.75rem 1.2rem;border-radius:10px;font-family:'Fredoka One',cursive;font-size:0.88rem;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+  .fill-submit:hover:not(:disabled){background:var(--amber);color:#1a0e0e;}
+  .fill-submit:disabled{opacity:0.4;cursor:default;}
+  .fill-hint{font-family:'Patrick Hand',cursive;font-size:0.75rem;color:var(--chalk-muted);margin-bottom:0.8rem;}
+
+  /* Feedback */
+  .feedback{border-radius:10px;padding:0.7rem 0.9rem;font-size:0.84rem;font-weight:800;display:none;line-height:1.55;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+
+  /* Status badge */
+  .status-badge{display:inline-flex;align-items:center;gap:0.35rem;font-family:'Patrick Hand',cursive;font-size:0.72rem;padding:0.22rem 0.65rem;border-radius:20px;margin-top:0.7rem;}
+  .status-badge.ok{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green);}
+  .status-badge.no{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red);}
+
+  /* Summary bar */
+  .summary-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(26,14,14,0.96);border-top:1px solid var(--card-border);backdrop-filter:blur(12px);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between;z-index:200;gap:1rem;}
+  .sb-info{font-family:'Patrick Hand',cursive;font-size:0.82rem;color:var(--chalk-muted);}
+  .sb-info strong{color:var(--amber);}
+  .sb-btns{display:flex;gap:0.6rem;}
+  .btn{padding:0.6rem 1.3rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.85rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.3rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--amber-border);color:var(--amber);}
+  .btn-amber{background:var(--amber-dark);color:#fff;}
+  .btn-amber:hover{background:var(--amber);color:#1a0e0e;}
+
+  /* Done banner */
+  .done-banner{background:linear-gradient(135deg,rgba(74,158,105,0.1),rgba(245,200,66,0.07));border:2px solid var(--amber-border);border-radius:14px;padding:1.8rem;text-align:center;margin-top:2rem;display:none;}
+  .done-banner.show{display:block;}
+  .done-icon{font-size:3rem;display:block;margin-bottom:0.6rem;}
+  .done-title{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--chalk);margin-bottom:0.3rem;}
+  .done-sub{font-family:'Patrick Hand',cursive;font-size:0.9rem;color:var(--chalk-muted);line-height:1.6;margin-bottom:1rem;}
+  .done-score{font-family:'Fredoka One',cursive;font-size:2.5rem;color:var(--amber);margin-bottom:0.2rem;}
+  .done-score-lbl{font-family:'Patrick Hand',cursive;font-size:0.8rem;color:var(--chalk-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;}
+  .done-btns{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;}
+  .btn-big{padding:0.8rem 2rem;font-size:0.95rem;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level8.html">Level 8</a><span>›</span>
+  <span class="cur">Exercise</span>
+</nav>
+
+<div class="wrap">
+  <div class="page-header">
+    <div class="page-badge">✏️ Exercise · Level 08</div>
+    <h1>Latihan <span>Kalkulus Dasar</span></h1>
+    <p class="page-sub">10 soal santai tanpa timer. 5 soal per section. Progres tersimpan otomatis.</p>
+  </div>
+
+  <!-- Progress Overview -->
+  <div class="progress-overview">
+    <div class="po-top">
+      <div class="po-label">📊 Progres Kamu</div>
+      <div style="display:flex;align-items:center;gap:0.7rem;">
+        <div class="po-score" id="poScore">0 / 10 benar</div>
+        <button class="reset-btn" onclick="resetAll()">🗑 Reset</button>
+      </div>
+    </div>
+    <div class="po-track"><div class="po-fill" id="poFill" style="width:0%"></div></div>
+    <div class="po-dots" id="poDots"></div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="sec-divider"><div class="sd-line"></div><div class="sd-label">📉 Section 01 · Limit & Turunan (Soal 1–5)</div><div class="sd-line"></div></div>
+
+  <!-- Q1: MC -->
+  <div class="q-card" id="card-0">
+    <div class="q-num-row">
+      <div class="q-num">1</div>
+      <div class="q-topic-tag sec1">Limit</div>
+      <div class="q-type-tag">Pilihan Ganda</div>
+    </div>
+    <div class="q-text">Nilai lim[x→1] (x³ − 1) / (x − 1) adalah…</div>
+    <div class="opts" id="opts-0">
+      <button class="opt-btn" onclick="mcAnswer(0,0,2)"><div class="opt-key">A</div>1</button>
+      <button class="opt-btn" onclick="mcAnswer(0,1,2)"><div class="opt-key">B</div>0</button>
+      <button class="opt-btn" onclick="mcAnswer(0,2,2)"><div class="opt-key">C</div>3</button>
+      <button class="opt-btn" onclick="mcAnswer(0,3,2)"><div class="opt-key">D</div>Tidak ada</button>
+    </div>
+    <div class="feedback" id="fb-0"></div>
+  </div>
+
+  <!-- Q2: MC -->
+  <div class="q-card" id="card-1">
+    <div class="q-num-row">
+      <div class="q-num">2</div>
+      <div class="q-topic-tag sec1">Turunan — Pangkat</div>
+      <div class="q-type-tag">Pilihan Ganda</div>
+    </div>
+    <div class="q-text">Jika f(x) = 2x⁵ − 4x³ + x, maka f'(x) = ?</div>
+    <div class="opts" id="opts-1">
+      <button class="opt-btn" onclick="mcAnswer(1,0,0)"><div class="opt-key">A</div>10x⁴ − 12x² + 1</button>
+      <button class="opt-btn" onclick="mcAnswer(1,1,0)"><div class="opt-key">B</div>10x⁴ − 12x² + x</button>
+      <button class="opt-btn" onclick="mcAnswer(1,2,0)"><div class="opt-key">C</div>10x⁴ − 4x² + 1</button>
+      <button class="opt-btn" onclick="mcAnswer(1,3,0)"><div class="opt-key">D</div>2x⁴ − 4x² + 1</button>
+    </div>
+    <div class="feedback" id="fb-1"></div>
+  </div>
+
+  <!-- Q3: Fill -->
+  <div class="q-card" id="card-2">
+    <div class="q-num-row">
+      <div class="q-num">3</div>
+      <div class="q-topic-tag sec1">Turunan — Rantai</div>
+      <div class="q-type-tag">Isian</div>
+    </div>
+    <div class="q-text">Jika f(x) = (x² + 3)⁴, maka f'(x) = ___·x·(x²+3)³</div>
+    <div class="fill-hint">💡 Gunakan aturan rantai. Koefisien di depan x adalah angka berapa?</div>
+    <div class="fill-row">
+      <input class="fill-input" id="fill-2" type="text" placeholder="Ketik koefisiennya (angka)…">
+      <button class="fill-submit" id="fsub-2" onclick="fillAnswer(2,'8',['8'])">Cek ✓</button>
+    </div>
+    <div class="feedback" id="fb-2"></div>
+  </div>
+
+  <!-- Q4: MC -->
+  <div class="q-card" id="card-3">
+    <div class="q-num-row">
+      <div class="q-num">4</div>
+      <div class="q-topic-tag sec1">Turunan — Aplikasi</div>
+      <div class="q-type-tag">Pilihan Ganda</div>
+    </div>
+    <div class="q-text">Fungsi f(x) = x³ − 3x mempunyai titik kritis (f'(x) = 0) di x = ?</div>
+    <div class="opts" id="opts-3">
+      <button class="opt-btn" onclick="mcAnswer(3,0,1)"><div class="opt-key">A</div>x = 0 saja</button>
+      <button class="opt-btn" onclick="mcAnswer(3,1,1)"><div class="opt-key">B</div>x = 1 dan x = −1</button>
+      <button class="opt-btn" onclick="mcAnswer(3,2,1)"><div class="opt-key">C</div>x = 3 dan x = −3</button>
+      <button class="opt-btn" onclick="mcAnswer(3,3,1)"><div class="opt-key">D</div>x = −3 saja</button>
+    </div>
+    <div class="feedback" id="fb-3"></div>
+  </div>
+
+  <!-- Q5: Fill -->
+  <div class="q-card" id="card-4">
+    <div class="q-num-row">
+      <div class="q-num">5</div>
+      <div class="q-topic-tag sec1">Limit di ∞</div>
+      <div class="q-type-tag">Isian</div>
+    </div>
+    <div class="q-text">Nilai lim[x→∞] (3x² + 5) / (x² − 2) = ?</div>
+    <div class="fill-hint">💡 Bagi pembilang dan penyebut dengan x². Suku 5/x² dan 2/x² → 0 saat x→∞.</div>
+    <div class="fill-row">
+      <input class="fill-input" id="fill-4" type="text" placeholder="Jawabannya angka…">
+      <button class="fill-submit" id="fsub-4" onclick="fillAnswer(4,'3',['3'])">Cek ✓</button>
+    </div>
+    <div class="feedback" id="fb-4"></div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="sec-divider"><div class="sd-line"></div><div class="sd-label">∫ Section 02 · Integral (Soal 6–10)</div><div class="sd-line"></div></div>
+
+  <!-- Q6: MC -->
+  <div class="q-card" id="card-5">
+    <div class="q-num-row">
+      <div class="q-num sec2">6</div>
+      <div class="q-topic-tag">Integral Tak Tentu</div>
+      <div class="q-type-tag">Pilihan Ganda</div>
+    </div>
+    <div class="q-text">Hasil dari ∫ (x³ + 5x) dx adalah…</div>
+    <div class="opts" id="opts-5">
+      <button class="opt-btn" onclick="mcAnswer(5,0,3)"><div class="opt-key">A</div>3x² + 5 + C</button>
+      <button class="opt-btn" onclick="mcAnswer(5,1,3)"><div class="opt-key">B</div>x⁴/4 + 5x + C</button>
+      <button class="opt-btn" onclick="mcAnswer(5,2,3)"><div class="opt-key">C</div>x⁴ + 5x² + C</button>
+      <button class="opt-btn" onclick="mcAnswer(5,3,3)"><div class="opt-key">D</div>x⁴/4 + 5x²/2 + C</button>
+    </div>
+    <div class="feedback" id="fb-5"></div>
+  </div>
+
+  <!-- Q7: MC -->
+  <div class="q-card" id="card-6">
+    <div class="q-num-row">
+      <div class="q-num sec2">7</div>
+      <div class="q-topic-tag">Integral Tentu</div>
+      <div class="q-type-tag">Pilihan Ganda</div>
+    </div>
+    <div class="q-text">Nilai ∫[1 ke 4] (3x²) dx = ?</div>
+    <div class="opts" id="opts-6">
+      <button class="opt-btn" onclick="mcAnswer(6,0,2)"><div class="opt-key">A</div>21</button>
+      <button class="opt-btn" onclick="mcAnswer(6,1,2)"><div class="opt-key">B</div>45</button>
+      <button class="opt-btn" onclick="mcAnswer(6,2,2)"><div class="opt-key">C</div>63</button>
+      <button class="opt-btn" onclick="mcAnswer(6,3,2)"><div class="opt-key">D</div>48</button>
+    </div>
+    <div class="feedback" id="fb-6"></div>
+  </div>
+
+  <!-- Q8: Fill -->
+  <div class="q-card" id="card-7">
+    <div class="q-num-row">
+      <div class="q-num sec2">8</div>
+      <div class="q-topic-tag">Substitusi-u</div>
+      <div class="q-type-tag">Isian</div>
+    </div>
+    <div class="q-text">∫ 3x²·(x³ + 1)⁴ dx = (x³+1)⁵ / ___ + C</div>
+    <div class="fill-hint">💡 Misalkan u = x³+1, maka du = 3x² dx. Integral menjadi ∫u⁴ du = u⁵/5. Penyebutnya berapa?</div>
+    <div class="fill-row">
+      <input class="fill-input" id="fill-7" type="text" placeholder="Penyebutnya angka…">
+      <button class="fill-submit" id="fsub-7" onclick="fillAnswer(7,'5',['5'])">Cek ✓</button>
+    </div>
+    <div class="feedback" id="fb-7"></div>
+  </div>
+
+  <!-- Q9: MC -->
+  <div class="q-card" id="card-8">
+    <div class="q-num-row">
+      <div class="q-num sec2">9</div>
+      <div class="q-topic-tag">Sifat Integral</div>
+      <div class="q-type-tag">Pilihan Ganda</div>
+    </div>
+    <div class="q-text">Jika ∫[0 ke 5] f(x)dx = 12 dan ∫[0 ke 3] f(x)dx = 5, maka ∫[3 ke 5] f(x)dx = ?</div>
+    <div class="opts" id="opts-8">
+      <button class="opt-btn" onclick="mcAnswer(8,0,3)"><div class="opt-key">A</div>17</button>
+      <button class="opt-btn" onclick="mcAnswer(8,1,3)"><div class="opt-key">B</div>−7</button>
+      <button class="opt-btn" onclick="mcAnswer(8,2,3)"><div class="opt-key">C</div>60</button>
+      <button class="opt-btn" onclick="mcAnswer(8,3,3)"><div class="opt-key">D</div>7</button>
+    </div>
+    <div class="feedback" id="fb-8"></div>
+  </div>
+
+  <!-- Q10: Fill -->
+  <div class="q-card" id="card-9">
+    <div class="q-num-row">
+      <div class="q-num sec2">10</div>
+      <div class="q-topic-tag">Integral Tentu</div>
+      <div class="q-type-tag">Isian</div>
+    </div>
+    <div class="q-text">Hitung ∫[0 ke 2] (6x² − 4x) dx = ?</div>
+    <div class="fill-hint">💡 Anti-turunan: 2x³ − 2x². Evaluasi di x=2 dan x=0, lalu kurangi.</div>
+    <div class="fill-row">
+      <input class="fill-input" id="fill-9" type="text" placeholder="Jawabannya angka…">
+      <button class="fill-submit" id="fsub-9" onclick="fillAnswer(9,'8',['8'])">Cek ✓</button>
+    </div>
+    <div class="feedback" id="fb-9"></div>
+  </div>
+
+  <!-- Done banner -->
+  <div class="done-banner" id="doneBanner">
+    <span class="done-icon">🎊</span>
+    <div class="done-title">Exercise Selesai!</div>
+    <div class="done-sub" id="doneSubtext"></div>
+    <div class="done-score" id="doneScore"></div>
+    <div class="done-score-lbl">soal benar dari 10</div>
+    <div class="done-btns">
+      <a href="level8.html" class="btn btn-ghost btn-big">← Level Hub</a>
+      <button class="btn btn-amber btn-big" onclick="resetAll()">🔄 Ulangi</button>
+      <a href="quicktest.html" class="btn btn-big" style="background:var(--sienna);color:#fff;">⏱️ Quick Test</a>
+    </div>
+  </div>
+</div>
+
+<!-- Sticky bottom bar -->
+<div class="summary-bar">
+  <div class="sb-info">✏️ Exercise · <strong id="sbDone">0</strong>/10 dijawab · <strong id="sbCorrect">0</strong> benar</div>
+  <div class="sb-btns">
+    <a href="level8.html" class="btn btn-ghost">← Hub</a>
+    <a href="summary.html" class="btn btn-ghost">📋 Summary</a>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY='math_arena_l8_exercise';
+const TOTAL=10;
+
+// Explanations
+const EXPLANATIONS={
+  0:'x³−1 = (x−1)(x²+x+1). Setelah dicoret (x−1): lim[x→1](x²+x+1) = 1+1+1 = 3.',
+  1:'d/dx[2x⁵]=10x⁴, d/dx[−4x³]=−12x², d/dx[x]=1. Jadi f\'(x)=10x⁴−12x²+1.',
+  2:'f(x)=(x²+3)⁴. Aturan rantai: 4(x²+3)³·2x = 8x(x²+3)³. Koefisiennya 8.',
+  3:'f\'(x)=3x²−3=0 → x²=1 → x=±1. Titik kritis di x=1 dan x=−1.',
+  4:'(3x²+5)/(x²−2) = (3+5/x²)/(1−2/x²) → 3/1 = 3 saat x→∞.',
+  5:'∫x³dx=x⁴/4, ∫5x dx=5x²/2. Hasilnya x⁴/4 + 5x²/2 + C.',
+  6:'∫3x²dx=x³. Evaluasi: F(4)−F(1)=64−1=63.',
+  7:'u=x³+1, du=3x²dx. ∫u⁴du=u⁵/5+C=(x³+1)⁵/5+C. Penyebutnya 5.',
+  8:'Sifat aditif: ∫[3,5]=∫[0,5]−∫[0,3]=12−5=7.',
+  9:'Anti-turunan: 2x³−2x². F(2)=16−8=8. F(0)=0. Hasilnya 8−0=8.'
+};
+
+// State
+let state={answers:{},correct:{}};
+
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(raw)state=JSON.parse(raw);
+  }catch(e){}
+}
+
+function saveState(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){}
+}
+
+function resetAll(){
+  if(!confirm('Reset semua progres latihan Level 8? Tidak bisa dibatalkan.'))return;
+  state={answers:{},correct:{}};
+  saveState();
+  location.reload();
+}
+
+function mcAnswer(qIdx,chosen,correct){
+  if(state.answers[qIdx]!==undefined)return;
+  state.answers[qIdx]=chosen;
+  state.correct[qIdx]=(chosen===correct);
+  saveState();
+  renderMC(qIdx,chosen,correct);
+  updateUI();
+}
+
+function renderMC(qIdx,chosen,correct){
+  const btns=document.querySelectorAll(`#opts-${qIdx} .opt-btn`);
+  btns.forEach(b=>b.disabled=true);
+  const isOk=(chosen===correct);
+  btns[chosen].classList.add(isOk?'correct':'wrong');
+  if(!isOk)btns[correct].classList.add('correct');
+  const fb=document.getElementById(`fb-${qIdx}`);
+  fb.className='feedback show '+(isOk?'ok':'no');
+  fb.textContent=(isOk?'✅ Tepat! ':'❌ Belum tepat. ')+EXPLANATIONS[qIdx];
+  document.getElementById(`card-${qIdx}`).classList.add('answered');
+}
+
+function fillAnswer(qIdx,answer,accepts){
+  if(state.answers[qIdx]!==undefined)return;
+  const input=document.getElementById(`fill-${qIdx}`);
+  const val=input.value.trim().toLowerCase();
+  const isOk=accepts.map(a=>a.toLowerCase()).includes(val);
+  state.answers[qIdx]=val;
+  state.correct[qIdx]=isOk;
+  saveState();
+  input.disabled=true;
+  input.classList.add(isOk?'correct':'wrong');
+  document.getElementById(`fsub-${qIdx}`).disabled=true;
+  const fb=document.getElementById(`fb-${qIdx}`);
+  fb.className='feedback show '+(isOk?'ok':'no');
+  fb.textContent=(isOk?'✅ Tepat! ':'❌ Belum tepat. Jawaban: '+answer+'. ')+EXPLANATIONS[qIdx];
+  document.getElementById(`card-${qIdx}`).classList.add('answered');
+  updateUI();
+}
+
+function updateUI(){
+  const done=Object.keys(state.answers).length;
+  const correct=Object.values(state.correct).filter(Boolean).length;
+  // Sticky bar
+  document.getElementById('sbDone').textContent=done;
+  document.getElementById('sbCorrect').textContent=correct;
+  // Progress overview
+  document.getElementById('poScore').textContent=`${correct} / ${TOTAL} benar`;
+  document.getElementById('poFill').style.width=`${(done/TOTAL)*100}%`;
+  // Dots
+  const dotsEl=document.getElementById('poDots');
+  dotsEl.innerHTML='';
+  for(let i=0;i<TOTAL;i++){
+    const d=document.createElement('div');
+    d.className='po-dot';
+    if(state.answers[i]!==undefined){
+      d.classList.add(state.correct[i]?'done-ok':'done-no');
+      d.textContent=state.correct[i]?'✓':'✗';
+    } else {
+      d.textContent=i+1;
+    }
+    d.onclick=()=>document.getElementById(`card-${i}`).scrollIntoView({behavior:'smooth',block:'center'});
+    dotsEl.appendChild(d);
+  }
+  // Done banner
+  if(done===TOTAL){
+    const pct=Math.round((correct/TOTAL)*100);
+    let sub='';
+    if(correct===10)sub='Sempurna! Kamu menguasai semua konsep kalkulus dasar dengan sangat baik!';
+    else if(correct>=8)sub='Hampir sempurna! Sedikit lagi dan kamu bisa dapat 10/10!';
+    else if(correct>=6)sub='Bagus! Review soal yang salah dan perkuat pemahaman konsepnya.';
+    else sub='Jangan menyerah! Kembali ke section materi dan pelajari ulang, lalu coba lagi.';
+    document.getElementById('doneScore').textContent=`${correct}`;
+    document.getElementById('doneSubtext').textContent=sub;
+    document.getElementById('doneBanner').classList.add('show');
+  }
+}
+
+function restoreState(){
+  // MC
+  [0,1,3,5,6,8].forEach(i=>{
+    if(state.answers[i]!==undefined){
+      // find correct from hardcoded map
+      const correctMap={0:2,1:0,3:1,5:3,6:2,8:3};
+      renderMC(i,state.answers[i],correctMap[i]);
+    }
+  });
+  // Fill-in
+  const fillMap={2:'8',4:'3',7:'5',9:'8'};
+  const fillAccepts={2:['8'],4:['3'],7:['5'],9:['8']};
+  [2,4,7,9].forEach(i=>{
+    if(state.answers[i]!==undefined){
+      const input=document.getElementById(`fill-${i}`);
+      input.value=state.answers[i];
+      input.disabled=true;
+      input.classList.add(state.correct[i]?'correct':'wrong');
+      document.getElementById(`fsub-${i}`).disabled=true;
+      const fb=document.getElementById(`fb-${i}`);
+      fb.className='feedback show '+(state.correct[i]?'ok':'no');
+      fb.textContent=(state.correct[i]?'✅ Tepat! ':'❌ Belum tepat. Jawaban: '+fillMap[i]+'. ')+EXPLANATIONS[i];
+      document.getElementById(`card-${i}`).classList.add('answered');
+    }
+  });
+  updateUI();
+}
+
+// Init
+loadState();
+restoreState();
+</script>
+</body>
+</html>

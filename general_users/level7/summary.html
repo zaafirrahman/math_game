@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summary · Cheat Sheet Level 7 · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1f0e14; --board-light:#2e1520;
+    --grid:rgba(255,255,255,0.03); --grid-major:rgba(255,255,255,0.06);
+    --chalk:#ede4d8; --chalk-muted:rgba(237,228,216,0.55); --chalk-dim:rgba(237,228,216,0.22);
+    --teal:#2dd4bf; --teal-dark:#0d9488; --teal-bg:rgba(45,212,191,0.1); --teal-border:rgba(45,212,191,0.38);
+    --teal2:#5eead4; --teal2-bg:rgba(94,234,212,0.1); --teal2-border:rgba(94,234,212,0.35);
+    --aqua:#99f6e4; --aqua-bg:rgba(153,246,228,0.08); --aqua-border:rgba(153,246,228,0.3);
+    --green:#4ade80; --green-bg:rgba(74,222,128,0.1); --green-border:rgba(74,222,128,0.35);
+    --red:#f87171; --red-bg:rgba(248,113,113,0.1); --red-border:rgba(248,113,113,0.35);
+    --card-border:rgba(237,228,216,0.12); --card-bg:rgba(255,255,255,0.04);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.7;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(31,14,20,0.94);backdrop-filter:blur(14px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--teal);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--teal2);}
+  .wrap{max-width:780px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .page-header{text-align:center;margin-bottom:2.5rem;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--teal-bg);border:1px solid var(--teal-border);color:var(--teal);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.5rem,4vw,2.1rem);text-shadow:2px 2px 0 rgba(0,0,0,0.4);margin-bottom:0.4rem;}
+  h1 span{color:var(--teal);}
+  .page-sub{font-family:'Patrick Hand',cursive;font-size:0.9rem;color:var(--chalk-muted);}
+  .section-divider{display:flex;align-items:center;gap:0.8rem;margin:2rem 0 1.2rem;}
+  .sd-line{flex:1;height:1px;background:var(--chalk-dim);}
+  .sd-label{font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--chalk-muted);white-space:nowrap;}
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.5rem 1.6rem;margin-bottom:1rem;box-shadow:0 4px 18px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.04);}
+  .card-title{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--chalk);margin-bottom:0.9rem;display:flex;align-items:center;gap:0.5rem;}
+
+  /* Formula grid */
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.65rem;margin:0.6rem 0;}
+  @media(max-width:500px){.formula-grid{grid-template-columns:1fr;}}
+  .fb{border-radius:10px;padding:0.8rem 1rem;}
+  .fb.a{background:var(--teal-bg);border:1px solid var(--teal-border);}
+  .fb.b{background:var(--teal2-bg);border:1px solid var(--teal2-border);}
+  .fb.c{background:var(--aqua-bg);border:1px solid var(--aqua-border);}
+  .fb.d{background:var(--green-bg);border:1px solid var(--green-border);}
+  .fb-op{font-family:'Patrick Hand',cursive;font-size:0.68rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:0.3rem;}
+  .fb.a .fb-op{color:var(--teal);}
+  .fb.b .fb-op{color:var(--teal2);}
+  .fb.c .fb-op{color:var(--aqua);}
+  .fb.d .fb-op{color:var(--green);}
+  .fb-eq{font-family:'Fredoka One',cursive;font-size:0.9rem;margin-bottom:0.25rem;}
+  .fb.a .fb-eq{color:var(--teal);}
+  .fb.b .fb-eq{color:var(--teal2);}
+  .fb.c .fb-eq{color:var(--aqua);}
+  .fb.d .fb-eq{color:var(--green);}
+  .fb-note{font-family:'Patrick Hand',cursive;font-size:0.73rem;color:var(--chalk-muted);line-height:1.45;}
+
+  /* Key list */
+  .key-list{display:flex;flex-direction:column;gap:0.5rem;margin:0.6rem 0;}
+  .key-item{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.85rem;color:var(--chalk-muted);line-height:1.5;}
+  .key-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+  .key-dot.teal{background:var(--teal);}
+  .key-dot.teal2{background:var(--teal2);}
+  .key-dot.aqua{background:var(--aqua);}
+  .key-dot.green{background:var(--green);}
+
+  /* Comparison table */
+  .cmp-table{width:100%;border-collapse:collapse;margin:0.7rem 0;font-size:0.84rem;}
+  .cmp-table th{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--chalk-muted);text-align:left;padding:0.4rem 0.6rem;border-bottom:1px solid var(--card-border);}
+  .cmp-table td{padding:0.4rem 0.6rem;border-bottom:1px solid rgba(237,228,216,0.06);color:var(--chalk-muted);vertical-align:top;line-height:1.5;}
+  .cmp-table td:first-child{font-family:'Fredoka One',cursive;color:var(--teal2);}
+  .cmp-table td:nth-child(2){font-family:'Fredoka One',cursive;font-size:0.85rem;color:var(--chalk);}
+  .cmp-table tr:last-child td{border-bottom:none;}
+
+  /* Prob chips */
+  .prob-chips{display:flex;gap:0.65rem;margin:0.6rem 0;flex-wrap:wrap;}
+  .prob-chip{flex:1;min-width:120px;border-radius:8px;padding:0.7rem 0.8rem;text-align:center;}
+  .prob-chip.p0{background:var(--red-bg);border:1px solid var(--red-border);}
+  .prob-chip.p1{background:var(--teal-bg);border:1px solid var(--teal-border);}
+  .prob-chip.p2{background:var(--green-bg);border:1px solid var(--green-border);}
+  .prob-val{font-family:'Fredoka One',cursive;font-size:0.95rem;margin-bottom:0.2rem;}
+  .prob-chip.p0 .prob-val{color:var(--red);}
+  .prob-chip.p1 .prob-val{color:var(--teal);}
+  .prob-chip.p2 .prob-val{color:var(--green);}
+  .prob-desc{font-family:'Patrick Hand',cursive;font-size:0.72rem;color:var(--chalk-muted);}
+
+  .bottom-nav{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;}
+  .btn{padding:0.75rem 1.8rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--teal-border);color:var(--teal);}
+  .btn-primary{background:var(--teal-dark);color:#fff;box-shadow:0 4px 14px rgba(13,148,136,0.35);}
+  .btn-primary:hover{background:var(--teal);color:#0d1f1c;transform:translateY(-2px);}
+  .btn-teal2{background:#1a5c56;color:#fff;box-shadow:0 4px 14px rgba(26,92,86,0.4);}
+  .btn-teal2:hover{background:var(--teal2);color:#0a2220;transform:translateY(-2px);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level7.html">Level 7</a><span>›</span>
+  <span class="cur">Summary</span>
+</nav>
+
+<div class="wrap">
+  <div class="page-header">
+    <div class="page-badge">📋 Level 07</div>
+    <h1>Cheat Sheet — <span>Statistika & Peluang</span></h1>
+    <p class="page-sub">Semua rumus dan konsep kunci Level 7 dalam satu halaman</p>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="section-divider"><div class="sd-line"></div><div class="sd-label">📈 Section 01 · Pengolahan Data</div><div class="sd-line"></div></div>
+
+  <div class="card">
+    <div class="card-title">📌 Tiga Ukuran Pusat Data</div>
+    <div class="formula-grid">
+      <div class="fb a"><div class="fb-op">Mean (Rata-rata)</div><div class="fb-eq">x̄ = Σx / n</div><div class="fb-note">Jumlah semua data ÷ banyak data</div></div>
+      <div class="fb b"><div class="fb-op">Median (Tengah)</div><div class="fb-eq">Data posisi ke-(n+1)/2</div><div class="fb-note">Urutkan dulu! Jika n genap, rata-ratakan dua nilai tengah</div></div>
+      <div class="fb c"><div class="fb-op">Modus (Mode)</div><div class="fb-eq">Nilai paling sering</div><div class="fb-note">Bisa lebih dari 1 modus (bimodal/multimodal)</div></div>
+      <div class="fb d"><div class="fb-op">Pilih yang Tepat</div><div class="fb-eq">Ada outlier → Median</div><div class="fb-note">Mean sensitif terhadap nilai ekstrem</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💡 Kapan Pakai Apa?</div>
+    <div class="key-list">
+      <div class="key-item"><div class="key-dot teal"></div><div><strong style="color:var(--teal)">Mean</strong> — data berdistribusi merata, tidak ada outlier. Contoh: nilai ujian kelas yang seimbang.</div></div>
+      <div class="key-item"><div class="key-dot teal2"></div><div><strong style="color:var(--teal2)">Median</strong> — ada nilai ekstrem (outlier). Contoh: data gaji, harga rumah.</div></div>
+      <div class="key-item"><div class="key-dot aqua"></div><div><strong style="color:var(--aqua)">Modus</strong> — data kategorikal atau nominal. Contoh: warna favorit, merek terlaris.</div></div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section-divider"><div class="sd-line"></div><div class="sd-label">🎲 Section 02 · Kaidah Pencacahan</div><div class="sd-line"></div></div>
+
+  <div class="card">
+    <div class="card-title">📌 Rumus Utama</div>
+    <div class="formula-grid">
+      <div class="fb a"><div class="fb-op">Faktorial</div><div class="fb-eq">n! = n×(n-1)×…×1</div><div class="fb-note">0! = 1 (definisi). 5! = 120</div></div>
+      <div class="fb b"><div class="fb-op">Permutasi P(n,r)</div><div class="fb-eq">n! / (n−r)!</div><div class="fb-note">Urutan PENTING. AB ≠ BA</div></div>
+      <div class="fb c"><div class="fb-op">Kombinasi C(n,r)</div><div class="fb-eq">n! / (r!·(n−r)!)</div><div class="fb-note">Urutan TIDAK penting. {A,B} = {B,A}</div></div>
+      <div class="fb d"><div class="fb-op">Perkalian Dasar</div><div class="fb-eq">m × n cara</div><div class="fb-note">Jika pilihan pertama m, kedua n cara</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔄 Permutasi vs Kombinasi</div>
+    <table class="cmp-table">
+      <tr><th>Aspek</th><th>Permutasi</th><th>Kombinasi</th></tr>
+      <tr><td>Urutan</td><td>Penting</td><td>Tidak penting</td></tr>
+      <tr><td>Rumus</td><td>P(n,r) = n!/(n-r)!</td><td>C(n,r) = n!/(r!·(n-r)!)</td></tr>
+      <tr><td>Contoh</td><td>Podium juara 1,2,3</td><td>Pilih anggota tim</td></tr>
+      <tr><td>Hubungan</td><td colspan="2">C(n,r) = P(n,r) / r! — Kombinasi selalu ≤ Permutasi</td></tr>
+      <tr><td>Melingkar</td><td>(n−1)!</td><td>—</td></tr>
+    </table>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section-divider"><div class="sd-line"></div><div class="sd-label">🍀 Section 03 · Probabilitas</div><div class="sd-line"></div></div>
+
+  <div class="card">
+    <div class="card-title">📌 Rumus Inti</div>
+    <div class="formula-grid">
+      <div class="fb a"><div class="fb-op">Peluang Dasar</div><div class="fb-eq">P(A) = n(A)/n(S)</div><div class="fb-note">Hasil yang diinginkan ÷ total hasil</div></div>
+      <div class="fb b"><div class="fb-op">Komplemen</div><div class="fb-eq">P(Aᶜ) = 1 − P(A)</div><div class="fb-note">Peluang A TIDAK terjadi</div></div>
+      <div class="fb c"><div class="fb-op">Gabungan A∪B</div><div class="fb-eq">P(A)+P(B)−P(A∩B)</div><div class="fb-note">A atau B terjadi (jangan double count!)</div></div>
+      <div class="fb d"><div class="fb-op">Kejadian Bebas</div><div class="fb-eq">P(A∩B) = P(A)·P(B)</div><div class="fb-note">Hanya jika A dan B independen</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎯 Rentang Nilai Peluang</div>
+    <div class="prob-chips">
+      <div class="prob-chip p0"><div class="prob-val">P = 0</div><div class="prob-desc">Mustahil terjadi</div></div>
+      <div class="prob-chip p1"><div class="prob-val">0 &lt; P &lt; 1</div><div class="prob-desc">Mungkin terjadi</div></div>
+      <div class="prob-chip p2"><div class="prob-val">P = 1</div><div class="prob-desc">Pasti terjadi</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💡 Tips & Jebakan Umum</div>
+    <div class="key-list">
+      <div class="key-item"><div class="key-dot teal"></div><div><strong style="color:var(--teal)">Mutually exclusive:</strong> Jika A dan B tidak bisa terjadi bersamaan, maka P(A∩B)=0, sehingga P(A∪B) = P(A)+P(B)</div></div>
+      <div class="key-item"><div class="key-dot teal2"></div><div><strong style="color:var(--teal2)">Jangan bingung:</strong> "atau" → pakai gabungan (∪). "dan" → pakai irisan (∩).</div></div>
+      <div class="key-item"><div class="key-dot aqua"></div><div><strong style="color:var(--aqua)">Komplemen trick:</strong> Lebih mudah hitung P(tidak A) lalu kurangkan dari 1</div></div>
+      <div class="key-item"><div class="key-dot green"></div><div><strong style="color:var(--green)">Independen vs Mutually Exclusive:</strong> Keduanya BERBEDA konsep — tidak boleh dicampur!</div></div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="level7.html" class="btn btn-ghost">← Level Hub</a>
+    <a href="quicktest.html" class="btn btn-primary">⏱️ Quick Test</a>
+    <a href="exercise.html" class="btn btn-teal2">✏️ Exercise</a>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Test · Level 8 · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1a0e0e;--board-light:#241414;--board-mid:#1e1111;
+    --grid:rgba(255,210,100,0.03);--grid-major:rgba(255,210,100,0.055);
+    --chalk:#f5ecd7;--chalk-muted:rgba(245,236,215,0.55);--chalk-dim:rgba(245,236,215,0.22);
+    --amber:#f5c842;--amber-dark:#b8892a;--amber-bg:rgba(245,200,66,0.12);--amber-border:rgba(245,200,66,0.38);
+    --gold:#ffd966;--gold-bg:rgba(255,217,102,0.1);--gold-border:rgba(255,217,102,0.35);
+    --copper:#e8974a;--copper-bg:rgba(232,151,74,0.11);--copper-border:rgba(232,151,74,0.38);
+    --sienna:#c96a2a;--sienna-bg:rgba(201,106,42,0.12);--sienna-border:rgba(201,106,42,0.38);
+    --green:#4a9e69;--green-bg:rgba(74,158,105,0.12);--green-border:rgba(74,158,105,0.38);
+    --red:#e06060;--red-bg:rgba(224,96,96,0.1);--red-border:rgba(224,96,96,0.35);
+    --card-border:rgba(245,200,66,0.13);--card-bg:rgba(255,255,255,0.04);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.7;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(26,14,14,0.94);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:rgba(245,200,66,0.25);}
+  nav .cur{color:var(--gold);}
+
+  .wrap{max-width:620px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  /* ---- INTRO SCREEN ---- */
+  #intro{text-align:center;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1.1rem;}
+  .intro-icon{font-size:3.5rem;display:block;margin-bottom:0.8rem;}
+  .intro-title{font-family:'Fredoka One',cursive;font-size:clamp(1.5rem,4vw,2rem);margin-bottom:0.5rem;}
+  .intro-title span{color:var(--amber);}
+  .intro-desc{font-family:'Patrick Hand',cursive;font-size:0.92rem;color:var(--chalk-muted);line-height:1.7;max-width:420px;margin:0 auto 1.5rem;}
+  .rules-box{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.3rem 1.5rem;margin:0 auto 1.8rem;max-width:420px;text-align:left;box-shadow:0 4px 20px rgba(0,0,0,0.35);}
+  .rules-title{font-family:'Patrick Hand',cursive;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:0.8rem;}
+  .rule-item{display:flex;gap:0.65rem;align-items:flex-start;margin-bottom:0.5rem;font-size:0.86rem;color:var(--chalk-muted);}
+  .rule-item span{flex-shrink:0;}
+
+  /* ---- QUIZ SCREEN ---- */
+  #quiz{display:none;}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+  .q-counter{font-family:'Patrick Hand',cursive;font-size:0.8rem;color:var(--chalk-muted);letter-spacing:1px;}
+  .q-counter strong{color:var(--amber);}
+
+  /* Timer ring */
+  .timer-wrap{display:flex;flex-direction:column;align-items:center;gap:0.2rem;}
+  .timer-ring{position:relative;width:56px;height:56px;}
+  .timer-ring svg{transform:rotate(-90deg);}
+  .timer-ring circle{fill:none;stroke-width:4;}
+  .timer-ring .track{stroke:rgba(245,200,66,0.12);}
+  .timer-ring .prog{stroke:var(--amber);stroke-linecap:round;transition:stroke-dashoffset 1s linear, stroke 0.3s;}
+  .timer-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1rem;color:var(--amber);}
+  .timer-label{font-family:'Patrick Hand',cursive;font-size:0.62rem;color:var(--chalk-muted);letter-spacing:1px;text-transform:uppercase;}
+
+  /* Progress bar */
+  .prog-bar-wrap{margin-bottom:1.6rem;}
+  .prog-bar-track{height:5px;background:rgba(245,200,66,0.1);border-radius:999px;overflow:hidden;}
+  .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--amber-dark),var(--amber));border-radius:999px;transition:width 0.4s ease;}
+
+  /* Question card */
+  .q-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 22px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.04);animation:fadeUp 0.35s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .q-topic{font-family:'Patrick Hand',cursive;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--copper);margin-bottom:0.7rem;}
+  .q-text{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--chalk);line-height:1.45;margin-bottom:0.3rem;}
+  .q-hint{font-family:'Patrick Hand',cursive;font-size:0.8rem;color:var(--chalk-muted);margin-bottom:1.1rem;line-height:1.5;}
+
+  /* Options */
+  .opts{display:flex;flex-direction:column;gap:0.55rem;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.85rem 1rem;border-radius:10px;cursor:pointer;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;display:flex;align-items:center;gap:0.65rem;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--amber-border);background:var(--amber-bg);}
+  .opt-btn.correct{border-color:var(--green)!important;background:var(--green-bg)!important;color:var(--green)!important;}
+  .opt-btn.wrong{border-color:var(--red)!important;background:var(--red-bg)!important;color:var(--red)!important;}
+  .opt-btn.timeout{border-color:var(--sienna)!important;background:var(--sienna-bg)!important;}
+  .opt-btn:disabled{cursor:default;}
+  .opt-key{font-family:'Fredoka One',cursive;font-size:0.72rem;color:var(--chalk-muted);background:rgba(245,236,215,0.08);border-radius:5px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+  /* Feedback */
+  .feedback{border-radius:10px;padding:0.8rem 1rem;font-size:0.85rem;font-weight:800;display:none;margin-top:0.8rem;line-height:1.55;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+  .feedback.tout{background:var(--sienna-bg);color:var(--copper);border:1px solid var(--copper-border);}
+
+  /* Next btn */
+  .next-wrap{display:flex;justify-content:flex-end;margin-top:0.8rem;}
+  .btn-next{background:var(--amber-dark);color:#fff;border:none;padding:0.7rem 1.6rem;border-radius:20px;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;display:none;align-items:center;gap:0.4rem;}
+  .btn-next.show{display:flex;}
+  .btn-next:hover{background:var(--amber);color:#1a0e0e;transform:translateY(-2px);}
+
+  /* ---- RESULT SCREEN ---- */
+  #result{display:none;text-align:center;}
+  .result-icon{font-size:4rem;display:block;margin-bottom:0.8rem;}
+  .result-title{font-family:'Fredoka One',cursive;font-size:1.9rem;margin-bottom:0.3rem;}
+  .result-sub{font-family:'Patrick Hand',cursive;font-size:0.95rem;color:var(--chalk-muted);margin-bottom:1.5rem;line-height:1.6;}
+  .score-big{font-family:'Fredoka One',cursive;font-size:3.5rem;color:var(--amber);margin:0.5rem 0;line-height:1;}
+  .score-label{font-family:'Patrick Hand',cursive;font-size:0.82rem;color:var(--chalk-muted);letter-spacing:2px;text-transform:uppercase;}
+  .stat-row{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;margin:1.3rem 0;}
+  .stat-box{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:0.8rem 1.2rem;text-align:center;min-width:80px;}
+  .stat-val{font-family:'Fredoka One',cursive;font-size:1.3rem;}
+  .stat-val.green{color:var(--green);}
+  .stat-val.red{color:var(--red);}
+  .stat-val.gold{color:var(--gold);}
+  .stat-val.copper{color:var(--copper);}
+  .stat-lbl{font-family:'Patrick Hand',cursive;font-size:0.68rem;color:var(--chalk-muted);letter-spacing:1px;text-transform:uppercase;margin-top:0.2rem;}
+  .review-list{text-align:left;margin:1rem 0;}
+  .review-item{display:flex;gap:0.7rem;align-items:flex-start;padding:0.65rem 0.8rem;border-radius:10px;margin-bottom:0.4rem;font-size:0.84rem;background:var(--board-light);border:1px solid var(--card-border);}
+  .review-item .ri-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+  .review-item .ri-q{color:var(--chalk-muted);flex:1;line-height:1.5;}
+  .review-item .ri-q strong{color:var(--chalk);display:block;}
+  .review-item.ok-item{border-color:rgba(74,158,105,0.3);}
+  .review-item.no-item{border-color:rgba(224,96,96,0.3);}
+  .xp-badge{display:inline-block;background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber);font-family:'Fredoka One',cursive;font-size:0.88rem;padding:0.3rem 1.3rem;border-radius:20px;margin-bottom:1.2rem;}
+  .result-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1rem;}
+  .btn{padding:0.72rem 1.7rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--amber-border);color:var(--amber);}
+  .btn-amber{background:var(--amber-dark);color:#fff;box-shadow:0 4px 14px rgba(184,137,42,0.35);}
+  .btn-amber:hover{background:var(--amber);color:#1a0e0e;transform:translateY(-2px);}
+  .btn-copper{background:var(--sienna);color:#fff;}
+  .btn-copper:hover{background:var(--copper);transform:translateY(-2px);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level8.html">Level 8</a><span>›</span>
+  <span class="cur">Quick Test</span>
+</nav>
+
+<div class="wrap">
+
+  <!-- INTRO -->
+  <div id="intro">
+    <div class="page-badge">⏱️ Quick Test · Level 08</div>
+    <span class="intro-icon">🎯</span>
+    <div class="intro-title">Kalkulus <span>Challenge</span></div>
+    <p class="intro-desc">5 soal campuran limit, turunan, dan integral. Setiap soal punya timer sendiri — jawab cepat, jawab tepat!</p>
+    <div class="rules-box">
+      <div class="rules-title">📋 Aturan Main</div>
+      <div class="rule-item"><span>⏱️</span>Setiap soal punya timer 20 detik. Waktu habis = jawaban hangus.</div>
+      <div class="rule-item"><span>🎯</span>Pilih jawaban yang paling tepat. Hanya satu pilihan yang benar.</div>
+      <div class="rule-item"><span>📊</span>Hasil lengkap + review tiap soal ditampilkan di akhir.</div>
+      <div class="rule-item"><span>🔥</span>Skor dihitung dari jumlah benar + bonus kecepatan jawab.</div>
+    </div>
+    <button class="btn btn-amber" onclick="startQuiz()" style="font-size:1rem;padding:0.9rem 2.5rem;">Mulai Test →</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz">
+    <div class="quiz-header">
+      <div class="q-counter">Soal <strong id="qNum">1</strong> / 5</div>
+      <div class="timer-wrap">
+        <div class="timer-ring">
+          <svg width="56" height="56" viewBox="0 0 56 56">
+            <circle class="track" cx="28" cy="28" r="24"/>
+            <circle class="prog" id="timerCircle" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer-num" id="timerNum">20</div>
+        </div>
+        <div class="timer-label">detik</div>
+      </div>
+    </div>
+    <div class="prog-bar-wrap">
+      <div class="prog-bar-track"><div class="prog-bar-fill" id="progBar" style="width:0%"></div></div>
+    </div>
+    <div class="q-card" id="qCard">
+      <div class="q-topic" id="qTopic"></div>
+      <div class="q-text" id="qText"></div>
+      <div class="q-hint" id="qHint"></div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+    <div class="next-wrap">
+      <button class="btn-next" id="btnNext" onclick="nextQuestion()">Soal Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result"></div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    topic:'📉 Limit',
+    text:'Berapakah nilai dari lim[x→2] (x² − 4) / (x − 2)?',
+    hint:'Coba faktorkan pembilangnya terlebih dahulu!',
+    opts:['1','4','2','Tidak ada (DNE)'],
+    correct:1,
+    exp:'x²−4 = (x−2)(x+2). Setelah dicoret: lim[x→2](x+2) = 2+2 = 4.'
+  },
+  {
+    topic:'⚡ Turunan — Aturan Pangkat',
+    text:'Jika f(x) = 5x³ − 3x² + 7, maka f\'(x) = ?',
+    hint:'Turunkan suku per suku. Konstanta 7 jadi nol.',
+    opts:['15x² − 6x','15x² − 3x','5x² − 6x + 7','15x² − 6x + 7'],
+    correct:0,
+    exp:'d/dx[5x³]=15x², d/dx[−3x²]=−6x, d/dx[7]=0. Jadi f\'(x)=15x²−6x.'
+  },
+  {
+    topic:'⚡ Turunan — Aturan Rantai',
+    text:'Tentukan f\'(x) dari f(x) = sin(2x)',
+    hint:'Fungsi luar: sin(u), fungsi dalam: u = 2x. Ingat aturan rantai!',
+    opts:['cos(2x)','2cos(2x)','−2cos(2x)','sin(2)·cos(x)'],
+    correct:1,
+    exp:'Aturan rantai: d/dx[sin(u)] = cos(u)·u\'. Di sini u=2x, u\'=2. Jadi f\'(x)=2cos(2x).'
+  },
+  {
+    topic:'∫ Integral Tak Tentu',
+    text:'Hasil dari ∫ (4x³ + 2) dx adalah…',
+    hint:'Gunakan aturan pangkat balik: ∫xⁿ = xⁿ⁺¹/(n+1). Jangan lupa +C!',
+    opts:['x⁴ + 2x + C','4x⁴ + 2x + C','12x² + C','x⁴ + 2 + C'],
+    correct:0,
+    exp:'∫4x³dx = 4·x⁴/4 = x⁴. ∫2dx = 2x. Gabung: x⁴+2x+C.'
+  },
+  {
+    topic:'∫ Integral Tentu',
+    text:'Hitung ∫[0 ke 3] (2x + 1) dx',
+    hint:'Cari anti-turunan dulu, lalu evaluasi F(3) − F(0).',
+    opts:['10','12','9','15'],
+    correct:1,
+    exp:'Anti-turunan: x²+x. F(3)=9+3=12. F(0)=0. Hasil: 12−0 = 12.'
+  }
+];
+
+let cur=0, score=0, timeLeft=20, timerInt=null;
+let results=[];
+const TOTAL_TIME=20;
+const CIRCUMFERENCE=150.8;
+
+function startQuiz(){
+  document.getElementById('intro').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  loadQuestion();
+}
+
+function loadQuestion(){
+  const q=QUESTIONS[cur];
+  document.getElementById('qNum').textContent=cur+1;
+  document.getElementById('progBar').style.width=((cur/5)*100)+'%';
+  document.getElementById('qTopic').textContent=q.topic;
+  document.getElementById('qText').textContent=q.text;
+  document.getElementById('qHint').textContent='💡 '+q.hint;
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('feedback').textContent='';
+  document.getElementById('btnNext').className='btn-next';
+
+  // Render opts
+  const optsEl=document.getElementById('opts');
+  optsEl.innerHTML='';
+  const keys=['A','B','C','D'];
+  q.opts.forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';
+    btn.innerHTML=`<div class="opt-key">${keys[i]}</div>${o}`;
+    btn.onclick=()=>answer(i,btn);
+    optsEl.appendChild(btn);
+  });
+
+  // Animate card
+  document.getElementById('qCard').style.animation='none';
+  requestAnimationFrame(()=>{document.getElementById('qCard').style.animation='fadeUp 0.35s ease';});
+
+  startTimer();
+}
+
+function startTimer(){
+  timeLeft=TOTAL_TIME;
+  clearInterval(timerInt);
+  updateTimerDisplay();
+  timerInt=setInterval(()=>{
+    timeLeft--;
+    updateTimerDisplay();
+    if(timeLeft<=0){
+      clearInterval(timerInt);
+      handleTimeout();
+    }
+  },1000);
+}
+
+function updateTimerDisplay(){
+  const n=document.getElementById('timerNum');
+  const c=document.getElementById('timerCircle');
+  n.textContent=timeLeft;
+  const offset=CIRCUMFERENCE*(1-timeLeft/TOTAL_TIME);
+  c.style.strokeDashoffset=offset;
+  if(timeLeft<=5){n.style.color='var(--red)';c.style.stroke='var(--red)';}
+  else if(timeLeft<=10){n.style.color='var(--copper)';c.style.stroke='var(--copper)';}
+  else{n.style.color='var(--amber)';c.style.stroke='var(--amber)';}
+}
+
+function answer(idx,btn){
+  clearInterval(timerInt);
+  const q=QUESTIONS[cur];
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('feedback');
+  const timeUsed=TOTAL_TIME-timeLeft;
+  let correct=false;
+  if(idx===q.correct){
+    btn.classList.add('correct');
+    fb.className='feedback show ok';
+    fb.textContent='✅ Tepat! '+q.exp;
+    score++;correct=true;
+  } else {
+    btn.classList.add('wrong');
+    btns[q.correct].classList.add('correct');
+    fb.className='feedback show no';
+    fb.textContent='❌ Belum tepat. '+q.exp;
+  }
+  results.push({q:q.text,correct,timeUsed,topic:q.topic});
+  document.getElementById('btnNext').className='btn-next show';
+}
+
+function handleTimeout(){
+  const q=QUESTIONS[cur];
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>{b.disabled=true;b.classList.add('timeout');});
+  btns[q.correct].className='opt-btn correct';
+  const fb=document.getElementById('feedback');
+  fb.className='feedback show tout';
+  fb.textContent='⌛ Waktu habis! '+q.exp;
+  results.push({q:q.text,correct:false,timeUsed:TOTAL_TIME,topic:q.topic,timeout:true});
+  document.getElementById('btnNext').className='btn-next show';
+}
+
+function nextQuestion(){
+  cur++;
+  if(cur<QUESTIONS.length){loadQuestion();}
+  else{showResult();}
+}
+
+function showResult(){
+  document.getElementById('quiz').style.display='none';
+  const res=document.getElementById('result');
+  res.style.display='block';
+  const pct=Math.round((score/5)*100);
+  let icon='🥈',title='Lumayan!',sub='Kamu paham beberapa konsep. Review bagian yang salah dan coba lagi!';
+  if(score===5){icon='🏆';title='Sempurna!';sub='Luar biasa! Kamu menguasai semua topik kalkulus dasar dengan sempurna!';}
+  else if(score>=4){icon='🥇';title='Hampir Sempurna!';sub='Sangat bagus! Satu soal lagi dan kamu meraih skor penuh!';}
+  else if(score>=2){icon='🥈';title='Lumayan!';sub='Pemahaman dasar sudah ada. Review materi dan coba lagi untuk hasil lebih baik!';}
+  else{icon='📚';title='Perlu Belajar Lagi';sub='Jangan menyerah! Kembali ke section materi dan pelajari ulang konsepnya.';}
+
+  const avgTime=Math.round(results.reduce((a,r)=>a+r.timeUsed,0)/results.length);
+  const timeouts=results.filter(r=>r.timeout).length;
+  const xpGained=score*20+(5-avgTime)*2;
+
+  let reviewHTML=results.map((r,i)=>`
+    <div class="review-item ${r.correct?'ok-item':'no-item'}">
+      <div class="ri-icon">${r.correct?'✅':'❌'}</div>
+      <div class="ri-q">
+        <strong>Soal ${i+1} — ${r.topic}</strong>
+        ${r.timeout?'<em style="color:var(--copper)">Waktu habis</em>':(r.correct?'<em style="color:var(--green)">Benar</em>':'<em style="color:var(--red)">Salah</em>')}
+        · ${r.timeUsed}s
+      </div>
+    </div>`).join('');
+
+  res.innerHTML=`
+    <span class="result-icon">${icon}</span>
+    <div class="result-title">${title}</div>
+    <p class="result-sub">${sub}</p>
+    <div class="score-big">${score}/5</div>
+    <div class="score-label">soal benar</div>
+    <div class="stat-row">
+      <div class="stat-box"><div class="stat-val green">${score}</div><div class="stat-lbl">Benar</div></div>
+      <div class="stat-box"><div class="stat-val red">${5-score}</div><div class="stat-lbl">Salah</div></div>
+      <div class="stat-box"><div class="stat-val gold">${pct}%</div><div class="stat-lbl">Akurasi</div></div>
+      <div class="stat-box"><div class="stat-val copper">${avgTime}s</div><div class="stat-lbl">Rata-rata</div></div>
+    </div>
+    <div class="xp-badge">✨ +${xpGained} XP earned</div>
+    <div class="review-list">${reviewHTML}</div>
+    <div class="result-btns">
+      <a href="level8.html" class="btn btn-ghost">← Level Hub</a>
+      <button class="btn btn-amber" onclick="restart()">🔄 Coba Lagi</button>
+      <a href="exercise.html" class="btn btn-copper">✏️ Exercise</a>
+    </div>`;
+}
+
+function restart(){
+  cur=0;score=0;results=[];
+  document.getElementById('result').style.display='none';
+  document.getElementById('result').innerHTML='';
+  document.getElementById('quiz').style.display='block';
+  loadQuestion();
+}
+</script>
+</body>
+</html>

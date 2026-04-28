@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 2 · Kaidah Pencacahan · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1f0e14; --board-light:#2e1520;
+    --grid:rgba(255,255,255,0.03); --grid-major:rgba(255,255,255,0.06);
+    --chalk:#ede4d8; --chalk-muted:rgba(237,228,216,0.55); --chalk-dim:rgba(237,228,216,0.22);
+    --teal:#2dd4bf; --teal-dark:#0d9488; --teal-bg:rgba(45,212,191,0.1); --teal-border:rgba(45,212,191,0.38);
+    --teal2:#5eead4; --teal2-bg:rgba(94,234,212,0.1); --teal2-border:rgba(94,234,212,0.35);
+    --aqua:#99f6e4; --aqua-bg:rgba(153,246,228,0.08); --aqua-border:rgba(153,246,228,0.3);
+    --green:#4ade80; --green-bg:rgba(74,222,128,0.1); --green-border:rgba(74,222,128,0.35);
+    --red:#f87171; --red-bg:rgba(248,113,113,0.1); --red-border:rgba(248,113,113,0.35);
+    --card-border:rgba(237,228,216,0.12); --card-bg:rgba(255,255,255,0.04);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background-color:var(--board);background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px;color:var(--chalk);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.7;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--card-border);background:rgba(31,14,20,0.94);backdrop-filter:blur(14px);position:sticky;top:0;z-index:100;font-family:'Patrick Hand',cursive;font-size:0.88rem;}
+  nav a{color:var(--chalk-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--teal);}
+  nav span{color:var(--card-border);}
+  nav .cur{color:var(--teal2);}
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5.5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--teal2-bg);border:1px solid var(--teal2-border);color:var(--teal2);font-family:'Patrick Hand',cursive;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:20px;margin-bottom:1.3rem;}
+  h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,2rem);margin-bottom:0.6rem;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,0.4);}
+  h1 span{color:var(--teal2);}
+  .intro{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem;}
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(237,228,216,0.13);transition:all 0.3s;}
+  .dot.active{background:var(--teal2);box-shadow:0 0 0 3px rgba(94,234,212,0.2);transform:scale(1.2);}
+  .dot.done{background:var(--teal-dark);}
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 20px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.05);}
+  .card-label{font-family:'Patrick Hand',cursive;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.teal{color:var(--teal);}
+  .card-label.teal2{color:var(--teal2);}
+  .card-label.aqua{color:var(--aqua);}
+  .card h2{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:0.7rem;line-height:1.35;color:var(--chalk);}
+  .card p{color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;}
+
+  .why-banner{background:linear-gradient(135deg,#0a1f1c,#12342e);border:1px solid var(--teal2-border);border-radius:14px;padding:1.8rem;margin-bottom:1.1rem;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.4);}
+  .why-banner::after{content:'🎲';position:absolute;right:1.2rem;bottom:-0.4rem;font-size:4.5rem;opacity:0.12;}
+  .why-banner h2{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:0.6rem;color:var(--chalk);}
+  .why-banner p{font-size:0.9rem;line-height:1.7;color:var(--chalk-muted);}
+  .why-list{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem;}
+  .why-item{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.88rem;color:var(--chalk-muted);}
+  .why-item span{flex-shrink:0;}
+
+  /* Compare cards */
+  .compare-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1rem 0;}
+  @media(max-width:480px){.compare-row{grid-template-columns:1fr;}}
+  .cmp-card{border-radius:12px;padding:1.2rem;}
+  .cmp-card.a{background:var(--teal-bg);border:2px solid var(--teal-border);}
+  .cmp-card.b{background:var(--teal2-bg);border:2px solid var(--teal2-border);}
+  .cmp-head{font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:0.4rem;}
+  .cmp-card.a .cmp-head{color:var(--teal);}
+  .cmp-card.b .cmp-head{color:var(--teal2);}
+  .cmp-formula{font-family:'Fredoka One',cursive;font-size:0.88rem;background:rgba(0,0,0,0.25);border-radius:8px;padding:0.5rem 0.7rem;margin:0.5rem 0;}
+  .cmp-card.a .cmp-formula{color:var(--teal);}
+  .cmp-card.b .cmp-formula{color:var(--teal2);}
+  .cmp-key{font-family:'Patrick Hand',cursive;font-size:0.78rem;color:var(--chalk-muted);line-height:1.5;}
+
+  .steps{display:flex;flex-direction:column;gap:0.65rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:var(--board-light);border:1px solid var(--card-border);border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;color:var(--chalk-muted);}
+  .step-n{font-family:'Fredoka One',cursive;font-size:0.8rem;color:var(--board);background:var(--teal2);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .step strong{color:var(--teal2);}
+  .step .t{color:var(--teal);}
+  .step .aq{color:var(--aqua);}
+  .step .gr{color:var(--green);}
+
+  .hl{border-radius:10px;padding:0.9rem 1.1rem;margin:0.8rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-teal{background:var(--teal-bg);border:1px solid var(--teal-border);}
+  .hl-teal strong{color:var(--teal);}
+  .hl-teal2{background:var(--teal2-bg);border:1px solid var(--teal2-border);}
+  .hl-teal2 strong{color:var(--teal2);}
+
+  /* Factorial visual */
+  .fact-chain{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:0.8rem 0;font-family:'Fredoka One',cursive;font-size:1rem;}
+  .fact-n{color:var(--teal2);}
+  .fact-op{color:var(--chalk-muted);}
+  .fact-result{color:var(--green);}
+
+  /* Permutation slots */
+  .slots{display:flex;gap:8px;margin:1rem 0;flex-wrap:wrap;}
+  .slot{width:50px;height:50px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:0.9rem;border:2px dashed var(--teal-border);color:var(--chalk);}
+  .slot.filled{background:var(--teal-bg);border-style:solid;border-color:var(--teal-border);color:var(--teal);}
+
+  .opts{display:flex;flex-direction:column;gap:0.6rem;margin:1rem 0;}
+  .opt-btn{background:var(--board-light);border:1px solid var(--card-border);color:var(--chalk);padding:0.85rem 1.1rem;border-radius:10px;cursor:pointer;font-size:0.92rem;font-family:'Nunito',sans-serif;font-weight:800;text-align:left;transition:all 0.18s;display:flex;align-items:center;gap:0.7rem;}
+  .opt-btn:hover:not(:disabled){border-color:var(--teal2-border);background:var(--teal2-bg);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-key{font-family:'Fredoka One',cursive;font-size:0.75rem;color:var(--chalk-muted);background:rgba(237,228,216,0.08);border-radius:5px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .feedback{border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;font-weight:800;display:none;margin-top:0.8rem;line-height:1.5;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .feedback.no{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+
+  .nav-btns{display:flex;gap:0.8rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:20px;border:none;font-family:'Fredoka One',cursive;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.5px;}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border);color:var(--chalk-muted);}
+  .btn-ghost:hover{border-color:var(--teal2-border);color:var(--teal2);}
+  .btn-primary{background:var(--teal-dark);color:#fff;box-shadow:0 4px 14px rgba(13,148,136,0.35);}
+  .btn-primary:hover{background:var(--teal);color:#0d1f1c;transform:translateY(-2px);}
+  .btn-primary:disabled{opacity:0.45;cursor:not-allowed;transform:none;}
+
+  .finish{text-align:center;padding:2rem 0;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--teal2);margin-bottom:0.8rem;}
+  .finish-desc{font-family:'Patrick Hand',cursive;color:var(--chalk-muted);font-size:0.95rem;line-height:1.7;margin-bottom:1.5rem;}
+  .xp{display:inline-block;background:var(--teal2-bg);border:1px solid var(--teal2-border);color:var(--teal2);font-family:'Fredoka One',cursive;padding:0.5rem 1.2rem;border-radius:20px;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html">Math Arena</a><span>›</span>
+  <a href="../../general_users.html">General</a><span>›</span>
+  <a href="level7.html">Level 7</a><span>›</span>
+  <span class="cur">Section 2</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🎲 Section 02</div>
+  <h1>Kaidah <span>Pencacahan</span></h1>
+  <p class="intro">Berapa banyak cara kamu bisa menyusun 3 dari 5 buku di rak? Berapa tim yang bisa dibentuk dari 10 orang? Matematika punya cara pintarnya sendiri.</p>
+
+  <div class="dots" id="dots"></div>
+
+  <!-- SLIDE 0: WHY -->
+  <div class="slide active">
+    <div class="why-banner">
+      <h2>🤔 Kenapa ini penting?</h2>
+      <p>Kamu berencana bikin password 4 digit dari 0-9. Berapa kemungkinannya? Atau panitia harus memilih ketua, wakil, dan sekretaris dari 8 kandidat — berapa banyak susunan yang mungkin?</p>
+      <div class="why-list">
+        <div class="why-item"><span>🔐</span>Keamanan password dan kriptografi menggunakan prinsip pencacahan</div>
+        <div class="why-item"><span>🏆</span>Kompetisi olahraga: berapa kemungkinan podium dari 10 atlet?</div>
+        <div class="why-item"><span>🧬</span>Biologi dan kimia: berapa kombinasi gen atau senyawa yang mungkin?</div>
+        <div class="why-item"><span>🎯</span><div>Kunci utama: apakah urutan penting? Kalau iya → <strong style="color:var(--teal2)">Permutasi</strong>. Kalau tidak → <strong style="color:var(--teal2)">Kombinasi</strong>.</div></div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <span></span>
+      <button class="btn btn-primary" onclick="nextSlide()">Mulai Belajar →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: MATERI -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label teal2">⚡ Kaidah Dasar</div>
+      <h2>Aturan Perkalian & Faktorial</h2>
+      <p style="margin-bottom:0.8rem;">Jika kejadian pertama ada m cara dan kejadian kedua ada n cara, maka keduanya bersama ada <strong style="color:var(--teal)">m × n</strong> cara.</p>
+      <div class="hl hl-teal"><strong>Contoh:</strong> Baju 3 pilihan, celana 4 pilihan → outfit = 3 × 4 = <strong>12 cara</strong></div>
+      <p style="margin-top:0.8rem;margin-bottom:0.5rem;">Faktorial dipakai untuk menghitung susunan:</p>
+      <div class="fact-chain">
+        <span class="fact-n">5!</span>
+        <span class="fact-op">=</span>
+        <span class="fact-n">5 × 4 × 3 × 2 × 1</span>
+        <span class="fact-op">=</span>
+        <span class="fact-result">120</span>
+      </div>
+      <div class="hl hl-teal2"><strong>0! = 1</strong> (definisi khusus, bukan nol!)</div>
+    </div>
+    <div class="card">
+      <div class="card-label teal">🔀 Permutasi</div>
+      <h2>Urutan Penting — P(n,r)</h2>
+      <p style="margin-bottom:0.8rem;">Memilih r objek dari n objek <strong style="color:var(--teal)">di mana urutan diperhitungkan</strong>. AB ≠ BA.</p>
+      <div class="compare-row">
+        <div class="cmp-card a">
+          <div class="cmp-head">P(n,r)</div>
+          <div class="cmp-formula">n! / (n−r)!</div>
+          <div class="cmp-key">n = total objek<br>r = yang dipilih</div>
+        </div>
+        <div class="cmp-card b">
+          <div class="cmp-head">Semua item</div>
+          <div class="cmp-formula">n!</div>
+          <div class="cmp-key">Menyusun semua<br>n objek</div>
+        </div>
+      </div>
+      <p style="margin-top:0.5rem;font-size:0.88rem;color:var(--chalk-muted);">Contoh: Memilih Ketua, Wakil dari 5 orang → P(5,2) = 5!/(5-2)! = 120/6 = <strong style="color:var(--teal)">20 cara</strong></p>
+    </div>
+    <div class="card">
+      <div class="card-label teal2">🤝 Kombinasi</div>
+      <h2>Urutan Tidak Penting — C(n,r)</h2>
+      <p style="margin-bottom:0.8rem;">Memilih r objek dari n objek <strong style="color:var(--teal2)">di mana urutan tidak diperhitungkan</strong>. {A,B} = {B,A}.</p>
+      <div class="hl hl-teal2"><strong>C(n,r) = n! / (r! × (n−r)!)</strong><br>Juga ditulis C(n,r) atau ⁿCᵣ</div>
+      <p style="margin-top:0.5rem;font-size:0.88rem;color:var(--chalk-muted);">Contoh: Memilih 3 anggota tim dari 5 orang → C(5,3) = 5!/(3!×2!) = 120/12 = <strong style="color:var(--teal2)">10 cara</strong></p>
+      <div class="hl hl-teal"><strong>Tips:</strong> C(n,r) = P(n,r) / r! &nbsp;→ Kombinasi selalu lebih kecil dari permutasi!</div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Contoh Soal →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: CONTOH SOAL -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label teal2">💡 Contoh Soal & Pembahasan</div>
+      <h2>Soal 1: Permutasi — Kode PIN</h2>
+      <p style="margin-bottom:0.8rem;color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;">Berapa banyak kode PIN 3 digit berbeda yang bisa dibuat dari angka 1, 2, 3, 4, 5 jika tidak boleh ada angka yang berulang?</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><strong>Identifikasi:</strong> Urutan penting (PIN 123 ≠ 321) → Permutasi</div></div>
+        <div class="step"><div class="step-n">2</div><div>n=5, r=3 → <strong>P(5,3) = 5!/(5-3)! = 5!/2!</strong></div></div>
+        <div class="step"><div class="step-n">3</div><div>= (5×4×3×2×1)/(2×1) = 120/2 = <span class="gr">60 cara</span></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label teal2">💡 Contoh Soal & Pembahasan</div>
+      <h2>Soal 2: Kombinasi — Tim</h2>
+      <p style="margin-bottom:0.8rem;color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;">Dari 6 siswa, dipilih 4 orang untuk mewakili lomba. Berapa banyak cara memilih?</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><strong>Identifikasi:</strong> Urutan tidak penting (tim, bukan jabatan) → Kombinasi</div></div>
+        <div class="step"><div class="step-n">2</div><div>n=6, r=4 → <strong>C(6,4) = 6!/(4!×2!)</strong></div></div>
+        <div class="step"><div class="step-n">3</div><div>= 720/(24×2) = 720/48 = <span class="gr">15 cara</span></div></div>
+      </div>
+      <div class="hl hl-teal2"><strong>Trik:</strong> C(6,4) = C(6,2) = 6×5/(2×1) = 15. Pilih yang lebih kecil!</div>
+    </div>
+    <div class="card">
+      <div class="card-label teal2">💡 Contoh Soal & Pembahasan</div>
+      <h2>Soal 3: Permutasi Melingkar</h2>
+      <p style="margin-bottom:0.8rem;color:var(--chalk-muted);font-size:0.9rem;line-height:1.7;">8 orang duduk melingkar di meja bundar. Berapa banyak susunan tempat duduk?</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><strong>Permutasi melingkar:</strong> Satu posisi dianggap tetap (tidak ada awal/akhir)</div></div>
+        <div class="step"><div class="step-n">2</div><div>Rumus = <strong>(n−1)!</strong></div></div>
+        <div class="step"><div class="step-n">3</div><div>= (8−1)! = 7! = <span class="gr">5.040 susunan</span></div></div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Soal Latihan →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: LATIHAN -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label aqua">✏️ Soal Latihan</div>
+      <h2>Uji Pemahamanmu</h2>
+      <p style="font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:1.2rem;line-height:1.4;color:var(--chalk);">Dari 7 warna, ingin dipilih 2 warna untuk kombinasi cat dinding. Berapa banyak kombinasi yang mungkin?</p>
+      <div class="opts" id="opts2">
+        <button class="opt-btn" onclick="answer(0,this,'opts2','fb2',0)"><div class="opt-key">A</div>42</button>
+        <button class="opt-btn" onclick="answer(1,this,'opts2','fb2',0)"><div class="opt-key">B</div>21</button>
+        <button class="opt-btn" onclick="answer(2,this,'opts2','fb2',0)"><div class="opt-key">C</div>14</button>
+        <button class="opt-btn" onclick="answer(3,this,'opts2','fb2',0)"><div class="opt-key">D</div>49</button>
+      </div>
+      <div class="feedback" id="fb2"></div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" id="btn2next" onclick="nextSlide()" disabled>Selesai →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: FINISH -->
+  <div class="slide">
+    <div class="finish">
+      <span class="finish-icon">🎉</span>
+      <div class="finish-title">Section 2 Selesai!</div>
+      <div class="finish-desc">Kamu sekarang bisa membedakan kapan pakai Permutasi dan kapan pakai Kombinasi! Ingat pertanyaan kuncinya: "apakah urutan penting?" Itu satu-satunya yang menentukan.</div>
+      <div class="xp">✨ +100 XP — Kaidah Pencacahan</div>
+      <div class="finish-btns">
+        <a href="level7.html" class="btn btn-ghost">← Level Hub</a>
+        <a href="section3.html" class="btn btn-primary">Section 3 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let cur=0;const total=5;
+function renderDots(){const d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<total;i++){const dot=document.createElement('div');dot.className='dot'+(i===cur?' active':i<cur?' done':'');d.appendChild(dot);}}
+function showSlide(n){document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('active',i===n));cur=n;renderDots();window.scrollTo({top:0,behavior:'smooth'});}
+function nextSlide(){if(cur<total-1)showSlide(cur+1);}
+function prevSlide(){if(cur>0)showSlide(cur-1);}
+function answer(idx,btn,optsId,fbId,correct){
+  const opts=document.querySelectorAll('#'+optsId+' .opt-btn');
+  opts.forEach(b=>b.disabled=true);
+  const fb=document.getElementById(fbId);
+  if(idx===correct){
+    btn.classList.add('correct');fb.className='feedback show ok';
+    fb.textContent='✅ Betul! C(7,2) = 7!/(2!×5!) = 42/2 = 21 kombinasi warna.';
+  } else {
+    btn.classList.add('wrong');opts[correct].classList.add('correct');fb.className='feedback show no';
+    fb.textContent='❌ Kurang tepat. Urutan tidak penting (merah-biru = biru-merah), jadi pakai Kombinasi: C(7,2) = 7×6/(2×1) = 21.';
+  }
+  document.getElementById('btn2next').disabled=false;
+}
+renderDots();
+</script>
+</body>
+</html>
