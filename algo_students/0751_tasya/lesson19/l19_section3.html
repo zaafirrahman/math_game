@@ -115,7 +115,7 @@
     <div class="rules-box">
       <div class="rules-title">⚡ Rules</div>
       <div class="rule"><span>🎯</span> 5 soal pilihan ganda</div>
-      <div class="rule"><span>⏱️</span> 25 detik per soal</div>
+      <div class="rule"><span>⏱️</span>50 detik per soal</div>
       <div class="rule"><span>⭐</span> Jawaban benar = +20 poin</div>
       <div class="rule"><span>💡</span> Waktu habis atau salah = 0 poin, tetap lanjut</div>
     </div>
@@ -133,7 +133,7 @@
           <circle class="ring-bg" cx="35" cy="35" r="30"/>
           <circle class="ring-fg" id="ringFg" cx="35" cy="35" r="30" stroke-dasharray="188.5" stroke-dashoffset="0"/>
         </svg>
-        <div class="ring-num" id="ringNum">25</div>
+        <div class="ring-num" id="ringNum">50</div>
       </div>
     </div>
     <div class="q-card" id="qCard">
@@ -204,7 +204,7 @@
     }
   ];
 
-  let cur=0, score=0, timer=null, timeLeft=25;
+  let cur=0, score=0, timer=null, timeLeft=50;
   const log=[];
 
   function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
@@ -238,7 +238,7 @@
     startTimer();
   }
 
-  const MAXTIME=25, CIRC=188.5;
+  const MAXTIME=50, CIRC=188.5;
 
   function startTimer(){
     timeLeft=MAXTIME; updateRing();
