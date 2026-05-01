@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 2 · Substitusi · L19 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --lavender:#9b7fc8;--lavender-light:#c8b4e8;--lav-bg:rgba(155,127,200,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --peach:#f0956a;
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 90%,rgba(155,127,200,0.08) 0%,transparent 50%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--lavender);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--lavender);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--lavender);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:all 0.3s;}
+  .dot.active{background:var(--lavender);box-shadow:0 0 0 3px rgba(155,127,200,0.2);transform:scale(1.1);}
+  .dot.done{background:var(--mint);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);}
+  .card-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card h2{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.7rem;line-height:1.4;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  .steps{display:flex;flex-direction:column;gap:0.8rem;margin:1rem 0;}
+  .step{border-radius:14px;padding:1rem 1.2rem;font-size:0.9rem;line-height:1.7;}
+  .step.s1{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .step.s2{background:var(--lav-bg);border:1.5px solid var(--lavender-light);}
+  .step.s3{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .step-head{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .step.s1 .step-head{color:var(--rose);}
+  .step.s2 .step-head{color:var(--lavender);}
+  .step.s3 .step-head{color:var(--mint);}
+  .math{font-family:'Nunito',sans-serif;font-size:1.15rem;font-weight:900;color:var(--text);margin:0.3rem 0;}
+
+  /* Animation steps */
+  .anim-steps{display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0;}
+  .anim-step{display:flex;gap:1rem;align-items:flex-start;padding:0.7rem 0.9rem;background:#fafafa;border:1.5px solid var(--border);border-radius:12px;font-size:0.88rem;}
+  .a-n{font-family:'Nunito',sans-serif;font-weight:900;font-size:0.8rem;background:var(--lav-bg);color:var(--lavender);border:1.5px solid var(--lavender-light);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .a-content{flex:1;}
+  .a-content .eq{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;color:var(--text);}
+  .a-content .note{font-size:0.78rem;color:var(--text-muted);margin-top:0.15rem;}
+
+  /* Graph */
+  .graph-wrap{background:#fafafa;border:1.5px solid var(--border2);border-radius:16px;overflow:hidden;margin:1.1rem 0;}
+  canvas{display:block;width:100%;height:auto;}
+
+  /* Result box */
+  .result-box{background:linear-gradient(135deg,rgba(95,191,160,0.12),rgba(155,127,200,0.12));border:2px solid var(--mint-light);border-radius:18px;padding:1.5rem;text-align:center;margin:1rem 0;}
+  .result-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--mint);margin-bottom:0.8rem;}
+  .result-vals{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;}
+  .result-val{text-align:center;}
+  .result-val .letter{font-family:'Nunito',sans-serif;font-size:2rem;font-weight:900;}
+  .result-val .letter.p{color:var(--rose);}
+  .result-val .letter.b{color:var(--lavender);}
+  .result-val .value{font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;color:var(--mint);}
+  .result-val .unit{font-size:0.78rem;color:var(--text-muted);}
+
+  /* Verify */
+  .verify{display:flex;flex-direction:column;gap:0.6rem;margin:1rem 0;}
+  .v-row{display:flex;gap:1rem;align-items:center;padding:0.7rem 1rem;border-radius:12px;font-size:0.88rem;}
+  .v-row.ok{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .v-check{font-size:1.2rem;flex-shrink:0;}
+
+  .hl-box{border-radius:14px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.9rem;line-height:1.6;}
+  .hl-lav{background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--text-mid);}
+  .hl-lav strong{color:var(--lavender);}
+  .hl-mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .hl-mint strong{color:var(--mint);}
+
+  .quiz-q{font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;margin-bottom:1.2rem;line-height:1.5;}
+  .opts{display:flex;flex-direction:column;gap:0.7rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.9rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--lavender-light);background:var(--lav-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--lavender-light);color:var(--lavender);}
+  .btn-primary{background:linear-gradient(135deg,var(--lavender),var(--rose));color:#fff;box-shadow:0 4px 14px rgba(155,127,200,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:var(--lavender);margin-bottom:0.7rem;}
+  .finish-desc{color:var(--text-muted);line-height:1.7;margin-bottom:1.8rem;font-size:0.92rem;}
+  .xp{display:inline-block;background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--lavender);padding:0.35rem 1.1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;margin-bottom:1.8rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson19.html">LESSON 19</a><span>›</span>
+  <span class="cur">SEC 2</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🔗 Section 02 · Contoh Soal</div>
+  <h1>Logika <span>Substitusi</span></h1>
+  <p class="intro">Teknik paling intuitif untuk selesaikan SPLDV — pakai satu persamaan untuk ganti variabel di persamaan lainnya.</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- Slide 0: Setup soal -->
+    <div class="slide active">
+      <div class="card">
+        <div class="card-label" style="color:var(--lavender);">📋 Soal yang Akan Diselesaikan</div>
+        <h2>Sistem persamaan dari cerita pensil & buku</h2>
+        <div class="steps">
+          <div class="step s1">
+            <div class="step-head">Persamaan 1</div>
+            <div class="math">2p + b = 5</div>
+            <div style="font-size:0.82rem;color:var(--text-muted);">→ dari: 2 pensil + 1 buku = 5 ribu</div>
+          </div>
+          <div class="step s2">
+            <div class="step-head">Persamaan 2</div>
+            <div class="math">p + b = 4</div>
+            <div style="font-size:0.82rem;color:var(--text-muted);">→ dari: 1 pensil + 1 buku = 4 ribu</div>
+          </div>
+        </div>
+        <p>Kita punya dua persamaan, dua variabel. Target: cari nilai p dan b!</p>
+      </div>
+      <div class="hl-box hl-lav">
+        <strong>Strategi substitusi:</strong> Isolasi satu variabel dari satu persamaan, lalu "masukkan" ke persamaan satunya. Ini cara yang paling logis — tidak perlu hafal langkah, cukup ngerti konsepnya.
+      </div>
+    </div>
+
+    <!-- Slide 1: Langkah 1 - isolasi b -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label" style="color:var(--rose);">🔧 Langkah 1 · Isolasi Variabel</div>
+        <h2>Dari persamaan 2, ungkapkan b dalam bentuk p</h2>
+        <p>Kita pilih persamaan 2 karena lebih sederhana:</p>
+        <div class="anim-steps" style="margin-top:1rem;">
+          <div class="anim-step">
+            <div class="a-n">①</div>
+            <div class="a-content">
+              <div class="eq">p + b = 4</div>
+              <div class="note">Mulai dari persamaan 2</div>
+            </div>
+          </div>
+          <div class="anim-step">
+            <div class="a-n">②</div>
+            <div class="a-content">
+              <div class="eq">b = 4 − p</div>
+              <div class="note">Pindahkan p ke kanan: kurangi kedua sisi dengan p</div>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top:0.8rem;">Sekarang kita punya <strong>b = 4 − p</strong>. Artinya: kalau kita tahu p, langsung bisa cari b.</p>
+      </div>
+      <div class="hl-box hl-mint">
+        <strong>Ingat:</strong> Kita tidak "menebak" nilai b. Kita mengubah bentuk persamaan — keduanya masih setara!
+      </div>
+    </div>
+
+    <!-- Slide 2: Langkah 2 - substitusi -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label" style="color:var(--lavender);">🔄 Langkah 2 · Substitusi</div>
+        <h2>Masukkan b = 4 − p ke persamaan 1</h2>
+        <div class="anim-steps" style="margin-top:1rem;">
+          <div class="anim-step">
+            <div class="a-n">①</div>
+            <div class="a-content">
+              <div class="eq">2p + b = 5</div>
+              <div class="note">Persamaan 1 — ganti b-nya</div>
+            </div>
+          </div>
+          <div class="anim-step">
+            <div class="a-n">②</div>
+            <div class="a-content">
+              <div class="eq">2p + (4 − p) = 5</div>
+              <div class="note">b diganti dengan (4 − p)</div>
+            </div>
+          </div>
+          <div class="anim-step">
+            <div class="a-n">③</div>
+            <div class="a-content">
+              <div class="eq">p + 4 = 5</div>
+              <div class="note">Sederhanakan: 2p − p = p</div>
+            </div>
+          </div>
+          <div class="anim-step">
+            <div class="a-n">④</div>
+            <div class="a-content">
+              <div class="eq" style="color:var(--rose);">p = 1</div>
+              <div class="note">Kurangi kedua sisi dengan 4 → p = 5 − 4 = 1 ✅</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Langkah 3 - cari b -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label" style="color:var(--mint);">✅ Langkah 3 · Selesaikan</div>
+        <h2>Sekarang cari b!</h2>
+        <p>Kita sudah tahu <strong>p = 1</strong>. Masukkan ke rumus yang tadi:</p>
+        <div class="anim-steps" style="margin-top:1rem;">
+          <div class="anim-step">
+            <div class="a-n">①</div>
+            <div class="a-content">
+              <div class="eq">b = 4 − p</div>
+              <div class="note">Rumus dari langkah 1</div>
+            </div>
+          </div>
+          <div class="anim-step">
+            <div class="a-n">②</div>
+            <div class="a-content">
+              <div class="eq">b = 4 − 1</div>
+              <div class="note">Masukkan p = 1</div>
+            </div>
+          </div>
+          <div class="anim-step">
+            <div class="a-n">③</div>
+            <div class="a-content">
+              <div class="eq" style="color:var(--lavender);">b = 3</div>
+              <div class="note">Harga buku = Rp 3.000 ✅</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-box" style="margin-top:1.2rem;">
+          <div class="result-label">🎯 Solusi SPLDV</div>
+          <div class="result-vals">
+            <div class="result-val">
+              <div class="letter p">p</div>
+              <div class="value">= 1</div>
+              <div class="unit">harga pensil = Rp 1.000</div>
+            </div>
+            <div class="result-val">
+              <div class="letter b">b</div>
+              <div class="value">= 3</div>
+              <div class="unit">harga buku = Rp 3.000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Verifikasi -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label" style="color:var(--mint);">🔍 Verifikasi — Cek Balik ke Cerita</div>
+        <h2>Selalu cek jawaban ke persamaan asal!</h2>
+        <div class="verify">
+          <div class="v-row ok">
+            <span class="v-check">✅</span>
+            <span><strong>Pers. 1:</strong> 2p + b = 2(1) + 3 = 2 + 3 = <strong>5</strong> ✓</span>
+          </div>
+          <div class="v-row ok">
+            <span class="v-check">✅</span>
+            <span><strong>Pers. 2:</strong> p + b = 1 + 3 = <strong>4</strong> ✓</span>
+          </div>
+        </div>
+        <p style="margin-top:0.8rem;">Keduanya cocok dengan cerita aslinya. Solusi kita benar!</p>
+      </div>
+      <div class="hl-box hl-lav">
+        <strong>Kebiasaan penting:</strong> Selalu verifikasi jawaban SPLDV dengan mensubstitusi kembali ke <em>semua</em> persamaan asal. Ini cara paling cepat buat cek apakah kamu sudah benar.
+      </div>
+    </div>
+
+    <!-- Slide 5: Hubungan dengan grafik -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label" style="color:var(--lavender);">📈 Koneksi ke Grafik</div>
+        <h2>Solusi SPLDV = Titik Potong Dua Garis</h2>
+        <p>Setiap persamaan linear bisa digambar sebagai garis. Solusi SPLDV adalah titik di mana dua garis itu <strong>bertemu</strong>.</p>
+        <div class="graph-wrap"><canvas id="cGraph" width="500" height="320"></canvas></div>
+        <p style="margin-top:0.5rem;">Dua garis: <span style="color:var(--rose);font-weight:700;">2p + b = 5</span> dan <span style="color:var(--lavender);font-weight:700;">p + b = 4</span> bertemu di titik <strong>(1, 3)</strong> — tepat solusi kita!</p>
+      </div>
+    </div>
+
+    <!-- Slide 6: Quiz -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label" style="color:var(--lavender);">🧩 Latihan</div>
+        <div class="quiz-q">Dari sistem: x + y = 10 dan 2x + y = 14. Jika kita isolasi y dari persamaan 1, hasilnya adalah...</div>
+        <div class="opts" id="q1">
+          <button class="opt-btn" onclick="chk(this,true)">y = 10 − x</button>
+          <button class="opt-btn" onclick="chk(this,false)">y = 10 + x</button>
+          <button class="opt-btn" onclick="chk(this,false)">y = x − 10</button>
+          <button class="opt-btn" onclick="chk(this,false)">y = 14 − 2x</button>
+        </div>
+        <div class="feedback" id="q1-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Finish -->
+    <div class="slide">
+      <div class="finish">
+        <span class="finish-icon">🧠</span>
+        <div class="finish-title">Substitusi dikuasai!</div>
+        <div class="finish-desc">
+          Kamu sudah bisa nerjemahin cerita jadi sistem persamaan, selesaikan dengan substitusi, verifikasi, dan terhubungkan ke grafik.<br><br>
+          Selanjutnya: uji dirimu di Sprint!
+        </div>
+        <div class="xp">✨ +80 XP — Substitusi SPLDV</div>
+        <div class="finish-btns">
+          <a href="l19_section1.html" class="btn btn-ghost">← Sec 1</a>
+          <a href="l19_section3.html" class="btn btn-primary">Sprint →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="move(-1)" disabled>← Back</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="move(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL = 8;
+  let cur = 0, q1done = false;
+  const dotsEl = document.getElementById('dots');
+  const slides = document.querySelectorAll('.slide');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div'); d.className = 'dot'; dotsEl.appendChild(d);
+  }
+
+  function updateUI() {
+    slides.forEach((s,i) => s.classList.toggle('active', i === cur));
+    dotsEl.querySelectorAll('.dot').forEach((d,i) => {
+      d.className = 'dot' + (i===cur?' active':i<cur?' done':'');
+    });
+    prevBtn.disabled = cur === 0;
+    if (cur === TOTAL - 1) { nextBtn.style.display='none'; }
+    else { nextBtn.style.display=''; nextBtn.disabled = (cur === 6 && !q1done); }
+    if (cur === 5) drawGraph();
+  }
+
+  function move(dir) {
+    cur = Math.max(0, Math.min(TOTAL-1, cur+dir));
+    updateUI();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function chk(btn, correct) {
+    if (q1done) return; q1done = true;
+    document.querySelectorAll('#q1 .opt-btn').forEach(b => b.disabled=true);
+    btn.classList.add(correct?'correct':'wrong');
+    if (!correct) document.querySelectorAll('#q1 .opt-btn')[0].classList.add('correct');
+    const fb = document.getElementById('q1-fb');
+    fb.className = 'feedback show ' + (correct?'ok':'no');
+    fb.textContent = correct
+      ? '✅ Tepat! Dari x + y = 10, pindahkan x ke kanan: y = 10 − x.'
+      : '❌ Isolasi y: kurangi kedua sisi dengan x → y = 10 − x.';
+    nextBtn.disabled = false;
+  }
+
+  function drawGraph() {
+    const canvas = document.getElementById('cGraph');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const cx = W * 0.22, cy = H * 0.75;
+    const sc = 52;
+
+    ctx.clearRect(0,0,W,H);
+
+    // Grid
+    ctx.strokeStyle = 'rgba(180,100,150,0.07)'; ctx.lineWidth = 1;
+    for (let x=0; x<W; x+=sc) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y=0; y<H; y+=sc) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+    // Axes
+    ctx.strokeStyle = '#b898b4'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(0,cy); ctx.lineTo(W,cy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,H); ctx.stroke();
+
+    // Axis labels
+    ctx.fillStyle = '#b898b4'; ctx.font = '12px Quicksand';
+    for (let i=-2; i<=6; i++) {
+      if (i===0) continue;
+      ctx.fillText(i, cx+i*sc-4, cy+16);
+      ctx.fillText(i, cx+5, cy-i*sc+4);
+    }
+    ctx.fillText('p', W-18, cy-8);
+    ctx.fillText('b', cx+8, 14);
+
+    // Line 1: 2p + b = 5 → b = 5 - 2p
+    ctx.beginPath();
+    const p1s = -cx/sc, p1e = (W-cx)/sc;
+    ctx.moveTo(0, cy-(5-2*p1s)*sc);
+    ctx.lineTo(W, cy-(5-2*p1e)*sc);
+    ctx.strokeStyle = '#e8628a'; ctx.lineWidth = 2.5; ctx.stroke();
+
+    // Line 2: p + b = 4 → b = 4 - p
+    ctx.beginPath();
+    ctx.moveTo(0, cy-(4-p1s)*sc);
+    ctx.lineTo(W, cy-(4-p1e)*sc);
+    ctx.strokeStyle = '#9b7fc8'; ctx.lineWidth = 2.5; ctx.stroke();
+
+    // Labels
+    ctx.font = 'bold 11px Nunito';
+    ctx.fillStyle = '#e8628a';
+    ctx.fillText('2p + b = 5', cx+2.5*sc, cy-2*sc);
+    ctx.fillStyle = '#9b7fc8';
+    ctx.fillText('p + b = 4', cx+3*sc, cy-0.7*sc);
+
+    // Intersection point (1, 3)
+    const ix = cx + 1*sc, iy = cy - 3*sc;
+    ctx.beginPath(); ctx.arc(ix, iy, 6, 0, Math.PI*2);
+    ctx.fillStyle = '#5fbfa0'; ctx.fill();
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = '#3d2b3d'; ctx.font = 'bold 12px Nunito';
+    ctx.fillText('(1, 3) ✅', ix+8, iy-6);
+  }
+
+  updateUI();
+</script>
+</body>
+</html>
