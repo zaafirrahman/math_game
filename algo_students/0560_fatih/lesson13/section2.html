@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 2 · Contoh Soal Diskon · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;
+    --pink:#e05888;--pink-bg:rgba(224,88,136,0.1);
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 30%,rgba(74,144,184,0.06) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--steel-light);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--steel-bg);border:1px solid rgba(74,144,184,0.4);color:var(--steel-light);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.3rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:0.6rem;line-height:1.3;letter-spacing:1px;}
+  h1 span{color:var(--steel-light);}
+  .intro{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:8px;height:8px;border-radius:2px;background:var(--border2);transition:all 0.3s;}
+  .dot.active{background:var(--steel);box-shadow:0 0 8px rgba(74,144,184,0.4);transform:scaleX(1.5);}
+  .dot.done{background:var(--green);}
+
+  .slide{display:none;animation:fadeUp 0.35s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--steel),var(--amber));}
+  .card-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.steel{color:var(--steel-light);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card-label.pink{color:var(--pink);}
+  .card h2{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.7rem;line-height:1.4;letter-spacing:0.5px;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  /* Problem display */
+  .problem{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:1.2rem 1.4rem;margin:1rem 0;text-align:center;}
+  .prob-tag{font-family:'Rajdhani',sans-serif;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;}
+  .prob-text{font-family:'Rajdhani',sans-serif;font-size:clamp(1rem,3vw,1.3rem);font-weight:700;color:var(--text);line-height:1.5;}
+  .prob-text .h{color:var(--amber);}
+  .prob-text .d{color:var(--pink);}
+
+  /* Solution steps */
+  .solution{display:flex;flex-direction:column;gap:0.6rem;margin:1rem 0;}
+  .sol-step{display:flex;gap:0.9rem;align-items:flex-start;background:var(--track);border:1px solid var(--border);border-radius:10px;padding:0.75rem 1rem;font-size:0.88rem;color:var(--text-mid);}
+  .sol-n{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.7rem;color:#fff;background:var(--steel);border-radius:3px;min-width:24px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 4px;}
+  .sol-step .math{color:var(--amber);font-family:'Rajdhani',sans-serif;font-weight:700;}
+  .sol-step .ans{color:var(--green);font-weight:700;}
+
+  /* Answer highlight */
+  .answer-box{background:var(--green-bg);border:1px solid rgba(72,200,112,0.4);border-radius:10px;padding:1rem 1.4rem;margin:1rem 0;text-align:center;}
+  .answer-box .ans-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.3rem;}
+  .answer-box .ans-val{font-family:'Rajdhani',sans-serif;font-size:1.8rem;font-weight:700;color:var(--green);}
+
+  .hl{border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-pink{background:var(--pink-bg);border:1px solid rgba(224,88,136,0.35);}
+  .hl-amber{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);}
+  .hl-green{background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);}
+  .hl-steel{background:var(--steel-bg);border:1px solid rgba(74,144,184,0.35);color:var(--text-mid);}
+  .hl-pink strong{color:var(--pink);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+  .hl-steel strong{color:var(--steel-light);}
+
+  .divider{display:flex;align-items:center;gap:1rem;margin:1.2rem 0;}
+  .div-line{flex:1;height:1px;background:var(--border);}
+  .div-text{font-family:'Rajdhani',sans-serif;font-size:0.65rem;letter-spacing:2px;color:var(--text-muted);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--steel),#3a7098);color:#fff;box-shadow:0 4px 12px rgba(74,144,184,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--amber);margin-bottom:0.7rem;letter-spacing:2px;}
+  .finish-desc{color:var(--text-muted);line-height:1.7;margin-bottom:1.8rem;font-size:0.9rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.4);color:var(--amber);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.8rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  .level-badge{display:inline-block;padding:0.2rem 0.7rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:1px;margin-right:0.5rem;}
+  .lv1{background:rgba(72,200,112,0.15);color:var(--green);border:1px solid rgba(72,200,112,0.3);}
+  .lv2{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(240,168,48,0.3);}
+  .lv3{background:rgba(224,88,136,0.15);color:var(--pink);border:1px solid rgba(224,88,136,0.3);}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson13.html">LESSON 13</a><span>/</span>
+  <span class="cur">SEC 2</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📋 Section 02 · Contoh Soal</div>
+  <h1>Walkthrough <span>Soal Diskon</span></h1>
+  <p class="intro">Dari yang paling mudah sampai yang butuh strategi — ikutin alurnya step by step!</p>
+
+  <div class="dots" id="dots"></div>
+
+  <div id="slides">
+
+    <!-- Slide 1: Level 1 Soal A -->
+    <div class="slide active">
+      <div class="card">
+        <div class="card-label green">🟢 Level 1 — Soal A</div>
+        <h2>Diskon langsung dengan persen mudah</h2>
+        <div class="problem">
+          <div class="prob-tag">Soal</div>
+          <div class="prob-text">Harga buku <span class="h">Rp50</span>, diskon <span class="d">10%</span>. Bayar berapa?</div>
+        </div>
+        <div class="solution">
+          <div class="sol-step"><div class="sol-n">1</div>Identifikasi: harga = <span class="math">50</span>, diskon = <span class="math">10%</span></div>
+          <div class="sol-step"><div class="sol-n">2</div>10% dari 50 = 50 ÷ 10 = <span class="math">5</span> (ini jumlah diskon)</div>
+          <div class="sol-step"><div class="sol-n">3</div>Harga bayar = 50 − 5 = <span class="ans">45 ✓</span></div>
+        </div>
+        <div class="answer-box">
+          <div class="ans-label">Bayar</div>
+          <div class="ans-val">Rp45</div>
+        </div>
+        <div class="hl hl-green">
+          <strong>Cara cepat:</strong> 10% = ÷10. Langsung 50÷10=5, 50−5=45.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Level 1 Soal B -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">🟢 Level 1 — Soal B</div>
+        <h2>Diskon 50% — setengah harga</h2>
+        <div class="problem">
+          <div class="prob-tag">Soal</div>
+          <div class="prob-text">Mainan harga <span class="h">Rp100</span>, diskon <span class="d">50%</span>. Bayar berapa?</div>
+        </div>
+        <div class="solution">
+          <div class="sol-step"><div class="sol-n">1</div>Diskon 50% = setengah → bagi 2</div>
+          <div class="sol-step"><div class="sol-n">2</div>100 ÷ 2 = <span class="math">50</span> (jumlah diskon)</div>
+          <div class="sol-step"><div class="sol-n">3</div>Harga bayar = 100 − 50 = <span class="ans">50 ✓</span></div>
+        </div>
+        <div class="answer-box">
+          <div class="ans-label">Bayar</div>
+          <div class="ans-val">Rp50</div>
+        </div>
+        <div class="hl hl-green">
+          <strong>Catatan:</strong> Cara 1 juga bisa — bayar 50% dari 100 = 100÷2 = 50. Sama saja!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Level 2 Soal A -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🟡 Level 2 — Soal A</div>
+        <h2>Diskon 25% — seperempat harga</h2>
+        <div class="problem">
+          <div class="prob-tag">Soal</div>
+          <div class="prob-text">Baju harga <span class="h">Rp80</span>, diskon <span class="d">25%</span>. Bayar berapa?</div>
+        </div>
+        <div class="solution">
+          <div class="sol-step"><div class="sol-n">1</div>Diskon 25% = ¼ → bagi 4</div>
+          <div class="sol-step"><div class="sol-n">2</div>80 ÷ 4 = <span class="math">20</span> (jumlah diskon)</div>
+          <div class="sol-step"><div class="sol-n">3</div>Harga bayar = 80 − 20 = <span class="ans">60 ✓</span></div>
+        </div>
+        <div class="answer-box">
+          <div class="ans-label">Bayar</div>
+          <div class="ans-val">Rp60</div>
+        </div>
+        <div class="hl hl-amber">
+          <strong>Alternatif Cara 1:</strong> bayar 75% dari 80 = 3×(80÷4) = 3×20 = 60. Sama!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Level 2 Soal B - strategi 10%-dulu -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🟡 Level 2 — Soal B</div>
+        <h2>Strategi 10%-dulu untuk diskon 20%</h2>
+        <div class="problem">
+          <div class="prob-tag">Soal</div>
+          <div class="prob-text">Sepatu harga <span class="h">Rp60</span>, diskon <span class="d">20%</span>. Bayar berapa?</div>
+        </div>
+        <div class="solution">
+          <div class="sol-step"><div class="sol-n">1</div>Cari 10% dulu: 60 ÷ 10 = <span class="math">6</span></div>
+          <div class="sol-step"><div class="sol-n">2</div>Diskon 20% = 2 × 10% = 2 × 6 = <span class="math">12</span></div>
+          <div class="sol-step"><div class="sol-n">3</div>Harga bayar = 60 − 12 = <span class="ans">48 ✓</span></div>
+        </div>
+        <div class="answer-box">
+          <div class="ans-label">Bayar</div>
+          <div class="ans-val">Rp48</div>
+        </div>
+        <div class="hl hl-amber">
+          <strong>10%-dulu</strong> cocok untuk diskon 20%, 30%, 40% — tinggal kalikan!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Level 3 Soal A -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label pink">🔴 Level 3 — Soal A</div>
+        <h2>Diskon 50% dari harga lebih besar</h2>
+        <div class="problem">
+          <div class="prob-tag">Soal</div>
+          <div class="prob-text">Tas harga <span class="h">Rp120</span>, diskon <span class="d">50%</span>. Bayar berapa?</div>
+        </div>
+        <div class="solution">
+          <div class="sol-step"><div class="sol-n">1</div>Diskon 50% = bagi 2: 120 ÷ 2 = <span class="math">60</span></div>
+          <div class="sol-step"><div class="sol-n">2</div>Harga bayar = 120 − 60 = <span class="ans">60 ✓</span></div>
+        </div>
+        <div class="answer-box">
+          <div class="ans-label">Bayar</div>
+          <div class="ans-val">Rp60</div>
+        </div>
+
+        <div class="divider"><div class="div-line"></div><div class="div-text">juga coba</div><div class="div-line"></div></div>
+
+        <div class="problem">
+          <div class="prob-tag">Soal</div>
+          <div class="prob-text">Buku harga <span class="h">Rp200</span>, diskon <span class="d">10%</span>. Bayar berapa?</div>
+        </div>
+        <div class="solution">
+          <div class="sol-step"><div class="sol-n">1</div>10% dari 200 = 200 ÷ 10 = <span class="math">20</span></div>
+          <div class="sol-step"><div class="sol-n">2</div>Harga bayar = 200 − 20 = <span class="ans">180 ✓</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Ringkasan strategi -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">🗺️ Peta Strategi</div>
+        <h2>Pilih cara yang paling cepat!</h2>
+        <p style="margin-bottom:1rem;">Lihat tabel ini setiap kali ketemu soal diskon:</p>
+        <div class="solution">
+          <div class="sol-step"><div class="sol-n" style="background:var(--pink);color:#fff;">50%</div><strong>Bagi 2</strong> → diskon = harga÷2 → bayar = harga÷2</div>
+          <div class="sol-step"><div class="sol-n" style="background:var(--pink);color:#fff;">25%</div><strong>Bagi 4</strong> → diskon = harga÷4 → bayar = harga−diskon</div>
+          <div class="sol-step"><div class="sol-n" style="background:var(--amber);color:#000;">10%</div><strong>Bagi 10</strong> → diskon = harga÷10 → bayar = harga−diskon</div>
+          <div class="sol-step"><div class="sol-n" style="background:var(--amber);color:#000;">20%</div><strong>Cari 10%</strong> dulu → ×2 → bayar = harga−diskon</div>
+          <div class="sol-step"><div class="sol-n" style="background:var(--steel);color:#fff;">Lain</div><strong>Cara 2 langkah:</strong> hitung diskon dulu → kurangi dari harga</div>
+        </div>
+        <div class="hl hl-steel">
+          <strong>Kunci:</strong> Selalu tanya — "berapa persen yang dibayar?" atau "berapa rupiah yang dipotong?" — pilih yang lebih mudah dikerjakan.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Finish -->
+    <div class="slide">
+      <div class="card finish">
+        <span class="finish-icon">📋</span>
+        <div class="finish-title">CONTOH SOAL SELESAI!</div>
+        <div class="finish-desc">Level 1 sampai 3 sudah kamu kuasai! Sekarang waktunya uji kecepatan di Sprint Mode — bisa nggak ngerjain soal diskon dalam 20 detik?</div>
+        <div class="xp">+ 80 XP — WALKTHROUGH DONE</div>
+        <div class="finish-btns">
+          <a href="lesson13.html" class="btn btn-ghost">← Lesson Hub</a>
+          <a href="section3.html" class="btn btn-primary">Sprint Mode ⚡</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-btns" id="navbtns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="go(-1)" disabled>← Prev</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL=7; let cur=0;
+  const dotsEl=document.getElementById('dots');
+  const slides=document.querySelectorAll('.slide');
+  const prev=document.getElementById('prevBtn'),next=document.getElementById('nextBtn'),nav=document.getElementById('navbtns');
+
+  for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
+  function updateUI(){
+    slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+    dotsEl.querySelectorAll('.dot').forEach((d,i)=>{d.classList.remove('active','done');if(i<cur)d.classList.add('done');if(i===cur)d.classList.add('active');});
+    prev.disabled=cur===0;
+    nav.style.display=cur===TOTAL-1?'none':'flex';
+    next.disabled=false;
+  }
+  function go(dir){cur=Math.max(0,Math.min(TOTAL-1,cur+dir));updateUI();}
+  updateUI();
+</script>
+</body>
+</html>
