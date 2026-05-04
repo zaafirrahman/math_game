@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 4 · Latihan Mandiri · L20 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fdf6fb;--card:#fff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --lavender:#9b7fc8;--lavender-light:#c8b4e8;--lav-bg:rgba(155,127,200,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --peach:#f0956a;
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --amber:#f5c842;
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 80%,rgba(95,191,160,0.07) 0%,transparent 50%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--mint);}
+
+  .wrap{max-width:700px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  /* Header */
+  .hw-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--mint);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--mint);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:0.8rem;}
+  .progress-bar-wrap{height:6px;background:var(--border);border-radius:99px;margin-bottom:2rem;overflow:hidden;}
+  .progress-bar{height:100%;background:linear-gradient(90deg,var(--mint),var(--ocean));border-radius:99px;transition:width 0.5s ease;width:0%;}
+
+  /* Question card */
+  .q-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.2rem;box-shadow:0 3px 12px var(--shadow);display:none;animation:fadeUp 0.35s ease;}
+  .q-card.show{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .q-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;gap:1rem;}
+  .q-num{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--mint);}
+  .q-tag{font-size:0.62rem;font-weight:700;padding:0.18rem 0.6rem;border-radius:99px;text-transform:uppercase;letter-spacing:0.5px;}
+  .tag-elim{background:var(--ocean-bg);color:var(--ocean);border:1.5px solid var(--ocean-light);}
+  .tag-subst{background:var(--lav-bg);color:var(--lavender);border:1.5px solid var(--lavender-light);}
+  .tag-mix{background:rgba(245,200,66,0.12);color:#c9a000;border:1.5px solid rgba(245,200,66,0.4);}
+  .q-text{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;margin-bottom:0.4rem;line-height:1.6;color:var(--text);}
+  .q-sys{background:linear-gradient(135deg,var(--ocean-bg),var(--lav-bg));border:1.5px solid var(--ocean-light);border-radius:12px;padding:0.8rem 1.1rem;margin:0.8rem 0;font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:800;color:var(--text);line-height:1.8;}
+  .q-hint{font-size:0.8rem;color:var(--text-muted);margin-bottom:1.2rem;font-style:italic;}
+
+  .opts{display:flex;flex-direction:column;gap:0.7rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.9rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;display:flex;gap:0.6rem;align-items:flex-start;}
+  .opt-btn:hover:not(:disabled){border-color:var(--mint-light);background:rgba(95,191,160,0.05);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-letter{font-family:'Nunito',sans-serif;font-weight:900;width:20px;flex-shrink:0;color:var(--text-muted);}
+
+  .feedback{margin-top:1rem;padding:0.9rem 1.1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;line-height:1.6;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .next-q-btn{margin-top:1.1rem;width:100%;padding:0.85rem;border-radius:99px;border:none;background:var(--card);border:2px solid var(--mint-light);color:var(--mint);font-family:'Nunito',sans-serif;font-weight:800;font-size:0.88rem;cursor:pointer;display:none;transition:all 0.2s;}
+  .next-q-btn.show{display:block;}
+  .next-q-btn:hover{background:var(--mint-bg);}
+
+  /* Score bar */
+  .score-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;font-size:0.88rem;}
+  .score-box{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:0.5rem 1.1rem;box-shadow:0 2px 8px var(--shadow);}
+  .score-val{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.1rem;color:var(--mint);}
+
+  /* Finish */
+  .finish-panel{background:var(--card);border:2px solid var(--border);border-radius:24px;padding:3rem 2rem;text-align:center;display:none;box-shadow:0 6px 24px var(--shadow);}
+  .finish-panel.show{display:block;animation:fadeUp 0.4s ease;}
+  .fi-icon{font-size:5rem;display:block;margin-bottom:1.2rem;}
+  .fi-title{font-family:'Nunito',sans-serif;font-size:1.8rem;font-weight:900;color:var(--mint);margin-bottom:0.5rem;}
+  .fi-sub{color:var(--text-muted);line-height:1.7;margin-bottom:2rem;font-size:0.92rem;}
+  .grade-ring{width:120px;height:120px;margin:0 auto 1.5rem;position:relative;}
+  .grade-ring svg{transform:rotate(-90deg);}
+  .grade-ring circle{fill:none;stroke-width:9;}
+  .gr-bg{stroke:var(--border);}
+  .gr-fg{stroke:var(--mint);stroke-linecap:round;transition:stroke-dashoffset 1.5s ease;}
+  .grade-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .grade-score{font-family:'Nunito',sans-serif;font-size:1.8rem;font-weight:900;color:var(--text);}
+  .grade-lbl{font-size:0.65rem;color:var(--text-muted);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+  .xp-badge{display:inline-block;background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--mint);padding:0.35rem 1.2rem;border-radius:99px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;margin-bottom:1.5rem;}
+  .breakdown{text-align:left;margin-bottom:2rem;}
+  .br-row{display:flex;justify-content:space-between;align-items:center;padding:0.45rem 0;border-bottom:1px solid var(--border);font-size:0.85rem;}
+  .br-row:last-child{border-bottom:none;font-weight:800;}
+  .br-ok{color:var(--mint);font-family:'Nunito',sans-serif;font-weight:800;}
+  .br-no{color:var(--rose);font-family:'Nunito',sans-serif;font-weight:800;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--mint-light);color:var(--mint);}
+  .btn-primary{background:linear-gradient(135deg,var(--mint),var(--ocean));color:#fff;box-shadow:0 4px 14px rgba(95,191,160,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson20.html">LESSON 20</a><span>›</span>
+  <span class="cur">SEC 4 · MANDIRI</span>
+</nav>
+
+<div class="wrap">
+  <div class="hw-badge">🌙 Section 04 · Homework Mode</div>
+  <h1>Latihan <span>Mandiri</span></h1>
+  <p class="intro">Santai, tidak ada timer. 10 soal eliminasi dan campuran — kerjain sendiri dulu sebelum lihat jawabannya!</p>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+  <div class="score-row">
+    <span style="font-size:0.82rem;color:var(--text-muted);font-weight:600;">Pertanyaan <span id="qNumLabel">1</span> dari 10</span>
+    <div class="score-box">Benar: <span class="score-val" id="scoreLabel">0</span>/10</div>
+  </div>
+
+  <div id="questionContainer"></div>
+
+  <div class="finish-panel" id="finishPanel">
+    <span class="fi-icon" id="fiIcon"></span>
+    <div class="fi-title" id="fiTitle"></div>
+    <div class="fi-sub" id="fiSub"></div>
+    <div class="grade-ring">
+      <svg width="120" height="120" viewBox="0 0 120 120">
+        <circle class="gr-bg" cx="60" cy="60" r="50"/>
+        <circle class="gr-fg" id="grFg" cx="60" cy="60" r="50" stroke-dasharray="314.2" stroke-dashoffset="314.2"/>
+      </svg>
+      <div class="grade-num">
+        <div class="grade-score" id="grScore">0</div>
+        <div class="grade-lbl">Benar</div>
+      </div>
+    </div>
+    <div class="xp-badge" id="xpBadge"></div>
+    <div class="breakdown" id="breakdown"></div>
+    <div class="finish-btns">
+      <button class="btn btn-ghost" onclick="restartAll()">🔄 Ulangi</button>
+      <a href="lesson20.html" class="btn btn-primary">← Lesson 20</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const Qs = [
+    {
+      tag:'elim', tagLabel:'Eliminasi Langsung',
+      text:'Selesaikan dengan eliminasi:',
+      sys:'x + y = 10\n2x + y = 14',
+      hint:'Koefisien y sudah sama, langsung bisa dikurangi',
+      opts:['x = 4, y = 6','x = 3, y = 7','x = 6, y = 4','x = 5, y = 5'],
+      answer:'x = 4, y = 6',
+      explain:'Pers 2 − Pers 1: x = 4. Substitusi ke pers 1: 4 + y = 10 → y = 6. Cek: 2(4)+6=14 ✓'
+    },
+    {
+      tag:'elim', tagLabel:'Eliminasi Langsung',
+      text:'Selesaikan dengan eliminasi:',
+      sys:'3x + y = 13\n5x + y = 19',
+      hint:'Kurangi persamaan 1 dari persamaan 2',
+      opts:['x = 2, y = 7','x = 3, y = 4','x = 4, y = 1','x = 1, y = 10'],
+      answer:'x = 3, y = 4',
+      explain:'Pers 2 − Pers 1: 2x = 6 → x = 3. Substitusi: 3(3)+y=13 → 9+y=13 → y=4.'
+    },
+    {
+      tag:'mix', tagLabel:'Pilih Strategi',
+      text:'Cara paling efisien untuk menyelesaikan sistem ini adalah...',
+      sys:'2x + 3y = 12\n2x + y = 8',
+      hint:'Perhatikan mana yang koefisiennya sama',
+      opts:['Eliminasi x (koefisien sama)','Eliminasi y','Substitusi x dari pers 1','Tidak bisa diselesaikan'],
+      answer:'Eliminasi x (koefisien sama)',
+      explain:'Kedua persamaan punya 2x (koefisien sama). Kurangkan: (2x+3y)−(2x+y) = 12−8 → 2y = 4 → y = 2. Lalu x = 3.'
+    },
+    {
+      tag:'elim', tagLabel:'Koefisien Berbeda',
+      text:'Selesaikan sistem berikut:',
+      sys:'x + 2y = 8\n3x + 2y = 16',
+      hint:'Koefisien y sudah sama (2y), langsung eliminasi',
+      opts:['x = 3, y = 2.5','x = 4, y = 2','x = 2, y = 3','x = 6, y = 1'],
+      answer:'x = 4, y = 2',
+      explain:'Pers 2 − Pers 1: 2x = 8 → x = 4. Substitusi: 4 + 2y = 8 → 2y = 4 → y = 2.'
+    },
+    {
+      tag:'elim', tagLabel:'Menyamakan Koefisien',
+      text:'Selesaikan dengan menyamakan koefisien y dulu:',
+      sys:'3x + y = 11\nx + 2y = 7',
+      hint:'Kalikan persamaan 1 dengan 2, lalu kurangkan',
+      opts:['x = 3, y = 2','x = 5, y = −4','x = 2, y = 5','x = 1, y = 8'],
+      answer:'x = 3, y = 2',
+      explain:'Pers 1 × 2: 6x + 2y = 22. Kurangi pers 2: 5x = 15 → x = 3. Substitusi: 3+2y=7 → y=2.'
+    },
+    {
+      tag:'subst', tagLabel:'Substitusi / Eliminasi',
+      text:'Nilai x + y dari sistem berikut adalah:',
+      sys:'2x − y = 3\nx + y = 9',
+      hint:'Coba jumlahkan kedua persamaan',
+      opts:['8','9','10','12'],
+      answer:'9',
+      explain:'Perhatikan: x + y = 9 langsung dari persamaan 2! Tapi nilai xnya: jumlah pers 1+2: 3x = 12 → x = 4, y = 5. Maka x+y = 9.'
+    },
+    {
+      tag:'elim', tagLabel:'Tanda Berlawanan',
+      text:'Selesaikan:',
+      sys:'4x + y = 15\n2x − y = 3',
+      hint:'Tanda y berlawanan, coba jumlahkan',
+      opts:['x = 2, y = 7','x = 3, y = 3','x = 4, y = −1','x = 1, y = 11'],
+      answer:'x = 3, y = 3',
+      explain:'Jumlahkan kedua pers: 6x = 18 → x = 3. Substitusi ke pers 1: 12 + y = 15 → y = 3.'
+    },
+    {
+      tag:'mix', tagLabel:'Soal Cerita',
+      text:'Harga 2 buku + 3 pensil = Rp 13.000. Harga 2 buku + 1 pensil = Rp 9.000. Berapa harga 1 pensil?',
+      sys:'2b + 3p = 13\n2b + p = 9',
+      hint:'Koefisien b sama, eliminasi b',
+      opts:['Rp 1.000','Rp 2.000','Rp 3.000','Rp 4.000'],
+      answer:'Rp 2.000',
+      explain:'Pers 1 − Pers 2: 2p = 4 → p = 2. Harga pensil = Rp 2.000. Cek: 2b+3(2)=13 → 2b=7 → b=3.5 ribu.'
+    },
+    {
+      tag:'elim', tagLabel:'Eliminasi Lanjutan',
+      text:'Selesaikan sistem ini:',
+      sys:'2x + 3y = 16\nx + 2y = 10',
+      hint:'Kalikan persamaan 2 dengan 2, lalu eliminasi x',
+      opts:['x = 2, y = 4','x = 4, y = 2.67','x = 1, y = 4.5','x = 4, y = 8/3'],
+      answer:'x = 2, y = 4',
+      explain:'Pers 2 × 2: 2x + 4y = 20. Kurangi pers 1: y = 4. Substitusi: x + 2(4) = 10 → x = 2.'
+    },
+    {
+      tag:'mix', tagLabel:'Kesimpulan',
+      text:'Pernyataan mana yang BENAR tentang eliminasi vs substitusi?',
+      sys:'',
+      hint:'Pikirkan kelemahan dan kelebihan masing-masing',
+      opts:[
+        'Eliminasi selalu lebih cepat dari substitusi',
+        'Substitusi tidak bisa dipakai jika koefisien berbeda',
+        'Eliminasi cocok saat ada variabel dengan koefisien yang sama atau bisa disamakan',
+        'Kita hanya boleh pakai satu metode untuk satu soal'
+      ],
+      answer:'Eliminasi cocok saat ada variabel dengan koefisien yang sama atau bisa disamakan',
+      explain:'Tidak ada metode yang selalu lebih baik — tergantung soalnya. Eliminasi efisien saat koefisien sudah/bisa disamakan. Keduanya valid!'
+    }
+  ];
+
+  let cur = 0, correctCount = 0;
+  const results = [];
+  const container = document.getElementById('questionContainer');
+
+  function renderQ(idx) {
+    const q = Qs[idx];
+    container.innerHTML = '';
+    const card = document.createElement('div');
+    card.className = 'q-card show';
+
+    const letters = ['A','B','C','D'];
+    const sysHtml = q.sys ? `<div class="q-sys">${q.sys.replace(/\n/g,'<br>')}</div>` : '';
+    card.innerHTML = `
+      <div class="q-header">
+        <div class="q-num">Soal ${idx+1} dari 10</div>
+        <span class="q-tag tag-${q.tag}">${q.tagLabel}</span>
+      </div>
+      <div class="q-text">${q.text}</div>
+      ${sysHtml}
+      <div class="q-hint">💡 ${q.hint}</div>
+      <div class="opts" id="opts${idx}">
+        ${q.opts.map((o,i) => `<button class="opt-btn" onclick="pickAns(this,'${idx}','${o.replace(/'/g,"\\'")}')">
+          <span class="opt-letter">${letters[i]}.</span>${o}
+        </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${idx}"></div>
+      <button class="next-q-btn" id="nextq${idx}" onclick="nextQ(${idx})">
+        ${idx < 9 ? 'Soal Berikutnya →' : 'Lihat Hasil 🏆'}
+      </button>
+    `;
+    container.appendChild(card);
+  }
+
+  function pickAns(btn, idx, choice) {
+    const q = Qs[idx];
+    const correct = choice === q.answer;
+    if (btn.disabled) return;
+    document.querySelectorAll(`#opts${idx} .opt-btn`).forEach(b => b.disabled = true);
+    btn.classList.add(correct ? 'correct' : 'wrong');
+    if (!correct) {
+      document.querySelectorAll(`#opts${idx} .opt-btn`).forEach(b => {
+        if (b.textContent.trim().slice(2).trim() === q.answer || b.textContent.includes(q.answer)) {
+          if (!b.classList.contains('wrong')) b.classList.add('correct');
+        }
+      });
+    }
+    if (correct) {
+      correctCount++;
+      document.getElementById('scoreLabel').textContent = correctCount;
+    }
+    results[idx] = { text: q.text, ok: correct };
+
+    const fb = document.getElementById(`fb${idx}`);
+    fb.className = 'feedback show ' + (correct ? 'ok' : 'no');
+    fb.textContent = (correct ? '✅ ' : '❌ ') + q.explain;
+
+    document.getElementById(`nextq${idx}`).className = 'next-q-btn show';
+
+    // Update progress
+    const done = results.filter(r => r !== undefined).length;
+    document.getElementById('progressBar').style.width = (done/10*100)+'%';
+  }
+
+  function nextQ(idx) {
+    if (idx >= 9) {
+      showFinish();
+    } else {
+      cur = idx + 1;
+      document.getElementById('qNumLabel').textContent = cur + 1;
+      renderQ(cur);
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+  }
+
+  function showFinish() {
+    container.innerHTML = '';
+    const panel = document.getElementById('finishPanel');
+    panel.className = 'finish-panel show';
+
+    const pct = correctCount / 10;
+    let icon, title, sub, xp;
+    if (pct >= 0.9) { icon='🏆'; title='Sempurna!'; sub='Kamu menguasai metode eliminasi dengan luar biasa. Semua konsep — dari eliminasi langsung sampai menyamakan koefisien — kamu pahami dengan baik!'; xp='+150 XP'; }
+    else if (pct >= 0.7) { icon='⭐'; title='Kerja Bagus!'; sub='Sebagian besar soal kamu kerjakan dengan benar. Review soal yang salah dan kamu akan semakin kuat!'; xp='+100 XP'; }
+    else if (pct >= 0.5) { icon='💪'; title='Terus Berlatih!'; sub='Kamu sudah paham dasarnya. Coba ulangi soal yang salah dan baca kembali penjelasannya ya.'; xp='+70 XP'; }
+    else { icon='📚'; title='Belajar Lagi Yuk!'; sub='Tidak apa-apa — kembali ke Section 1 dan 2 untuk memperkuat konsep eliminasi dulu. Semangat!'; xp='+40 XP'; }
+
+    document.getElementById('fiIcon').textContent = icon;
+    document.getElementById('fiTitle').textContent = title;
+    document.getElementById('fiSub').textContent = sub;
+    document.getElementById('grScore').textContent = correctCount;
+    document.getElementById('xpBadge').textContent = `✨ ${xp} — Latihan Mandiri L20`;
+
+    // Animate ring
+    const CIRC = 314.2;
+    const offset = CIRC * (1 - pct);
+    setTimeout(() => {
+      const fg = document.getElementById('grFg');
+      fg.style.stroke = pct >= 0.7 ? 'var(--mint)' : pct >= 0.5 ? 'var(--peach)' : 'var(--rose)';
+      fg.style.strokeDashoffset = offset;
+    }, 100);
+
+    let html = '';
+    results.forEach((r, i) => {
+      if (r) html += `<div class="br-row"><span style="color:var(--text-mid)">Soal ${i+1}: ${r.text.slice(0,35)}...</span><span class="${r.ok?'br-ok':'br-no'}">${r.ok?'✓':'✗'}</span></div>`;
+    });
+    html += `<div class="br-row"><span>Total Benar</span><span>${correctCount}/10</span></div>`;
+    document.getElementById('breakdown').innerHTML = html;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function restartAll() {
+    cur = 0; correctCount = 0; results.length = 0;
+    document.getElementById('scoreLabel').textContent = '0';
+    document.getElementById('qNumLabel').textContent = '1';
+    document.getElementById('progressBar').style.width = '0%';
+    document.getElementById('finishPanel').className = 'finish-panel';
+    renderQ(0);
+  }
+
+  renderQ(0);
+</script>
+</body>
+</html>
