@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise Zone · Lesson 5 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --card: #1a1a28; --border: #2a2a40;
+    --neon: #00f5c4; --neon2: #7c3aed; --accent: #f59e0b;
+    --cyan: #22d3ee; --red: #ef4444; --green: #4ade80;
+    --violet: #a78bfa; --text: #e2e8f0; --muted: #64748b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 20% 70%, rgba(167,139,250,0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(34,211,238,0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  nav {
+    padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.9); backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+    font-family: 'Orbitron', monospace; font-size: 0.72rem; letter-spacing: 1px;
+  }
+  nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--neon); }
+  nav span { color: var(--border); }
+  nav .current { color: var(--violet); }
+  .wrapper { max-width: 760px; margin: 0 auto; padding: 2.5rem 1rem 6rem; position: relative; z-index: 1; }
+  @media (max-width: 480px) { .wrapper { padding: 2rem 0.75rem 6rem; } }
+
+  .page-header { margin-bottom: 2rem; }
+  .page-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.25); color: var(--violet); font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; padding: 0.3rem 1rem; border-radius: 20px; margin-bottom: 1.2rem; font-family: 'Orbitron', monospace; }
+  .page-title { font-family: 'Orbitron', monospace; font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 900; margin-bottom: 0.6rem; }
+  .page-title span { color: var(--violet); }
+  .page-desc { color: var(--muted); font-size: 0.92rem; line-height: 1.6; }
+
+  .progress-panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.2rem 1.5rem; margin-bottom: 2rem; }
+  .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+  .prog-label { font-family: 'Orbitron', monospace; font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .prog-count { font-family: 'Orbitron', monospace; font-size: 0.95rem; font-weight: 700; color: var(--violet); }
+  .prog-track { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 0.6rem; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--neon2), var(--violet)); border-radius: 99px; transition: width 0.6s ease; }
+  .prog-sub { font-size: 0.78rem; color: var(--muted); }
+  .reset-link { float: right; font-size: 0.72rem; color: var(--muted); cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+  .reset-link:hover { color: var(--red); }
+
+  .sec-divider { font-family: 'Orbitron', monospace; font-size: 0.62rem; letter-spacing: 4px; text-transform: uppercase; padding: 0.6rem 0; margin: 1.5rem 0 1rem; border-bottom: 1px solid var(--border); }
+  .sd-fpb { color: var(--violet); }
+  .sd-kpk { color: var(--cyan); }
+  .sd-mix { color: var(--green); }
+
+  .exercise-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; max-width: 100%; }
+  @media(max-width: 480px) { .exercise-grid { grid-template-columns: 1fr; padding: 0 0.5rem; } }
+
+  .ex-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.2rem; transition: border-color 0.2s; position: relative; overflow: hidden; }
+  .ex-card.done-card { border-color: rgba(167,139,250,0.35); background: rgba(167,139,250,0.03); }
+
+  .ex-num { font-family: 'Orbitron', monospace; font-size: 0.6rem; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 0.4rem; }
+  .ex-tag { display: inline-block; font-size: 0.58rem; padding: 0.15rem 0.45rem; border-radius: 6px; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+  .ex-tag.tag-fpb { background: rgba(167,139,250,0.1); color: var(--violet); border: 1px solid rgba(167,139,250,0.25); }
+  .ex-tag.tag-kpk { background: rgba(34,211,238,0.1); color: var(--cyan); border: 1px solid rgba(34,211,238,0.25); }
+  .ex-tag.tag-mix { background: rgba(74,222,128,0.1); color: var(--green); border: 1px solid rgba(74,222,128,0.25); }
+
+  .ex-q { font-family: 'Orbitron', monospace; font-size: clamp(1rem, 4vw, 1.3rem); font-weight: 900; color: var(--text); margin-bottom: 0.5rem; line-height: 1.4; word-break: break-word; }
+  .ex-hint { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.8rem; font-style: italic; line-height: 1.4; }
+  .ex-card.done-card .ex-q { color: var(--violet); }
+
+  .ex-input-wrap { display: flex; flex-direction: column; gap: 0.5rem; }
+  .ex-input-row { display: flex; gap: 0.5rem; align-items: center; }
+  .ex-input { flex: 1; background: #12121c; border: 2px solid var(--border); color: var(--text); padding: 0.6rem 0.8rem; border-radius: 10px; font-family: 'Orbitron', monospace; font-size: 1rem; text-align: center; transition: border-color 0.2s; outline: none; min-width: 0; width: 100%; }
+  .ex-input:focus { border-color: var(--neon2); }
+  .ex-input.correct { border-color: var(--violet); color: var(--violet); }
+  .ex-input.wrong-anim { border-color: var(--red); color: var(--red); animation: shake 0.4s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0);} 20%,60%{transform:translateX(-6px);} 40%,80%{transform:translateX(6px);} }
+  .ex-btn { background: rgba(124,58,237,0.2); border: 1px solid rgba(124,58,237,0.4); color: #a78bfa; padding: 0.6rem 0.9rem; border-radius: 10px; cursor: pointer; font-family: 'Orbitron', monospace; font-size: 0.65rem; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+  .ex-btn:hover { background: rgba(124,58,237,0.35); border-color: #a78bfa; }
+  .ex-btn:disabled { opacity: 0.3; cursor: default; }
+  @media (max-width: 360px) { .ex-input-row { flex-direction: column; } .ex-btn { width: 100%; } }
+  .ex-feedback { margin-top: 0.6rem; font-size: 0.82rem; font-weight: 700; display: none; line-height: 1.5; }
+  .ex-feedback.show { display: block; }
+  .ex-feedback.ok { color: var(--violet); }
+  .ex-feedback.no { color: var(--red); }
+  .done-badge { position: absolute; top: 1rem; right: 1rem; background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.4); color: var(--violet); font-family: 'Orbitron', monospace; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; padding: 0.2rem 0.5rem; border-radius: 8px; }
+  .attempts-row { margin-top: 0.4rem; display: flex; gap: 2px; align-items: center; }
+  .attempts-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--red); margin-right: 2px; }
+
+  #allDone { display: none; text-align: center; padding: 3rem 2rem; }
+  .alldone-icon { font-size: 5rem; display: block; margin-bottom: 1.5rem; animation: bounce 1s ease infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+  .alldone-title { font-family: 'Orbitron', monospace; font-size: clamp(1.5rem,5vw,2rem); color: var(--violet); margin-bottom: 0.8rem; }
+  .alldone-desc { color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
+  .alldone-xp { display: inline-block; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.4); color: var(--accent); padding: 0.5rem 1.5rem; border-radius: 20px; font-family: 'Orbitron', monospace; font-size: 0.9rem; margin-bottom: 2rem; }
+  .action-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn { padding: 0.8rem 1.8rem; border-radius: 10px; border: none; font-family: 'Orbitron', monospace; font-size: 0.78rem; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+  .btn-ghost:hover { border-color: var(--neon); color: var(--neon); }
+  .btn-primary { background: linear-gradient(135deg,var(--neon2),#4f46e5); color: white; box-shadow: 0 4px 15px rgba(124,58,237,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson5.html">LESSON 5</a>
+  <span>›</span>
+  <span class="current">EXERCISE</span>
+</nav>
+
+<div class="wrapper">
+
+  <div class="page-header">
+    <div class="page-badge">🏋️ Exercise Zone</div>
+    <div class="page-title">Latihan <span>FPB &amp; KPK</span></div>
+    <div class="page-desc">20 soal santai tanpa timer. Coba jawab, cek, dan pelajari penjelasannya. Progress tersimpan otomatis!</div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress</span>
+      <span class="prog-count" id="progCount">0 / 20</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      Selesaikan semua soal untuk unlock badge!
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+  <div id="allDone">
+    <span class="alldone-icon">🌟</span>
+    <div class="alldone-title">SEMUA SELESAI!</div>
+    <div class="alldone-desc">
+      Luar biasa! Kamu udah selesaikan semua 20 soal FPB &amp; KPK.<br>
+      Irisan angka udah kamu kuasai — ini fondasi untuk semua konsep matematika lanjutan!
+    </div>
+    <div class="alldone-xp">✨ +200 XP — Exercise Zone Conquered!</div>
+    <div class="action-btns">
+      <a href="lesson5.html" class="btn btn-ghost">← Lesson Hub</a>
+      <button class="btn btn-primary" onclick="resetProgress()">🔄 Ulangi Semua</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson5_exercise';
+
+const exercises = [
+  // FPB (soal 1-8)
+  { id:1, type:'fpb', tag:'tag-fpb', tagLabel:'🔵 FPB',
+    q:'FPB dari 6 dan 9?',
+    hint:'Faktor 6: 1,2,3,6 | Faktor 9: 1,3,9',
+    answers:['3'],
+    explain:'✅ Faktor persekutuan 6 dan 9: 1,3 → yang terbesar adalah 3. FPB(6,9) = 3!' },
+
+  { id:2, type:'fpb', tag:'tag-fpb', tagLabel:'🔵 FPB',
+    q:'FPB dari 8 dan 12?',
+    hint:'Faktor 8: 1,2,4,8 | Faktor 12: 1,2,3,4,6,12',
+    answers:['4'],
+    explain:'✅ Faktor persekutuan: 1,2,4 → terbesar adalah 4. FPB(8,12) = 4!' },
+
+  { id:3, type:'fpb', tag:'tag-fpb', tagLabel:'🔵 FPB',
+    q:'FPB dari 10 dan 15?',
+    hint:'Faktor 10: 1,2,5,10 | Faktor 15: 1,3,5,15',
+    answers:['5'],
+    explain:'✅ Faktor persekutuan 10 dan 15: 1,5 → terbesar adalah 5. FPB(10,15) = 5!' },
+
+  { id:4, type:'fpb', tag:'tag-fpb', tagLabel:'🔵 FPB',
+    q:'FPB dari 18 dan 24?',
+    hint:'Faktor 18: 1,2,3,6,9,18 | Faktor 24: 1,2,3,4,6,8,12,24',
+    answers:['6'],
+    explain:'✅ Faktor persekutuan: 1,2,3,6 → terbesar adalah 6. FPB(18,24) = 6!' },
+
+  { id:5, type:'fpb', tag:'tag-fpb', tagLabel:'🔵 FPB',
+    q:'FPB dari 20 dan 28?',
+    hint:'Faktor 20: 1,2,4,5,10,20 | Faktor 28: 1,2,4,7,14,28',
+    answers:['4'],
+    explain:'✅ Faktor persekutuan 20 dan 28: 1,2,4 → terbesar adalah 4. FPB(20,28) = 4!' },
+
+  { id:6, type:'fpb', tag:'tag-fpb', tagLabel:'🔵 FPB',
+    q:'FPB dari 9 dan 12?',
+    hint:'Faktor 9: 1,3,9 | Faktor 12: 1,2,3,4,6,12',
+    answers:['3'],
+    explain:'✅ Faktor persekutuan 9 dan 12: 1,3 → terbesar adalah 3. FPB(9,12) = 3!' },
+
+  { id:7, type:'fpb', tag:'tag-fpb', tagLabel:'🔵 FPB',
+    q:'FPB dari 16 dan 20?',
+    hint:'Faktor 16: 1,2,4,8,16 | Faktor 20: 1,2,4,5,10,20',
+    answers:['4'],
+    explain:'✅ Faktor persekutuan 16 dan 20: 1,2,4 → terbesar adalah 4. FPB(16,20) = 4!' },
+
+  { id:8, type:'fpb', tag:'tag-fpb', tagLabel:'🔵 FPB',
+    q:'FPB dari 30 dan 45?',
+    hint:'Faktor 30: 1,2,3,5,6,10,15,30 | Faktor 45: 1,3,5,9,15,45',
+    answers:['15'],
+    explain:'✅ Faktor persekutuan: 1,3,5,15 → terbesar adalah 15. FPB(30,45) = 15!' },
+
+  // KPK (soal 9-16)
+  { id:9, type:'kpk', tag:'tag-kpk', tagLabel:'🟦 KPK',
+    q:'KPK dari 2 dan 3?',
+    hint:'Kelipatan 2: 2,4,6... | Kelipatan 3: 3,6...',
+    answers:['6'],
+    explain:'✅ Kelipatan 2: 2,4,→6. Kelipatan 3: 3,→6. KPK(2,3) = 6!' },
+
+  { id:10, type:'kpk', tag:'tag-kpk', tagLabel:'🟦 KPK',
+    q:'KPK dari 4 dan 5?',
+    hint:'Kelipatan 4: 4,8,12,16,20 | Kelipatan 5: 5,10,15,20',
+    answers:['20'],
+    explain:'✅ Kelipatan 4: ...→20. Kelipatan 5: ...→20. KPK(4,5) = 20!' },
+
+  { id:11, type:'kpk', tag:'tag-kpk', tagLabel:'🟦 KPK',
+    q:'KPK dari 6 dan 9?',
+    hint:'Kelipatan 6: 6,12,18... | Kelipatan 9: 9,18...',
+    answers:['18'],
+    explain:'✅ Kelipatan 6: 6,12,→18. Kelipatan 9: 9,→18. KPK(6,9) = 18!' },
+
+  { id:12, type:'kpk', tag:'tag-kpk', tagLabel:'🟦 KPK',
+    q:'KPK dari 3 dan 8?',
+    hint:'Kelipatan 3: 3,6,9,12,15,18,21,24 | Kelipatan 8: 8,16,24',
+    answers:['24'],
+    explain:'✅ Kelipatan 3: ...→24. Kelipatan 8: 8,16,→24. KPK(3,8) = 24!' },
+
+  { id:13, type:'kpk', tag:'tag-kpk', tagLabel:'🟦 KPK',
+    q:'KPK dari 5 dan 6?',
+    hint:'Kelipatan 5: 5,10,15,20,25,30 | Kelipatan 6: 6,12,18,24,30',
+    answers:['30'],
+    explain:'✅ Kelipatan 5: ...→30. Kelipatan 6: ...→30. KPK(5,6) = 30!' },
+
+  { id:14, type:'kpk', tag:'tag-kpk', tagLabel:'🟦 KPK',
+    q:'KPK dari 4 dan 9?',
+    hint:'Kelipatan 4: 4,8,...,36 | Kelipatan 9: 9,18,27,36',
+    answers:['36'],
+    explain:'✅ Kelipatan 4: 4,8,...,→36. Kelipatan 9: 9,18,27,→36. KPK(4,9) = 36!' },
+
+  { id:15, type:'kpk', tag:'tag-kpk', tagLabel:'🟦 KPK',
+    q:'KPK dari 6 dan 10?',
+    hint:'Kelipatan 6: 6,12,18,24,30 | Kelipatan 10: 10,20,30',
+    answers:['30'],
+    explain:'✅ Kelipatan 6: ...→30. Kelipatan 10: 10,20,→30. KPK(6,10) = 30!' },
+
+  { id:16, type:'kpk', tag:'tag-kpk', tagLabel:'🟦 KPK',
+    q:'KPK dari 8 dan 12?',
+    hint:'Kelipatan 8: 8,16,24 | Kelipatan 12: 12,24',
+    answers:['24'],
+    explain:'✅ Kelipatan 8: 8,16,→24. Kelipatan 12: 12,→24. KPK(8,12) = 24!' },
+
+  // CAMPURAN / KONEKSI (soal 17-20)
+  { id:17, type:'mix', tag:'tag-mix', tagLabel:'🔗 Gabungan',
+    q:'FPB dan KPK dari 4 dan 6: mana yang lebih besar?',
+    hint:'FPB(4,6) = ? dan KPK(4,6) = ?',
+    answers:['kpk','KPK','Kelipatan Persekutuan Terkecil'],
+    explain:'✅ FPB(4,6) = 2 (faktor persekutuan terbesar). KPK(4,6) = 12 (kelipatan persekutuan terkecil). KPK selalu ≥ FPB!' },
+
+  { id:18, type:'mix', tag:'tag-mix', tagLabel:'🔗 Gabungan',
+    q:'FPB dari 12 dan 18, lalu tambahkan KPK dari 2 dan 3. Hasilnya?',
+    hint:'FPB(12,18) + KPK(2,3) = ?',
+    answers:['12'],
+    explain:'✅ FPB(12,18) = 6 (faktor persekutuan: 1,2,3,6). KPK(2,3) = 6. Jadi 6 + 6 = 12!' },
+
+  { id:19, type:'mix', tag:'tag-mix', tagLabel:'🔗 Koneksi',
+    q:'Jika FPB(a,b) = 5 dan KPK(a,b) = 30, apakah 5 × 6 = 30?',
+    hint:'Hubungan FPB × KPK',
+    answers:['ya','iya','yes','benar'],
+    explain:'✅ YA! Ada rumus keren: FPB × KPK = a × b. Jadi kalau FPB=5 dan KPK=30, maka 5×30 = 150, dan itu sama dengan nilai kedua bilangan dikali! (misal 10×15 = 150).' },
+
+  { id:20, type:'mix', tag:'tag-mix', tagLabel:'🔗 Challenge',
+    q:'KPK dari 6 dan 8, dikurangi FPB dari 12 dan 16. Hasilnya?',
+    hint:'KPK(6,8) - FPB(12,16) = ?',
+    answers:['20'],
+    explain:'✅ KPK(6,8): Kelipatan 6: 6,12,18,24 | Kelipatan 8: 8,16,24 → KPK = 24. FPB(12,16): Faktor persekutuan → 1,2,4 → FPB = 4. Jadi 24 - 4 = 20!' },
+];
+
+function loadProgress() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
+}
+function saveProgress(prog) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(prog)); } catch {}
+}
+
+let progress = loadProgress();
+
+function updateProgressBar() {
+  const done = Object.keys(progress).length;
+  document.getElementById('progCount').textContent = `${done} / ${exercises.length}`;
+  document.getElementById('progFill').style.width = `${(done/exercises.length)*100}%`;
+  if (done === exercises.length) {
+    setTimeout(() => {
+      document.getElementById('allDone').style.display = 'block';
+      document.getElementById('allDone').scrollIntoView({ behavior: 'smooth' });
+    }, 600);
+  }
+}
+
+function checkAnswer(id, input, btn, q) {
+  const raw = input.value.trim().toLowerCase().replace(/\s+/g,' ');
+  if (!raw) return;
+  const correct = q.answers.some(a => raw === a.toLowerCase()) ||
+                  (q.altAnswers && q.altAnswers.some(a => raw === a.toLowerCase()));
+  if (correct) {
+    input.classList.add('correct');
+    input.disabled = true;
+    btn.disabled = true;
+    const fb = input.closest('.ex-card').querySelector('.ex-feedback');
+    fb.className = 'ex-feedback show ok';
+    fb.textContent = q.explain;
+    const card = input.closest('.ex-card');
+    card.classList.add('done-card');
+    if (!card.querySelector('.done-badge')) {
+      const badge = document.createElement('div');
+      badge.className = 'done-badge';
+      badge.textContent = '✓ Done';
+      card.appendChild(badge);
+    }
+    progress[id] = true;
+    saveProgress(progress);
+    updateProgressBar();
+  } else {
+    input.classList.add('wrong-anim');
+    const attRow = input.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div');
+    dot.className = 'attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(() => { input.classList.remove('wrong-anim'); input.value = ''; input.focus(); }, 400);
+    if (attRow.children.length >= 3) {
+      const fb = input.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className = 'ex-feedback show no';
+      fb.textContent = '💡 Hmm, coba lagi! ' + q.explain;
+    }
+  }
+}
+
+function buildExercises() {
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = '';
+
+  const groups = [
+    { type:'fpb', label:'🔵 Bagian 1 — FPB', cls:'sd-fpb', items: exercises.filter(e=>e.type==='fpb') },
+    { type:'kpk', label:'🟦 Bagian 2 — KPK', cls:'sd-kpk', items: exercises.filter(e=>e.type==='kpk') },
+    { type:'mix', label:'🔗 Bagian 3 — Gabungan', cls:'sd-mix', items: exercises.filter(e=>e.type==='mix') },
+  ];
+
+  groups.forEach(g => {
+    const div = document.createElement('div');
+    div.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    g.items.forEach(q => {
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      card.className = 'ex-card' + (isDone ? ' done-card' : '');
+      card.innerHTML = `
+        <div class="ex-num">Soal ${q.id}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        <div class="ex-input-wrap">
+          <div class="ex-input-row">
+            <input type="text" class="ex-input ${isDone?'correct':''}"
+              placeholder="Jawaban kamu..."
+              value="${isDone ? (q.answers[0]) : ''}"
+              ${isDone ? 'disabled' : ''}
+              onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+            <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+          </div>
+          <div class="attempts-row"></div>
+        </div>
+        <div class="ex-feedback ${isDone ? 'show ok' : ''}">${isDone ? q.explain : ''}</div>
+        ${isDone ? '<div class="done-badge">✓ Done</div>' : ''}
+      `;
+      const btn = card.querySelector('.ex-btn');
+      const inp = card.querySelector('.ex-input');
+      btn.onclick = () => checkAnswer(q.id, inp, btn, q);
+      grid.appendChild(card);
+    });
+
+    div.appendChild(grid);
+    area.appendChild(div);
+  });
+
+  updateProgressBar();
+}
+
+function resetProgress() {
+  if (confirm('Reset semua progress exercise? Jawaban akan dihapus.')) {
+    progress = {};
+    saveProgress(progress);
+    document.getElementById('allDone').style.display = 'none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+</script>
+</body>
+</html>
