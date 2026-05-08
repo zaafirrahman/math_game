@@ -596,30 +596,52 @@
       avatar: '🚂', name: 'Fatih',
       password: '0560',
       href: 'algo_students/0560_fatih/fatih_0560.html',
-      done: 12, total: 20,
     },
     tasya: {
       avatar: '🌸', name: 'Tasya',
       password: '0751',
       href: 'algo_students/0751_tasya/tasya_0751.html',
-      done: 18, total: 41,
     },
     asfa: {
       avatar: '🎮', name: 'Asfa',
       password: 'ayokitabisa',
       href: 'algo_students/1195_asfa/asfa_1195.html',
-      done: 3, total: 40,
     },
   };
 
-  Object.entries(students).forEach(([key, s]) => {
-    const pct = s.total > 0 ? Math.round((s.done / s.total) * 100) : 0;
-    document.getElementById(`${key}-pct`).textContent = pct + '%';
-    document.getElementById(`${key}-sub`).textContent = `Sesi ${s.done} dari ${s.total} pertemuan`;
-    setTimeout(() => {
-      document.getElementById(`${key}-fill`).style.width = pct + '%';
-    }, 350);
-  });
+  // Fetch progress dari file masing-masing student
+  async function loadProgress() {
+    for (const [key, s] of Object.entries(students)) {
+      try {
+        const response = await fetch(s.href);
+        if (response.ok) {
+          const html = await response.text();
+          // Ekstrak DONE dan TOTAL dari script tag
+          const scriptMatch = html.match(/const\s+(?:DONE|DONE_LESSONS)\s*=\s*(\d+)[^]*?const\s+(?:TOTAL|TOTAL_LESSONS)\s*=\s*(\d+)/);
+          if (scriptMatch) {
+            s.done = parseInt(scriptMatch[1]);
+            s.total = parseInt(scriptMatch[2]);
+          } else {
+            s.done = 0; s.total = 1; // fallback agar tidak error
+          }
+        } else {
+          s.done = 0; s.total = 1;
+        }
+      } catch (e) {
+        // Fallback jika fetch gagal (misal offline)
+        const fallbacks = { fatih: {d:13, t:20}, tasya: {d:21, t:41}, asfa: {d:6, t:40} };
+        s.done = fallbacks[key]?.d || 0;
+        s.total = fallbacks[key]?.t || 1;
+      }
+      const pct = s.total > 0 ? Math.round((s.done / s.total) * 100) : 0;
+      document.getElementById(`${key}-pct`).textContent = pct + '%';
+      document.getElementById(`${key}-sub`).textContent = `Sesi ${s.done} dari ${s.total} pertemuan`;
+      setTimeout(() => {
+        document.getElementById(`${key}-fill`).style.width = pct + '%';
+      }, 350);
+    }
+  }
+  loadProgress();
 
   let activeStudent = null;
   function openModal(key) {
