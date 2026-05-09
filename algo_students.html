@@ -616,6 +616,8 @@
         const response = await fetch(s.href);
         if (response.ok) {
           const html = await response.text();
+          // Debug: log subset of html
+          console.log(`[${key}] HTML preview:`, html.substring(0, 200), '...');
           // Ekstrak DONE dan TOTAL dari script tag
           const scriptMatch = html.match(/const\s+DONE\s*=\s*(\d+)\s*;\s*const\s+TOTAL\s*=\s*(\d+)/);
           if (scriptMatch) {
