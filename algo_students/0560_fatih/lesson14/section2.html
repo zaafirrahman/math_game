@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 2 · Contoh Soal Perbandingan · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;
+    --ratio:#7c6fcd;--ratio-bg:rgba(124,111,205,0.1);--ratio-light:#a89de0;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 30%,rgba(74,144,184,0.06) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--steel-light);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--steel-bg);border:1px solid rgba(74,144,184,0.4);color:var(--steel-light);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.3rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:0.6rem;line-height:1.3;letter-spacing:1px;}
+  h1 span{color:var(--steel-light);}
+  .intro{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:8px;height:8px;border-radius:2px;background:var(--border2);transition:all 0.3s;}
+  .dot.active{background:var(--steel);box-shadow:0 0 8px rgba(74,144,184,0.4);transform:scaleX(1.5);}
+  .dot.done{background:var(--green);}
+
+  .slide{display:none;animation:fadeUp 0.35s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ratio),var(--amber));}
+  .card-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.steel{color:var(--steel-light);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card-label.pink{color:#e05888;}
+  .card-label.ratio{color:#a89de0;}
+  .card h2{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.7rem;line-height:1.4;letter-spacing:0.5px;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  .problem{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:1.2rem 1.4rem;margin:1rem 0;text-align:center;}
+  .prob-tag{font-family:'Rajdhani',sans-serif;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;}
+  .prob-text{font-family:'Rajdhani',sans-serif;font-size:clamp(1rem,3vw,1.3rem);font-weight:700;color:var(--text);line-height:1.5;}
+  .prob-text .h{color:var(--ratio-light);}
+  .prob-text .d{color:var(--amber);}
+
+  .solution{display:flex;flex-direction:column;gap:0.6rem;margin:1rem 0;}
+  .sol-step{display:flex;gap:0.9rem;align-items:flex-start;background:var(--track);border:1px solid var(--border);border-radius:10px;padding:0.75rem 1rem;font-size:0.88rem;color:var(--text-mid);}
+  .sol-n{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.7rem;color:#fff;background:var(--steel);border-radius:3px;min-width:24px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 4px;}
+  .sol-step .math{color:var(--amber);font-family:'Rajdhani',sans-serif;font-weight:700;}
+  .sol-step .ans{color:var(--green);font-weight:700;}
+
+  .answer-box{background:var(--green-bg);border:1px solid rgba(72,200,112,0.4);border-radius:10px;padding:1rem 1.4rem;margin:1rem 0;text-align:center;}
+  .answer-box .ans-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.3rem;}
+  .answer-box .ans-val{font-family:'Rajdhani',sans-serif;font-size:1.8rem;font-weight:700;color:var(--green);}
+
+  .hl{border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-ratio{background:rgba(124,111,205,0.1);border:1px solid rgba(124,111,205,0.35);}
+  .hl-amber{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);}
+  .hl-green{background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);}
+  .hl-steel{background:var(--steel-bg);border:1px solid rgba(74,144,184,0.35);color:var(--text-mid);}
+  .hl-ratio strong{color:#a89de0;}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+  .hl-steel strong{color:var(--steel-light);}
+
+  .divider{display:flex;align-items:center;gap:1rem;margin:1.2rem 0;}
+  .div-line{flex:1;height:1px;background:var(--border);}
+  .div-text{font-family:'Rajdhani',sans-serif;font-size:0.65rem;letter-spacing:2px;color:var(--text-muted);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--steel),#3a7098);color:#fff;box-shadow:0 4px 12px rgba(74,144,184,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--amber);margin-bottom:0.7rem;letter-spacing:2px;}
+  .finish-desc{color:var(--text-muted);line-height:1.7;margin-bottom:1.8rem;font-size:0.9rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.4);color:var(--amber);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.8rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  .level-badge{display:inline-block;padding:0.2rem 0.7rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:1px;margin-right:0.5rem;}
+  .lv1{background:rgba(72,200,112,0.15);color:var(--green);border:1px solid rgba(72,200,112,0.3);}
+  .lv2{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(240,168,48,0.3);}
+  .lv3{background:rgba(124,111,205,0.15);color:#a89de0;border:1px solid rgba(124,111,205,0.3);}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson14.html">LESSON 14</a><span>/</span>
+  <span class="cur">SEC 2</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📋 Section 02 · Contoh Soal</div>
+  <h1>Walkthrough <span>Soal Perbandingan</span></h1>
+  <p class="intro">Dari menyederhanakan, ke senilai, ke skala — ikutin alurnya step by step!</p>
+
+  <div class="dots" id="dots"></div>
+
+  <div id="slides">
+
+    <!-- Slide 1: Level 1 - Sederhanakan -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">🟢 Level 1 — Menyederhanakan</div>
+        <h2>Soal A: Sederhanakan 12 : 18</h2>
+        <div class="problem">
+          <div class="prob-tag">Soal</div>
+          <div class="prob-text">Ada <span class="h">12</span> buku merah dan <span class="d">18</span> buku biru. Nyatakan dalam bentuk paling sederhana!</div>
+        </div>
+        <div class="solution">
+          <div class="sol-step"><div class="sol-n">1</div>Cari FPB dari 12 dan 18 → faktor 12: 1,2,3,4,6,12 | faktor 18: 1,2,3,6,9,18 → FPB = <span class="math">6</span></div>
+          <div class="sol-step"><div class="sol-n">2</div>12 ÷ 6 = <span class="math">2</span></div>
+          <div class="sol-step"><div class="sol-n">3</div>18 ÷ 6 = <span class="math">3</span></div>
+          <div class="sol-step"><div class="sol-n">4</div>Perbandingan paling sederhana: <span class="ans">2 : 3 ✓</span></div>
+        </div>
+        <div class="answer-box">
+          <div class="ans-label">Jawaban</div>
+          <div class="ans-val">2 : 3</div>
+        </div>
+        <div class="hl hl-green">
+          <strong>Check:</strong> Tidak bisa disederhanakan lagi karena FPB dari 2 dan 3 adalah 1. Sudah paling sederhana!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Level 1 - Menulis perbandingan -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">🟢 Level 1 — Soal B</div>
+        <h2>Tulis dan Sederhanakan Perbandingan</h2>
+        <div class="problem">
+          <div class="prob-tag">Soal</div>
+          <div class="prob-text">Di kelas ada <span class="h">10</span> siswa laki-laki dan <span class="d">15</span> siswa perempuan. Berapa perbandingan laki : perempuan?</div>
+        </div>
+        <div class="solution">
+          <div class="sol-step"><div class="sol-n">1</div>Tulis dulu: laki : perempuan = <span class="math">10 : 15</span></div>
+          <div class="sol-step"><div class="sol-n">2</div>FPB dari 10 dan 15 = <span class="math">5</span></div>
+          <div class="sol-step"><div class="sol-n">3</div>10 ÷ 5 = 2, &nbsp; 15 ÷ 5 = 3</div>
+          <div class="sol-step"><div class="sol-n">4</div>Jawaban: <span class="ans">2 : 3 ✓</span></div>
+        </div>
+        <div class="answer-box">
+          <div class="ans-label">Laki : Perempuan</div>
+          <div class="ans-val">2 : 3</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Level 2 - Perbandingan senilai -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🟡 Level 2 — Perbandingan Senilai</div>
+        <h2>Harga 2 Roti = Rp6.000, Harga 5 Roti?</h2>
+        <div class="problem">
+          <div class="prob-tag">Soal</div>
+          <div class="prob-text"><span class="h">2</span> roti seharga <span class="d">Rp6.000</span>. Berapa harga <span class="h">5</span> roti?</div>
+        </div>
+        <div class="solution">
+          <div class="sol-step"><div class="sol-n">1</div>Cari harga 1 roti: 6.000 ÷ 2 = <span class="math">Rp3.000</span></div>
+          <div class="sol-step"><div class="sol-n">2</div>Harga 5 roti = 5 × Rp3.000 = <span class="ans">Rp15.000 ✓</span></div>
+        </div>
+        <div class="answer-box">
+          <div class="ans-label">Harga 5 Roti</div>
+          <div class="ans-val">Rp15.000</div>
+        </div>
+        <div class="hl hl-amber">
+          <strong>Bonus:</strong> Harga 1 roti = Rp3.000. Jadi 1 roti = 3.000, 2 roti = 6.000 ✓ (cocok dengan soal!)
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Level 2 - Senilai B -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🟡 Level 2 — Soal B</div>
+        <h2>3 Pensil = Rp2.100, Harga 7 Pensil?</h2>
+        <div class="problem">
+          <div class="prob-tag">Soal</div>
+          <div class="prob-text"><span class="h">3</span> pensil seharga <span class="d">Rp2.100</span>. Berapa harga <span class="h">7</span> pensil?</div>
+        </div>
+        <div class="solution">
+          <div class="sol-step"><div class="sol-n">1</div>Harga 1 pensil: 2.100 ÷ 3 = <span class="math">Rp700</span></div>
+          <div class="sol-step"><div class="sol-n">2</div>Harga 7 pensil: 7 × 700 = <span class="ans">Rp4.900 ✓</span></div>
+        </div>
+        <div class="answer-box">
+          <div class="ans-label">Harga 7 Pensil</div>
+          <div class="ans-val">Rp4.900</div>
+        </div>
+        <div class="hl hl-amber">
+          <strong>Langkah kunci:</strong> Selalu cari nilai satuan (harga 1 buah) dulu → baru kalikan dengan yang dicari!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Level 3 - Skala -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label ratio">🟣 Level 3 — Skala</div>
+        <h2>Jika Skala 1 cm = 10 m, Berapa Jarak 3 cm?</h2>
+        <div class="problem">
+          <div class="prob-tag">Soal A</div>
+          <div class="prob-text">Skala peta: <span class="h">1 cm</span> = <span class="d">10 m</span>. Jarak di peta = <span class="h">3 cm</span>. Jarak sebenarnya = ?</div>
+        </div>
+        <div class="solution">
+          <div class="sol-step"><div class="sol-n">1</div>1 cm = 10 m (diketahui dari soal)</div>
+          <div class="sol-step"><div class="sol-n">2</div>3 cm = 3 × 10 m = <span class="ans">30 m ✓</span></div>
+        </div>
+        <div class="answer-box">
+          <div class="ans-label">Jarak Sebenarnya</div>
+          <div class="ans-val">30 m</div>
+        </div>
+
+        <div class="divider"><div class="div-line"></div><div class="div-text">soal lanjutan</div><div class="div-line"></div></div>
+
+        <div class="problem">
+          <div class="prob-tag">Soal B</div>
+          <div class="prob-text">Skala: <span class="h">1 cm</span> = <span class="d">5 m</span>. Jarak di gambar = <span class="h">4 cm</span>. Jarak sebenarnya = ?</div>
+        </div>
+        <div class="solution">
+          <div class="sol-step"><div class="sol-n">1</div>1 cm = 5 m</div>
+          <div class="sol-step"><div class="sol-n">2</div>4 cm = 4 × 5 m = <span class="ans">20 m ✓</span></div>
+        </div>
+        <div class="answer-box">
+          <div class="ans-label">Jarak Sebenarnya</div>
+          <div class="ans-val">20 m</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Ringkasan strategi -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">🗺️ Peta Strategi</div>
+        <h2>Pilih cara yang tepat untuk tiap jenis soal!</h2>
+        <div class="solution">
+          <div class="sol-step"><div class="sol-n" style="background:#a89de0;color:#000;">A:B</div><strong>Sederhanakan</strong> → cari FPB kedua angka → bagi keduanya</div>
+          <div class="sol-step"><div class="sol-n" style="background:var(--amber);color:#000;">Sen</div><strong>Senilai</strong> → cari nilai 1 satuan dulu → kalikan dengan yang dicari</div>
+          <div class="sol-step"><div class="sol-n" style="background:var(--steel);color:#fff;">Skl</div><strong>Skala</strong> → jarak nyata = jarak gambar × nilai skala</div>
+        </div>
+        <div class="hl hl-steel">
+          <strong>Tips utama:</strong> Baca soal dulu! Tanya ke diri sendiri — "Ini disederhanakan, dicari yang senilai, atau dihitung skalanya?"
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Finish -->
+    <div class="slide">
+      <div class="card finish">
+        <span class="finish-icon">📋</span>
+        <div class="finish-title">CONTOH SOAL SELESAI!</div>
+        <div class="finish-desc">Level 1 sampai 3 sudah kamu kuasai! Sekarang waktunya tes kecepatan di Sprint Mode — bisa nggak ngerjain soal perbandingan dalam 20 detik?</div>
+        <div class="xp">+ 80 XP — WALKTHROUGH DONE</div>
+        <div class="finish-btns">
+          <a href="lesson14.html" class="btn btn-ghost">← Lesson Hub</a>
+          <a href="section3.html" class="btn btn-primary">Sprint Mode ⚡</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-btns" id="navbtns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="go(-1)" disabled>← Prev</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL=7; let cur=0;
+  const dotsEl=document.getElementById('dots');
+  const slides=document.querySelectorAll('.slide');
+  const prev=document.getElementById('prevBtn'),next=document.getElementById('nextBtn'),nav=document.getElementById('navbtns');
+
+  for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
+  function updateUI(){
+    slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+    dotsEl.querySelectorAll('.dot').forEach((d,i)=>{d.classList.remove('active','done');if(i<cur)d.classList.add('done');if(i===cur)d.classList.add('active');});
+    prev.disabled=cur===0;
+    nav.style.display=cur===TOTAL-1?'none':'flex';
+    next.disabled=false;
+  }
+  function go(dir){cur=Math.max(0,Math.min(TOTAL-1,cur+dir));updateUI();}
+  updateUI();
+</script>
+</body>
+</html>

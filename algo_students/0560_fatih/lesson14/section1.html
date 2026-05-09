@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Perbandingan · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;
+    --ratio:#7c6fcd;--ratio-bg:rgba(124,111,205,0.1);--ratio-light:#a89de0;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 70% 20%,rgba(124,111,205,0.06) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--ratio-light);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--ratio-bg);border:1px solid rgba(124,111,205,0.4);color:var(--ratio-light);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.3rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:0.6rem;line-height:1.3;letter-spacing:1px;}
+  h1 span{color:var(--ratio-light);}
+  .intro{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:8px;height:8px;border-radius:2px;background:var(--border2);transition:all 0.3s;}
+  .dot.active{background:var(--ratio);box-shadow:0 0 8px rgba(124,111,205,0.4);transform:scaleX(1.5);}
+  .dot.done{background:var(--steel);}
+
+  .slide{display:none;animation:fadeUp 0.35s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ratio),transparent);}
+  .card-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.ratio{color:var(--ratio-light);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card-label.steel{color:var(--steel-light);}
+  .card h2{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.7rem;line-height:1.4;letter-spacing:0.5px;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  /* Ratio visual */
+  .ratio-visual{display:flex;align-items:center;justify-content:center;gap:1rem;margin:1.3rem 0;flex-wrap:wrap;}
+  .ratio-block{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:1rem 1.5rem;text-align:center;min-width:100px;}
+  .ratio-block .lbl{font-family:'Rajdhani',sans-serif;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.3rem;}
+  .ratio-block .val{font-family:'Rajdhani',sans-serif;font-size:2.2rem;font-weight:700;}
+  .ratio-block .val.a{color:var(--ratio-light);}
+  .ratio-block .val.b{color:var(--amber);}
+  .ratio-colon{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;color:var(--text-muted);}
+
+  /* Big equation */
+  .big-eq{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:1.4rem;margin:1.1rem 0;text-align:center;font-family:'Rajdhani',sans-serif;}
+  .big-eq .main{font-size:clamp(1.4rem,4vw,1.9rem);font-weight:700;color:var(--text);line-height:1.5;}
+  .big-eq .result{font-size:clamp(2rem,6vw,3rem);font-weight:700;color:var(--green);}
+  .big-eq .sub{font-size:0.82rem;color:var(--text-muted);margin-top:0.3rem;}
+
+  /* Steps */
+  .steps{display:flex;flex-direction:column;gap:0.7rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:var(--track);border:1px solid var(--border);border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;color:var(--text-mid);}
+  .step-n{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.72rem;color:#000;background:var(--amber);border-radius:3px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .step strong{color:var(--amber);}
+  .step .r{color:var(--ratio-light);}
+  .step .g{color:var(--green);}
+
+  /* Simplify grid */
+  .simp-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1rem 0;}
+  @media(max-width:460px){.simp-grid{grid-template-columns:1fr;}}
+  .simp-card{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 1rem;}
+  .simp-before{font-family:'Rajdhani',sans-serif;font-size:1.2rem;font-weight:700;color:var(--text-mid);}
+  .simp-arrow{font-size:0.8rem;color:var(--text-muted);margin:0.3rem 0;}
+  .simp-after{font-family:'Rajdhani',sans-serif;font-size:1.4rem;font-weight:700;color:var(--green);}
+  .simp-note{font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;}
+
+  /* Highlight */
+  .hl{border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-ratio{background:var(--ratio-bg);border:1px solid rgba(124,111,205,0.35);}
+  .hl-amber{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);}
+  .hl-green{background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);}
+  .hl-steel{background:var(--steel-bg);border:1px solid rgba(74,144,184,0.35);color:var(--text-mid);}
+  .hl-ratio strong{color:var(--ratio-light);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+  .hl-steel strong{color:var(--steel-light);}
+
+  /* Quiz */
+  .quiz-q{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:1.2rem;line-height:1.5;letter-spacing:0.5px;}
+  .opts{display:flex;flex-direction:column;gap:0.6rem;}
+  .opt-btn{background:var(--track);border:1px solid var(--border2);color:var(--text);padding:0.8rem 1.1rem;border-radius:8px;cursor:pointer;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:700;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--ratio);background:rgba(124,111,205,0.06);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(232,80,64,0.08);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.8rem;padding:0.75rem 1rem;border-radius:8px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid rgba(72,200,112,0.35);}
+  .feedback.no{background:rgba(232,80,64,0.08);color:var(--red);border:1px solid rgba(232,80,64,0.3);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--steel),#3a7098);color:#fff;box-shadow:0 4px 12px rgba(74,144,184,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(74,144,184,0.4);}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--ratio-light);margin-bottom:0.7rem;letter-spacing:2px;}
+  .finish-desc{color:var(--text-muted);line-height:1.7;margin-bottom:1.8rem;font-size:0.9rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.4);color:var(--amber);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.8rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson14.html">LESSON 14</a><span>/</span>
+  <span class="cur">SEC 1</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">⚖️ Section 01 · Pemahaman</div>
+  <h1>Apa Itu <span>Perbandingan?</span></h1>
+  <p class="intro">Dari arti dasar, cara menulis, menyederhanakan, sampai perbandingan senilai dan skala — step by step!</p>
+
+  <div class="dots" id="dots"></div>
+
+  <div id="slides">
+
+    <!-- Slide 1: Apa itu perbandingan -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label ratio">⚖️ Konsep Dasar</div>
+        <h2>Apa Itu Perbandingan?</h2>
+        <p style="margin-bottom:1rem;">Perbandingan adalah cara membandingkan dua nilai. Kita pakai simbol titik dua <strong style="color:var(--ratio-light);">:</strong></p>
+        <div class="ratio-visual">
+          <div class="ratio-block"><div class="lbl">Apel</div><div class="val a">2</div></div>
+          <div class="ratio-colon">:</div>
+          <div class="ratio-block"><div class="lbl">Jeruk</div><div class="val b">3</div></div>
+        </div>
+        <div class="hl hl-ratio">
+          <strong>2 : 3</strong> artinya → ada <strong>2 apel</strong> dan <strong>3 jeruk</strong>. Bukan 2 bagi 3 — tapi 2 <em>dibandingkan</em> dengan 3!
+        </div>
+        <div class="steps">
+          <div class="step"><div class="step-n">📌</div>Urutan penting! <span class="r">apel : jeruk = 2 : 3</span> berbeda dengan jeruk : apel = 3 : 2</div>
+          <div class="step"><div class="step-n">📌</div>Perbandingan bisa ditulis juga sebagai pecahan: <strong>2/3</strong> — tapi tetap dibaca "2 banding 3"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Menulis perbandingan -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">✍️ Cara Menulis</div>
+        <h2>Menulis Perbandingan dengan Benar</h2>
+        <p style="margin-bottom:1rem;">Langkah-langkahnya simpel:</p>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div>Tentukan dua hal yang dibandingkan</div>
+          <div class="step"><div class="step-n">2</div>Tulis nilai pertama, lalu titik dua, lalu nilai kedua</div>
+          <div class="step"><div class="step-n">3</div>Pastikan urutannya sesuai soal!</div>
+        </div>
+        <div class="simp-grid">
+          <div class="simp-card">
+            <div class="simp-note">4 buku, 2 pensil</div>
+            <div class="simp-arrow">buku : pensil →</div>
+            <div class="simp-after">4 : 2</div>
+          </div>
+          <div class="simp-card">
+            <div class="simp-note">3 kucing, 5 anjing</div>
+            <div class="simp-arrow">kucing : anjing →</div>
+            <div class="simp-after">3 : 5</div>
+          </div>
+          <div class="simp-card">
+            <div class="simp-note">6 siswa laki, 9 perempuan</div>
+            <div class="simp-arrow">laki : perempuan →</div>
+            <div class="simp-after">6 : 9</div>
+          </div>
+          <div class="simp-card">
+            <div class="simp-note">10 merah, 15 biru</div>
+            <div class="simp-arrow">merah : biru →</div>
+            <div class="simp-after">10 : 15</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Menyederhanakan -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">✂️ Sederhanakan</div>
+        <h2>Menyederhanakan Perbandingan</h2>
+        <p style="margin-bottom:1rem;">Seperti pecahan, perbandingan bisa disederhanakan — bagi kedua angka dengan bilangan yang sama!</p>
+        <div class="big-eq">
+          <div class="main">4 : 6</div>
+          <div class="sub">÷ 2 pada keduanya</div>
+          <div class="result">= 2 : 3</div>
+        </div>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div>Cari <strong>FPB</strong> (faktor persekutuan terbesar) dari kedua angka</div>
+          <div class="step"><div class="step-n">2</div>Bagi kedua angka dengan FPB itu</div>
+          <div class="step"><div class="step-n">3</div>Hasil sudah paling sederhana kalau FPB-nya 1</div>
+        </div>
+        <div class="simp-grid">
+          <div class="simp-card">
+            <div class="simp-before">4 : 6</div>
+            <div class="simp-arrow">÷ 2 &nbsp;→</div>
+            <div class="simp-after">2 : 3</div>
+          </div>
+          <div class="simp-card">
+            <div class="simp-before">8 : 12</div>
+            <div class="simp-arrow">÷ 4 &nbsp;→</div>
+            <div class="simp-after">2 : 3</div>
+          </div>
+          <div class="simp-card">
+            <div class="simp-before">6 : 9</div>
+            <div class="simp-arrow">÷ 3 &nbsp;→</div>
+            <div class="simp-after">2 : 3</div>
+          </div>
+          <div class="simp-card">
+            <div class="simp-before">10 : 15</div>
+            <div class="simp-arrow">÷ 5 &nbsp;→</div>
+            <div class="simp-after">2 : 3</div>
+          </div>
+        </div>
+        <div class="hl hl-green">
+          <strong>Seru kan?</strong> Perbandingan 4:6, 8:12, 6:9, 10:15 semuanya sama maknanya — yaitu <strong>2 : 3</strong>!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Perbandingan senilai -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">🔗 Perbandingan Senilai</div>
+        <h2>Kalau 1 Pensil = 2 Ribu, 3 Pensil = ?</h2>
+        <p style="margin-bottom:1rem;">Perbandingan senilai artinya <strong>kalau satu naik, yang lain ikut naik</strong> dengan kelipatan yang sama.</p>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div>Cari nilai satuan: <strong>1 pensil = Rp2.000</strong></div>
+          <div class="step"><div class="step-n">2</div>Kalikan: <span class="g">3 pensil = 3 × Rp2.000 = <strong>Rp6.000</strong></span></div>
+        </div>
+        <div class="big-eq">
+          <div class="main">1 : 2.000 = 3 : ?</div>
+          <div class="sub">kalikan keduanya × 3</div>
+          <div class="result">? = 6.000</div>
+        </div>
+        <div class="hl hl-amber">
+          <strong>Cara lain:</strong> Gunakan perkalian silang. 1 × ? = 3 × 2.000 → ? = 6.000. Sama hasilnya!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Skala dasar -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label ratio">🗺️ Mengenal Skala</div>
+        <h2>Skala — Ukuran Gambar vs Ukuran Nyata</h2>
+        <p style="margin-bottom:1rem;">Skala adalah perbandingan antara ukuran di gambar/peta dengan ukuran sebenarnya di dunia nyata.</p>
+        <div class="ratio-visual">
+          <div class="ratio-block"><div class="lbl">Di Gambar</div><div class="val a">1 cm</div></div>
+          <div class="ratio-colon">=</div>
+          <div class="ratio-block"><div class="lbl">Sebenarnya</div><div class="val b">10 cm</div></div>
+        </div>
+        <div class="steps">
+          <div class="step"><div class="step-n">📌</div>Skala 1 : 10 artinya → 1 cm di gambar = 10 cm di nyata</div>
+          <div class="step"><div class="step-n">📌</div>Kalau 3 cm di gambar → <span class="g">3 × 10 = <strong>30 cm</strong> di nyata</span></div>
+          <div class="step"><div class="step-n">📌</div>Rumus: <strong>jarak nyata = jarak gambar × skala</strong></div>
+        </div>
+        <div class="hl hl-ratio">
+          <strong>Ingat:</strong> Skala peta biasanya besar, seperti 1 : 100.000 (1 cm di peta = 1 km di nyata). Tapi logikanya sama!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Quiz 1 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🎯 Quick Check</div>
+        <div class="quiz-q">Perbandingan 6 : 9 disederhanakan menjadi...?</div>
+        <div class="opts" id="q1">
+          <button class="opt-btn" onclick="chk(this,'q1',false,'q1-fb',1)">3 : 4</button>
+          <button class="opt-btn" onclick="chk(this,'q1',true,'q1-fb',1)">2 : 3</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false,'q1-fb',1)">1 : 2</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false,'q1-fb',1)">3 : 6</button>
+        </div>
+        <div class="feedback" id="q1-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Quiz 2 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🎯 Satu Lagi!</div>
+        <div class="quiz-q">Skala 1 : 5 artinya 1 cm di gambar = ? cm di nyata</div>
+        <div class="opts" id="q2">
+          <button class="opt-btn" onclick="chk(this,'q2',false,'q2-fb',2)">1 cm</button>
+          <button class="opt-btn" onclick="chk(this,'q2',false,'q2-fb',2)">3 cm</button>
+          <button class="opt-btn" onclick="chk(this,'q2',true,'q2-fb',2)">5 cm</button>
+          <button class="opt-btn" onclick="chk(this,'q2',false,'q2-fb',2)">10 cm</button>
+        </div>
+        <div class="feedback" id="q2-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Finish -->
+    <div class="slide">
+      <div class="card finish">
+        <span class="finish-icon">⚖️</span>
+        <div class="finish-title">KONSEP PERBANDINGAN CLEAR!</div>
+        <div class="finish-desc">Kamu udah paham: perbandingan itu membandingkan dua nilai, bisa disederhanakan dengan bagi FPB, bisa dicari nilai senilainya, dan skala adalah perbandingan gambar vs nyata. Lanjut ke contoh soal!</div>
+        <div class="xp">+ 60 XP — RATIO UNLOCKED</div>
+        <div class="finish-btns">
+          <a href="lesson14.html" class="btn btn-ghost">← Lesson Hub</a>
+          <a href="section2.html" class="btn btn-primary">Contoh Soal →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-btns" id="navbtns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="go(-1)" disabled>← Prev</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL=8; let cur=0;
+  let q1d=false,q2d=false;
+  const dotsEl=document.getElementById('dots');
+  const slides=document.querySelectorAll('.slide');
+  const prev=document.getElementById('prevBtn'),next=document.getElementById('nextBtn'),nav=document.getElementById('navbtns');
+
+  for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
+  function updateUI(){
+    slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+    dotsEl.querySelectorAll('.dot').forEach((d,i)=>{d.classList.remove('active','done');if(i<cur)d.classList.add('done');if(i===cur)d.classList.add('active');});
+    prev.disabled=cur===0;
+    nav.style.display=cur===TOTAL-1?'none':'flex';
+    if(cur===5)next.disabled=!q1d;
+    else if(cur===6)next.disabled=!q2d;
+    else next.disabled=false;
+  }
+  function go(dir){cur=Math.max(0,Math.min(TOTAL-1,cur+dir));updateUI();}
+
+  function chk(btn,gid,correct,fbid,qnum){
+    if(qnum===1&&q1d)return; if(qnum===2&&q2d)return;
+    if(qnum===1)q1d=true; else q2d=true;
+    document.querySelectorAll(`#${gid} .opt-btn`).forEach(b=>b.disabled=true);
+    btn.classList.add(correct?'correct':'wrong');
+    if(!correct){
+      const all=document.querySelectorAll(`#${gid} .opt-btn`);
+      if(qnum===1)all[1].classList.add('correct');
+      else all[2].classList.add('correct');
+    }
+    const fb=document.getElementById(fbid);
+    fb.className='feedback show '+(correct?'ok':'no');
+    if(qnum===1) fb.textContent=correct?'✅ Tepat! 6÷3=2, 9÷3=3 → hasilnya 2:3':'❌ FPB dari 6 dan 9 adalah 3 → 6÷3 : 9÷3 = 2:3!';
+    else fb.textContent=correct?'✅ Betul! Skala 1:5 → 1 cm gambar = 5 cm nyata':'❌ Skala 1:5 artinya angka kedua = jarak nyata → 5 cm!';
+    next.disabled=false;
+  }
+  updateUI();
+</script>
+</body>
+</html>
