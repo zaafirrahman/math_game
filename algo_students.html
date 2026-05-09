@@ -621,15 +621,19 @@
           if (scriptMatch) {
             s.done = parseInt(scriptMatch[1]);
             s.total = parseInt(scriptMatch[2]);
+            console.log(`[${key}] Progress loaded: ${s.done}/${s.total}`);
           } else {
+            console.warn(`[${key}] Script tag not found in ${s.href}`);
             s.done = 0; s.total = 1; // fallback agar tidak error
           }
         } else {
+          console.error(`[${key}] HTTP ${response.status} on ${s.href}`);
           s.done = 0; s.total = 1;
         }
       } catch (e) {
+        console.error(`[${key}] Fetch error for ${s.href}:`, e.message);
         // Fallback jika fetch gagal (misal offline)
-        const fallbacks = { fatih: {d:13, t:20}, tasya: {d:21, t:41}, asfa: {d:6, t:40} };
+        const fallbacks = { fatih: {d:14, t:20}, tasya: {d:21, t:41}, asfa: {d:6, t:40} };
         s.done = fallbacks[key]?.d || 0;
         s.total = fallbacks[key]?.t || 1;
       }
