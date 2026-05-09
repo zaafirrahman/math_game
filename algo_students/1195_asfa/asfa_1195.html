@@ -336,14 +336,14 @@
 </div>
 
 <script>
-  // ── UPDATE DI SINI TIAP NAMBAH LESSON ──
-  const DONE_LESSONS = 6;  // sesi yang udah selesai dibuat
-  const TOTAL_LESSONS = 40; // total sesi yang direncanakan
-  // ────────────────────────────────────────
+  // ── Update tiap nambah lesson ──
+  const DONE = 6;
+  const TOTAL = 40;
+  // ──────────────────────────────
 
-  const pct = Math.round((DONE_LESSONS / TOTAL_LESSONS) * 100);
+  const pct = Math.round((DONE / TOTAL) * 100);
   document.getElementById('pct').textContent = pct + '%';
-  document.getElementById('progressSub').textContent = `Sesi ${DONE_LESSONS} dari ${TOTAL_LESSONS} pertemuan`;
+  document.getElementById('progressSub').textContent = `Sesi ${DONE} dari ${TOTAL} pertemuan`;
   setTimeout(() => {
     document.getElementById('fill').style.width = pct + '%';
   }, 200);

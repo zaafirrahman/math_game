@@ -293,7 +293,10 @@
 </div>
 
 <script>
-  const DONE = 14, TOTAL = 20;
+  // ── Update tiap nambah lesson ──
+  const DONE = 14;
+  const TOTAL = 20;
+  // ──────────────────────────────
   const pct = Math.round((DONE/TOTAL)*100);
   document.getElementById('pct').textContent = pct+'%';
   document.getElementById('sub').textContent = `Sesi ${DONE} dari ${TOTAL} pertemuan`;
