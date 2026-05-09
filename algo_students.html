@@ -617,7 +617,7 @@
         if (response.ok) {
           const html = await response.text();
           // Ekstrak DONE dan TOTAL dari script tag
-          const scriptMatch = html.match(/const\s+(?:DONE|DONE_LESSONS)\s*=\s*(\d+)[^]*?const\s+(?:TOTAL|TOTAL_LESSONS)\s*=\s*(\d+)/);
+          const scriptMatch = html.match(/const\s+(DONE|DONE_LESSONS)\s*=\s*(\d+)\s*;\s*const\s+(TOTAL|TOTAL_LESSONS)\s*=\s*(\d+)/);
           if (scriptMatch) {
             s.done = parseInt(scriptMatch[1]);
             s.total = parseInt(scriptMatch[2]);
