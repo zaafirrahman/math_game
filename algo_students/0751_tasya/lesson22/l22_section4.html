@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 4 · Mandiri · L22 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --lavender:#9b7fc8;--lavender-light:#c8b4e8;--lav-bg:rgba(155,127,200,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --peach:#f0956a;--peach-bg:rgba(240,149,106,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 90%,rgba(155,127,200,0.07) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--mint);}
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--mint);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--mint);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .prog-bar-wrap{background:var(--border);border-radius:99px;height:8px;margin-bottom:0.4rem;overflow:hidden;}
+  .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--lavender),var(--mint));border-radius:99px;transition:width 0.4s ease;}
+  .prog-label{display:flex;justify-content:space-between;font-size:0.72rem;font-weight:700;color:var(--text-muted);margin-bottom:1.5rem;}
+
+  .q-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);display:none;animation:fadeUp 0.35s ease;}
+  .q-card.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .tag{display:inline-block;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.2rem 0.7rem;border-radius:99px;margin-bottom:0.9rem;}
+  .tag-bilangan{background:var(--gold-bg);color:var(--gold);border:1.5px solid var(--gold-light);}
+  .tag-harga{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .tag-umur{background:var(--lav-bg);color:var(--lavender);border:1.5px solid var(--lavender-light);}
+  .tag-geometri{background:var(--peach-bg);color:var(--peach);border:1.5px solid rgba(240,149,106,0.4);}
+  .tag-campuran{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .story-box{background:linear-gradient(135deg,#f5f0ff,#efe8ff);border:2px solid var(--lavender-light);border-radius:14px;padding:1rem 1.2rem;margin-bottom:1rem;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:700;color:var(--text);line-height:1.7;}
+  .q-text{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;margin-bottom:1rem;line-height:1.5;}
+
+  .hint-toggle{background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--lavender);padding:0.4rem 1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;margin-bottom:1rem;display:inline-block;transition:all 0.2s;}
+  .hint-toggle:hover{background:var(--lavender);color:#fff;}
+  .hint-box{background:var(--lav-bg);border:1.5px solid var(--lavender-light);border-radius:12px;padding:0.7rem 1rem;margin-bottom:0.9rem;font-size:0.85rem;color:var(--text-mid);display:none;}
+  .hint-box.show{display:block;}
+
+  .opts{display:flex;flex-direction:column;gap:0.65rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.88rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--lavender-light);background:var(--lav-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--lavender-light);color:var(--lavender);}
+  .btn-primary{background:linear-gradient(135deg,var(--mint),#3d9a80);color:#fff;box-shadow:0 4px 14px rgba(95,191,160,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(95,191,160,0.4);}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:var(--mint);margin-bottom:0.7rem;}
+  .finish-desc{color:var(--text-muted);line-height:1.7;margin-bottom:1.8rem;font-size:0.92rem;}
+  .xp{display:block;background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--mint);padding:0.35rem 1.1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;margin-bottom:0.7rem;}
+  .score-final{font-family:'Nunito',sans-serif;font-size:2rem;font-weight:900;color:var(--lavender);margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;max-width:380px;margin:0 auto 1.5rem;}
+  .sum-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:0.9rem;text-align:center;}
+  .sum-val{font-family:'Nunito',sans-serif;font-size:1.6rem;font-weight:900;color:var(--lavender);}
+  .sum-lbl{font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-top:0.2rem;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson22.html">LESSON 22</a><span>›</span>
+  <span class="cur">SEC 4</span>
+</nav>
+
+<div class="wrap">
+  <div id="mainContent">
+    <div class="sec-badge">🌙 Section 04 · Homework Mode</div>
+    <h1>Latihan <span>Mandiri</span></h1>
+    <p class="intro">10 soal campuran semua pola kalimat. Santai, tanpa timer. Ada petunjuk kalau butuh. Kerjakan semua, bisa dilanjut di rumah!</p>
+
+    <div class="prog-bar-wrap"><div class="prog-bar-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-label"><span id="progText">Soal 1 dari 10</span><span id="correctCount">0 benar</span></div>
+
+    <div id="cards"></div>
+
+    <div class="nav-btns">
+      <button class="btn btn-ghost" id="prevBtn" onclick="prevQ()" disabled>← Prev</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQ()">Lanjut →</button>
+    </div>
+  </div>
+
+  <div class="finish" id="finishScreen" style="display:none;">
+    <span class="finish-icon">🌙</span>
+    <div class="finish-title">Lesson 22 Selesai!</div>
+    <div class="finish-desc">Kamu sudah melewati semua section Lesson 22 — dari belajar kosakata matematika sampai latihan mandiri penuh. Kamu sudah bisa membaca bahasa matematika!</div>
+    <div class="xp">+50 XP · Math Linguist</div>
+    <div class="score-final" id="scoreFinal"></div>
+    <div class="summary-grid">
+      <div class="sum-card"><div class="sum-val" id="sumCorrect">0</div><div class="sum-lbl">Jawaban Benar</div></div>
+      <div class="sum-card"><div class="sum-val" id="sumWrong">0</div><div class="sum-lbl">Perlu Review</div></div>
+    </div>
+    <div class="finish-btns">
+      <a href="lesson22.html" class="btn btn-ghost">← Lesson 22</a>
+      <a href="../tasya_0751.html" class="btn btn-primary">Ke Hub Tasya 🏠</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const qs = [
+  {
+    tag:'bilangan', tagLabel:'Pola Bilangan',
+    story:'"Jumlah dua bilangan genap berurutan adalah 46."',
+    text:'Jika bilangan pertama adalah n, bilangan kedua adalah n+2. Persamaan yang benar adalah...',
+    hint:'Bilangan genap berurutan: n dan n+2. Jumlah keduanya = 46.',
+    opts:['n + n = 46','n + (n+2) = 46','n × 2 = 46','n + 2 = 46'],
+    answer:'n + (n+2) = 46',
+    explain:'"Jumlah dua bilangan genap berurutan = 46" → n + (n+2) = 46 → 2n + 2 = 46 → n = 22. Jadi bilangan itu 22 dan 24.'
+  },
+  {
+    tag:'bilangan', tagLabel:'Pola Bilangan',
+    story:'"Bilangan pertama tiga kali bilangan kedua. Selisih keduanya adalah 14."',
+    text:'Jika x = bilangan pertama dan y = bilangan kedua, model yang benar adalah...',
+    hint:'"Tiga kali" → ×3. "Selisih" → kurang. Siapa yang lebih besar?',
+    opts:['x = 3y dan x + y = 14','x = 3y dan x − y = 14','3x = y dan x − y = 14','x = y + 3 dan x − y = 14'],
+    answer:'x = 3y dan x − y = 14',
+    explain:'"x tiga kali y" → x = 3y (x yang lebih besar). "Selisih = 14" → x − y = 14 (kurangi yang kecil dari yang besar).'
+  },
+  {
+    tag:'harga', tagLabel:'Pola Harga',
+    story:'"Beli 4 mangga dan 2 pisang bayar Rp 28.000. Beli 2 mangga dan 5 pisang bayar Rp 31.000."',
+    text:'Jika m = harga mangga dan p = harga pisang (ribu), model yang tepat adalah...',
+    hint:'Satu kalimat = satu persamaan. Hitung koefisien masing-masing buah.',
+    opts:['4m + 2p = 28 dan 5m + 2p = 31','4m + 2p = 28 dan 2m + 5p = 31','2m + 4p = 28 dan 5m + 2p = 31','4m + 5p = 28 dan 2m + 2p = 31'],
+    answer:'4m + 2p = 28 dan 2m + 5p = 31',
+    explain:'"4 mangga + 2 pisang = 28" → 4m + 2p = 28. "2 mangga + 5 pisang = 31" → 2m + 5p = 31. Koefisien sesuai jumlah buah!'
+  },
+  {
+    tag:'harga', tagLabel:'Pola Harga',
+    story:'"Harga 1 pensil Rp 2.000 lebih murah dari harga 1 pulpen. Beli 3 pensil dan 2 pulpen bayar Rp 24.000."',
+    text:'Jika n = harga pensil dan u = harga pulpen (ribu), persamaan pertama adalah...',
+    hint:'"Pensil lebih murah" → pensil yang dikurangi. "Lebih murah Rp 2.000" → selisih 2.',
+    opts:['n − u = 2','u = n − 2','n = u − 2','n + u = 2'],
+    answer:'n = u − 2',
+    explain:'"Pensil Rp 2.000 lebih murah dari pulpen" → n = u − 2 (pensil yang lebih kecil). Persamaan kedua: 3n + 2u = 24.'
+  },
+  {
+    tag:'umur', tagLabel:'Pola Umur',
+    story:'"Umur Paman sekarang dua kali umur Keponakan. Sepuluh tahun lagi, jumlah umur mereka 65 tahun."',
+    text:'Jika p = umur Paman dan k = umur Keponakan sekarang, model yang tepat adalah...',
+    hint:'"Dua kali" → p = 2k. "10 tahun lagi, jumlah = 65" → keduanya bertambah 10.',
+    opts:['p = 2k dan p + k = 65','p = 2k dan (p+10) + (k+10) = 65','2p = k dan p + k + 10 = 65','p = 2k dan p + k = 55'],
+    answer:'p = 2k dan (p+10) + (k+10) = 65',
+    explain:'"Paman 2× keponakan" → p = 2k. "10 tahun lagi, jumlah = 65" → kedua orang tambah 10 → (p+10) + (k+10) = 65.'
+  },
+  {
+    tag:'umur', tagLabel:'Pola Umur',
+    story:'"Lima tahun lalu, umur Ibu empat kali umur Putri. Sekarang, jumlah umur mereka 55 tahun."',
+    text:'Jika i = umur Ibu sekarang dan u = umur Putri sekarang, model yang tepat adalah...',
+    hint:'"5 tahun lalu" berarti kurangi 5 dari keduanya untuk kalimat pertama. Kalimat kedua adalah kondisi sekarang.',
+    opts:['i = 4u dan i + u = 55','(i−5) = 4(u−5) dan i + u = 55','i − 5 = 4u − 5 dan i + u = 55','i = 4(u−5) dan i + u = 55'],
+    answer:'(i−5) = 4(u−5) dan i + u = 55',
+    explain:'"5 tahun lalu" → kurangi 5 dari keduanya → (i−5) = 4(u−5). "Sekarang jumlahnya 55" → i + u = 55 (tanpa tambahan waktu).'
+  },
+  {
+    tag:'geometri', tagLabel:'Pola Geometri',
+    story:'"Keliling sebuah persegi panjang adalah 56 cm. Panjangnya 4 cm lebih dari dua kali lebarnya."',
+    text:'Jika p = panjang dan l = lebar, model yang benar adalah...',
+    hint:'Keliling = 2(p+l). "Panjang 4 lebih dari dua kali lebar" → p = 2l + 4.',
+    opts:['2p + 2l = 56 dan p = 2l + 4','p + l = 56 dan p = l + 4','2(p+l) = 56 dan p = l + 4','2p + 2l = 56 dan p = 4l + 2'],
+    answer:'2p + 2l = 56 dan p = 2l + 4',
+    explain:'"Keliling 56" → 2(p+l) = 56 atau 2p + 2l = 56. "Panjang 4 lebih dari DUA KALI lebar" → p = 2l + 4 (perhatikan urutan kata!)'
+  },
+  {
+    tag:'geometri', tagLabel:'Pola Geometri',
+    story:'"Segitiga siku-siku memiliki dua sisi yang saling membentuk sudut siku-siku. Sisi pertama 3 cm lebih pendek dari sisi kedua. Jumlah keduanya 21 cm."',
+    text:'Jika a = sisi pertama dan b = sisi kedua (cm), model yang benar adalah...',
+    hint:'"3 cm lebih pendek" → sisi pertama yang lebih kecil. "Jumlah keduanya 21" → penjumlahan kedua sisi.',
+    opts:['a = b + 3 dan a + b = 21','a = b − 3 dan a + b = 21','b = a + 3 dan a + b = 21','a − b = 3 dan a + b = 21'],
+    answer:'a = b − 3 dan a + b = 21',
+    explain:'"Sisi pertama 3 cm lebih pendek dari sisi kedua" → a = b − 3. "Jumlah keduanya 21" → a + b = 21. Kedua persamaan sudah lengkap!'
+  },
+  {
+    tag:'campuran', tagLabel:'Campuran',
+    story:'"Setengah dari suatu bilangan ditambah sepertiganya adalah 25."',
+    text:'Jika bilangan itu adalah x, persamaan yang benar adalah...',
+    hint:'"Setengah dari x" → x/2. "Sepertiganya" → x/3. Keduanya dijumlahkan = 25.',
+    opts:['x/2 − x/3 = 25','x/2 + x/3 = 25','2x + 3x = 25','x/5 = 25'],
+    answer:'x/2 + x/3 = 25',
+    explain:'"Setengah dari x" → x/2. "Ditambah sepertiganya" → + x/3. Hasilnya 25 → x/2 + x/3 = 25. Sederhanakan: 3x/6 + 2x/6 = 5x/6 = 25 → x = 30.'
+  },
+  {
+    tag:'campuran', tagLabel:'Campuran',
+    story:'"Dua bilangan berbeda. Bila bilangan besar dikali 2 kemudian dikurangi bilangan kecil, hasilnya 19. Bila bilangan kecil dikali 3 ditambah bilangan besar, hasilnya 27."',
+    text:'Jika b = bilangan besar dan k = bilangan kecil, model yang tepat adalah...',
+    hint:'Kalimat 1: 2b − k = 19. Kalimat 2: 3k + b = 27. Baca perlahan dan identifikasi subjeknya!',
+    opts:['2b − k = 19 dan 3k + b = 27','b − 2k = 19 dan k + 3b = 27','2b + k = 19 dan 3k − b = 27','b − k = 19 dan k + b = 27'],
+    answer:'2b − k = 19 dan 3k + b = 27',
+    explain:'"Bilangan besar dikali 2 dikurangi bilangan kecil = 19" → 2b − k = 19. "Bilangan kecil dikali 3 ditambah bilangan besar = 27" → 3k + b = 27.'
+  }
+];
+
+let cur = 0, correctCount = 0;
+const answered = new Array(qs.length).fill(false);
+
+function buildCards(){
+  const container=document.getElementById('cards');
+  qs.forEach((q,i)=>{
+    const div=document.createElement('div');
+    div.className='q-card'+(i===0?' active':'');
+    div.id='qcard_'+i;
+    div.innerHTML=`
+      <span class="tag tag-${q.tag}">${q.tagLabel}</span>
+      ${q.story?`<div class="story-box">${q.story}</div>`:''}
+      <div class="q-text">${q.text}</div>
+      <button class="hint-toggle" onclick="toggleHint(${i})">💡 Lihat Petunjuk</button>
+      <div class="hint-box" id="hint_${i}">💡 ${q.hint}</div>
+      <div class="opts">
+        ${q.opts.map(o=>`<button class="opt-btn" onclick="checkAns(${i},this,'${o.replace(/'/g,"\\'")}')">` + o + `</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb_${i}"></div>`;
+    container.appendChild(div);
+  });
+}
+
+function toggleHint(idx){document.getElementById('hint_'+idx).classList.toggle('show');}
+
+function checkAns(idx,btn,choice){
+  if(answered[idx])return;
+  answered[idx]=true;
+  const q=qs[idx];
+  const correct=choice===q.answer;
+  if(correct){correctCount++;document.getElementById('correctCount').textContent=correctCount+' benar';}
+  btn.closest('.opts').querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  btn.classList.add(correct?'correct':'wrong');
+  if(!correct){
+    btn.closest('.opts').querySelectorAll('.opt-btn').forEach(b=>{
+      if(b.textContent.trim()===q.answer)b.classList.add('correct');
+    });
+  }
+  const fb=document.getElementById('fb_'+idx);
+  fb.className='feedback show '+(correct?'ok':'no');
+  fb.textContent=(correct?'✅ ':'❌ ')+q.explain;
+}
+
+function updateProgress(){
+  const pct=((cur+1)/qs.length)*100;
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progText').textContent='Soal '+(cur+1)+' dari '+qs.length;
+}
+
+function showCard(idx){
+  document.querySelectorAll('.q-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('qcard_'+idx).classList.add('active');
+  document.getElementById('prevBtn').disabled=idx===0;
+  const isLast=idx===qs.length-1;
+  document.getElementById('nextBtn').textContent=isLast?'Selesai ✓':'Lanjut →';
+  updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function nextQ(){
+  if(cur<qs.length-1){cur++;showCard(cur);}
+  else showFinish();
+}
+
+function prevQ(){
+  if(cur>0){cur--;showCard(cur);}
+}
+
+function showFinish(){
+  document.getElementById('mainContent').style.display='none';
+  document.getElementById('finishScreen').style.display='block';
+  const wrong=qs.length-correctCount;
+  document.getElementById('sumCorrect').textContent=correctCount;
+  document.getElementById('sumWrong').textContent=wrong;
+  document.getElementById('scoreFinal').textContent=correctCount+' / '+qs.length+' benar';
+}
+
+buildCards();
+updateProgress();
+</script>
+</body>
+</html>

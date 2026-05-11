@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 2 · Pola Kalimat · L22 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --lavender:#9b7fc8;--lavender-light:#c8b4e8;--lav-bg:rgba(155,127,200,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --peach:#f0956a;--peach-bg:rgba(240,149,106,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 75% 15%,rgba(95,191,160,0.07) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--lavender);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--lavender);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--lavender);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:all 0.3s;}
+  .dot.active{background:var(--lavender);box-shadow:0 0 0 3px rgba(155,127,200,0.2);transform:scale(1.1);}
+  .dot.done{background:var(--mint);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);}
+  .card-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.lav{color:var(--lavender);}
+  .card-label.gold{color:var(--gold);}
+  .card-label.mint{color:var(--mint);}
+  .card-label.rose{color:var(--rose);}
+  .card-label.peach{color:var(--peach);}
+  .card h2{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.7rem;line-height:1.4;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  .story-box{background:linear-gradient(135deg,#f5f0ff,#efe8ff);border:2px solid var(--lavender-light);border-radius:18px;padding:1.2rem 1.5rem;margin:1rem 0;}
+  .story-label{font-size:0.62rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--lavender);margin-bottom:0.6rem;}
+  .story-text{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;color:var(--text);line-height:1.7;}
+  .story-text em{color:var(--lavender);font-style:normal;border-bottom:2px dashed var(--lavender-light);}
+
+  .steps{display:flex;flex-direction:column;gap:0.7rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:#fafafa;border:1.5px solid var(--border);border-radius:12px;padding:0.9rem 1rem;font-size:0.88rem;}
+  .step-n{font-family:'Nunito',sans-serif;font-weight:900;font-size:0.75rem;color:var(--lavender);background:var(--lav-bg);border:1.5px solid var(--lavender-light);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .step strong{color:var(--text);}
+  .step .eq{font-family:'Nunito',sans-serif;font-weight:900;color:var(--lavender);margin-top:0.2rem;font-size:0.95rem;}
+
+  .eq-box{border-radius:14px;padding:1.1rem 1.4rem;margin:0.7rem 0;}
+  .eq-box.lav{background:var(--lav-bg);border:1.5px solid var(--lavender-light);}
+  .eq-box.mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .eq-box.gold{background:var(--gold-bg);border:1.5px solid var(--gold-light);}
+  .eq-box.rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .eq-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .eq-label.l{color:var(--lavender);}
+  .eq-label.m{color:var(--mint);}
+  .eq-label.g{color:var(--gold);}
+  .eq-label.r{color:var(--rose);}
+  .eq-text{font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;color:var(--text);}
+  .eq-text span.l{color:var(--lavender);}
+  .eq-text span.m{color:var(--mint);}
+  .eq-text span.g{color:var(--gold);}
+  .eq-sub{font-size:0.78rem;color:var(--text-muted);margin-top:0.3rem;}
+
+  .hl-box{border-radius:14px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.9rem;line-height:1.6;}
+  .hl-lav{background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--text-mid);}
+  .hl-lav strong{color:var(--lavender);}
+  .hl-mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--text-mid);}
+  .hl-mint strong{color:var(--mint);}
+  .hl-gold{background:var(--gold-bg);border:1.5px solid var(--gold-light);color:var(--text-mid);}
+  .hl-gold strong{color:var(--gold);}
+  .hl-rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);color:var(--text-mid);}
+  .hl-rose strong{color:var(--rose);}
+
+  .insight{background:linear-gradient(135deg,var(--lavender),#7a5aa8);color:#fff;border-radius:16px;padding:1.2rem 1.5rem;margin:1rem 0;font-size:0.9rem;line-height:1.6;}
+  .insight strong{font-family:'Nunito',sans-serif;font-size:1rem;}
+
+  .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1rem 0;}
+  .cmp{border-radius:14px;padding:1rem 1.1rem;}
+  .cmp-a{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .cmp-b{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .cmp-label{font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .cmp-a .cmp-label{color:var(--rose);}
+  .cmp-b .cmp-label{color:var(--mint);}
+  .cmp-text{font-family:'Nunito',sans-serif;font-size:0.88rem;font-weight:700;color:var(--text);line-height:1.5;}
+
+  .quiz-q{font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;margin-bottom:1.2rem;line-height:1.5;}
+  .opts{display:flex;flex-direction:column;gap:0.7rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.9rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--lavender-light);background:var(--lav-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--lavender-light);color:var(--lavender);}
+  .btn-primary{background:linear-gradient(135deg,var(--lavender),#7a5aa8);color:#fff;box-shadow:0 4px 14px rgba(155,127,200,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(155,127,200,0.4);}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:var(--lavender);margin-bottom:0.7rem;}
+  .finish-desc{color:var(--text-muted);line-height:1.7;margin-bottom:1.8rem;font-size:0.92rem;}
+  .xp{display:inline-block;background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--lavender);padding:0.35rem 1.1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;margin-bottom:1.8rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson22.html">LESSON 22</a><span>›</span>
+  <span class="cur">SEC 2</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🔗 Section 02 · Strategi</div>
+  <h1>Pola Kalimat & <span>Terjemahan</span></h1>
+  <p class="intro">Sekarang kita latihan terjemahkan kalimat satu per satu — mulai dari pola bilangan, harga, umur, sampai geometri.</p>
+
+  <div class="dots" id="dots"></div>
+
+  <!-- Slide 1: Langkah Menerjemahkan -->
+  <div class="slide active">
+    <div class="card">
+      <div class="card-label lav">🔗 Cara Menerjemahkan</div>
+      <h2>3 Langkah Wajib</h2>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><strong>Baca kalimat</strong> dan temukan kata kunci (jumlah, selisih, kali, dll.)<div class="eq">→ Tentukan operasinya</div></div></div>
+        <div class="step"><div class="step-n">2</div><div><strong>Tentukan siapa variabelnya</strong> — subjek dan objek dalam kalimat<div class="eq">→ Beri nama variabel (x, y, a, b...)</div></div></div>
+        <div class="step"><div class="step-n">3</div><div><strong>Tulis persamaan</strong> — ikuti struktur kalimatnya<div class="eq">→ "A adalah B" → A = B</div></div></div>
+      </div>
+    </div>
+    <div class="hl-box hl-lav">
+      💡 <strong>Tips:</strong> Bacalah kalimat dua kali. Pertama untuk memahami, kedua untuk menerjemahkan.
+    </div>
+  </div>
+
+  <!-- Slide 2: Pola Bilangan -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label gold">🔢 Pola: Bilangan</div>
+      <h2>Soal bilangan bulat</h2>
+      <div class="story-box">
+        <div class="story-label">📖 Kalimat</div>
+        <div class="story-text">"<em>Jumlah</em> dua bilangan adalah 15. Bilangan pertama <em>4 lebih besar</em> dari bilangan kedua."</div>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><strong>Variabel:</strong> misalkan x = bilangan pertama, y = bilangan kedua</div></div>
+        <div class="step"><div class="step-n">2</div><div><strong>Kalimat 1:</strong> "Jumlah → +" → <div class="eq">x + y = 15</div></div></div>
+        <div class="step"><div class="step-n">3</div><div><strong>Kalimat 2:</strong> "x lebih besar 4 dari y" → <div class="eq">x = y + 4</div></div></div>
+      </div>
+      <div class="eq-box lav">
+        <div class="eq-label l">Model Selesai</div>
+        <div class="eq-text"><span class="l">x + y = 15</span></div>
+        <div class="eq-text"><span class="l">x = y + 4</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3: Pola Harga -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label mint">💰 Pola: Harga & Jumlah Barang</div>
+      <h2>Soal harga barang</h2>
+      <div class="story-box">
+        <div class="story-label">📖 Kalimat</div>
+        <div class="story-text">"Beli <em>2 baju</em> dan <em>3 celana</em> bayar Rp 190.000. Beli <em>1 baju</em> dan <em>1 celana</em> bayar Rp 80.000."</div>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><strong>Variabel:</strong> b = harga baju, c = harga celana (dalam ribuan)</div></div>
+        <div class="step"><div class="step-n">2</div><div><strong>Kalimat 1:</strong> 2 baju + 3 celana = 190 → <div class="eq">2b + 3c = 190</div></div></div>
+        <div class="step"><div class="step-n">3</div><div><strong>Kalimat 2:</strong> 1 baju + 1 celana = 80 → <div class="eq">b + c = 80</div></div></div>
+      </div>
+    </div>
+    <div class="hl-box hl-mint">
+      💡 <strong>Pola harga:</strong> (jumlah barang) × (harga satuan) = total. Koefisien = berapa banyaknya!
+    </div>
+  </div>
+
+  <!-- Slide 4: Pola Umur -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">🎂 Pola: Umur</div>
+      <h2>Soal umur dengan konteks waktu</h2>
+      <div class="story-box">
+        <div class="story-label">📖 Kalimat</div>
+        <div class="story-text">"Umur Ibu <em>3 kali</em> umur Anak. <em>5 tahun lagi</em>, umur Ibu <em>2 kali</em> umur Anak."</div>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><strong>Variabel:</strong> i = umur Ibu sekarang, a = umur Anak sekarang</div></div>
+        <div class="step"><div class="step-n">2</div><div><strong>Kalimat 1:</strong> "Ibu 3× Anak" → <div class="eq">i = 3a</div></div></div>
+        <div class="step"><div class="step-n">3</div><div><strong>Kalimat 2:</strong> "5 tahun lagi" → tambahkan 5 ke masing-masing → <div class="eq">(i + 5) = 2(a + 5)</div></div></div>
+      </div>
+      <div class="hl-box hl-rose">
+        ⚠️ <strong>Perhatikan:</strong> "5 tahun lagi" mempengaruhi KEDUA orang — Ibu dan Anak sama-sama bertambah 5 tahun!
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 5: Pola Geometri -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label peach">📐 Pola: Geometri</div>
+      <h2>Soal keliling dan panjang</h2>
+      <div class="story-box">
+        <div class="story-label">📖 Kalimat</div>
+        <div class="story-text">"Panjang persegi panjang <em>6 cm lebih</em> dari lebarnya. Kelilingnya <em>48 cm</em>."</div>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><strong>Variabel:</strong> p = panjang, l = lebar</div></div>
+        <div class="step"><div class="step-n">2</div><div><strong>Kalimat 1:</strong> "panjang 6 lebih dari lebar" → <div class="eq">p = l + 6</div></div></div>
+        <div class="step"><div class="step-n">3</div><div><strong>Kalimat 2:</strong> "Keliling 48" → rumus keliling = 2(p + l) → <div class="eq">2(p + l) = 48 → p + l = 24</div></div></div>
+      </div>
+      <div class="hl-box hl-gold">
+        📌 <strong>Ingat rumus:</strong> Keliling persegi panjang = 2(p + l). Kalau keliling = 48, maka p + l = 24!
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 6: Jebakan Umum -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">⚠️ Jebakan-Jebakan Umum</div>
+      <h2>Yang sering salah</h2>
+      <div class="compare-grid">
+        <div class="cmp cmp-a">
+          <div class="cmp-label">❌ Salah</div>
+          <div class="cmp-text">"A dua kali B" ditulis jadi A + B = 2 atau 2A = B</div>
+        </div>
+        <div class="cmp cmp-b">
+          <div class="cmp-label">✅ Benar</div>
+          <div class="cmp-text">"A dua kali B" → A = 2B (A yang nilainya 2× lipat)</div>
+        </div>
+      </div>
+      <div class="compare-grid">
+        <div class="cmp cmp-a">
+          <div class="cmp-label">❌ Salah</div>
+          <div class="cmp-text">"3 tahun lagi ibu 2× anak" → i = 2a + 3</div>
+        </div>
+        <div class="cmp cmp-b">
+          <div class="cmp-label">✅ Benar</div>
+          <div class="cmp-text">"3 tahun lagi" → (i+3) = 2(a+3) — kedua sisi berubah!</div>
+        </div>
+      </div>
+      <div class="compare-grid">
+        <div class="cmp cmp-a">
+          <div class="cmp-label">❌ Salah</div>
+          <div class="cmp-text">"Selisih x dan y = 6" langsung tulis x = 6</div>
+        </div>
+        <div class="cmp cmp-b">
+          <div class="cmp-label">✅ Benar</div>
+          <div class="cmp-text">"Selisih" = |x − y| = 6 → x − y = 6 (tergantung mana lebih besar)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 7: Quiz 1 -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">🧪 Cek Pemahaman 1</div>
+      <div class="quiz-q">"Umur Ayah dua kali umur Anak. Tiga tahun lalu, umur Ayah tiga kali umur Anak."<br><br>Jika a = umur Ayah sekarang dan n = umur Anak sekarang, model yang tepat adalah...</div>
+      <div class="opts">
+        <button class="opt-btn" onclick="check(0,this,'wrong')">a = 2n dan a − 3 = 3(n − 3)</button>
+        <button class="opt-btn" onclick="check(0,this,'correct')">a = 2n dan (a − 3) = 3(n − 3)</button>
+        <button class="opt-btn" onclick="check(0,this,'wrong')">a = 2n dan a = 3n − 3</button>
+        <button class="opt-btn" onclick="check(0,this,'wrong')">2a = n dan a − 3 = 3n − 3</button>
+      </div>
+      <div class="feedback" id="fb0"></div>
+    </div>
+  </div>
+
+  <!-- Slide 8: Quiz 2 -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">🧪 Cek Pemahaman 2</div>
+      <div class="quiz-q">"Beli 4 apel dan 2 jeruk bayar Rp 22.000. Beli 1 apel dan 3 jeruk bayar Rp 17.000."<br><br>Jika p = harga apel dan j = harga jeruk (dalam ribu), persamaan kedua adalah...</div>
+      <div class="opts">
+        <button class="opt-btn" onclick="check(1,this,'wrong')">3p + j = 17</button>
+        <button class="opt-btn" onclick="check(1,this,'correct')">p + 3j = 17</button>
+        <button class="opt-btn" onclick="check(1,this,'wrong')">4p + 2j = 17</button>
+        <button class="opt-btn" onclick="check(1,this,'wrong')">p + j = 17</button>
+      </div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+  </div>
+
+  <!-- Slide 9: Kesimpulan -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label mint">💎 Kesimpulan Besar</div>
+      <h2>Yang harus selalu kamu ingat</h2>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><strong>Kata = Simbol</strong> — setiap kata kunci punya padanan operasi matematika</div></div>
+        <div class="step"><div class="step-n">2</div><div><strong>Konteks waktu</strong> — "n tahun lagi/lalu" menggeser SEMUA variabel yang terlibat</div></div>
+        <div class="step"><div class="step-n">3</div><div><strong>Siapa subjeknya?</strong> — "A dua kali B" berarti A = 2B, bukan B = 2A</div></div>
+        <div class="step"><div class="step-n">4</div><div><strong>Koefisien = kuantitas</strong> — "3 baju" → koefisien baju adalah 3</div></div>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>🌟 Sebelum tulis persamaan:</strong> Pastikan kamu tahu <em>hubungan apa</em> yang digambarkan kalimat itu. Baru tulis simbolnya!
+    </div>
+  </div>
+
+  <!-- Finish -->
+  <div class="slide">
+    <div class="finish">
+      <span class="finish-icon">🔗</span>
+      <div class="finish-title">Section 2 Selesai!</div>
+      <div class="finish-desc">Kamu sudah berlatih menerjemahkan berbagai pola kalimat. Sekarang waktunya tes kecepatan di Sprint!</div>
+      <div class="xp">+35 XP · Pattern Reader</div>
+      <div class="finish-btns">
+        <a href="l22_section1.html" class="btn btn-ghost">← Section 1</a>
+        <a href="l22_section3.html" class="btn btn-primary">Sprint ⚡</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /slides -->
+
+<div class="nav-btns">
+  <button class="btn btn-ghost" id="prevBtn" onclick="prev()" disabled>← Prev</button>
+  <button class="btn btn-primary" id="nextBtn" onclick="next()">Lanjut →</button>
+</div>
+</div>
+
+<script>
+  const total = 10;
+  let cur = 0;
+  const slides = document.querySelectorAll('.slide');
+  const dotsEl = document.getElementById('dots');
+  for(let i=0;i<total;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+  function updateDots(){document.querySelectorAll('.dot').forEach((d,i)=>{d.className='dot'+(i===cur?' active':(i<cur?' done':''));});}
+  function showSlide(n){slides.forEach(s=>s.classList.remove('active'));slides[n].classList.add('active');document.getElementById('prevBtn').disabled=n===0;document.getElementById('nextBtn').style.display=n===total-1?'none':'inline-flex';updateDots();}
+  function next(){if(cur<total-1){cur++;showSlide(cur);}}
+  function prev(){if(cur>0){cur--;showSlide(cur);}}
+
+  const feedbacks = {
+    0:{correct:'✅ Tepat! "Tiga tahun lalu" berarti kita kurangi 3 dari kedua pihak: (a−3) = 3(n−3). Jangan lupa kurangi juga dari anak!',wrong:'❌ Perhatikan "tiga tahun lalu" — ini menggeser KEDUANYA. Ayah jadi a−3 dan Anak jadi n−3.'},
+    1:{correct:'✅ Benar! Kalimat kedua: "1 apel dan 3 jeruk" → koefisien apel = 1, koefisien jeruk = 3 → p + 3j = 17.',wrong:'❌ Baca kembali kalimat kedua: berapa apel? Berapa jeruk? Koefisien harus sesuai jumlah barangnya.'}
+  };
+
+  function check(idx,btn,result){
+    const btns=btn.closest('.opts').querySelectorAll('.opt-btn');
+    btns.forEach(b=>b.disabled=true);
+    btn.classList.add(result);
+    const fb=document.getElementById('fb'+idx);
+    fb.className='feedback show '+(result==='correct'?'ok':'no');
+    fb.textContent=result==='correct'?feedbacks[idx].correct:feedbacks[idx].wrong;
+  }
+</script>
+</body>
+</html>

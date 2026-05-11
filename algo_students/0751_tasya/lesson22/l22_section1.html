@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Kamus · L22 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --lavender:#9b7fc8;--lavender-light:#c8b4e8;--lav-bg:rgba(155,127,200,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --peach:#f0956a;--peach-bg:rgba(240,149,106,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 10%,rgba(155,127,200,0.08) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--lavender);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--lavender);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--lavender);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:all 0.3s;}
+  .dot.active{background:var(--lavender);box-shadow:0 0 0 3px rgba(155,127,200,0.2);transform:scale(1.1);}
+  .dot.done{background:var(--mint);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);}
+  .card-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.lav{color:var(--lavender);}
+  .card-label.gold{color:var(--gold);}
+  .card-label.mint{color:var(--mint);}
+  .card-label.rose{color:var(--rose);}
+  .card h2{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.7rem;line-height:1.4;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  /* Keyword table */
+  .kw-table{width:100%;border-collapse:collapse;margin:1rem 0;}
+  .kw-table th{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.5rem 0.8rem;text-align:left;border-bottom:2px solid var(--border2);color:var(--text-muted);}
+  .kw-table td{padding:0.65rem 0.8rem;font-size:0.88rem;border-bottom:1px solid var(--border);vertical-align:middle;}
+  .kw-table tr:last-child td{border-bottom:none;}
+  .kw-pill{display:inline-block;font-weight:700;padding:0.2rem 0.65rem;border-radius:8px;font-size:0.85rem;}
+  .kw-plus{background:rgba(95,191,160,0.15);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .kw-minus{background:rgba(232,98,138,0.1);color:var(--rose);border:1.5px solid var(--rose-light);}
+  .kw-times{background:rgba(155,127,200,0.12);color:var(--lavender);border:1.5px solid var(--lavender-light);}
+  .kw-eq{background:rgba(232,160,32,0.1);color:var(--gold);border:1.5px solid var(--gold-light);}
+  .kw-div{background:rgba(240,149,106,0.12);color:var(--peach);border:1.5px solid rgba(240,149,106,0.4);}
+
+  .story-box{background:linear-gradient(135deg,#f5f0ff,#efe8ff);border:2px solid var(--lavender-light);border-radius:18px;padding:1.4rem 1.6rem;margin:1rem 0;}
+  .story-label{font-size:0.62rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--lavender);margin-bottom:0.7rem;}
+  .story-text{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;color:var(--text);line-height:1.7;}
+  .story-text em{color:var(--lavender);font-style:normal;border-bottom:2px dashed var(--lavender-light);}
+
+  .eq-box{border-radius:14px;padding:1.1rem 1.4rem;margin:0.7rem 0;}
+  .eq-box.lav{background:var(--lav-bg);border:1.5px solid var(--lavender-light);}
+  .eq-box.mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .eq-box.gold{background:var(--gold-bg);border:1.5px solid var(--gold-light);}
+  .eq-box.rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .eq-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .eq-label.l{color:var(--lavender);}
+  .eq-label.m{color:var(--mint);}
+  .eq-label.g{color:var(--gold);}
+  .eq-label.r{color:var(--rose);}
+  .eq-text{font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;color:var(--text);}
+  .eq-text span.l{color:var(--lavender);}
+  .eq-text span.m{color:var(--mint);}
+  .eq-text span.g{color:var(--gold);}
+  .eq-text span.r{color:var(--rose);}
+  .eq-sub{font-size:0.78rem;color:var(--text-muted);margin-top:0.3rem;}
+
+  .arrow-row{display:flex;align-items:center;gap:0.7rem;margin:0.55rem 0;font-size:0.9rem;flex-wrap:wrap;}
+  .arrow-row .phrase{background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--lavender);font-weight:700;font-size:0.85rem;padding:0.3rem 0.8rem;border-radius:8px;}
+  .arrow-row .arrow{color:var(--text-muted);font-size:1.2rem;}
+  .arrow-row .result{font-family:'Nunito',sans-serif;font-weight:900;font-size:0.95rem;color:var(--text);}
+
+  .hl-box{border-radius:14px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.9rem;line-height:1.6;}
+  .hl-lav{background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--text-mid);}
+  .hl-lav strong{color:var(--lavender);}
+  .hl-mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--text-mid);}
+  .hl-mint strong{color:var(--mint);}
+  .hl-gold{background:var(--gold-bg);border:1.5px solid var(--gold-light);color:var(--text-mid);}
+  .hl-gold strong{color:var(--gold);}
+  .hl-rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);color:var(--text-mid);}
+  .hl-rose strong{color:var(--rose);}
+
+  .insight{background:linear-gradient(135deg,var(--lavender),#7a5aa8);color:#fff;border-radius:16px;padding:1.2rem 1.5rem;margin:1rem 0;font-size:0.9rem;line-height:1.6;}
+  .insight strong{font-family:'Nunito',sans-serif;font-size:1rem;}
+
+  .trap-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1rem 0;}
+  .trap-card{border-radius:14px;padding:1rem 1.1rem;}
+  .trap-wrong{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .trap-right{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .trap-label{font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .trap-wrong .trap-label{color:var(--rose);}
+  .trap-right .trap-label{color:var(--mint);}
+  .trap-eq{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:900;color:var(--text);margin-bottom:0.3rem;}
+  .trap-note{font-size:0.78rem;color:var(--text-muted);}
+
+  .quiz-q{font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;margin-bottom:1.2rem;line-height:1.5;}
+  .opts{display:flex;flex-direction:column;gap:0.7rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.9rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--lavender-light);background:var(--lav-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--lavender-light);color:var(--lavender);}
+  .btn-primary{background:linear-gradient(135deg,var(--lavender),#7a5aa8);color:#fff;box-shadow:0 4px 14px rgba(155,127,200,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(155,127,200,0.4);}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:var(--lavender);margin-bottom:0.7rem;}
+  .finish-desc{color:var(--text-muted);line-height:1.7;margin-bottom:1.8rem;font-size:0.92rem;}
+  .xp{display:inline-block;background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--lavender);padding:0.35rem 1.1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;margin-bottom:1.8rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson22.html">LESSON 22</a><span>›</span>
+  <span class="cur">SEC 1</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📖 Section 01 · Vocabulary</div>
+  <h1>Kamus Kata <span>Matematika</span></h1>
+  <p class="intro">Setiap kata dalam soal punya arti matematika. Kenali kamus ini dan kamu tidak akan bingung lagi membaca soal cerita!</p>
+
+  <div class="dots" id="dots"></div>
+
+  <!-- Slide 1: Ide Utama -->
+  <div class="slide active">
+    <div class="card">
+      <div class="card-label lav">💡 Ide Utama</div>
+      <h2>Matematika = Bahasa Simbol</h2>
+      <p>Soal cerita ditulis dengan kata-kata. Tapi matematika berbicara dalam simbol. Tugasmu: <strong>menerjemahkan</strong> bahasa ke simbol.</p>
+      <div class="story-box">
+        <div class="story-label">📖 Kalimat</div>
+        <div class="story-text">"<em>Jumlah</em> dua angka adalah <em>10</em>."</div>
+      </div>
+      <div class="eq-box lav">
+        <div class="eq-label l">Terjemahan</div>
+        <div class="eq-text"><span class="l">x + y</span> = 10</div>
+        <div class="eq-sub">"Jumlah" → tambah (+). Dua angka → dua variabel.</div>
+      </div>
+    </div>
+    <div class="hl-box hl-lav">
+      💬 <strong>Prinsip utama:</strong> Pahami cerita dulu, baru tulis simbol. Jangan langsung tulis angka!
+    </div>
+  </div>
+
+  <!-- Slide 2: Kata Kunci Plus -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label mint">➕ Kata Kunci: Jumlah & Total</div>
+      <h2>Kata-kata yang berarti +</h2>
+      <table class="kw-table">
+        <tr><th>Kata</th><th>Simbol</th><th>Contoh</th></tr>
+        <tr><td><strong>jumlah</strong></td><td><span class="kw-pill kw-plus">+</span></td><td>jumlah x dan y → x + y</td></tr>
+        <tr><td><strong>total</strong></td><td><span class="kw-pill kw-plus">+</span></td><td>total uang → A + B</td></tr>
+        <tr><td><strong>digabungkan</strong></td><td><span class="kw-pill kw-plus">+</span></td><td>pensil dan buku digabung → p + b</td></tr>
+        <tr><td><strong>bersama-sama</strong></td><td><span class="kw-pill kw-plus">+</span></td><td>keduanya bersama 40 → a + b = 40</td></tr>
+        <tr><td><strong>ditambah</strong></td><td><span class="kw-pill kw-plus">+</span></td><td>x ditambah 5 adalah 12 → x + 5 = 12</td></tr>
+      </table>
+    </div>
+    <div class="eq-box mint">
+      <div class="eq-label m">Contoh kalimat</div>
+      <div class="eq-text">"Total uang Ani dan Budi Rp 80.000"</div>
+      <div class="eq-sub">→ A + B = 80 (dalam ribuan)</div>
+    </div>
+  </div>
+
+  <!-- Slide 3: Kata Kunci Minus -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">➖ Kata Kunci: Selisih & Lebih Dari</div>
+      <h2>Kata-kata yang berarti −</h2>
+      <table class="kw-table">
+        <tr><th>Kata</th><th>Simbol</th><th>Contoh</th></tr>
+        <tr><td><strong>selisih</strong></td><td><span class="kw-pill kw-minus">−</span></td><td>selisih x dan y → x − y</td></tr>
+        <tr><td><strong>lebih besar dari</strong></td><td><span class="kw-pill kw-minus">+</span></td><td>x 3 lebih besar dari y → x = y + 3</td></tr>
+        <tr><td><strong>lebih kecil dari</strong></td><td><span class="kw-pill kw-minus">−</span></td><td>x 5 lebih kecil dari y → x = y − 5</td></tr>
+        <tr><td><strong>kurang dari</strong></td><td><span class="kw-pill kw-minus">−</span></td><td>4 kurang dari x → x − 4</td></tr>
+        <tr><td><strong>dikurangi</strong></td><td><span class="kw-pill kw-minus">−</span></td><td>y dikurangi 6 adalah 9 → y − 6 = 9</td></tr>
+      </table>
+    </div>
+    <div class="hl-box hl-rose">
+      ⚠️ <strong>Jebakan!</strong> "x lebih besar dari y" bukan x − y = 0. Artinya <strong>x = y + (selisihnya)</strong>. Yang menjadi rujukan adalah y, bukan x!
+    </div>
+    <div class="trap-grid">
+      <div class="trap-card trap-wrong">
+        <div class="trap-label">❌ Salah</div>
+        <div class="trap-eq">"x 4 lebih besar dari y" → x − y = 4</div>
+        <div class="trap-note">Ini pernyataan, bukan persamaan langsung</div>
+      </div>
+      <div class="trap-card trap-right">
+        <div class="trap-label">✅ Benar</div>
+        <div class="trap-eq">"x 4 lebih besar dari y" → x = y + 4</div>
+        <div class="trap-note">x adalah yang lebih besar, tambahkan 4 ke y</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 4: Kata Kunci Kali -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label lav">✖️ Kata Kunci: Kali & Lipat</div>
+      <h2>Kata-kata yang berarti ×</h2>
+      <table class="kw-table">
+        <tr><th>Kata</th><th>Simbol</th><th>Contoh</th></tr>
+        <tr><td><strong>dua kali</strong></td><td><span class="kw-pill kw-times">2×</span></td><td>dua kali x → 2x</td></tr>
+        <tr><td><strong>tiga kali lebih banyak</strong></td><td><span class="kw-pill kw-times">3×</span></td><td>A tiga kali B → A = 3B</td></tr>
+        <tr><td><strong>setengah dari</strong></td><td><span class="kw-pill kw-div">÷2</span></td><td>setengah dari x → x/2</td></tr>
+        <tr><td><strong>seperempat</strong></td><td><span class="kw-pill kw-div">÷4</span></td><td>seperempat dari n → n/4</td></tr>
+        <tr><td><strong>berlipat ganda</strong></td><td><span class="kw-pill kw-times">2×</span></td><td>berlipat ganda dari x → 2x</td></tr>
+      </table>
+    </div>
+    <div class="story-box">
+      <div class="story-label">📖 Kalimat</div>
+      <div class="story-text">"Umur Ibu <em>dua kali</em> umur Ani."</div>
+    </div>
+    <div class="eq-box lav">
+      <div class="eq-label l">Terjemahan</div>
+      <div class="eq-text">I = <span class="l">2</span>A</div>
+      <div class="eq-sub">I = umur Ibu, A = umur Ani. Ibu yang 2× lipat, jadi I = 2A.</div>
+    </div>
+  </div>
+
+  <!-- Slide 5: Kata Kunci Waktu -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label gold">🕐 Kata Kunci: Konteks Waktu</div>
+      <h2>Kata-kata tentang waktu</h2>
+      <p style="margin-bottom:1rem;">Soal umur sering pakai konteks waktu. Pastikan kamu tambah/kurang ke variabel sekarang!</p>
+      <div class="arrow-row">
+        <div class="phrase">5 tahun lagi</div>
+        <div class="arrow">→</div>
+        <div class="result">x + 5</div>
+      </div>
+      <div class="arrow-row">
+        <div class="phrase">3 tahun yang lalu</div>
+        <div class="arrow">→</div>
+        <div class="result">x − 3</div>
+      </div>
+      <div class="arrow-row">
+        <div class="phrase">saat ini</div>
+        <div class="arrow">→</div>
+        <div class="result">x (saja)</div>
+      </div>
+      <div class="arrow-row">
+        <div class="phrase">2 tahun ke depan</div>
+        <div class="arrow">→</div>
+        <div class="result">x + 2</div>
+      </div>
+    </div>
+    <div class="hl-box hl-gold">
+      💡 <strong>Kenapa tandanya berbeda?</strong> Karena variabel x selalu mewakili <em>umur sekarang</em>. Masa depan = tambah, masa lalu = kurang.
+    </div>
+    <div class="story-box">
+      <div class="story-label">📖 Contoh</div>
+      <div class="story-text">"<em>3 tahun lagi</em>, umur Budi dua kali umur Sari <em>saat ini</em>."<br>→ (B + 3) = 2S</div>
+    </div>
+  </div>
+
+  <!-- Slide 6: Quiz 1 -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">🧪 Cek Pemahaman 1</div>
+      <div class="quiz-q">"Selisih umur Ayah dan Ibu adalah 5 tahun. Ayah lebih tua."<br>Jika a = umur Ayah dan i = umur Ibu, persamaan yang tepat adalah...</div>
+      <div class="opts">
+        <button class="opt-btn" onclick="check(0,this,'wrong')">a − i = 5, dengan i > a</button>
+        <button class="opt-btn" onclick="check(0,this,'correct')">a − i = 5, dengan a > i</button>
+        <button class="opt-btn" onclick="check(0,this,'wrong')">a + i = 5</button>
+        <button class="opt-btn" onclick="check(0,this,'wrong')">i = a + 5</button>
+      </div>
+      <div class="feedback" id="fb0"></div>
+    </div>
+  </div>
+
+  <!-- Slide 7: Quiz 2 -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">🧪 Cek Pemahaman 2</div>
+      <div class="quiz-q">"Harga sepatu 3 kali harga sandal. Total harganya Rp 120.000."<br>Jika s = harga sepatu dan n = harga sandal (ribu), manakah model yang benar?</div>
+      <div class="opts">
+        <button class="opt-btn" onclick="check(1,this,'wrong')">s = n + 3 dan s + n = 120</button>
+        <button class="opt-btn" onclick="check(1,this,'wrong')">3s = n dan s + n = 120</button>
+        <button class="opt-btn" onclick="check(1,this,'correct')">s = 3n dan s + n = 120</button>
+        <button class="opt-btn" onclick="check(1,this,'wrong')">s × n = 3 dan s + n = 120</button>
+      </div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+  </div>
+
+  <!-- Slide 8: Rangkuman -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label mint">📚 Kamus Lengkap</div>
+      <h2>Simpan ini sebagai referensi!</h2>
+      <table class="kw-table">
+        <tr><th>Kata</th><th>Arti</th></tr>
+        <tr><td>jumlah, total, digabung</td><td><span class="kw-pill kw-plus">+</span></td></tr>
+        <tr><td>selisih, dikurangi, kurang dari</td><td><span class="kw-pill kw-minus">−</span></td></tr>
+        <tr><td>x lebih besar dari y</td><td><span class="kw-pill kw-eq">x = y + n</span></td></tr>
+        <tr><td>dua kali, berlipat</td><td><span class="kw-pill kw-times">2x, 3x...</span></td></tr>
+        <tr><td>setengah, seperempat</td><td><span class="kw-pill kw-div">x/2, x/4</span></td></tr>
+        <tr><td>n tahun lagi</td><td><span class="kw-pill kw-plus">x + n</span></td></tr>
+        <tr><td>n tahun lalu</td><td><span class="kw-pill kw-minus">x − n</span></td></tr>
+      </table>
+    </div>
+    <div class="insight">
+      <strong>🌟 Kunci Berhasil:</strong> Sebelum tulis simbol, tanya dulu — <em>"Ini hubungan apa? Tambah, kurang, kali, atau bagi?"</em>
+    </div>
+  </div>
+
+  <!-- Finish -->
+  <div class="slide">
+    <div class="finish">
+      <span class="finish-icon">📖</span>
+      <div class="finish-title">Section 1 Selesai!</div>
+      <div class="finish-desc">Kamu sudah punya kamus kata matematika. Sekarang lanjut ke Section 2 untuk latihan menerjemahkan kalimat pola demi pola!</div>
+      <div class="xp">+30 XP · Language Master</div>
+      <div class="finish-btns">
+        <a href="lesson22.html" class="btn btn-ghost">← Kembali</a>
+        <a href="l22_section2.html" class="btn btn-primary">Section 2 →</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /slides -->
+
+<div class="nav-btns">
+  <button class="btn btn-ghost" id="prevBtn" onclick="prev()" disabled>← Prev</button>
+  <button class="btn btn-primary" id="nextBtn" onclick="next()">Lanjut →</button>
+</div>
+</div>
+
+<script>
+  const total = 9;
+  let cur = 0;
+  const slides = document.querySelectorAll('.slide');
+  const dotsEl = document.getElementById('dots');
+  for (let i=0;i<total;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
+  function updateDots(){document.querySelectorAll('.dot').forEach((d,i)=>{d.className='dot'+(i===cur?' active':(i<cur?' done':''));});}
+  function showSlide(n){slides.forEach(s=>s.classList.remove('active'));slides[n].classList.add('active');document.getElementById('prevBtn').disabled=n===0;document.getElementById('nextBtn').style.display=n===total-1?'none':'inline-flex';updateDots();}
+  function next(){if(cur<total-1){cur++;showSlide(cur);}}
+  function prev(){if(cur>0){cur--;showSlide(cur);}}
+
+  const feedbacks = {
+    0: {correct:'✅ Betul! Selisih = a − i. Karena Ayah lebih tua, maka a > i, sehingga a − i = 5 positif.', wrong:'❌ Ingat, "selisih" artinya pengurangan. Karena Ayah yang lebih tua, kita kurangi umur Ibu dari Ayah.'},
+    1: {correct:'✅ Tepat! "3 kali harga sandal" berarti s = 3n (sepatu yang 3× lipat sandal). Total → s + n = 120.', wrong:'❌ Perhatikan siapa yang "3 kali". Sepatu yang nilainya 3× lipat sandal, jadi s = 3n, bukan sebaliknya.'}
+  };
+
+  function check(idx, btn, result) {
+    const btns = btn.closest('.opts').querySelectorAll('.opt-btn');
+    btns.forEach(b=>b.disabled=true);
+    btn.classList.add(result);
+    const fb = document.getElementById('fb'+idx);
+    fb.className='feedback show '+(result==='correct'?'ok':'no');
+    fb.textContent = result==='correct' ? feedbacks[idx].correct : feedbacks[idx].wrong;
+  }
+</script>
+</body>
+</html>
