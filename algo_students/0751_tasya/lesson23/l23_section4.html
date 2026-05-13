@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise · L23 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --lavender:#9b7fc8;--lavender-light:#c8b4e8;--lav-bg:rgba(155,127,200,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --peach:#f0956a;--peach-bg:rgba(240,149,106,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 90%,rgba(155,127,200,0.07) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--mint);}
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--mint);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--mint);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .prog-bar-wrap{background:var(--border);border-radius:99px;height:8px;margin-bottom:0.4rem;overflow:hidden;}
+  .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--lavender),var(--mint));border-radius:99px;transition:width 0.4s ease;}
+  .prog-label{display:flex;justify-content:space-between;font-size:0.72rem;font-weight:700;color:var(--text-muted);margin-bottom:1.5rem;}
+
+  .q-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);display:none;animation:fadeUp 0.35s ease;}
+  .q-card.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .tag{display:inline-block;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.2rem 0.7rem;border-radius:99px;margin-bottom:0.9rem;}
+  .tag-dadu{background:var(--lav-bg);color:var(--lavender);border:1.5px solid var(--lavender-light);}
+  .tag-koin{background:var(--gold-bg);color:var(--gold);border:1.5px solid var(--gold-light);}
+  .tag-campuran{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .tag-bangun{background:var(--peach-bg);color:var(--peach);border:1.5px solid rgba(240,149,106,0.4);}
+
+  /* Chips */
+  .chip-row{display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;}
+  .chip{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:38px;padding:0 8px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:900;border:2px solid;}
+  .chip-n{background:var(--lav-bg);border-color:var(--lavender-light);color:var(--lavender);}
+
+  .q-text{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;margin-bottom:1rem;line-height:1.5;}
+
+  .hint-toggle{background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--lavender);padding:0.4rem 1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;margin-bottom:0.8rem;display:inline-block;transition:all 0.2s;}
+  .hint-toggle:hover{background:var(--lavender);color:#fff;}
+  .hint-box{background:var(--lav-bg);border:1.5px solid var(--lavender-light);border-radius:12px;padding:0.7rem 1rem;margin-bottom:0.9rem;font-size:0.85rem;color:var(--text-mid);display:none;}
+  .hint-box.show{display:block;}
+
+  .opts{display:flex;flex-direction:column;gap:0.65rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.88rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--lavender-light);background:var(--lav-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--lavender-light);color:var(--lavender);}
+  .btn-primary{background:linear-gradient(135deg,var(--mint),#3d9a80);color:#fff;box-shadow:0 4px 14px rgba(95,191,160,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(95,191,160,0.4);}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:var(--mint);margin-bottom:0.7rem;}
+  .finish-score{font-family:'Nunito',sans-serif;font-size:2.8rem;font-weight:900;color:var(--lavender);margin-bottom:0.3rem;}
+  .finish-desc{color:var(--text-muted);line-height:1.7;margin-bottom:1.8rem;font-size:0.92rem;}
+  .xp{display:inline-block;background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--mint);padding:0.35rem 1.1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;margin-bottom:1.4rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  .saved-banner{background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--mint);border-radius:12px;padding:0.6rem 1rem;font-size:0.82rem;font-weight:700;margin-bottom:1rem;display:none;}
+  .saved-banner.show{display:block;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson23.html">LESSON 23</a><span>›</span>
+  <span class="cur">EXERCISE</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🌙 Exercise</div>
+  <h1>Latihan Mandiri — <span>10 Soal</span></h1>
+  <div class="intro">Campuran semua tipe soal peluang. Santai, tanpa timer. Gunakan petunjuk kalau butuh bantuan. Progresmu tersimpan otomatis.</div>
+
+  <div class="saved-banner" id="savedBanner">✅ Progress tersimpan!</div>
+
+  <div class="prog-bar-wrap"><div class="prog-bar-fill" id="progFill" style="width:0%"></div></div>
+  <div class="prog-label"><span id="progText">0 / 10 selesai</span><span id="scoreText">0 benar</span></div>
+
+  <!-- Q1 -->
+  <div class="q-card active" id="qc0">
+    <span class="tag tag-dadu">🎲 Dadu</span>
+    <div class="chip-row"><div class="chip chip-n">1</div><div class="chip chip-n">2</div><div class="chip chip-n">3</div><div class="chip chip-n">4</div><div class="chip chip-n">5</div><div class="chip chip-n">6</div></div>
+    <div class="q-text">Sebuah dadu dilempar sekali. Berapa peluang mendapatkan angka 3?</div>
+    <button class="hint-toggle" onclick="toggleHint(0)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint0">Ruang sampel dadu: {1,2,3,4,5,6} → total 6. Angka 3 hanya ada 1. Peluang = ?/6</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(0,this,'wrong')">1/3</button>
+      <button class="opt-btn" onclick="ans(0,this,'correct')">1/6</button>
+      <button class="opt-btn" onclick="ans(0,this,'wrong')">2/6</button>
+      <button class="opt-btn" onclick="ans(0,this,'wrong')">3/6</button>
+    </div>
+    <div class="feedback" id="fb0"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="qc1">
+    <span class="tag tag-koin">🪙 Koin</span>
+    <div class="chip-row"><div class="chip chip-n">A</div><div class="chip chip-n">G</div></div>
+    <div class="q-text">Sebuah koin dilempar. Peluang mendapatkan sisi Gambar adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(1)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint1">Koin punya 2 sisi: Angka (A) dan Gambar (G). Gambar ada 1 dari total 2 kemungkinan.</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(1,this,'wrong')">1/4</button>
+      <button class="opt-btn" onclick="ans(1,this,'wrong')">1/3</button>
+      <button class="opt-btn" onclick="ans(1,this,'correct')">1/2</button>
+      <button class="opt-btn" onclick="ans(1,this,'wrong')">2/3</button>
+    </div>
+    <div class="feedback" id="fb1"></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="qc2">
+    <span class="tag tag-dadu">🎲 Dadu</span>
+    <div class="chip-row"><div class="chip chip-n">1</div><div class="chip chip-n">2</div><div class="chip chip-n">3</div><div class="chip chip-n">4</div><div class="chip chip-n">5</div><div class="chip chip-n">6</div></div>
+    <div class="q-text">Peluang mendapatkan angka yang merupakan kelipatan 2 (genap) dari sebuah dadu adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(2)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint2">Kelipatan 2 dari {1,2,3,4,5,6}: tulis yang habis dibagi 2. Ada berapa?</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(2,this,'wrong')">1/6</button>
+      <button class="opt-btn" onclick="ans(2,this,'wrong')">2/6</button>
+      <button class="opt-btn" onclick="ans(2,this,'correct')">3/6</button>
+      <button class="opt-btn" onclick="ans(2,this,'wrong')">4/6</button>
+    </div>
+    <div class="feedback" id="fb2"></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="qc3">
+    <span class="tag tag-campuran">🎲 Dadu</span>
+    <div class="chip-row"><div class="chip chip-n">1</div><div class="chip chip-n">2</div><div class="chip chip-n">3</div><div class="chip chip-n">4</div><div class="chip chip-n">5</div><div class="chip chip-n">6</div></div>
+    <div class="q-text">Sebuah dadu dilempar. Peluang mendapatkan angka kurang dari 3 adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(3)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint3">Kurang dari 3 berarti nilainya di bawah 3: cari dari {1,2,3,4,5,6} yang memenuhi.</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(3,this,'correct')">2/6</button>
+      <button class="opt-btn" onclick="ans(3,this,'wrong')">3/6</button>
+      <button class="opt-btn" onclick="ans(3,this,'wrong')">1/6</button>
+      <button class="opt-btn" onclick="ans(3,this,'wrong')">4/6</button>
+    </div>
+    <div class="feedback" id="fb3"></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="qc4">
+    <span class="tag tag-koin">🪙🪙 2 Koin</span>
+    <div class="chip-row"><div class="chip chip-n">AA</div><div class="chip chip-n">AG</div><div class="chip chip-n">GA</div><div class="chip chip-n">GG</div></div>
+    <div class="q-text">Dua koin dilempar bersamaan. Peluang mendapat minimal satu sisi Gambar adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(4)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint4">Ruang sampel: {AA, AG, GA, GG}. "Minimal satu Gambar" artinya ada G di mana saja. Hitung yang memenuhi.</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(4,this,'wrong')">1/4</button>
+      <button class="opt-btn" onclick="ans(4,this,'wrong')">2/4</button>
+      <button class="opt-btn" onclick="ans(4,this,'correct')">3/4</button>
+      <button class="opt-btn" onclick="ans(4,this,'wrong')">4/4</button>
+    </div>
+    <div class="feedback" id="fb4"></div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card" id="qc5">
+    <span class="tag tag-dadu">🎲 Dadu</span>
+    <div class="chip-row"><div class="chip chip-n">1</div><div class="chip chip-n">2</div><div class="chip chip-n">3</div><div class="chip chip-n">4</div><div class="chip chip-n">5</div><div class="chip chip-n">6</div></div>
+    <div class="q-text">Sebuah dadu dilempar. Peluang mendapatkan angka prima adalah... (Prima: hanya bisa dibagi 1 dan dirinya sendiri)</div>
+    <button class="hint-toggle" onclick="toggleHint(5)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint5">Cek satu per satu: 1 (bukan prima), 2 (prima ✓), 3 (prima ✓), 4 (bukan), 5 (prima ✓), 6 (bukan).</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(5,this,'wrong')">2/6</button>
+      <button class="opt-btn" onclick="ans(5,this,'correct')">3/6</button>
+      <button class="opt-btn" onclick="ans(5,this,'wrong')">4/6</button>
+      <button class="opt-btn" onclick="ans(5,this,'wrong')">1/6</button>
+    </div>
+    <div class="feedback" id="fb5"></div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card" id="qc6">
+    <span class="tag tag-campuran">🎯 Perbandingan</span>
+    <div class="q-text">Mana pernyataan yang BENAR tentang peluang lempar dadu?</div>
+    <button class="hint-toggle" onclick="toggleHint(6)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint6">Hitung peluang masing-masing pernyataan. Peluang mustahil = 0, peluang pasti = 1.</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(6,this,'wrong')">Peluang dapat angka 7 adalah 1/6</button>
+      <button class="opt-btn" onclick="ans(6,this,'correct')">Peluang dapat angka 1 sampai 6 adalah 1 (pasti)</button>
+      <button class="opt-btn" onclick="ans(6,this,'wrong')">Peluang dapat angka genap lebih besar dari peluang dapat angka ganjil</button>
+      <button class="opt-btn" onclick="ans(6,this,'wrong')">Peluang dapat angka lebih dari 5 adalah 2/6</button>
+    </div>
+    <div class="feedback" id="fb6"></div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card" id="qc7">
+    <span class="tag tag-dadu">🎲 Dadu</span>
+    <div class="chip-row"><div class="chip chip-n">1</div><div class="chip chip-n">2</div><div class="chip chip-n">3</div><div class="chip chip-n">4</div><div class="chip chip-n">5</div><div class="chip chip-n">6</div></div>
+    <div class="q-text">Sebuah dadu dilempar. Kejadian mana yang peluangnya sama dengan 1/2?</div>
+    <button class="hint-toggle" onclick="toggleHint(7)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint7">1/2 berarti 3 dari 6. Cari kejadian yang menghasilkan tepat 3 angka.</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(7,this,'wrong')">Dapat angka lebih dari 3</button>
+      <button class="opt-btn" onclick="ans(7,this,'correct')">Dapat angka kurang dari atau sama dengan 3</button>
+      <button class="opt-btn" onclick="ans(7,this,'wrong')">Dapat angka 1 atau 2</button>
+      <button class="opt-btn" onclick="ans(7,this,'wrong')">Dapat angka lebih dari 4</button>
+    </div>
+    <div class="feedback" id="fb7"></div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card" id="qc8">
+    <span class="tag tag-campuran">🎯 Soal Cerita</span>
+    <div class="q-text">Sebuah tas berisi 3 kelereng merah, 2 kelereng biru, dan 1 kelereng hijau. Satu kelereng diambil secara acak. Berapa peluang mendapat kelereng merah?</div>
+    <button class="hint-toggle" onclick="toggleHint(8)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint8">Total kelereng = 3 + 2 + 1 = ? Kelereng merah ada berapa? Peluang = merah / total.</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(8,this,'wrong')">1/6</button>
+      <button class="opt-btn" onclick="ans(8,this,'wrong')">2/6</button>
+      <button class="opt-btn" onclick="ans(8,this,'correct')">3/6</button>
+      <button class="opt-btn" onclick="ans(8,this,'wrong')">4/6</button>
+    </div>
+    <div class="feedback" id="fb8"></div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card" id="qc9">
+    <span class="tag tag-campuran">🎯 Soal Cerita</span>
+    <div class="q-text">Dari soal sebelumnya (3 merah, 2 biru, 1 hijau), kejadian mana yang peluangnya PALING KECIL?</div>
+    <button class="hint-toggle" onclick="toggleHint(9)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint9">Hitung peluang masing-masing warna. Semakin sedikit kelereng, semakin kecil peluangnya.</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(9,this,'wrong')">Merah (3 dari 6)</button>
+      <button class="opt-btn" onclick="ans(9,this,'wrong')">Biru (2 dari 6)</button>
+      <button class="opt-btn" onclick="ans(9,this,'correct')">Hijau (1 dari 6)</button>
+      <button class="opt-btn" onclick="ans(9,this,'wrong')">Semua sama</button>
+    </div>
+    <div class="feedback" id="fb9"></div>
+  </div>
+
+  <!-- Finish -->
+  <div class="q-card" id="finishCard" style="display:none;animation:fadeUp 0.4s ease;">
+    <div class="finish">
+      <span class="finish-icon" id="finishEmoji">🌟</span>
+      <div class="finish-title">Exercise Selesai!</div>
+      <div class="finish-score" id="finishScore">10/10</div>
+      <div class="finish-desc" id="finishDesc">Kamu telah menguasai peluang dasar. Lanjut ke lesson berikutnya!</div>
+      <span class="xp" id="finishXP">+50 XP · Probability Master</span>
+      <div class="finish-btns">
+        <a href="lesson23.html" class="btn btn-ghost">← Lesson 23</a>
+        <a href="../tasya_0751.html" class="btn btn-primary">Halaman Utama 🏠</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="prev()" disabled>← Prev</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="next()" disabled>Lanjut →</button>
+  </div>
+</div>
+
+<script>
+const TOTAL = 10;
+const STORAGE_KEY = 'tasya_l23_ex';
+
+// 0=unanswered, 1=correct, -1=wrong
+let progArr = Array(TOTAL).fill(0);
+let cur = 0;
+
+const feedbacks = [
+  {ok:'✅ Tepat! Angka 3 hanya ada 1 dari total 6 kemungkinan. Peluang = 1/6.', no:'❌ Ingat: ruang sampel dadu ada 6. Angka 3 hanya muncul 1 kali. Peluang = 1/6.'},
+  {ok:'✅ Benar! Koin punya 2 sisi. Gambar = 1 dari 2. Peluang = 1/2.', no:'❌ Koin hanya punya 2 kemungkinan: A atau G. Gambar ada 1, total ada 2.'},
+  {ok:'✅ Benar! Genap di dadu: {2, 4, 6} → 3 dari 6. Peluang = 3/6 = ½.', no:'❌ Tulis dulu: {1,2,3,4,5,6}. Yang genap (habis ÷2): 2, 4, 6 → ada 3.'},
+  {ok:'✅ Tepat! Kurang dari 3: {1, 2} → 2 hasil. Peluang = 2/6.', no:'❌ Kurang dari 3 berarti nilainya 1 atau 2 saja (bukan termasuk 3). Jadi ada 2 dari 6.'},
+  {ok:'✅ Benar! Minimal 1 gambar: {AG, GA, GG} → 3 dari 4. Yang tidak memenuhi hanya AA.', no:'❌ Coba coret yang tidak punya G sama sekali: hanya AA. Sisanya (AG, GA, GG) semuanya punya gambar → 3/4.'},
+  {ok:'✅ Benar! Prima dari {1..6}: 2, 3, 5 → 3 angka. Peluang = 3/6.', no:'❌ Ingat definisi prima: hanya bisa dibagi 1 dan dirinya. Dari dadu: 2 ✓, 3 ✓, 5 ✓ → ada 3.'},
+  {ok:'✅ Tepat! Dadu selalu keluar 1 dari {1,2,3,4,5,6}, jadi P(1 sampai 6) = 6/6 = 1 (pasti terjadi).', no:'❌ Cek satu per satu: Angka 7 tidak ada di dadu (P=0), genap=ganjil (sama 3/6), lebih dari 5 hanya {6} = 1/6. Yang benar adalah P(1-6)=1.'},
+  {ok:'✅ Tepat! Kurang dari atau sama dengan 3: {1, 2, 3} → 3 dari 6 = 1/2.', no:'❌ 1/2 berarti perlu tepat 3 angka. Periksa: ≤3 memberikan {1,2,3} = 3 angka ✓.'},
+  {ok:'✅ Benar! Total = 6. Merah = 3. Peluang = 3/6 = ½.', no:'❌ Hitung total dulu: 3+2+1=6. Lalu merah/total = 3/6.'},
+  {ok:'✅ Benar! Hijau hanya 1 dari 6 (peluang paling kecil). Merah 3/6, biru 2/6, hijau 1/6.', no:'❌ Bandingkan: merah=3/6, biru=2/6, hijau=1/6. Yang paling kecil pembilangnya adalah hijau.'}
+];
+
+// Load saved progress
+function loadProgress(){
+  try{
+    const s = localStorage.getItem(STORAGE_KEY);
+    if(s){
+      const d = JSON.parse(s);
+      progArr = d.progArr || Array(TOTAL).fill(0);
+      cur = d.cur || 0;
+    }
+  }catch(e){}
+}
+
+function saveProgress(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({progArr, cur}));
+    const b = document.getElementById('savedBanner');
+    b.classList.add('show');
+    setTimeout(()=>b.classList.remove('show'), 1800);
+  }catch(e){}
+}
+
+function updateProgress(){
+  const done = progArr.filter(v=>v!==0).length;
+  const correct = progArr.filter(v=>v===1).length;
+  const pct = done/TOTAL*100;
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progText').textContent=done+' / '+TOTAL+' selesai';
+  document.getElementById('scoreText').textContent=correct+' benar';
+}
+
+function showCard(n){
+  document.querySelectorAll('.q-card').forEach(c=>c.classList.remove('active'));
+  const card = document.getElementById('qc'+n);
+  if(card){card.classList.add('active');card.style.display='block';}
+  document.getElementById('prevBtn').disabled = n===0;
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.disabled = progArr[n]===0;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function next(){
+  if(cur < TOTAL-1){cur++;showCard(cur);}
+  else showFinish();
+}
+function prev(){if(cur>0){cur--;showCard(cur);}}
+
+function toggleHint(idx){
+  const h = document.getElementById('hint'+idx);
+  h.classList.toggle('show');
+}
+
+function ans(idx, btn, result){
+  if(progArr[idx]!==0) return;
+  const btns = btn.closest('.opts').querySelectorAll('.opt-btn');
+  btns.forEach(b=>b.disabled=true);
+  btn.classList.add(result);
+  const correct = result==='correct';
+  progArr[idx] = correct?1:-1;
+  const fb = document.getElementById('fb'+idx);
+  fb.className='feedback show '+(correct?'ok':'no');
+  fb.textContent = correct ? feedbacks[idx].ok : feedbacks[idx].no;
+  document.getElementById('nextBtn').disabled = false;
+  updateProgress();
+  saveProgress();
+
+  if(progArr.every(v=>v!==0)) setTimeout(showFinish, 1200);
+}
+
+function showFinish(){
+  document.querySelectorAll('.q-card').forEach(c=>{c.classList.remove('active');c.style.display='none';});
+  const fc = document.getElementById('finishCard');
+  fc.style.display='block'; fc.classList.add('active');
+  document.getElementById('prevBtn').disabled=true;
+  document.getElementById('nextBtn').disabled=true;
+  const correct = progArr.filter(v=>v===1).length;
+  document.getElementById('finishScore').textContent=correct+' / '+TOTAL+' benar';
+  const pct=correct/TOTAL;
+  document.getElementById('finishEmoji').textContent=pct>=0.9?'🏆':pct>=0.7?'🌟':'💪';
+  document.getElementById('finishDesc').textContent=pct>=0.9?'Sempurna! Kamu sudah menguasai peluang dasar dengan sangat baik!':pct>=0.7?'Kerja bagus! Kamu memahami konsep peluang. Review soal yang salah ya.':'Terus semangat! Peluang butuh latihan. Ulangi dan perhatikan cara menghitung ruang sampelnya.';
+  document.getElementById('finishXP').textContent='+'+correct*5+' XP · '+TOTAL+' Soal Selesai';
+  try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
+}
+
+// Init
+loadProgress();
+updateProgress();
+// Restore answered state if any
+for(let i=0;i<TOTAL;i++){
+  if(progArr[i]!==0){
+    const card=document.getElementById('qc'+i);
+    if(!card)continue;
+    const btns=card.querySelectorAll('.opt-btn');
+    btns.forEach(b=>b.disabled=true);
+    const fb=document.getElementById('fb'+i);
+    fb.className='feedback show '+(progArr[i]===1?'ok':'no');
+    fb.textContent=progArr[i]===1?feedbacks[i].ok:feedbacks[i].no;
+  }
+}
+if(cur>0&&cur<TOTAL){showCard(cur);}
+else if(cur===0){showCard(0);}
+</script>
+</body>
+</html>
