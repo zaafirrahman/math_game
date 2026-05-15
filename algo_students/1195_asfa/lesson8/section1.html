@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Konversi 3 Wajah · Lesson 8</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#7c3aed;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --violet:#a78bfa;--text:#e2e8f0;--muted:#64748b;
+    --orange:#fb923c;--blue:#60a5fa;--pink:#f472b6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:
+    radial-gradient(ellipse at 70% 20%,rgba(0,245,196,0.07) 0%,transparent 50%),
+    radial-gradient(ellipse at 20% 80%,rgba(96,165,250,0.05) 0%,transparent 50%);
+    pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--neon);}
+  .wrapper{max-width:720px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(0,245,196,0.1);border:1px solid rgba(0,245,196,0.3);color:var(--neon);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1.5rem;font-family:'Orbitron',monospace;}
+  h1{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,4vw,2rem);font-weight:900;margin-bottom:0.8rem;line-height:1.3;}
+  h1 span{color:var(--neon);}
+  .intro{color:var(--muted);font-size:0.95rem;line-height:1.7;margin-bottom:3rem;}
+  .progress-dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:2rem;}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all 0.3s;}
+  .dot.active{background:var(--neon);box-shadow:0 0 8px var(--neon);}
+  .dot.done{background:var(--neon2);}
+  .slide{display:none;animation:slideIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes slideIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:1.5rem;}
+  .card-label{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--neon);text-transform:uppercase;margin-bottom:1rem;}
+  .card h2{font-size:1.3rem;font-weight:800;margin-bottom:0.8rem;line-height:1.4;}
+  .card p{color:#94a3b8;line-height:1.7;font-size:0.95rem;}
+  .card p+p{margin-top:0.8rem;}
+
+  /* Big conversion display */
+  .tri-display{display:flex;align-items:center;justify-content:center;gap:0.8rem;flex-wrap:wrap;margin:1.8rem 0;}
+  .tri-face{display:flex;flex-direction:column;align-items:center;gap:0.3rem;}
+  .tri-val{font-family:'Orbitron',monospace;font-size:clamp(2rem,7vw,3.2rem);font-weight:900;line-height:1;}
+  .tri-label{font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;opacity:0.7;}
+  .tri-eq{font-family:'Orbitron',monospace;font-size:2rem;color:var(--border);align-self:center;}
+  .tri-frac{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(2rem,7vw,3.2rem);display:inline-flex;flex-direction:column;align-items:center;line-height:1;}
+  .tri-top,.tri-bot{font-size:1em;min-width:20px;text-align:center;}
+  .tri-line{width:100%;height:3px;background:var(--text);border-radius:2px;margin:5px 0;}
+  .face-pec{color:var(--orange);}
+  .face-dec{color:var(--blue);}
+  .face-pct{color:var(--green);}
+
+  /* Steps */
+  .steps{margin:1.2rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:0.9rem;}
+  .step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:900;flex-shrink:0;margin-top:2px;}
+  .step-num.green{background:rgba(74,222,128,0.15);color:var(--green);border:1px solid rgba(74,222,128,0.4);}
+  .step-num.blue{background:rgba(96,165,250,0.15);color:var(--blue);border:1px solid rgba(96,165,250,0.4);}
+  .step-num.orange{background:rgba(251,146,60,0.15);color:var(--orange);border:1px solid rgba(251,146,60,0.4);}
+  .step-num.neon{background:rgba(0,245,196,0.15);color:var(--neon);border:1px solid rgba(0,245,196,0.4);}
+  .step-body{font-size:0.92rem;color:#94a3b8;line-height:1.6;}
+  .step-body strong{color:var(--text);}
+  .step-body code{font-family:'Orbitron',monospace;font-size:0.88rem;background:#12121c;padding:0.15rem 0.5rem;border-radius:6px;color:var(--neon);}
+
+  /* Arrow diagram */
+  .conv-arrows{display:grid;grid-template-columns:1fr 80px 1fr;align-items:center;gap:0.5rem;margin:1.5rem 0;}
+  .arrow-box{background:#12121c;border:1px solid var(--border);border-radius:12px;padding:1rem;text-align:center;}
+  .arrow-label{font-family:'Orbitron',monospace;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.3rem;}
+  .arrow-formula{font-size:0.82rem;color:var(--muted);line-height:1.5;}
+  .arrow-center{display:flex;flex-direction:column;align-items:center;gap:0.3rem;font-size:1.5rem;}
+
+  /* Number line / bar */
+  .bar-demo{margin:1.2rem 0;}
+  .bar-row{margin-bottom:0.8rem;}
+  .bar-lbl-row{display:flex;justify-content:space-between;margin-bottom:0.3rem;}
+  .bar-name{font-size:0.82rem;color:var(--muted);}
+  .bar-val{font-family:'Orbitron',monospace;font-size:0.88rem;font-weight:700;}
+  .bar-track{height:28px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,0.03);padding:3px;}
+  .bar-fill{height:100%;border-radius:6px;transition:width 0.5s ease;}
+
+  /* Insight */
+  .insight{background:rgba(0,245,196,0.06);border:1px solid rgba(0,245,196,0.25);border-radius:14px;padding:1.2rem 1.5rem;margin:1.2rem 0;display:flex;gap:1rem;align-items:flex-start;}
+  .insight-icon{font-size:1.5rem;flex-shrink:0;}
+  .insight-text{font-size:0.92rem;color:var(--text);line-height:1.6;}
+  .insight-text strong{color:var(--neon);}
+  .warn-box{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.25);border-radius:14px;padding:1.2rem 1.5rem;margin:1.2rem 0;display:flex;gap:1rem;align-items:flex-start;}
+  .warn-box .insight-text strong{color:var(--accent);}
+
+  /* Table */
+  .conv-table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:0.88rem;}
+  .conv-table th{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:2px;padding:0.6rem;border-bottom:1px solid var(--border);text-align:center;}
+  .conv-table td{padding:0.6rem;border-bottom:1px solid rgba(42,42,64,0.5);text-align:center;font-family:'Orbitron',monospace;font-weight:700;}
+  .conv-table tr:hover td{background:rgba(255,255,255,0.02);}
+  .col-pec{color:var(--orange);}
+  .col-dec{color:var(--blue);}
+  .col-pct{color:var(--green);}
+
+  /* Challenge */
+  .challenge-box{background:rgba(34,211,238,0.05);border:1px solid rgba(34,211,238,0.25);border-radius:14px;padding:1.3rem 1.5rem;margin:1.2rem 0;}
+  .ch-label{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;margin-bottom:0.8rem;}
+  .ch-body{font-size:0.92rem;color:#94a3b8;line-height:1.7;}
+  .ch-body strong{color:var(--text);}
+  .ch-answer{display:none;margin-top:0.8rem;padding:0.8rem;background:rgba(0,245,196,0.07);border-radius:10px;font-size:0.9rem;color:var(--neon);line-height:1.7;}
+  .ch-answer.show{display:block;}
+  .ch-reveal{background:transparent;border:1px dashed rgba(34,211,238,0.4);color:var(--cyan);padding:0.4rem 1rem;border-radius:8px;font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:2px;cursor:pointer;margin-top:0.8rem;transition:all 0.2s;}
+  .ch-reveal:hover{background:rgba(34,211,238,0.08);}
+
+  /* Quiz */
+  .quiz-q{font-size:1.05rem;font-weight:700;margin-bottom:1.2rem;line-height:1.5;}
+  .options{display:flex;flex-direction:column;gap:0.7rem;}
+  .opt-btn{background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.9rem 1.2rem;border-radius:12px;cursor:pointer;font-size:0.95rem;font-family:'Nunito',sans-serif;text-align:left;transition:all 0.2s;}
+  .opt-btn:hover:not(:disabled){border-color:var(--neon);background:rgba(0,245,196,0.05);}
+  .opt-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .opt-btn.wrong{border-color:#ef4444;background:rgba(239,68,68,0.1);color:#ef4444;}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:1rem;padding:0.8rem 1rem;border-radius:10px;font-size:0.9rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.3);}
+  .feedback.no{background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.3);}
+
+  /* Finish */
+  .finish-card{text-align:center;padding:3rem 2rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Orbitron',monospace;font-size:1.5rem;color:var(--neon);margin-bottom:0.8rem;}
+  .finish-desc{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .xp-badge{display:block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.4rem 1.2rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:1.5rem;}
+
+  /* Nav */
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2rem;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--neon);color:var(--neon);}
+  .btn-primary{background:linear-gradient(135deg,var(--neon2),#4f46e5);color:white;box-shadow:0 4px 15px rgba(124,58,237,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson8.html">LESSON 8</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+
+<div class="wrapper">
+  <div class="sec-badge">🔄 Section 01 · Learn</div>
+  <h1>Konversi <span>3 Wajah Angka</span></h1>
+  <div class="intro">Pecahan, desimal, dan persen itu <em>tiga cara nulis hal yang sama</em>. Kamu akan belajar cara "menerjemahkan" ke arah mana pun — dan kenapa nilainya selalu identik!</div>
+
+  <div class="progress-dots" id="dots"></div>
+
+  <!-- ═══════ Slide 1: Konsep Besar ═══════ -->
+  <div class="slide active">
+    <div class="card">
+      <div class="card-label">💡 Big Idea</div>
+      <h2>Tiga wajah, satu nilai</h2>
+      <p>Bayangkan sebuah pizza dipotong 2. Kamu ambil 1 potong. Kamu bisa cerita itu dengan tiga cara berbeda:</p>
+
+      <div class="tri-display">
+        <div class="tri-face">
+          <div class="tri-frac face-pec">
+            <span class="tri-top">1</span>
+            <span class="tri-line"></span>
+            <span class="tri-bot">2</span>
+          </div>
+          <span class="tri-label" style="color:var(--orange);">Pecahan</span>
+        </div>
+        <div class="tri-eq">=</div>
+        <div class="tri-face">
+          <span class="tri-val face-dec">0.5</span>
+          <span class="tri-label" style="color:var(--blue);">Desimal</span>
+        </div>
+        <div class="tri-eq">=</div>
+        <div class="tri-face">
+          <span class="tri-val face-pct">50%</span>
+          <span class="tri-label" style="color:var(--green);">Persen</span>
+        </div>
+      </div>
+
+      <p>Ketiga notasi ini mewakili <strong>nilai yang persis sama</strong>. Matematika pakai ketiganya tergantung situasi — tapi kamu harus bisa pindah-pindah dengan mulus!</p>
+
+      <div class="insight">
+        <span class="insight-icon">🎯</span>
+        <div class="insight-text"><strong>Kuncinya:</strong> ada 6 arah konversi: pecahan→desimal, desimal→pecahan, desimal→persen, persen→desimal, pecahan→persen, persen→pecahan. Kita kuasai satu per satu!</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" disabled>← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- ═══════ Slide 2: Pecahan → Desimal ═══════ -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label">➡️ Rute 1 — Pecahan ke Desimal</div>
+      <h2>Bagi pembilang dengan penyebut</h2>
+      <p>Pecahan pada dasarnya adalah <strong>operasi pembagian</strong>. Jadi <code>3/4</code> artinya <em>3 dibagi 4</em>.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num orange">1</div>
+          <div class="step-body"><strong>Ambil pembilang (angka atas)</strong> → <code>3</code></div>
+        </div>
+        <div class="step">
+          <div class="step-num orange">2</div>
+          <div class="step-body"><strong>Bagi dengan penyebut (angka bawah)</strong> → <code>3 ÷ 4 = 0.75</code></div>
+        </div>
+        <div class="step">
+          <div class="step-num orange">3</div>
+          <div class="step-body"><strong>Hasil pembagian = desimal</strong> → <code>3/4 = 0.75</code> ✅</div>
+        </div>
+      </div>
+
+      <table class="conv-table">
+        <tr><th class="col-pec">Pecahan</th><th></th><th class="col-dec">Desimal</th><th style="color:var(--muted);font-size:0.6rem;">Cara hitung</th></tr>
+        <tr><td class="col-pec">1/2</td><td>→</td><td class="col-dec">0.5</td><td style="color:var(--muted)">1÷2</td></tr>
+        <tr><td class="col-pec">1/4</td><td>→</td><td class="col-dec">0.25</td><td style="color:var(--muted)">1÷4</td></tr>
+        <tr><td class="col-pec">3/4</td><td>→</td><td class="col-dec">0.75</td><td style="color:var(--muted)">3÷4</td></tr>
+        <tr><td class="col-pec">1/5</td><td>→</td><td class="col-dec">0.2</td><td style="color:var(--muted)">1÷5</td></tr>
+        <tr><td class="col-pec">2/5</td><td>→</td><td class="col-dec">0.4</td><td style="color:var(--muted)">2÷5</td></tr>
+        <tr><td class="col-pec">3/10</td><td>→</td><td class="col-dec">0.3</td><td style="color:var(--muted)">3÷10</td></tr>
+      </table>
+
+      <div class="challenge-box">
+        <div class="ch-label">🧩 Coba Kamu</div>
+        <div class="ch-body"><strong>1/8</strong> dalam desimal berapa?<br>Hint: 1 ÷ 8 = ...</div>
+        <button class="ch-reveal" onclick="this.nextElementSibling.classList.add('show');this.style.display='none'">Lihat Jawaban</button>
+        <div class="ch-answer">1 ÷ 8 = <strong>0.125</strong> ✅<br>Bisa juga bayangkan: 1/8 = setengah dari 1/4 (0.25), jadi 0.25 ÷ 2 = 0.125!</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- ═══════ Slide 3: Desimal → Persen & balik ═══════ -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label">➡️ Rute 2 — Desimal ↔ Persen</div>
+      <h2>Kali/bagi 100 — semudah geser titik!</h2>
+      <p><strong>Persen</strong> = per-seratus. Jadi mengubah desimal ke persen = <em>mengalikan dengan 100</em>.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num blue">→</div>
+          <div class="step-body"><strong>Desimal → Persen:</strong> kalikan dengan 100 (atau geser titik desimal 2 ke kanan)<br><code>0.4 × 100 = 40%</code> &nbsp;|&nbsp; <code>0.75 × 100 = 75%</code></div>
+        </div>
+        <div class="step">
+          <div class="step-num blue">←</div>
+          <div class="step-body"><strong>Persen → Desimal:</strong> bagi dengan 100 (atau geser titik desimal 2 ke kiri)<br><code>35% ÷ 100 = 0.35</code> &nbsp;|&nbsp; <code>6% ÷ 100 = 0.06</code></div>
+        </div>
+      </div>
+
+      <div class="bar-demo">
+        <div class="bar-row">
+          <div class="bar-lbl-row"><span class="bar-name">0.25 = 25%</span><span class="bar-val col-green">25%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:25%;background:rgba(74,222,128,0.7);"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-lbl-row"><span class="bar-name">0.5 = 50%</span><span class="bar-val col-blue">50%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:50%;background:rgba(96,165,250,0.7);"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-lbl-row"><span class="bar-name">0.75 = 75%</span><span class="bar-val col-orange">75%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:75%;background:rgba(251,146,60,0.7);"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-lbl-row"><span class="bar-name">1.0 = 100%</span><span class="bar-val" style="color:var(--neon)">100%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:rgba(0,245,196,0.7);"></div></div>
+        </div>
+      </div>
+
+      <div class="warn-box">
+        <span class="insight-icon">⚠️</span>
+        <div class="insight-text"><strong>Jebakan persen!</strong> 6% = 0.06, bukan 0.6. Selalu bagi dengan 100 penuh — geser 2 tempat ke kiri, bukan satu!</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- ═══════ Slide 4: Pecahan → Persen & Persen → Pecahan ═══════ -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label">➡️ Rute 3 — Pecahan ↔ Persen</div>
+      <h2>Lewat desimal, atau langsung!</h2>
+      <p>Ada dua strategi untuk pecahan ↔ persen:</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num green">A</div>
+          <div class="step-body"><strong>Strategi Via Desimal:</strong> pecahan → desimal → persen (aman untuk semua pecahan)<br><code>3/8 → 3÷8 = 0.375 → ×100 = 37.5%</code></div>
+        </div>
+        <div class="step">
+          <div class="step-num green">B</div>
+          <div class="step-body"><strong>Strategi Langsung (penyebut faktor 100):</strong> ubah penyebut jadi 100, pembilangnya = persen<br><code>3/4 → ×25/×25 → 75/100 = 75%</code></div>
+        </div>
+      </div>
+
+      <div class="card" style="background:#12121c;border-color:rgba(74,222,128,0.2);margin-top:1rem;">
+        <div class="card-label" style="color:var(--green);">Persen → Pecahan</div>
+        <div class="steps" style="margin:0;">
+          <div class="step">
+            <div class="step-num neon">1</div>
+            <div class="step-body"><strong>Tulis persen sebagai pecahan per-seratus:</strong> <code>75% = 75/100</code></div>
+          </div>
+          <div class="step">
+            <div class="step-num neon">2</div>
+            <div class="step-body"><strong>Sederhanakan (cari FPB):</strong> <code>75/100 ÷ 25/25 = 3/4</code> ✅</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="challenge-box">
+        <div class="ch-label">🧩 Coba Kamu</div>
+        <div class="ch-body">Ubah <strong>40%</strong> ke pecahan paling sederhana! (hint: 40/100 → bagi FPB...)</div>
+        <button class="ch-reveal" onclick="this.nextElementSibling.classList.add('show');this.style.display='none'">Lihat Jawaban</button>
+        <div class="ch-answer">40% = 40/100<br>FPB(40,100) = 20<br>40 ÷ 20 = 2 &nbsp;|&nbsp; 100 ÷ 20 = 5<br><strong>= 2/5</strong> ✅</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- ═══════ Slide 5: Peta Konversi + Tabel Hafalan ═══════ -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label">🗺️ Peta Konversi</div>
+      <h2>Keenam rute dalam satu tampilan</h2>
+
+      <div class="conv-arrows">
+        <div class="arrow-box">
+          <div class="arrow-label col-pec">Pecahan</div>
+          <div class="arrow-formula">a/b</div>
+        </div>
+        <div class="arrow-center">
+          <span style="font-size:1.2rem;">↕</span>
+        </div>
+        <div class="arrow-box">
+          <div class="arrow-label col-dec">Desimal</div>
+          <div class="arrow-formula">0.abc</div>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:0.8rem;color:var(--muted);margin:-0.3rem 0 0.8rem;">↕ Bagi/kali 100 ↕</div>
+      <div class="conv-arrows" style="grid-template-columns:1fr 80px 1fr;">
+        <div></div>
+        <div class="arrow-box" style="grid-column:2/4;">
+          <div class="arrow-label col-pct">Persen</div>
+          <div class="arrow-formula">n%</div>
+        </div>
+      </div>
+
+      <div style="background:#12121c;border:1px solid var(--border);border-radius:14px;padding:1rem 1.2rem;margin:1.2rem 0;">
+        <div style="font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.8rem;">Rumus Cepat</div>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.88rem;">
+          <div><span style="color:var(--orange);font-weight:800;">Pec → Des:</span> <span style="color:#94a3b8;">pembilang ÷ penyebut</span></div>
+          <div><span style="color:var(--blue);font-weight:800;">Des → Pec:</span> <span style="color:#94a3b8;">tulis sebagai n/10 atau n/100, sederhanakan</span></div>
+          <div><span style="color:var(--blue);font-weight:800;">Des → Pct:</span> <span style="color:#94a3b8;">× 100 (geser titik 2 kanan)</span></div>
+          <div><span style="color:var(--green);font-weight:800;">Pct → Des:</span> <span style="color:#94a3b8;">÷ 100 (geser titik 2 kiri)</span></div>
+          <div><span style="color:var(--orange);font-weight:800;">Pec → Pct:</span> <span style="color:#94a3b8;">via desimal, atau ubah penyebut ke 100</span></div>
+          <div><span style="color:var(--green);font-weight:800;">Pct → Pec:</span> <span style="color:#94a3b8;">n/100 lalu sederhanakan (÷FPB)</span></div>
+        </div>
+      </div>
+
+      <table class="conv-table">
+        <tr><th class="col-pec">Pecahan</th><th class="col-dec">Desimal</th><th class="col-pct">Persen</th></tr>
+        <tr><td class="col-pec">1/2</td><td class="col-dec">0.5</td><td class="col-pct">50%</td></tr>
+        <tr><td class="col-pec">1/4</td><td class="col-dec">0.25</td><td class="col-pct">25%</td></tr>
+        <tr><td class="col-pec">3/4</td><td class="col-dec">0.75</td><td class="col-pct">75%</td></tr>
+        <tr><td class="col-pec">1/5</td><td class="col-dec">0.2</td><td class="col-pct">20%</td></tr>
+        <tr><td class="col-pec">2/5</td><td class="col-dec">0.4</td><td class="col-pct">40%</td></tr>
+        <tr><td class="col-pec">1/10</td><td class="col-dec">0.1</td><td class="col-pct">10%</td></tr>
+        <tr><td class="col-pec">3/10</td><td class="col-dec">0.3</td><td class="col-pct">30%</td></tr>
+        <tr><td class="col-pec">1/8</td><td class="col-dec">0.125</td><td class="col-pct">12.5%</td></tr>
+      </table>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- ═══════ Slide 6: Quiz ═══════ -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label">🧠 Cek Pemahaman</div>
+      <h2>Tes konversimu!</h2>
+
+      <div id="q1" style="margin-bottom:1.5rem;">
+        <div class="quiz-q">1. 3/5 dalam desimal adalah...</div>
+        <div class="options">
+          <button class="opt-btn" onclick="checkQ('q1',this,false)">0.35</button>
+          <button class="opt-btn" onclick="checkQ('q1',this,false)">0.53</button>
+          <button class="opt-btn" onclick="checkQ('q1',this,true)">0.6</button>
+          <button class="opt-btn" onclick="checkQ('q1',this,false)">0.5</button>
+        </div>
+        <div class="feedback" id="q1fb"></div>
+      </div>
+
+      <div id="q2" style="margin-bottom:1.5rem;">
+        <div class="quiz-q">2. 0.08 = berapa persen?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="checkQ('q2',this,false)">0.8%</button>
+          <button class="opt-btn" onclick="checkQ('q2',this,false)">80%</button>
+          <button class="opt-btn" onclick="checkQ('q2',this,true)">8%</button>
+          <button class="opt-btn" onclick="checkQ('q2',this,false)">800%</button>
+        </div>
+        <div class="feedback" id="q2fb"></div>
+      </div>
+
+      <div id="q3">
+        <div class="quiz-q">3. 60% dalam pecahan paling sederhana adalah...</div>
+        <div class="options">
+          <button class="opt-btn" onclick="checkQ('q3',this,false)">60/100</button>
+          <button class="opt-btn" onclick="checkQ('q3',this,false)">6/10</button>
+          <button class="opt-btn" onclick="checkQ('q3',this,true)">3/5</button>
+          <button class="opt-btn" onclick="checkQ('q3',this,false)">12/20</button>
+        </div>
+        <div class="feedback" id="q3fb"></div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" id="nextBtn6" onclick="nextSlide()" disabled>Selesai →</button>
+    </div>
+  </div>
+
+  <!-- ═══════ Slide 7: Finish ═══════ -->
+  <div class="slide">
+    <div class="card finish-card">
+      <span class="finish-icon">🔄</span>
+      <div class="finish-title">KONVERSI DIKUASAI!</div>
+      <div class="finish-desc">
+        Pecahan → Desimal: bagi pembilang dengan penyebut.<br>
+        Desimal ↔ Persen: kali / bagi 100.<br>
+        Persen → Pecahan: n/100 lalu sederhanakan. Let's test it!
+      </div>
+      <div class="xp-badge">✨ +150 XP — Konverter Unlocked!</div>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="lesson8.html" class="btn btn-ghost">← Lesson Hub</a>
+        <a href="quicktest.html" class="btn btn-primary">Quick Test ⚡</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+let cur = 0;
+
+slides.forEach((_,i) => {
+  const d = document.createElement('div');
+  d.className = 'dot'+(i===0?' active':'');
+  dotsContainer.appendChild(d);
+});
+
+function updateDots() {
+  document.querySelectorAll('.dot').forEach((d,i) => {
+    d.className='dot'+(i===cur?' active':(i<cur?' done':''));
+  });
+}
+function nextSlide() {
+  if (cur < slides.length-1) { slides[cur].classList.remove('active'); cur++; slides[cur].classList.add('active'); updateDots(); window.scrollTo({top:0,behavior:'smooth'}); }
+}
+function prevSlide() {
+  if (cur > 0) { slides[cur].classList.remove('active'); cur--; slides[cur].classList.add('active'); updateDots(); window.scrollTo({top:0,behavior:'smooth'}); }
+}
+
+const ans = {q1:false,q2:false,q3:false};
+const explains = {
+  q1:'✅ Benar! 3 ÷ 5 = 0.6. Pembilang dibagi penyebut selalu jadi desimal!',
+  q2:'✅ Tepat! 0.08 × 100 = 8%. Geser titik desimal 2 ke kanan → 08 = 8%.',
+  q3:'✅ Benar! 60% = 60/100. FPB(60,100) = 20 → 60÷20=3, 100÷20=5 → 3/5!'
+};
+const wrongs = {
+  q1:'❌ Rumusnya: pembilang ÷ penyebut. 3 ÷ 5 = 0.6, bukan 0.35.',
+  q2:'❌ Jangan lupa ×100 itu geser 2 tempat! 0.08 → 08 → 8%, bukan 80%.',
+  q3:'❌ Harus disederhanakan! 60/100 ÷ 20 = 3/5. Cari FPB-nya dulu.'
+};
+
+function checkQ(qid,btn,ok) {
+  const qDiv = document.getElementById(qid);
+  qDiv.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  const fb = document.getElementById(qid+'fb');
+  if (ok) { btn.classList.add('correct'); fb.className='feedback show ok'; fb.textContent=explains[qid]; ans[qid]=true; }
+  else { btn.classList.add('wrong'); fb.className='feedback show no'; fb.textContent=wrongs[qid]; }
+  if (Object.values(ans).filter(Boolean).length>=2) { document.getElementById('nextBtn6').disabled=false; }
+}
+</script>
+</body>
+</html>
