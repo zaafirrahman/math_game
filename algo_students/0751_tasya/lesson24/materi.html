@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Counting · L24 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --lavender:#9b7fc8;--lavender-light:#c8b4e8;--lav-bg:rgba(155,127,200,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --peach:#f0956a;--peach-bg:rgba(240,149,106,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 75% 10%,rgba(74,159,212,0.08) 0%,transparent 50%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--ocean);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--ocean-bg);border:1.5px solid var(--ocean-light);color:var(--ocean);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--ocean);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:all 0.3s;}
+  .dot.active{background:var(--ocean);box-shadow:0 0 0 3px rgba(74,159,212,0.2);transform:scale(1.1);}
+  .dot.done{background:var(--lavender);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);}
+  .card-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.ocean{color:var(--ocean);}
+  .card-label.lav{color:var(--lavender);}
+  .card-label.rose{color:var(--rose);}
+  .card-label.mint{color:var(--mint);}
+  .card-label.gold{color:var(--gold);}
+  .card h2{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.7rem;line-height:1.4;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  /* Context box (like story-box) */
+  .ctx-box{background:linear-gradient(135deg,#f0f8ff,#e8f4fd);border:2px solid var(--ocean-light);border-radius:18px;padding:1.4rem 1.6rem;margin:1rem 0;}
+  .ctx-label{font-size:0.62rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ocean);margin-bottom:0.7rem;}
+  .ctx-text{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;color:var(--text);line-height:1.7;}
+  .ctx-text em{color:var(--ocean);font-style:normal;border-bottom:2px dashed var(--ocean-light);}
+
+  /* Listing grid */
+  .list-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin:1rem 0;}
+  .list-item{background:var(--ocean-bg);border:1.5px solid var(--ocean-light);border-radius:10px;padding:0.6rem 0.5rem;text-align:center;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;color:var(--ocean);}
+  .list-item.highlight{background:linear-gradient(135deg,var(--ocean),#2d7ab0);color:#fff;border-color:transparent;}
+
+  /* Tree diagram SVG wrapper */
+  .tree-wrap{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:1.2rem;margin:1rem 0;overflow-x:auto;}
+  .tree-svg{width:100%;max-width:480px;display:block;margin:0 auto;}
+
+  /* Big number display */
+  .big-num{text-align:center;margin:1.2rem 0;}
+  .big-eq{font-family:'Nunito',sans-serif;font-size:2rem;font-weight:900;color:var(--ocean);}
+  .big-eq .op{color:var(--text-muted);font-size:1.5rem;}
+  .big-eq .result{color:var(--mint);}
+  .big-sub{font-size:0.82rem;color:var(--text-muted);margin-top:0.3rem;}
+
+  .eq-box{border-radius:14px;padding:1.1rem 1.4rem;margin:0.7rem 0;}
+  .eq-box.ocean{background:var(--ocean-bg);border:1.5px solid var(--ocean-light);}
+  .eq-box.lav{background:var(--lav-bg);border:1.5px solid var(--lavender-light);}
+  .eq-box.mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .eq-box.rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .eq-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .eq-label.o{color:var(--ocean);}
+  .eq-label.l{color:var(--lavender);}
+  .eq-label.m{color:var(--mint);}
+  .eq-label.r{color:var(--rose);}
+  .eq-text{font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;color:var(--text);}
+  .eq-text span.o{color:var(--ocean);}
+  .eq-text span.l{color:var(--lavender);}
+  .eq-text span.m{color:var(--mint);}
+  .eq-text span.r{color:var(--rose);}
+  .eq-sub{font-size:0.78rem;color:var(--text-muted);margin-top:0.3rem;}
+
+  .hl-box{border-radius:14px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.9rem;line-height:1.6;}
+  .hl-ocean{background:var(--ocean-bg);border:1.5px solid var(--ocean-light);color:var(--text-mid);}
+  .hl-ocean strong{color:var(--ocean);}
+  .hl-lav{background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--text-mid);}
+  .hl-lav strong{color:var(--lavender);}
+  .hl-rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);color:var(--text-mid);}
+  .hl-rose strong{color:var(--rose);}
+  .hl-mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--text-mid);}
+  .hl-mint strong{color:var(--mint);}
+
+  .steps{display:flex;flex-direction:column;gap:0.7rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:#fafafa;border:1.5px solid var(--border);border-radius:12px;padding:0.8rem 1rem;font-size:0.88rem;}
+  .step-n{font-family:'Nunito',sans-serif;font-weight:900;font-size:0.75rem;color:var(--ocean);background:var(--ocean-bg);border:1.5px solid var(--ocean-light);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+  /* Compare cards (urutan penting vs tidak) */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1rem 0;}
+  .cmp-card{border-radius:14px;padding:1rem;text-align:center;}
+  .cmp-card.yes{background:var(--rose-bg);border:2px solid var(--rose-light);}
+  .cmp-card.no{background:var(--mint-bg);border:2px solid var(--mint-light);}
+  .cmp-icon{font-size:1.8rem;margin-bottom:0.4rem;}
+  .cmp-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.88rem;margin-bottom:0.3rem;}
+  .cmp-card.yes .cmp-title{color:var(--rose);}
+  .cmp-card.no .cmp-title{color:var(--mint);}
+  .cmp-desc{font-size:0.78rem;color:var(--text-muted);line-height:1.5;}
+
+  .insight{background:linear-gradient(135deg,var(--ocean),#2d7ab0);color:#fff;border-radius:16px;padding:1.2rem 1.5rem;margin:1rem 0;font-size:0.9rem;line-height:1.6;}
+  .insight strong{font-family:'Nunito',sans-serif;font-size:1rem;}
+
+  .quiz-q{font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;margin-bottom:1.2rem;line-height:1.5;}
+  .opts{display:flex;flex-direction:column;gap:0.7rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.9rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--ocean-light);background:var(--ocean-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--ocean-light);color:var(--ocean);}
+  .btn-primary{background:linear-gradient(135deg,var(--ocean),#2d7ab0);color:#fff;box-shadow:0 4px 14px rgba(74,159,212,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(74,159,212,0.4);}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:var(--ocean);margin-bottom:0.7rem;}
+  .finish-desc{color:var(--text-muted);line-height:1.7;margin-bottom:1.8rem;font-size:0.92rem;}
+  .xp{display:inline-block;background:var(--ocean-bg);border:1.5px solid var(--ocean-light);color:var(--ocean);padding:0.35rem 1.1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;margin-bottom:1.8rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  /* Chapter divider */
+  .chapter-div{display:flex;align-items:center;gap:1rem;margin:0.5rem 0 1.2rem;}
+  .chapter-div .ch-line{flex:1;height:1px;background:var(--border2);}
+  .chapter-div .ch-label{font-size:0.68rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ocean);white-space:nowrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson24.html">LESSON 24</a><span>›</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🌳 Materi Utama</div>
+  <h1>Listing, Tree Diagram<br><span>&amp; Prinsip Perkalian</span></h1>
+  <p class="intro">Dua bagian dalam satu tempat — dari cara paling dasar (listing) sampai cara paling efisien (perkalian). Ikuti slide per slide ya!</p>
+
+  <div class="dots" id="dots"></div>
+
+  <!-- ===== PART 1: LISTING ===== -->
+
+  <!-- Slide 0: Masalah Awal -->
+  <div class="slide active">
+    <div class="chapter-div"><div class="ch-line"></div><div class="ch-label">Bagian 1 · Listing &amp; Tree Diagram</div><div class="ch-line"></div></div>
+    <div class="card">
+      <div class="card-label ocean">🎽 Masalah Awal</div>
+      <h2>Kamu punya 2 baju dan 3 celana</h2>
+      <div class="ctx-box">
+        <div class="ctx-label">📦 Situasi</div>
+        <div class="ctx-text">
+          Baju: <em>B1</em> (putih) dan <em>B2</em> (biru)<br>
+          Celana: <em>C1</em> (hitam), <em>C2</em> (abu), <em>C3</em> (coklat)
+        </div>
+      </div>
+      <p style="margin-top:1rem;">Pertanyaan klasik: <strong>Berapa total kombinasi pakaian yang bisa dibuat?</strong><br><br>Kita mulai dari cara yang paling jujur dulu — tuliskan satu per satu!</p>
+    </div>
+  </div>
+
+  <!-- Slide 1: Listing semua kemungkinan -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label lav">📋 Listing Semua Kemungkinan</div>
+      <h2>Tulis satu per satu secara teratur</h2>
+      <p style="margin-bottom:1rem;">Mulai dari Baju 1, pasangkan dengan semua celana. Lalu Baju 2, pasangkan lagi dengan semua celana:</p>
+      <div class="list-grid">
+        <div class="list-item highlight">B1 – C1</div>
+        <div class="list-item highlight">B1 – C2</div>
+        <div class="list-item highlight">B1 – C3</div>
+        <div class="list-item">B2 – C1</div>
+        <div class="list-item">B2 – C2</div>
+        <div class="list-item">B2 – C3</div>
+      </div>
+      <div class="hl-box hl-ocean">
+        🔑 <strong>Kunci listing yang baik:</strong> Tetap di satu pilihan pertama sampai semua pasangan habis, baru pindah ke pilihan berikutnya. Tidak ada yang kelewat, tidak ada yang dobel.
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 2: Kenapa ada 6? -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label mint">💡 Kenapa Hasilnya 6?</div>
+      <h2>Setiap pilihan pertama membuka cabang baru</h2>
+      <p style="margin-bottom:1rem;">Baju ada 2 pilihan. Setiap baju punya 3 pasangan celana. Jadi total:</p>
+      <div class="big-num">
+        <div class="big-eq">2 <span class="op">×</span> 3 <span class="op">=</span> <span class="result">6</span></div>
+        <div class="big-sub">kemungkinan kombinasi</div>
+      </div>
+      <div class="hl-box hl-lav">
+        🌟 <strong>Ide utamanya:</strong> Bukan ditambah, tapi <strong>dikali</strong>. Karena setiap pilihan pertama menghasilkan sekelompok pilihan baru secara independen.
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3: Tree Diagram -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label ocean">🌳 Tree Diagram</div>
+      <h2>Visualisasi percabangan kemungkinan</h2>
+      <p style="margin-bottom:1rem;">Tree diagram membantu melihat <em>bagaimana setiap pilihan bercabang</em>:</p>
+      <div class="tree-wrap">
+        <svg class="tree-svg" viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg" font-family="Nunito, sans-serif">
+          <!-- Root -->
+          <circle cx="40" cy="110" r="14" fill="#4a9fd4" opacity="0.15" stroke="#4a9fd4" stroke-width="2"/>
+          <text x="40" y="115" text-anchor="middle" font-size="11" font-weight="800" fill="#4a9fd4">Start</text>
+
+          <!-- B1 branch -->
+          <line x1="54" y1="105" x2="126" y2="60" stroke="#c8b4e8" stroke-width="2"/>
+          <rect x="120" y="46" width="50" height="28" rx="8" fill="#c8b4e8" opacity="0.3" stroke="#9b7fc8" stroke-width="1.5"/>
+          <text x="145" y="65" text-anchor="middle" font-size="12" font-weight="800" fill="#9b7fc8">B1</text>
+
+          <!-- B1 → C1,C2,C3 -->
+          <line x1="170" y1="60" x2="230" y2="28" stroke="#a0cfee" stroke-width="1.5"/>
+          <rect x="226" y="16" width="44" height="24" rx="6" fill="#e8f4fd" stroke="#4a9fd4" stroke-width="1.5"/>
+          <text x="248" y="32" text-anchor="middle" font-size="11" font-weight="700" fill="#4a9fd4">C1</text>
+          <text x="308" y="32" text-anchor="start" font-size="10" fill="#7a5c78" font-weight="700">→ B1–C1</text>
+
+          <line x1="170" y1="60" x2="230" y2="60" stroke="#a0cfee" stroke-width="1.5"/>
+          <rect x="226" y="48" width="44" height="24" rx="6" fill="#e8f4fd" stroke="#4a9fd4" stroke-width="1.5"/>
+          <text x="248" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#4a9fd4">C2</text>
+          <text x="308" y="64" text-anchor="start" font-size="10" fill="#7a5c78" font-weight="700">→ B1–C2</text>
+
+          <line x1="170" y1="60" x2="230" y2="92" stroke="#a0cfee" stroke-width="1.5"/>
+          <rect x="226" y="80" width="44" height="24" rx="6" fill="#e8f4fd" stroke="#4a9fd4" stroke-width="1.5"/>
+          <text x="248" y="96" text-anchor="middle" font-size="11" font-weight="700" fill="#4a9fd4">C3</text>
+          <text x="308" y="96" text-anchor="start" font-size="10" fill="#7a5c78" font-weight="700">→ B1–C3</text>
+
+          <!-- B2 branch -->
+          <line x1="54" y1="115" x2="126" y2="160" stroke="#c8b4e8" stroke-width="2"/>
+          <rect x="120" y="146" width="50" height="28" rx="8" fill="#c8b4e8" opacity="0.3" stroke="#9b7fc8" stroke-width="1.5"/>
+          <text x="145" y="165" text-anchor="middle" font-size="12" font-weight="800" fill="#9b7fc8">B2</text>
+
+          <!-- B2 → C1,C2,C3 -->
+          <line x1="170" y1="160" x2="230" y2="128" stroke="#a0cfee" stroke-width="1.5"/>
+          <rect x="226" y="116" width="44" height="24" rx="6" fill="#e8f4fd" stroke="#4a9fd4" stroke-width="1.5"/>
+          <text x="248" y="132" text-anchor="middle" font-size="11" font-weight="700" fill="#4a9fd4">C1</text>
+          <text x="308" y="132" text-anchor="start" font-size="10" fill="#7a5c78" font-weight="700">→ B2–C1</text>
+
+          <line x1="170" y1="160" x2="230" y2="160" stroke="#a0cfee" stroke-width="1.5"/>
+          <rect x="226" y="148" width="44" height="24" rx="6" fill="#e8f4fd" stroke="#4a9fd4" stroke-width="1.5"/>
+          <text x="248" y="164" text-anchor="middle" font-size="11" font-weight="700" fill="#4a9fd4">C2</text>
+          <text x="308" y="164" text-anchor="start" font-size="10" fill="#7a5c78" font-weight="700">→ B2–C2</text>
+
+          <line x1="170" y1="160" x2="230" y2="192" stroke="#a0cfee" stroke-width="1.5"/>
+          <rect x="226" y="180" width="44" height="24" rx="6" fill="#e8f4fd" stroke="#4a9fd4" stroke-width="1.5"/>
+          <text x="248" y="196" text-anchor="middle" font-size="11" font-weight="700" fill="#4a9fd4">C3</text>
+          <text x="308" y="196" text-anchor="start" font-size="10" fill="#7a5c78" font-weight="700">→ B2–C3</text>
+
+          <!-- Count label -->
+          <text x="430" y="110" text-anchor="middle" font-size="13" font-weight="900" fill="#5fbfa0">6</text>
+          <text x="430" y="125" text-anchor="middle" font-size="9" fill="#b898b4">total</text>
+        </svg>
+      </div>
+      <div class="hl-box hl-mint">
+        🌳 <strong>Tree diagram berguna saat:</strong> pilihan bertingkat (pilihan ke-2 tergantung pilihan ke-1 atau ada lebih dari 2 tahap). Setiap cabang = satu kemungkinan baru.
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 4: Cek pemahaman 1 -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">🧪 Cek Pemahaman</div>
+      <div class="quiz-q">Ada 2 rasa es krim (coklat, vanila) dan 2 topping (meses, kacang). Berapa total kombinasi yang bisa dibuat?</div>
+      <div class="opts">
+        <button class="opt-btn" onclick="check(this,'wrong','fb0')">2</button>
+        <button class="opt-btn" onclick="check(this,'wrong','fb0')">3</button>
+        <button class="opt-btn" onclick="check(this,'correct','fb0')">4</button>
+        <button class="opt-btn" onclick="check(this,'wrong','fb0')">6</button>
+      </div>
+      <div class="feedback" id="fb0"></div>
+    </div>
+  </div>
+
+  <!-- ===== PART 2: PRINSIP PERKALIAN ===== -->
+
+  <!-- Slide 5: Prinsip Perkalian -->
+  <div class="slide">
+    <div class="chapter-div"><div class="ch-line"></div><div class="ch-label">Bagian 2 · Prinsip Perkalian &amp; Urutan</div><div class="ch-line"></div></div>
+    <div class="card">
+      <div class="card-label ocean">✖️ Prinsip Perkalian</div>
+      <h2>Cara cepat tanpa perlu listing</h2>
+      <p style="margin-bottom:1rem;">Bayangkan kamu pilih outfit, lalu sepatu, lalu tas. Masing-masing punya beberapa pilihan:</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><strong>3 pilihan baju</strong> — setiap baju membuka tahap berikutnya</div></div>
+        <div class="step"><div class="step-n">2</div><div><strong>4 pilihan celana</strong> — dari masing-masing baju</div></div>
+        <div class="step"><div class="step-n">3</div><div><strong>2 pilihan sepatu</strong> — dari masing-masing kombinasi atas</div></div>
+      </div>
+      <div class="big-num">
+        <div class="big-eq">3 <span class="op">×</span> 4 <span class="op">×</span> 2 <span class="op">=</span> <span class="result">24</span></div>
+        <div class="big-sub">total kemungkinan outfit — tanpa perlu tulis semua satu per satu!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 6: Contoh soal prinsip perkalian -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label lav">📐 Latihan Prinsip Perkalian</div>
+      <h2>Hitung tanpa listing</h2>
+      <div class="ctx-box">
+        <div class="ctx-label">🎲 Soal</div>
+        <div class="ctx-text">
+          Menu makan siang: <em>3 pilihan minuman</em>, <em>4 pilihan lauk</em>, <em>2 pilihan dessert</em>.<br>
+          Berapa paket makan yang bisa dibuat?
+        </div>
+      </div>
+      <div class="eq-box ocean" style="margin-top:1rem;">
+        <div class="eq-label o">Prinsip Perkalian</div>
+        <div class="eq-text"><span class="o">3</span> × <span class="l">4</span> × <span class="m">2</span> = <span style="color:var(--mint)">24</span></div>
+        <div class="eq-sub">3 minuman × 4 lauk × 2 dessert = 24 paket</div>
+      </div>
+      <div class="hl-box hl-ocean">
+        💡 <strong>Aturan perkalian:</strong> Kalau setiap tahap pilihan tidak saling mempengaruhi, kalikan saja jumlah pilihan di tiap tahap. Simpel!
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 7: Urutan Penting? -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">🔀 Urutan Penting atau Tidak?</div>
+      <h2>Ini pertanyaan paling krusial di counting!</h2>
+      <div class="compare">
+        <div class="cmp-card yes">
+          <div class="cmp-icon">🔒</div>
+          <div class="cmp-title">Urutan PENTING</div>
+          <div class="cmp-desc">PIN: <strong>1-2-3 ≠ 3-2-1</strong><br>Password, kode brankas, nomor antrian — urutannya menentukan hasil yang berbeda.</div>
+        </div>
+        <div class="cmp-card no">
+          <div class="cmp-icon">👥</div>
+          <div class="cmp-title">Urutan TIDAK Penting</div>
+          <div class="cmp-desc">Pilih 2 teman: <strong>{A,B} = {B,A}</strong><br>Komite, tim, grup — siapa yang terpilih yang penting, bukan urutan siapa yang disebut duluan.</div>
+        </div>
+      </div>
+      <div class="hl-box hl-lav">
+        🎯 <strong>Cara cepat cek:</strong> Tanya pada dirimu — "Kalau urutannya dibalik, apakah hasilnya berbeda?" Kalau iya → urutan penting. Kalau tidak → urutan tidak penting.
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 8: Cek pemahaman 2 -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">🧪 Cek Pemahaman</div>
+      <div class="quiz-q">Dari 4 huruf A, B, C, D — kamu ingin membuat kode 2 huruf (contoh: AB, BA, CD, ...). Karena AB ≠ BA, berarti urutannya penting. Berapa total kode 2 huruf berbeda yang bisa dibuat?</div>
+      <div class="opts">
+        <button class="opt-btn" onclick="check(this,'wrong','fb1')">6</button>
+        <button class="opt-btn" onclick="check(this,'wrong','fb1')">8</button>
+        <button class="opt-btn" onclick="check(this,'correct','fb1')">12</button>
+        <button class="opt-btn" onclick="check(this,'wrong','fb1')">16</button>
+      </div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+  </div>
+
+  <!-- Slide 9: Insight besar -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label mint">💎 Rangkuman Besar</div>
+      <h2>Tiga senjata menghitung kemungkinan</h2>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><strong>Listing</strong> — tulis semua kemungkinan secara teratur. Cocok untuk jumlah kecil, memastikan tidak ada yang kelewat.</div></div>
+        <div class="step"><div class="step-n">2</div><div><strong>Tree Diagram</strong> — visualisasikan percabangan. Cocok saat pilihan bertingkat atau ingin melihat polanya.</div></div>
+        <div class="step"><div class="step-n">3</div><div><strong>Prinsip Perkalian</strong> — kalikan jumlah pilihan di setiap tahap. Cara paling cepat untuk jumlah besar.</div></div>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>🌟 Ingat selalu tanya ini dulu:</strong><br>
+      "Urutan penting atau tidak?" — jawabannya menentukan apakah kamu perlu hitung lebih atau kurang dari yang kamu kira. Ini dasar dari kombinasi dan permutasi yang akan kamu pelajari nanti!
+    </div>
+  </div>
+
+  <!-- Finish -->
+  <div class="slide">
+    <div class="finish">
+      <span class="finish-icon">🌳</span>
+      <div class="finish-title">Materi Selesai!</div>
+      <div class="finish-desc">Kamu sudah menguasai listing, tree diagram, prinsip perkalian, dan ide urutan penting. Ini fondasi dari semua yang namanya kombinasi dan peluang lanjutan!</div>
+      <div class="xp">+40 XP · Counting Foundations</div>
+      <div class="finish-btns">
+        <a href="lesson24.html" class="btn btn-ghost">← Kembali</a>
+        <a href="soal.html" class="btn btn-primary">Sprint Soal ⚡</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /slides -->
+
+<div class="nav-btns">
+  <button class="btn btn-ghost" id="prevBtn" onclick="prev()" disabled>← Prev</button>
+  <button class="btn btn-primary" id="nextBtn" onclick="next()">Lanjut →</button>
+</div>
+</div>
+
+<script>
+  const total = 11;
+  let cur = 0;
+  const slides = document.querySelectorAll('.slide');
+  const dotsEl = document.getElementById('dots');
+
+  for (let i=0; i<total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots() {
+    document.querySelectorAll('.dot').forEach((d,i) => {
+      d.className = 'dot' + (i===cur?' active':(i<cur?' done':''));
+    });
+  }
+
+  function showSlide(n) {
+    slides.forEach(s => s.classList.remove('active'));
+    slides[n].classList.add('active');
+    document.getElementById('prevBtn').disabled = n===0;
+    document.getElementById('nextBtn').style.display = n===total-1?'none':'inline-flex';
+    updateDots();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function next() { if(cur<total-1){cur++;showSlide(cur);} }
+  function prev() { if(cur>0){cur--;showSlide(cur);} }
+
+  function check(btn, result, fbId) {
+    const btns = btn.closest('.opts').querySelectorAll('.opt-btn');
+    btns.forEach(b => b.disabled = true);
+    btn.classList.add(result);
+    const fb = document.getElementById(fbId);
+    fb.className = 'feedback show ' + (result==='correct'?'ok':'no');
+    if (fbId === 'fb0') {
+      fb.textContent = result==='correct'
+        ? '✅ Benar! 2 rasa × 2 topping = 4 kombinasi. Listing: Coklat–Meses, Coklat–Kacang, Vanila–Meses, Vanila–Kacang.'
+        : '❌ Coba listing dulu! Dari setiap rasa, ada 2 topping. Jadi 2 × 2 = 4.';
+    } else {
+      fb.textContent = result==='correct'
+        ? '✅ Tepat! 4 pilihan huruf pertama × 3 sisa huruf untuk posisi kedua (tidak boleh sama) = 12. Contoh: AB, AC, AD, BA, BC, BD, CA, CB, CD, DA, DB, DC.'
+        : '❌ Ingat, huruf tidak boleh diulang dan urutan penting. Posisi pertama: 4 pilihan. Posisi kedua: 3 sisa. 4 × 3 = 12.';
+    }
+  }
+</script>
+</body>
+</html>
