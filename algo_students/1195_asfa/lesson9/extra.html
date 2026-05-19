@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extra PR · Lesson 9 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#7c3aed;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --violet:#a78bfa;--text:#e2e8f0;--muted:#64748b;
+    --orange:#fb923c;--blue:#60a5fa;--pink:#f472b6;
+    --pr:#f472b6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 80%,rgba(244,114,182,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 85% 15%,rgba(167,139,250,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 50%,rgba(0,245,196,0.03) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  nav{
+    padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:100;
+    font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;
+  }
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--pr);}
+
+  .wrapper{max-width:800px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  /* PR Header banner */
+  .pr-banner{background:linear-gradient(135deg,rgba(244,114,182,0.08),rgba(167,139,250,0.08));border:1px solid rgba(244,114,182,0.25);border-radius:20px;padding:2rem 2rem 1.5rem;margin-bottom:2rem;position:relative;overflow:hidden;}
+  .pr-banner::before{content:'PR';position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);font-family:'Orbitron',monospace;font-size:5rem;font-weight:900;color:rgba(244,114,182,0.06);pointer-events:none;line-height:1;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.3);color:var(--pr);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;margin-bottom:0.5rem;line-height:1.3;}
+  .page-title span{color:var(--pr);}
+  .page-desc{color:var(--muted);font-size:0.9rem;line-height:1.7;max-width:540px;}
+  .pr-pills{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;}
+  .pr-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.72rem;padding:0.2rem 0.7rem;border-radius:20px;font-weight:700;}
+  .pill-pink{background:rgba(244,114,182,0.1);color:var(--pr);border:1px solid rgba(244,114,182,0.3);}
+  .pill-violet{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+  .pill-orange{background:rgba(251,146,60,0.1);color:var(--orange);border:1px solid rgba(251,146,60,0.3);}
+  .pill-cyan{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .pill-neon{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.3);}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--pr);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--pr),var(--violet));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+  .prog-stars{display:flex;gap:0.3rem;margin-top:0.5rem;align-items:center;font-size:0.78rem;color:var(--muted);}
+  .star{font-size:0.9rem;opacity:0.25;transition:opacity 0.4s;}
+  .star.lit{opacity:1;}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--neon);}
+  .sd-2{color:var(--orange);}
+  .sd-3{color:var(--violet);}
+  .sd-4{color:var(--cyan);}
+  .sd-5{color:var(--pr);}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;max-width:100%;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;padding:0 0.25rem;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(244,114,182,0.35);background:rgba(244,114,182,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.25);}
+  .ex-tag.tag-2{background:rgba(251,146,60,0.1);color:var(--orange);border:1px solid rgba(251,146,60,0.25);}
+  .ex-tag.tag-3{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.25);}
+  .ex-tag.tag-4{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.25);}
+  .ex-tag.tag-5{background:rgba(244,114,182,0.1);color:var(--pr);border:1px solid rgba(244,114,182,0.25);}
+
+  .ex-eq-display{display:flex;align-items:center;justify-content:center;gap:0.3rem;flex-wrap:wrap;margin:0.5rem 0 0.6rem;padding:0.5rem;background:#12121c;border-radius:10px;border:1px solid var(--border);}
+  .eed-x{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;color:var(--violet);}
+  .eed-n{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;color:var(--neon);}
+  .eed-sym{font-family:'Orbitron',monospace;font-size:0.9rem;color:var(--muted);}
+  .eed-eq{font-family:'Orbitron',monospace;font-size:1rem;color:var(--cyan);}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.8rem,3vw,0.98rem);font-weight:900;color:var(--text);margin-bottom:0.5rem;line-height:1.5;word-break:break-word;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--pr);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .x-prefix{font-family:'Orbitron',monospace;font-size:1rem;color:var(--violet);font-weight:900;white-space:nowrap;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:1rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--pr);}
+  .ex-input.correct{border-color:var(--pr);color:var(--pr);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.3);color:var(--pr);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(244,114,182,0.22);border-color:var(--pr);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+  @media(max-width:360px){.ex-input-row{flex-direction:column;}.ex-btn{width:100%;}}
+
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--neon);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.4);color:var(--pr);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+  .attempts-row{margin-top:0.4rem;display:flex;gap:2px;align-items:center;}
+  .attempts-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:2px;}
+
+  .ex-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;}
+  .ex-opt{background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.55rem 0.4rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;transition:all 0.15s;text-align:center;line-height:1.4;}
+  .ex-opt:hover:not(:disabled){border-color:var(--pr);background:rgba(244,114,182,0.06);}
+  .ex-opt.opt-correct{border-color:var(--neon);background:rgba(0,245,196,0.12);color:var(--neon);}
+  .ex-opt.opt-wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .ex-opt:disabled{cursor:default;}
+
+  /* Word problem card variant */
+  .ex-card.word-card{border-left:3px solid var(--orange);}
+  .ex-card.word-card.done-card{border-left-color:var(--pr);}
+  .word-story{background:rgba(251,146,60,0.06);border:1px solid rgba(251,146,60,0.2);border-radius:10px;padding:0.7rem 0.9rem;margin-bottom:0.7rem;font-size:0.84rem;color:var(--text);line-height:1.6;}
+  .word-story strong{color:var(--orange);}
+
+  #allDone{display:none;text-align:center;padding:3rem 2rem;}
+  .alldone-icon{font-size:5rem;display:block;margin-bottom:1.5rem;animation:bounce 1s ease infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .alldone-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2rem);color:var(--pr);margin-bottom:0.8rem;}
+  .alldone-desc{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .alldone-xp{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.5rem 1.5rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:2rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--violet);color:var(--violet);}
+  .btn-primary{background:linear-gradient(135deg,#be185d,var(--neon2));color:white;box-shadow:0 4px 15px rgba(190,24,93,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson9.html">LESSON 9</a>
+  <span>›</span>
+  <span class="current">EXTRA PR</span>
+</nav>
+
+<div class="wrapper">
+  <div class="pr-banner">
+    <div class="page-badge">📝 Homework</div>
+    <div class="page-title">Extra <span>PR Mode</span></div>
+    <div class="page-desc">
+      40 soal aljabar dasar — lebih bervariasi, angka lebih besar, dan ada soal cerita!
+      Kerjakan santai, progress tersimpan otomatis. Ini latihan ekstra buat kamu yang mau makin jago.
+    </div>
+    <div class="pr-pills">
+      <span class="pr-pill pill-neon">➕ Satu Langkah</span>
+      <span class="pr-pill pill-orange">✖️ Perkalian & Pembagian</span>
+      <span class="pr-pill pill-violet">🔗 Dua Langkah</span>
+      <span class="pr-pill pill-cyan">💪 Angka Besar</span>
+      <span class="pr-pill pill-pink">📖 Soal Cerita</span>
+    </div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress PR</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      Kumpulkan ⭐ untuk setiap bagian yang diselesaikan!
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+      <span style="margin-left:0.3rem;font-size:0.72rem;">Selesaikan 8 soal per bagian</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🎓</span>
+    <div class="alldone-title">PR SELESAI SEMUA!</div>
+    <div class="alldone-desc">
+      Luar biasa! Kamu udah menyelesaikan 40 soal aljabar ekstra!<br>
+      Dari angka kecil sampai besar — semuanya kamu taklukkan. Mantap! 🔥
+    </div>
+    <div class="alldone-xp">🌟 +400 XP — Algebra Master Badge Unlocked!</div>
+    <div class="action-btns">
+      <a href="lesson9.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="exercise.html" class="btn btn-ghost">Exercise Zone</a>
+      <a href="quicktest.html" class="btn btn-primary">Quick Test ⚡</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson9_extra_v1';
+function loadProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{};}catch(e){return{};}}
+function saveProgress(p){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(p));}catch(e){}}
+let progress = loadProgress();
+
+function eqDisp(parts){
+  return '<div class="ex-eq-display">'+parts.map(p=>{
+    if(p==='x') return '<span class="eed-x">x</span>';
+    if(p==='=') return '<span class="eed-eq">=</span>';
+    if(['+','-','×','÷'].includes(p)) return '<span class="eed-sym">'+p+'</span>';
+    return '<span class="eed-n">'+p+'</span>';
+  }).join('')+'</div>';
+}
+
+const exercises = [
+  // ─── BAGIAN 1: Penjumlahan & Pengurangan (e01–e08) ───────────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'+ / −', type:'text',
+    eq:['x','+','7','=','15'],
+    q:'x + 7 = 15', hint:'Kurangi 7 dari kedua sisi',
+    answers:['8'], explain:'✅ x = 15 − 7 = 8. Cek: 8 + 7 = 15 ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'+ / −', type:'text',
+    eq:['x','+','13','=','27'],
+    q:'x + 13 = 27', hint:'Kurangi 13 dari kedua sisi',
+    answers:['14'], explain:'✅ x = 27 − 13 = 14. Cek: 14 + 13 = 27 ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'+ / −', type:'text',
+    eq:['x','-','9','=','16'],
+    q:'x − 9 = 16', hint:'Tambah 9 ke kedua sisi',
+    answers:['25'], explain:'✅ x = 16 + 9 = 25. Cek: 25 − 9 = 16 ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'+ / −', type:'mcq',
+    eq:['x','-','17','=','8'],
+    q:'x − 17 = 8', hint:'x = 8 + 17',
+    opts:['24','25','26','27'], answer:'25',
+    explain:'✅ x = 8 + 17 = 25. Cek: 25 − 17 = 8 ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'+ / −', type:'text',
+    eq:['24','+','x','=','50'],
+    q:'24 + x = 50', hint:'x = 50 − 24',
+    answers:['26'], explain:'✅ x = 50 − 24 = 26. Cek: 24 + 26 = 50 ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'+ / −', type:'text',
+    eq:['x','+','35','=','100'],
+    q:'x + 35 = 100', hint:'Kurangi 35 dari 100',
+    answers:['65'], explain:'✅ x = 100 − 35 = 65. Cek: 65 + 35 = 100 ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'+ / −', type:'mcq',
+    eq:['x','-','48','=','52'],
+    q:'x − 48 = 52', hint:'x = 52 + 48',
+    opts:['98','99','100','101'], answer:'100',
+    explain:'✅ x = 52 + 48 = 100. Cek: 100 − 48 = 52 ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'+ / −', type:'text',
+    eq:['x','+','127','=','200'],
+    q:'x + 127 = 200', hint:'Kurangi 127 dari kedua sisi',
+    answers:['73'], explain:'✅ x = 200 − 127 = 73. Cek: 73 + 127 = 200 ✓' },
+
+  // ─── BAGIAN 2: Perkalian & Pembagian (e09–e16) ──────────────────────
+  { id:'e09', section:'s2', tag:'tag-2', tagLabel:'× / ÷', type:'text',
+    eq:['4','×','x','=','36'],
+    q:'4x = 36', hint:'Bagi kedua sisi dengan 4',
+    answers:['9'], explain:'✅ x = 36 ÷ 4 = 9. Cek: 4 × 9 = 36 ✓' },
+
+  { id:'e10', section:'s2', tag:'tag-2', tagLabel:'× / ÷', type:'text',
+    eq:['7','×','x','=','56'],
+    q:'7x = 56', hint:'Bagi kedua sisi dengan 7',
+    answers:['8'], explain:'✅ x = 56 ÷ 7 = 8. Cek: 7 × 8 = 56 ✓' },
+
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'× / ÷', type:'text',
+    eq:['x','÷','4','=','9'],
+    q:'x ÷ 4 = 9', hint:'Kalikan kedua sisi dengan 4',
+    answers:['36'], explain:'✅ x = 9 × 4 = 36. Cek: 36 ÷ 4 = 9 ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'× / ÷', type:'mcq',
+    eq:['9','×','x','=','72'],
+    q:'9x = 72', hint:'Bagi dengan 9',
+    opts:['6','7','8','9'], answer:'8',
+    explain:'✅ x = 72 ÷ 9 = 8. Cek: 9 × 8 = 72 ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'× / ÷', type:'text',
+    eq:['x','÷','8','=','12'],
+    q:'x ÷ 8 = 12', hint:'Kalikan kedua sisi dengan 8',
+    answers:['96'], explain:'✅ x = 12 × 8 = 96. Cek: 96 ÷ 8 = 12 ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'× / ÷', type:'text',
+    eq:['11','×','x','=','121'],
+    q:'11x = 121', hint:'Bagi dengan 11',
+    answers:['11'], explain:'✅ x = 121 ÷ 11 = 11. Cek: 11 × 11 = 121 ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'× / ÷', type:'mcq',
+    eq:['x','÷','7','=','11'],
+    q:'x ÷ 7 = 11', hint:'Kalikan dengan 7',
+    opts:['70','77','78','84'], answer:'77',
+    explain:'✅ x = 11 × 7 = 77. Cek: 77 ÷ 7 = 11 ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'× / ÷', type:'text',
+    eq:['12','×','x','=','144'],
+    q:'12x = 144', hint:'Bagi dengan 12',
+    answers:['12'], explain:'✅ x = 144 ÷ 12 = 12. Cek: 12 × 12 = 144 ✓' },
+
+  // ─── BAGIAN 3: Dua Langkah (e17–e24) ────────────────────────────────
+  { id:'e17', section:'s3', tag:'tag-3', tagLabel:'2 Langkah', type:'text',
+    eq:['2','×','x','+','3','=','15'],
+    q:'2x + 3 = 15', hint:'−3 dulu, lalu ÷2',
+    answers:['6'], explain:'✅ 2x = 12 → x = 6. Cek: 2(6)+3 = 15 ✓' },
+
+  { id:'e18', section:'s3', tag:'tag-3', tagLabel:'2 Langkah', type:'text',
+    eq:['3','×','x','-','4','=','17'],
+    q:'3x − 4 = 17', hint:'+4 dulu, lalu ÷3',
+    answers:['7'], explain:'✅ 3x = 21 → x = 7. Cek: 3(7)−4 = 17 ✓' },
+
+  { id:'e19', section:'s3', tag:'tag-3', tagLabel:'2 Langkah', type:'text',
+    eq:['5','×','x','+','6','=','31'],
+    q:'5x + 6 = 31', hint:'−6 dulu, lalu ÷5',
+    answers:['5'], explain:'✅ 5x = 25 → x = 5. Cek: 5(5)+6 = 31 ✓' },
+
+  { id:'e20', section:'s3', tag:'tag-3', tagLabel:'2 Langkah', type:'mcq',
+    eq:['4','×','x','-','8','=','20'],
+    q:'4x − 8 = 20', hint:'+8 dulu, lalu ÷4',
+    opts:['5','6','7','8'], answer:'7',
+    explain:'✅ 4x = 28 → x = 7. Cek: 4(7)−8 = 20 ✓' },
+
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'2 Langkah', type:'text',
+    eq:['6','×','x','+','4','=','40'],
+    q:'6x + 4 = 40', hint:'−4 dulu, lalu ÷6',
+    answers:['6'], explain:'✅ 6x = 36 → x = 6. Cek: 6(6)+4 = 40 ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'2 Langkah', type:'text',
+    eq:['x','÷','3','+','5','=','14'],
+    q:'x ÷ 3 + 5 = 14', hint:'−5 dulu, lalu ×3',
+    answers:['27'], explain:'✅ x ÷ 3 = 9 → x = 27. Cek: 27÷3+5 = 14 ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'2 Langkah', type:'mcq',
+    eq:['7','×','x','-','3','=','32'],
+    q:'7x − 3 = 32', hint:'+3 dulu, lalu ÷7',
+    opts:['4','5','6','7'], answer:'5',
+    explain:'✅ 7x = 35 → x = 5. Cek: 7(5)−3 = 32 ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'2 Langkah', type:'text',
+    eq:['x','÷','4','-','3','=','6'],
+    q:'x ÷ 4 − 3 = 6', hint:'+3 dulu, lalu ×4',
+    answers:['36'], explain:'✅ x ÷ 4 = 9 → x = 36. Cek: 36÷4−3 = 6 ✓' },
+
+  // ─── BAGIAN 4: Angka Besar (e25–e32) ────────────────────────────────
+  { id:'e25', section:'s4', tag:'tag-4', tagLabel:'Angka Besar', type:'text',
+    eq:['x','+','150','=','325'],
+    q:'x + 150 = 325', hint:'Kurangi 150 dari kedua sisi',
+    answers:['175'], explain:'✅ x = 325 − 150 = 175. Cek: 175 + 150 = 325 ✓' },
+
+  { id:'e26', section:'s4', tag:'tag-4', tagLabel:'Angka Besar', type:'text',
+    eq:['x','-','248','=','152'],
+    q:'x − 248 = 152', hint:'Tambah 248 ke kedua sisi',
+    answers:['400'], explain:'✅ x = 152 + 248 = 400. Cek: 400 − 248 = 152 ✓' },
+
+  { id:'e27', section:'s4', tag:'tag-4', tagLabel:'Angka Besar', type:'text',
+    eq:['15','×','x','=','180'],
+    q:'15x = 180', hint:'Bagi kedua sisi dengan 15',
+    answers:['12'], explain:'✅ x = 180 ÷ 15 = 12. Cek: 15 × 12 = 180 ✓' },
+
+  { id:'e28', section:'s4', tag:'tag-4', tagLabel:'Angka Besar', type:'mcq',
+    eq:['x','÷','25','=','8'],
+    q:'x ÷ 25 = 8', hint:'Kalikan dengan 25',
+    opts:['175','200','205','225'], answer:'200',
+    explain:'✅ x = 8 × 25 = 200. Cek: 200 ÷ 25 = 8 ✓' },
+
+  { id:'e29', section:'s4', tag:'tag-4', tagLabel:'Angka Besar', type:'text',
+    eq:['3','×','x','+','50','=','200'],
+    q:'3x + 50 = 200', hint:'−50 dulu, lalu ÷3',
+    answers:['50'], explain:'✅ 3x = 150 → x = 50. Cek: 3(50)+50 = 200 ✓' },
+
+  { id:'e30', section:'s4', tag:'tag-4', tagLabel:'Angka Besar', type:'text',
+    eq:['x','+','375','=','500'],
+    q:'x + 375 = 500', hint:'Kurangi 375 dari 500',
+    answers:['125'], explain:'✅ x = 500 − 375 = 125. Cek: 125 + 375 = 500 ✓' },
+
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Angka Besar', type:'mcq',
+    eq:['20','×','x','-','100','=','300'],
+    q:'20x − 100 = 300', hint:'+100 dulu, lalu ÷20',
+    opts:['15','20','25','30'], answer:'20',
+    explain:'✅ 20x = 400 → x = 20. Cek: 20(20)−100 = 300 ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Angka Besar', type:'text',
+    eq:['x','÷','12','=','25'],
+    q:'x ÷ 12 = 25', hint:'Kalikan kedua sisi dengan 12',
+    answers:['300'], explain:'✅ x = 25 × 12 = 300. Cek: 300 ÷ 12 = 25 ✓' },
+
+  // ─── BAGIAN 5: Soal Cerita (e33–e40) ────────────────────────────────
+  { id:'e33', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', type:'text', wordProblem: true,
+    story:'Sebuah toko punya <strong>x</strong> buah apel. Setelah dijual <strong>15 buah</strong>, sisa apelnya tinggal <strong>28 buah</strong>.',
+    eq:['x','-','15','=','28'],
+    q:'x − 15 = 28', hint:'Tambah 15 ke kedua sisi untuk cari stok awal',
+    answers:['43'], explain:'✅ x = 28 + 15 = 43. Awalnya ada 43 buah apel ✓' },
+
+  { id:'e34', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', type:'mcq', wordProblem: true,
+    story:'Rina punya <strong>x</strong> kelereng. Dia membeli <strong>12 kelereng</strong> lagi dan sekarang punya <strong>30 kelereng</strong>.',
+    eq:['x','+','12','=','30'],
+    q:'x + 12 = 30', hint:'x = 30 − 12',
+    opts:['16','17','18','19'], answer:'18',
+    explain:'✅ x = 30 − 12 = 18. Rina awalnya punya 18 kelereng ✓' },
+
+  { id:'e35', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', type:'text', wordProblem: true,
+    story:'Sebuah keranjang diisi dengan <strong>4 baris kue</strong>. Setiap baris berisi <strong>x kue</strong>. Total ada <strong>32 kue</strong>.',
+    eq:['4','×','x','=','32'],
+    q:'4x = 32', hint:'Bagi 32 dengan 4 untuk tahu isi tiap baris',
+    answers:['8'], explain:'✅ x = 32 ÷ 4 = 8. Setiap baris ada 8 kue ✓' },
+
+  { id:'e36', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', type:'text', wordProblem: true,
+    story:'Pak Budi membagi <strong>x</strong> pensil secara rata ke <strong>6 murid</strong>. Setiap murid mendapat <strong>9 pensil</strong>.',
+    eq:['x','÷','6','=','9'],
+    q:'x ÷ 6 = 9', hint:'Kalikan kedua sisi dengan 6',
+    answers:['54'], explain:'✅ x = 9 × 6 = 54. Pak Budi punya 54 pensil ✓' },
+
+  { id:'e37', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', type:'mcq', wordProblem: true,
+    story:'Sebuah buku harganya <strong>x rupiah</strong>. Dengan diskon <strong>Rp 5.000</strong>, harga jadi <strong>Rp 20.000</strong>.',
+    eq:['x','-','5','=','20'],
+    q:'x − 5 = 20 (dalam ribuan rupiah)', hint:'x = 20 + 5',
+    opts:['23','24','25','26'], answer:'25',
+    explain:'✅ x = 20 + 5 = 25. Harga asli buku Rp 25.000 ✓' },
+
+  { id:'e38', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', type:'text', wordProblem: true,
+    story:'Lani menabung <strong>x rupiah</strong> per hari selama <strong>7 hari</strong>. Ditambah uang saku <strong>Rp 10.000</strong>, total tabungannya <strong>Rp 45.000</strong>.',
+    eq:['7','×','x','+','10','=','45'],
+    q:'7x + 10 = 45 (dalam ribuan)', hint:'−10 dulu, lalu ÷7',
+    answers:['5'], explain:'✅ 7x = 35 → x = 5. Lani menabung Rp 5.000/hari ✓' },
+
+  { id:'e39', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', type:'text', wordProblem: true,
+    story:'Sebuah mobil menempuh <strong>x km</strong> dalam 1 jam. Dalam <strong>3 jam</strong> dikurangi istirahat <strong>15 km</strong>, total jaraknya <strong>135 km</strong>.',
+    eq:['3','×','x','-','15','=','135'],
+    q:'3x − 15 = 135', hint:'+15 dulu, lalu ÷3',
+    answers:['50'], explain:'✅ 3x = 150 → x = 50. Kecepatan mobil 50 km/jam ✓' },
+
+  { id:'e40', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', type:'mcq', wordProblem: true,
+    story:'Di kelas ada <strong>x siswa</strong>. Setelah <strong>8 siswa</strong> pindah kelas, lalu <strong>5 siswa baru</strong> masuk, jumlah akhirnya <strong>32 siswa</strong>.',
+    eq:['x','-','8','+','5','=','32'],
+    q:'x − 8 + 5 = 32, berarti x − 3 = 32', hint:'x = 32 + 3',
+    opts:['33','34','35','36'], answer:'35',
+    explain:'✅ x = 32 + 3 = 35. Awalnya ada 35 siswa ✓' },
+];
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  const total = exercises.length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+  // Stars: 1 per 8 completed
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done >= i*8);
+  }
+  if(done === total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){
+    inp.classList.add('correct'); inp.disabled=true; btn.disabled=true;
+  } else {
+    card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true);
+  }
+  const fb = card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok';
+  fb.textContent = q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){
+    const badge=document.createElement('div');
+    badge.className='done-badge'; badge.textContent='✓ Done';
+    card.appendChild(badge);
+  }
+  progress[q.id]=true;
+  saveProgress(progress);
+  updateProgressBar();
+}
+
+function checkText(id, inp, btn, q){
+  const raw = inp.value.trim().toLowerCase().replace(/\s+/g,' ');
+  if(!raw) return;
+  const correct = q.answers.some(a=>raw===a.toLowerCase());
+  if(correct){
+    markDone(inp.closest('.ex-card'), q, inp, btn);
+  } else {
+    inp.classList.add('wrong-anim');
+    const attRow = inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div'); dot.className='attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(()=>{inp.classList.remove('wrong-anim'); inp.value=''; inp.focus();}, 400);
+    if(attRow.children.length >= 3){
+      const fb = inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no';
+      fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.val===q.answer) b.classList.add('opt-correct');
+  });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb = card.querySelector('.ex-feedback');
+  if(val===q.answer){
+    markDone(card, q, null, null);
+  } else {
+    fb.className='ex-feedback show no';
+    fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+  }
+}
+
+function buildExercises(){
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = '';
+  const groups = [
+    { key:'s1', label:'➕ Bagian 1 — Penjumlahan & Pengurangan', cls:'sd-1' },
+    { key:'s2', label:'✖️ Bagian 2 — Perkalian & Pembagian',    cls:'sd-2' },
+    { key:'s3', label:'🔗 Bagian 3 — Dua Langkah',               cls:'sd-3' },
+    { key:'s4', label:'💪 Bagian 4 — Angka Besar',               cls:'sd-4' },
+    { key:'s5', label:'📖 Bagian 5 — Soal Cerita',               cls:'sd-5' },
+  ];
+  groups.forEach(g=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      const isWord = !!q.wordProblem;
+      card.className = 'ex-card' + (isWord?' word-card':'') + (isDone?' done-card':'');
+
+      let inputHTML = '';
+      if(q.type==='text'){
+        inputHTML = `
+          <div class="ex-input-wrap">
+            <div class="ex-input-row">
+              <span class="x-prefix">x =</span>
+              <input type="number" class="ex-input ${isDone?'correct':''}"
+                placeholder="?"
+                value="${isDone ? q.answers[0] : ''}"
+                ${isDone?'disabled':''}
+                onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+              <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+            </div>
+            <div class="attempts-row"></div>
+          </div>`;
+      } else {
+        const shuffled = [...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML = `<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>x = ${o}</button>`).join('')}</div>`;
+      }
+
+      const storyHTML = q.story
+        ? `<div class="word-story">${q.story}</div>`
+        : '';
+
+      card.innerHTML = `
+        <div class="ex-num">Soal ${q.id.replace('e','')}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${storyHTML}
+        ${q.eq ? eqDisp(q.eq) : ''}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone ? q.explain : ''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn = card.querySelector('.ex-btn');
+        const inp = card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick = ()=>checkText(q.id, inp, btn, q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{
+          b.onclick = ()=>checkMCQ(b.dataset.val, b, q, card);
+        });
+      }
+      grid.appendChild(card);
+    });
+
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Extra PR? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+</script>
+</body>
+</html>
