@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise Zone · Lesson 9 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#7c3aed;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --violet:#a78bfa;--text:#e2e8f0;--muted:#64748b;
+    --orange:#fb923c;--blue:#60a5fa;--pink:#f472b6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 20% 70%,rgba(167,139,250,0.04) 0%,transparent 50%),
+               radial-gradient(ellipse at 80% 20%,rgba(0,245,196,0.04) 0%,transparent 50%);
+    pointer-events:none;
+  }
+  nav{
+    padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:100;
+    font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;
+  }
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--violet);}
+  .wrapper{max-width:760px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  .page-header{margin-bottom:2rem;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.25);color:var(--violet);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1.2rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,4vw,2rem);font-weight:900;margin-bottom:0.6rem;}
+  .page-title span{color:var(--violet);}
+  .page-desc{color:var(--muted);font-size:0.92rem;line-height:1.6;}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--violet);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--violet),var(--neon));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--neon);}
+  .sd-2{color:var(--orange);}
+  .sd-3{color:var(--violet);}
+  .sd-4{color:var(--cyan);}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;max-width:100%;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;padding:0 0.5rem;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(167,139,250,0.35);background:rgba(167,139,250,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.25);}
+  .ex-tag.tag-2{background:rgba(251,146,60,0.1);color:var(--orange);border:1px solid rgba(251,146,60,0.25);}
+  .ex-tag.tag-3{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.25);}
+  .ex-tag.tag-4{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.25);}
+
+  /* Inline equation display */
+  .ex-eq-display{display:flex;align-items:center;justify-content:center;gap:0.3rem;flex-wrap:wrap;margin:0.5rem 0 0.6rem;padding:0.5rem;background:#12121c;border-radius:10px;border:1px solid var(--border);}
+  .eed-x{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;color:var(--violet);}
+  .eed-n{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;color:var(--neon);}
+  .eed-sym{font-family:'Orbitron',monospace;font-size:0.9rem;color:var(--muted);}
+  .eed-eq{font-family:'Orbitron',monospace;font-size:1rem;color:var(--cyan);}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.82rem,3vw,1rem);font-weight:900;color:var(--text);margin-bottom:0.5rem;line-height:1.5;word-break:break-word;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--violet);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .x-prefix{font-family:'Orbitron',monospace;font-size:1rem;color:var(--violet);font-weight:900;white-space:nowrap;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:1rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--neon2);}
+  .ex-input.correct{border-color:var(--violet);color:var(--violet);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.3);color:var(--violet);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(167,139,250,0.25);border-color:var(--violet);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+  @media(max-width:360px){.ex-input-row{flex-direction:column;}.ex-btn{width:100%;}}
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--neon);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.4);color:var(--violet);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+  .attempts-row{margin-top:0.4rem;display:flex;gap:2px;align-items:center;}
+  .attempts-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:2px;}
+
+  .ex-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;}
+  .ex-opt{background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.55rem 0.4rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;transition:all 0.15s;text-align:center;line-height:1.4;}
+  .ex-opt:hover:not(:disabled){border-color:var(--violet);background:rgba(167,139,250,0.06);}
+  .ex-opt.opt-correct{border-color:var(--neon);background:rgba(0,245,196,0.12);color:var(--neon);}
+  .ex-opt.opt-wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .ex-opt:disabled{cursor:default;}
+
+  #allDone{display:none;text-align:center;padding:3rem 2rem;}
+  .alldone-icon{font-size:5rem;display:block;margin-bottom:1.5rem;animation:bounce 1s ease infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .alldone-title{font-family:'Orbitron',monospace;font-size:clamp(1.5rem,5vw,2rem);color:var(--violet);margin-bottom:0.8rem;}
+  .alldone-desc{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .alldone-xp{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.5rem 1.5rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:2rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--violet);color:var(--violet);}
+  .btn-primary{background:linear-gradient(135deg,var(--neon2),#4f46e5);color:white;box-shadow:0 4px 15px rgba(124,58,237,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson9.html">LESSON 9</a>
+  <span>›</span>
+  <span class="current">EXERCISE</span>
+</nav>
+
+<div class="wrapper">
+  <div class="page-header">
+    <div class="page-badge">🏋️ Exercise Zone</div>
+    <div class="page-title">Latihan <span>Aljabar Dasar</span></div>
+    <div class="page-desc">20 soal: persamaan satu langkah, perkalian/pembagian, dua langkah, dan campuran. Ketik nilai x dan tekan CEK. Progress tersimpan otomatis!</div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress</span>
+      <span class="prog-count" id="progCount">0 / 20</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      Selesaikan semua soal untuk unlock badge!
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🏆</span>
+    <div class="alldone-title">SEMUA SOAL SELESAI!</div>
+    <div class="alldone-desc">
+      Kamu udah menyelesaikan semua 20 soal aljabar dasar!<br>
+      x sudah bukan misteri lagi buat kamu. Selamat! 🎉
+    </div>
+    <div class="alldone-xp">🌟 +200 XP — Algebra Solver Badge Unlocked!</div>
+    <div class="action-btns">
+      <a href="lesson9.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="quicktest.html" class="btn btn-primary">Quick Test Lagi ⚡</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson9_exercise_v1';
+
+function loadProgress() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+  catch(e) { return {}; }
+}
+function saveProgress(p) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch(e) {}
+}
+
+let progress = loadProgress();
+
+function eqDisp(parts) {
+  return '<div class="ex-eq-display">' + parts.map(p => {
+    if (p === 'x') return '<span class="eed-x">x</span>';
+    if (p === '=') return '<span class="eed-eq">=</span>';
+    if (['+','-','×','÷'].includes(p)) return '<span class="eed-sym">'+p+'</span>';
+    return '<span class="eed-n">'+p+'</span>';
+  }).join('') + '</div>';
+}
+
+const exercises = [
+  // Bagian 1: Satu langkah — penjumlahan & pengurangan
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'+ / −', type:'text',
+    eq: ['x','+','3','=','10'],
+    q:'x + 3 = 10', hint:'Kurangi 3 dari kedua sisi',
+    answers:['7'], explain:'✅ x = 10 − 3 = 7. Cek: 7 + 3 = 10 ✓' },
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'+ / −', type:'text',
+    eq: ['x','+','6','=','14'],
+    q:'x + 6 = 14', hint:'Kurangi 6 dari kedua sisi',
+    answers:['8'], explain:'✅ x = 14 − 6 = 8. Cek: 8 + 6 = 14 ✓' },
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'+ / −', type:'text',
+    eq: ['x','-','5','=','9'],
+    q:'x − 5 = 9', hint:'Tambah 5 ke kedua sisi',
+    answers:['14'], explain:'✅ x = 9 + 5 = 14. Cek: 14 − 5 = 9 ✓' },
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'+ / −', type:'text',
+    eq: ['x','-','8','=','3'],
+    q:'x − 8 = 3', hint:'Tambah 8 ke kedua sisi',
+    answers:['11'], explain:'✅ x = 3 + 8 = 11. Cek: 11 − 8 = 3 ✓' },
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'+ / −', type:'mcq',
+    eq: ['4','+','x','=','11'],
+    q:'4 + x = 11', hint:'x = 11 − 4',
+    opts:['5','6','7','8'], answer:'7',
+    explain:'✅ x = 11 − 4 = 7. Cek: 4 + 7 = 11 ✓' },
+
+  // Bagian 2: Satu langkah — perkalian & pembagian
+  { id:'e06', section:'s2', tag:'tag-2', tagLabel:'× / ÷', type:'text',
+    eq: ['3','×','x','=','12'],
+    q:'3x = 12', hint:'Bagi kedua sisi dengan 3',
+    answers:['4'], explain:'✅ x = 12 ÷ 3 = 4. Cek: 3 × 4 = 12 ✓' },
+  { id:'e07', section:'s2', tag:'tag-2', tagLabel:'× / ÷', type:'text',
+    eq: ['5','×','x','=','25'],
+    q:'5x = 25', hint:'Bagi kedua sisi dengan 5',
+    answers:['5'], explain:'✅ x = 25 ÷ 5 = 5. Cek: 5 × 5 = 25 ✓' },
+  { id:'e08', section:'s2', tag:'tag-2', tagLabel:'× / ÷', type:'text',
+    eq: ['x','÷','3','=','4'],
+    q:'x ÷ 3 = 4', hint:'Kalikan kedua sisi dengan 3',
+    answers:['12'], explain:'✅ x = 4 × 3 = 12. Cek: 12 ÷ 3 = 4 ✓' },
+  { id:'e09', section:'s2', tag:'tag-2', tagLabel:'× / ÷', type:'text',
+    eq: ['x','÷','5','=','3'],
+    q:'x ÷ 5 = 3', hint:'Kalikan kedua sisi dengan 5',
+    answers:['15'], explain:'✅ x = 3 × 5 = 15. Cek: 15 ÷ 5 = 3 ✓' },
+  { id:'e10', section:'s2', tag:'tag-2', tagLabel:'× / ÷', type:'mcq',
+    eq: ['6','×','x','=','30'],
+    q:'6x = 30', hint:'Bagi dengan 6',
+    opts:['4','5','6','24'], answer:'5',
+    explain:'✅ x = 30 ÷ 6 = 5. Cek: 6 × 5 = 30 ✓' },
+
+  // Bagian 3: Dua langkah
+  { id:'e11', section:'s3', tag:'tag-3', tagLabel:'2 Langkah', type:'text',
+    eq: ['2','×','x','+','1','=','9'],
+    q:'2x + 1 = 9', hint:'−1 dulu, lalu ÷2',
+    answers:['4'], explain:'✅ 2x = 8 → x = 4. Cek: 2(4)+1 = 9 ✓' },
+  { id:'e12', section:'s3', tag:'tag-3', tagLabel:'2 Langkah', type:'text',
+    eq: ['3','×','x','-','2','=','13'],
+    q:'3x − 2 = 13', hint:'+2 dulu, lalu ÷3',
+    answers:['5'], explain:'✅ 3x = 15 → x = 5. Cek: 3(5)−2 = 13 ✓' },
+  { id:'e13', section:'s3', tag:'tag-3', tagLabel:'2 Langkah', type:'text',
+    eq: ['2','×','x','+','5','=','13'],
+    q:'2x + 5 = 13', hint:'−5 dulu, lalu ÷2',
+    answers:['4'], explain:'✅ 2x = 8 → x = 4. Cek: 2(4)+5 = 13 ✓' },
+  { id:'e14', section:'s3', tag:'tag-3', tagLabel:'2 Langkah', type:'text',
+    eq: ['4','×','x','-','3','=','9'],
+    q:'4x − 3 = 9', hint:'+3 dulu, lalu ÷4',
+    answers:['3'], explain:'✅ 4x = 12 → x = 3. Cek: 4(3)−3 = 9 ✓' },
+  { id:'e15', section:'s3', tag:'tag-3', tagLabel:'2 Langkah', type:'mcq',
+    eq: ['3','×','x','+','1','=','16'],
+    q:'3x + 1 = 16', hint:'−1 dulu, lalu ÷3',
+    opts:['4','5','6','7'], answer:'5',
+    explain:'✅ 3x = 15 → x = 5. Cek: 3(5)+1 = 16 ✓' },
+
+  // Bagian 4: Campuran / tantangan
+  { id:'e16', section:'s4', tag:'tag-4', tagLabel:'Campuran', type:'text',
+    eq: ['x','÷','2','+','1','=','5'],
+    q:'x ÷ 2 + 1 = 5', hint:'−1 dulu, lalu ×2',
+    answers:['8'], explain:'✅ x ÷ 2 = 4 → x = 8. Cek: 8÷2+1 = 5 ✓' },
+  { id:'e17', section:'s4', tag:'tag-4', tagLabel:'Campuran', type:'text',
+    eq: ['x','÷','3','-','2','=','1'],
+    q:'x ÷ 3 − 2 = 1', hint:'+2 dulu, lalu ×3',
+    answers:['9'], explain:'✅ x ÷ 3 = 3 → x = 9. Cek: 9÷3−2 = 1 ✓' },
+  { id:'e18', section:'s4', tag:'tag-4', tagLabel:'Campuran', type:'mcq',
+    eq: ['2','×','x','÷','4','=','3'],
+    q:'2x ÷ 4 = 3', hint:'Ini sama dengan x ÷ 2 = 3, jadi x = 6',
+    opts:['3','6','8','12'], answer:'6',
+    explain:'✅ 2x ÷ 4 = x ÷ 2 = 3 → x = 6. Cek: 2(6)÷4 = 3 ✓' },
+  { id:'e19', section:'s4', tag:'tag-4', tagLabel:'Campuran', type:'text',
+    eq: ['5','×','x','-','10','=','15'],
+    q:'5x − 10 = 15', hint:'+10 dulu, lalu ÷5',
+    answers:['5'], explain:'✅ 5x = 25 → x = 5. Cek: 5(5)−10 = 15 ✓' },
+  { id:'e20', section:'s4', tag:'tag-4', tagLabel:'Campuran', type:'mcq',
+    eq: ['3','×','x','+','4','=','19'],
+    q:'3x + 4 = 19', hint:'−4 dulu, lalu ÷3',
+    opts:['4','5','6','7'], answer:'5',
+    explain:'✅ 3x = 15 → x = 5. Cek: 3(5)+4 = 19 ✓' },
+];
+
+function updateProgressBar() {
+  const done = Object.values(progress).filter(Boolean).length;
+  const total = exercises.length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+  if (done === total) {
+    setTimeout(() => {
+      document.getElementById('allDone').style.display = 'block';
+      document.getElementById('allDone').scrollIntoView({ behavior: 'smooth' });
+    }, 600);
+  }
+}
+
+function markDone(card, q, inp, btn) {
+  if (q.type === 'text') {
+    inp.classList.add('correct'); inp.disabled = true; btn.disabled = true;
+  } else {
+    card.querySelectorAll('.ex-opt').forEach(b => b.disabled = true);
+  }
+  const fb = card.querySelector('.ex-feedback');
+  fb.className = 'ex-feedback show ok';
+  fb.textContent = q.explain;
+  card.classList.add('done-card');
+  if (!card.querySelector('.done-badge')) {
+    const badge = document.createElement('div');
+    badge.className = 'done-badge'; badge.textContent = '✓ Done';
+    card.appendChild(badge);
+  }
+  progress[q.id] = true;
+  saveProgress(progress);
+  updateProgressBar();
+}
+
+function checkText(id, inp, btn, q) {
+  const raw = inp.value.trim().toLowerCase().replace(/\s+/g,' ');
+  if (!raw) return;
+  const correct = q.answers.some(a => raw === a.toLowerCase());
+  if (correct) {
+    markDone(inp.closest('.ex-card'), q, inp, btn);
+  } else {
+    inp.classList.add('wrong-anim');
+    const attRow = inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div'); dot.className = 'attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(() => { inp.classList.remove('wrong-anim'); inp.value=''; inp.focus(); }, 400);
+    if (attRow.children.length >= 3) {
+      const fb = inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className = 'ex-feedback show no';
+      fb.textContent = '💡 Coba lagi! ' + q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card) {
+  const correct = val === q.answer;
+  card.querySelectorAll('.ex-opt').forEach(b => {
+    b.disabled = true;
+    if (b.dataset.val === q.answer) b.classList.add('opt-correct');
+  });
+  if (!correct) btn.classList.add('opt-wrong');
+  const fb = card.querySelector('.ex-feedback');
+  if (correct) {
+    markDone(card, q, null, null);
+  } else {
+    fb.className = 'ex-feedback show no';
+    fb.textContent = '❌ Bukan itu! ' + q.explain;
+    progress[q.id] = true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+  }
+}
+
+function buildExercises() {
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = '';
+  const groups = [
+    { key:'s1', label:'➕ Bagian 1 — Penjumlahan & Pengurangan', cls:'sd-1' },
+    { key:'s2', label:'✖️ Bagian 2 — Perkalian & Pembagian',    cls:'sd-2' },
+    { key:'s3', label:'🔗 Bagian 3 — Dua Langkah',               cls:'sd-3' },
+    { key:'s4', label:'🌟 Bagian 4 — Soal Campuran',             cls:'sd-4' },
+  ];
+  groups.forEach(g => {
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    exercises.filter(e => e.section === g.key).forEach(q => {
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      card.className = 'ex-card' + (isDone ? ' done-card' : '');
+
+      let inputHTML = '';
+      if (q.type === 'text') {
+        inputHTML = `
+          <div class="ex-input-wrap">
+            <div class="ex-input-row">
+              <span class="x-prefix">x =</span>
+              <input type="number" class="ex-input ${isDone?'correct':''}"
+                placeholder="?"
+                value="${isDone ? q.answers[0] : ''}"
+                ${isDone ? 'disabled' : ''}
+                onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+              <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+            </div>
+            <div class="attempts-row"></div>
+          </div>`;
+      } else {
+        const shuffled = [...q.opts].sort(() => Math.random()-0.5);
+        inputHTML = `<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>x = ${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="ex-num">Soal ${q.id.replace('e','')}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${q.eq ? eqDisp(q.eq) : ''}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone ? q.explain : ''}</div>
+        ${isDone ? '<div class="done-badge">✓ Done</div>' : ''}
+      `;
+
+      if (q.type === 'text') {
+        const btn = card.querySelector('.ex-btn');
+        const inp = card.querySelector('.ex-input');
+        if (btn && inp) btn.onclick = () => checkText(q.id, inp, btn, q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b => {
+          b.onclick = () => checkMCQ(b.dataset.val, b, q, card);
+        });
+      }
+      grid.appendChild(card);
+    });
+
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress() {
+  if (confirm('Reset semua progress exercise? Jawaban akan dihapus.')) {
+    progress = {}; saveProgress(progress);
+    document.getElementById('allDone').style.display = 'none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+</script>
+</body>
+</html>
