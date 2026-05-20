@@ -28,7 +28,7 @@
   nav span{color:var(--border2);}
   nav .cur{color:var(--ocean);}
 
-  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 2rem;position:relative;z-index:1;}
   .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--ocean-bg);border:1.5px solid var(--ocean-light);color:var(--ocean);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
   h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
   h1 span{color:var(--ocean);}
@@ -132,7 +132,7 @@
   .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
   .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
 
-  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;max-width:680px;margin:0 auto;padding:1rem 1.5rem;position:sticky;bottom:0;background:rgba(253,246,251,0.92);backdrop-filter:blur(10px);border-top:1.5px solid var(--border);z-index:50;}
   .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
   .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
   .btn-ghost:hover{border-color:var(--ocean-light);color:var(--ocean);}
@@ -418,10 +418,11 @@
 
 </div><!-- /slides -->
 
+</div><!-- /wrap -->
+
 <div class="nav-btns">
   <button class="btn btn-ghost" id="prevBtn" onclick="prev()" disabled>← Prev</button>
   <button class="btn btn-primary" id="nextBtn" onclick="next()">Lanjut →</button>
-</div>
 </div>
 
 <script>
