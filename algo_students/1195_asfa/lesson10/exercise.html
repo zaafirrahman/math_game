@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise Zone · Lesson 10 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#7c3aed;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --violet:#a78bfa;--text:#e2e8f0;--muted:#64748b;
+    --orange:#fb923c;--blue:#60a5fa;--pink:#f472b6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 20% 70%,rgba(34,211,238,0.04) 0%,transparent 50%),
+               radial-gradient(ellipse at 80% 20%,rgba(245,158,11,0.04) 0%,transparent 50%);
+    pointer-events:none;
+  }
+  nav{
+    padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:100;
+    font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;
+  }
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--neon);}
+  .wrapper{max-width:760px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  .page-header{margin-bottom:2rem;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(0,245,196,0.08);border:1px solid rgba(0,245,196,0.25);color:var(--neon);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1.2rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,4vw,2rem);font-weight:900;margin-bottom:0.6rem;}
+  .page-title span{color:var(--neon);}
+  .page-desc{color:var(--muted);font-size:0.92rem;line-height:1.6;}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--neon);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--neon));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--neon);}
+  .sd-2{color:var(--orange);}
+  .sd-3{color:var(--violet);}
+  .sd-4{color:var(--cyan);}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(0,245,196,0.35);background:rgba(0,245,196,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.6rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.25);}
+  .ex-tag.tag-2{background:rgba(251,146,60,0.1);color:var(--orange);border:1px solid rgba(251,146,60,0.25);}
+  .ex-tag.tag-3{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.25);}
+  .ex-tag.tag-4{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.25);}
+
+  /* Story block */
+  .ex-story{background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:0.7rem 0.9rem;margin-bottom:0.7rem;}
+  .ex-story-tag{font-family:'Orbitron',monospace;font-size:0.55rem;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:0.3rem;}
+  .ex-story-text{font-size:0.88rem;font-weight:700;color:var(--text);line-height:1.5;}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.75rem,2.5vw,0.88rem);font-weight:900;color:var(--text);margin-bottom:0.4rem;line-height:1.4;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--neon);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .x-prefix{font-family:'Orbitron',monospace;font-size:0.9rem;color:var(--neon);font-weight:900;white-space:nowrap;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:0.95rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--neon2);}
+  .ex-input.correct{border-color:var(--neon);color:var(--neon);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(0,245,196,0.1);border:1px solid rgba(0,245,196,0.3);color:var(--neon);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(0,245,196,0.2);border-color:var(--neon);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--neon);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(0,245,196,0.1);border:1px solid rgba(0,245,196,0.4);color:var(--neon);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+
+  .finish-banner{background:linear-gradient(135deg,rgba(0,245,196,0.08),rgba(34,211,238,0.08));border:1px solid rgba(0,245,196,0.3);border-radius:16px;padding:2rem;text-align:center;margin-top:2rem;display:none;}
+  .finish-banner.show{display:block;}
+  .fin-icon{font-size:3rem;margin-bottom:0.8rem;}
+  .fin-title{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;color:var(--neon);margin-bottom:0.5rem;}
+  .fin-desc{color:var(--muted);font-size:0.9rem;line-height:1.6;margin-bottom:1.2rem;}
+  .fin-xp{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.4rem 1.2rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:1.2rem;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--neon);color:var(--neon);}
+  .btn-primary{background:linear-gradient(135deg,var(--neon2),#4f46e5);color:white;box-shadow:0 4px 15px rgba(124,58,237,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>›</span>
+  <a href="../asfa_1195.html">ASFA</a><span>›</span>
+  <a href="lesson10.html">LESSON 10</a><span>›</span>
+  <span class="current">EXERCISE</span>
+</nav>
+<div class="wrapper">
+  <div class="page-header">
+    <div class="page-badge">🏋️ Exercise Zone</div>
+    <div class="page-title">Latihan: <span>Soal Cerita → Persamaan</span></div>
+    <div class="page-desc">20 soal latihan santai. Baca ceritanya, tulis persamaan aljabarnya! No timer — progress tersimpan otomatis.</div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress</span>
+      <span class="prog-count" id="progCount">0 / 20</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-sub">Jawab semua 20 soal untuk mendapatkan full XP! <span class="reset-link" onclick="resetProgress()">Reset</span></div>
+  </div>
+
+  <div id="exerciseContainer"></div>
+
+  <div class="finish-banner" id="finishBanner">
+    <div class="fin-icon">🕵️</div>
+    <div class="fin-title">MISI SELESAI!</div>
+    <div class="fin-desc">Semua 20 soal berhasil diselesaikan!<br>Kamu sudah mahir menerjemahkan cerita ke persamaan aljabar.</div>
+    <div class="fin-xp">⚡ +200 XP — Story Translator Master!</div>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <a href="lesson10.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="../asfa_1195.html" class="btn btn-primary">Asfa Hub →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'asfa_l10_exercise';
+
+const exercises = [
+  // Sesi 1 - Satu Operasi Dasar
+  { id:1, tag:'tag-1', tagLabel:'Satu Operasi',
+    story:'Suatu angka ditambah 9 hasilnya 14.',
+    q:'Tulis persamaannya!', hint:'Gunakan x untuk angka yang belum diketahui',
+    answers:['x+9=14','x + 9 = 14'], explain:'✅ x + 9 = 14 → x = 5' },
+  { id:2, tag:'tag-1', tagLabel:'Satu Operasi',
+    story:'Suatu angka dikurangi 7 sama dengan 8.',
+    q:'Persamaannya?', hint:'"dikurangi" = tanda −',
+    answers:['x-7=8','x - 7 = 8','x−7=8'], explain:'✅ x − 7 = 8 → x = 15' },
+  { id:3, tag:'tag-1', tagLabel:'Satu Operasi',
+    story:'Lima kali suatu angka adalah 25.',
+    q:'Tulis persamaannya!', hint:'"lima kali" = 5x',
+    answers:['5x=25','5x = 25'], explain:'✅ 5x = 25 → x = 5' },
+  { id:4, tag:'tag-1', tagLabel:'Satu Operasi',
+    story:'Suatu angka dibagi 3 hasilnya 6.',
+    q:'Persamaannya?', hint:'"dibagi 3" = x/3',
+    answers:['x/3=6','x / 3 = 6','x÷3=6'], explain:'✅ x/3 = 6 → x = 18' },
+  { id:5, tag:'tag-1', tagLabel:'Satu Operasi',
+    story:'Suatu angka ditambah 15 hasilnya 30.',
+    q:'Tulis persamaannya!', hint:'Ingat pola: angka + sesuatu = hasil',
+    answers:['x+15=30','x + 15 = 30'], explain:'✅ x + 15 = 30 → x = 15' },
+
+  // Sesi 2 - Dua Operasi
+  { id:6, tag:'tag-2', tagLabel:'Dua Operasi',
+    story:'Dua kali suatu angka ditambah 4 hasilnya 12.',
+    q:'Persamaannya?', hint:'"dua kali x" = 2x',
+    answers:['2x+4=12','2x + 4 = 12'], explain:'✅ 2x + 4 = 12 → 2x = 8 → x = 4' },
+  { id:7, tag:'tag-2', tagLabel:'Dua Operasi',
+    story:'Tiga kali suatu angka dikurangi 5 sama dengan 10.',
+    q:'Tulis persamaannya!', hint:'"tiga kali" → 3x, "dikurangi 5" → −5',
+    answers:['3x-5=10','3x - 5 = 10','3x−5=10'], explain:'✅ 3x − 5 = 10 → 3x = 15 → x = 5' },
+  { id:8, tag:'tag-2', tagLabel:'Dua Operasi',
+    story:'Suatu angka dibagi 2 lalu ditambah 3 hasilnya 8.',
+    q:'Persamaannya?', hint:'x/2 + 3 = 8',
+    answers:['x/2+3=8','x / 2 + 3 = 8'], explain:'✅ x/2 + 3 = 8 → x/2 = 5 → x = 10' },
+  { id:9, tag:'tag-2', tagLabel:'Dua Operasi',
+    story:'Empat kali suatu angka dikurangi 2 sama dengan 18.',
+    q:'Tulis persamaannya!', hint:'"empat kali" → 4x',
+    answers:['4x-2=18','4x - 2 = 18','4x−2=18'], explain:'✅ 4x − 2 = 18 → 4x = 20 → x = 5' },
+  { id:10, tag:'tag-2', tagLabel:'Dua Operasi',
+    story:'Dua kali suatu angka ditambah 7 hasilnya 21.',
+    q:'Persamaannya?', hint:'Perhatikan urutannya: operasi → konstanta → hasil',
+    answers:['2x+7=21','2x + 7 = 21'], explain:'✅ 2x + 7 = 21 → 2x = 14 → x = 7' },
+
+  // Sesi 3 - Konteks nyata
+  { id:11, tag:'tag-3', tagLabel:'Konteks Nyata',
+    story:'Umur Rima 3 tahun lebih tua dari Hani. Umur Rima 15 tahun.',
+    q:'Jika umur Hani = x, tuliskan persamaannya!', hint:'"lebih tua 3" → +3',
+    answers:['x+3=15','x + 3 = 15'], explain:'✅ Umur Hani + 3 = Umur Rima → x + 3 = 15 → x = 12' },
+  { id:12, tag:'tag-3', tagLabel:'Konteks Nyata',
+    story:'Harga sepatu setelah diskon Rp20.000 menjadi Rp80.000.',
+    q:'Jika harga asal = x, persamaannya?', hint:'"setelah diskon" = dikurangi',
+    answers:['x-20000=80000','x - 20000 = 80000'], explain:'✅ x − 20000 = 80000 → x = 100000' },
+  { id:13, tag:'tag-3', tagLabel:'Konteks Nyata',
+    story:'Kakak menabung Rp50.000 lagi, total tabungannya jadi Rp200.000.',
+    q:'Jika tabungan awal = x, persamaannya?', hint:'"menabung lagi" = ditambah',
+    answers:['x+50000=200000','x + 50000 = 200000'], explain:'✅ x + 50000 = 200000 → x = 150000' },
+  { id:14, tag:'tag-3', tagLabel:'Konteks Nyata',
+    story:'Panjang tali dipotong 30 cm, sisanya 70 cm.',
+    q:'Jika panjang tali awal = x, persamaannya?', hint:'"dipotong" = dikurangi, "sisanya" = hasilnya',
+    answers:['x-30=70','x - 30 = 70'], explain:'✅ x − 30 = 70 → x = 100 cm' },
+  { id:15, tag:'tag-3', tagLabel:'Konteks Nyata',
+    story:'Sebuah bilangan dua kali lipat dari bilangan lain yang nilainya 7.',
+    q:'Jika bilangan tersebut = x, persamaannya?', hint:'"dua kali lipat dari 7"',
+    answers:['x=2*7','x=14','x = 14','x=2×7'], explain:'✅ x = 2 × 7 = 14. Atau bisa ditulis: x/2 = 7' },
+
+  // Sesi 4 - Campuran & agak kompleks
+  { id:16, tag:'tag-4', tagLabel:'Campuran',
+    story:'Setengah dari suatu angka adalah 9.',
+    q:'Persamaannya?', hint:'"setengah dari x" = x/2',
+    answers:['x/2=9','x / 2 = 9'], explain:'✅ x/2 = 9 → x = 18' },
+  { id:17, tag:'tag-4', tagLabel:'Campuran',
+    story:'Suatu angka dikalikan 6 lalu dikurangi 3, hasilnya 21.',
+    q:'Tulis persamaannya!', hint:'Urutan: ×6 dulu, baru −3',
+    answers:['6x-3=21','6x - 3 = 21','6x−3=21'], explain:'✅ 6x − 3 = 21 → 6x = 24 → x = 4' },
+  { id:18, tag:'tag-4', tagLabel:'Campuran',
+    story:'Jumlah dua angka berurutan adalah 13. Angka pertama = x.',
+    q:'Persamaannya?', hint:'"berurutan" → angka berikutnya = x + 1',
+    answers:['x+x+1=13','2x+1=13','x + (x+1) = 13','x+(x+1)=13'], explain:'✅ x + (x+1) = 13 → 2x + 1 = 13 → x = 6' },
+  { id:19, tag:'tag-4', tagLabel:'Campuran',
+    story:'Budi membeli 4 buah apel dan 1 buah mangga seharga Rp22.000. Harga mangga Rp6.000.',
+    q:'Jika harga apel = x, persamaannya?', hint:'4 apel + 1 mangga = total',
+    answers:['4x+6000=22000','4x + 6000 = 22000'], explain:'✅ 4x + 6000 = 22000 → 4x = 16000 → x = 4000' },
+  { id:20, tag:'tag-4', tagLabel:'Campuran',
+    story:'Sebuah angka jika ditambah 10 hasilnya dua kali dari angka 8.',
+    q:'Persamaannya?', hint:'"dua kali dari angka 8" = 16',
+    answers:['x+10=16','x + 10 = 16','x+10=2*8'], explain:'✅ x + 10 = 2 × 8 = 16 → x = 6' },
+];
+
+let doneSet = new Set();
+
+function normalize(s){
+  return s.toLowerCase()
+    .replace(/\s+/g,'')
+    .replace(/×/g,'*')
+    .replace(/÷/g,'/')
+    .replace(/−/g,'-');
+}
+
+function loadProgress(){
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if(saved){ const arr = JSON.parse(saved); arr.forEach(id=>doneSet.add(id)); }
+  } catch(e){}
+}
+
+function saveProgress(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...doneSet]));
+}
+
+function updateProgress(){
+  const n = doneSet.size;
+  document.getElementById('progCount').textContent = `${n} / 20`;
+  document.getElementById('progFill').style.width = (n/20*100)+'%';
+  if(n>=20) document.getElementById('finishBanner').classList.add('show');
+}
+
+function resetProgress(){
+  if(!confirm('Reset semua progress exercise?')) return;
+  doneSet.clear();
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+function renderExercises(){
+  const container = document.getElementById('exerciseContainer');
+  const groups = [
+    { label:'Sesi 1 — Satu Operasi', cls:'sd-1', ids:[1,2,3,4,5] },
+    { label:'Sesi 2 — Dua Operasi', cls:'sd-2', ids:[6,7,8,9,10] },
+    { label:'Sesi 3 — Konteks Nyata', cls:'sd-3', ids:[11,12,13,14,15] },
+    { label:'Sesi 4 — Campuran', cls:'sd-4', ids:[16,17,18,19,20] },
+  ];
+
+  groups.forEach(g=>{
+    const divider = document.createElement('div');
+    divider.className = `sec-divider ${g.cls}`;
+    divider.textContent = g.label;
+    container.appendChild(divider);
+
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    g.ids.forEach(id=>{
+      const ex = exercises.find(e=>e.id===id);
+      if(!ex) return;
+      const done = doneSet.has(id);
+      const card = document.createElement('div');
+      card.className = 'ex-card'+(done?' done-card':'');
+      card.id = `card${id}`;
+      card.innerHTML = `
+        ${done?'<div class="done-badge">✓ DONE</div>':''}
+        <div class="ex-num">No. ${id}</div>
+        <span class="ex-tag ${ex.tag}">${ex.tagLabel}</span>
+        <div class="ex-story">
+          <div class="ex-story-tag">📖 Soal Cerita</div>
+          <div class="ex-story-text">${ex.story}</div>
+        </div>
+        <div class="ex-q">${ex.q}</div>
+        <div class="ex-hint">${ex.hint}</div>
+        <div class="ex-input-wrap">
+          <div class="ex-input-row">
+            <input type="text" class="ex-input" id="inp${id}" placeholder="Tulis persamaan..." ${done?'disabled':''} />
+            <button class="ex-btn" id="btn${id}" onclick="checkAnswer(${id})" ${done?'disabled':''}>CEK</button>
+          </div>
+          <div class="ex-feedback" id="fb${id}"></div>
+        </div>
+      `;
+      grid.appendChild(card);
+
+      if(done){
+        setTimeout(()=>{
+          const inp = document.getElementById(`inp${id}`);
+          if(inp){ inp.value = ex.answers[0]; inp.className='ex-input correct'; }
+          const fb = document.getElementById(`fb${id}`);
+          if(fb){ fb.className='ex-feedback show ok'; fb.textContent=ex.explain; }
+        },0);
+      }
+    });
+
+    container.appendChild(grid);
+  });
+}
+
+function checkAnswer(id){
+  const ex = exercises.find(e=>e.id===id);
+  if(!ex) return;
+  const inp = document.getElementById(`inp${id}`);
+  const fb = document.getElementById(`fb${id}`);
+  const btn = document.getElementById(`btn${id}`);
+  const val = inp.value.trim();
+  if(!val){ inp.style.animation='none'; void inp.offsetWidth; inp.style.animation=''; return; }
+
+  const norm = normalize(val);
+  const correct = ex.answers.some(a=>normalize(a)===norm);
+
+  if(correct){
+    inp.className='ex-input correct';
+    btn.disabled=true;
+    fb.className='ex-feedback show ok'; fb.textContent=ex.explain;
+    const card=document.getElementById(`card${id}`);
+    card.classList.add('done-card');
+    card.innerHTML=`<div class="done-badge">✓ DONE</div>`+card.innerHTML.replace('<div class="done-badge">✓ DONE</div>','');
+    doneSet.add(id);
+    saveProgress();
+    updateProgress();
+  } else {
+    inp.className='ex-input wrong-anim';
+    setTimeout(()=>inp.className='ex-input',400);
+    fb.className='ex-feedback show no';
+    fb.textContent='❌ Belum tepat. Perhatikan kata kunci dalam cerita, lalu coba lagi!';
+  }
+}
+
+// Allow Enter key
+document.addEventListener('keydown', e=>{
+  if(e.key==='Enter'){
+    const active=document.activeElement;
+    if(active && active.classList.contains('ex-input')){
+      const id=parseInt(active.id.replace('inp',''));
+      if(id) checkAnswer(id);
+    }
+  }
+});
+
+loadProgress();
+renderExercises();
+updateProgress();
+</script>
+</body>
+</html>
