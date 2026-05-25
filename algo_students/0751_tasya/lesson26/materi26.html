@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Permutasi & Kombinasi · L26 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --lavender:#9b7fc8;--lavender-light:#c8b4e8;--lav-bg:rgba(155,127,200,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --peach:#f0956a;--peach-bg:rgba(240,149,106,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --violet:#7c5cbf;--violet-light:#b89ee0;--vio-bg:rgba(124,92,191,0.08);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 75% 10%,rgba(232,160,32,0.07) 0%,transparent 50%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--gold);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 2rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--gold-bg);border:1.5px solid var(--gold-light);color:var(--gold);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--gold);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:all 0.3s;}
+  .dot.active{background:var(--gold);box-shadow:0 0 0 3px rgba(232,160,32,0.2);transform:scale(1.1);}
+  .dot.done{background:var(--gold-light);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);}
+  .card-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.gold{color:var(--gold);}
+  .card-label.vio{color:var(--violet);}
+  .card-label.ocean{color:var(--ocean);}
+  .card-label.lav{color:var(--lavender);}
+  .card-label.rose{color:var(--rose);}
+  .card-label.mint{color:var(--mint);}
+  .card h2{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.7rem;line-height:1.4;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  .ctx-box{background:linear-gradient(135deg,#fffbf0,#fef3d0);border:2px solid var(--gold-light);border-radius:18px;padding:1.4rem 1.6rem;margin:1rem 0;}
+  .ctx-label{font-size:0.62rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.7rem;}
+  .ctx-text{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;color:var(--text);line-height:1.7;}
+  .ctx-text em{color:var(--gold);font-style:normal;border-bottom:2px dashed var(--gold-light);}
+
+  /* Seats / slots */
+  .seats{display:flex;gap:0.6rem;justify-content:center;margin:1rem 0;flex-wrap:wrap;}
+  .seat{border-radius:12px;padding:0.7rem 1rem;min-width:64px;text-align:center;}
+  .seat.gold{background:var(--gold-bg);border:2px solid var(--gold-light);}
+  .seat.vio{background:var(--vio-bg);border:2px solid var(--violet-light);}
+  .seat.mint{background:var(--mint-bg);border:2px solid var(--mint-light);}
+  .seat-label{font-size:0.58rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.3rem;}
+  .seat-label.v{color:var(--violet);}
+  .seat-label.m{color:var(--mint);}
+  .seat-num{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.1rem;color:var(--gold);}
+  .seat-num.v{color:var(--violet);}
+  .seat-num.m{color:var(--mint);}
+  .seat-sub{font-size:0.65rem;color:var(--text-muted);}
+
+  .arrow-row{display:flex;align-items:center;justify-content:center;gap:0.5rem;font-size:0.9rem;color:var(--text-muted);margin:0.4rem 0;flex-wrap:wrap;}
+  .arrow-row .times{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.2rem;color:var(--gold);}
+  .arrow-row .eq{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.2rem;color:var(--mint);}
+
+  .big-num{text-align:center;margin:1.2rem 0;}
+  .big-eq{font-family:'Nunito',sans-serif;font-size:2rem;font-weight:900;color:var(--gold);}
+  .big-eq .op{color:var(--text-muted);font-size:1.5rem;}
+  .big-eq .result{color:var(--mint);}
+  .big-sub{font-size:0.82rem;color:var(--text-muted);margin-top:0.3rem;}
+
+  .eq-box{border-radius:14px;padding:1.1rem 1.4rem;margin:0.7rem 0;}
+  .eq-box.gold{background:var(--gold-bg);border:1.5px solid var(--gold-light);}
+  .eq-box.vio{background:var(--vio-bg);border:1.5px solid var(--violet-light);}
+  .eq-box.mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .eq-box.rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .eq-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .eq-label.g{color:var(--gold);}
+  .eq-label.v{color:var(--violet);}
+  .eq-label.m{color:var(--mint);}
+  .eq-label.r{color:var(--rose);}
+  .eq-text{font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;color:var(--text);}
+  .eq-text span.g{color:var(--gold);}
+  .eq-text span.v{color:var(--violet);}
+  .eq-text span.m{color:var(--mint);}
+  .eq-text span.r{color:var(--rose);}
+  .eq-sub{font-size:0.78rem;color:var(--text-muted);margin-top:0.3rem;}
+
+  .hl-box{border-radius:14px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.9rem;line-height:1.6;}
+  .hl-gold{background:var(--gold-bg);border:1.5px solid var(--gold-light);color:var(--text-mid);}
+  .hl-gold strong{color:var(--gold);}
+  .hl-vio{background:var(--vio-bg);border:1.5px solid var(--violet-light);color:var(--text-mid);}
+  .hl-vio strong{color:var(--violet);}
+  .hl-mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--text-mid);}
+  .hl-mint strong{color:var(--mint);}
+  .hl-rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);color:var(--text-mid);}
+  .hl-rose strong{color:var(--rose);}
+  .hl-lav{background:var(--lav-bg);border:1.5px solid var(--lavender-light);color:var(--text-mid);}
+  .hl-lav strong{color:var(--lavender);}
+
+  /* Factorial table */
+  .fact-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:0.88rem;}
+  .fact-table th{background:var(--gold-bg);color:var(--gold);font-family:'Nunito',sans-serif;font-weight:800;padding:0.6rem 0.9rem;text-align:left;border-bottom:2px solid var(--gold-light);}
+  .fact-table td{padding:0.55rem 0.9rem;border-bottom:1px solid var(--border);color:var(--text-mid);}
+  .fact-table tr:last-child td{border-bottom:none;}
+  .fact-table .val{font-family:'Nunito',sans-serif;font-weight:900;color:var(--gold);}
+  .fact-table .result{font-family:'Nunito',sans-serif;font-weight:900;color:var(--mint);}
+
+  /* Arrangement grid for permutations */
+  .arr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.55rem;margin:1rem 0;}
+  .arr-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.55rem;margin:1rem 0;}
+  .arr-item{background:var(--rose-bg);border:1.5px solid var(--rose-light);border-radius:10px;padding:0.6rem 0.5rem;text-align:center;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;color:var(--rose);}
+  .arr-item.gold{background:var(--gold-bg);border-color:var(--gold-light);color:var(--gold);}
+  .arr-item.mint{background:var(--mint-bg);border-color:var(--mint-light);color:var(--mint);}
+  .arr-item.faded{opacity:0.4;text-decoration:line-through;}
+
+  /* Selection / combination grid */
+  .sel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.55rem;margin:1rem 0;}
+  .sel-item{background:var(--mint-bg);border:1.5px solid var(--mint-light);border-radius:10px;padding:0.6rem 0.5rem;text-align:center;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;color:var(--mint);}
+  .sel-item.strike{text-decoration:line-through;opacity:0.38;background:var(--rose-bg);border-color:var(--rose-light);color:var(--rose);}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1rem 0;}
+  .cmp-card{border-radius:14px;padding:1rem;text-align:center;}
+  .cmp-card.perm{background:var(--rose-bg);border:2px solid var(--rose-light);}
+  .cmp-card.comb{background:var(--mint-bg);border:2px solid var(--mint-light);}
+  .cmp-icon{font-size:1.8rem;margin-bottom:0.4rem;}
+  .cmp-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.88rem;margin-bottom:0.3rem;}
+  .cmp-card.perm .cmp-title{color:var(--rose);}
+  .cmp-card.comb .cmp-title{color:var(--mint);}
+  .cmp-desc{font-size:0.78rem;color:var(--text-muted);line-height:1.5;}
+
+  .steps{display:flex;flex-direction:column;gap:0.7rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:#fafafa;border:1.5px solid var(--border);border-radius:12px;padding:0.8rem 1rem;font-size:0.88rem;}
+  .step-n{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:0.85rem;flex-shrink:0;}
+  .step-n.gold{background:var(--gold-bg);color:var(--gold);border:2px solid var(--gold-light);}
+  .step-n.vio{background:var(--vio-bg);color:var(--violet);border:2px solid var(--violet-light);}
+  .step-n.mint{background:var(--mint-bg);color:var(--mint);border:2px solid var(--mint-light);}
+  .step div{color:var(--text-mid);line-height:1.6;}
+  .step div strong{color:var(--text);}
+
+  /* Quiz */
+  .quiz-q{background:linear-gradient(135deg,#f5f0ff,#ede4fb);border:2px solid var(--violet-light);border-radius:14px;padding:1rem 1.2rem;margin-bottom:1rem;font-family:'Nunito',sans-serif;font-size:0.97rem;font-weight:700;color:var(--text);line-height:1.7;}
+  .quiz-q em{color:var(--violet);font-style:normal;}
+  .opts{display:flex;flex-direction:column;gap:0.65rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.8rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.88rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--gold-light);background:var(--gold-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  /* Insight */
+  .insight{background:linear-gradient(135deg,#fffbf0,#fef3d0);border:2px solid var(--gold-light);border-radius:16px;padding:1.2rem 1.5rem;margin:1rem 0;font-size:0.9rem;color:var(--text-mid);line-height:1.7;}
+  .insight strong{color:var(--gold);}
+
+  /* Finish */
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4.5rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.6rem;font-weight:900;color:var(--gold);margin-bottom:0.7rem;}
+  .finish-desc{color:var(--text-muted);line-height:1.7;margin-bottom:1.8rem;font-size:0.92rem;}
+  .xp{display:block;background:var(--gold-bg);border:1.5px solid var(--gold-light);color:var(--gold);padding:0.35rem 1.1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  /* Nav buttons */
+  .nav-btns{position:sticky;bottom:0;background:rgba(253,246,251,0.95);backdrop-filter:blur(12px);border-top:2px solid var(--border);padding:1rem 2rem;display:flex;justify-content:space-between;gap:1rem;z-index:100;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--gold-light);color:var(--gold);}
+  .btn-primary{background:linear-gradient(135deg,var(--gold),#c8880e);color:#fff;box-shadow:0 4px 14px rgba(232,160,32,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(232,160,32,0.4);}
+  .btn[disabled]{opacity:0.35;cursor:not-allowed;pointer-events:none;}
+
+  /* Derivation display */
+  .deriv-row{display:flex;align-items:center;gap:0.6rem;margin:0.5rem 0;font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;flex-wrap:wrap;}
+  .deriv-row .num{background:var(--gold-bg);border:1.5px solid var(--gold-light);color:var(--gold);border-radius:8px;padding:0.3rem 0.7rem;font-size:1rem;}
+  .deriv-row .op{color:var(--text-muted);font-size:1.2rem;}
+  .deriv-row .ans{color:var(--mint);}
+
+  .formula-box{background:linear-gradient(135deg,#fffbf0,#fef3d0);border:2.5px solid var(--gold);border-radius:18px;padding:1.4rem 1.6rem;margin:1rem 0;text-align:center;}
+  .formula-name{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;}
+  .formula-expr{font-family:'Nunito',sans-serif;font-size:1.6rem;font-weight:900;color:var(--text);margin-bottom:0.4rem;}
+  .formula-expr sub{font-size:0.75em;vertical-align:sub;}
+  .formula-meaning{font-size:0.82rem;color:var(--text-muted);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson26.html">LESSON 26</a><span>›</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🧮 Materi · Lesson 26</div>
+  <h1>Dari Pola ke <span>Rumus</span></h1>
+  <p class="intro">Kamu sudah tahu cara menyusun dan memilih. Sekarang kita bangun rumusnya dari pola yang kamu temukan sendiri — bukan hafalan!</p>
+
+  <div class="dots" id="dots"></div>
+
+  <!-- Slide 1: Review -->
+  <div class="slide active">
+    <div class="card">
+      <div class="card-label gold">🔁 Review Sesi 25</div>
+      <h2>Kamu sudah tahu ini!</h2>
+      <p>Di sesi sebelumnya kamu menemukan dua jenis situasi menghitung kemungkinan:</p>
+      <div class="compare">
+        <div class="cmp-card perm">
+          <div class="cmp-icon">🪑</div>
+          <div class="cmp-title">Menyusun</div>
+          <div class="cmp-desc">Urutan penting. AB ≠ BA. Hitungan lebih banyak.</div>
+        </div>
+        <div class="cmp-card comb">
+          <div class="cmp-icon">👥</div>
+          <div class="cmp-title">Memilih</div>
+          <div class="cmp-desc">Urutan tidak penting. AB = BA. Hitungan lebih sedikit.</div>
+        </div>
+      </div>
+      <div class="hl-gold">
+        <strong>Pertanyaan besar hari ini:</strong> Dari pola yang kamu temukan itu, bagaimana cara menulis rumus singkatnya — dan mengapa rumusnya berbentuk seperti itu?
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 2: Pola perkalian menurun -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label gold">🔢 Langkah 1 — Pola Perkalian Menurun</div>
+      <h2>Ingat polanya dulu</h2>
+      <p>3 siswa: A, B, C — mau disusun semua di 3 kursi:</p>
+      <div class="seats">
+        <div class="seat gold"><div class="seat-label">Kursi 1</div><div class="seat-num">3</div><div class="seat-sub">pilihan</div></div>
+        <div class="seat gold"><div class="seat-label">Kursi 2</div><div class="seat-num">2</div><div class="seat-sub">sisa</div></div>
+        <div class="seat gold"><div class="seat-label">Kursi 3</div><div class="seat-num">1</div><div class="seat-sub">sisa</div></div>
+      </div>
+      <div class="big-num">
+        <div class="big-eq">3 <span class="op">×</span> 2 <span class="op">×</span> 1 <span class="op">=</span> <span class="result">6</span></div>
+        <div class="big-sub">Ada 6 susunan berbeda</div>
+      </div>
+      <div class="hl-gold"><strong>Pola:</strong> setiap kali satu tempat terisi, sisa pilihan berkurang 1. Ini yang akan jadi dasar rumus!</div>
+    </div>
+  </div>
+
+  <!-- Slide 3: Faktorial -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label gold">🔣 Langkah 2 — Mengenal Faktorial</div>
+      <h2>Pola ini punya nama: <span style="color:var(--gold)">Faktorial!</span></h2>
+      <p>Perkalian menurun dari n sampai 1 disebut <strong>n faktorial</strong>, ditulis <strong>n!</strong></p>
+      <table class="fact-table">
+        <thead><tr><th>Notasi</th><th>Artinya</th><th>Hasil</th></tr></thead>
+        <tbody>
+          <tr><td class="val">1!</td><td>1</td><td class="result">1</td></tr>
+          <tr><td class="val">2!</td><td>2 × 1</td><td class="result">2</td></tr>
+          <tr><td class="val">3!</td><td>3 × 2 × 1</td><td class="result">6</td></tr>
+          <tr><td class="val">4!</td><td>4 × 3 × 2 × 1</td><td class="result">24</td></tr>
+          <tr><td class="val">5!</td><td>5 × 4 × 3 × 2 × 1</td><td class="result">120</td></tr>
+        </tbody>
+      </table>
+      <div class="hl-vio">Perhatikan: <strong>5! = 5 × 4!</strong> — setiap faktorial adalah angka itu dikali faktorial sebelumnya. Ini pola yang rapi!</div>
+    </div>
+    <div class="card">
+      <div class="card-label vio">❓ Satu hal spesial</div>
+      <p>Ada satu konvensi yang sering muncul di rumus nanti:</p>
+      <div class="eq-box vio">
+        <div class="eq-label v">Konvensi Penting</div>
+        <div class="eq-text"><span class="g">0! = 1</span></div>
+        <div class="eq-sub">Bukan 0! Ini kesepakatan matematika supaya rumus bekerja dengan rapi.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 4: Permutasi penuh -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">🔀 Permutasi — Menyusun Semua</div>
+      <h2>Menyusun n objek semuanya</h2>
+      <p>Kalau semua n objek disusun, kamu mengisi n tempat dengan n pilihan yang terus berkurang:</p>
+      <div class="ctx-box">
+        <div class="ctx-label">Contoh — 4 buku di rak</div>
+        <div class="ctx-text">Posisi 1: <em>4</em> pilihan × Posisi 2: <em>3</em> × Posisi 3: <em>2</em> × Posisi 4: <em>1</em></div>
+      </div>
+      <div class="big-num">
+        <div class="big-eq">4 <span class="op">×</span> 3 <span class="op">×</span> 2 <span class="op">×</span> 1 <span class="op">=</span> <span class="result">24</span></div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-name">Permutasi Penuh</div>
+        <div class="formula-expr">P(n) = n!</div>
+        <div class="formula-meaning">Susun semua n objek → tinggal hitung n faktorial</div>
+      </div>
+      <div class="hl-gold"><strong>Rumus itu hanya nama singkat dari pola yang sudah kamu tahu!</strong> 4! = 24 bukan sesuatu yang baru — kamu sudah menghitungnya secara logis.</div>
+    </div>
+  </div>
+
+  <!-- Slide 5: Permutasi sebagian -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">🔤 Permutasi Sebagian — Tidak Semua Disusun</div>
+      <h2>Susun 3 huruf dari A, B, C, D, E</h2>
+      <p>Ada 5 huruf, tapi hanya 3 posisi yang perlu diisi:</p>
+      <div class="seats">
+        <div class="seat gold"><div class="seat-label">Posisi 1</div><div class="seat-num">5</div><div class="seat-sub">pilihan</div></div>
+        <div class="seat gold"><div class="seat-label">Posisi 2</div><div class="seat-num">4</div><div class="seat-sub">sisa</div></div>
+        <div class="seat gold"><div class="seat-label">Posisi 3</div><div class="seat-num">3</div><div class="seat-sub">sisa</div></div>
+      </div>
+      <div class="big-num">
+        <div class="big-eq">5 <span class="op">×</span> 4 <span class="op">×</span> 3 <span class="op">=</span> <span class="result">60</span></div>
+        <div class="big-sub">Berhenti setelah 3 langkah — posisi sudah terisi!</div>
+      </div>
+      <div class="hl-rose"><strong>Kunci:</strong> Berhenti ketika semua tempat sudah terisi. Tidak perlu terus sampai 1.</div>
+    </div>
+    <div class="card">
+      <div class="card-label rose">✏️ Kenapa Berhenti di 3?</div>
+      <p>Perhatikan: 5 × 4 × 3 = <strong>5! ÷ 2!</strong></p>
+      <div class="deriv-row">
+        <span>5! =</span>
+        <span class="num">5×4×3</span>
+        <span class="op">×</span>
+        <span>2×1</span>
+      </div>
+      <div class="deriv-row">
+        <span>5! ÷ 2! =</span>
+        <span class="num">5×4×3</span>
+        <span class="op">=</span>
+        <span class="ans">60 ✓</span>
+      </div>
+      <div class="hl-vio">Angka 2 ini adalah sisa yang tidak dipakai: 5 − 3 = 2. Itulah asal-usul "n − r" di rumus permutasi!</div>
+    </div>
+  </div>
+
+  <!-- Slide 6: Notasi nPr -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">🔤 Notasi ⁿPᵣ</div>
+      <h2>Shortcut yang keren: ⁿPᵣ</h2>
+      <p>Daripada nulis "susun r dari n objek" setiap kali, matematikawan membuat notasi singkat:</p>
+      <div class="formula-box">
+        <div class="formula-name">Permutasi Sebagian — Notasi Formal</div>
+        <div class="formula-expr">ⁿPᵣ = n × (n−1) × … × (n−r+1)</div>
+        <div class="formula-meaning">"susun r objek dari n objek yang tersedia"</div>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-n gold">1</div><div><strong>⁵P₃</strong> artinya: susun 3 dari 5 → 5 × 4 × 3 = <strong style="color:var(--mint)">60</strong></div></div>
+        <div class="step"><div class="step-n gold">2</div><div><strong>⁴P₂</strong> artinya: susun 2 dari 4 → 4 × 3 = <strong style="color:var(--mint)">12</strong></div></div>
+        <div class="step"><div class="step-n gold">3</div><div><strong>⁴P₄</strong> artinya: susun semua 4 → 4 × 3 × 2 × 1 = <strong style="color:var(--mint)">24</strong> = 4!</div></div>
+      </div>
+      <div class="hl-gold"><strong>Cara baca:</strong> "n P r" = susun r dari n. Angka kecil di bawah-kanan = berapa yang mau disusun. Angka besar = total pilihan.</div>
+    </div>
+  </div>
+
+  <!-- Slide 7: Kombinasi - masalah hitungan ganda -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label mint">👥 Kombinasi — Masalah Hitungan Ganda</div>
+      <h2>Pilih 2 dari A, B, C</h2>
+      <p>Kalau kita susun dulu (permutasi), hasilnya:</p>
+      <div class="arr-grid">
+        <div class="arr-item">AB</div>
+        <div class="arr-item">AC</div>
+        <div class="arr-item">BC</div>
+        <div class="arr-item">BA</div>
+        <div class="arr-item">CA</div>
+        <div class="arr-item">CB</div>
+      </div>
+      <div class="big-num">
+        <div class="big-eq" style="font-size:1.5rem;">3 <span class="op">×</span> 2 <span class="op">=</span> <span class="result">6</span> susunan</div>
+      </div>
+      <div class="hl-rose"><strong>Tapi tunggu!</strong> Kalau urutan tidak penting (kita hanya memilih kelompok), maka AB dan BA adalah <strong>kelompok yang sama</strong>!</div>
+    </div>
+    <div class="card">
+      <div class="card-label mint">🔍 Mana yang Sama?</div>
+      <div class="sel-grid">
+        <div class="sel-item">AB ✓</div>
+        <div class="sel-item strike">BA ✗</div>
+        <div class="sel-item">AC ✓</div>
+        <div class="sel-item strike">CA ✗</div>
+        <div class="sel-item">BC ✓</div>
+        <div class="sel-item strike">CB ✗</div>
+      </div>
+      <p style="font-size:0.9rem;color:var(--text-mid);margin:0.5rem 0;">Yang coret = duplikat. Yang hijau = unik.</p>
+      <div class="big-num">
+        <div class="big-eq" style="font-size:1.5rem;">6 <span class="op">÷</span> 2 <span class="op">=</span> <span class="result">3</span> kombinasi</div>
+      </div>
+      <div class="hl-mint"><strong>Dibagi 2</strong> karena setiap pasang 2 orang bisa disusun dalam 2! = 2 cara (AB dan BA). Jadi kita bagi 2! untuk hilangkan duplikat.</div>
+    </div>
+  </div>
+
+  <!-- Slide 8: Kenapa dibagi r! -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label mint">➗ Kenapa Dibagi r!?</div>
+      <h2>Prinsip umum menghilangkan duplikat</h2>
+      <p>Contoh: pilih 3 dari A, B, C, D. Susun dulu = ⁴P₃ = 4×3×2 = 24.</p>
+      <div class="hl-rose"><strong>Masalah:</strong> Kelompok {A,B,C} dihitung berapa kali dalam 24 susunan itu?</div>
+      <div class="arr-grid">
+        <div class="arr-item">ABC</div><div class="arr-item">ACB</div><div class="arr-item">BAC</div>
+        <div class="arr-item">BCA</div><div class="arr-item">CAB</div><div class="arr-item">CBA</div>
+      </div>
+      <p style="font-size:0.88rem;color:var(--text-muted);margin:0.4rem 0;">⬆️ 6 susunan, semuanya adalah kelompok {A,B,C} yang sama!</p>
+      <div class="big-num">
+        <div class="big-eq" style="font-size:1.5rem;">6 = 3! = 3 <span class="op">×</span> 2 <span class="op">×</span> 1</div>
+      </div>
+      <div class="hl-mint"><strong>Setiap kelompok r orang</strong> dihitung r! kali dalam permutasi. Jadi untuk dapat kombinasi, kita bagi r!<br><br><strong>Kombinasi = Permutasi ÷ r!</strong></div>
+    </div>
+  </div>
+
+  <!-- Slide 9: Notasi nCr -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label mint">🔢 Notasi ⁿCᵣ</div>
+      <h2>Shortcut kombinasi: ⁿCᵣ</h2>
+      <div class="formula-box">
+        <div class="formula-name">Kombinasi — Notasi Formal</div>
+        <div class="formula-expr">ⁿCᵣ = ⁿPᵣ ÷ r!</div>
+        <div class="formula-meaning">"pilih r dari n, urutan tidak penting"</div>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-n mint">1</div><div><strong>⁵C₂</strong> = ⁵P₂ ÷ 2! = (5×4) ÷ 2 = 20 ÷ 2 = <strong style="color:var(--mint)">10</strong></div></div>
+        <div class="step"><div class="step-n mint">2</div><div><strong>⁴C₃</strong> = ⁴P₃ ÷ 3! = (4×3×2) ÷ 6 = 24 ÷ 6 = <strong style="color:var(--mint)">4</strong></div></div>
+        <div class="step"><div class="step-n mint">3</div><div><strong>⁵C₅</strong> = ⁵P₅ ÷ 5! = 120 ÷ 120 = <strong style="color:var(--mint)">1</strong> (semua dipilih, hanya 1 cara)</div></div>
+      </div>
+      <div class="hl-gold"><strong>Rumus bukan hafalan — ini logika!</strong> Permutasi dulu, lalu bagi duplikat yang muncul karena urutan tidak penting.</div>
+    </div>
+  </div>
+
+  <!-- Slide 10: Membandingkan P vs C -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label gold">⚖️ Perbandingan ⁿPᵣ vs ⁿCᵣ</div>
+      <h2>Selalu: Permutasi ≥ Kombinasi</h2>
+      <p>Untuk n dan r yang sama, ⁿPᵣ selalu lebih besar atau sama dengan ⁿCᵣ:</p>
+      <div class="compare">
+        <div class="cmp-card perm">
+          <div class="cmp-icon">🔀</div>
+          <div class="cmp-title">⁵P₃ = 60</div>
+          <div class="cmp-desc">Permutasi 3 dari 5<br>(urutan penting)</div>
+        </div>
+        <div class="cmp-card comb">
+          <div class="cmp-icon">👥</div>
+          <div class="cmp-title">⁵C₃ = 10</div>
+          <div class="cmp-desc">Kombinasi 3 dari 5<br>(urutan tidak penting)</div>
+        </div>
+      </div>
+      <div class="deriv-row" style="justify-content:center;font-size:1.1rem;">
+        <span>60 ÷ 6</span><span class="op">=</span><span class="ans">10</span><span style="color:var(--text-muted);font-size:0.8rem;">(6 = 3!)</span>
+      </div>
+      <div class="hl-vio"><strong>Kenapa selalu lebih besar?</strong> Karena permutasi menghitung setiap urutan secara terpisah. Kombinasi menggabungkan semua urutan yang sama menjadi satu kelompok.</div>
+    </div>
+  </div>
+
+  <!-- Slide 11: Cek pemahaman -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">🧪 Cek Pemahaman — Permutasi</div>
+      <div class="quiz-q">Di lomba lari, ada 6 pelari. Podium hanya untuk juara 1, 2, dan 3. Berapa banyak kemungkinan hasil podium yang berbeda? <em>(Urutan penting: juara 1 ≠ juara 2)</em></div>
+      <div class="opts">
+        <button class="opt-btn" onclick="check(this,'wrong','fb_p1')">18</button>
+        <button class="opt-btn" onclick="check(this,'correct','fb_p1')">120</button>
+        <button class="opt-btn" onclick="check(this,'wrong','fb_p1')">20</button>
+        <button class="opt-btn" onclick="check(this,'wrong','fb_p1')">216</button>
+      </div>
+      <div class="feedback" id="fb_p1"></div>
+    </div>
+  </div>
+
+  <!-- Slide 12: Cek pemahaman kombinasi -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label mint">🧪 Cek Pemahaman — Kombinasi</div>
+      <div class="quiz-q">Dari 6 siswa, akan dipilih 3 orang sebagai anggota panitia. Semua anggota setara (tidak ada jabatan). Berapa cara memilihnya?</div>
+      <div class="opts">
+        <button class="opt-btn" onclick="check(this,'wrong','fb_c1')">120</button>
+        <button class="opt-btn" onclick="check(this,'wrong','fb_c1')">30</button>
+        <button class="opt-btn" onclick="check(this,'correct','fb_c1')">20</button>
+        <button class="opt-btn" onclick="check(this,'wrong','fb_c1')">15</button>
+      </div>
+      <div class="feedback" id="fb_c1"></div>
+    </div>
+  </div>
+
+  <!-- Slide 13: Rangkuman -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label gold">💎 Rangkuman Besar</div>
+      <h2>Perjalanan dari pola ke rumus</h2>
+      <div class="steps">
+        <div class="step"><div class="step-n gold">1</div><div><strong>Pola perkalian menurun</strong> → ketika menyusun, pilihan berkurang 1 setiap langkah.</div></div>
+        <div class="step"><div class="step-n gold">2</div><div><strong>n! (Faktorial)</strong> = perkalian menurun dari n sampai 1. Shortcut dari pola tersebut.</div></div>
+        <div class="step"><div class="step-n gold">3</div><div><strong>ⁿPᵣ (Permutasi)</strong> = susun r dari n. Hitung r langkah perkalian menurun dari n. Urutan penting.</div></div>
+        <div class="step"><div class="step-n gold">4</div><div><strong>ⁿCᵣ (Kombinasi)</strong> = pilih r dari n. Permutasi ÷ r! untuk hilangkan hitungan ganda urutan. Urutan tidak penting.</div></div>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>🌟 Prinsip utama:</strong> Rumus adalah shortcut dari pola kemungkinan. Kalau kamu mengerti polanya — pilihan yang terus berkurang, dan mengapa kita perlu bagi r! — kamu tidak perlu menghafal. Kamu bisa <em>menurunkan</em> rumusnya sendiri!
+    </div>
+  </div>
+
+  <!-- Finish -->
+  <div class="slide">
+    <div class="finish">
+      <span class="finish-icon">🧮</span>
+      <div class="finish-title">Materi Selesai!</div>
+      <div class="finish-desc">Kamu sudah membangun pemahaman tentang faktorial, permutasi, dan kombinasi dari akar polanya. Sekarang kamu tidak hanya tahu rumusnya — kamu tahu <em>mengapa</em> rumus itu ada!</div>
+      <span class="xp">+40 XP · Permutasi & Kombinasi — Dari Pola ke Rumus</span>
+      <div class="finish-btns">
+        <a href="lesson26.html" class="btn btn-ghost">← Kembali</a>
+        <a href="soal26.html" class="btn btn-primary">Sprint Soal ⚡</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<div class="nav-btns">
+  <button class="btn btn-ghost" id="prevBtn" onclick="prev()" disabled>← Prev</button>
+  <button class="btn btn-primary" id="nextBtn" onclick="next()">Lanjut →</button>
+</div>
+
+<script>
+  const total = 14;
+  let cur = 0;
+  const slides = document.querySelectorAll('.slide');
+  const dotsEl = document.getElementById('dots');
+
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots() {
+    document.querySelectorAll('.dot').forEach((d, i) => {
+      d.className = 'dot' + (i === cur ? ' active' : (i < cur ? ' done' : ''));
+    });
+  }
+
+  function showSlide(n) {
+    slides.forEach(s => s.classList.remove('active'));
+    slides[n].classList.add('active');
+    document.getElementById('prevBtn').disabled = n === 0;
+    document.getElementById('nextBtn').style.display = n === total - 1 ? 'none' : 'inline-flex';
+    updateDots();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function next() { if (cur < total - 1) { cur++; showSlide(cur); } }
+  function prev() { if (cur > 0) { cur--; showSlide(cur); } }
+
+  const explanations = {
+    'fb_p1': {
+      correct: '✅ Tepat! ⁶P₃ = 6 × 5 × 4 = 120. Urutan penting karena juara 1, 2, 3 berbeda.',
+      wrong: '❌ Ini permutasi — urutan penting. ⁶P₃ = 6 × 5 × 4 = 120. Tiga langkah perkalian menurun dari 6.'
+    },
+    'fb_c1': {
+      correct: '✅ Benar! ⁶C₃ = ⁶P₃ ÷ 3! = (6×5×4) ÷ 6 = 120 ÷ 6 = 20. Semua anggota setara, jadi dibagi 3!',
+      wrong: '❌ Ini kombinasi. ⁶C₃ = (6×5×4) ÷ (3×2×1) = 120 ÷ 6 = 20. Bagi 3! karena setiap kelompok 3 orang dihitung 6 kali di permutasi.'
+    }
+  };
+
+  function check(btn, result, fbId) {
+    const btns = btn.closest('.opts').querySelectorAll('.opt-btn');
+    btns.forEach(b => b.disabled = true);
+    btn.classList.add(result);
+    if (result === 'wrong') {
+      btns.forEach(b => { if (b.onclick.toString().includes("'correct'")) b.classList.add('correct'); });
+    }
+    const fb = document.getElementById(fbId);
+    const exp = explanations[fbId];
+    fb.className = 'feedback show ' + (result === 'correct' ? 'ok' : 'no');
+    fb.textContent = result === 'correct' ? exp.correct : exp.wrong;
+  }
+</script>
+</body>
+</html>

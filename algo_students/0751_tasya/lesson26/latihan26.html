@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan · Mandiri · L26 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --lavender:#9b7fc8;--lavender-light:#c8b4e8;--lav-bg:rgba(155,127,200,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --peach:#f0956a;--peach-bg:rgba(240,149,106,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --violet:#7c5cbf;--violet-light:#b89ee0;--vio-bg:rgba(124,92,191,0.08);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 90%,rgba(232,160,32,0.06) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--mint);}
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--mint);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--gold);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .prog-bar-wrap{background:var(--border);border-radius:99px;height:8px;margin-bottom:0.4rem;overflow:hidden;}
+  .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--peach));border-radius:99px;transition:width 0.4s ease;}
+  .prog-label{display:flex;justify-content:space-between;font-size:0.72rem;font-weight:700;color:var(--text-muted);margin-bottom:1.5rem;}
+
+  .q-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);display:none;animation:fadeUp 0.35s ease;}
+  .q-card.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .tag{display:inline-block;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.2rem 0.7rem;border-radius:99px;margin-bottom:0.9rem;}
+  .tag-fact{background:var(--gold-bg);color:var(--gold);border:1.5px solid var(--gold-light);}
+  .tag-perm{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+  .tag-comb{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .tag-identify{background:var(--vio-bg);color:var(--violet);border:1.5px solid var(--violet-light);}
+  .tag-compare{background:var(--lav-bg);color:var(--lavender);border:1.5px solid var(--lavender-light);}
+  .tag-apply{background:var(--ocean-bg);color:var(--ocean);border:1.5px solid var(--ocean-light);}
+
+  .story-box{background:linear-gradient(135deg,#fffbf0,#fef3d0);border:2px solid var(--gold-light);border-radius:14px;padding:1rem 1.2rem;margin-bottom:1rem;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:700;color:var(--text);line-height:1.7;}
+  .q-text{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;margin-bottom:1rem;line-height:1.5;}
+
+  .hint-toggle{background:var(--gold-bg);border:1.5px solid var(--gold-light);color:var(--gold);padding:0.4rem 1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;margin-bottom:1rem;display:inline-block;transition:all 0.2s;}
+  .hint-toggle:hover{background:var(--gold);color:#fff;}
+  .hint-box{background:var(--gold-bg);border:1.5px solid var(--gold-light);border-radius:12px;padding:0.7rem 1rem;margin-bottom:0.9rem;font-size:0.85rem;color:var(--text-mid);display:none;}
+  .hint-box.show{display:block;}
+
+  .opts{display:flex;flex-direction:column;gap:0.65rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.88rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--gold-light);background:var(--gold-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--mint-light);color:var(--mint);}
+  .btn-primary{background:linear-gradient(135deg,var(--mint),#3d9a80);color:#fff;box-shadow:0 4px 14px rgba(95,191,160,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(95,191,160,0.4);}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:var(--gold);margin-bottom:0.7rem;}
+  .finish-desc{color:var(--text-muted);line-height:1.7;margin-bottom:1.8rem;font-size:0.92rem;}
+  .xp{display:block;background:var(--gold-bg);border:1.5px solid var(--gold-light);color:var(--gold);padding:0.35rem 1.1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;margin-bottom:0.7rem;}
+  .score-final{font-family:'Nunito',sans-serif;font-size:2rem;font-weight:900;color:var(--gold);margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;max-width:380px;margin:0 auto 1.5rem;}
+  .sum-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:0.9rem;text-align:center;}
+  .sum-val{font-family:'Nunito',sans-serif;font-size:1.6rem;font-weight:900;color:var(--gold);}
+  .sum-lbl{font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-top:0.2rem;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson26.html">LESSON 26</a><span>›</span>
+  <span class="cur">LATIHAN</span>
+</nav>
+
+<div class="wrap">
+  <div id="mainContent">
+    <div class="sec-badge">🌙 Latihan Mandiri · Homework Mode</div>
+    <h1>Latihan <span>Dari Pola ke Rumus</span></h1>
+    <p class="intro">10 soal faktorial, permutasi, dan kombinasi. Santai, tanpa timer. Ada petunjuk kalau butuh. Cocok dikerjakan di rumah!</p>
+
+    <div class="prog-bar-wrap"><div class="prog-bar-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-label"><span id="progText">Soal 1 dari 10</span><span id="correctCount">0 benar</span></div>
+
+    <div id="cards"></div>
+
+    <div class="nav-btns">
+      <button class="btn btn-ghost" id="prevBtn" onclick="prevQ()" disabled>← Prev</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQ()">Lanjut →</button>
+    </div>
+  </div>
+
+  <div class="finish" id="finishScreen" style="display:none;">
+    <span class="finish-icon">🧮</span>
+    <div class="finish-title">Lesson 26 Selesai!</div>
+    <div class="finish-desc">Kamu sudah melewati semua bagian Lesson 26 — faktorial, permutasi sebagian, kombinasi, dan logika di balik setiap rumus. Rumus bukan hafalan bagimu sekarang!</div>
+    <span class="xp">+50 XP · Dari Pola ke Rumus</span>
+    <div class="score-final" id="scoreFinal"></div>
+    <div class="summary-grid">
+      <div class="sum-card"><div class="sum-val" id="sumCorrect">0</div><div class="sum-lbl">Jawaban Benar</div></div>
+      <div class="sum-card"><div class="sum-val" id="sumWrong">0</div><div class="sum-lbl">Perlu Review</div></div>
+    </div>
+    <div class="finish-btns">
+      <a href="lesson26.html" class="btn btn-ghost">← Lesson 26</a>
+      <a href="../tasya_0751.html" class="btn btn-primary">Ke Hub Tasya 🏠</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const qs = [
+  {
+    tag: 'fact', tagLabel: 'Faktorial',
+    story: 'Faktorial adalah perkalian menurun dari n sampai 1. Kita tulis n! Misalnya 3! = 3 × 2 × 1 = 6.',
+    text: 'Berapa nilai dari 4! (empat faktorial)?',
+    hint: 'Kalikan: 4 × 3 × 2 × 1.',
+    opts: ['12', '16', '24', '48'],
+    answer: '24',
+    explain: '4! = 4 × 3 × 2 × 1 = 24. Faktorial selalu perkalian menurun sampai 1.'
+  },
+  {
+    tag: 'fact', tagLabel: 'Faktorial',
+    story: 'Ada konvensi matematika yang penting: 0! = 1 (bukan nol). Ini digunakan supaya rumus kombinasi bekerja dengan rapi.',
+    text: 'Berapa nilai dari 3! + 0!?',
+    hint: '3! = 6, dan 0! = 1 (bukan 0!)',
+    opts: ['6', '7', '9', '3'],
+    answer: '7',
+    explain: '3! = 6, 0! = 1 (konvensi). Jadi 3! + 0! = 6 + 1 = 7.'
+  },
+  {
+    tag: 'perm', tagLabel: 'Permutasi Penuh',
+    story: 'Di sebuah lomba foto, ada 4 peserta yang akan berfoto berjajar. Setiap urutan berbaris dianggap sebagai susunan berbeda.',
+    text: 'Berapa banyak susunan berbaris yang mungkin dari 4 peserta?',
+    hint: 'Menyusun semua 4 orang = 4!',
+    opts: ['8', '12', '16', '24'],
+    answer: '24',
+    explain: 'Permutasi penuh: 4! = 4 × 3 × 2 × 1 = 24. Semua objek disusun, gunakan n!'
+  },
+  {
+    tag: 'perm', tagLabel: 'Permutasi Sebagian',
+    story: 'Ada 5 warna: Merah, Biru, Hijau, Kuning, Ungu. Kamu ingin menyusun 3 warna dari kiri ke kanan (urutan warna penting).',
+    text: 'Berapa banyak susunan 3 warna dari 5 yang berbeda? (⁵P₃)',
+    hint: '⁵P₃ = 5 × 4 × 3. Tiga langkah perkalian menurun dari 5.',
+    opts: ['10', '30', '60', '15'],
+    answer: '60',
+    explain: '⁵P₃ = 5 × 4 × 3 = 60. Tiga posisi, masing-masing pilihan berkurang 1.'
+  },
+  {
+    tag: 'perm', tagLabel: 'Permutasi Sebagian',
+    story: 'Password 4 digit dibuat dari angka 1–7, masing-masing tidak boleh berulang. Urutan angka sangat menentukan password.',
+    text: 'Berapa banyak password 4 digit yang bisa dibuat dari 7 angka? (⁷P₄)',
+    hint: '⁷P₄ = 7 × 6 × 5 × 4. Empat langkah perkalian menurun dari 7.',
+    opts: ['35', '840', '210', '2401'],
+    answer: '840',
+    explain: '⁷P₄ = 7 × 6 × 5 × 4 = 840. Empat posisi password, pilihan berkurang 1 setiap langkah.'
+  },
+  {
+    tag: 'comb', tagLabel: 'Kombinasi',
+    story: 'Dari 5 buku di rak, kamu ingin meminjam 2 buku sekaligus. Tidak ada urutan — yang penting buku mana yang dipilih.',
+    text: 'Berapa banyak pilihan 2 buku dari 5? (⁵C₂)',
+    hint: '⁵C₂ = (5 × 4) ÷ 2! = 20 ÷ 2.',
+    opts: ['20', '10', '5', '15'],
+    answer: '10',
+    explain: '⁵C₂ = (5 × 4) ÷ 2 = 10. Bagi 2! karena {A,B} = {B,A} — urutan tidak penting.'
+  },
+  {
+    tag: 'comb', tagLabel: 'Kombinasi',
+    story: 'Dalam rapat desa ada 8 warga. Akan dipilih 3 orang sebagai perwakilan yang setara (tidak ada ketua, semua posisinya sama).',
+    text: 'Berapa cara memilih 3 perwakilan dari 8 warga? (⁸C₃)',
+    hint: '⁸C₃ = (8 × 7 × 6) ÷ 3! = 336 ÷ 6.',
+    opts: ['56', '112', '168', '336'],
+    answer: '56',
+    explain: '⁸C₃ = (8 × 7 × 6) ÷ (3 × 2 × 1) = 336 ÷ 6 = 56. Bagi 3! karena setiap kelompok dihitung 6 kali di permutasi.'
+  },
+  {
+    tag: 'identify', tagLabel: 'Kenali Tipenya',
+    story: 'Satu situasi meminta kamu menghitung susunan 2 jabatan (ketua dan wakil) dari 5 kandidat. Situasi lain meminta kamu memilih 2 teman dari 5 untuk diajak jalan.',
+    text: 'Mana yang nilainya lebih besar?',
+    hint: 'Hitung keduanya: ⁵P₂ = 5×4, ⁵C₂ = (5×4)÷2.',
+    opts: ['Keduanya sama (20 = 20)', 'Memilih teman lebih banyak (10 > 20)', 'Menyusun jabatan lebih banyak (20 > 10)', 'Tergantung situasi'],
+    answer: 'Menyusun jabatan lebih banyak (20 > 10)',
+    explain: 'ⁿPᵣ selalu ≥ ⁿCᵣ. ⁵P₂ = 20, ⁵C₂ = 10. Permutasi lebih banyak karena menghitung setiap urutan secara terpisah.'
+  },
+  {
+    tag: 'compare', tagLabel: 'Bandingkan',
+    story: 'Kamu punya 4 teman: Adi, Bela, Cika, Doni. Kamu mau mengajak 2 di antaranya.',
+    text: 'Jika urutan penting (siapa yang diajak pertama kali berbeda), hasilnya berapa? Jika urutan tidak penting, hasilnya berapa?',
+    hint: 'Permutasi: ⁴P₂ = 4×3. Kombinasi: ⁴C₂ = (4×3)÷2.',
+    opts: ['Urutan penting: 6, Tidak penting: 12', 'Urutan penting: 12, Tidak penting: 6', 'Keduanya 12', 'Keduanya 6'],
+    answer: 'Urutan penting: 12, Tidak penting: 6',
+    explain: '⁴P₂ = 4 × 3 = 12 (urutan penting). ⁴C₂ = 12 ÷ 2 = 6 (urutan tidak penting). Kombinasi selalu lebih kecil!'
+  },
+  {
+    tag: 'apply', tagLabel: 'Terapkan',
+    story: 'Dalam turnamen catur sekolah, ada 6 pemain. Setiap pemain bertanding melawan setiap pemain lain tepat sekali. (Pertandingan A vs B sama dengan B vs A — tidak ada yang lebih dulu.)',
+    text: 'Berapa total pertandingan yang akan terjadi? (Hitung ⁶C₂)',
+    hint: '⁶C₂ = (6 × 5) ÷ 2! = 30 ÷ 2. Setiap pasangan bertanding sekali.',
+    opts: ['30', '15', '12', '36'],
+    answer: '15',
+    explain: '⁶C₂ = (6 × 5) ÷ 2 = 15. Setiap pasang pemain = 1 pertandingan. Karena A vs B = B vs A, kita gunakan kombinasi.'
+  }
+];
+
+let cur = 0, correctCount = 0;
+const answered = new Array(qs.length).fill(false);
+
+function buildCards() {
+  const container = document.getElementById('cards');
+  qs.forEach((q, i) => {
+    const tagClass = 'tag-' + q.tag;
+    const div = document.createElement('div');
+    div.className = 'q-card' + (i === 0 ? ' active' : '');
+    div.id = 'qcard_' + i;
+    div.innerHTML = `
+      <span class="tag ${tagClass}">${q.tagLabel}</span>
+      ${q.story ? `<div class="story-box">${q.story}</div>` : ''}
+      <div class="q-text">${q.text}</div>
+      <button class="hint-toggle" onclick="toggleHint(${i})">💡 Lihat Petunjuk</button>
+      <div class="hint-box" id="hint_${i}">💡 ${q.hint}</div>
+      <div class="opts">
+        ${q.opts.map(o => `<button class="opt-btn" onclick="checkAns(${i},this,'${o.replace(/'/g, "\\'")}')">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb_${i}"></div>`;
+    container.appendChild(div);
+  });
+}
+
+function toggleHint(idx) {
+  document.getElementById('hint_' + idx).classList.toggle('show');
+}
+
+function checkAns(idx, btn, choice) {
+  if (answered[idx]) return;
+  answered[idx] = true;
+  const q = qs[idx];
+  const correct = choice === q.answer;
+  if (correct) {
+    correctCount++;
+    document.getElementById('correctCount').textContent = correctCount + ' benar';
+  }
+  btn.closest('.opts').querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+  btn.classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) {
+    btn.closest('.opts').querySelectorAll('.opt-btn').forEach(b => {
+      if (b.textContent.trim() === q.answer) b.classList.add('correct');
+    });
+  }
+  const fb = document.getElementById('fb_' + idx);
+  fb.className = 'feedback show ' + (correct ? 'ok' : 'no');
+  fb.textContent = (correct ? '✅ ' : '❌ ') + q.explain;
+}
+
+function updateProgress() {
+  const pct = ((cur + 1) / qs.length) * 100;
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('progText').textContent = 'Soal ' + (cur + 1) + ' dari ' + qs.length;
+}
+
+function showCard(idx) {
+  document.querySelectorAll('.q-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('qcard_' + idx).classList.add('active');
+  document.getElementById('prevBtn').disabled = idx === 0;
+  const isLast = idx === qs.length - 1;
+  document.getElementById('nextBtn').textContent = isLast ? 'Selesai ✓' : 'Lanjut →';
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextQ() {
+  if (cur < qs.length - 1) {
+    cur++;
+    showCard(cur);
+  } else {
+    showFinish();
+  }
+}
+
+function prevQ() {
+  if (cur > 0) {
+    cur--;
+    showCard(cur);
+  }
+}
+
+function showFinish() {
+  document.getElementById('mainContent').style.display = 'none';
+  document.getElementById('finishScreen').style.display = 'block';
+  const wrong = qs.length - correctCount;
+  document.getElementById('sumCorrect').textContent = correctCount;
+  document.getElementById('sumWrong').textContent = wrong;
+  document.getElementById('scoreFinal').textContent = correctCount + ' / ' + qs.length + ' benar';
+}
+
+buildCards();
+updateProgress();
+</script>
+</body>
+</html>
