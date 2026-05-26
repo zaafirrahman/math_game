@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise Zone · Lesson 11 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#7c3aed;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --violet:#a78bfa;--text:#e2e8f0;--muted:#64748b;
+    --orange:#fb923c;--blue:#60a5fa;--pink:#f472b6;
+    --ratio:#34d399;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:
+    radial-gradient(ellipse at 20% 70%,rgba(52,211,153,0.04) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 20%,rgba(245,158,11,0.04) 0%,transparent 50%);
+    pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--neon);}
+  .wrapper{max-width:760px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  .page-header{margin-bottom:2rem;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);color:var(--ratio);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1.2rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,4vw,2rem);font-weight:900;margin-bottom:0.6rem;}
+  .page-title span{color:var(--ratio);}
+  .page-desc{color:var(--muted);font-size:0.92rem;line-height:1.6;}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--ratio);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--ratio),var(--neon));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--ratio);}
+  .sd-2{color:var(--orange);}
+  .sd-3{color:var(--violet);}
+  .sd-4{color:var(--cyan);}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(52,211,153,0.35);background:rgba(52,211,153,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.6rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(52,211,153,0.1);color:var(--ratio);border:1px solid rgba(52,211,153,0.25);}
+  .ex-tag.tag-2{background:rgba(251,146,60,0.1);color:var(--orange);border:1px solid rgba(251,146,60,0.25);}
+  .ex-tag.tag-3{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.25);}
+  .ex-tag.tag-4{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.25);}
+
+  .ex-story{background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:0.7rem 0.9rem;margin-bottom:0.7rem;}
+  .ex-story-tag{font-family:'Orbitron',monospace;font-size:0.55rem;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:0.3rem;}
+  .ex-story-text{font-size:0.88rem;font-weight:700;color:var(--text);line-height:1.5;}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.75rem,2.5vw,0.88rem);font-weight:900;color:var(--text);margin-bottom:0.4rem;line-height:1.4;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--ratio);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .x-prefix{font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--ratio);font-weight:900;white-space:nowrap;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:0.95rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--neon2);}
+  .ex-input.correct{border-color:var(--ratio);color:var(--ratio);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);color:var(--ratio);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(52,211,153,0.2);border-color:var(--ratio);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--ratio);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.4);color:var(--ratio);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+
+  .finish-banner{background:linear-gradient(135deg,rgba(52,211,153,0.08),rgba(34,211,238,0.08));border:1px solid rgba(52,211,153,0.3);border-radius:16px;padding:2rem;text-align:center;margin-top:2rem;display:none;}
+  .finish-banner.show{display:block;}
+  .finish-icon{font-size:3.5rem;margin-bottom:1rem;}
+  .finish-title{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;color:var(--ratio);margin-bottom:0.5rem;}
+  .finish-desc{color:var(--muted);font-size:0.9rem;line-height:1.6;margin-bottom:1.5rem;}
+  .xp-badge{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.4rem 1.2rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:1.5rem;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--neon);color:var(--neon);}
+  .btn-primary{background:linear-gradient(135deg,var(--neon2),#4f46e5);color:white;box-shadow:0 4px 15px rgba(124,58,237,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>›</span>
+  <a href="../asfa_1195.html">ASFA</a><span>›</span>
+  <a href="lesson11.html">LESSON 11</a><span>›</span>
+  <span class="current">EXERCISE</span>
+</nav>
+<div class="wrapper">
+  <div class="page-header">
+    <div class="page-badge">🏋️ Exercise Zone</div>
+    <div class="page-title">Latihan <span>Rasio & Proporsi</span></div>
+    <div class="page-desc">20 soal latihan — baca cerita, tulis rasio atau hitung hasilnya. No timer, santai tapi tetap fokus! Progress tersimpan otomatis.</div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <div class="prog-label">Progress</div>
+      <div class="prog-count" id="progCount">0 / 20</div>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-sub">Selesaikan semua soal untuk mendapat XP penuh! <span class="reset-link" onclick="resetProgress()">Reset</span></div>
+  </div>
+
+  <!-- KELOMPOK 1: Baca & Tulis Rasio -->
+  <div class="sec-divider sd-1">⚔️ Level 1 — Baca & Tulis Rasio</div>
+  <div class="exercise-grid">
+
+    <div class="ex-card" id="card-1">
+      <div class="ex-num">Soal 01</div>
+      <div class="ex-tag tag-1">Tulis Rasio</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Di meja ada 4 pensil dan 6 pulpen.</div></div>
+      <div class="ex-q">Rasio pensil : pulpen?</div>
+      <div class="ex-hint">Tulis dalam format A : B</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <input class="ex-input" id="inp-1" placeholder="_ : _" oninput="this.value=this.value.toUpperCase()">
+          <button class="ex-btn" onclick="check(1)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-1"></div>
+      </div>
+      <div class="done-badge" id="done-1" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-2">
+      <div class="ex-num">Soal 02</div>
+      <div class="ex-tag tag-1">Tulis Rasio</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Di game, Lena punya 5 potion merah dan 3 potion hijau.</div></div>
+      <div class="ex-q">Rasio potion merah : hijau?</div>
+      <div class="ex-hint">Tulis dalam format A : B</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <input class="ex-input" id="inp-2" placeholder="_ : _">
+          <button class="ex-btn" onclick="check(2)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-2"></div>
+      </div>
+      <div class="done-badge" id="done-2" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-3">
+      <div class="ex-num">Soal 03</div>
+      <div class="ex-tag tag-1">Tulis Rasio</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Kandang ternak: 8 sapi dan 12 kambing.</div></div>
+      <div class="ex-q">Rasio sapi : kambing?</div>
+      <div class="ex-hint">Tulis angka yang ada, belum perlu disederhanakan</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <input class="ex-input" id="inp-3" placeholder="_ : _">
+          <button class="ex-btn" onclick="check(3)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-3"></div>
+      </div>
+      <div class="done-badge" id="done-3" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-4">
+      <div class="ex-num">Soal 04</div>
+      <div class="ex-tag tag-1">Part to Total</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Di kelas: 10 laki-laki dan 15 perempuan.</div></div>
+      <div class="ex-q">Rasio perempuan : total siswa?</div>
+      <div class="ex-hint">Hitung dulu totalnya!</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <input class="ex-input" id="inp-4" placeholder="_ : _">
+          <button class="ex-btn" onclick="check(4)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-4"></div>
+      </div>
+      <div class="done-badge" id="done-4" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-5">
+      <div class="ex-num">Soal 05</div>
+      <div class="ex-tag tag-1">Tulis Rasio</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Skor: 9 menang dan 3 kalah dalam turnamen.</div></div>
+      <div class="ex-q">Rasio menang : kalah?</div>
+      <div class="ex-hint">Tulis dalam format A : B</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <input class="ex-input" id="inp-5" placeholder="_ : _">
+          <button class="ex-btn" onclick="check(5)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-5"></div>
+      </div>
+      <div class="done-badge" id="done-5" style="display:none;">✓ DONE</div>
+    </div>
+
+  </div>
+
+  <!-- KELOMPOK 2: Sederhanakan -->
+  <div class="sec-divider sd-2">✂️ Level 2 — Sederhanakan Rasio</div>
+  <div class="exercise-grid">
+
+    <div class="ex-card" id="card-6">
+      <div class="ex-num">Soal 06</div>
+      <div class="ex-tag tag-2">Sederhanakan</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Rasio awal: 6 : 9</div></div>
+      <div class="ex-q">Sederhanakan rasio 6 : 9!</div>
+      <div class="ex-hint">Bagi keduanya dengan FPB(6,9)</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <input class="ex-input" id="inp-6" placeholder="_ : _">
+          <button class="ex-btn" onclick="check(6)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-6"></div>
+      </div>
+      <div class="done-badge" id="done-6" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-7">
+      <div class="ex-num">Soal 07</div>
+      <div class="ex-tag tag-2">Sederhanakan</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Rasio awal: 10 : 15</div></div>
+      <div class="ex-q">Sederhanakan rasio 10 : 15!</div>
+      <div class="ex-hint">FPB(10,15) = ?</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <input class="ex-input" id="inp-7" placeholder="_ : _">
+          <button class="ex-btn" onclick="check(7)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-7"></div>
+      </div>
+      <div class="done-badge" id="done-7" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-8">
+      <div class="ex-num">Soal 08</div>
+      <div class="ex-tag tag-2">Sederhanakan</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Rasio laki:perempuan di kelas = 12 : 16</div></div>
+      <div class="ex-q">Sederhanakan 12 : 16!</div>
+      <div class="ex-hint">Cari FPB dari 12 dan 16</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <input class="ex-input" id="inp-8" placeholder="_ : _">
+          <button class="ex-btn" onclick="check(8)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-8"></div>
+      </div>
+      <div class="done-badge" id="done-8" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-9">
+      <div class="ex-num">Soal 09</div>
+      <div class="ex-tag tag-2">Sederhanakan</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Rasio bahan: 20 : 25</div></div>
+      <div class="ex-q">Sederhanakan 20 : 25!</div>
+      <div class="ex-hint">FPB(20,25) = 5</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <input class="ex-input" id="inp-9" placeholder="_ : _">
+          <button class="ex-btn" onclick="check(9)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-9"></div>
+      </div>
+      <div class="done-badge" id="done-9" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-10">
+      <div class="ex-num">Soal 10</div>
+      <div class="ex-tag tag-2">Sederhanakan</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Campuran cat: 14 bagian biru dan 21 bagian putih.</div></div>
+      <div class="ex-q">Sederhanakan 14 : 21!</div>
+      <div class="ex-hint">FPB(14,21) = ?</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <input class="ex-input" id="inp-10" placeholder="_ : _">
+          <button class="ex-btn" onclick="check(10)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-10"></div>
+      </div>
+      <div class="done-badge" id="done-10" style="display:none;">✓ DONE</div>
+    </div>
+
+  </div>
+
+  <!-- KELOMPOK 3: Scale Up -->
+  <div class="sec-divider sd-3">📈 Level 3 — Scale Up Proporsi</div>
+  <div class="exercise-grid">
+
+    <div class="ex-card" id="card-11">
+      <div class="ex-num">Soal 11</div>
+      <div class="ex-tag tag-3">Scale Up</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Resep: 2 orang butuh 6 sendok gula.</div></div>
+      <div class="ex-q">Untuk 8 orang butuh berapa sendok?</div>
+      <div class="ex-hint">1 orang = ? sendok → 8 orang = ?</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <div class="x-prefix">Jawab:</div>
+          <input class="ex-input" id="inp-11" placeholder="angka" type="number">
+          <button class="ex-btn" onclick="check(11)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-11"></div>
+      </div>
+      <div class="done-badge" id="done-11" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-12">
+      <div class="ex-num">Soal 12</div>
+      <div class="ex-tag tag-3">Scale Up</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Jus jeruk: 3 buah jeruk untuk 1 gelas jus.</div></div>
+      <div class="ex-q">Berapa jeruk untuk 5 gelas jus?</div>
+      <div class="ex-hint">Rasio jeruk:gelas = 3:1</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <div class="x-prefix">Jawab:</div>
+          <input class="ex-input" id="inp-12" placeholder="angka" type="number">
+          <button class="ex-btn" onclick="check(12)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-12"></div>
+      </div>
+      <div class="done-badge" id="done-12" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-13">
+      <div class="ex-num">Soal 13</div>
+      <div class="ex-tag tag-3">Scale Up</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Cat dinding: 5 liter cat untuk 20 m² dinding.</div></div>
+      <div class="ex-q">Untuk 60 m² butuh berapa liter?</div>
+      <div class="ex-hint">Cari faktor pengali dulu!</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <div class="x-prefix">Jawab:</div>
+          <input class="ex-input" id="inp-13" placeholder="angka" type="number">
+          <button class="ex-btn" onclick="check(13)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-13"></div>
+      </div>
+      <div class="done-badge" id="done-13" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-14">
+      <div class="ex-num">Soal 14</div>
+      <div class="ex-tag tag-3">Scale Down</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Resep kue untuk 12 orang: 360 gram tepung.</div></div>
+      <div class="ex-q">Untuk 4 orang butuh berapa gram?</div>
+      <div class="ex-hint">12 orang → 4 orang: faktor ÷3</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <div class="x-prefix">Jawab:</div>
+          <input class="ex-input" id="inp-14" placeholder="angka" type="number">
+          <button class="ex-btn" onclick="check(14)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-14"></div>
+      </div>
+      <div class="done-badge" id="done-14" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-15">
+      <div class="ex-num">Soal 15</div>
+      <div class="ex-tag tag-3">Scale Up</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Harga 4 pensil = Rp8.000.</div></div>
+      <div class="ex-q">Berapa harga 10 pensil?</div>
+      <div class="ex-hint">Harga 1 pensil = ? → ×10</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <div class="x-prefix">Rp</div>
+          <input class="ex-input" id="inp-15" placeholder="angka" type="number">
+          <button class="ex-btn" onclick="check(15)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-15"></div>
+      </div>
+      <div class="done-badge" id="done-15" style="display:none;">✓ DONE</div>
+    </div>
+
+  </div>
+
+  <!-- KELOMPOK 4: Challenge -->
+  <div class="sec-divider sd-4">🏆 Level 4 — Challenge Mode</div>
+  <div class="exercise-grid">
+
+    <div class="ex-card" id="card-16">
+      <div class="ex-num">Soal 16</div>
+      <div class="ex-tag tag-4">Rasio Senilai</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">2 : 5 = 6 : ?</div></div>
+      <div class="ex-q">Cari nilai yang menggantikan "?"</div>
+      <div class="ex-hint">Faktor pengali: 2 → 6 berarti ×3</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <div class="x-prefix">? =</div>
+          <input class="ex-input" id="inp-16" placeholder="angka" type="number">
+          <button class="ex-btn" onclick="check(16)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-16"></div>
+      </div>
+      <div class="done-badge" id="done-16" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-17">
+      <div class="ex-num">Soal 17</div>
+      <div class="ex-tag tag-4">Rasio Senilai</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">3 : 4 = ? : 20</div></div>
+      <div class="ex-q">Cari nilai yang menggantikan "?"</div>
+      <div class="ex-hint">Faktor pengali: 4 → 20 berarti ×5</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <div class="x-prefix">? =</div>
+          <input class="ex-input" id="inp-17" placeholder="angka" type="number">
+          <button class="ex-btn" onclick="check(17)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-17"></div>
+      </div>
+      <div class="done-badge" id="done-17" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-18">
+      <div class="ex-num">Soal 18</div>
+      <div class="ex-tag tag-4">Soal Cerita</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Campuran sirup: 1 bagian sirup : 4 bagian air. Total campuran = 25 ml.</div></div>
+      <div class="ex-q">Berapa ml sirup yang dibutuhkan?</div>
+      <div class="ex-hint">Total bagian = 1+4=5. Sirup = 1/5 dari total.</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <div class="x-prefix">Jawab:</div>
+          <input class="ex-input" id="inp-18" placeholder="angka" type="number">
+          <button class="ex-btn" onclick="check(18)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-18"></div>
+      </div>
+      <div class="done-badge" id="done-18" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-19">
+      <div class="ex-num">Soal 19</div>
+      <div class="ex-tag tag-4">Soal Cerita</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Uang dibagi Andi dan Budi dengan rasio 2 : 3. Total uang = Rp50.000.</div></div>
+      <div class="ex-q">Berapa bagian uang Budi? (dalam Rp)</div>
+      <div class="ex-hint">Total bagian = 5. Budi = 3/5 dari total.</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <div class="x-prefix">Rp</div>
+          <input class="ex-input" id="inp-19" placeholder="angka" type="number">
+          <button class="ex-btn" onclick="check(19)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-19"></div>
+      </div>
+      <div class="done-badge" id="done-19" style="display:none;">✓ DONE</div>
+    </div>
+
+    <div class="ex-card" id="card-20">
+      <div class="ex-num">Soal 20</div>
+      <div class="ex-tag tag-4">Boss Soal</div>
+      <div class="ex-story"><div class="ex-story-tag">📖 Situasi</div><div class="ex-story-text">Kecepatan mobil A: 120 km dalam 2 jam. Mobil B: 180 km dalam 3 jam.</div></div>
+      <div class="ex-q">Rasio kecepatan A : B (km/jam)?</div>
+      <div class="ex-hint">Hitung kecepatan per jam dulu, lalu bandingkan!</div>
+      <div class="ex-input-wrap">
+        <div class="ex-input-row">
+          <input class="ex-input" id="inp-20" placeholder="_ : _">
+          <button class="ex-btn" onclick="check(20)">CEK ✓</button>
+        </div>
+        <div class="ex-feedback" id="fb-20"></div>
+      </div>
+      <div class="done-badge" id="done-20" style="display:none;">✓ DONE</div>
+    </div>
+
+  </div>
+
+  <div class="finish-banner" id="finishBanner">
+    <div class="finish-icon">🏆</div>
+    <div class="finish-title">EXERCISE COMPLETE!</div>
+    <div class="finish-desc">Luar biasa! Semua 20 soal rasio sudah diselesaikan.<br>Kamu sekarang seorang Ratio Master yang sejati!</div>
+    <div class="xp-badge">✨ +200 XP — Ratio Master Unlocked!</div>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <a href="lesson11.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="../asfa_1195.html" class="btn btn-primary">Lesson Berikutnya →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson11_exercise';
+
+// Answers config
+const answers = {
+  1: { correct: ['4 : 6', '4:6'], explain: '✅ 4 pensil : 6 pulpen → rasio = 4 : 6!' },
+  2: { correct: ['5 : 3', '5:3'], explain: '✅ 5 potion merah : 3 hijau → rasio = 5 : 3!' },
+  3: { correct: ['8 : 12', '8:12'], explain: '✅ 8 sapi : 12 kambing → rasio = 8 : 12! (Bisa disederhanakan jadi 2:3)' },
+  4: { correct: ['15 : 25', '15:25', '3 : 5', '3:5'], explain: '✅ Total = 10+15=25. Perempuan:total = 15:25 = 3:5!' },
+  5: { correct: ['9 : 3', '9:3', '3 : 1', '3:1'], explain: '✅ 9 menang : 3 kalah → rasio = 9 : 3 atau disederhanakan 3 : 1!' },
+  6: { correct: ['2 : 3', '2:3'], explain: '✅ FPB(6,9)=3. 6÷3=2, 9÷3=3. Rasio sederhana = 2 : 3!' },
+  7: { correct: ['2 : 3', '2:3'], explain: '✅ FPB(10,15)=5. 10÷5=2, 15÷5=3. Rasio sederhana = 2 : 3!' },
+  8: { correct: ['3 : 4', '3:4'], explain: '✅ FPB(12,16)=4. 12÷4=3, 16÷4=4. Rasio sederhana = 3 : 4!' },
+  9: { correct: ['4 : 5', '4:5'], explain: '✅ FPB(20,25)=5. 20÷5=4, 25÷5=5. Rasio sederhana = 4 : 5!' },
+  10: { correct: ['2 : 3', '2:3'], explain: '✅ FPB(14,21)=7. 14÷7=2, 21÷7=3. Rasio sederhana = 2 : 3!' },
+  11: { correct: ['24'], explain: '✅ 2 orang=6 sdm → 1 orang=3 sdm → 8 orang = 8×3 = 24 sdm!' },
+  12: { correct: ['15'], explain: '✅ 3 jeruk per gelas × 5 gelas = 15 jeruk!' },
+  13: { correct: ['15'], explain: '✅ 5L=20m². 60÷20=3 (faktor ×3). 5×3=15 liter!' },
+  14: { correct: ['120'], explain: '✅ 12 orang=360g → 4 orang (÷3) → 360÷3=120 gram!' },
+  15: { correct: ['20000', '20.000'], explain: '✅ 4 pensil=Rp8.000 → 1 pensil=Rp2.000 → 10 pensil=Rp20.000!' },
+  16: { correct: ['15'], explain: '✅ 2:5 = 6:? → 2×3=6, jadi 5×3=15. Nilai ? = 15!' },
+  17: { correct: ['15'], explain: '✅ 3:4 = ?:20 → 4×5=20, jadi 3×5=15. Nilai ? = 15!' },
+  18: { correct: ['5'], explain: '✅ Total bagian=1+4=5. Sirup = 1/5 × 25ml = 5ml!' },
+  19: { correct: ['30000', '30.000'], explain: '✅ Total bagian=2+3=5. Budi=3/5 × 50000 = Rp30.000!' },
+  20: { correct: ['1 : 1', '1:1', '60 : 60', '60:60'], explain: '✅ A=120÷2=60km/j. B=180÷3=60km/j. Rasio=60:60=1:1 (sama cepatnya)!' },
+};
+
+let done = {};
+
+function loadProgress(){
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if(saved) done = JSON.parse(saved);
+  } catch(e) { done = {}; }
+  // Restore done state
+  Object.keys(done).forEach(id => {
+    if(done[id]){
+      const card = document.getElementById('card-'+id);
+      const inp = document.getElementById('inp-'+id);
+      const badge = document.getElementById('done-'+id);
+      const fb = document.getElementById('fb-'+id);
+      const btn = card.querySelector('.ex-btn');
+      if(card){ card.classList.add('done-card'); }
+      if(inp){ inp.disabled=true; inp.classList.add('correct'); }
+      if(badge){ badge.style.display='block'; }
+      if(btn){ btn.disabled=true; }
+      if(fb){ fb.className='ex-feedback show ok'; fb.textContent=answers[id].explain; }
+    }
+  });
+  updateProgress();
+}
+
+function saveProgress(){
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(done)); } catch(e){}
+}
+
+function updateProgress(){
+  const total = 20;
+  const count = Object.values(done).filter(Boolean).length;
+  document.getElementById('progCount').textContent = count + ' / ' + total;
+  document.getElementById('progFill').style.width = (count/total*100)+'%';
+  if(count>=total){
+    document.getElementById('finishBanner').classList.add('show');
+  }
+}
+
+function check(id){
+  const inp = document.getElementById('inp-'+id);
+  const fb = document.getElementById('fb-'+id);
+  const ans = answers[id];
+  const val = inp.value.trim().replace(/\s+/g,' ');
+  const isCorrect = ans.correct.some(a => a.toLowerCase() === val.toLowerCase());
+
+  if(isCorrect){
+    inp.classList.remove('wrong-anim'); void inp.offsetWidth;
+    inp.classList.add('correct'); inp.disabled=true;
+    fb.className='ex-feedback show ok'; fb.textContent=ans.explain;
+    document.getElementById('done-'+id).style.display='block';
+    document.getElementById('card-'+id).classList.add('done-card');
+    document.querySelector('#card-'+id+' .ex-btn').disabled=true;
+    done[id]=true; saveProgress(); updateProgress();
+  } else {
+    inp.classList.remove('wrong-anim'); void inp.offsetWidth;
+    inp.classList.add('wrong-anim');
+    setTimeout(()=>inp.classList.remove('wrong-anim'),500);
+    fb.className='ex-feedback show no';
+    fb.textContent='❌ Belum tepat. Cek lagi petunjuknya! Format: angka : angka';
+  }
+}
+
+function resetProgress(){
+  if(!confirm('Reset semua progress? Jawaban yang sudah benar akan dihapus!')) return;
+  done={};
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
+  location.reload();
+}
+
+// Allow Enter key
+document.addEventListener('keydown', e => {
+  if(e.key==='Enter'){
+    const active = document.activeElement;
+    if(active && active.classList.contains('ex-input')){
+      const id = active.id.replace('inp-','');
+      if(id) check(parseInt(id));
+    }
+  }
+});
+
+loadProgress();
+</script>
+</body>
+</html>

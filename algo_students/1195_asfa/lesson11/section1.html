@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Rasio & Proporsi · Lesson 11</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#7c3aed;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --violet:#a78bfa;--text:#e2e8f0;--muted:#64748b;
+    --orange:#fb923c;--blue:#60a5fa;--pink:#f472b6;
+    --ratio:#34d399;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:
+    radial-gradient(ellipse at 70% 20%,rgba(52,211,153,0.07) 0%,transparent 50%),
+    radial-gradient(ellipse at 20% 80%,rgba(245,158,11,0.05) 0%,transparent 50%);
+    pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--ratio);}
+  .wrapper{max-width:720px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);color:var(--ratio);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1.5rem;font-family:'Orbitron',monospace;}
+  h1{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,4vw,2rem);font-weight:900;margin-bottom:0.8rem;line-height:1.3;}
+  h1 span{color:var(--ratio);}
+  .intro{color:var(--muted);font-size:0.95rem;line-height:1.7;margin-bottom:3rem;}
+  .progress-dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:2rem;}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all 0.3s;}
+  .dot.active{background:var(--ratio);box-shadow:0 0 8px var(--ratio);}
+  .dot.done{background:var(--neon2);}
+  .slide{display:none;animation:slideIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes slideIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:1.5rem;}
+  .card-label{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--ratio);text-transform:uppercase;margin-bottom:1rem;}
+  .card h2{font-size:1.3rem;font-weight:800;margin-bottom:0.8rem;line-height:1.4;}
+  .card p{color:#94a3b8;line-height:1.7;font-size:0.95rem;}
+  .card p+p{margin-top:0.8rem;}
+
+  /* Ratio bar visual */
+  .ratio-bar-wrap{margin:1.5rem 0;}
+  .ratio-bar-label{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:0.6rem;}
+  .ratio-bar{display:flex;border-radius:10px;overflow:hidden;height:40px;margin-bottom:0.4rem;}
+  .ratio-seg{display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:900;transition:all 0.6s ease;}
+  .ratio-seg.a{background:rgba(239,68,68,0.3);color:#f87171;border-right:2px solid var(--bg);}
+  .ratio-seg.b{background:rgba(96,165,250,0.3);color:var(--blue);}
+  .ratio-note{font-size:0.82rem;color:var(--muted);}
+
+  /* Ratio comparison visual */
+  .compare-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0;}
+  @media(max-width:480px){.compare-wrap{grid-template-columns:1fr;}}
+  .compare-card{background:#12121c;border:1px solid var(--border);border-radius:14px;padding:1rem;text-align:center;}
+  .compare-label{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem;}
+  .compare-ratio{font-family:'Orbitron',monospace;font-size:1.8rem;font-weight:900;margin-bottom:0.4rem;}
+  .compare-bar{height:12px;border-radius:6px;margin:0 auto;transition:width 0.5s;}
+  .compare-note{font-size:0.78rem;color:var(--muted);margin-top:0.4rem;}
+
+  /* Scale table */
+  .scale-table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:0.9rem;}
+  .scale-table th{background:rgba(52,211,153,0.1);color:var(--ratio);font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;padding:0.6rem 1rem;text-align:center;border:1px solid var(--border);}
+  .scale-table td{padding:0.5rem 1rem;text-align:center;border:1px solid var(--border);color:var(--text);}
+  .scale-table tr:nth-child(even) td{background:rgba(255,255,255,0.02);}
+  .scale-table .highlight-row td{background:rgba(52,211,153,0.07);color:var(--ratio);font-weight:700;}
+
+  /* Kamus rasio */
+  .dict-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin:1.2rem 0;}
+  @media(max-width:500px){.dict-grid{grid-template-columns:1fr;}}
+  .dict-row{display:flex;align-items:center;gap:0.8rem;background:#12121c;border:1px solid var(--border);border-radius:12px;padding:0.7rem 1rem;}
+  .dict-word{font-size:0.88rem;color:var(--text);font-weight:700;flex:1;}
+  .dict-arrow{color:var(--muted);font-size:0.8rem;}
+  .dict-sym{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:900;min-width:3.5rem;text-align:center;}
+  .dict-sym.ratio{color:var(--ratio);}
+  .dict-sym.orange{color:var(--orange);}
+  .dict-sym.violet{color:var(--violet);}
+  .dict-sym.cyan{color:var(--cyan);}
+
+  /* Steps */
+  .steps{margin:1.2rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:0.9rem;}
+  .step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:900;flex-shrink:0;margin-top:2px;}
+  .step-num.ratio{background:rgba(52,211,153,0.15);color:var(--ratio);border:1px solid rgba(52,211,153,0.4);}
+  .step-num.orange{background:rgba(251,146,60,0.15);color:var(--orange);border:1px solid rgba(251,146,60,0.4);}
+  .step-num.neon{background:rgba(0,245,196,0.15);color:var(--neon);border:1px solid rgba(0,245,196,0.4);}
+  .step-num.violet{background:rgba(167,139,250,0.15);color:var(--violet);border:1px solid rgba(167,139,250,0.4);}
+  .step-body{font-size:0.92rem;color:#94a3b8;line-height:1.6;}
+  .step-body strong{color:var(--text);}
+  .step-body code{font-family:'Orbitron',monospace;font-size:0.88rem;background:#12121c;padding:0.15rem 0.5rem;border-radius:6px;color:var(--ratio);}
+
+  /* Insight boxes */
+  .insight{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.25);border-radius:14px;padding:1.2rem 1.5rem;margin:1.2rem 0;display:flex;gap:1rem;align-items:flex-start;}
+  .insight-icon{font-size:1.5rem;flex-shrink:0;}
+  .insight-text{font-size:0.92rem;color:var(--text);line-height:1.6;}
+  .insight-text strong{color:var(--ratio);}
+  .warn-box{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.25);border-radius:14px;padding:1.2rem 1.5rem;margin:1.2rem 0;display:flex;gap:1rem;align-items:flex-start;}
+  .warn-box .insight-text strong{color:var(--accent);}
+  .violet-box{background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.25);border-radius:14px;padding:1.2rem 1.5rem;margin:1.2rem 0;display:flex;gap:1rem;align-items:flex-start;}
+  .violet-box .insight-text strong{color:var(--violet);}
+  .orange-box{background:rgba(251,146,60,0.06);border:1px solid rgba(251,146,60,0.25);border-radius:14px;padding:1.2rem 1.5rem;margin:1.2rem 0;display:flex;gap:1rem;align-items:flex-start;}
+  .orange-box .insight-text strong{color:var(--orange);}
+
+  /* Challenge */
+  .challenge-box{background:rgba(52,211,153,0.05);border:1px solid rgba(52,211,153,0.25);border-radius:14px;padding:1.3rem 1.5rem;margin:1.2rem 0;}
+  .ch-label{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:3px;color:var(--ratio);text-transform:uppercase;margin-bottom:0.8rem;}
+  .ch-body{font-size:0.92rem;color:#94a3b8;line-height:1.7;}
+  .ch-body strong{color:var(--text);}
+  .ch-answer{display:none;margin-top:0.8rem;padding:0.8rem;background:rgba(0,245,196,0.07);border-radius:10px;font-size:0.9rem;color:var(--neon);line-height:1.7;}
+  .ch-answer.show{display:block;}
+  .ch-reveal{background:transparent;border:1px dashed rgba(52,211,153,0.4);color:var(--ratio);padding:0.4rem 1rem;border-radius:8px;font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:2px;cursor:pointer;margin-top:0.8rem;transition:all 0.2s;}
+  .ch-reveal:hover{background:rgba(52,211,153,0.08);}
+
+  /* Quiz */
+  .quiz-q{font-size:1.05rem;font-weight:700;margin-bottom:1.2rem;line-height:1.5;}
+  .options{display:flex;flex-direction:column;gap:0.7rem;}
+  .opt-btn{background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.9rem 1.2rem;border-radius:12px;cursor:pointer;font-size:0.95rem;font-family:'Nunito',sans-serif;text-align:left;transition:all 0.2s;}
+  .opt-btn:hover:not(:disabled){border-color:var(--ratio);background:rgba(52,211,153,0.05);}
+  .opt-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .opt-btn.wrong{border-color:#ef4444;background:rgba(239,68,68,0.1);color:#ef4444;}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:1rem;padding:0.8rem 1rem;border-radius:10px;font-size:0.9rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.3);}
+  .feedback.no{background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.3);}
+
+  /* Nav */
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--neon);color:var(--neon);}
+  .btn-primary{background:linear-gradient(135deg,var(--neon2),#4f46e5);color:white;box-shadow:0 4px 15px rgba(124,58,237,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-primary:disabled{opacity:0.4;cursor:default;transform:none;}
+
+  /* Finish */
+  .finish-card{text-align:center;padding:3rem 2rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1.5rem;animation:pulse 1.2s ease infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.07);}}
+  .finish-title{font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;color:var(--ratio);margin-bottom:0.8rem;}
+  .finish-desc{color:var(--muted);line-height:1.8;margin-bottom:1.8rem;font-size:0.95rem;}
+  .xp-badge{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.4rem 1.2rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:2rem;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>›</span>
+  <a href="../asfa_1195.html">ASFA</a><span>›</span>
+  <a href="lesson11.html">LESSON 11</a><span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+<div class="wrapper">
+  <div class="sec-badge">📐 Section 01</div>
+  <h1>Kamus Rasio & <span>Proporsi</span></h1>
+  <div class="intro">Rasio = cara membandingkan dua hal secara cepat. Dari resep masakan sampai skor game — semua bisa dinyatakan dengan rasio. Pelajari cara menulis, menyederhanakan, dan scale up!</div>
+
+  <div class="progress-dots" id="dots"></div>
+
+  <!-- ═══ Slide 1: Apa itu Rasio? ═══ -->
+  <div class="slide active">
+    <div class="card">
+      <div class="card-label">🎯 Konsep Dasar</div>
+      <h2>Apa itu Rasio?</h2>
+      <p>Rasio adalah cara membandingkan dua jumlah. Kalau ada <strong>2 apel dan 3 jeruk</strong>, kita bilang rasio apel terhadap jeruk adalah <strong>2 : 3</strong>.</p>
+      <p>Rasio bisa ditulis dengan tiga cara:</p>
+
+      <div class="dict-grid">
+        <div class="dict-row">
+          <div class="dict-word">Notasi titik dua</div>
+          <div class="dict-arrow">→</div>
+          <div class="dict-sym ratio">2 : 3</div>
+        </div>
+        <div class="dict-row">
+          <div class="dict-word">Notasi pecahan</div>
+          <div class="dict-arrow">→</div>
+          <div class="dict-sym orange">2/3</div>
+        </div>
+        <div class="dict-row">
+          <div class="dict-word">Kata "berbanding"</div>
+          <div class="dict-arrow">→</div>
+          <div class="dict-sym violet" style="font-size:0.75rem;">2 berbanding 3</div>
+        </div>
+        <div class="dict-row">
+          <div class="dict-word">Desimal</div>
+          <div class="dict-arrow">→</div>
+          <div class="dict-sym cyan">≈ 0.67</div>
+        </div>
+      </div>
+
+      <div class="ratio-bar-wrap">
+        <div class="ratio-bar-label">Visualisasi 2 : 3</div>
+        <div class="ratio-bar">
+          <div class="ratio-seg a" style="flex:2;">🍎 2</div>
+          <div class="ratio-seg b" style="flex:3;">🍊 3</div>
+        </div>
+        <div class="ratio-note">Lebar segmen mencerminkan perbandingan jumlahnya!</div>
+      </div>
+
+      <div class="insight">
+        <div class="insight-icon">💡</div>
+        <div class="insight-text"><strong>Urutan penting!</strong> 2 : 3 ≠ 3 : 2. Rasio apel:jeruk = 2:3 artinya berbeda dengan jeruk:apel = 3:2. Selalu perhatikan urutan pertanyaannya!</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <span></span>
+      <button class="btn btn-primary" onclick="nextSlide()">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- ═══ Slide 2: Menyederhanakan Rasio ═══ -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label">✂️ Sederhanakan!</div>
+      <h2>Cara Menyederhanakan Rasio</h2>
+      <p>Sama seperti pecahan, rasio bisa disederhanakan dengan <strong>membagi kedua angka dengan FPB (Faktor Persekutuan Besar)</strong> mereka.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num ratio">1</div>
+          <div class="step-body"><strong>Tulis rasionya:</strong> 12 : 18</div>
+        </div>
+        <div class="step">
+          <div class="step-num orange">2</div>
+          <div class="step-body"><strong>Cari FPB dari 12 dan 18:</strong> Faktor 12 = {1,2,3,4,6,12}, faktor 18 = {1,2,3,6,9,18}. FPB = <code>6</code></div>
+        </div>
+        <div class="step">
+          <div class="step-num neon">3</div>
+          <div class="step-body"><strong>Bagi keduanya dengan 6:</strong> 12÷6 = 2, 18÷6 = 3. Hasilnya: <code>2 : 3</code></div>
+        </div>
+      </div>
+
+      <div class="ratio-bar-wrap">
+        <div class="ratio-bar-label">12 : 18 = 2 : 3 (sama besar!)</div>
+        <div class="ratio-bar">
+          <div class="ratio-seg a" style="flex:12;">12</div>
+          <div class="ratio-seg b" style="flex:18;">18</div>
+        </div>
+        <div class="ratio-bar" style="margin-top:0.4rem;">
+          <div class="ratio-seg a" style="flex:2;">2</div>
+          <div class="ratio-seg b" style="flex:3;">3</div>
+        </div>
+        <div class="ratio-note">Perbandingan lebarnya sama — itulah rasio senilai!</div>
+      </div>
+
+      <div class="challenge-box">
+        <div class="ch-label">🧠 Coba Sendiri</div>
+        <div class="ch-body">Sederhanakan rasio <strong>8 : 12</strong>. Berapa FPB-nya? Apa hasilnya?</div>
+        <button class="ch-reveal" onclick="this.nextElementSibling.classList.toggle('show')">👁 Lihat Jawaban</button>
+        <div class="ch-answer">FPB dari 8 dan 12 = <strong>4</strong>.<br>8÷4 = 2, 12÷4 = 3.<br>Jadi <strong>8 : 12 = 2 : 3</strong> ✅</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- ═══ Slide 3: Rasio Senilai ═══ -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label">⚖️ Rasio Senilai</div>
+      <h2>Rasio Senilai — Scale Up & Down</h2>
+      <p>Dua rasio <strong>senilai</strong> kalau mereka mewakili perbandingan yang sama. Caranya: kalikan atau bagi kedua angka dengan bilangan yang sama.</p>
+
+      <table class="scale-table">
+        <tr><th>Rasio</th><th>Operasi</th><th>Hasil</th><th>Senilai?</th></tr>
+        <tr><td>2 : 3</td><td>× 2</td><td>4 : 6</td><td>✅ Ya</td></tr>
+        <tr><td>2 : 3</td><td>× 3</td><td>6 : 9</td><td>✅ Ya</td></tr>
+        <tr class="highlight-row"><td>2 : 3</td><td>× 5</td><td>10 : 15</td><td>✅ Ya</td></tr>
+        <tr><td>2 : 3</td><td>+ 1</td><td>3 : 4</td><td>❌ Tidak!</td></tr>
+      </table>
+
+      <div class="warn-box">
+        <div class="insight-icon">⚠️</div>
+        <div class="insight-text"><strong>Jangan tambah/kurangi!</strong> Rasio senilai hanya bisa dibuat dengan mengalikan atau membagi, bukan menambah atau mengurangi. 2:3 + 1 = 3:4 itu BUKAN rasio senilai!</div>
+      </div>
+
+      <div class="challenge-box">
+        <div class="ch-label">🧠 Coba Sendiri</div>
+        <div class="ch-body">Apakah <strong>3 : 4</strong> senilai dengan <strong>9 : 12</strong>?</div>
+        <button class="ch-reveal" onclick="this.nextElementSibling.classList.toggle('show')">👁 Lihat Jawaban</button>
+        <div class="ch-answer">✅ YA! Karena 3 × 3 = 9 dan 4 × 3 = 12.<br>Atau cek: 3÷12 = 9÷... salah cara, pakai FPB.<br>9:12 → FPB=3 → 3:4. Sama! ✅</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- ═══ Slide 4: Scale Up Soal Cerita ═══ -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label">📈 Scale Up!</div>
+      <h2>Scale Up di Kehidupan Nyata</h2>
+      <p>Kalau tahu rasionya, kamu bisa <strong>scale up atau scale down</strong> — artinya mencari nilai baru ketika jumlahnya berubah.</p>
+
+      <div style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.25);border-radius:14px;padding:1.2rem 1.5rem;margin-bottom:1rem;">
+        <div style="font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:0.5rem;">🍳 Soal Cerita</div>
+        <div style="font-size:1rem;font-weight:700;color:var(--text);line-height:1.5;">Resep untuk <strong>2 orang</strong> butuh <strong>4 telur</strong>. Berapa telur untuk <strong>6 orang</strong>?</div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num ratio">1</div>
+          <div class="step-body"><strong>Tulis rasio awal:</strong> orang : telur = <code>2 : 4</code></div>
+        </div>
+        <div class="step">
+          <div class="step-num orange">2</div>
+          <div class="step-body"><strong>Cari faktor pengali:</strong> 2 → 6 berarti dikali <code>3</code></div>
+        </div>
+        <div class="step">
+          <div class="step-num neon">3</div>
+          <div class="step-body"><strong>Kalikan bagian telur juga:</strong> 4 × 3 = <code>12 telur</code></div>
+        </div>
+        <div class="step">
+          <div class="step-num violet">4</div>
+          <div class="step-body"><strong>Cek:</strong> 2:4 = 6:12? → sederhanakan 6:12 = 1:2. 2:4 = 1:2. ✅ Sama!</div>
+        </div>
+      </div>
+
+      <table class="scale-table">
+        <tr><th>Orang</th><th>Telur</th><th>Cek Rasio</th></tr>
+        <tr><td>2</td><td>4</td><td>1 : 2</td></tr>
+        <tr><td>4</td><td>8</td><td>1 : 2</td></tr>
+        <tr class="highlight-row"><td>6</td><td>12</td><td>1 : 2 ✅</td></tr>
+        <tr><td>10</td><td>20</td><td>1 : 2</td></tr>
+      </table>
+
+      <div class="orange-box">
+        <div class="insight-icon">🚀</div>
+        <div class="insight-text"><strong>Tips cepat:</strong> Cari dulu nilai untuk 1 satuan (per orang, per item), lalu kalikan dengan target. 2 orang = 4 telur → 1 orang = 2 telur → 6 orang = 12 telur!</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- ═══ Slide 5: Rasio Bagian ke Total ═══ -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label">📊 Part vs Total</div>
+      <h2>Rasio Bagian ke Total</h2>
+      <p>Selain membandingkan dua bagian, rasio juga bisa membandingkan <strong>bagian terhadap total</strong>. Ini sering muncul di soal cerita!</p>
+
+      <div style="background:rgba(34,211,238,0.06);border:1px solid rgba(34,211,238,0.25);border-radius:14px;padding:1.2rem 1.5rem;margin-bottom:1rem;">
+        <div style="font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;margin-bottom:0.5rem;">📚 Situasi</div>
+        <div style="font-size:1rem;font-weight:700;color:var(--text);line-height:1.5;">Di kelas ada <strong>12 laki-laki</strong> dan <strong>18 perempuan</strong>.</div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num ratio">1</div>
+          <div class="step-body"><strong>Rasio L : P</strong> = 12 : 18 = <code>2 : 3</code> (bagi FPB=6)</div>
+        </div>
+        <div class="step">
+          <div class="step-num orange">2</div>
+          <div class="step-body"><strong>Total siswa</strong> = 12 + 18 = <code>30</code></div>
+        </div>
+        <div class="step">
+          <div class="step-num neon">3</div>
+          <div class="step-body"><strong>Rasio P : Total</strong> = 18 : 30 = <code>3 : 5</code> (bagi FPB=6)</div>
+        </div>
+        <div class="step">
+          <div class="step-num violet">4</div>
+          <div class="step-body"><strong>Rasio L : Total</strong> = 12 : 30 = <code>2 : 5</code></div>
+        </div>
+      </div>
+
+      <div class="ratio-bar-wrap">
+        <div class="ratio-bar-label">Visualisasi 12 L + 18 P = 30 Total</div>
+        <div class="ratio-bar">
+          <div class="ratio-seg a" style="flex:12;font-size:0.72rem;">👦 12 (2/5)</div>
+          <div class="ratio-seg b" style="flex:18;font-size:0.72rem;">👧 18 (3/5)</div>
+        </div>
+      </div>
+
+      <div class="challenge-box">
+        <div class="ch-label">🧠 Level Up</div>
+        <div class="ch-body">Di kantong ada <strong>5 kelereng hijau</strong>, <strong>3 kelereng kuning</strong>, dan <strong>2 kelereng merah</strong>. Berapa rasio kelereng hijau terhadap total?</div>
+        <button class="ch-reveal" onclick="this.nextElementSibling.classList.toggle('show')">👁 Lihat Jawaban</button>
+        <div class="ch-answer">Total = 5 + 3 + 2 = <strong>10</strong><br>Rasio hijau : total = 5 : 10 = <strong>1 : 2</strong> ✅<br>Artinya setengah dari semua kelereng berwarna hijau!</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- ═══ Slide 6: Bandingkan Dua Rasio ═══ -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label">⚖️ Mana Lebih Besar?</div>
+      <h2>Membandingkan Dua Rasio</h2>
+      <p>Mana yang "lebih besar": <strong>2 : 3</strong> atau <strong>4 : 5</strong>? Caranya ubah ke desimal atau samakan penyebut!</p>
+
+      <div class="compare-wrap">
+        <div class="compare-card">
+          <div class="compare-label">Rasio A</div>
+          <div class="compare-ratio" style="color:var(--blue);">2 : 3</div>
+          <div class="compare-bar" style="width:67%;background:rgba(96,165,250,0.4);"></div>
+          <div class="compare-note">2 ÷ 3 ≈ <strong>0.67</strong></div>
+        </div>
+        <div class="compare-card">
+          <div class="compare-label">Rasio B</div>
+          <div class="compare-ratio" style="color:var(--ratio);">4 : 5</div>
+          <div class="compare-bar" style="width:80%;background:rgba(52,211,153,0.4);"></div>
+          <div class="compare-note">4 ÷ 5 = <strong>0.80</strong> → Lebih besar! ✅</div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num ratio">✓</div>
+          <div class="step-body"><strong>Cara 1 — Desimal:</strong> Bagi angka pertama dengan kedua. 2÷3 ≈ 0.67, 4÷5 = 0.80. Bandingkan: <code>0.80 > 0.67</code></div>
+        </div>
+        <div class="step">
+          <div class="step-num orange">✓</div>
+          <div class="step-body"><strong>Cara 2 — Samakan penyebut:</strong> 2/3 = 10/15, 4/5 = 12/15. Bandingkan: <code>12 > 10</code></div>
+        </div>
+      </div>
+
+      <div class="insight">
+        <div class="insight-icon">🎮</div>
+        <div class="insight-text"><strong>Konteks game:</strong> KDA 4:5 lebih baik dari 2:3 karena rasio kill/death lebih tinggi. Rasio yang lebih besar bukan selalu lebih baik — tergantung konteksnya!</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- ═══ Slide 7: Mini Quiz ═══ -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label">🧠 Cek Pemahaman</div>
+      <h2>Uji kemampuan ratio-mu!</h2>
+
+      <div id="q1" style="margin-bottom:1.5rem;">
+        <div class="quiz-q">1. Sederhanakan rasio 6 : 9.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="checkQ('q1',this,true)">2 : 3</button>
+          <button class="opt-btn" onclick="checkQ('q1',this,false)">3 : 4</button>
+          <button class="opt-btn" onclick="checkQ('q1',this,false)">6 : 9</button>
+          <button class="opt-btn" onclick="checkQ('q1',this,false)">1 : 2</button>
+        </div>
+        <div class="feedback" id="q1fb"></div>
+      </div>
+
+      <div id="q2" style="margin-bottom:1.5rem;">
+        <div class="quiz-q">2. Resep untuk 4 orang butuh 8 sdm gula. Untuk 10 orang butuh berapa?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="checkQ('q2',this,false)">16 sdm</button>
+          <button class="opt-btn" onclick="checkQ('q2',this,false)">18 sdm</button>
+          <button class="opt-btn" onclick="checkQ('q2',this,true)">20 sdm</button>
+          <button class="opt-btn" onclick="checkQ('q2',this,false)">24 sdm</button>
+        </div>
+        <div class="feedback" id="q2fb"></div>
+      </div>
+
+      <div id="q3">
+        <div class="quiz-q">3. Apakah 3 : 5 senilai dengan 12 : 20?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="checkQ('q3',this,true)">Ya, karena 3×4=12 dan 5×4=20</button>
+          <button class="opt-btn" onclick="checkQ('q3',this,false)">Tidak, angkanya berbeda</button>
+          <button class="opt-btn" onclick="checkQ('q3',this,false)">Ya, tapi beda cara hitungnya</button>
+          <button class="opt-btn" onclick="checkQ('q3',this,false)">Tidak bisa dibandingkan</button>
+        </div>
+        <div class="feedback" id="q3fb"></div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSlide()">← Kembali</button>
+      <button class="btn btn-primary" id="nextBtn7" onclick="nextSlide()" disabled>Selesai →</button>
+    </div>
+  </div>
+
+  <!-- ═══ Slide 8: Finish ═══ -->
+  <div class="slide">
+    <div class="card finish-card">
+      <span class="finish-icon">📐</span>
+      <div class="finish-title">RATIO MASTER: AKTIF!</div>
+      <div class="finish-desc">
+        Kamu udah paham cara menulis dan membaca rasio.<br>
+        Menyederhanakan sudah dikuasai (FPB adalah kuncinya!).<br>
+        Scale up dan rasio senilai sudah jelas.<br>
+        Sekarang uji kecepatan di Quick Test!
+      </div>
+      <div class="xp-badge">✨ +150 XP — Ratio Translator Unlocked!</div>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="lesson11.html" class="btn btn-ghost">← Lesson Hub</a>
+        <a href="quicktest.html" class="btn btn-primary">Quick Test ⚡</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const dotsContainer=document.getElementById('dots');
+let cur=0;
+
+slides.forEach((_,i)=>{
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  dotsContainer.appendChild(d);
+});
+
+function updateDots(){
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.className='dot'+(i===cur?' active':(i<cur?' done':''));
+  });
+}
+function nextSlide(){
+  if(cur<slides.length-1){
+    slides[cur].classList.remove('active'); cur++;
+    slides[cur].classList.add('active'); updateDots();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+function prevSlide(){
+  if(cur>0){
+    slides[cur].classList.remove('active'); cur--;
+    slides[cur].classList.add('active'); updateDots();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+const ans={q1:false,q2:false,q3:false};
+const explains={
+  q1:'✅ Benar! FPB dari 6 dan 9 = 3. 6÷3=2, 9÷3=3. Jadi 6:9 = 2:3!',
+  q2:'✅ Tepat! 4 orang = 8 sdm → 1 orang = 2 sdm → 10 orang = 20 sdm!',
+  q3:'✅ Benar! 3×4=12 dan 5×4=20. Faktor pengali sama → rasio senilai!'
+};
+const wrongs={
+  q1:'❌ FPB dari 6 dan 9 adalah 3. 6÷3=2, 9÷3=3. Jadi jawabannya 2:3!',
+  q2:'❌ Ingat: 4 orang = 8 sdm, jadi 1 orang = 2 sdm. 10 × 2 = 20 sdm!',
+  q3:'❌ Cek: 3×4=12 ✅ dan 5×4=20 ✅. Faktor pengali sama (×4), jadi mereka senilai!'
+};
+
+function checkQ(qid,btn,ok){
+  const qDiv=document.getElementById(qid);
+  qDiv.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById(qid+'fb');
+  if(ok){btn.classList.add('correct');fb.className='feedback show ok';fb.textContent=explains[qid];ans[qid]=true;}
+  else{btn.classList.add('wrong');fb.className='feedback show no';fb.textContent=wrongs[qid];}
+  if(Object.values(ans).filter(Boolean).length>=2){
+    document.getElementById('nextBtn7').disabled=false;
+  }
+}
+</script>
+</body>
+</html>
