@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Bangun Ruang · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;
+    --cube:#7a5af8;--cube-bg:rgba(122,90,248,0.1);--cube-light:#a98ff8;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 70% 20%,rgba(122,90,248,0.06) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--cube-light);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--cube-bg);border:1px solid rgba(122,90,248,0.4);color:var(--cube-light);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.3rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:0.6rem;line-height:1.3;letter-spacing:1px;}
+  h1 span{color:var(--cube-light);}
+  .intro{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:8px;height:8px;border-radius:2px;background:var(--border2);transition:all 0.3s;}
+  .dot.active{background:var(--cube);box-shadow:0 0 8px rgba(122,90,248,0.4);transform:scaleX(1.5);}
+  .dot.done{background:var(--steel);}
+
+  .slide{display:none;animation:fadeUp 0.35s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cube),transparent);}
+  .card-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.cube{color:var(--cube-light);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card-label.steel{color:var(--steel-light);}
+  .card h2{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.7rem;line-height:1.4;letter-spacing:0.5px;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  /* Shape visual side by side */
+  .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0;}
+  @media(max-width:420px){.compare-grid{grid-template-columns:1fr;}}
+  .cmp-box{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:1rem;text-align:center;}
+  .cmp-title{font-family:'Rajdhani',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.7rem;}
+  .cmp-title.flat{color:var(--steel-light);}
+  .cmp-title.space{color:var(--cube-light);}
+  .cmp-icons{font-size:1.6rem;margin-bottom:0.4rem;line-height:1.8;}
+  .cmp-desc{font-size:0.77rem;color:var(--text-muted);line-height:1.5;}
+
+  .formula-box{background:var(--track);border-radius:10px;padding:1.2rem 1.4rem;margin:1rem 0;text-align:center;border:1px solid var(--border2);}
+  .formula-box .f-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;}
+  .formula-box .f-main{font-family:'Rajdhani',sans-serif;font-size:clamp(1.2rem,4vw,1.7rem);font-weight:700;color:var(--text);line-height:1.4;}
+  .formula-box .f-main .hi-a{color:var(--amber);}
+  .formula-box .f-main .hi-c{color:var(--cube-light);}
+  .formula-box .f-main .hi-g{color:var(--green);}
+  .formula-box .f-sub{font-size:0.8rem;color:var(--text-muted);margin-top:0.35rem;}
+
+  .big-eq{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:1.3rem;margin:1rem 0;text-align:center;font-family:'Rajdhani',sans-serif;}
+  .big-eq .main{font-size:clamp(1.1rem,3.5vw,1.5rem);font-weight:700;color:var(--text);line-height:1.5;}
+  .big-eq .result{font-size:clamp(1.8rem,5vw,2.6rem);font-weight:700;color:var(--cube-light);}
+  .big-eq .sub{font-size:0.82rem;color:var(--text-muted);margin-top:0.3rem;}
+
+  .steps{display:flex;flex-direction:column;gap:0.7rem;margin:1rem 0;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;background:var(--track);border:1px solid var(--border);border-radius:10px;padding:0.8rem 1rem;font-size:0.88rem;color:var(--text-mid);}
+  .step-n{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.72rem;color:#000;background:var(--amber);border-radius:3px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .step strong{color:var(--amber);}
+  .step .c{color:var(--cube-light);}
+  .step .r{color:var(--green);}
+
+  .hl{border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-cube{background:var(--cube-bg);border:1px solid rgba(122,90,248,0.35);}
+  .hl-amber{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);}
+  .hl-green{background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);}
+  .hl-steel{background:var(--steel-bg);border:1px solid rgba(74,144,184,0.35);color:var(--text-mid);}
+  .hl-cube strong{color:var(--cube-light);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+
+  .divider{display:flex;align-items:center;gap:1rem;margin:2.5rem 0 2rem;}
+  .div-line{height:1px;flex:1;background:var(--border);}
+  .div-label{font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--amber);white-space:nowrap;}
+
+  /* Parts info grid: sisi, rusuk, titik sudut */
+  .parts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;margin:1rem 0;}
+  @media(max-width:400px){.parts-grid{grid-template-columns:1fr;}}
+  .part-card{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem;text-align:center;}
+  .part-icon{font-size:1.4rem;margin-bottom:0.3rem;}
+  .part-name{font-family:'Rajdhani',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin-bottom:0.25rem;}
+  .part-num{font-family:'Rajdhani',sans-serif;font-size:1.4rem;font-weight:700;color:var(--cube-light);line-height:1;}
+  .part-desc{font-size:0.7rem;color:var(--text-muted);margin-top:0.25rem;line-height:1.4;}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1rem 0;}
+  @media(max-width:460px){.two-col{grid-template-columns:1fr;}}
+  .col-card{background:var(--track);border-radius:10px;padding:1rem;text-align:center;border:1px solid var(--border2);}
+  .col-title{font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:700;margin-bottom:0.4rem;letter-spacing:1px;}
+  .col-val{font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);}
+  .col-desc{font-size:0.78rem;color:var(--text-muted);margin-top:0.25rem;line-height:1.5;}
+
+  /* Volume cube visual — cubes stacking */
+  .vol-visual{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;margin:1rem 0;padding:0.8rem;background:var(--track);border-radius:10px;border:1px solid var(--border2);}
+  .mini-cube{width:22px;height:22px;border:1px solid rgba(122,90,248,0.6);background:rgba(122,90,248,0.18);border-radius:2px;}
+
+  .quiz-q{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:1.2rem;line-height:1.5;letter-spacing:0.5px;}
+  .opts{display:flex;flex-direction:column;gap:0.6rem;}
+  .opt-btn{background:var(--track);border:1px solid var(--border2);color:var(--text);padding:0.8rem 1.1rem;border-radius:8px;cursor:pointer;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:700;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--cube);background:rgba(122,90,248,0.06);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(232,80,64,0.08);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.8rem;padding:0.75rem 1rem;border-radius:8px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid rgba(72,200,112,0.35);}
+  .feedback.no{background:rgba(232,80,64,0.08);color:var(--red);border:1px solid rgba(232,80,64,0.3);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--amber),#c07810);color:#000;font-weight:800;}
+  .btn-green{background:linear-gradient(135deg,var(--green),#38a058);color:#000;font-weight:800;}
+  .btn:disabled{opacity:0.4;cursor:default;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 2rem;}
+  .finish-icon{font-size:4.5rem;display:block;margin-bottom:1rem;animation:chug 0.6s ease-in-out infinite alternate;}
+  @keyframes chug{from{transform:translateX(-4px);}to{transform:translateX(4px);}}
+  .finish-title{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--cube-light);letter-spacing:3px;margin-bottom:0.7rem;}
+  .finish-desc{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1.5rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);color:var(--amber);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.8rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson17.html">LESSON 17</a><span>/</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📦 Materi · Lesson 17</div>
+  <h1>Bangun Ruang: <span>Kubus & Balok</span></h1>
+  <p class="intro">Belajar step by step: dari perbedaan bangun datar vs ruang, kenalan sama kubus dan balok, sampai hitung volume. Ada mini quiz di akhir!</p>
+
+  <div class="dots" id="dots"></div>
+
+  <div id="slides">
+
+    <!-- Slide 1: Bangun Datar vs Bangun Ruang -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label cube">📐 Slide 1 · Konsep Dasar</div>
+        <h2>Bangun Datar vs Bangun Ruang</h2>
+        <p>Kamu udah kenal bangun datar — persegi, persegi panjang, segitiga. Semuanya <em>2 dimensi</em>: punya panjang dan lebar. Sekarang kita masuk ke <strong>bangun ruang</strong> — punya panjang, lebar, DAN tinggi!</p>
+        <div class="compare-grid" style="margin-top:1.2rem;">
+          <div class="cmp-box">
+            <div class="cmp-title flat">🔲 Bangun Datar</div>
+            <div class="cmp-icons">⬛ 🔺 ▬</div>
+            <div class="cmp-desc">2 dimensi — hanya panjang & lebar. Bisa dilukis di kertas.</div>
+          </div>
+          <div class="cmp-box">
+            <div class="cmp-title space">📦 Bangun Ruang</div>
+            <div class="cmp-icons">📦 🎲 🧊</div>
+            <div class="cmp-desc">3 dimensi — panjang, lebar, & tinggi. Punya isi (volume)!</div>
+          </div>
+        </div>
+        <div class="hl hl-cube" style="margin-top:0.8rem;">
+          <strong>Kata kunci:</strong> Bangun ruang = bangun 3D = punya volume = bisa diisi sesuatu di dalamnya!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Mengenal Kubus -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label cube">📦 Slide 2 · Mengenal Kubus</div>
+        <h2>Apa itu Kubus?</h2>
+        <p style="margin-bottom:1rem;">Kubus adalah bangun ruang dengan <strong>semua sisi berbentuk persegi dan ukurannya sama</strong>. Contoh benda: dadu, rubik, es batu.</p>
+        <div style="text-align:center;margin:1rem 0;">
+          <svg width="160" height="130" viewBox="0 0 160 130" xmlns="http://www.w3.org/2000/svg">
+            <!-- Kubus isometrik -->
+            <polygon points="80,10 130,38 130,94 80,122 30,94 30,38" fill="none"/>
+            <!-- top -->
+            <polygon points="80,10 130,38 80,66 30,38" fill="rgba(122,90,248,0.3)" stroke="#7a5af8" stroke-width="1.8"/>
+            <!-- left -->
+            <polygon points="30,38 80,66 80,122 30,94" fill="rgba(122,90,248,0.15)" stroke="#7a5af8" stroke-width="1.8"/>
+            <!-- right -->
+            <polygon points="130,38 80,66 80,122 130,94" fill="rgba(122,90,248,0.22)" stroke="#7a5af8" stroke-width="1.8"/>
+            <!-- label sisi -->
+            <text x="80" y="42" text-anchor="middle" fill="#a98ff8" font-family="Rajdhani" font-size="10" font-weight="700">Sisi (atas)</text>
+            <text x="44" y="83" text-anchor="middle" fill="#9ab0c0" font-family="Rajdhani" font-size="9">Sisi kiri</text>
+            <text x="116" y="83" text-anchor="middle" fill="#9ab0c0" font-family="Rajdhani" font-size="9">Sisi kanan</text>
+            <!-- vertex dots -->
+            <circle cx="80" cy="10" r="3" fill="#f8c870"/>
+            <circle cx="130" cy="38" r="3" fill="#f8c870"/>
+            <circle cx="130" cy="94" r="3" fill="#f8c870"/>
+            <circle cx="80" cy="122" r="3" fill="#f8c870"/>
+            <circle cx="30" cy="94" r="3" fill="#f8c870"/>
+            <circle cx="30" cy="38" r="3" fill="#f8c870"/>
+            <circle cx="80" cy="66" r="3" fill="#f8c870"/>
+            <!-- hidden vertex -->
+            <circle cx="30" cy="38" r="1.5" fill="#586878"/>
+          </svg>
+        </div>
+        <div class="parts-grid">
+          <div class="part-card">
+            <div class="part-icon">⬛</div>
+            <div class="part-name">Sisi</div>
+            <div class="part-num" style="color:var(--cube-light)">6</div>
+            <div class="part-desc">Bidang datar yang membentuk kubus</div>
+          </div>
+          <div class="part-card">
+            <div class="part-icon">📏</div>
+            <div class="part-name">Rusuk</div>
+            <div class="part-num" style="color:var(--amber)">12</div>
+            <div class="part-desc">Garis pertemuan antar sisi</div>
+          </div>
+          <div class="part-card">
+            <div class="part-icon">🔸</div>
+            <div class="part-name">Titik Sudut</div>
+            <div class="part-num" style="color:var(--green)">8</div>
+            <div class="part-desc">Pojok pertemuan rusuk</div>
+          </div>
+        </div>
+        <div class="hl hl-amber">
+          <strong>Ciri khas kubus:</strong> Semua rusuknya sama panjang! Kalau sisinya 4 cm, semua 12 rusuknya = 4 cm.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Mengenal Balok -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📦 Slide 3 · Mengenal Balok</div>
+        <h2>Apa itu Balok?</h2>
+        <p style="margin-bottom:1rem;">Balok mirip kubus, tapi <strong>panjang, lebar, dan tingginya bisa berbeda</strong>. Contoh: kotak susu, kotak sepatu, batu bata.</p>
+        <div style="text-align:center;margin:1rem 0;">
+          <svg width="200" height="130" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg">
+            <!-- Balok (lebih lebar dari kubus) -->
+            <!-- top face -->
+            <polygon points="30,30 140,30 160,50 50,50" fill="rgba(240,168,48,0.25)" stroke="#f0a830" stroke-width="1.8"/>
+            <!-- front face -->
+            <polygon points="30,30 30,100 50,120 50,50" fill="rgba(240,168,48,0.12)" stroke="#f0a830" stroke-width="1.8"/>
+            <!-- right face -->
+            <polygon points="140,30 160,50 160,120 140,100" fill="rgba(240,168,48,0.18)" stroke="#f0a830" stroke-width="1.8"/>
+            <!-- bottom front -->
+            <line x1="30" y1="100" x2="140" y2="100" stroke="#f0a830" stroke-width="1.8"/>
+            <line x1="140" y1="100" x2="160" y2="120" stroke="#f0a830" stroke-width="1.8"/>
+            <line x1="50" y1="120" x2="160" y2="120" stroke="#f0a830" stroke-width="1.8"/>
+            <!-- dimension labels -->
+            <text x="85" y="26" text-anchor="middle" fill="#f8c870" font-family="Rajdhani" font-size="10" font-weight="700">Panjang (p)</text>
+            <text x="168" y="88" fill="#9ab0c0" font-family="Rajdhani" font-size="10">Tinggi (t)</text>
+            <text x="55" y="116" fill="#9ab0c0" font-family="Rajdhani" font-size="10">Lebar (l)</text>
+            <!-- vertices -->
+            <circle cx="30" cy="30" r="3" fill="#f8c870"/>
+            <circle cx="140" cy="30" r="3" fill="#f8c870"/>
+            <circle cx="160" cy="50" r="3" fill="#f8c870"/>
+            <circle cx="50" cy="50" r="3" fill="#f8c870"/>
+            <circle cx="30" cy="100" r="3" fill="#f8c870"/>
+            <circle cx="140" cy="100" r="3" fill="#f8c870"/>
+            <circle cx="160" cy="120" r="3" fill="#f8c870"/>
+            <circle cx="50" cy="120" r="3" fill="#f8c870"/>
+          </svg>
+        </div>
+        <div class="two-col">
+          <div class="col-card">
+            <div class="col-title" style="color:var(--cube-light)">Kubus</div>
+            <div class="col-desc">Semua sisi = persegi<br>Semua rusuk = sama panjang<br>s × s × s</div>
+          </div>
+          <div class="col-card">
+            <div class="col-title" style="color:var(--amber)">Balok</div>
+            <div class="col-desc">Sisi = persegi panjang<br>Rusuk bisa berbeda panjang<br>p × l × t</div>
+          </div>
+        </div>
+        <div class="parts-grid" style="margin-top:0.8rem;">
+          <div class="part-card">
+            <div class="part-icon">▬</div>
+            <div class="part-name">Sisi</div>
+            <div class="part-num" style="color:var(--cube-light)">6</div>
+            <div class="part-desc">Tapi bisa beda ukuran!</div>
+          </div>
+          <div class="part-card">
+            <div class="part-icon">📏</div>
+            <div class="part-name">Rusuk</div>
+            <div class="part-num" style="color:var(--amber)">12</div>
+            <div class="part-desc">Ada 3 kelompok panjang</div>
+          </div>
+          <div class="part-card">
+            <div class="part-icon">🔸</div>
+            <div class="part-name">Titik Sudut</div>
+            <div class="part-num" style="color:var(--green)">8</div>
+            <div class="part-desc">Sama seperti kubus</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Sisi, Rusuk, Titik Sudut -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">🔍 Slide 4 · Bagian-Bagian Bangun Ruang</div>
+        <h2>Sisi, Rusuk & Titik Sudut</h2>
+        <p style="margin-bottom:1.2rem;">Tiga bagian penting yang selalu ada di kubus dan balok:</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-n">S</div>
+            <div><strong>Sisi</strong> = <span class="c">bidang datar</span> yang jadi "dinding" bangun ruang.<br>
+            <span style="font-size:0.82rem;color:var(--text-muted)">Contoh: permukaan atas kotak adalah 1 sisi. Kubus & balok punya 6 sisi.</span></div>
+          </div>
+          <div class="step">
+            <div class="step-n">R</div>
+            <div><strong>Rusuk</strong> = <span class="c">garis</span> pertemuan antara dua sisi.<br>
+            <span style="font-size:0.82rem;color:var(--text-muted)">Contoh: pinggir kotak adalah rusuk. Kubus & balok punya 12 rusuk.</span></div>
+          </div>
+          <div class="step">
+            <div class="step-n">T</div>
+            <div><strong>Titik Sudut</strong> = <span class="c">pojok</span> pertemuan beberapa rusuk.<br>
+            <span style="font-size:0.82rem;color:var(--text-muted)">Contoh: sudut kotak adalah titik sudut. Kubus & balok punya 8 titik sudut.</span></div>
+          </div>
+        </div>
+        <div class="hl hl-cube">
+          <strong>Tips hafal:</strong> 6 sisi · 12 rusuk · 8 titik sudut — berlaku untuk KUBUS dan BALOK!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Apa itu Volume -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">🧊 Slide 5 · Konsep Volume</div>
+        <h2>Apa itu Volume?</h2>
+        <p style="margin-bottom:1rem;">Volume = <strong>banyaknya ruang atau isi</strong> di dalam sebuah bangun ruang. Bayangkan kamu menuang air ke dalam kotak — berapa banyak air yang bisa masuk? Itu volume-nya!</p>
+        <!-- Mini cubes stacking visualization -->
+        <div style="background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:1rem;text-align:center;margin:1rem 0;">
+          <div style="font-family:'Rajdhani',sans-serif;font-size:0.65rem;letter-spacing:2px;color:var(--text-muted);margin-bottom:0.7rem;text-transform:uppercase;">Visualisasi: kubus kecil mengisi kotak</div>
+          <div style="display:grid;grid-template-columns:repeat(4,28px);gap:3px;justify-content:center;">
+            <!-- 8 mini cubes (2x2x2 representation) -->
+            <div style="width:28px;height:28px;border:1px solid rgba(122,90,248,0.7);background:rgba(122,90,248,0.25);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--cube-light);">1</div>
+            <div style="width:28px;height:28px;border:1px solid rgba(122,90,248,0.7);background:rgba(122,90,248,0.25);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--cube-light);">2</div>
+            <div style="width:28px;height:28px;border:1px solid rgba(122,90,248,0.7);background:rgba(122,90,248,0.25);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--cube-light);">3</div>
+            <div style="width:28px;height:28px;border:1px solid rgba(122,90,248,0.7);background:rgba(122,90,248,0.25);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--cube-light);">4</div>
+            <div style="width:28px;height:28px;border:1px solid rgba(122,90,248,0.7);background:rgba(122,90,248,0.25);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--cube-light);">5</div>
+            <div style="width:28px;height:28px;border:1px solid rgba(122,90,248,0.7);background:rgba(122,90,248,0.25);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--cube-light);">6</div>
+            <div style="width:28px;height:28px;border:1px solid rgba(122,90,248,0.7);background:rgba(122,90,248,0.25);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--cube-light);">7</div>
+            <div style="width:28px;height:28px;border:1px solid rgba(122,90,248,0.7);background:rgba(122,90,248,0.25);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--cube-light);">8</div>
+          </div>
+          <div style="margin-top:0.7rem;font-size:0.8rem;color:var(--text-muted);">8 kubus kecil → Volume = 8 satuan</div>
+        </div>
+        <div class="hl hl-green">
+          <strong>Satuan volume:</strong> cm³ (dibaca "sentimeter kubik"). Kalau panjangnya cm, volume-nya cm³. Kalau meter, berarti m³.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Volume Kubus -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label cube">📐 Slide 6 · Volume Kubus</div>
+        <h2>Volume Kubus</h2>
+        <p style="margin-bottom:1rem;">Karena semua sisi kubus sama panjang (kita sebut <strong>s</strong>), volumenya cukup kalikan s tiga kali!</p>
+        <div class="formula-box">
+          <div class="f-label">Rumus Volume Kubus</div>
+          <div class="f-main">V = <span class="hi-c">s</span> × <span class="hi-c">s</span> × <span class="hi-c">s</span> = <span class="hi-c">s³</span></div>
+          <div class="f-sub">s = panjang rusuk (semua rusuk sama)</div>
+        </div>
+        <div class="divider"><div class="div-line"></div><div class="div-label">Contoh Soal</div><div class="div-line"></div></div>
+        <p style="margin-bottom:0.8rem;font-size:0.9rem;color:var(--text-mid);">Sebuah dadu punya panjang rusuk <strong>4 cm</strong>. Hitung volumenya!</p>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div><strong>Tulis rumus:</strong> V = s × s × s</div>
+          <div class="step"><div class="step-n">2</div><strong>Masukkan nilai:</strong> V = <span class="c">4</span> × <span class="c">4</span> × <span class="c">4</span></div>
+          <div class="step"><div class="step-n">3</div><strong>Hitung:</strong> 4 × 4 = 16, lalu 16 × 4 = <span class="r"><strong>64</strong></span></div>
+        </div>
+        <div class="big-eq">
+          <div class="main">V = 4 × 4 × 4</div>
+          <div class="result">= 64 cm³</div>
+          <div class="sub">Volume dadu = 64 sentimeter kubik</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Volume Balok -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📐 Slide 7 · Volume Balok</div>
+        <h2>Volume Balok</h2>
+        <p style="margin-bottom:1rem;">Balok punya <strong>panjang (p)</strong>, <strong>lebar (l)</strong>, dan <strong>tinggi (t)</strong> yang bisa beda-beda. Kalikan ketiganya!</p>
+        <div class="formula-box">
+          <div class="f-label">Rumus Volume Balok</div>
+          <div class="f-main">V = <span class="hi-a">p</span> × <span class="hi-a">l</span> × <span class="hi-a">t</span></div>
+          <div class="f-sub">p = panjang · l = lebar · t = tinggi</div>
+        </div>
+        <div class="divider"><div class="div-line"></div><div class="div-label">Contoh Soal</div><div class="div-line"></div></div>
+        <p style="margin-bottom:0.8rem;font-size:0.9rem;color:var(--text-mid);">Kotak susu: panjang <strong>5 cm</strong>, lebar <strong>3 cm</strong>, tinggi <strong>8 cm</strong>. Hitung volumenya!</p>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div><strong>Identifikasi:</strong> p = <span class="c">5</span>, l = <span class="c">3</span>, t = <span class="c">8</span></div>
+          <div class="step"><div class="step-n">2</div><strong>Tulis rumus:</strong> V = p × l × t</div>
+          <div class="step"><div class="step-n">3</div><strong>Hitung:</strong> 5 × 3 = 15, lalu 15 × 8 = <span class="r"><strong>120</strong></span></div>
+        </div>
+        <div class="big-eq">
+          <div class="main">V = 5 × 3 × 8</div>
+          <div class="result">= 120 cm³</div>
+          <div class="sub">Volume kotak susu = 120 sentimeter kubik</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Contoh Soal Campuran -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📖 Slide 8 · Contoh Soal Campuran</div>
+        <h2>Soal Cerita: Pilih Rumus yang Tepat!</h2>
+        <p style="margin-bottom:1rem;color:var(--text-mid);font-size:0.9rem;">Kunci sukses bangun ruang: <strong>kenali dulu bentuknya</strong>, baru pilih rumus!</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-n">1</div>
+            <div>
+              <strong>Soal:</strong> Kotak hadiah berbentuk kubus dengan rusuk <span class="c">6 cm</span>. Berapa volume-nya?<br>
+              <span style="color:var(--green)">✓ Kubus → V = s³ = 6 × 6 × 6 = <strong>216 cm³</strong></span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">2</div>
+            <div>
+              <strong>Soal:</strong> Aquarium: panjang <span class="c">10 cm</span>, lebar <span class="c">6 cm</span>, tinggi <span class="c">8 cm</span>. Berapa volume-nya?<br>
+              <span style="color:var(--green)">✓ Balok → V = p×l×t = 10×6×8 = <strong>480 cm³</strong></span>
+            </div>
+          </div>
+        </div>
+        <div class="hl hl-cube" style="margin-top:0.8rem;">
+          <strong>Cara bedain:</strong> Semua ukuran sama → kubus. Ukuran beda-beda → balok.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Quiz 1 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🎯 Quick Check 1</div>
+        <div class="quiz-q">Kubus dengan panjang rusuk 3 cm. Berapa volumenya?</div>
+        <div class="opts" id="q1">
+          <button class="opt-btn" onclick="chk(this,'q1',false,'q1-fb',1)">6 cm³</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false,'q1-fb',1)">18 cm³</button>
+          <button class="opt-btn" onclick="chk(this,'q1',true,'q1-fb',1)">27 cm³</button>
+          <button class="opt-btn" onclick="chk(this,'q1',false,'q1-fb',1)">9 cm³</button>
+        </div>
+        <div class="feedback" id="q1-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Quiz 2 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🎯 Quick Check 2</div>
+        <div class="quiz-q">Balok: panjang = 4 cm, lebar = 3 cm, tinggi = 5 cm. Berapa volumenya?</div>
+        <div class="opts" id="q2">
+          <button class="opt-btn" onclick="chk(this,'q2',false,'q2-fb',2)">48 cm³</button>
+          <button class="opt-btn" onclick="chk(this,'q2',true,'q2-fb',2)">60 cm³</button>
+          <button class="opt-btn" onclick="chk(this,'q2',false,'q2-fb',2)">36 cm³</button>
+          <button class="opt-btn" onclick="chk(this,'q2',false,'q2-fb',2)">72 cm³</button>
+        </div>
+        <div class="feedback" id="q2-fb"></div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Finish -->
+    <div class="slide">
+      <div class="card finish">
+        <span class="finish-icon">📦</span>
+        <div class="finish-title">MATERI CLEAR!</div>
+        <div class="finish-desc">Top! Kamu udah paham bangun datar vs ruang, sisi/rusuk/titik sudut, konsep volume, dan bisa hitung volume kubus & balok. Ready sprint?</div>
+        <div class="xp">+ 60 XP — 3D UNLOCKED</div>
+        <div class="finish-btns">
+          <a href="lesson17.html" class="btn btn-ghost">← Lesson Hub</a>
+          <a href="soal.html" class="btn btn-primary">Sprint ⚡</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+
+  <div class="nav-btns" id="navbtns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="go(-1)" disabled>← Prev</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL=11; let cur=0;
+  let q1d=false,q2d=false;
+  const dotsEl=document.getElementById('dots');
+  const slides=document.querySelectorAll('.slide');
+  const prev=document.getElementById('prevBtn'),next=document.getElementById('nextBtn'),nav=document.getElementById('navbtns');
+
+  for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
+  function updateUI(){
+    slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+    dotsEl.querySelectorAll('.dot').forEach((d,i)=>{d.classList.remove('active','done');if(i<cur)d.classList.add('done');if(i===cur)d.classList.add('active');});
+    prev.disabled=cur===0;
+    nav.style.display=cur===TOTAL-1?'none':'flex';
+    if(cur===8)next.disabled=!q1d;
+    else if(cur===9)next.disabled=!q2d;
+    else next.disabled=false;
+  }
+  function go(dir){cur=Math.max(0,Math.min(TOTAL-1,cur+dir));updateUI();}
+
+  function chk(btn,gid,correct,fbid,qnum){
+    if(qnum===1&&q1d)return; if(qnum===2&&q2d)return;
+    if(qnum===1)q1d=true; else q2d=true;
+    document.querySelectorAll('#'+gid+' .opt-btn').forEach(b=>b.disabled=true);
+    btn.classList.add(correct?'correct':'wrong');
+    if(!correct){
+      const all=document.querySelectorAll('#'+gid+' .opt-btn');
+      // highlight correct: q1 index 2 (27), q2 index 1 (60)
+      if(qnum===1)all[2].classList.add('correct');
+      else all[1].classList.add('correct');
+    }
+    const fb=document.getElementById(fbid);
+    fb.className='feedback show '+(correct?'ok':'no');
+    if(qnum===1) fb.textContent=correct?'✅ Tepat! V = 3 × 3 × 3 = 27 cm³':'❌ V = s³ → 3 × 3 × 3 = 27 cm³!';
+    else fb.textContent=correct?'✅ Benar! V = 4 × 3 × 5 = 60 cm³':'❌ V = p × l × t → 4 × 3 × 5 = 60 cm³!';
+    next.disabled=false;
+  }
+  updateUI();
+</script>
+</body>
+</html>
