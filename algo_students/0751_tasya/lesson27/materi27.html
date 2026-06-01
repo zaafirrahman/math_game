@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Peluang dengan Kombinasi · L27 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --lavender:#9b7fc8;--lavender-light:#c8b4e8;--lav-bg:rgba(155,127,200,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --peach:#f0956a;--peach-bg:rgba(240,149,106,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --violet:#7c5cbf;--violet-light:#b89ee0;--vio-bg:rgba(124,92,191,0.08);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 75% 10%,rgba(74,159,212,0.08) 0%,transparent 50%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--ocean);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 2rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--ocean-bg);border:1.5px solid var(--ocean-light);color:var(--ocean);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--ocean);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:all 0.3s;}
+  .dot.active{background:var(--ocean);box-shadow:0 0 0 3px rgba(74,159,212,0.2);transform:scale(1.1);}
+  .dot.done{background:var(--ocean-light);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);}
+  .card-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.ocean{color:var(--ocean);}
+  .card-label.mint{color:var(--mint);}
+  .card-label.gold{color:var(--gold);}
+  .card-label.rose{color:var(--rose);}
+  .card-label.vio{color:var(--violet);}
+  .card h2{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.7rem;line-height:1.4;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  .ctx-box{background:linear-gradient(135deg,#f0f8ff,#daeef9);border:2px solid var(--ocean-light);border-radius:18px;padding:1.4rem 1.6rem;margin:1rem 0;}
+  .ctx-label{font-size:0.62rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ocean);margin-bottom:0.7rem;}
+  .ctx-text{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;color:var(--text);line-height:1.7;}
+  .ctx-text em{color:var(--ocean);font-style:normal;border-bottom:2px dashed var(--ocean-light);}
+
+  .eq-box{border-radius:14px;padding:1.1rem 1.4rem;margin:0.7rem 0;}
+  .eq-box.ocean{background:var(--ocean-bg);border:1.5px solid var(--ocean-light);}
+  .eq-box.mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .eq-box.gold{background:var(--gold-bg);border:1.5px solid var(--gold-light);}
+  .eq-box.rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .eq-box.vio{background:var(--vio-bg);border:1.5px solid var(--violet-light);}
+  .eq-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .eq-label.o{color:var(--ocean);}
+  .eq-label.m{color:var(--mint);}
+  .eq-label.g{color:var(--gold);}
+  .eq-label.r{color:var(--rose);}
+  .eq-label.v{color:var(--violet);}
+  .eq-text{font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;color:var(--text);}
+  .eq-text span.o{color:var(--ocean);}
+  .eq-text span.m{color:var(--mint);}
+  .eq-text span.g{color:var(--gold);}
+  .eq-text span.r{color:var(--rose);}
+  .eq-text span.v{color:var(--violet);}
+  .eq-sub{font-size:0.78rem;color:var(--text-muted);margin-top:0.3rem;}
+
+  .hl-box{border-radius:14px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.9rem;line-height:1.6;}
+  .hl-ocean{background:var(--ocean-bg);border:1.5px solid var(--ocean-light);color:var(--text-mid);}
+  .hl-ocean strong{color:var(--ocean);}
+  .hl-mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--text-mid);}
+  .hl-mint strong{color:var(--mint);}
+  .hl-gold{background:var(--gold-bg);border:1.5px solid var(--gold-light);color:var(--text-mid);}
+  .hl-gold strong{color:var(--gold);}
+  .hl-rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);color:var(--text-mid);}
+  .hl-rose strong{color:var(--rose);}
+  .hl-vio{background:var(--vio-bg);border:1.5px solid var(--violet-light);color:var(--text-mid);}
+  .hl-vio strong{color:var(--violet);}
+
+  /* Ball display */
+  .balls{display:flex;gap:0.55rem;flex-wrap:wrap;margin:1rem 0;justify-content:center;}
+  .ball{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:0.8rem;}
+  .ball.red{background:var(--rose-bg);border:2.5px solid var(--rose-light);color:var(--rose);}
+  .ball.blue{background:var(--ocean-bg);border:2.5px solid var(--ocean-light);color:var(--ocean);}
+
+  /* Two-step box */
+  .two-step{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1.1rem 0;}
+  .step-box{border-radius:16px;padding:1.1rem;text-align:center;}
+  .step-box.total{background:var(--ocean-bg);border:2px solid var(--ocean-light);}
+  .step-box.event{background:var(--mint-bg);border:2px solid var(--mint-light);}
+  .step-num{font-size:0.6rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .step-num.o{color:var(--ocean);}
+  .step-num.m{color:var(--mint);}
+  .step-icon{font-size:1.6rem;margin-bottom:0.4rem;}
+  .step-val{font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900;}
+  .step-val.o{color:var(--ocean);}
+  .step-val.m{color:var(--mint);}
+  .step-desc{font-size:0.75rem;color:var(--text-muted);margin-top:0.3rem;line-height:1.4;}
+
+  /* Fraction display */
+  .frac-wrap{text-align:center;margin:1.2rem 0;}
+  .frac{display:inline-block;}
+  .frac-num{font-family:'Nunito',sans-serif;font-size:1.6rem;font-weight:900;color:var(--mint);}
+  .frac-line{border-bottom:3px solid var(--text-muted);margin:0.2rem 0;}
+  .frac-den{font-family:'Nunito',sans-serif;font-size:1.6rem;font-weight:900;color:var(--ocean);}
+  .frac-eq{font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900;color:var(--text-mid);margin:0 0.5rem;}
+  .frac-res{font-family:'Nunito',sans-serif;font-size:1.8rem;font-weight:900;color:var(--gold);}
+
+  /* Step list */
+  .steps{display:flex;flex-direction:column;gap:0.8rem;margin:1rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;}
+  .step-n{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:0.85rem;flex-shrink:0;}
+  .step-n.ocean{background:var(--ocean-bg);border:2px solid var(--ocean-light);color:var(--ocean);}
+  .step-n.mint{background:var(--mint-bg);border:2px solid var(--mint-light);color:var(--mint);}
+  .step-n.gold{background:var(--gold-bg);border:2px solid var(--gold-light);color:var(--gold);}
+  .step div{color:var(--text-mid);font-size:0.88rem;line-height:1.6;padding-top:0.2rem;}
+  .step div strong{color:var(--text);}
+
+  /* Quiz */
+  .quiz-q{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;margin-bottom:1.1rem;line-height:1.5;color:var(--text);}
+  .quiz-q em{color:var(--text-muted);font-style:normal;font-size:0.85rem;}
+  .opts{display:flex;flex-direction:column;gap:0.65rem;margin-bottom:0.5rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.8rem 1rem;border-radius:13px;cursor:pointer;font-size:0.88rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.15s;}
+  .opt-btn:hover{border-color:var(--ocean-light);background:var(--ocean-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.8rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  /* Insight */
+  .insight{background:linear-gradient(135deg,rgba(74,159,212,0.07),rgba(95,191,160,0.07));border:2px solid var(--ocean-light);border-radius:16px;padding:1.2rem 1.4rem;margin:1rem 0;font-size:0.9rem;line-height:1.7;color:var(--text-mid);}
+  .insight strong{color:var(--ocean);}
+  .insight em{color:var(--mint);font-style:normal;}
+
+  /* Compare: why not 3/5 */
+  .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1rem 0;}
+  .why-card{border-radius:14px;padding:1rem;text-align:center;}
+  .why-card.wrong-way{background:var(--rose-bg);border:2px solid var(--rose-light);}
+  .why-card.right-way{background:var(--mint-bg);border:2px solid var(--mint-light);}
+  .why-head{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;}
+  .why-head.r{color:var(--rose);}
+  .why-head.m{color:var(--mint);}
+  .why-val{font-family:'Nunito',sans-serif;font-size:1.6rem;font-weight:900;margin:0.3rem 0;}
+  .why-val.r{color:var(--rose);}
+  .why-val.m{color:var(--mint);}
+  .why-sub{font-size:0.75rem;color:var(--text-muted);line-height:1.4;}
+
+  /* Nav */
+  .nav-btns{position:sticky;bottom:0;background:rgba(253,246,251,0.95);backdrop-filter:blur(12px);border-top:2px solid var(--border);padding:1rem 1.5rem;display:flex;gap:1rem;justify-content:space-between;z-index:50;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--ocean-light);color:var(--ocean);}
+  .btn-primary{background:linear-gradient(135deg,var(--ocean),#2d7ab5);color:#fff;box-shadow:0 4px 14px rgba(74,159,212,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(74,159,212,0.4);}
+
+  /* Finish */
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:var(--ocean);margin-bottom:0.7rem;}
+  .finish-desc{color:var(--text-muted);line-height:1.7;margin-bottom:1.8rem;font-size:0.92rem;}
+  .xp{display:inline-block;background:var(--ocean-bg);border:1.5px solid var(--ocean-light);color:var(--ocean);padding:0.35rem 1.1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson27.html">LESSON 27</a><span>›</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🎲 Materi · Lesson 27</div>
+  <h1>Peluang dengan <span>Kombinasi</span></h1>
+  <p class="intro">Bagaimana kombinasi membantu menghitung peluang — dibangun dari contoh nyata, bukan rumus hafalan.</p>
+
+  <div class="dots" id="dots"></div>
+
+  <!-- Slide 0: Review Peluang -->
+  <div class="slide active">
+    <div class="card">
+      <div class="card-label ocean">🔁 Review — Peluang Dasar</div>
+      <h2>Ingat kembali: apa itu peluang?</h2>
+      <p>Peluang adalah cara mengukur seberapa mungkin suatu kejadian terjadi dibanding semua yang bisa terjadi.</p>
+    </div>
+    <div class="eq-box ocean">
+      <div class="eq-label o">Rumus Dasar</div>
+      <div class="eq-text">P(kejadian) = <span class="o">kejadian yang diinginkan</span> ÷ <span class="m">seluruh kemungkinan</span></div>
+    </div>
+    <div class="ctx-box">
+      <div class="ctx-label">Contoh sederhana</div>
+      <div class="ctx-text">Sebuah dadu dilempar. Berapa P(angka genap)?<br>Angka genap: <em>2, 4, 6 → 3 cara</em><br>Seluruh kemungkinan: <em>1, 2, 3, 4, 5, 6 → 6 cara</em><br>P(genap) = 3 ÷ 6 = <em>1/2</em></div>
+    </div>
+    <div class="hl-ocean">Ini mudah karena kita bisa <strong>listing satu per satu</strong>. Tapi bagaimana kalau kemungkinannya terlalu banyak?</div>
+  </div>
+
+  <!-- Slide 1: Masalah baru -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label ocean">🆕 Masalah Baru</div>
+      <h2>Ketika listing tidak lagi efisien</h2>
+      <p>Bayangkan kamu punya sebuah kotak berisi bola-bola berwarna:</p>
+    </div>
+    <div class="balls">
+      <div class="ball red">M1</div>
+      <div class="ball red">M2</div>
+      <div class="ball red">M3</div>
+      <div class="ball blue">B1</div>
+      <div class="ball blue">B2</div>
+    </div>
+    <div class="ctx-box">
+      <div class="ctx-label">Situasi</div>
+      <div class="ctx-text">Kotak berisi <em>3 bola merah</em> dan <em>2 bola biru</em>.<br>Diambil <em>2 bola sekaligus</em> (urutan tidak penting).<br>Pertanyaan: Berapa <em>peluang mendapat 2 bola merah</em>?</div>
+    </div>
+    <div class="hl-ocean">Kita bisa listing semua pasangan 2 bola dari 5 bola... tapi ada cara yang lebih efisien. <strong>Di sinilah kombinasi masuk!</strong></div>
+  </div>
+
+  <!-- Slide 2: Langkah 1 — Total kemungkinan -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label ocean">🔢 Langkah 1 — Total Kemungkinan</div>
+      <h2>Berapa banyak cara memilih 2 bola dari 5?</h2>
+      <p>Kita ambil 2 bola dari 5 bola. Urutan tidak penting (M1,M2 = M2,M1).</p>
+    </div>
+    <div class="eq-box ocean">
+      <div class="eq-label o">Hitung dengan kombinasi</div>
+      <div class="eq-text">⁵C₂ = (5 × 4) ÷ <span class="o">2!</span> = 20 ÷ 2 = <span class="m">10</span></div>
+      <div class="eq-sub">Ini adalah SELURUH pasangan 2 bola yang mungkin diambil.</div>
+    </div>
+    <div class="hl-mint"><strong>10 pasangan</strong> = inilah seluruh kemungkinan yang bisa terjadi (ruang sampel kita).</div>
+    <div class="hl-ocean">Kita tidak perlu menulis semua 10 pasangan — kombinasi sudah menghitungnya untuk kita!</div>
+  </div>
+
+  <!-- Slide 3: Langkah 2 — Kejadian yang diinginkan -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label mint">🎯 Langkah 2 — Kejadian yang Diinginkan</div>
+      <h2>Berapa cara mendapat tepat 2 bola merah?</h2>
+      <p>Kita hanya peduli dengan 3 bola merah (M1, M2, M3). Pilih 2 dari 3 bola merah.</p>
+    </div>
+    <div class="balls">
+      <div class="ball red">M1</div>
+      <div class="ball red">M2</div>
+      <div class="ball red">M3</div>
+    </div>
+    <div class="eq-box mint">
+      <div class="eq-label m">Hitung dengan kombinasi</div>
+      <div class="eq-text">³C₂ = (3 × 2) ÷ <span class="m">2!</span> = 6 ÷ 2 = <span class="o">3</span></div>
+      <div class="eq-sub">Ada 3 cara mendapat 2 bola merah: {M1,M2}, {M1,M3}, {M2,M3}</div>
+    </div>
+    <div class="hl-mint">Kita hanya fokus pada <strong>bola merah saja</strong> — bola biru diabaikan di langkah ini.</div>
+  </div>
+
+  <!-- Slide 4: Hitung Peluang -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label gold">✨ Hitung Peluang</div>
+      <h2>Gabungkan dua langkah menjadi peluang</h2>
+    </div>
+    <div class="two-step">
+      <div class="step-box total">
+        <div class="step-num o">Total</div>
+        <div class="step-icon">🎱</div>
+        <div class="step-val o">10</div>
+        <div class="step-desc">Semua cara ambil 2 dari 5</div>
+      </div>
+      <div class="step-box event">
+        <div class="step-num m">Kejadian</div>
+        <div class="step-icon">🔴</div>
+        <div class="step-val m">3</div>
+        <div class="step-desc">Cara dapat 2 bola merah</div>
+      </div>
+    </div>
+    <div class="frac-wrap">
+      <div class="frac">
+        <div class="frac-num">3</div>
+        <div class="frac-line"></div>
+        <div class="frac-den">10</div>
+      </div>
+      <span class="frac-eq">= P(2 merah)</span>
+    </div>
+    <div class="hl-gold"><strong>P(2 merah) = ³C₂ ÷ ⁵C₂ = 3 ÷ 10 = 0.3</strong> — artinya peluang 30%.</div>
+  </div>
+
+  <!-- Slide 5: Mengapa bukan 3/5? -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">🤔 Diskusi — Mengapa Bukan 3/5?</div>
+      <h2>Kenapa jawabannya 3/10 dan bukan 3/5?</h2>
+      <p>Ada 3 bola merah dari 5 bola total. Kenapa tidak langsung P = 3/5?</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card wrong-way">
+        <div class="why-head r">❌ Cara Salah</div>
+        <div class="why-val r">3/5</div>
+        <div class="why-sub">Menghitung bola, bukan pasangan. Ini peluang 1 bola merah dari 5 bola.</div>
+      </div>
+      <div class="why-card right-way">
+        <div class="why-head m">✅ Cara Benar</div>
+        <div class="why-val m">3/10</div>
+        <div class="why-sub">Menghitung pasangan. Kita ambil 2 bola sekaligus — bukan 1.</div>
+      </div>
+    </div>
+    <div class="hl-rose">Kita <strong>mengambil 2 bola sekaligus</strong>, bukan 1. Jadi yang dibandingkan harus pasangan, bukan bola tunggal.</div>
+    <div class="hl-ocean"><strong>Kunci:</strong> Penyebut (total kemungkinan) dan pembilang (kejadian) harus berasal dari "unit" yang sama — dalam hal ini, <strong>pasangan 2 bola</strong>.</div>
+  </div>
+
+  <!-- Slide 6: Contoh 2 — Kelas -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label ocean">📚 Contoh Kedua — Pilihan Siswa</div>
+      <h2>Dipilih 2 siswa dari kelas</h2>
+      <p>Dalam kelas ada 4 siswa laki-laki (L) dan 3 siswa perempuan (P). Dipilih 2 siswa secara acak.</p>
+    </div>
+    <div class="ctx-box">
+      <div class="ctx-label">Pertanyaan</div>
+      <div class="ctx-text">Berapa peluang keduanya perempuan?</div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n ocean">1</div>
+        <div><strong>Total kemungkinan:</strong> pilih 2 dari 7 siswa (4L + 3P)<br>⁷C₂ = (7 × 6) ÷ 2 = 42 ÷ 2 = <strong style="color:var(--ocean)">21</strong></div>
+      </div>
+      <div class="step">
+        <div class="step-n mint">2</div>
+        <div><strong>Kejadian yang diinginkan:</strong> pilih 2 dari 3 perempuan<br>³C₂ = (3 × 2) ÷ 2 = 6 ÷ 2 = <strong style="color:var(--mint)">3</strong></div>
+      </div>
+      <div class="step">
+        <div class="step-n gold">3</div>
+        <div><strong>Peluang:</strong> P(2 perempuan) = 3 ÷ 21 = <strong style="color:var(--gold)">1/7 ≈ 0,143</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 7: Strategi Umum -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label ocean">🗺️ Strategi Umum</div>
+      <h2>Dua Langkah Berpikir</h2>
+      <p>Setiap soal peluang dengan kombinasi bisa diselesaikan dengan dua pertanyaan ini:</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n ocean">1</div>
+        <div><strong>Berapa total kemungkinan?</strong><br>Pilih r dari semua n objek → ⁿCᵣ<br><span style="color:var(--text-muted);font-size:0.82rem;">Ini adalah penyebut (denominator) peluang</span></div>
+      </div>
+      <div class="step">
+        <div class="step-n mint">2</div>
+        <div><strong>Berapa cara kejadian yang diinginkan terjadi?</strong><br>Pilih r dari objek yang sesuai saja → ⁿCᵣ yang lebih kecil<br><span style="color:var(--text-muted);font-size:0.82rem;">Ini adalah pembilang (numerator) peluang</span></div>
+      </div>
+      <div class="step">
+        <div class="step-n gold">3</div>
+        <div><strong>Bagi keduanya</strong> → itulah peluangnya<br>P = <span style="color:var(--mint)">kejadian</span> ÷ <span style="color:var(--ocean)">total</span></div>
+      </div>
+    </div>
+    <div class="insight"><strong>Pola yang sama selalu berlaku:</strong> Kapanpun kamu mengambil beberapa objek sekaligus dan urutan tidak penting — gunakan kombinasi untuk menghitung total dan kejadian, lalu bagi.</div>
+  </div>
+
+  <!-- Slide 8: Contoh 3 — Kartu -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label vio">🃏 Contoh Ketiga — Kartu Bernomor</div>
+      <h2>Kartu bernomor 1 sampai 5</h2>
+      <p>Dari 5 kartu bernomor 1, 2, 3, 4, 5 — diambil 2 kartu secara acak.</p>
+    </div>
+    <div class="ctx-box">
+      <div class="ctx-label">Pertanyaan</div>
+      <div class="ctx-text">Berapa peluang kedua kartu yang terambil <em>bernomor ganjil</em>?</div>
+    </div>
+    <div class="hl-vio">Identifikasi dulu: <strong>Kartu ganjil</strong> = 1, 3, 5 → ada 3 kartu ganjil. <strong>Total</strong> = 5 kartu.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n ocean">1</div>
+        <div>Total: ⁵C₂ = (5 × 4) ÷ 2 = <strong style="color:var(--ocean)">10</strong></div>
+      </div>
+      <div class="step">
+        <div class="step-n mint">2</div>
+        <div>Kejadian (2 ganjil): ³C₂ = (3 × 2) ÷ 2 = <strong style="color:var(--mint)">3</strong></div>
+      </div>
+      <div class="step">
+        <div class="step-n gold">3</div>
+        <div>P(2 ganjil) = 3 ÷ 10 = <strong style="color:var(--gold)">3/10</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 9: Contoh 4 — Seseorang pasti terpilih -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label mint">👤 Contoh Khusus — Seseorang Tertentu Terpilih</div>
+      <h2>Bagaimana jika kita ingin Ani pasti terpilih?</h2>
+      <p>Dari 6 siswa (termasuk Ani), dipilih 2 siswa. Berapa peluang Ani terpilih?</p>
+    </div>
+    <div class="hl-mint">Jika <strong>Ani pasti masuk</strong>, kita tinggal memilih 1 siswa lagi dari sisa 5 siswa.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n ocean">1</div>
+        <div>Total: ⁶C₂ = (6 × 5) ÷ 2 = <strong style="color:var(--ocean)">15</strong></div>
+      </div>
+      <div class="step">
+        <div class="step-n mint">2</div>
+        <div>Kejadian (Ani terpilih): Ani fix, pilih 1 dari 5 siswa lain → ⁵C₁ = <strong style="color:var(--mint)">5</strong></div>
+      </div>
+      <div class="step">
+        <div class="step-n gold">3</div>
+        <div>P(Ani terpilih) = 5 ÷ 15 = <strong style="color:var(--gold)">1/3</strong></div>
+      </div>
+    </div>
+    <div class="hl-ocean"><strong>Logika kuncinya:</strong> Jika 1 orang sudah "dikunci" terpilih, kita tinggal menghitung cara memilih sisa slot dari orang-orang yang tersisa.</div>
+  </div>
+
+  <!-- Slide 10: Quiz 1 -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label rose">🧪 Cek Pemahaman — Bola</div>
+      <div class="quiz-q">Kotak berisi 4 bola merah dan 3 bola biru. Diambil 2 bola sekaligus. Berapa peluang keduanya merah? <em>(Hitung ⁷C₂ dan ⁴C₂)</em></div>
+      <div class="opts">
+        <button class="opt-btn" onclick="check(this,'wrong','fb_q1')">4/7</button>
+        <button class="opt-btn" onclick="check(this,'correct','fb_q1')">6/21</button>
+        <button class="opt-btn" onclick="check(this,'wrong','fb_q1')">4/21</button>
+        <button class="opt-btn" onclick="check(this,'wrong','fb_q1')">1/7</button>
+      </div>
+      <div class="feedback" id="fb_q1"></div>
+    </div>
+  </div>
+
+  <!-- Slide 11: Quiz 2 -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label mint">🧪 Cek Pemahaman — Siswa</div>
+      <div class="quiz-q">Dari 5 kartu bernomor 1–5, diambil 2 kartu. Berapa peluang kedua kartu bernomor ganjil? <em>(Kartu ganjil: 1, 3, 5)</em></div>
+      <div class="opts">
+        <button class="opt-btn" onclick="check(this,'wrong','fb_q2')">3/5</button>
+        <button class="opt-btn" onclick="check(this,'wrong','fb_q2')">1/5</button>
+        <button class="opt-btn" onclick="check(this,'correct','fb_q2')">3/10</button>
+        <button class="opt-btn" onclick="check(this,'wrong','fb_q2')">6/10</button>
+      </div>
+      <div class="feedback" id="fb_q2"></div>
+    </div>
+  </div>
+
+  <!-- Slide 12: Rangkuman -->
+  <div class="slide">
+    <div class="card">
+      <div class="card-label gold">💎 Rangkuman</div>
+      <h2>Menghitung Peluang dengan Kombinasi</h2>
+      <div class="steps">
+        <div class="step"><div class="step-n ocean">1</div><div><strong>Kenali situasi:</strong> Apakah kita mengambil beberapa objek sekaligus? Apakah urutan tidak penting? → Gunakan kombinasi.</div></div>
+        <div class="step"><div class="step-n mint">2</div><div><strong>Hitung total kemungkinan</strong> dengan ⁿCᵣ (n = semua objek, r = yang diambil).</div></div>
+        <div class="step"><div class="step-n gold">3</div><div><strong>Hitung kejadian yang diinginkan</strong> dengan ⁿCᵣ yang lebih kecil (n = objek yang sesuai).</div></div>
+        <div class="step"><div class="step-n ocean">4</div><div><strong>Bagi:</strong> P = kejadian ÷ total.</div></div>
+      </div>
+    </div>
+    <div class="insight"><strong>🌟 Prinsip besar:</strong> Kombinasi menghitung <em>kemungkinan</em>. Peluang <em>membandingkan</em> kemungkinan. Dua konsep ini selalu bekerja bersama — kombinasi menyiapkan angkanya, peluang menyimpulkannya.</div>
+  </div>
+
+  <!-- Slide 13: Finish -->
+  <div class="slide">
+    <div class="finish">
+      <span class="finish-icon">🎲</span>
+      <div class="finish-title">Materi Selesai!</div>
+      <div class="finish-desc">Kamu sudah memahami bagaimana kombinasi bekerja dalam menghitung peluang. Strategi dua langkah — total dulu, kejadian kemudian — adalah kuncinya. Sekarang uji kemampuanmu!</div>
+      <span class="xp">+40 XP · Peluang dengan Kombinasi</span>
+      <div class="finish-btns">
+        <a href="lesson27.html" class="btn btn-ghost">← Kembali</a>
+        <a href="soal27.html" class="btn btn-primary">Sprint Soal ⚡</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<div class="nav-btns">
+  <button class="btn btn-ghost" id="prevBtn" onclick="prev()" disabled>← Prev</button>
+  <button class="btn btn-primary" id="nextBtn" onclick="next()">Lanjut →</button>
+</div>
+
+<script>
+  const total = 14;
+  let cur = 0;
+  const slides = document.querySelectorAll('.slide');
+  const dotsEl = document.getElementById('dots');
+
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots() {
+    document.querySelectorAll('.dot').forEach((d, i) => {
+      d.className = 'dot' + (i === cur ? ' active' : (i < cur ? ' done' : ''));
+    });
+  }
+
+  function showSlide(n) {
+    slides.forEach(s => s.classList.remove('active'));
+    slides[n].classList.add('active');
+    document.getElementById('prevBtn').disabled = n === 0;
+    document.getElementById('nextBtn').style.display = n === total - 1 ? 'none' : 'inline-flex';
+    updateDots();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function next() { if (cur < total - 1) { cur++; showSlide(cur); } }
+  function prev() { if (cur > 0) { cur--; showSlide(cur); } }
+
+  const explanations = {
+    'fb_q1': {
+      correct: '✅ Tepat! Total: ⁷C₂ = 21. Kejadian (2 merah): ⁴C₂ = 6. P = 6/21 = 2/7.',
+      wrong: '❌ Ingat: kita ambil 2 bola sekaligus, bukan 1. Total = ⁷C₂ = 21, Kejadian = ⁴C₂ = 6. P = 6/21.'
+    },
+    'fb_q2': {
+      correct: '✅ Benar! Kartu ganjil ada 3 (1,3,5). Total: ⁵C₂ = 10. Kejadian: ³C₂ = 3. P = 3/10.',
+      wrong: '❌ Jangan bingung dengan P(1 kartu ganjil). Kita ambil 2 kartu — total = ⁵C₂ = 10. Kejadian = ³C₂ = 3. P = 3/10.'
+    }
+  };
+
+  function check(btn, result, fbId) {
+    const btns = btn.closest('.opts').querySelectorAll('.opt-btn');
+    btns.forEach(b => b.disabled = true);
+    btn.classList.add(result);
+    if (result === 'wrong') {
+      btns.forEach(b => { if (b.onclick.toString().includes("'correct'")) b.classList.add('correct'); });
+    }
+    const fb = document.getElementById(fbId);
+    const exp = explanations[fbId];
+    fb.className = 'feedback show ' + (result === 'correct' ? 'ok' : 'no');
+    fb.textContent = result === 'correct' ? exp.correct : exp.wrong;
+  }
+</script>
+</body>
+</html>
