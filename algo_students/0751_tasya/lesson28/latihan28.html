@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan · Mandiri · L28 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --violet:#7c5cbf;--violet-light:#b89ee0;--vio-bg:rgba(124,92,191,0.08);
+    --teal:#3db8a0;--teal-light:#7ed6c4;--teal-bg:rgba(61,184,160,0.1);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 90%,rgba(61,184,160,0.06) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--mint);}
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--mint);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--teal);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .prog-bar-wrap{background:var(--border);border-radius:99px;height:8px;margin-bottom:0.4rem;overflow:hidden;}
+  .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--mint));border-radius:99px;transition:width 0.4s ease;}
+  .prog-label{display:flex;justify-content:space-between;font-size:0.72rem;font-weight:700;color:var(--text-muted);margin-bottom:1.5rem;}
+
+  .q-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);display:none;animation:fadeUp 0.35s ease;}
+  .q-card.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .tag{display:inline-block;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.2rem 0.7rem;border-radius:99px;margin-bottom:0.9rem;}
+  .tag-mean{background:var(--teal-bg);color:var(--teal);border:1.5px solid var(--teal-light);}
+  .tag-median{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .tag-modus{background:var(--gold-bg);color:var(--gold);border:1.5px solid var(--gold-light);}
+  .tag-apply{background:var(--vio-bg);color:var(--violet);border:1.5px solid var(--violet-light);}
+  .tag-think{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .story-box{background:linear-gradient(135deg,#f0fdf8,#d4f5ed);border:2px solid var(--teal-light);border-radius:14px;padding:1rem 1.2rem;margin-bottom:1rem;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:700;color:var(--text);line-height:1.7;}
+  .q-text{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;margin-bottom:1rem;line-height:1.5;}
+
+  .hint-toggle{background:var(--teal-bg);border:1.5px solid var(--teal-light);color:var(--teal);padding:0.4rem 1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;margin-bottom:1rem;display:inline-block;transition:all 0.2s;}
+  .hint-toggle:hover{background:var(--teal);color:#fff;}
+  .hint-box{background:var(--teal-bg);border:1.5px solid var(--teal-light);border-radius:12px;padding:0.7rem 1rem;margin-bottom:0.9rem;font-size:0.85rem;color:var(--text-mid);display:none;}
+  .hint-box.show{display:block;}
+
+  .opts{display:flex;flex-direction:column;gap:0.65rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.88rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--teal-light);background:var(--teal-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--teal-light);color:var(--teal);}
+  .btn-primary{background:linear-gradient(135deg,var(--teal),#2a8a74);color:#fff;box-shadow:0 4px 14px rgba(61,184,160,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(61,184,160,0.4);}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:var(--teal);margin-bottom:0.7rem;}
+  .finish-sub{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1.5rem;max-width:380px;margin-left:auto;margin-right:auto;}
+  .finish-score{font-family:'Nunito',sans-serif;font-size:3rem;font-weight:900;color:var(--teal);margin-bottom:0.3rem;}
+  .finish-label{font-size:0.8rem;color:var(--text-muted);margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .star-row{display:flex;justify-content:center;gap:0.3rem;font-size:2rem;margin-bottom:1rem;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson28.html">LESSON 28</a><span>›</span>
+  <span class="cur">LATIHAN</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🌙 Latihan Mandiri</div>
+  <h1>Latihan <span>10 Soal</span></h1>
+  <p class="intro">Santai, tidak ada timer. Ada petunjuk jika butuh bantuan. Cocok dikerjakan di rumah!</p>
+
+  <div class="prog-bar-wrap"><div class="prog-bar-fill" id="progFill" style="width:0%"></div></div>
+  <div class="prog-label"><span id="progText">0 / 10 selesai</span><span id="scoreText">Skor: 0</span></div>
+
+  <!-- Q1 -->
+  <div class="q-card active" id="qc0">
+    <span class="tag tag-mean">Mean</span>
+    <div class="story-box">Nilai ujian Budi: 60, 75, 80, 85, 100.</div>
+    <div class="q-text">Berapa mean nilai Budi?</div>
+    <button class="hint-toggle" onclick="toggleHint('h0')">💡 Petunjuk</button>
+    <div class="hint-box" id="h0">Jumlahkan semua nilai, lalu bagi dengan banyak data. Ada 5 nilai.</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(this,'wrong','fb0',0)">78</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb0',0)">79</button>
+      <button class="opt-btn" onclick="ans(this,'correct','fb0',0)">80</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb0',0)">82</button>
+    </div>
+    <div class="feedback" id="fb0"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="qc1">
+    <span class="tag tag-median">Median</span>
+    <div class="story-box">Data berat badan (kg): 45, 52, 48, 60, 50.</div>
+    <div class="q-text">Berapa median data tersebut?</div>
+    <button class="hint-toggle" onclick="toggleHint('h1')">💡 Petunjuk</button>
+    <div class="hint-box" id="h1">Urutkan dulu dari kecil ke besar, lalu cari nilai di posisi tengah.</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(this,'wrong','fb1',1)">48</button>
+      <button class="opt-btn" onclick="ans(this,'correct','fb1',1)">50</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb1',1)">51</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb1',1)">52</button>
+    </div>
+    <div class="feedback" id="fb1"></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="qc2">
+    <span class="tag tag-modus">Modus</span>
+    <div class="story-box">Nilai latihan soal: 7, 8, 8, 9, 7, 8, 10, 7, 8.</div>
+    <div class="q-text">Berapa modus dari data tersebut?</div>
+    <button class="hint-toggle" onclick="toggleHint('h2')">💡 Petunjuk</button>
+    <div class="hint-box" id="h2">Hitung berapa kali masing-masing nilai muncul. Modus = yang paling sering.</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(this,'wrong','fb2',2)">7</button>
+      <button class="opt-btn" onclick="ans(this,'correct','fb2',2)">8</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb2',2)">9</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb2',2)">10</button>
+    </div>
+    <div class="feedback" id="fb2"></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="qc3">
+    <span class="tag tag-think">Interpretasi</span>
+    <div class="story-box">Pendapatan 6 orang: 2 jt, 2 jt, 2 jt, 2 jt, 2 jt, 20 jt.</div>
+    <div class="q-text">Berapa mean pendapatan? Apakah mean mewakili kondisi sebagian besar orang?</div>
+    <button class="hint-toggle" onclick="toggleHint('h3')">💡 Petunjuk</button>
+    <div class="hint-box" id="h3">Hitung mean dulu. Lalu pikirkan: berapa orang yang mendapat lebih dari mean itu?</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(this,'wrong','fb3',3)">Mean = 5 jt, ya mewakili</button>
+      <button class="opt-btn" onclick="ans(this,'correct','fb3',3)">Mean = 5 jt, tidak mewakili — 5 dari 6 orang hanya 2 juta</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb3',3)">Mean = 4 jt, tidak mewakili</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb3',3)">Mean = 2 jt, ya mewakili</button>
+    </div>
+    <div class="feedback" id="fb3"></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="qc4">
+    <span class="tag tag-median">Median</span>
+    <div class="story-box">Data gol pemain sepak bola dalam 6 pertandingan: 0, 1, 0, 3, 0, 2.</div>
+    <div class="q-text">Berapa median jumlah gol?</div>
+    <button class="hint-toggle" onclick="toggleHint('h4')">💡 Petunjuk</button>
+    <div class="hint-box" id="h4">Data genap! Setelah diurutkan, median = rata-rata dua nilai tengah. Urutan: 0,0,0,1,2,3 → nilai ke-3 dan ke-4.</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(this,'wrong','fb4',4)">0</button>
+      <button class="opt-btn" onclick="ans(this,'correct','fb4',4)">0,5</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb4',4)">1</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb4',4)">1,5</button>
+    </div>
+    <div class="feedback" id="fb4"></div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card" id="qc5">
+    <span class="tag tag-apply">Terapkan</span>
+    <div class="story-box">Toko roti menjual roti dengan harga: 5rb, 5rb, 5rb, 8rb, 10rb, 12rb, 15rb per hari selama seminggu.</div>
+    <div class="q-text">Jika tutor ingin mengetahui harga yang paling sering terjual, ukuran apa yang digunakan?</div>
+    <button class="hint-toggle" onclick="toggleHint('h5')">💡 Petunjuk</button>
+    <div class="hint-box" id="h5">Mana ukuran yang mencerminkan nilai yang paling sering muncul?</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(this,'wrong','fb5',5)">Mean — karena rata-rata lebih akurat</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb5',5)">Median — karena posisi tengah lebih representatif</button>
+      <button class="opt-btn" onclick="ans(this,'correct','fb5',5)">Modus — karena mewakili nilai yang paling sering muncul</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb5',5)">Ketiganya sama</button>
+    </div>
+    <div class="feedback" id="fb5"></div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card" id="qc6">
+    <span class="tag tag-mean">Mean</span>
+    <div class="story-box">Data: 3, 3, 3, 3, 3, 3, 3, 3, 3, 100.</div>
+    <div class="q-text">Berapa mean data tersebut?</div>
+    <button class="hint-toggle" onclick="toggleHint('h6')">💡 Petunjuk</button>
+    <div class="hint-box" id="h6">Jumlahkan semua (ada 9 angka 3 dan satu 100), lalu bagi 10.</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(this,'wrong','fb6',6)">3</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb6',6)">12,7</button>
+      <button class="opt-btn" onclick="ans(this,'correct','fb6',6)">12,7 → (27 + 100) ÷ 10 = 12,7</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb6',6)">10</button>
+    </div>
+    <div class="feedback" id="fb6"></div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card" id="qc7">
+    <span class="tag tag-think">Interpretasi</span>
+    <div class="story-box">Data: 3, 3, 3, 3, 3, 3, 3, 3, 3, 100. (sama seperti soal sebelumnya)</div>
+    <div class="q-text">Ukuran mana yang paling mewakili "kondisi sebenarnya" dari data ini?</div>
+    <button class="hint-toggle" onclick="toggleHint('h7')">💡 Petunjuk</button>
+    <div class="hint-box" id="h7">9 dari 10 data bernilai 3. Mean = 12,7. Median = 3. Modus = 3. Mana yang paling menggambarkan "kebanyakan data"?</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(this,'wrong','fb7',7)">Mean (12,7) — karena paling presisi</button>
+      <button class="opt-btn" onclick="ans(this,'correct','fb7',7)">Median atau modus (3) — karena mencerminkan sebagian besar data</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb7',7)">Ketiganya sama bagus</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb7',7)">Tidak bisa ditentukan</button>
+    </div>
+    <div class="feedback" id="fb7"></div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card" id="qc8">
+    <span class="tag tag-apply">Bandingkan</span>
+    <div class="story-box">Data A: 5, 5, 5, 5, 5 &nbsp;|&nbsp; Data B: 1, 3, 5, 7, 9</div>
+    <div class="q-text">Mean dan median kedua data sama (5). Pernyataan yang BENAR adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint('h8')">💡 Petunjuk</button>
+    <div class="hint-box" id="h8">Lihat penyebaran data — apakah nilai-nilainya dekat satu sama lain atau berjauhan?</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(this,'wrong','fb8',8)">Kedua data identik karena ukurannya sama</button>
+      <button class="opt-btn" onclick="ans(this,'correct','fb8',8)">Data A lebih konsisten; Data B lebih menyebar</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb8',8)">Data B lebih baik karena lebih beragam</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb8',8)">Hanya mean yang perlu dilihat</button>
+    </div>
+    <div class="feedback" id="fb8"></div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card" id="qc9">
+    <span class="tag tag-think">Refleksi</span>
+    <div class="story-box">Sebuah koran menulis: "Rata-rata penghasilan warga Desa X adalah 8 juta rupiah per bulan."</div>
+    <div class="q-text">Kamu tidak tahu datanya. Apa pertanyaan kritis yang sebaiknya kamu tanyakan?</div>
+    <button class="hint-toggle" onclick="toggleHint('h9')">💡 Petunjuk</button>
+    <div class="hint-box" id="h9">Mean bisa dipengaruhi oleh nilai ekstrem. Apa yang perlu kamu tahu lebih lanjut?</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(this,'wrong','fb9',9)">Siapa wartawannya?</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb9',9)">Kapan data dikumpulkan?</button>
+      <button class="opt-btn" onclick="ans(this,'correct','fb9',9)">Apakah ada outlier? Berapa median dan modusnya?</button>
+      <button class="opt-btn" onclick="ans(this,'wrong','fb9',9)">Angka 8 juta terdengar besar, jadi benar</button>
+    </div>
+    <div class="feedback" id="fb9"></div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-btns">
+    <button class="btn btn-ghost" id="prevBtn" onclick="prevQ()" disabled>← Sebelumnya</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="nextQ()">Berikutnya →</button>
+  </div>
+
+  <!-- Finish screen -->
+  <div class="finish" id="finishScreen" style="display:none;">
+    <span class="finish-icon">🌟</span>
+    <div class="star-row" id="starRow"></div>
+    <div class="finish-title">Latihan Selesai!</div>
+    <div class="finish-score" id="finScore">0/10</div>
+    <div class="finish-label">soal benar</div>
+    <div class="finish-sub" id="finMsg">Kerja keras kamu tidak sia-sia!</div>
+    <div class="finish-btns">
+      <a href="lesson28.html" class="btn btn-ghost">← Lesson 28</a>
+      <a href="soal28.html" class="btn btn-primary">Coba Sprint ⚡</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const TOTAL = 10;
+  const KEY = 'latihan28_tasya';
+  let cur = 0;
+  let answered = new Array(TOTAL).fill(false);
+  let correct = new Array(TOTAL).fill(false);
+
+  const feedbacks = [
+    { ok: '✅ Benar! (60+75+80+85+100) ÷ 5 = 400 ÷ 5 = 80.', no: '❌ Jumlahkan semua: 60+75+80+85+100 = 400. 400 ÷ 5 = 80.' },
+    { ok: '✅ Tepat! Diurutkan: 45,48,50,52,60 → nilai ke-3 = 50.', no: '❌ Urutkan dulu: 45,48,50,52,60 → nilai tengah (ke-3) = 50.' },
+    { ok: '✅ Benar! 8 muncul 4 kali, 7 muncul 3 kali. Modus = 8.', no: '❌ Hitung frekuensi: 7→3x, 8→4x, 9→1x, 10→1x. Yang paling sering = 8.' },
+    { ok: '✅ Tepat! Mean = (2+2+2+2+2+20) ÷ 6 = 30 ÷ 6 = 5 juta. Tapi 5 orang hanya 2 juta — mean tidak mewakili mereka!', no: '❌ Mean = (2×5+20) ÷ 6 = 30 ÷ 6 = 5 juta. Namun 5 dari 6 orang hanya 2 juta. Mean tidak mewakili mayoritas.' },
+    { ok: '✅ Benar! Urutan: 0,0,0,1,2,3 → dua nilai tengah = 0 dan 1 → median = (0+1) ÷ 2 = 0,5.', no: '❌ Data genap: urutkan jadi 0,0,0,1,2,3 → dua nilai tengah = 0 dan 1 → median = 0,5.' },
+    { ok: '✅ Tepat! Modus = 5rb (muncul 3 kali). Untuk mencari yang paling sering laku = modus!', no: '❌ Yang "paling sering" = modus. Modus harga = 5.000 (muncul 3 kali).' },
+    { ok: '✅ Benar! (3×9 + 100) ÷ 10 = 127 ÷ 10 = 12,7.', no: '❌ 9 angka 3 = 27. 27+100 = 127. 127 ÷ 10 = 12,7.' },
+    { ok: '✅ Tepat! Mean = 12,7 tapi 9 dari 10 data = 3. Median dan modus lebih mencerminkan kondisi sebenarnya.', no: '❌ Mean terpengaruh outlier 100. Sebagian besar data = 3. Median dan modus lebih representatif di sini.' },
+    { ok: '✅ Benar! Mean dan median bisa sama tapi penyebaran bisa sangat berbeda. Data A konsisten, Data B menyebar.', no: '❌ Walau mean dan median sama, penyebaran data berbeda. Data A semua nilainya sama (konsisten). Data B bervariasi luas.' },
+    { ok: '✅ Pertanyaan kritis yang bagus! Statistik perlu dikritisi — outlier bisa mendongkrak mean secara tidak representatif.', no: '❌ Pertanyaan kritis yang tepat: apakah ada outlier? Berapa median dan modusnya? Mean saja tidak cukup!' }
+  ];
+
+  function loadState() {
+    try {
+      const s = localStorage.getItem(KEY);
+      if (s) {
+        const p = JSON.parse(s);
+        answered = p.answered || answered;
+        correct = p.correct || correct;
+        // restore UI for answered questions
+        answered.forEach((done, i) => { if (done) restoreQ(i); });
+      }
+    } catch(e) {}
+  }
+
+  function saveState() {
+    try { localStorage.setItem(KEY, JSON.stringify({ answered, correct })); } catch(e) {}
+  }
+
+  function restoreQ(i) {
+    const card = document.getElementById('qc' + i);
+    const fb = document.getElementById('fb' + i);
+    const opts = card.querySelectorAll('.opt-btn');
+    opts.forEach(o => {
+      o.disabled = true;
+      if (o.onclick && o.onclick.toString().includes("'correct'")) {
+        o.classList.add('correct');
+      }
+    });
+    if (fb) {
+      fb.className = 'feedback show ' + (correct[i] ? 'ok' : 'no');
+      fb.textContent = correct[i] ? feedbacks[i].ok : feedbacks[i].no;
+    }
+  }
+
+  function updateProgress() {
+    const done = answered.filter(Boolean).length;
+    const sc = correct.filter(Boolean).length;
+    document.getElementById('progFill').style.width = (done / TOTAL * 100) + '%';
+    document.getElementById('progText').textContent = done + ' / ' + TOTAL + ' selesai';
+    document.getElementById('scoreText').textContent = 'Skor: ' + sc;
+  }
+
+  function showQ(n) {
+    document.querySelectorAll('.q-card').forEach(c => c.classList.remove('active'));
+    document.getElementById('qc' + n).classList.add('active');
+    document.getElementById('prevBtn').disabled = n === 0;
+
+    const allDone = answered.every(Boolean);
+    if (allDone && n === TOTAL - 1) {
+      document.getElementById('nextBtn').textContent = 'Lihat Hasil 🎉';
+      document.getElementById('nextBtn').onclick = showFinish;
+    } else if (n === TOTAL - 1) {
+      document.getElementById('nextBtn').textContent = 'Berikutnya →';
+      document.getElementById('nextBtn').onclick = nextQ;
+    } else {
+      document.getElementById('nextBtn').textContent = 'Berikutnya →';
+      document.getElementById('nextBtn').onclick = nextQ;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function nextQ() { if (cur < TOTAL - 1) { cur++; showQ(cur); } }
+  function prevQ() { if (cur > 0) { cur--; showQ(cur); } }
+
+  function toggleHint(id) {
+    const h = document.getElementById(id);
+    h.classList.toggle('show');
+  }
+
+  function ans(btn, result, fbId, idx) {
+    if (answered[idx]) return;
+    answered[idx] = true;
+    correct[idx] = result === 'correct';
+
+    const opts = btn.closest('.opts').querySelectorAll('.opt-btn');
+    opts.forEach(o => {
+      o.disabled = true;
+      if (o.onclick && o.onclick.toString().includes("'correct'")) o.classList.add('correct');
+    });
+    if (result === 'wrong') btn.classList.add('wrong');
+
+    const fb = document.getElementById(fbId);
+    fb.className = 'feedback show ' + (result === 'correct' ? 'ok' : 'no');
+    fb.textContent = result === 'correct' ? feedbacks[idx].ok : feedbacks[idx].no;
+
+    updateProgress();
+    saveState();
+
+    // Check if all done
+    if (answered.every(Boolean)) {
+      if (cur === TOTAL - 1) {
+        document.getElementById('nextBtn').textContent = 'Lihat Hasil 🎉';
+        document.getElementById('nextBtn').onclick = showFinish;
+      }
+    }
+  }
+
+  function showFinish() {
+    document.querySelectorAll('.q-card').forEach(c => c.style.display = 'none');
+    document.querySelector('.nav-btns').style.display = 'none';
+    const sc = correct.filter(Boolean).length;
+    document.getElementById('finScore').textContent = sc + '/10';
+    const msgs = ['Coba ulangi lagi ya — kamu pasti bisa!','Mulai paham nih! Coba review materinya.','Bagus! Sedikit lagi sempurna.','Keren banget! Hampir sempurna.','Luar biasa! Pemahaman datamu sangat kuat!'];
+    const msgIdx = sc <= 4 ? 0 : sc <= 6 ? 1 : sc <= 7 ? 2 : sc <= 9 ? 3 : 4;
+    document.getElementById('finMsg').textContent = msgs[msgIdx];
+    const stars = sc >= 9 ? 3 : sc >= 7 ? 2 : sc >= 5 ? 1 : 0;
+    document.getElementById('starRow').textContent = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
+    document.getElementById('finishScreen').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Init
+  loadState();
+  updateProgress();
+  showQ(0);
+</script>
+</body>
+</html>
