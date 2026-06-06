@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 14 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--violet:#a78bfa;--red:#ef4444;--blue:#38bdf8;--orange:#fb923c;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(167,139,250,0.07) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(0,245,196,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--violet);}
+
+  .wrapper{max-width:720px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+
+  /* Slide system */
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--violet);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title .hi{color:var(--violet);}
+  .slide-title .h2{color:var(--neon);}
+  .slide-title .h3{color:var(--accent);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+
+  /* Machine visual */
+  .machine-box{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:2rem;margin-bottom:1.5rem;text-align:center;}
+  .machine-box .lbl{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:1rem;}
+
+  /* IO Table */
+  .io-wrap{display:flex;justify-content:center;margin:1rem 0;}
+  table.iot{border-collapse:collapse;}
+  table.iot th{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding:0.4rem 1.5rem;border-bottom:1px solid var(--border);}
+  table.iot td{text-align:center;padding:0.55rem 1.5rem;font-family:'Orbitron',monospace;font-size:1.15rem;font-weight:700;border-top:1px solid rgba(42,42,64,0.5);}
+  table.iot td.iv{color:var(--blue);}
+  table.iot td.ov{color:var(--neon);}
+  table.iot td.ar{color:var(--muted);font-size:0.9rem;padding:0.55rem 0.4rem;}
+  table.iot td.qv{color:var(--accent);}
+
+  /* Reveal button */
+  .reveal-btn{background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.4);color:var(--violet);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(167,139,250,0.2);border-color:var(--violet);}
+  .reveal-box{background:rgba(0,245,196,0.05);border:1px solid rgba(0,245,196,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;text-align:center;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+  .reveal-box .rule-text{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;color:var(--neon);margin-bottom:0.4rem;}
+  .reveal-box .rule-sub{font-size:0.85rem;color:var(--muted);}
+
+  /* Concept cards */
+  .concept-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;}
+  @media(max-width:500px){.concept-grid{grid-template-columns:1fr;}}
+  .concept-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;}
+  .concept-card .icon{font-size:1.8rem;margin-bottom:0.6rem;display:block;}
+  .concept-card .ctitle{font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:700;color:var(--violet);margin-bottom:0.5rem;}
+  .concept-card .cdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  /* Step-by-step */
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:var(--violet);flex-shrink:0;}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  /* Input exercise */
+  .fill-row{display:flex;align-items:center;justify-content:center;gap:0.8rem;margin:0.5rem 0;font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;}
+  .fill-row .iv{color:var(--blue);}
+  .fill-row .ar{color:var(--muted);}
+  .fill-input{background:#12121c;border:1.5px solid var(--border);color:var(--neon);font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;width:64px;text-align:center;border-radius:8px;padding:0.4rem;transition:border-color 0.2s;}
+  .fill-input:focus{outline:none;border-color:var(--violet);}
+  .fill-input.ok{border-color:var(--neon);}
+  .fill-input.err{border-color:var(--red);}
+  .check-btn{background:linear-gradient(135deg,var(--violet),#7c3aed);color:#fff;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;padding:0.5rem 1.2rem;border:none;border-radius:8px;cursor:pointer;margin-top:0.8rem;}
+  .check-result{font-family:'Orbitron',monospace;font-size:0.85rem;margin-top:0.6rem;min-height:22px;text-align:center;}
+
+  /* Callout */
+  .callout{background:rgba(167,139,250,0.06);border-left:3px solid var(--violet);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--violet);}
+  .callout.green{background:rgba(0,245,196,0.06);border-color:var(--neon);}
+  .callout.green strong{color:var(--neon);}
+  .callout.orange{background:rgba(245,158,11,0.06);border-color:var(--accent);}
+  .callout.orange strong{color:var(--accent);}
+
+  /* Nav buttons */
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--violet),#7c3aed);border:none;color:#fff;font-weight:800;}
+  .nav-btn:hover{border-color:var(--violet);color:var(--violet);}
+  .nav-btn.next:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(167,139,250,0.3);}
+
+  /* Progress */
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--violet),var(--neon));border-radius:99px;transition:width 0.4s ease;}
+
+  /* Summary */
+  .summary-card{background:var(--card);border:1px solid rgba(0,245,196,0.3);border-radius:18px;padding:2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.9rem;color:var(--neon);letter-spacing:2px;margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .summary-item span{flex-shrink:0;}
+
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;}
+  .da-primary{background:linear-gradient(135deg,var(--violet),#7c3aed);color:#fff;border:none;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(167,139,250,0.3);}
+  .da-secondary:hover{border-color:var(--violet);color:var(--violet);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson14.html">LESSON 14</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+  <!-- SLIDE 1: Cover -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title"><span class="hi">Mesin Angka</span> Rahasia</div>
+      <div class="slide-sub">Dapatkah kamu menemukan aturan tersembunyi?</div>
+    </div>
+    <div class="machine-box">
+      <svg width="300" height="170" viewBox="0 0 300 170" xmlns="http://www.w3.org/2000/svg">
+        <rect x="90" y="20" width="120" height="100" rx="16" fill="#12121c" stroke="#a78bfa" stroke-width="2.5"/>
+        <rect x="106" y="38" width="88" height="44" rx="8" fill="#0a0a0f" stroke="#2a2a40"/>
+        <text x="150" y="57" text-anchor="middle" fill="#a78bfa" font-family="Orbitron,monospace" font-size="9" letter-spacing="2">ATURAN</text>
+        <text x="150" y="74" text-anchor="middle" fill="#00f5c4" font-family="Orbitron,monospace" font-size="13" font-weight="700">🔒 ???</text>
+        <circle cx="112" cy="108" r="6" fill="#fb923c" opacity="0.9"/>
+        <circle cx="130" cy="108" r="6" fill="#38bdf8" opacity="0.9"/>
+        <circle cx="148" cy="108" r="6" fill="#00f5c4" opacity="0.9"/>
+        <line x1="15" y1="70" x2="84" y2="70" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#a1)"/>
+        <text x="5" y="58" fill="#38bdf8" font-family="Orbitron,monospace" font-size="11" font-weight="700">IN</text>
+        <text x="4" y="72" fill="#e2e8f0" font-family="Orbitron,monospace" font-size="16" font-weight="900">?</text>
+        <line x1="216" y1="70" x2="280" y2="70" stroke="#00f5c4" stroke-width="2.5" marker-end="url(#a2)"/>
+        <text x="284" y="58" fill="#00f5c4" font-family="Orbitron,monospace" font-size="11" font-weight="700">OUT</text>
+        <text x="284" y="72" fill="#e2e8f0" font-family="Orbitron,monospace" font-size="16" font-weight="900">?</text>
+        <defs>
+          <marker id="a1" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#38bdf8"/></marker>
+          <marker id="a2" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#00f5c4"/></marker>
+        </defs>
+        <text x="150" y="158" text-anchor="middle" fill="#64748b" font-family="Nunito,sans-serif" font-size="11">Setiap mesin punya aturan satu — berlaku untuk semua angka</text>
+      </svg>
+    </div>
+    <div class="callout">
+      <strong>Bayangkan ini:</strong> ada sebuah mesin ajaib. Kamu memasukkan angka, mesin memprosesnya dengan aturan rahasia, lalu mengeluarkan angka baru. Tugasmu adalah <em>memecahkan kodenya!</em>
+    </div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Mulai Belajar →</button></div>
+  </div>
+
+  <!-- SLIDE 2: Ice breaking -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Mesin Pertama: <span class="hi">Apakah aturannya?</span></div>
+      <div class="slide-sub">Perhatikan apa yang dilakukan mesin kepada setiap angka.</div>
+    </div>
+    <div class="machine-box">
+      <div class="lbl">Input → Output</div>
+      <div class="io-wrap">
+        <table class="iot">
+          <tr><th>Input</th><th></th><th>Output</th></tr>
+          <tr><td class="iv">1</td><td class="ar">→</td><td class="ov">3</td></tr>
+          <tr><td class="iv">2</td><td class="ar">→</td><td class="ov">4</td></tr>
+          <tr><td class="iv">3</td><td class="ar">→</td><td class="ov">5</td></tr>
+        </table>
+      </div>
+      <button class="reveal-btn" onclick="toggleReveal('r2')">🔍 Lihat Aturannya</button>
+      <div class="reveal-box" id="r2">
+        <div class="rule-text">Output = Input + 2</div>
+        <div class="rule-sub">Mesin menambahkan 2 ke setiap angka yang masuk!</div>
+      </div>
+    </div>
+    <div class="callout">
+      <strong>Cara menemukan aturan:</strong> lihat perbedaan antara input dan output. 1→3 (naik 2), 2→4 (naik 2), 3→5 (naik 2). Polanya konsisten!
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Selanjutnya →</button></div>
+  </div>
+
+  <!-- SLIDE 3: Pola sederhana -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title">Pola <span class="h2">Perkalian</span></div>
+      <div class="slide-sub">Kali ini mesinnya lebih seru — perhatikan polanya!</div>
+    </div>
+    <div class="machine-box">
+      <div class="lbl">Input → Output</div>
+      <div class="io-wrap">
+        <table class="iot">
+          <tr><th>Input</th><th></th><th>Output</th></tr>
+          <tr><td class="iv">1</td><td class="ar">→</td><td class="ov">2</td></tr>
+          <tr><td class="iv">2</td><td class="ar">→</td><td class="ov">4</td></tr>
+          <tr><td class="iv">3</td><td class="ar">→</td><td class="ov">6</td></tr>
+          <tr><td class="iv">4</td><td class="ar">→</td><td class="ov">8</td></tr>
+        </table>
+      </div>
+      <button class="reveal-btn" onclick="toggleReveal('r3')">🔍 Lihat Aturannya</button>
+      <div class="reveal-box" id="r3">
+        <div class="rule-text">Output = Input × 2</div>
+        <div class="rule-sub">Mesin menggandakan setiap angka! Jika input 10 → output 20.</div>
+      </div>
+    </div>
+    <div class="callout orange">
+      <strong>Trik cepat:</strong> Bagi output dengan input. 2÷1=2, 4÷2=2, 6÷3=2 — hasilnya sama! Artinya aturannya adalah "kali 2".
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Selanjutnya →</button></div>
+  </div>
+
+  <!-- SLIDE 4: Level up -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Mesin <span class="h3">Level Up</span></div>
+      <div class="slide-sub">Aturan dua langkah — mesin ini sedikit lebih kompleks!</div>
+    </div>
+    <div class="machine-box">
+      <div class="lbl">Input → Output</div>
+      <div class="io-wrap">
+        <table class="iot">
+          <tr><th>Input</th><th></th><th>Output</th></tr>
+          <tr><td class="iv">1</td><td class="ar">→</td><td class="ov">4</td></tr>
+          <tr><td class="iv">2</td><td class="ar">→</td><td class="ov">7</td></tr>
+          <tr><td class="iv">3</td><td class="ar">→</td><td class="ov">10</td></tr>
+          <tr><td class="iv">4</td><td class="ar">→</td><td class="ov">13</td></tr>
+        </table>
+      </div>
+      <button class="reveal-btn" onclick="toggleReveal('r4')">🔍 Lihat Aturannya</button>
+      <div class="reveal-box" id="r4">
+        <div class="rule-text">Output = Input × 3 + 1</div>
+        <div class="rule-sub">Kalikan 3 dulu, baru tambah 1. Input 5 → 5×3+1 = 16 ✓</div>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="stitle">Lihat perbedaan output berurutan</div><div class="sdesc">4→7→10→13 — selisihnya selalu 3. Ini berarti "kali 3"!</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="stitle">Cek konstanta tambahan</div><div class="sdesc">Input 1 × 3 = 3, tapi outputnya 4. Artinya ada "+1" tersembunyi.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="stitle">Verifikasi semua baris</div><div class="sdesc">Input 2 → 2×3+1=7 ✓ · Input 3 → 3×3+1=10 ✓ · Input 4 → 4×3+1=13 ✓</div></div></div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Selanjutnya →</button></div>
+  </div>
+
+  <!-- SLIDE 5: Fill the table -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title"><span class="hi">Lengkapi</span> Tabelnya</div>
+      <div class="slide-sub">Temukan aturan, lalu isi sel yang kosong!</div>
+    </div>
+    <div class="machine-box">
+      <div class="lbl">Temukan pola dan isi yang kosong</div>
+      <div class="io-wrap">
+        <table class="iot">
+          <tr><th>Input</th><th></th><th>Output</th></tr>
+          <tr><td class="iv">1</td><td class="ar">→</td><td class="ov">5</td></tr>
+          <tr><td class="iv">2</td><td class="ar">→</td><td class="ov">8</td></tr>
+          <tr><td class="iv">3</td><td class="ar">→</td><td class="ov">11</td></tr>
+          <tr><td class="iv">4</td><td class="ar">→</td><td class="qv"><input class="fill-input" id="f5a" placeholder="?" maxlength="3"></td></tr>
+          <tr><td class="iv">5</td><td class="ar">→</td><td class="qv"><input class="fill-input" id="f5b" placeholder="?" maxlength="3"></td></tr>
+        </table>
+      </div>
+      <button class="check-btn" onclick="checkFill5()">Cek Jawaban ✓</button>
+      <div class="check-result" id="cr5"></div>
+    </div>
+    <div class="callout green">
+      <strong>Petunjuk:</strong> Lihat pola selisih: 5→8→11 — naik 3 setiap kali. Apa aturan mesinnya? (Hint: coba input×3 + sesuatu)
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Selanjutnya →</button></div>
+  </div>
+
+  <!-- SLIDE 6: Detective challenge -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title">Tantangan <span class="h3">Detektif 🕵️</span></div>
+      <div class="slide-sub">Aturan ini lebih rumit — kamu bisa menemukan polanya?</div>
+    </div>
+    <div class="machine-box">
+      <div class="lbl">Apa aturan mesin ini?</div>
+      <div class="io-wrap">
+        <table class="iot">
+          <tr><th>Input</th><th></th><th>Output</th></tr>
+          <tr><td class="iv">1</td><td class="ar">→</td><td class="ov">6</td></tr>
+          <tr><td class="iv">2</td><td class="ar">→</td><td class="ov">10</td></tr>
+          <tr><td class="iv">3</td><td class="ar">→</td><td class="ov">14</td></tr>
+          <tr><td class="iv">4</td><td class="ar">→</td><td class="qv"><input class="fill-input" id="f6" placeholder="?" maxlength="3"></td></tr>
+        </table>
+      </div>
+      <button class="check-btn" onclick="checkFill6()">Cek Jawaban ✓</button>
+      <div class="check-result" id="cr6"></div>
+      <button class="reveal-btn" onclick="toggleReveal('r6')" style="margin-top:0.8rem">🔍 Ungkap Aturannya</button>
+      <div class="reveal-box" id="r6">
+        <div class="rule-text">Output = Input × 4 + 2</div>
+        <div class="rule-sub">Selisih output: 6→10→14 naik 4. Input 1×4=4, tapi output 6, jadi +2. Input 4 → 4×4+2 = <strong style="color:var(--neon)">18</strong></div>
+      </div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">Selanjutnya →</button></div>
+  </div>
+
+  <!-- SLIDE 7: Dari kata ke mesin -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">Dari <span class="hi">Kata</span> ke Mesin</div>
+      <div class="slide-sub">Kadang aturan diberikan dalam bentuk kalimat — kamu harus mengubahnya jadi angka!</div>
+    </div>
+    <div class="machine-box">
+      <div class="lbl" style="color:var(--accent)">⚙️ Aturan Mesin</div>
+      <div style="font-family:'Orbitron',monospace;font-size:0.95rem;color:var(--text);margin:0.8rem 0 1.2rem;line-height:1.6;">"Mesin menambahkan 5<br>pada setiap angka yang masuk."</div>
+      <div class="lbl">Hitung outputnya!</div>
+      <div class="io-wrap">
+        <table class="iot">
+          <tr><th>Input</th><th></th><th>Output</th></tr>
+          <tr><td class="iv">3</td><td class="ar">→</td><td class="qv"><input class="fill-input" id="w7a" placeholder="?" maxlength="3"></td></tr>
+          <tr><td class="iv">7</td><td class="ar">→</td><td class="qv"><input class="fill-input" id="w7b" placeholder="?" maxlength="3"></td></tr>
+          <tr><td class="iv">10</td><td class="ar">→</td><td class="qv"><input class="fill-input" id="w7c" placeholder="?" maxlength="3"></td></tr>
+        </table>
+      </div>
+      <button class="check-btn" onclick="checkFill7()">Cek Jawaban ✓</button>
+      <div class="check-result" id="cr7"></div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Selanjutnya →</button></div>
+  </div>
+
+  <!-- SLIDE 8: Prediksi besar -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">Prediksi <span class="h2">Besar</span> 🚀</div>
+      <div class="slide-sub">Aturan berlaku untuk SEMUA angka — bahkan yang sangat besar!</div>
+    </div>
+    <div class="machine-box">
+      <div class="io-wrap">
+        <table class="iot">
+          <tr><th>Input</th><th></th><th>Output</th></tr>
+          <tr><td class="iv">1</td><td class="ar">→</td><td class="ov">3</td></tr>
+          <tr><td class="iv">2</td><td class="ar">→</td><td class="ov">5</td></tr>
+          <tr><td class="iv">3</td><td class="ar">→</td><td class="ov">7</td></tr>
+          <tr><td class="iv">4</td><td class="ar">→</td><td class="ov">9</td></tr>
+          <tr><td class="iv" style="color:var(--accent)">20</td><td class="ar">→</td><td class="qv"><input class="fill-input" id="p8" placeholder="?" maxlength="4"></td></tr>
+        </table>
+      </div>
+      <button class="check-btn" onclick="checkFill8()">Cek Jawaban ✓</button>
+      <div class="check-result" id="cr8"></div>
+    </div>
+    <div class="callout green">
+      <strong>Kuncinya:</strong> Jangan hitung satu per satu dari 4 sampai 20! Temukan aturannya dulu, lalu langsung gunakan untuk input 20. Aturan: Output = Input × 2 + 1. Jadi input 20 → ?
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Selanjutnya →</button></div>
+  </div>
+
+  <!-- SLIDE 9: Rahasia mesin -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">Rahasia <span class="hi">Mesin</span> Terungkap</div>
+      <div class="slide-sub">Semua aturan yang kamu temukan bisa ditulis dengan sangat sederhana!</div>
+    </div>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <span class="icon">➕</span>
+        <div class="ctitle">Aturan Tambah</div>
+        <div class="cdesc">Output = Input + angka tertentu<br><br>Contoh: +2, +5, +10<br>Pola: output naik seragam</div>
+      </div>
+      <div class="concept-card">
+        <span class="icon">✖️</span>
+        <div class="ctitle">Aturan Kali</div>
+        <div class="cdesc">Output = Input × angka tertentu<br><br>Contoh: ×2, ×3, ×5<br>Pola: output tumbuh proporsional</div>
+      </div>
+      <div class="concept-card">
+        <span class="icon">🔀</span>
+        <div class="ctitle">Aturan Campuran</div>
+        <div class="cdesc">Output = Input × a + b<br><br>Contoh: ×3+1, ×4+2<br>Pola: kali dulu, baru tambah</div>
+      </div>
+      <div class="concept-card">
+        <span class="icon">🎯</span>
+        <div class="ctitle">Satu Aturan</div>
+        <div class="cdesc">Satu aturan berlaku untuk SEMUA input — itulah yang membuatnya powerful!</div>
+      </div>
+    </div>
+    <div class="callout">
+      <strong>Tahukah kamu?</strong> Dalam matematika yang lebih tinggi, "mesin" ini disebut <em>fungsi</em>. Kamu baru saja belajar konsep salah satu ide paling penting dalam matematika!
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Selesai →</button></div>
+  </div>
+
+  <!-- SLIDE 10: Summary -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Refleksi & <span class="h2">Penutup</span> 🎉</div>
+    </div>
+    <div class="summary-card">
+      <h3>✅ Yang Kamu Pelajari</h3>
+      <div class="summary-item"><span>⚙️</span> Mesin angka mengikuti aturan tertentu yang berlaku konsisten</div>
+      <div class="summary-item"><span>🔍</span> Pola ditemukan dengan melihat selisih dan hubungan input-output</div>
+      <div class="summary-item"><span>🚀</span> Satu aturan bisa digunakan untuk memprediksi angka sebesar apapun</div>
+      <div class="summary-item"><span>🧠</span> Matematika sering kali adalah seni menemukan aturan yang tersembunyi</div>
+    </div>
+    <div class="callout green">
+      <strong>"Matematika sering kali adalah seni menemukan aturan yang tersembunyi."</strong><br>Dan kamu baru saja membuktikannya! 🎯
+    </div>
+    <div class="done-actions">
+      <a href="quicktest14.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise14.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson14.html" class="da-btn da-secondary">Lesson 14</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let currentSlide = 1;
+const TOTAL = 10;
+
+function goSlide(n) {
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide = n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width = ((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function toggleReveal(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('show');
+}
+
+function checkFill5() {
+  const a = parseInt(document.getElementById('f5a').value);
+  const b = parseInt(document.getElementById('f5b').value);
+  const cr = document.getElementById('cr5');
+  const aOk = a === 14, bOk = b === 17;
+  document.getElementById('f5a').className = 'fill-input ' + (aOk?'ok':'err');
+  document.getElementById('f5b').className = 'fill-input ' + (bOk?'ok':'err');
+  if(aOk && bOk) { cr.style.color='var(--neon)'; cr.textContent='✅ Sempurna! Aturan: Output = Input × 3 + 2'; }
+  else { cr.style.color='var(--red)'; cr.textContent='❌ Coba lagi! Petunjuk: selisihnya 3, dan 1×3+2=5'; }
+}
+
+function checkFill6() {
+  const v = parseInt(document.getElementById('f6').value);
+  const cr = document.getElementById('cr6');
+  document.getElementById('f6').className = 'fill-input ' + (v===18?'ok':'err');
+  if(v===18) { cr.style.color='var(--neon)'; cr.textContent='✅ Benar! 4×4+2 = 18'; }
+  else { cr.style.color='var(--red)'; cr.textContent='❌ Selisih outputnya 4, ada tambahan 2'; }
+}
+
+function checkFill7() {
+  const a=parseInt(document.getElementById('w7a').value);
+  const b=parseInt(document.getElementById('w7b').value);
+  const c=parseInt(document.getElementById('w7c').value);
+  const cr=document.getElementById('cr7');
+  const ok = a===8 && b===12 && c===15;
+  document.getElementById('w7a').className='fill-input '+(a===8?'ok':'err');
+  document.getElementById('w7b').className='fill-input '+(b===12?'ok':'err');
+  document.getElementById('w7c').className='fill-input '+(c===15?'ok':'err');
+  if(ok){ cr.style.color='var(--neon)'; cr.textContent='✅ Semua benar! 3+5=8, 7+5=12, 10+5=15'; }
+  else{ cr.style.color='var(--red)'; cr.textContent='❌ Ingat: tambahkan 5 ke setiap input!'; }
+}
+
+function checkFill8() {
+  const v=parseInt(document.getElementById('p8').value);
+  const cr=document.getElementById('cr8');
+  document.getElementById('p8').className='fill-input '+(v===41?'ok':'err');
+  if(v===41){ cr.style.color='var(--neon)'; cr.textContent='✅ Benar! 20×2+1 = 41 🚀'; }
+  else{ cr.style.color='var(--red)'; cr.textContent='❌ Aturan: ×2+1. Coba: 20×2+1=?'; }
+}
+</script>
+</body>
+</html>

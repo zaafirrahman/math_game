@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan Mandiri · Jaring-Jaring · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;
+    --cube:#7a5af8;--cube-bg:rgba(122,90,248,0.1);--cube-light:#a98ff8;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(122,90,248,0.05) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--green);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  .page-header{text-align:center;margin-bottom:2.5rem;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);color:var(--green);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.2rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:700;margin-bottom:0.5rem;letter-spacing:1px;}
+  h1 span{color:var(--cube-light);}
+  .intro{color:var(--text-muted);font-size:0.88rem;line-height:1.7;}
+
+  .prog-section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.5rem;margin-bottom:2rem;box-shadow:0 3px 10px var(--shadow);position:relative;overflow:hidden;}
+  .prog-section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),var(--cube));}
+  .prog-header{display:flex;justify-content:space-between;margin-bottom:0.5rem;}
+  .prog-lbl{font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);}
+  .prog-num{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.9rem;color:var(--green);}
+  .prog-track{height:8px;background:var(--track);border-radius:2px;overflow:hidden;border:1px solid var(--border);}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--green),var(--cube));border-radius:2px;transition:width 0.5s ease;}
+  .prog-sub{font-family:'Rajdhani',sans-serif;font-size:0.7rem;color:var(--text-muted);margin-top:0.35rem;text-align:right;letter-spacing:1px;}
+
+  .q-list{display:flex;flex-direction:column;gap:1.4rem;}
+  .q-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.6rem;box-shadow:0 3px 10px var(--shadow);transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .q-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--border2);transition:background 0.2s;}
+  .q-item.answered-ok{border-color:rgba(72,200,112,0.3);}
+  .q-item.answered-ok::before{background:var(--green);}
+  .q-item.answered-no{border-color:rgba(232,80,64,0.25);}
+  .q-item.answered-no::before{background:var(--red);}
+
+  .q-num{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.65rem;display:flex;align-items:center;gap:0.6rem;}
+  .q-status{font-size:0.85rem;}
+  .q-text{font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:0.35rem;line-height:1.4;letter-spacing:0.5px;}
+  .q-hint-txt{font-size:0.8rem;color:var(--text-muted);margin-bottom:1rem;}
+
+  /* SVG visual in latihan */
+  .q-visual{display:flex;justify-content:center;padding:0.8rem;background:rgba(0,0,0,0.2);border-radius:8px;border:1px solid var(--border);margin-bottom:1.2rem;overflow-x:auto;}
+  .q-visual-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1.2rem;}
+  .visual-opt-card{background:rgba(0,0,0,0.2);border:2px solid var(--border);border-radius:8px;padding:0.7rem;cursor:pointer;transition:all 0.15s;text-align:center;}
+  .visual-opt-card:hover:not([data-disabled]){border-color:var(--cube);}
+  .visual-opt-card.correct{border-color:var(--green);background:var(--green-bg);}
+  .visual-opt-card.wrong{border-color:var(--red);background:rgba(232,80,64,0.07);}
+  .voc-label{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.78rem;color:var(--text-muted);margin-top:0.3rem;letter-spacing:1px;}
+
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;}
+  @media(max-width:380px){.opts{grid-template-columns:1fr;}.q-visual-grid{grid-template-columns:1fr 1fr;}}
+  .opt-btn{background:var(--track);border:1px solid var(--border2);color:var(--text);padding:0.75rem 0.5rem;border-radius:6px;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.92rem;text-align:center;transition:all 0.15s;letter-spacing:0.5px;line-height:1.35;}
+  .opt-btn:hover:not(:disabled){border-color:var(--cube);background:rgba(122,90,248,0.07);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(232,80,64,0.07);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+
+  .feedback{margin-top:0.75rem;padding:0.7rem 0.9rem;border-radius:6px;font-size:0.85rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid rgba(72,200,112,0.3);}
+  .feedback.no{background:rgba(232,80,64,0.07);color:var(--red);border:1px solid rgba(232,80,64,0.25);}
+
+  .done-banner{display:none;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2.5rem 2rem;margin-top:2rem;position:relative;overflow:hidden;}
+  .done-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--cube),var(--amber));}
+  .done-banner.show{display:block;animation:fadeUp 0.5s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .done-icon{font-size:4rem;display:block;margin-bottom:0.8rem;animation:chug 0.6s ease-in-out infinite alternate;}
+  @keyframes chug{from{transform:translateX(-4px);}to{transform:translateX(4px);}}
+  .done-title{font-family:'Rajdhani',sans-serif;font-size:1.4rem;font-weight:700;color:var(--cube-light);letter-spacing:2px;margin-bottom:0.5rem;}
+  .done-desc{color:var(--text-muted);font-size:0.88rem;line-height:1.7;margin-bottom:1.2rem;}
+  .done-score{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;color:var(--amber);margin-bottom:1.2rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);color:var(--amber);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.5rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--amber),#c07810);color:#000;font-weight:800;}
+
+  .save-toast{position:fixed;bottom:2.5rem;right:1.5rem;background:var(--green);color:#000;padding:0.55rem 1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:1px;opacity:0;pointer-events:none;transition:opacity 0.3s;box-shadow:0 4px 12px rgba(72,200,112,0.4);z-index:200;}
+  .save-toast.show{opacity:1;}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson18.html">LESSON 18</a><span>/</span>
+  <span class="cur">LATIHAN MANDIRI</span>
+</nav>
+
+<div class="wrap">
+  <div class="page-header">
+    <div class="sec-badge">🏠 Latihan Mandiri</div>
+    <h1>10 Soal <span>Jaring-Jaring</span></h1>
+    <p class="intro">Nggak ada timer, nggak ada tekanan. Kerjain sekarang, tutup, buka lagi besok — jawaban tersimpan otomatis!</p>
+  </div>
+
+  <div class="prog-section">
+    <div class="prog-header">
+      <span class="prog-lbl">Progress</span>
+      <span class="prog-num" id="progNum">0 / 10</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <div class="prog-sub" id="progSub">Mulai dari soal manapun!</div>
+  </div>
+
+  <div class="q-list" id="qList"></div>
+
+  <div class="done-banner" id="doneBanner">
+    <span class="done-icon">🏆</span>
+    <div class="done-title">SELESAI!</div>
+    <div class="done-desc">Kamu udah ngerjain semua soal jaring-jaring. Mantap!</div>
+    <div class="done-score" id="doneScore"></div>
+    <div class="xp" id="doneXP"></div>
+    <div class="action-btns">
+      <a href="lesson18.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="../fatih_0560.html" class="btn btn-primary">Student Hub 🚂</a>
+    </div>
+  </div>
+</div>
+
+<div class="save-toast" id="toast">✓ SAVED</div>
+
+<script>
+// ── SVG Net Builder ───────────────────────────────────────────────
+function svgNet(cells, cols, rows, color, strokeColor, S) {
+  S = S || 32;
+  const pad = 4;
+  const W = cols * S + pad * 2;
+  const H = rows * S + pad * 2;
+  let rects = cells.map(([c,r]) =>
+    `<rect x="${pad+c*S}" y="${pad+r*S}" width="${S}" height="${S}" fill="${color}" stroke="${strokeColor}" stroke-width="1.5" rx="2"/>`
+  ).join('');
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">${rects}</svg>`;
+}
+
+function svgBalokNet(S) {
+  S = S || 18;
+  const pad = 6;
+  const fill = 'rgba(74,144,184,0.35)';
+  const stroke = '#4a90b8';
+  // Clean cross layout: top above front, left/right flanking, bottom+back below
+  const faces = [
+    [2, 0, 3, 2],  // top
+    [0, 2, 2, 2],  // left
+    [2, 2, 3, 2],  // front (center)
+    [5, 2, 2, 2],  // right
+    [2, 4, 3, 2],  // bottom
+    [2, 6, 3, 2],  // back
+  ];
+  const totalW = 7*S+pad*2, totalH = 8*S+pad*2;
+  let rects = faces.map(([x,y,w,h]) =>
+    `<rect x="${pad+x*S}" y="${pad+y*S}" width="${w*S}" height="${h*S}" fill="${fill}" stroke="${stroke}" stroke-width="1.5" rx="2"/>`
+  ).join('');
+  return `<svg width="${totalW}" height="${totalH}" viewBox="0 0 ${totalW} ${totalH}" xmlns="http://www.w3.org/2000/svg">${rects}</svg>`;
+}
+
+// ── Question data ─────────────────────────────────────────────────
+// visual: null | 'net-A' | 'net-B' | 'net-invalid5' | 'net-invalid6row' | 'balok-net' | 'multi-kubus' | 'multi-all'
+const QS = [
+  // 1: Fact — how many squares
+  {
+    text: 'Kubus punya berapa sisi? Jadi, jaring-jaringnya terdiri dari berapa persegi?',
+    hint: '💡 Ingat properti kubus: sisi, rusuk, titik sudut',
+    visual: null,
+    opts: ['4 persegi', '5 persegi', '6 persegi', '8 persegi'],
+    answer: '6 persegi',
+    explain: 'Kubus punya 6 sisi, sehingga jaring-jaringnya terdiri dari tepat 6 persegi ✓'
+  },
+  // 2: Valid net identification with SVG
+  {
+    text: 'Gambar di bawah ini — bisa dilipat jadi kubus?',
+    hint: '💡 Hitung jumlah kotak dan perhatikan posisinya',
+    visual: 'net-valid-cross',
+    opts: ['✅ Ya, ini jaring-jaring kubus', '❌ Tidak, kotaknya kurang', '❌ Tidak, kotaknya lebih', '❌ Tidak, bentuknya salah'],
+    answer: '✅ Ya, ini jaring-jaring kubus',
+    explain: 'Tepat 6 persegi dalam bentuk salib (+) — ini jaring-jaring kubus yang valid! ✓'
+  },
+  // 3: Invalid net — only 5 squares
+  {
+    text: 'Perhatikan gambar ini. Bisa jadi kubus?',
+    hint: '💡 Hitung dulu kotaknya!',
+    visual: 'net-invalid5',
+    opts: ['✅ Bisa — ini jaring-jaring kubus', '❌ Tidak — kotaknya cuma 5, kurang 1', '❌ Tidak — kotaknya 7, kebanyakan', '✅ Bisa — ini jaring-jaring balok'],
+    answer: '❌ Tidak — kotaknya cuma 5, kurang 1',
+    explain: 'Hanya 5 kotak, tapi kubus butuh 6. Jaring ini tidak lengkap! ✓'
+  },
+  // 4: Balok fact
+  {
+    text: 'Sisi-sisi balok berbentuk apa saja?',
+    hint: '💡 Bayangkan kotak tisu / kardus susu',
+    visual: null,
+    opts: ['6 persegi sama besar', 'Persegi panjang — 3 pasang beda ukuran', '4 persegi + 2 segitiga', '8 persegi panjang'],
+    answer: 'Persegi panjang — 3 pasang beda ukuran',
+    explain: 'Balok punya 6 sisi: 3 pasang persegi panjang. Tiap pasang bisa beda ukurannya ✓'
+  },
+  // 5: Balok net visual
+  {
+    text: 'Gambar di bawah adalah jaring-jaring suatu bangun. Bangun apakah itu?',
+    hint: '💡 Perhatikan bentuk dan ukuran tiap bagiannya',
+    visual: 'balok-net',
+    opts: ['Kubus', 'Balok', 'Segitiga', 'Persegi panjang'],
+    answer: 'Balok',
+    explain: 'Ada 6 persegi panjang dengan 3 pasang ukuran berbeda — ini jaring-jaring balok! ✓'
+  },
+  // 6: Row of 6 squares — invalid
+  {
+    text: '6 kotak berjejer dalam satu baris lurus. Bisa jadi kubus?',
+    hint: '💡 Coba bayangkan melipatnya — bagaimana ujung-ujungnya?',
+    visual: 'net-invalid-row',
+    opts: ['✅ Bisa, sudah 6 kotak', '❌ Tidak bisa, meski 6 kotak posisinya salah', '✅ Bisa menjadi balok', '❌ Tidak bisa, kotaknya kurang'],
+    answer: '❌ Tidak bisa, meski 6 kotak posisinya salah',
+    explain: '6 kotak dalam satu baris lurus tidak bisa dilipat jadi kubus — posisinya tidak tepat! ✓'
+  },
+  // 7: Multi-choice visual — pick valid cube net
+  {
+    text: 'Dari keempat gambar berikut, manakah jaring-jaring kubus yang BENAR?',
+    hint: '💡 Yang benar harus: 6 kotak + bisa dilipat menutup semua sisi',
+    visual: 'multi-kubus',
+    opts: ['A', 'B', 'C', 'D'],
+    answer: 'C',
+    explain: 'Gambar C adalah jaring-jaring kubus yang valid (variasi L-shape dengan 6 persegi yang bisa dilipat) ✓'
+  },
+  // 8: Soal cerita — jaring-jaring
+  {
+    text: 'Pak Andi membuat kotak kubus dari karton. Berapa lembar persegi yang dia butuhkan?',
+    hint: '💡 Satu lembar = satu sisi',
+    visual: null,
+    opts: ['4 lembar', '6 lembar', '8 lembar', '12 lembar'],
+    answer: '6 lembar',
+    explain: 'Kubus punya 6 sisi, jadi butuh 6 lembar persegi ✓'
+  },
+  // 9: Conceptual — what is a net
+  {
+    text: 'Jaring-jaring bangun ruang adalah...',
+    hint: '💡 Bayangkan kardus yang dibuka rata',
+    visual: null,
+    opts: [
+      'Gambar 3D bangun ruang dari samping',
+      'Bangun datar yang bisa dilipat jadi bangun ruang',
+      'Rumus untuk menghitung volume',
+      'Nama lain dari titik sudut'
+    ],
+    answer: 'Bangun datar yang bisa dilipat jadi bangun ruang',
+    explain: 'Jaring-jaring = bangun datar (2D) yang kalau dilipat pada garisnya akan membentuk bangun ruang (3D) ✓'
+  },
+  // 10: Challenge — cube vs balok net difference
+  {
+    text: 'Gambar A adalah jaring kubus, Gambar B adalah jaring balok. Perbedaan utamanya apa?',
+    hint: '💡 Perhatikan ukuran tiap kotaknya',
+    visual: 'compare-both',
+    opts: [
+      'Kubus punya lebih banyak sisi',
+      'Jaring kubus: semua kotak sama besar · Jaring balok: ada kotak beda ukuran',
+      'Balok punya lebih banyak sisi dari kubus',
+      'Tidak ada bedanya sama sekali'
+    ],
+    answer: 'Jaring kubus: semua kotak sama besar · Jaring balok: ada kotak beda ukuran',
+    explain: 'Kubus = 6 persegi identik. Balok = 6 persegi panjang, 3 pasang ukuran berbeda ✓'
+  }
+];
+
+// ── Visual Renderer ───────────────────────────────────────────────
+function buildVisualHTML(type) {
+  if (!type) return '';
+  const cv = 'rgba(122,90,248,0.35)';
+  const cs = '#7a5af8';
+  const rv = 'rgba(232,80,64,0.18)';
+  const rs = '#e85040';
+
+  if (type === 'net-valid-cross') {
+    return `<div class="q-visual">${svgNet([[1,0],[0,1],[1,1],[2,1],[3,1],[1,2]],4,3,cv,cs)}</div>`;
+  }
+  if (type === 'net-invalid5') {
+    return `<div class="q-visual">${svgNet([[0,0],[1,0],[1,1],[1,2],[2,2]],3,3,rv,rs)}</div>`;
+  }
+  if (type === 'net-invalid-row') {
+    return `<div class="q-visual">${svgNet([[0,0],[1,0],[2,0],[3,0],[4,0],[5,0]],6,1,rv,rs)}</div>`;
+  }
+  if (type === 'balok-net') {
+    return `<div class="q-visual" style="overflow-x:auto;">${svgBalokNet(20)}</div>`;
+  }
+  if (type === 'multi-kubus') {
+    // A: only 5 squares (invalid), B: row of 6 (invalid), C: valid L-shape, D: 7 squares (invalid)
+    // All same neutral color — no visual hint!
+    const cn = 'rgba(100,120,150,0.35)';
+    const sn = '#6080a0';
+    const svgA = svgNet([[0,0],[1,0],[1,1],[1,2],[2,2]],3,3,cn,sn,28);             // 5 sq — invalid
+    const svgB = svgNet([[0,0],[1,0],[2,0],[3,0],[4,0],[5,0]],6,1,cn,sn,28);       // row — invalid
+    const svgC = svgNet([[0,0],[1,0],[1,1],[2,1],[1,2],[1,3]],3,4,cn,sn,28);       // valid L-shape
+    const svgD = svgNet([[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[1,2]],3,3,cn,sn,28); // 7 sq — invalid
+    return `<div id="multi-grid-7" class="q-visual-grid" style="margin-bottom:1.2rem;">
+      ${[['A',svgA],['B',svgB],['C',svgC],['D',svgD]].map(([l,s])=>`
+        <div class="visual-opt-card" data-voc="${l}">
+          ${s}<div class="voc-label">${l}</div>
+        </div>`).join('')}
+    </div>`;
+  }
+  if (type === 'compare-both') {
+    const svgCube = svgNet([[1,0],[0,1],[1,1],[2,1],[3,1],[1,2]],4,3,cv,cs,24);
+    const svgBalok = svgBalokNet(18);
+    return `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1.2rem;">
+      <div style="background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:8px;padding:0.6rem;text-align:center;overflow:hidden;">
+        <div style="font-family:Rajdhani,sans-serif;font-size:0.7rem;font-weight:700;color:var(--cube-light);margin-bottom:0.3rem;letter-spacing:1px;">A · KUBUS</div>${svgCube}
+      </div>
+      <div style="background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:8px;padding:0.6rem;text-align:center;overflow:hidden;">
+        <div style="font-family:Rajdhani,sans-serif;font-size:0.7rem;font-weight:700;color:var(--steel-light);margin-bottom:0.3rem;letter-spacing:1px;">B · BALOK</div>${svgBalok}
+      </div>
+    </div>`;
+  }
+  return '';
+}
+
+// ── State & Storage ───────────────────────────────────────────────
+const KEY = 'fatih_latihan_lesson18';
+let state = loadState();
+
+function loadState(){try{const s=localStorage.getItem(KEY);if(s)return JSON.parse(s);}catch(e){}return{answers:{}};}
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify(state));showToast();}catch(e){}}
+function showToast(){const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1600);}
+
+function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+// ── Render ────────────────────────────────────────────────────────
+function renderAll(){
+  const list=document.getElementById('qList');
+  list.innerHTML='';
+  QS.forEach((q,i)=>{
+    const done=state.answers[i];
+    const el=document.createElement('div');
+    el.className='q-item'+(done?' answered-'+(done.correct?'ok':'no'):'');
+    el.id='qi-'+i;
+
+    // Build opts HTML
+    const shuf=shuffleArr([...q.opts]);
+    const isVisualMulti=(q.visual==='multi-kubus');
+
+    let optsHTML='';
+    if(!isVisualMulti){
+      optsHTML=`<div class="opts" id="opts-${i}">
+        ${shuf.map(o=>`
+          <button class="opt-btn${done?(o===q.answer?' correct':(o===done.chosen&&!done.correct?' wrong':'')):''}${done?' disabled-btn':''}"
+            ${done?'disabled':''} onclick="answer(${i},'${o.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">
+            ${o}
+          </button>`).join('')}
+      </div>`;
+    }
+
+    el.innerHTML=`
+      <div class="q-num">
+        <span class="q-status">${done?(done.correct?'✅':'❌'):'📦'}</span>
+        SOAL ${i+1} ${done?`· ${done.correct?'BENAR':'SALAH'}`:''}
+      </div>
+      <div class="q-text">${q.text}</div>
+      <div class="q-hint-txt">💡 ${q.hint}</div>
+      ${buildVisualHTML(q.visual)}
+      ${optsHTML}
+      <div class="feedback${done?' show '+(done.correct?'ok':'no'):''}" id="fb-${i}">
+        ${done?(done.correct?'✅ ':'❌ ')+q.explain:''}
+      </div>
+    `;
+    list.appendChild(el);
+
+    // Attach visual multi listeners after DOM insert
+    if(isVisualMulti){
+      const grid=el.querySelector('#multi-grid-7');
+      if(grid){
+        grid.querySelectorAll('.visual-opt-card').forEach(card=>{
+          const lbl=card.getAttribute('data-voc');
+          if(done){
+            card.setAttribute('data-disabled','1');
+            if(lbl===q.answer)card.classList.add('correct');
+            else if(lbl===done.chosen&&!done.correct)card.classList.add('wrong');
+          } else {
+            card.addEventListener('click',function(){
+              if(card.getAttribute('data-disabled'))return;
+              const isCorrect=lbl===q.answer;
+              // disable all
+              grid.querySelectorAll('.visual-opt-card').forEach(c=>{
+                c.setAttribute('data-disabled','1');
+                const cl=c.getAttribute('data-voc');
+                if(cl===q.answer)c.classList.add('correct');
+                else if(cl===lbl&&!isCorrect)c.classList.add('wrong');
+              });
+              recordAnswer(i, lbl, isCorrect, q);
+            });
+          }
+        });
+      }
+    }
+  });
+  updateProgress();
+  checkAllDone();
+}
+
+function answer(idx, chosen){
+  const q=QS[idx];
+  const correct=chosen===q.answer;
+  document.querySelectorAll(`#opts-${idx} .opt-btn`).forEach(b=>{
+    b.disabled=true;
+    if(b.textContent.trim()===q.answer)b.classList.add('correct');
+    else if(b.textContent.trim()===chosen&&!correct)b.classList.add('wrong');
+  });
+  recordAnswer(idx, chosen, correct, q);
+}
+
+function recordAnswer(idx, chosen, correct, q){
+  state.answers[idx]={chosen,correct};
+  saveState();
+  const fb=document.getElementById(`fb-${idx}`);
+  fb.className='feedback show '+(correct?'ok':'no');
+  fb.textContent=(correct?'✅ ':'❌ ')+q.explain;
+  const item=document.getElementById(`qi-${idx}`);
+  item.classList.add('answered-'+(correct?'ok':'no'));
+  item.querySelector('.q-num').innerHTML=`<span class="q-status">${correct?'✅':'❌'}</span> SOAL ${idx+1} · ${correct?'BENAR':'SALAH'}`;
+  updateProgress();
+  checkAllDone();
+  setTimeout(()=>{
+    const nextIdx=QS.findIndex((_,i)=>i>idx&&!state.answers[i]);
+    if(nextIdx!==-1){document.getElementById('qi-'+nextIdx).scrollIntoView({behavior:'smooth',block:'center'});}
+  },600);
+}
+
+function updateProgress(){
+  const done=Object.keys(state.answers).length;
+  const correct=Object.values(state.answers).filter(a=>a.correct).length;
+  document.getElementById('progNum').textContent=`${done} / 10`;
+  document.getElementById('progFill').style.width=(done/10*100)+'%';
+  document.getElementById('progSub').textContent=
+    done===0?'Mulai dari soal manapun!':
+    done===10?`Selesai! ${correct}/10 benar 📦`:
+    `${10-done} soal lagi — lanjut kapan pun kamu siap!`;
+}
+
+function checkAllDone(){
+  if(Object.keys(state.answers).length<10)return;
+  const correct=Object.values(state.answers).filter(a=>a.correct).length;
+  const banner=document.getElementById('doneBanner');
+  banner.classList.add('show');
+  document.getElementById('doneScore').textContent=`${correct} / 10 Benar`;
+  const pct=correct/10;
+  let xp=pct===1?'+200 XP — JARING MASTER!':pct>=0.8?'+160 XP — NET PRO!':pct>=0.6?'+120 XP — GOOD JOB!':'+80 XP — KEEP PRACTICING!';
+  document.getElementById('doneXP').textContent='⚡ '+xp;
+  banner.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+renderAll();
+</script>
+</body>
+</html>
