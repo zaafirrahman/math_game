@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 15 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--violet:#a78bfa;--red:#ef4444;--blue:#38bdf8;--orange:#fb923c;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(0,245,196,0.06) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(167,139,250,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--neon);}
+  .wrapper{max-width:720px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--neon),var(--violet));border-radius:99px;transition:width 0.4s ease;}
+
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--neon);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title .h1{color:var(--neon);}
+  .slide-title .h2{color:var(--violet);}
+  .slide-title .h3{color:var(--accent);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+
+  /* Dual machine */
+  .dual-machine-wrap{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.8rem;margin-bottom:1.5rem;overflow-x:auto;}
+  .dual-machine-wrap .lbl{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:1.2rem;text-align:center;}
+  .dm-row{display:flex;align-items:center;justify-content:center;gap:0.6rem;flex-wrap:wrap;row-gap:0.5rem;}
+  .dm-input{background:#12121c;border:2px solid var(--blue);border-radius:10px;padding:0.5rem 0.9rem;font-family:'Orbitron',monospace;font-size:1.2rem;font-weight:900;color:var(--blue);min-width:44px;text-align:center;}
+  .dm-arrow{color:var(--muted);font-size:1.1rem;font-weight:700;}
+  .dm-box{border-radius:10px;padding:0.5rem 1rem;font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:700;text-align:center;min-width:70px;}
+  .dm-box.b1{background:rgba(56,189,248,0.1);border:1.5px solid var(--blue);color:var(--blue);}
+  .dm-box.b2{background:rgba(167,139,250,0.1);border:1.5px solid var(--violet);color:var(--violet);}
+  .dm-mid{background:#0a0a0f;border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.7rem;font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--accent);min-width:36px;text-align:center;}
+  .dm-output{background:#12121c;border:2px solid var(--neon);border-radius:10px;padding:0.5rem 0.9rem;font-family:'Orbitron',monospace;font-size:1.2rem;font-weight:900;color:var(--neon);min-width:44px;text-align:center;}
+
+  /* IO Table */
+  .io-wrap{display:flex;justify-content:center;margin:1rem 0;}
+  table.iot{border-collapse:collapse;}
+  table.iot th{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding:0.4rem 1.5rem;border-bottom:1px solid var(--border);}
+  table.iot td{text-align:center;padding:0.55rem 1.5rem;font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;border-top:1px solid rgba(42,42,64,0.5);}
+  table.iot td.iv{color:var(--blue);}
+  table.iot td.ov{color:var(--neon);}
+  table.iot td.ar{color:var(--muted);font-size:0.9rem;padding:0.55rem 0.4rem;}
+  table.iot td.qv{color:var(--accent);}
+
+  /* Reveal */
+  .reveal-btn{background:rgba(0,245,196,0.08);border:1px solid rgba(0,245,196,0.35);color:var(--neon);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(0,245,196,0.15);}
+  .reveal-box{background:rgba(0,245,196,0.05);border:1px solid rgba(0,245,196,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;text-align:center;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+  .reveal-box .rule-text{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;color:var(--neon);margin-bottom:0.4rem;}
+  .reveal-box .rule-sub{font-size:0.85rem;color:var(--muted);}
+
+  /* Fill input */
+  .fill-row{display:flex;align-items:center;justify-content:center;gap:0.8rem;margin:0.5rem 0;font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;}
+  .fill-row .iv{color:var(--blue);}
+  .fill-row .ar{color:var(--muted);}
+  .fill-input{background:#12121c;border:1.5px solid var(--border);color:var(--neon);font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;width:64px;text-align:center;border-radius:8px;padding:0.4rem;transition:border-color 0.2s;}
+  .fill-input:focus{outline:none;border-color:var(--neon);}
+  .fill-input.ok{border-color:var(--neon);}
+  .fill-input.err{border-color:var(--red);}
+  .check-btn{background:linear-gradient(135deg,var(--neon),#059669);color:#000;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;padding:0.5rem 1.2rem;border:none;border-radius:8px;cursor:pointer;margin-top:0.8rem;font-weight:800;}
+  .check-result{font-family:'Orbitron',monospace;font-size:0.85rem;margin-top:0.6rem;min-height:22px;text-align:center;}
+
+  /* Concept grid */
+  .concept-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;}
+  @media(max-width:500px){.concept-grid{grid-template-columns:1fr;}}
+  .concept-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;}
+  .concept-card .icon{font-size:1.8rem;margin-bottom:0.6rem;display:block;}
+  .concept-card .ctitle{font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:700;color:var(--neon);margin-bottom:0.5rem;}
+  .concept-card .cdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  /* Steps */
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(0,245,196,0.12);border:1px solid rgba(0,245,196,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:var(--neon);flex-shrink:0;}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  /* Notation box */
+  .notation-box{background:var(--card);border:1px solid rgba(0,245,196,0.35);border-radius:16px;padding:1.5rem;margin:1.2rem 0;text-align:center;}
+  .notation-big{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2.2rem);font-weight:900;color:var(--neon);letter-spacing:2px;margin-bottom:0.6rem;}
+  .notation-sub{font-size:0.85rem;color:var(--muted);line-height:1.7;}
+  .notation-sub .xvar{color:var(--blue);font-weight:700;}
+  .notation-sub .yvar{color:var(--neon);font-weight:700;}
+
+  /* Callout */
+  .callout{background:rgba(0,245,196,0.05);border-left:3px solid var(--neon);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--neon);}
+  .callout.violet{background:rgba(167,139,250,0.05);border-color:var(--violet);}
+  .callout.violet strong{color:var(--violet);}
+  .callout.orange{background:rgba(245,158,11,0.05);border-color:var(--accent);}
+  .callout.orange strong{color:var(--accent);}
+
+  /* Nav */
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--neon),#059669);border:none;color:#000;font-weight:800;}
+  .nav-btn:hover{border-color:var(--neon);color:var(--neon);}
+  .nav-btn.next:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,245,196,0.3);}
+
+  /* Summary */
+  .summary-card{background:var(--card);border:1px solid rgba(0,245,196,0.3);border-radius:18px;padding:2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.9rem;color:var(--neon);letter-spacing:2px;margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .summary-item span{flex-shrink:0;}
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;}
+  .da-primary{background:linear-gradient(135deg,var(--neon),#059669);color:#000;border:none;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,245,196,0.3);}
+  .da-secondary:hover{border-color:var(--neon);color:var(--neon);}
+
+  /* Reverse machine */
+  .rev-machine{background:var(--card);border:1px solid rgba(251,146,60,0.3);border-radius:16px;padding:1.5rem;margin:1.2rem 0;}
+  .rev-machine .rev-lbl{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--orange);text-transform:uppercase;margin-bottom:1rem;text-align:center;}
+  .rev-row{display:flex;align-items:center;justify-content:center;gap:0.6rem;flex-wrap:wrap;}
+  .rev-out{background:#12121c;border:2px solid var(--orange);border-radius:10px;padding:0.5rem 0.9rem;font-family:'Orbitron',monospace;font-size:1.2rem;font-weight:900;color:var(--orange);text-align:center;}
+  .rev-arrow{color:var(--muted);font-size:1.1rem;font-weight:700;}
+  .rev-box{border-radius:10px;padding:0.5rem 1rem;font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:700;min-width:80px;text-align:center;background:rgba(251,146,60,0.1);border:1.5px solid var(--orange);color:var(--orange);}
+  .rev-in{background:#12121c;border:2px solid var(--blue);border-radius:10px;padding:0.5rem 0.9rem;font-family:'Orbitron',monospace;font-size:1.2rem;font-weight:900;color:var(--blue);text-align:center;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson15.html">LESSON 15</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+  <!-- SLIDE 1: Cover -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title"><span class="h1">Mesin Angka</span> <span class="h2">Level 2</span></div>
+      <div class="slide-sub">Kamu sudah bisa menemukan aturan sederhana. Sekarang mesinnya lebih canggih — dua langkah, bisa dibalik, dan bisa kamu tulis seperti rumus sungguhan!</div>
+    </div>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <span class="icon">⚙️⚙️</span>
+        <div class="ctitle">Dua Langkah</div>
+        <div class="cdesc">Mesin baru punya dua aturan berurutan. Input diproses step 1, hasilnya diproses step 2.</div>
+      </div>
+      <div class="concept-card">
+        <span class="icon">🔄</span>
+        <div class="ctitle">Reverse Challenge</div>
+        <div class="cdesc">Dikasih output, kamu harus menemukan inputnya. Jalan mundur lewat mesin!</div>
+      </div>
+      <div class="concept-card">
+        <span class="icon">🔤</span>
+        <div class="ctitle">Variabel x dan y</div>
+        <div class="cdesc">Aturan mesin bisa ditulis sebagai: y = 2x + 1. x adalah input, y adalah output.</div>
+      </div>
+      <div class="concept-card">
+        <span class="icon">🎯</span>
+        <div class="ctitle">Satu Aturan, Semua Input</div>
+        <div class="cdesc">Aturan yang sama berlaku untuk x berapa pun. Satu formula menjawab semuanya.</div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Mulai →</button></div>
+  </div>
+
+  <!-- SLIDE 2: Mesin Satu Langkah (recap) -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Recap: Mesin <span class="h1">Satu Langkah</span></div>
+      <div class="slide-sub">Kamu sudah hafal ini dari Lesson 14. Sebentar lagi kita tambah satu mesin lagi!</div>
+    </div>
+    <div class="dual-machine-wrap">
+      <div class="lbl">Mesin Satu Langkah</div>
+      <div class="dm-row">
+        <div class="dm-input">3</div>
+        <div class="dm-arrow">→</div>
+        <div class="dm-box b1">× 4</div>
+        <div class="dm-arrow">→</div>
+        <div class="dm-output">12</div>
+      </div>
+      <div style="margin-top:1rem;text-align:center;font-size:0.85rem;color:var(--muted);">Input 3, dikali 4, output 12. Simple!</div>
+    </div>
+    <div class="io-wrap">
+      <table class="iot">
+        <tr><th>Input</th><th></th><th>Output</th></tr>
+        <tr><td class="iv">1</td><td class="ar">→</td><td class="ov">4</td></tr>
+        <tr><td class="iv">2</td><td class="ar">→</td><td class="ov">8</td></tr>
+        <tr><td class="iv">3</td><td class="ar">→</td><td class="ov">12</td></tr>
+        <tr><td class="iv">5</td><td class="ar">→</td><td class="ov">20</td></tr>
+      </table>
+    </div>
+    <div class="callout"><strong>Aturannya:</strong> Output = Input × 4. Satu langkah, satu operasi. Sekarang, gimana kalau ada dua operasi berurutan?</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Selanjutnya →</button></div>
+  </div>
+
+  <!-- SLIDE 3: Mesin Dua Langkah -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title">Mesin <span class="h1">Dua Langkah</span></div>
+      <div class="slide-sub">Dua mesin disambung — output dari mesin pertama jadi input mesin kedua!</div>
+    </div>
+    <div class="dual-machine-wrap">
+      <div class="lbl">Mesin Dua Langkah · input = 4</div>
+      <div class="dm-row">
+        <div class="dm-input">4</div>
+        <div class="dm-arrow">→</div>
+        <div class="dm-box b1">× 2</div>
+        <div class="dm-arrow">→</div>
+        <div class="dm-mid">8</div>
+        <div class="dm-arrow">→</div>
+        <div class="dm-box b2">+ 3</div>
+        <div class="dm-arrow">→</div>
+        <div class="dm-output">11</div>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="stitle">Step 1: masuk ke Mesin ×2</div>
+          <div class="sdesc">Input 4 dikali 2 → hasilnya 8. Ini <em>hasil antara</em>, bukan output akhir.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="stitle">Step 2: hasil antara masuk ke Mesin +3</div>
+          <div class="sdesc">8 ditambah 3 → output akhir = 11. Selesai!</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout"><strong>Jangan langsung +3 ke input awal!</strong> Urutan penting: kali dulu, baru tambah. 4 × 2 + 3 = 11 ✓ (bukan 4 + 3 × 2 = 14)</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Selanjutnya →</button></div>
+  </div>
+
+  <!-- SLIDE 4: Latihan dua langkah -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Coba Sendiri: <span class="h2">Dua Langkah</span></div>
+      <div class="slide-sub">Mesin: ×3 kemudian +2. Lengkapi tabel ini!</div>
+    </div>
+    <div class="dual-machine-wrap">
+      <div class="lbl">Mesin: ×3 → +2</div>
+      <div class="dm-row">
+        <div class="dm-input">?</div>
+        <div class="dm-arrow">→</div>
+        <div class="dm-box b1">× 3</div>
+        <div class="dm-arrow">→</div>
+        <div class="dm-mid">?</div>
+        <div class="dm-arrow">→</div>
+        <div class="dm-box b2">+ 2</div>
+        <div class="dm-arrow">→</div>
+        <div class="dm-output">?</div>
+      </div>
+    </div>
+    <div class="io-wrap">
+      <table class="iot">
+        <tr><th>Input</th><th></th><th>Step 1 (×3)</th><th></th><th>Output</th></tr>
+        <tr><td class="iv">1</td><td class="ar">→</td><td class="ov" style="color:var(--accent)">3</td><td class="ar">→</td><td class="ov">5</td></tr>
+        <tr><td class="iv">2</td><td class="ar">→</td><td class="ov" style="color:var(--accent)">6</td><td class="ar">→</td><td class="ov">8</td></tr>
+        <tr><td class="iv">3</td><td class="ar">→</td><td class="ov" style="color:var(--accent)">9</td><td class="ar">→</td><td class="ov">11</td></tr>
+        <tr>
+          <td class="iv">5</td><td class="ar">→</td>
+          <td class="qv"><input class="fill-input" id="s4a" placeholder="?" maxlength="3"></td>
+          <td class="ar">→</td>
+          <td class="qv"><input class="fill-input" id="s4b" placeholder="?" maxlength="3"></td>
+        </tr>
+      </table>
+    </div>
+    <button class="check-btn" onclick="checkSlide4()">Cek Jawaban ✓</button>
+    <div class="check-result" id="cr4"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Selanjutnya →</button></div>
+  </div>
+
+  <!-- SLIDE 5: Reverse Challenge -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title"><span class="h3">Reverse</span> Challenge 🔄</div>
+      <div class="slide-sub">Biasanya kita diberi input, lalu cari output. Kali ini sebaliknya — dikasih output, cari inputnya!</div>
+    </div>
+    <div class="rev-machine">
+      <div class="rev-lbl">Jalan Mundur — aturan: ×2 lalu +1</div>
+      <div class="rev-row">
+        <div class="rev-out">Output: 13</div>
+        <div class="rev-arrow">←</div>
+        <div class="rev-box">Balik: −1 → 12</div>
+        <div class="rev-arrow">←</div>
+        <div class="rev-box">Balik: ÷2 → 6</div>
+        <div class="rev-arrow">←</div>
+        <div class="rev-in">Input: 6</div>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="stitle">Output diketahui: 13</div>
+          <div class="sdesc">Langkah terakhir mesin adalah +1, jadi kita balik: 13 − 1 = 12.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="stitle">Balik step pertama: ÷2</div>
+          <div class="sdesc">Step pertama mesin adalah ×2, jadi kita balik: 12 ÷ 2 = 6. Inputnya adalah 6!</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="stitle">Verifikasi</div>
+          <div class="sdesc">Cek: 6 × 2 + 1 = 13 ✅ Benar!</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout orange"><strong>Kunci reverse:</strong> Balik operasinya! ×2 jadi ÷2. +1 jadi −1. Dan urutan dibalik: mulai dari operasi terakhir!</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Selanjutnya →</button></div>
+  </div>
+
+  <!-- SLIDE 6: Latihan Reverse -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title">Coba Reverse: <span class="h3">Cari Inputnya!</span></div>
+      <div class="slide-sub">Mesin: ×3 lalu +2. Output-nya 17. Input berapa yang menghasilkan ini?</div>
+    </div>
+    <div class="rev-machine">
+      <div class="rev-lbl">Aturan mesin: ×3 lalu +2 · Output = 17</div>
+      <div class="rev-row">
+        <div class="rev-out">17</div>
+        <div class="rev-arrow">←</div>
+        <div class="rev-box">−2 = ?</div>
+        <div class="rev-arrow">←</div>
+        <div class="rev-box">÷3 = ?</div>
+        <div class="rev-arrow">←</div>
+        <div class="rev-in">Input = ?</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin:1.2rem 0;">
+      <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem;">Step 1 (balik +2): 17 − 2 = <input class="fill-input" id="r6a" placeholder="?" maxlength="3" style="display:inline-block;width:52px;"> &nbsp; Step 2 (balik ×3): ÷3 = <input class="fill-input" id="r6b" placeholder="?" maxlength="3" style="display:inline-block;width:52px;"></p>
+    </div>
+    <button class="check-btn" onclick="checkSlide6()">Cek Jawaban ✓</button>
+    <div class="check-result" id="cr6"></div>
+    <div class="callout" style="margin-top:1rem;"><strong>Hint:</strong> Apa kebalikan dari ×3? Dan apa kebalikan dari +2?</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">Selanjutnya →</button></div>
+  </div>
+
+  <!-- SLIDE 7: Variabel x dan y -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">Rahasia Matematikawan: <span class="h1">x</span> dan <span class="h2">y</span></div>
+      <div class="slide-sub">Matematikawan malas menulis "input" dan "output" terus. Mereka punya shortcut keren!</div>
+    </div>
+    <div class="notation-box">
+      <div class="notation-big">y = 2x + 3</div>
+      <div class="notation-sub">
+        <span class="xvar">x</span> = input (angka yang kamu masukkan ke mesin)<br>
+        <span class="yvar">y</span> = output (angka yang keluar dari mesin)<br><br>
+        Dibaca: "y sama dengan dua kali x ditambah tiga"
+      </div>
+    </div>
+    <div class="io-wrap">
+      <table class="iot">
+        <tr><th>x (Input)</th><th></th><th>Proses</th><th></th><th>y (Output)</th></tr>
+        <tr><td class="iv">1</td><td class="ar">→</td><td style="font-size:0.8rem;color:var(--muted);padding:0.5rem;">2(1)+3</td><td class="ar">→</td><td class="ov">5</td></tr>
+        <tr><td class="iv">2</td><td class="ar">→</td><td style="font-size:0.8rem;color:var(--muted);padding:0.5rem;">2(2)+3</td><td class="ar">→</td><td class="ov">7</td></tr>
+        <tr><td class="iv">5</td><td class="ar">→</td><td style="font-size:0.8rem;color:var(--muted);padding:0.5rem;">2(5)+3</td><td class="ar">→</td><td class="ov">13</td></tr>
+        <tr><td class="iv">10</td><td class="ar">→</td><td style="font-size:0.8rem;color:var(--muted);padding:0.5rem;">2(10)+3</td><td class="ar">→</td><td class="ov">23</td></tr>
+      </table>
+    </div>
+    <div class="callout violet"><strong>Kenapa pakai x dan y?</strong> Karena x bisa diganti angka berapa saja! Satu rumus y = 2x + 3 menjawab untuk x = 1, x = 100, bahkan x = 1000, tanpa perlu buat tabel baru.</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Selanjutnya →</button></div>
+  </div>
+
+  <!-- SLIDE 8: Latihan tulis aturan -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">Tulis Aturannya <span class="h2">Pakai x</span></div>
+      <div class="slide-sub">Lihat tabel ini — cari pola, lalu tulis aturannya dalam bentuk y = ...</div>
+    </div>
+    <div class="io-wrap">
+      <table class="iot">
+        <tr><th>x</th><th></th><th>y</th></tr>
+        <tr><td class="iv">1</td><td class="ar">→</td><td class="ov">4</td></tr>
+        <tr><td class="iv">2</td><td class="ar">→</td><td class="ov">7</td></tr>
+        <tr><td class="iv">3</td><td class="ar">→</td><td class="ov">10</td></tr>
+        <tr><td class="iv">4</td><td class="ar">→</td><td class="ov">13</td></tr>
+      </table>
+    </div>
+    <div class="callout"><strong>Cara menemukan:</strong> Selisih y berurutan = 3 (naik 3 setiap kali x naik 1). Jadi koefisien x adalah 3. Cek: x=1 → y=4. Kalau aturannya ×3, hasilnya 3 bukan 4. Berarti ada +1 lagi!</div>
+    <button class="reveal-btn" onclick="toggleReveal('rv8')">🔍 Lihat Jawaban</button>
+    <div class="reveal-box" id="rv8">
+      <div class="rule-text">y = 3x + 1</div>
+      <div class="rule-sub">Cek: x=1 → 3(1)+1=4 ✓ · x=4 → 3(4)+1=13 ✓</div>
+    </div>
+    <div style="margin-top:1.5rem;text-align:center;color:var(--muted);font-size:0.88rem;">Jika x = 20, berapa y? <input class="fill-input" id="s8" placeholder="?" maxlength="4" style="display:inline-block;width:64px;"></div>
+    <button class="check-btn" onclick="checkSlide8()">Cek ✓</button>
+    <div class="check-result" id="cr8"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Selanjutnya →</button></div>
+  </div>
+
+  <!-- SLIDE 9: Rangkuman pola -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">Semua <span class="h1">Terhubung</span></div>
+      <div class="slide-sub">Mesin angka, tabel, dan rumus y = ... semuanya cara berbeda menyatakan hal yang sama!</div>
+    </div>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <span class="icon">📊</span>
+        <div class="ctitle">Tabel</div>
+        <div class="cdesc">Cara paling mudah melihat pola. Cocok untuk cari aturan dan cek apakah konsisten.</div>
+      </div>
+      <div class="concept-card">
+        <span class="icon">⚙️</span>
+        <div class="ctitle">Diagram Mesin</div>
+        <div class="cdesc">Bagus untuk visualisasi proses step demi step. Mudah dimengerti secara intuitif.</div>
+      </div>
+      <div class="concept-card">
+        <span class="icon">📝</span>
+        <div class="ctitle">Rumus y = ...</div>
+        <div class="cdesc">Paling powerful — satu baris menjawab untuk input berapa pun, termasuk angka besar!</div>
+      </div>
+      <div class="concept-card">
+        <span class="icon">🔄</span>
+        <div class="ctitle">Reverse</div>
+        <div class="cdesc">Kalau tahu y, bisa cari x. Balik setiap operasi dari belakang ke depan.</div>
+      </div>
+    </div>
+    <div class="callout"><strong>Fun fact:</strong> Konsep "mesin angka" ini dalam matematika disebut <em>fungsi</em>. Dan y = 3x + 1 adalah <em>fungsi linear</em> — ini yang akan kamu pelajari lebih dalam di kelas 8 dan 9!</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Selesai →</button></div>
+  </div>
+
+  <!-- SLIDE 10: Summary -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Refleksi & <span class="h1">Penutup</span> 🎉</div>
+    </div>
+    <div class="summary-card">
+      <h3>✅ Yang Kamu Pelajari</h3>
+      <div class="summary-item"><span>⚙️</span> Mesin dua langkah: ikuti urutan operasi step demi step</div>
+      <div class="summary-item"><span>🔄</span> Reverse challenge: balik operasinya dan mulai dari output untuk temukan input</div>
+      <div class="summary-item"><span>📝</span> Notasi y = ... : cara ringkas menulis aturan mesin pakai variabel</div>
+      <div class="summary-item"><span>🚀</span> Satu rumus bisa dipakai untuk semua nilai input, bahkan yang sangat besar</div>
+    </div>
+    <div class="callout"><strong>"Fungsi adalah mesin yang bekerja konsisten — masukkan input berapa pun, aturan yang sama selalu berlaku."</strong></div>
+    <div class="done-actions">
+      <a href="quicktest15.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise15.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson15.html" class="da-btn da-secondary">Lesson 15</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let currentSlide=1;
+const TOTAL=10;
+function goSlide(n){
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide=n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width=((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleReveal(id){
+  const el=document.getElementById(id);
+  el.classList.toggle('show');
+}
+function checkSlide4(){
+  const a=parseInt(document.getElementById('s4a').value);
+  const b=parseInt(document.getElementById('s4b').value);
+  const cr=document.getElementById('cr4');
+  const aOk=a===15, bOk=b===17;
+  document.getElementById('s4a').className='fill-input '+(aOk?'ok':'err');
+  document.getElementById('s4b').className='fill-input '+(bOk?'ok':'err');
+  if(aOk&&bOk){cr.style.color='var(--neon)';cr.textContent='✅ Benar! 5×3=15, 15+2=17';}
+  else{cr.style.color='var(--red)';cr.textContent='❌ Ingat: ×3 dulu, baru +2. Input 5: step1=15, step2=17';}
+}
+function checkSlide6(){
+  const a=parseInt(document.getElementById('r6a').value);
+  const b=parseInt(document.getElementById('r6b').value);
+  const cr=document.getElementById('cr6');
+  const aOk=a===15, bOk=b===5;
+  document.getElementById('r6a').className='fill-input '+(aOk?'ok':'err');
+  document.getElementById('r6b').className='fill-input '+(bOk?'ok':'err');
+  if(aOk&&bOk){cr.style.color='var(--neon)';cr.textContent='✅ Benar! 17−2=15, 15÷3=5. Inputnya 5! Cek: 5×3+2=17 ✓';}
+  else{cr.style.color='var(--red)';cr.textContent='❌ Coba lagi. 17−2=? kemudian ?÷3=?';}
+}
+function checkSlide8(){
+  const v=parseInt(document.getElementById('s8').value);
+  const cr=document.getElementById('cr8');
+  document.getElementById('s8').className='fill-input '+(v===61?'ok':'err');
+  if(v===61){cr.style.color='var(--neon)';cr.textContent='✅ Benar! y = 3(20)+1 = 61 🚀';}
+  else{cr.style.color='var(--red)';cr.textContent='❌ Pakai rumus: y = 3x + 1. Jadi y = 3(20)+1 = ?';}
+}
+</script>
+</body>
+</html>

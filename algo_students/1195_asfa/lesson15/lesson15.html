@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 15 · Asfa · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f; --surface:#12121c; --card:#1a1a28; --border:#2a2a40;
+    --neon:#00f5c4; --accent:#f59e0b; --text:#e2e8f0; --muted:#64748b;
+    --coord:#38bdf8; --coord2:#fb923c; --violet:#a78bfa; --red:#ef4444;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 20% 20%,rgba(0,245,196,0.07) 0%,transparent 50%),
+               radial-gradient(ellipse at 80% 75%,rgba(167,139,250,0.07) 0%,transparent 50%);
+    pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--neon);}
+
+  .hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative;z-index:1;}
+  .session-badge{display:inline-block;background:rgba(0,245,196,0.08);border:1px solid rgba(0,245,196,0.35);color:var(--neon);font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1.2rem;font-family:'Orbitron',monospace;}
+  .lesson-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,4vw,2.4rem);font-weight:900;margin-bottom:0.8rem;line-height:1.3;}
+  .lesson-title .t1{color:var(--neon);}
+  .lesson-title .t2{color:var(--violet);}
+  .lesson-desc{color:var(--muted);max-width:600px;margin:0 auto 2.5rem;line-height:1.7;font-size:0.95rem;}
+
+  .dual-machine{display:flex;justify-content:center;margin:0 auto 2.5rem;}
+
+  .objectives{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem 2rem;max-width:600px;margin:0 auto 3rem;text-align:left;}
+  .obj-title{font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--neon);letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;}
+  .obj-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.7rem;font-size:0.9rem;}
+  .obj-item span{font-size:1rem;flex-shrink:0;}
+
+  .section-label{text-align:center;font-size:0.8rem;color:var(--neon);letter-spacing:4px;text-transform:uppercase;margin-bottom:2rem;opacity:0.7;position:relative;z-index:1;}
+  .sections-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem;max-width:960px;margin:0 auto;padding:0 2rem 4rem;position:relative;z-index:1;}
+  .sec-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.6rem;text-decoration:none;color:inherit;display:block;transition:all 0.3s ease;position:relative;overflow:hidden;}
+  .sec-card.unlocked:hover{transform:translateY(-3px);border-color:var(--neon);box-shadow:0 0 25px rgba(0,245,196,0.1);}
+  .sec-card .num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--neon);text-transform:uppercase;margin-bottom:0.7rem;}
+  .sec-card .icon{font-size:2rem;margin-bottom:0.7rem;display:block;}
+  .sec-card .title{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;margin-bottom:0.5rem;line-height:1.4;}
+  .sec-card .desc{font-size:0.82rem;color:var(--muted);line-height:1.6;}
+  .type-badge{display:inline-block;font-size:0.65rem;padding:0.2rem 0.55rem;border-radius:20px;margin-top:1rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .type-warmup{background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.3);}
+  .type-learn{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.3);}
+  .type-boss{background:rgba(245,158,11,0.1);color:var(--accent);border:1px solid rgba(245,158,11,0.3);}
+  .type-exercise{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <span class="current">LESSON 15</span>
+</nav>
+
+<div class="hero">
+  <div class="session-badge">Sesi 15</div>
+  <div class="lesson-title"><span class="t1">Mesin Angka Level 2:</span><br><span class="t2">Fungsi & Variabel</span></div>
+  <div class="lesson-desc">
+    Kamu sudah bisa menemukan pola sederhana. Sekarang saatnya naik level — mesin dua langkah, tantangan balik (reverse), dan cara menulis aturan dengan <em>x</em> dan <em>y</em> yang dipakai matematikawan sungguhan!
+  </div>
+
+  <!-- Dual machine SVG -->
+  <div class="dual-machine">
+    <svg width="340" height="130" viewBox="0 0 340 130" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arN" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#38bdf8"/></marker>
+        <marker id="arM" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#a78bfa"/></marker>
+        <marker id="arO" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#00f5c4"/></marker>
+      </defs>
+      <!-- Input -->
+      <text x="8" y="52" fill="#38bdf8" font-family="Orbitron,monospace" font-size="9" font-weight="700">IN</text>
+      <text x="4" y="67" fill="#e2e8f0" font-family="Orbitron,monospace" font-size="14" font-weight="900">x</text>
+      <line x1="22" y1="62" x2="52" y2="62" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arN)"/>
+      <!-- Machine 1 -->
+      <rect x="56" y="38" width="80" height="48" rx="10" fill="#1a1a28" stroke="#38bdf8" stroke-width="1.5"/>
+      <text x="96" y="58" text-anchor="middle" fill="#64748b" font-family="Orbitron,monospace" font-size="7" letter-spacing="1">STEP 1</text>
+      <text x="96" y="74" text-anchor="middle" fill="#38bdf8" font-family="Orbitron,monospace" font-size="10" font-weight="700">× 2</text>
+      <!-- Arrow middle -->
+      <line x1="140" y1="62" x2="168" y2="62" stroke="#a78bfa" stroke-width="2.5" marker-end="url(#arM)"/>
+      <!-- Machine 2 -->
+      <rect x="172" y="38" width="80" height="48" rx="10" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="212" y="58" text-anchor="middle" fill="#64748b" font-family="Orbitron,monospace" font-size="7" letter-spacing="1">STEP 2</text>
+      <text x="212" y="74" text-anchor="middle" fill="#a78bfa" font-family="Orbitron,monospace" font-size="10" font-weight="700">+ 3</text>
+      <!-- Output arrow -->
+      <line x1="256" y1="62" x2="290" y2="62" stroke="#00f5c4" stroke-width="2.5" marker-end="url(#arO)"/>
+      <text x="297" y="52" fill="#00f5c4" font-family="Orbitron,monospace" font-size="9" font-weight="700">OUT</text>
+      <text x="296" y="66" fill="#e2e8f0" font-family="Orbitron,monospace" font-size="14" font-weight="900">y</text>
+      <!-- Formula -->
+      <text x="170" y="108" text-anchor="middle" fill="#64748b" font-family="Nunito,sans-serif" font-size="10">y = 2x + 3 — aturan mesin yang kamu kendalikan 🎮</text>
+    </svg>
+  </div>
+
+  <div class="objectives">
+    <div class="obj-title">🎯 Yang akan kamu kuasai</div>
+    <div class="obj-item"><span>🔥</span> Warmup: tantangan mesin dua langkah — hitung step demi step sebelum waktu habis!</div>
+    <div class="obj-item"><span>🔬</span> Section 1: mesin dua langkah, reverse challenge, dan menulis aturan pakai x dan y</div>
+    <div class="obj-item"><span>⚡</span> Quick Test: 10 soal level 2 — mesin dua langkah + reverse. Timer 30 detik!</div>
+    <div class="obj-item"><span>🏋️</span> Exercise: 20 soal lengkap — dua langkah, reverse, notasi, dan soal cerita. Progress tersimpan!</div>
+  </div>
+</div>
+
+<div class="section-label">— Pilih Section —</div>
+<div class="sections-grid">
+  <a href="warmup15.html" class="sec-card unlocked">
+    <div class="num">Warmup</div>
+    <span class="icon">🔥</span>
+    <div class="title">Warmup: Mesin Dua Langkah!</div>
+    <div class="desc">10 soal cepat — mesin punya dua aturan berurutan. Hitung step demi step dan jawab sebelum waktu habis!</div>
+    <span class="type-badge type-warmup">Warmup</span>
+  </a>
+  <a href="section1_15.html" class="sec-card unlocked">
+    <div class="num">Section 01</div>
+    <span class="icon">🔬</span>
+    <div class="title">Panduan Level 2</div>
+    <div class="desc">Mesin dua langkah, reverse challenge (dari output → input), dan cara menulis aturan dengan x dan y!</div>
+    <span class="type-badge type-learn">Learn</span>
+  </a>
+  <a href="quicktest15.html" class="sec-card unlocked">
+    <div class="num">Quick Test</div>
+    <span class="icon">⚡</span>
+    <div class="title">Quick Test · Reverse & Double</div>
+    <div class="desc">10 soal — mesin dua langkah, balik arah (reverse), dan identifikasi aturan. Timer 30 detik!</div>
+    <span class="type-badge type-boss">Boss Stage</span>
+  </a>
+  <a href="exercise15.html" class="sec-card unlocked">
+    <div class="num">Exercise</div>
+    <span class="icon">🏋️</span>
+    <div class="title">Exercise Zone</div>
+    <div class="desc">20 soal: dua langkah, reverse, notasi x/y, dan soal cerita mesin. Progress tersimpan!</div>
+    <span class="type-badge type-exercise">Exercise</span>
+  </a>
+</div>
+</body>
+</html>
