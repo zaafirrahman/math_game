@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stage 01 · Start Grid · Shadiq · Math Arena</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --card: #1c1c1c;
+    --border: #2a2a2a;
+    --red: #e8001c;
+    --yellow: #ffd700;
+    --green: #00e676;
+    --white: #f0f0f0;
+    --muted: #666;
+    --dimmed: #444;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      repeating-linear-gradient(90deg, transparent, transparent 38px, rgba(255,255,255,0.012) 38px, rgba(255,255,255,0.012) 40px),
+      repeating-linear-gradient(0deg, transparent, transparent 38px, rgba(255,255,255,0.012) 38px, rgba(255,255,255,0.012) 40px);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    padding: 0.9rem 1.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    background: rgba(13,13,13,0.95);
+    backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-logo { font-family:'Barlow Condensed',sans-serif; font-size:0.9rem; font-weight:900; letter-spacing:3px; color:var(--white); text-decoration:none; text-transform:uppercase; }
+  .nav-logo span { color: var(--red); }
+  nav .sep { color: var(--dimmed); }
+  nav .bc { font-family:'Barlow Condensed',sans-serif; font-size:0.8rem; letter-spacing:2px; text-transform:uppercase; color:var(--muted); text-decoration:none; }
+  nav .bc:hover { color: var(--white); }
+  nav .current { font-family:'Barlow Condensed',sans-serif; font-size:0.8rem; letter-spacing:2px; color:var(--yellow); text-transform:uppercase; }
+
+  /* WRAPPER */
+  .wrapper { max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 6rem; position: relative; z-index: 1; }
+
+  /* SLIDE — concept */
+  .slide { display: none; }
+  .slide.active { display: block; animation: fadeUp 0.35s ease; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  /* CONCEPT SLIDE */
+  .concept-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(232,0,28,0.1); border: 1px solid rgba(232,0,28,0.35);
+    color: var(--red); font-family:'Barlow Condensed',sans-serif;
+    font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.3rem 0.9rem; border-radius: 2px; margin-bottom: 1.5rem;
+  }
+  .concept-title {
+    font-family:'Barlow Condensed',sans-serif; font-size: clamp(1.8rem,6vw,2.8rem);
+    font-weight: 900; letter-spacing: 2px; text-transform: uppercase; line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+  .concept-title .hl { color: var(--red); }
+  .concept-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.6; }
+
+  /* Start grid visual */
+  .grid-visual {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 4px; padding: 1.5rem; margin-bottom: 1.8rem;
+  }
+  .grid-label {
+    font-family:'Barlow Condensed',sans-serif; font-size:0.7rem;
+    letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:1rem;
+  }
+  .start-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6rem;
+  }
+  .grid-slot {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 0.6rem 0.3rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+    transition: all 0.2s;
+  }
+  .grid-slot .num {
+    font-family:'Barlow Condensed',sans-serif; font-size:1.6rem; font-weight:900;
+    color: var(--white); line-height: 1;
+  }
+  .grid-slot .car-emoji { font-size: 1.2rem; }
+  .grid-slot .dots {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; min-height: 20px;
+  }
+  .dot-pip {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--red); opacity: 0.85;
+  }
+
+  /* color each slot */
+  .grid-slot:nth-child(1) { border-color: rgba(232,0,28,0.5); }
+  .grid-slot:nth-child(2) { border-color: rgba(255,140,0,0.4); }
+  .grid-slot:nth-child(3) { border-color: rgba(255,215,0,0.4); }
+  .grid-slot:nth-child(4) { border-color: rgba(0,200,100,0.3); }
+  .grid-slot:nth-child(5) { border-color: rgba(0,150,255,0.3); }
+  .grid-slot:nth-child(6) { border-color: rgba(150,100,255,0.3); }
+  .grid-slot:nth-child(7) { border-color: rgba(255,100,200,0.3); }
+  .grid-slot:nth-child(8) { border-color: rgba(0,230,180,0.3); }
+  .grid-slot:nth-child(9) { border-color: rgba(200,200,0,0.3); }
+  .grid-slot:nth-child(10) { border-color: rgba(255,215,0,0.5); background:rgba(255,215,0,0.05); }
+  .grid-slot:nth-child(10) .num { color: var(--yellow); }
+
+  .concept-tip {
+    background: rgba(255,215,0,0.05); border: 1px solid rgba(255,215,0,0.2);
+    border-radius: 4px; padding: 1rem 1.2rem;
+    font-size: 0.88rem; color: #ccc; line-height: 1.7; margin-bottom: 2rem;
+  }
+  .concept-tip strong { color: var(--yellow); }
+
+  .start-btn {
+    width: 100%; padding: 1rem;
+    background: var(--red); color: var(--white);
+    border: none; border-radius: 4px; cursor: pointer;
+    font-family:'Barlow Condensed',sans-serif; font-size:1.1rem;
+    font-weight:900; letter-spacing:3px; text-transform:uppercase;
+    transition: all 0.2s;
+  }
+  .start-btn:hover { background: #ff1a30; transform: translateY(-1px); }
+
+  /* ── SOAL SECTION ── */
+  .progress-bar-wrap { margin-bottom: 1.5rem; }
+  .pb-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.5rem; }
+  .pb-label { font-family:'Barlow Condensed',sans-serif; font-size:0.7rem; letter-spacing:3px; color:var(--muted); text-transform:uppercase; }
+  .pb-count { font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:900; color:var(--yellow); }
+  .pb-track { height:6px; background:var(--border); border-radius:0; overflow:hidden; position:relative; }
+  .pb-track::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(90deg, transparent, transparent 9px, rgba(255,255,255,0.05) 9px, rgba(255,255,255,0.05) 10px); }
+  .pb-fill { height:100%; background:linear-gradient(90deg,var(--red),var(--yellow)); transition:width 0.4s ease; position:relative; z-index:1; }
+
+  .dot-row { display:flex; gap:0.4rem; margin-top:0.6rem; flex-wrap:wrap; }
+  .q-dot {
+    width:28px; height:28px; border-radius:3px; border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Barlow Condensed',sans-serif; font-size:0.7rem; color:var(--muted);
+    cursor:pointer; transition:all 0.2s;
+  }
+  .q-dot.active { border-color:var(--yellow); color:var(--yellow); background:rgba(255,215,0,0.08); }
+  .q-dot.ok { border-color:var(--green); color:var(--green); background:rgba(0,230,118,0.08); }
+  .q-dot.ko { border-color:var(--red); color:var(--red); background:rgba(232,0,28,0.08); }
+
+  /* QUESTION CARD */
+  .q-card { background:var(--card); border:1px solid var(--border); border-radius:4px; padding:1.6rem; }
+  .q-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
+  .q-num { font-family:'Barlow Condensed',sans-serif; font-size:0.7rem; letter-spacing:3px; color:var(--red); text-transform:uppercase; }
+  .q-type { font-family:'Barlow Condensed',sans-serif; font-size:0.65rem; letter-spacing:2px; padding:0.2rem 0.6rem; border-radius:2px; text-transform:uppercase; }
+  .type-count { background:rgba(232,0,28,0.1); color:var(--red); border:1px solid rgba(232,0,28,0.3); }
+  .type-match { background:rgba(255,215,0,0.08); color:var(--yellow); border:1px solid rgba(255,215,0,0.3); }
+  .type-logic { background:rgba(0,230,118,0.08); color:var(--green); border:1px solid rgba(0,230,118,0.3); }
+
+  .q-text { font-size:1.4rem; line-height:1.7; margin-bottom:1.2rem; color:var(--white); }
+  .q-text strong { color:var(--yellow); }
+
+  /* Visual: car dots */
+  .car-count-wrap {
+    background: var(--surface); border:1px solid var(--border); border-radius:4px;
+    padding:1rem; margin-bottom:1.2rem;
+    display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:center; min-height:60px; align-items:center;
+  }
+  .car-item { font-size:1.8rem; line-height:1; }
+
+  /* number line */
+  .numline-wrap {
+    background:var(--surface); border:1px solid var(--border); border-radius:4px;
+    padding:1rem 0.5rem; margin-bottom:1.2rem; overflow-x:auto;
+  }
+  .numline {
+    display:flex; gap:0; justify-content:center; align-items:center; min-width:300px;
+  }
+  .nl-cell {
+    min-width:36px; height:36px; display:flex; align-items:center; justify-content:center;
+    font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:700;
+    border:1px solid var(--border); color:var(--muted);
+  }
+  .nl-cell.hi { background:rgba(232,0,28,0.15); border-color:var(--red); color:var(--red); }
+  .nl-cell.blank { background:rgba(255,215,0,0.08); border-color:rgba(255,215,0,0.4); color:var(--yellow); font-size:1.2rem; }
+
+  /* options */
+  .opts { display:grid; grid-template-columns:1fr 1fr; gap:0.7rem; margin-bottom:0.8rem; }
+  @media(max-width:400px){ .opts { grid-template-columns:1fr; } }
+  .opt-btn {
+    background:var(--surface); border:1px solid var(--border); color:var(--white);
+    padding:1rem 0.8rem; border-radius:4px; cursor:pointer;
+    font-family:'Fredoka One', cursive; font-size:2rem;
+    letter-spacing:1px; transition:all 0.2s; text-align:center;
+  }
+  .opt-btn:hover:not(:disabled) { border-color:var(--yellow); background:rgba(255,215,0,0.05); }
+  .opt-btn.correct { border-color:var(--green); background:rgba(0,230,118,0.1); color:var(--green); }
+  .opt-btn.wrong { border-color:var(--red); background:rgba(232,0,28,0.1); color:var(--red); }
+  .opt-btn.reveal { border-color:var(--green); background:rgba(0,230,118,0.06); color:var(--green); }
+
+  .q-feedback { min-height:28px; font-size:0.88rem; margin-bottom:1rem; line-height:1.5; }
+  .fb-ok { color:var(--green); }
+  .fb-ko { color:var(--red); }
+
+  .next-btn {
+    width:100%; padding:0.85rem;
+    background:transparent; border:1px solid var(--border); color:var(--muted);
+    border-radius:4px; cursor:pointer;
+    font-family:'Barlow Condensed',sans-serif; font-size:0.9rem; font-weight:700;
+    letter-spacing:3px; text-transform:uppercase; transition:all 0.2s;
+    display:none;
+  }
+  .next-btn.show { display:block; }
+  .next-btn:hover { border-color:var(--yellow); color:var(--yellow); }
+  .next-btn.last { border-color:var(--red); color:var(--red); }
+  .next-btn.last:hover { background:rgba(232,0,28,0.1); }
+
+  /* FINISH SCREEN */
+  .finish-screen {
+    display:none; text-align:center; padding:3rem 1rem;
+    animation:fadeUp 0.4s ease;
+  }
+  .finish-screen.show { display:block; }
+  .finish-trophy { font-size:4rem; margin-bottom:1rem; }
+  .finish-title {
+    font-family:'Barlow Condensed',sans-serif; font-size:clamp(2rem,8vw,3.5rem);
+    font-weight:900; text-transform:uppercase; letter-spacing:3px;
+    color:var(--yellow); margin-bottom:0.5rem;
+  }
+  .finish-score {
+    font-family:'Barlow Condensed',sans-serif; font-size:1.2rem;
+    color:var(--muted); letter-spacing:2px; margin-bottom:2rem;
+  }
+  .finish-score span { color:var(--white); }
+  .score-bar-wrap { max-width:320px; margin:0 auto 2rem; }
+  .score-bar-track { height:10px; background:var(--border); border-radius:0; overflow:hidden; }
+  .score-bar-fill { height:100%; background:linear-gradient(90deg,var(--red),var(--yellow)); transition:width 1s ease; }
+  .score-msg { font-size:1rem; color:#aaa; line-height:1.7; margin-bottom:2rem; }
+  .replay-btn {
+    display:inline-block; padding:0.85rem 2.5rem;
+    background:var(--red); color:var(--white); border:none; border-radius:4px;
+    cursor:pointer; font-family:'Barlow Condensed',sans-serif; font-size:1rem;
+    font-weight:900; letter-spacing:3px; text-transform:uppercase; transition:all 0.2s;
+    margin-right:0.8rem;
+  }
+  .replay-btn:hover { background:#ff1a30; }
+  .hub-btn {
+    display:inline-block; padding:0.85rem 2rem;
+    background:transparent; color:var(--muted); border:1px solid var(--border);
+    border-radius:4px; cursor:pointer; font-family:'Barlow Condensed',sans-serif;
+    font-size:0.9rem; font-weight:700; letter-spacing:3px; text-transform:uppercase;
+    transition:all 0.2s; text-decoration:none;
+  }
+  .hub-btn:hover { border-color:var(--yellow); color:var(--yellow); }
+
+  /* checkered footer */
+  .footer-flag {
+    position:fixed; bottom:0; left:0; right:0; height:4px;
+    background:repeating-linear-gradient(90deg,var(--white) 0px,var(--white) 8px,var(--bg) 8px,var(--bg) 16px);
+    z-index:50; opacity:0.15;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../../algo_students.html">Math <span>Arena</span></a>
+  <span class="sep">›</span>
+  <a class="bc" href="../shadiq_9999.html">Shadiq</a>
+  <span class="sep">›</span>
+  <span class="current">Stage 01</span>
+</nav>
+
+<div class="wrapper">
+
+  <!-- ══ SLIDE 0: CONCEPT ══ -->
+  <div class="slide active" id="slide-concept">
+    <div class="concept-badge">🏁 Stage 01 · Start Grid</div>
+    <div class="concept-title">Angka <span class="hl">1 sampai 10</span></div>
+    <p class="concept-sub">Di balapan F1, setiap mobil punya nomor di grid start. Yuk kenali angka 1 sampai 10 — berapa mobilnya, berapa orangnya!</p>
+
+    <div class="grid-visual">
+      <div class="grid-label">🏎 Grid Start — 10 Mobil, 10 Posisi</div>
+      <div class="start-grid" id="startGrid"></div>
+    </div>
+
+    <div class="concept-tip">
+      <strong>Cara ingat gampang:</strong> Setiap angka = jumlah titik merah di bawah mobilnya. Angka <strong>1</strong> = 1 titik, angka <strong>5</strong> = 5 titik, angka <strong>10</strong> = 10 titik! Makin besar angkanya, makin banyak titiknya. 🔴
+    </div>
+
+    <button class="start-btn" onclick="startQuiz()">🚦 Siap Balapan — Mulai Soal!</button>
+  </div>
+
+  <!-- ══ SLIDE 1: QUIZ ══ -->
+  <div class="slide" id="slide-quiz">
+    <div class="progress-bar-wrap">
+      <div class="pb-header">
+        <span class="pb-label">Lap Progress</span>
+        <span class="pb-count" id="pbCount">1 / 10</span>
+      </div>
+      <div class="pb-track"><div class="pb-fill" id="pbFill" style="width:10%"></div></div>
+      <div class="dot-row" id="dotRow"></div>
+    </div>
+
+    <div class="q-card" id="qCard">
+      <div class="q-meta">
+        <span class="q-num" id="qNum">Soal 1</span>
+        <span class="q-type" id="qType"></span>
+      </div>
+      <div class="q-text" id="qText"></div>
+      <div id="qVisual"></div>
+      <div class="opts" id="qOpts"></div>
+      <div class="q-feedback" id="qFeedback"></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- ══ FINISH ══ -->
+  <div class="finish-screen" id="finishScreen">
+    <div class="finish-trophy" id="finishTrophy">🏆</div>
+    <div class="finish-title" id="finishTitle">Finish!</div>
+    <div class="finish-score">Skor kamu: <span id="finishScore">0 / 10</span></div>
+    <div class="score-bar-wrap">
+      <div class="score-bar-track"><div class="score-bar-fill" id="scoreBarFill" style="width:0%"></div></div>
+    </div>
+    <p class="score-msg" id="scoreMsg"></p>
+    <button class="replay-btn" onclick="replay()">🔄 Ulangi</button>
+    <a class="hub-btn" href="../../shadiq_9999.html">← Hub</a>
+  </div>
+
+</div>
+
+<div class="footer-flag"></div>
+
+<script>
+// ── BUILD CONCEPT GRID ──
+(function buildGrid() {
+  const cars = ['🏎️','🚗','🚙','🏎️','🚕','🚗','🚙','🏎️','🚗','🏆'];
+  const g = document.getElementById('startGrid');
+  for (let i = 1; i <= 10; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'grid-slot';
+    const dotsHtml = Array(i).fill('<div class="dot-pip"></div>').join('');
+    slot.innerHTML = `
+      <div class="num">${i}</div>
+      <div class="car-emoji">${cars[i-1]}</div>
+      <div class="dots">${dotsHtml}</div>`;
+    g.appendChild(slot);
+  }
+})();
+
+// ── QUESTIONS ──
+const questions = [
+  {
+    type: 'count', typeLabel: 'Hitung', typeCls: 'type-count',
+    text: 'Ada berapa 🏎️ di bawah ini?',
+    visual: { kind:'cars', items:'🏎️🏎️🏎️' },
+    opts: ['2','3','4','5'], ans: '3',
+    fb: 'Betul! Ada 3 mobil. Hitung satu-satu: 1, 2, 3!'
+  },
+  {
+    type: 'count', typeLabel: 'Hitung', typeCls: 'type-count',
+    text: 'Berapa jumlah 🚗 di bawah ini?',
+    visual: { kind:'cars', items:'🚗🚗🚗🚗🚗' },
+    opts: ['3','4','5','6'], ans: '5',
+    fb: 'Yesss! Ada 5 mobil. Coba hitung lagi: 1, 2, 3, 4, 5! 🖐️'
+  },
+  {
+    type: 'match', typeLabel: 'Cocokkan', typeCls: 'type-match',
+    text: 'Angka <strong>7</strong> itu sama dengan berapa 🔴 titik?',
+    visual: null,
+    opts: ['5 titik','6 titik','7 titik','8 titik'], ans: '7 titik',
+    fb: 'Pas banget! Angka 7 = 7 titik. Gampang kan? 😎'
+  },
+  {
+    type: 'count', typeLabel: 'Hitung', typeCls: 'type-count',
+    text: 'Hitung ban mobil di bawah ini. Ada berapa? (setiap 🛞 = 1 ban)',
+    visual: { kind:'cars', items:'🛞🛞🛞🛞🛞🛞🛞🛞' },
+    opts: ['6','7','8','9'], ans: '8',
+    fb: 'Top! Ada 8 ban. Mobil F1 punya 4 ban, jadi ini 2 mobil! 🏎️🏎️'
+  },
+  {
+    type: 'logic', typeLabel: 'Logika', typeCls: 'type-logic',
+    text: 'Di grid start, posisi nomor <strong>4</strong> ada di antara nomor berapa dan berapa?',
+    visual: { kind:'numline', nums:[1,2,3,4,5,6,7], hi:[4] },
+    opts: ['3 dan 5','2 dan 6','4 dan 6','3 dan 4'], ans: '3 dan 5',
+    fb: 'Benar! 3 → 4 → 5. Angka 4 ada di antara 3 dan 5. 📍'
+  },
+  {
+    type: 'count', typeLabel: 'Hitung', typeCls: 'type-count',
+    text: 'Ada berapa pembalap 🧑‍✈️ di bawah ini?',
+    visual: { kind:'cars', items:'🧑‍✈️🧑‍✈️' },
+    opts: ['1','2','3','4'], ans: '2',
+    fb: 'Yep, ada 2 pembalap! Angka 2. ✌️'
+  },
+  {
+    type: 'match', typeLabel: 'Cocokkan', typeCls: 'type-match',
+    text: 'Angka mana yang lebih BESAR — <strong>6</strong> atau <strong>9</strong>?',
+    visual: null,
+    opts: ['6','9','Sama besar','Tidak tahu'], ans: '9',
+    fb: 'Benar! 9 lebih besar dari 6. Di grid, posisi 9 lebih belakang karena angkanya lebih besar.'
+  },
+  {
+    type: 'count', typeLabel: 'Hitung', typeCls: 'type-count',
+    text: 'Hitung piala 🏆 di bawah ini!',
+    visual: { kind:'cars', items:'🏆🏆🏆🏆🏆🏆' },
+    opts: ['5','6','7','8'], ans: '6',
+    fb: 'Keren! Ada 6 piala. Pembalap yang menang 6 race tuh hebat banget! 🌟'
+  },
+  {
+    type: 'logic', typeLabel: 'Logika', typeCls: 'type-logic',
+    text: 'Urutan angka di bawah ada yang hilang! Angka berapa yang hilang?',
+    visual: { kind:'numline', nums:[1,2,3,'?',5,6,7], hi:[], blank:[3] },
+    opts: ['3','4','5','6'], ans: '4',
+    fb: 'Tepat! 1, 2, 3, <b>4</b>, 5, 6, 7. Angka 4 yang hilang! 🔍'
+  },
+  {
+    type: 'logic', typeLabel: 'Logika', typeCls: 'type-logic',
+    text: 'Grid start punya <strong>10</strong> posisi. Kalau posisi 1 sampai 7 sudah terisi, masih ada berapa posisi yang kosong?',
+    visual: { kind:'numline', nums:[1,2,3,4,5,6,7,8,9,10], hi:[1,2,3,4,5,6,7] },
+    opts: ['2','3','4','5'], ans: '3',
+    fb: 'Mantap! Posisi 8, 9, 10 masih kosong — itu 3 posisi. Kamu mulai bisa menghitung sisa! 🧠'
+  }
+];
+
+let current = 0;
+let score = 0;
+let answered = [];
+let answeredCorrect = [];
+
+function startQuiz() {
+  document.getElementById('slide-concept').classList.remove('active');
+  document.getElementById('slide-quiz').classList.add('active');
+  buildDots();
+  renderQ(0);
+}
+
+function buildDots() {
+  const row = document.getElementById('dotRow');
+  row.innerHTML = '';
+  questions.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'q-dot' + (i === 0 ? ' active' : '');
+    d.textContent = i + 1;
+    d.id = `dot-${i}`;
+    row.appendChild(d);
+  });
+}
+
+function renderQ(idx) {
+  const q = questions[idx];
+  document.getElementById('qNum').textContent = `Soal ${idx + 1}`;
+  document.getElementById('qType').textContent = q.typeLabel;
+  document.getElementById('qType').className = `q-type ${q.typeCls}`;
+  document.getElementById('qText').innerHTML = q.text;
+  document.getElementById('qFeedback').innerHTML = '';
+  document.getElementById('pbCount').textContent = `${idx + 1} / 10`;
+  document.getElementById('pbFill').style.width = `${(idx + 1) * 10}%`;
+
+  // visual
+  const vis = document.getElementById('qVisual');
+  vis.innerHTML = '';
+  if (q.visual) {
+    if (q.visual.kind === 'cars') {
+      const wrap = document.createElement('div');
+      wrap.className = 'car-count-wrap';
+      [...q.visual.items].forEach(em => {
+        const s = document.createElement('span');
+        s.className = 'car-item';
+        s.textContent = em;
+        wrap.appendChild(s);
+      });
+      vis.appendChild(wrap);
+    } else if (q.visual.kind === 'numline') {
+      const wrap = document.createElement('div');
+      wrap.className = 'numline-wrap';
+      const nl = document.createElement('div');
+      nl.className = 'numline';
+      q.visual.nums.forEach((n, i) => {
+        const cell = document.createElement('div');
+        const isBlank = q.visual.blank && q.visual.blank.includes(i);
+        const isHi = q.visual.hi && q.visual.hi.includes(n);
+        cell.className = 'nl-cell' + (isHi ? ' hi' : '') + (isBlank ? ' blank' : '');
+        cell.textContent = isBlank ? '?' : n;
+        nl.appendChild(cell);
+      });
+      wrap.appendChild(nl);
+      vis.appendChild(wrap);
+    }
+  }
+
+  // options
+  const opts = document.getElementById('qOpts');
+  opts.innerHTML = '';
+  q.opts.forEach(o => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = o;
+    btn.onclick = () => checkAns(o, btn);
+    opts.appendChild(btn);
+  });
+
+  const nb = document.getElementById('nextBtn');
+  nb.classList.remove('show', 'last');
+  nb.textContent = idx < questions.length - 1 ? 'Lanjut →' : '🏁 Lihat Hasil!';
+  if (idx === questions.length - 1) nb.classList.add('last');
+}
+
+function checkAns(chosen, btn) {
+  const q = questions[current];
+  const allBtns = document.querySelectorAll('.opt-btn');
+  allBtns.forEach(b => { b.disabled = true; });
+
+  const isCorrect = chosen === q.ans;
+  if (isCorrect) {
+    btn.classList.add('correct');
+    score++;
+    document.getElementById('qFeedback').innerHTML = `<span class="fb-ok">✅ ${q.fb}</span>`;
+    answeredCorrect[current] = true;
+  } else {
+    btn.classList.add('wrong');
+    allBtns.forEach(b => { if (b.textContent === q.ans) b.classList.add('reveal'); });
+    document.getElementById('qFeedback').innerHTML = `<span class="fb-ko">❌ Hampir! Jawaban yang benar: <strong>${q.ans}</strong>. ${q.fb}</span>`;
+    answeredCorrect[current] = false;
+  }
+  answered[current] = true;
+
+  // update dot
+  const dot = document.getElementById(`dot-${current}`);
+  dot.classList.remove('active');
+  dot.classList.add(isCorrect ? 'ok' : 'ko');
+
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function nextQ() {
+  current++;
+  if (current >= questions.length) {
+    showFinish();
+    return;
+  }
+  const prevDot = document.getElementById(`dot-${current}`);
+  if (prevDot) prevDot.classList.add('active');
+  renderQ(current);
+}
+
+function showFinish() {
+  document.getElementById('slide-quiz').classList.remove('active');
+  const fs = document.getElementById('finishScreen');
+  fs.classList.add('show');
+
+  const pct = Math.round((score / questions.length) * 100);
+  document.getElementById('finishScore').textContent = `${score} / ${questions.length}`;
+  setTimeout(() => {
+    document.getElementById('scoreBarFill').style.width = pct + '%';
+  }, 300);
+
+  let trophy, title, msg;
+  if (score === 10) {
+    trophy = '🏆'; title = 'Juara Dunia!';
+    msg = 'Sempurna! 10 dari 10 benar. Kamu sudah hafal angka 1–10 kayak pembalap hafal sirkuit! 🚀 Siap lanjut ke Stage berikutnya?';
+  } else if (score >= 8) {
+    trophy = '🥇'; title = 'Podium!';
+    msg = `${score} dari 10 benar — kamu naik podium! Tinggal sedikit lagi sempurna. Coba ulangi buat dapet 10/10! 💪`;
+  } else if (score >= 6) {
+    trophy = '🥈'; title = 'Bagus!';
+    msg = `${score} dari 10 benar. Sudah bagus! Coba ulangi sekali lagi biar makin hafal ya. 😊`;
+  } else {
+    trophy = '🔧'; title = 'Pit Stop!';
+    msg = `${score} dari 10 benar. Jangan nyerah — balik ke konsep dulu, terus coba lagi! Semua juara pernah gagal. 🏎️`;
+  }
+
+  document.getElementById('finishTrophy').textContent = trophy;
+  document.getElementById('finishTitle').textContent = title;
+  document.getElementById('scoreMsg').textContent = msg;
+}
+
+function replay() {
+  current = 0; score = 0; answered = []; answeredCorrect = [];
+  document.getElementById('finishScreen').classList.remove('show');
+  document.getElementById('slide-quiz').classList.add('active');
+  buildDots();
+  renderQ(0);
+}
+</script>
+</body>
+</html>

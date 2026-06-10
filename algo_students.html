@@ -32,6 +32,11 @@
     --asfa-mid: #c4b4e4;
     --asfa-dark: #5a3d99;
     --asfa-text: #2a1760;
+
+    --shadiq-bg: #fff0c0;
+    --shadiq-mid: #ffd966;
+    --shadiq-dark: #e06000;
+    --shadiq-text: #5a2200;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -540,6 +545,29 @@
       <div class="corner-doodle">×</div>
     </div>
 
+    <!-- Shadiq — kuning-oranye racing -->
+    <div class="student-card"
+      style="--c-bg:var(--shadiq-bg);--c-mid:var(--shadiq-mid);--c-dark:var(--shadiq-dark);--c-text:var(--shadiq-text);"
+      onclick="openModal('shadiq')">
+      <div class="card-top">
+        <div class="card-avatar-wrap">🏍️</div>
+        <div class="card-info">
+          <div class="card-name">Shadiq</div>
+          <div class="card-meta">Kelas · 1 SD</div>
+          <div class="card-badge">Active</div>
+        </div>
+      </div>
+      <div class="card-progress">
+        <div class="prog-header">
+          <span class="prog-label">Progress Pertemuan</span>
+          <span class="prog-pct" id="shadiq-pct">–</span>
+        </div>
+        <div class="prog-track"><div class="prog-fill" id="shadiq-fill"></div></div>
+        <div class="prog-sub" id="shadiq-sub"></div>
+      </div>
+      <div class="corner-doodle">⚡</div>
+    </div>
+
   </div>
 
   <!-- Back button -->
@@ -607,6 +635,11 @@
       password: 'ayokitabisa',
       href: 'algo_students/1195_asfa/asfa_1195.html',
     },
+    shadiq: {
+      avatar: '🏍️', name: 'Shadiq',
+      password: '9999',
+      href: 'algo_students/9999_shadiq/shadiq_9999.html',
+    },
   };
 
   // Fetch progress dari file masing-masing student
@@ -635,7 +668,7 @@
       } catch (e) {
         console.error(`[${key}] Fetch error for ${s.href}:`, e.message);
         // Fallback jika fetch gagal (misal offline)
-        const fallbacks = { fatih: {d:14, t:20}, tasya: {d:21, t:41}, asfa: {d:6, t:40} };
+        const fallbacks = { fatih: {d:14, t:20}, tasya: {d:21, t:41}, asfa: {d:6, t:40}, shadiq: {d:0, t:1} };
         s.done = fallbacks[key]?.d || 0;
         s.total = fallbacks[key]?.t || 1;
       }
