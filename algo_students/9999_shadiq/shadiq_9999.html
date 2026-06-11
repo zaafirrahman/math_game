@@ -464,12 +464,12 @@
   <div class="progress-wrap">
     <div class="progress-header">
       <span class="progress-label">Race Progress</span>
-      <span class="progress-pct" id="pct">0%</span>
+      <span class="progress-pct" id="pct">20%</span>
     </div>
     <div class="progress-track">
       <div class="progress-fill" id="fill"></div>
     </div>
-    <div class="progress-sub" id="progressSub">Stage 0 dari 10</div>
+    <div class="progress-sub" id="progressSub">Stage 2 dari 10</div>
   </div>
 </div>
 
@@ -486,20 +486,20 @@
     <div class="lesson-title">Start Grid: Angka 1–10</div>
     <div class="lesson-desc">Sebelum balapan dimulai, kamu harus hafal posisi grid! Kenali angka 1 sampai 10 — berapa ban mobilnya, berapa pembalapnya.</div>
     <div class="lesson-meta">
-      <span class="tag hot">Start Here</span>
+      <!-- <span class="tag hot">Start Here</span> -->
       <span class="tag">Angka</span>
       <span class="tag">Berhitung</span>
     </div>
   </a>
 
   <!-- Lesson 2 -->
-  <a href="lesson2/lesson2.html" class="lesson-card locked">
+  <a href="lesson2/lesson2.html" class="lesson-card unlocked">
     <div class="lesson-num">Stage 02</div>
-    <span class="lock-icon">🔒</span>
     <span class="lesson-icon">⏱️</span>
     <div class="lesson-title">Countdown: Maju & Mundur</div>
     <div class="lesson-desc">Balapan dimulai dengan countdown! Latihan berhitung maju (1, 2, 3...) dan mundur (10, 9, 8...) kayak lampu start F1.</div>
     <div class="lesson-meta">
+      <span class="tag hot">New</span>
       <span class="tag">Berhitung</span>
       <span class="tag">Urutan</span>
     </div>
@@ -614,7 +614,7 @@
 <div class="footer-flag"></div>
 
 <script>
-  const DONE = 0;
+  const DONE = 2;
   const TOTAL = 10;
 
   const pct = Math.round((DONE / TOTAL) * 100);

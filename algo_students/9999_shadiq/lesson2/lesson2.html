@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stage 02 · Countdown · Shadiq · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0d0d0d; --surface:#161616; --card:#1c1c1c; --border:#2a2a2a;
+    --red:#e8001c; --yellow:#ffd700; --green:#00e676; --orange:#ff8c00;
+    --white:#f0f0f0; --muted:#666; --dimmed:#444;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--white);font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;
+    background-image:
+      repeating-linear-gradient(90deg,transparent,transparent 38px,rgba(255,255,255,0.012) 38px,rgba(255,255,255,0.012) 40px),
+      repeating-linear-gradient(0deg,transparent,transparent 38px,rgba(255,255,255,0.012) 38px,rgba(255,255,255,0.012) 40px);
+    pointer-events:none;z-index:0;}
+
+  /* NAV */
+  nav{padding:0.9rem 1.5rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(13,13,13,0.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;}
+  .nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:900;letter-spacing:3px;color:var(--white);text-decoration:none;text-transform:uppercase;}
+  .nav-logo span{color:var(--red);}
+  nav .sep{color:var(--dimmed);}
+  nav .bc{font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;}
+  nav .bc:hover{color:var(--white);}
+  nav .current{font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:2px;color:var(--yellow);text-transform:uppercase;}
+
+  .wrapper{max-width:680px;margin:0 auto;padding:2rem 1.5rem 6rem;position:relative;z-index:1;}
+
+  /* SLIDES */
+  .slide{display:none;}
+  .slide.active{display:block;animation:fadeUp 0.35s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ── CONCEPT ── */
+  .concept-badge{
+    display:inline-flex;align-items:center;gap:0.5rem;
+    background:rgba(232,0,28,0.1);border:1px solid rgba(232,0,28,0.35);
+    color:var(--red);font-family:'Barlow Condensed',sans-serif;
+    font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;
+    padding:0.3rem 0.9rem;border-radius:2px;margin-bottom:1.5rem;
+  }
+  .concept-title{
+    font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,6vw,2.8rem);
+    font-weight:900;letter-spacing:2px;text-transform:uppercase;line-height:1.1;margin-bottom:0.5rem;
+  }
+  .concept-title .hl{color:var(--red);}
+  .concept-title .hl2{color:var(--yellow);}
+  .concept-sub{color:var(--muted);font-size:0.9rem;margin-bottom:2rem;line-height:1.6;}
+
+  /* Start lights */
+  .lights-panel{
+    background:var(--card);border:1px solid var(--border);border-radius:4px;
+    padding:1.8rem 1.5rem;margin-bottom:1.8rem;text-align:center;
+  }
+  .lights-label{font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:1.2rem;}
+  .lights-row{display:flex;justify-content:center;gap:0.8rem;margin-bottom:1.5rem;}
+  .light{
+    width:52px;height:52px;border-radius:50%;
+    background:#1a0000;border:3px solid #330000;
+    transition:all 0.4s ease;
+    box-shadow:none;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;color:#330000;
+  }
+  .light.on{
+    background:var(--red);border-color:#ff3344;
+    box-shadow:0 0 20px rgba(232,0,28,0.7),0 0 40px rgba(232,0,28,0.3);
+    color:rgba(255,200,200,0.8);
+  }
+  .light.go{
+    background:var(--green);border-color:#00ff88;
+    box-shadow:0 0 20px rgba(0,230,118,0.7),0 0 40px rgba(0,230,118,0.3);
+    color:rgba(200,255,220,0.8);
+  }
+  .countdown-display{
+    font-family:'Barlow Condensed',sans-serif;font-size:4rem;font-weight:900;
+    color:var(--white);letter-spacing:4px;min-height:5rem;
+    display:flex;align-items:center;justify-content:center;
+    transition:all 0.3s ease;
+  }
+  .countdown-display.flash{color:var(--yellow);transform:scale(1.15);}
+  .countdown-display.go-text{color:var(--green);}
+
+  .lights-btn{
+    margin-top:0.5rem;padding:0.7rem 2rem;
+    background:var(--red);color:var(--white);border:none;border-radius:4px;cursor:pointer;
+    font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:900;
+    letter-spacing:3px;text-transform:uppercase;transition:all 0.2s;
+  }
+  .lights-btn:hover{background:#ff1a30;}
+  .lights-btn:disabled{opacity:0.4;cursor:not-allowed;}
+
+  /* Number track */
+  .track-panel{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1.5rem;margin-bottom:1.8rem;}
+  .track-label{font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:1rem;}
+  .track-section{margin-bottom:1.2rem;}
+  .track-sub{font-size:0.82rem;color:var(--muted);margin-bottom:0.6rem;}
+  .track-sub strong{color:var(--yellow);}
+  .num-track{display:flex;gap:0.4rem;flex-wrap:wrap;}
+  .nt-cell{
+    min-width:36px;height:36px;border-radius:3px;border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;color:var(--muted);
+  }
+  .nt-cell.fwd{background:rgba(232,0,28,0.1);border-color:rgba(232,0,28,0.4);color:var(--red);}
+  .nt-cell.bwd{background:rgba(255,215,0,0.08);border-color:rgba(255,215,0,0.4);color:var(--yellow);}
+  .nt-cell.arrow{background:transparent;border:none;color:var(--dimmed);font-size:0.8rem;}
+
+  .concept-tip{
+    background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.2);
+    border-radius:4px;padding:1rem 1.2rem;
+    font-size:0.88rem;color:#ccc;line-height:1.7;margin-bottom:2rem;
+  }
+  .concept-tip strong{color:var(--yellow);}
+
+  .start-btn{
+    width:100%;padding:1rem;background:var(--red);color:var(--white);
+    border:none;border-radius:4px;cursor:pointer;
+    font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;
+    font-weight:900;letter-spacing:3px;text-transform:uppercase;transition:all 0.2s;
+  }
+  .start-btn:hover{background:#ff1a30;transform:translateY(-1px);}
+
+  /* ── QUIZ ── */
+  .progress-bar-wrap{margin-bottom:1.5rem;}
+  .pb-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.5rem;}
+  .pb-label{font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+  .pb-count{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;color:var(--yellow);}
+  .pb-track{height:6px;background:var(--border);overflow:hidden;position:relative;}
+  .pb-track::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 9px,rgba(255,255,255,0.05) 9px,rgba(255,255,255,0.05) 10px);}
+  .pb-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--yellow));transition:width 0.4s ease;position:relative;z-index:1;}
+
+  .dot-row{display:flex;gap:0.4rem;margin-top:0.6rem;flex-wrap:wrap;}
+  .q-dot{width:28px;height:28px;border-radius:3px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+  .q-dot.active{border-color:var(--yellow);color:var(--yellow);background:rgba(255,215,0,0.08);}
+  .q-dot.ok{border-color:var(--green);color:var(--green);background:rgba(0,230,118,0.08);}
+  .q-dot.ko{border-color:var(--red);color:var(--red);background:rgba(232,0,28,0.08);}
+
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1.6rem;}
+  .q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+  .q-num{font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:3px;color:var(--red);text-transform:uppercase;}
+  .q-type{font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;letter-spacing:2px;padding:0.2rem 0.6rem;border-radius:2px;text-transform:uppercase;}
+  .type-fwd{background:rgba(232,0,28,0.1);color:var(--red);border:1px solid rgba(232,0,28,0.3);}
+  .type-bwd{background:rgba(255,215,0,0.08);color:var(--yellow);border:1px solid rgba(255,215,0,0.3);}
+  .type-logic{background:rgba(0,230,118,0.08);color:var(--green);border:1px solid rgba(0,230,118,0.3);}
+
+  .q-text{font-size:1.4rem;line-height:1.7;margin-bottom:1.2rem;color:var(--white);}
+  .q-text strong{color:var(--yellow);}
+
+  /* sequence visual */
+  .seq-wrap{
+    background:var(--surface);border:1px solid var(--border);border-radius:4px;
+    padding:1rem;margin-bottom:1.2rem;
+    display:flex;gap:0.4rem;flex-wrap:wrap;justify-content:center;align-items:center;
+  }
+  .seq-cell{
+    min-width:48px;height:48px;border-radius:3px;border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--muted);
+  }
+  .seq-cell.known{background:var(--card);color:var(--white);}
+  .seq-cell.known.red{border-color:rgba(232,0,28,0.4);color:var(--red);}
+  .seq-cell.known.yel{border-color:rgba(255,215,0,0.4);color:var(--yellow);}
+  .seq-cell.blank{background:rgba(255,215,0,0.08);border-color:rgba(255,215,0,0.5);color:var(--yellow);font-size:1.5rem;}
+  .seq-cell.arr{border:none;background:transparent;color:var(--dimmed);font-size:1rem;min-width:20px;}
+
+  /* lights mini */
+  .lights-mini{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.2rem;}
+  .lm{width:36px;height:36px;border-radius:50%;background:#1a0000;border:2px solid #330000;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:900;color:#330000;}
+  .lm.on{background:var(--red);border-color:#ff3344;box-shadow:0 0 12px rgba(232,0,28,0.6);color:rgba(255,200,200,0.8);}
+
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-bottom:0.8rem;}
+  @media(max-width:400px){.opts{grid-template-columns:1fr;}}
+  .opt-btn{background:var(--surface);border:1px solid var(--border);color:var(--white);padding:1rem 0.8rem;border-radius:4px;cursor:pointer;font-family:'Fredoka One',cursive;font-size:2rem;letter-spacing:1px;transition:all 0.2s;text-align:center;}
+  .opt-btn:hover:not(:disabled){border-color:var(--yellow);background:rgba(255,215,0,0.05);}
+  .opt-btn.correct{border-color:var(--green);background:rgba(0,230,118,0.1);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(232,0,28,0.1);color:var(--red);}
+  .opt-btn.reveal{border-color:var(--green);background:rgba(0,230,118,0.06);color:var(--green);}
+
+  .q-feedback{min-height:28px;font-size:0.88rem;margin-bottom:1rem;line-height:1.5;}
+  .fb-ok{color:var(--green);}
+  .fb-ko{color:var(--red);}
+
+  .next-btn{width:100%;padding:0.85rem;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;transition:all 0.2s;display:none;}
+  .next-btn.show{display:block;}
+  .next-btn:hover{border-color:var(--yellow);color:var(--yellow);}
+  .next-btn.last{border-color:var(--red);color:var(--red);}
+  .next-btn.last:hover{background:rgba(232,0,28,0.1);}
+
+  /* FINISH */
+  .finish-screen{display:none;text-align:center;padding:3rem 1rem;animation:fadeUp 0.4s ease;}
+  .finish-screen.show{display:block;}
+  .finish-trophy{font-size:4rem;margin-bottom:1rem;}
+  .finish-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2rem,8vw,3.5rem);font-weight:900;text-transform:uppercase;letter-spacing:3px;color:var(--yellow);margin-bottom:0.5rem;}
+  .finish-score{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;color:var(--muted);letter-spacing:2px;margin-bottom:2rem;}
+  .finish-score span{color:var(--white);}
+  .score-bar-wrap{max-width:320px;margin:0 auto 2rem;}
+  .score-bar-track{height:10px;background:var(--border);}
+  .score-bar-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--yellow));transition:width 1s ease;}
+  .score-msg{font-size:1rem;color:#aaa;line-height:1.7;margin-bottom:2rem;}
+  .replay-btn{display:inline-block;padding:0.85rem 2.5rem;background:var(--red);color:var(--white);border:none;border-radius:4px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;letter-spacing:3px;text-transform:uppercase;transition:all 0.2s;margin-right:0.8rem;}
+  .replay-btn:hover{background:#ff1a30;}
+  .hub-btn{display:inline-block;padding:0.85rem 2rem;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:4px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;transition:all 0.2s;text-decoration:none;}
+  .hub-btn:hover{border-color:var(--yellow);color:var(--yellow);}
+
+  .footer-flag{position:fixed;bottom:0;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,var(--white) 0px,var(--white) 8px,var(--bg) 8px,var(--bg) 16px);z-index:50;opacity:0.15;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../../algo_students.html">Math <span>Arena</span></a>
+  <span class="sep">›</span>
+  <a class="bc" href="../shadiq_9999.html">Shadiq</a>
+  <span class="sep">›</span>
+  <span class="current">Stage 02</span>
+</nav>
+
+<div class="wrapper">
+
+  <!-- ══ SLIDE 0: CONCEPT ══ -->
+  <div class="slide active" id="slide-concept">
+    <div class="concept-badge">⏱️ Stage 02 · Countdown</div>
+    <div class="concept-title">Berhitung <span class="hl">Maju</span> &amp; <span class="hl2">Mundur</span></div>
+    <p class="concept-sub">Sebelum balapan F1 dimulai, ada 5 lampu merah yang menyala satu per satu — lalu semua mati sekaligus. Itu tanda <em>GO!</em> Berhitung itu sama kayak lampu start — ada urutannya!</p>
+
+    <!-- Interactive start lights -->
+    <div class="lights-panel">
+      <div class="lights-label">🔴 Simulasi Lampu Start F1 — Tekan untuk mulai!</div>
+      <div class="lights-row" id="lightsRow">
+        <div class="light" id="l1">1</div>
+        <div class="light" id="l2">2</div>
+        <div class="light" id="l3">3</div>
+        <div class="light" id="l4">4</div>
+        <div class="light" id="l5">5</div>
+      </div>
+      <div class="countdown-display" id="cdDisplay">—</div>
+      <button class="lights-btn" id="lightsBtn" onclick="runLights()">🚦 Nyalakan Lampu!</button>
+    </div>
+
+    <!-- Number tracks -->
+    <div class="track-panel">
+      <div class="track-label">📍 Jalur Angka</div>
+
+      <div class="track-section">
+        <div class="track-sub"><strong>Maju</strong> — seperti mobil mulai jalan (dari kecil ke besar)</div>
+        <div class="num-track">
+          <div class="nt-cell fwd">1</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell fwd">2</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell fwd">3</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell fwd">4</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell fwd">5</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell fwd">6</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell fwd">7</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell fwd">8</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell fwd">9</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell fwd">10</div>
+        </div>
+      </div>
+
+      <div class="track-section">
+        <div class="track-sub"><strong>Mundur</strong> — seperti countdown sebelum start (dari besar ke kecil)</div>
+        <div class="num-track">
+          <div class="nt-cell bwd">10</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell bwd">9</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell bwd">8</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell bwd">7</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell bwd">6</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell bwd">5</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell bwd">4</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell bwd">3</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell bwd">2</div>
+          <div class="nt-cell arrow">→</div>
+          <div class="nt-cell bwd">1</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="concept-tip">
+      <strong>Trik gampang:</strong> Berhitung <strong>maju</strong> = tiap langkah tambah 1 (naik terus). Berhitung <strong>mundur</strong> = tiap langkah kurang 1 (turun terus). Kayak gas vs rem! 🏎️
+    </div>
+
+    <button class="start-btn" onclick="startQuiz()">🚦 Siap? Mulai Soal!</button>
+  </div>
+
+  <!-- ══ SLIDE 1: QUIZ ══ -->
+  <div class="slide" id="slide-quiz">
+    <div class="progress-bar-wrap">
+      <div class="pb-header">
+        <span class="pb-label">Lap Progress</span>
+        <span class="pb-count" id="pbCount">1 / 10</span>
+      </div>
+      <div class="pb-track"><div class="pb-fill" id="pbFill" style="width:10%"></div></div>
+      <div class="dot-row" id="dotRow"></div>
+    </div>
+
+    <div class="q-card" id="qCard">
+      <div class="q-meta">
+        <span class="q-num" id="qNum">Soal 1</span>
+        <span class="q-type" id="qType"></span>
+      </div>
+      <div class="q-text" id="qText"></div>
+      <div id="qVisual"></div>
+      <div class="opts" id="qOpts"></div>
+      <div class="q-feedback" id="qFeedback"></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- ══ FINISH ══ -->
+  <div class="finish-screen" id="finishScreen">
+    <div class="finish-trophy" id="finishTrophy">🏆</div>
+    <div class="finish-title" id="finishTitle">Finish!</div>
+    <div class="finish-score">Skor kamu: <span id="finishScore">0 / 10</span></div>
+    <div class="score-bar-wrap">
+      <div class="score-bar-track"><div class="score-bar-fill" id="scoreBarFill" style="width:0%"></div></div>
+    </div>
+    <p class="score-msg" id="scoreMsg"></p>
+    <button class="replay-btn" onclick="replay()">🔄 Ulangi</button>
+    <a class="hub-btn" href="../shadiq_9999.html">← Hub</a>
+  </div>
+
+</div>
+
+<div class="footer-flag"></div>
+
+<script>
+// ── LIGHTS ANIMATION ──
+let lightsRunning = false;
+function runLights() {
+  if (lightsRunning) return;
+  lightsRunning = true;
+  const btn = document.getElementById('lightsBtn');
+  btn.disabled = true;
+
+  // reset
+  for (let i = 1; i <= 5; i++) {
+    const l = document.getElementById('l' + i);
+    l.classList.remove('on','go');
+  }
+  const disp = document.getElementById('cdDisplay');
+  disp.className = 'countdown-display';
+  disp.textContent = '—';
+
+  const nums = [5,4,3,2,1];
+  let step = 0;
+
+  const lightOn = setInterval(() => {
+    if (step < 5) {
+      document.getElementById('l' + (step+1)).classList.add('on');
+      disp.className = 'countdown-display flash';
+      disp.textContent = nums[step];
+      setTimeout(() => disp.classList.remove('flash'), 250);
+      step++;
+    } else {
+      clearInterval(lightOn);
+      // brief pause then all off = GO
+      setTimeout(() => {
+        for (let i = 1; i <= 5; i++) {
+          const l = document.getElementById('l' + i);
+          l.classList.remove('on');
+          l.classList.add('go');
+        }
+        disp.className = 'countdown-display go-text';
+        disp.textContent = 'GO! 🏎️';
+        setTimeout(() => {
+          for (let i = 1; i <= 5; i++) {
+            document.getElementById('l' + i).classList.remove('go');
+          }
+          disp.textContent = '—';
+          disp.className = 'countdown-display';
+          btn.disabled = false;
+          lightsRunning = false;
+        }, 2000);
+      }, 800);
+    }
+  }, 700);
+}
+
+// ── QUESTIONS ──
+const questions = [
+  {
+    typeLabel:'Maju', typeCls:'type-fwd',
+    text:'Urutan berhitung maju: <strong>1, 2, 3, 4, ___</strong>. Angka berapa selanjutnya?',
+    visual:{ kind:'seq', cells:[
+      {v:'1',cls:'known red'},{v:'→',cls:'arr'},
+      {v:'2',cls:'known red'},{v:'→',cls:'arr'},
+      {v:'3',cls:'known red'},{v:'→',cls:'arr'},
+      {v:'4',cls:'known red'},{v:'→',cls:'arr'},
+      {v:'?',cls:'blank'}
+    ]},
+    opts:['3','5','6','7'], ans:'5',
+    fb:'Betul! Setelah 4 adalah 5. Maju terus +1! 🚀'
+  },
+  {
+    typeLabel:'Mundur', typeCls:'type-bwd',
+    text:'Countdown balapan: <strong>5, 4, 3, 2, ___</strong>. Angka berapa selanjutnya?',
+    visual:{ kind:'seq', cells:[
+      {v:'5',cls:'known yel'},{v:'→',cls:'arr'},
+      {v:'4',cls:'known yel'},{v:'→',cls:'arr'},
+      {v:'3',cls:'known yel'},{v:'→',cls:'arr'},
+      {v:'2',cls:'known yel'},{v:'→',cls:'arr'},
+      {v:'?',cls:'blank'}
+    ]},
+    opts:['0','1','3','4'], ans:'1',
+    fb:'Yes! Mundur terus -1. Setelah 2 adalah 1. GO! 🏁'
+  },
+  {
+    typeLabel:'Logika', typeCls:'type-logic',
+    text:'Ada angka yang hilang! <strong>3, 4, ___, 6, 7</strong>. Angka berapa yang hilang?',
+    visual:{ kind:'seq', cells:[
+      {v:'3',cls:'known'},{v:'→',cls:'arr'},
+      {v:'4',cls:'known'},{v:'→',cls:'arr'},
+      {v:'?',cls:'blank'},{v:'→',cls:'arr'},
+      {v:'6',cls:'known'},{v:'→',cls:'arr'},
+      {v:'7',cls:'known'}
+    ]},
+    opts:['4','5','6','7'], ans:'5',
+    fb:'Benar! 3 → 4 → 5 → 6 → 7. Angka 5 yang hilang! 🔍'
+  },
+  {
+    typeLabel:'Maju', typeCls:'type-fwd',
+    text:'Pembalap mulai dari posisi <strong>6</strong> dan maju 2 langkah. Di posisi berapa dia sekarang?',
+    visual:{ kind:'seq', cells:[
+      {v:'6',cls:'known red'},{v:'→',cls:'arr'},
+      {v:'7',cls:'known'},{v:'→',cls:'arr'},
+      {v:'?',cls:'blank'}
+    ]},
+    opts:['7','8','9','10'], ans:'8',
+    fb:'Top! 6 → 7 → 8. Maju 2 langkah dari 6 = posisi 8! 🏎️'
+  },
+  {
+    typeLabel:'Mundur', typeCls:'type-bwd',
+    text:'Countdown: <strong>10, 9, 8, ___, 6</strong>. Angka berapa yang hilang?',
+    visual:{ kind:'seq', cells:[
+      {v:'10',cls:'known yel'},{v:'→',cls:'arr'},
+      {v:'9',cls:'known yel'},{v:'→',cls:'arr'},
+      {v:'8',cls:'known yel'},{v:'→',cls:'arr'},
+      {v:'?',cls:'blank'},{v:'→',cls:'arr'},
+      {v:'6',cls:'known yel'}
+    ]},
+    opts:['5','6','7','8'], ans:'7',
+    fb:'Pas! 10→9→8→7→6. Mundur -1 tiap langkah. ⏱️'
+  },
+  {
+    typeLabel:'Mundur', typeCls:'type-bwd',
+    text:'Berhitung mundur dari 8: <strong>8, 7, 6, 5, ___</strong>. Angka selanjutnya?',
+    visual:{ kind:'seq', cells:[
+      {v:'8',cls:'known yel'},{v:'→',cls:'arr'},
+      {v:'7',cls:'known yel'},{v:'→',cls:'arr'},
+      {v:'6',cls:'known yel'},{v:'→',cls:'arr'},
+      {v:'5',cls:'known yel'},{v:'→',cls:'arr'},
+      {v:'?',cls:'blank'}
+    ]},
+    opts:['3','4','5','6'], ans:'4',
+    fb:'Bener! Setelah 5 mundur 1 lagi jadi 4. 📉'
+  },
+  {
+    typeLabel:'Logika', typeCls:'type-logic',
+    text:'Lampu start menyala <strong>1 per 1</strong>: sudah menyala 3 lampu. Berapa lampu lagi yang belum menyala?',
+    visual:{ kind:'lights', on:3 },
+    opts:['1','2','3','4'], ans:'2',
+    fb:'Benar! Total 5 lampu, sudah menyala 3, sisa 5 - 3 = 2 lampu lagi! 🔴'
+  },
+  {
+    typeLabel:'Maju', typeCls:'type-fwd',
+    text:'Berhitung maju dari <strong>7</strong> sebanyak 3 langkah. Sampai di angka berapa?',
+    visual:{ kind:'seq', cells:[
+      {v:'7',cls:'known red'},{v:'→',cls:'arr'},
+      {v:'8',cls:'known'},{v:'→',cls:'arr'},
+      {v:'9',cls:'known'},{v:'→',cls:'arr'},
+      {v:'?',cls:'blank'}
+    ]},
+    opts:['8','9','10','11'], ans:'10',
+    fb:'Mantap! 7 → 8 → 9 → 10. Tiga langkah maju! 🏁'
+  },
+  {
+    typeLabel:'Logika', typeCls:'type-logic',
+    text:'Urutan ini maju atau mundur? <strong>9, 8, 7, 6, 5</strong>',
+    visual:{ kind:'seq', cells:[
+      {v:'9',cls:'known yel'},{v:'→',cls:'arr'},
+      {v:'8',cls:'known yel'},{v:'→',cls:'arr'},
+      {v:'7',cls:'known yel'},{v:'→',cls:'arr'},
+      {v:'6',cls:'known yel'},{v:'→',cls:'arr'},
+      {v:'5',cls:'known yel'}
+    ]},
+    opts:['Maju ↑','Mundur ↓','Acak','Sama semua'], ans:'Mundur ↓',
+    fb:'Betul! Angkanya turun terus — itu berhitung mundur. Kayak countdown! ⏳'
+  },
+  {
+    typeLabel:'Logika', typeCls:'type-logic',
+    text:'Pembalap ada di posisi <strong>10</strong>. Dia mundur 3 posisi ke belakang. Sekarang di posisi berapa?',
+    visual:{ kind:'seq', cells:[
+      {v:'10',cls:'known red'},{v:'→',cls:'arr'},
+      {v:'9',cls:'known'},{v:'→',cls:'arr'},
+      {v:'8',cls:'known'},{v:'→',cls:'arr'},
+      {v:'?',cls:'blank'}
+    ]},
+    opts:['6','7','8','9'], ans:'7',
+    fb:'Tepat! 10 → 9 → 8 → 7. Mundur 3 langkah dari 10 = posisi 7! 🧠'
+  }
+];
+
+let current = 0, score = 0;
+
+function startQuiz() {
+  document.getElementById('slide-concept').classList.remove('active');
+  document.getElementById('slide-quiz').classList.add('active');
+  buildDots();
+  renderQ(0);
+}
+
+function buildDots() {
+  const row = document.getElementById('dotRow');
+  row.innerHTML = '';
+  questions.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'q-dot' + (i === 0 ? ' active' : '');
+    d.textContent = i + 1;
+    d.id = `dot-${i}`;
+    row.appendChild(d);
+  });
+}
+
+function renderQ(idx) {
+  const q = questions[idx];
+  document.getElementById('qNum').textContent = `Soal ${idx + 1}`;
+  document.getElementById('qType').textContent = q.typeLabel;
+  document.getElementById('qType').className = `q-type ${q.typeCls}`;
+  document.getElementById('qText').innerHTML = q.text;
+  document.getElementById('qFeedback').innerHTML = '';
+  document.getElementById('pbCount').textContent = `${idx + 1} / 10`;
+  document.getElementById('pbFill').style.width = `${(idx + 1) * 10}%`;
+
+  // visual
+  const vis = document.getElementById('qVisual');
+  vis.innerHTML = '';
+  if (q.visual) {
+    if (q.visual.kind === 'seq') {
+      const wrap = document.createElement('div');
+      wrap.className = 'seq-wrap';
+      q.visual.cells.forEach(c => {
+        const cell = document.createElement('div');
+        cell.className = `seq-cell ${c.cls}`;
+        cell.textContent = c.v;
+        wrap.appendChild(cell);
+      });
+      vis.appendChild(wrap);
+    } else if (q.visual.kind === 'lights') {
+      const wrap = document.createElement('div');
+      wrap.className = 'lights-mini';
+      for (let i = 1; i <= 5; i++) {
+        const l = document.createElement('div');
+        l.className = 'lm' + (i <= q.visual.on ? ' on' : '');
+        l.textContent = i;
+        wrap.appendChild(l);
+      }
+      vis.appendChild(wrap);
+    }
+  }
+
+  // options
+  const opts = document.getElementById('qOpts');
+  opts.innerHTML = '';
+  q.opts.forEach(o => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = o;
+    btn.onclick = () => checkAns(o, btn);
+    opts.appendChild(btn);
+  });
+
+  const nb = document.getElementById('nextBtn');
+  nb.classList.remove('show','last');
+  nb.textContent = idx < questions.length - 1 ? 'Lanjut →' : '🏁 Lihat Hasil!';
+  if (idx === questions.length - 1) nb.classList.add('last');
+}
+
+function checkAns(chosen, btn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+  const ok = chosen === q.ans;
+  if (ok) {
+    btn.classList.add('correct');
+    score++;
+    document.getElementById('qFeedback').innerHTML = `<span class="fb-ok">✅ ${q.fb}</span>`;
+    document.getElementById(`dot-${current}`).classList.replace('active','ok');
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.opt-btn').forEach(b => { if (b.textContent === q.ans) b.classList.add('reveal'); });
+    document.getElementById('qFeedback').innerHTML = `<span class="fb-ko">❌ Hampir! Jawaban benar: <strong>${q.ans}</strong>. ${q.fb}</span>`;
+    document.getElementById(`dot-${current}`).classList.replace('active','ko');
+  }
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function nextQ() {
+  current++;
+  if (current >= questions.length) { showFinish(); return; }
+  document.getElementById(`dot-${current}`).classList.add('active');
+  renderQ(current);
+}
+
+function showFinish() {
+  document.getElementById('slide-quiz').classList.remove('active');
+  const fs = document.getElementById('finishScreen');
+  fs.classList.add('show');
+  const pct = Math.round((score / questions.length) * 100);
+  document.getElementById('finishScore').textContent = `${score} / ${questions.length}`;
+  setTimeout(() => { document.getElementById('scoreBarFill').style.width = pct + '%'; }, 300);
+
+  let trophy, title, msg;
+  if (score === 10) {
+    trophy='🏆'; title='Juara Dunia!';
+    msg='Sempurna! 10/10. Kamu hafal maju mundur kayak pembalap hafal tikungan sirkuit! 🏎️🔥';
+  } else if (score >= 8) {
+    trophy='🥇'; title='Podium!';
+    msg=`${score}/10 benar — naik podium! Dikit lagi sempurna, coba ulangi ya! 💪`;
+  } else if (score >= 6) {
+    trophy='🥈'; title='Bagus!';
+    msg=`${score}/10 benar. Sudah bagus! Ingat: maju = +1, mundur = -1. Ulangi sekali lagi biar makin mantap! 😊`;
+  } else {
+    trophy='🔧'; title='Pit Stop!';
+    msg=`${score}/10. Lihat lagi jalur angkanya di konsep ya, terus coba lagi! Semua juara butuh latihan. 🏎️`;
+  }
+  document.getElementById('finishTrophy').textContent = trophy;
+  document.getElementById('finishTitle').textContent = title;
+  document.getElementById('scoreMsg').textContent = msg;
+}
+
+function replay() {
+  current = 0; score = 0;
+  document.getElementById('finishScreen').classList.remove('show');
+  document.getElementById('slide-quiz').classList.add('active');
+  buildDots();
+  renderQ(0);
+}
+</script>
+</body>
+</html>
