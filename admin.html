@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · Math Arena Chat</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --board: #1e2a2a;
+    --board-mid: #243030;
+    --board-light: #2c3a3a;
+    --board-dark: #162020;
+    --grid: rgba(255,255,255,0.04);
+    --chalk: #e8e0d0;
+    --chalk-muted: rgba(232,224,208,0.5);
+    --chalk-dim: rgba(232,224,208,0.2);
+    --chalk-border: rgba(232,224,208,0.18);
+    --gold: #f0c060;
+    --red: #ef4444;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background-color: var(--board);
+    background-image:
+      linear-gradient(rgba(255,255,255,0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.055) 1px, transparent 1px),
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+    color: var(--chalk);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* subtle noise overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.5;
+  }
+
+  /* ── LOGIN ── */
+  #loginScreen {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    padding: 2rem; position: relative; z-index: 1;
+  }
+  .login-box {
+    background: var(--board-mid);
+    border: 2px dashed var(--chalk-border);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    width: 100%; max-width: 360px;
+    text-align: center;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .login-box::before {
+    content: '✏️';
+    position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+    font-size: 2rem; line-height: 1;
+  }
+  .login-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+  .login-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.6rem; letter-spacing: 2px;
+    color: var(--chalk); margin-bottom: 0.3rem;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+  }
+  .login-sub {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.9rem; color: var(--chalk-muted); margin-bottom: 2rem;
+  }
+  .login-input {
+    width: 100%;
+    background: var(--board-dark);
+    border: 1.5px dashed var(--chalk-border);
+    color: var(--chalk);
+    padding: 0.75rem 1rem; border-radius: 10px;
+    font-family: 'Patrick Hand', cursive; font-size: 1.1rem;
+    text-align: center; letter-spacing: 6px;
+    outline: none; transition: border-color 0.2s; margin-bottom: 0.9rem;
+  }
+  .login-input:focus { border-color: rgba(232,224,208,0.55); }
+  .login-input::placeholder { letter-spacing: 2px; font-size: 1rem; color: var(--chalk-dim); }
+  .login-btn {
+    width: 100%;
+    background: var(--board-light);
+    border: 2px dashed var(--chalk-border);
+    color: var(--chalk); font-weight: 800;
+    padding: 0.8rem; border-radius: 10px;
+    font-family: 'Fredoka One', cursive; font-size: 1rem; letter-spacing: 3px;
+    cursor: pointer; transition: all 0.18s;
+  }
+  .login-btn:hover { background: #3a4a4a; border-color: rgba(232,224,208,0.4); }
+  .login-err {
+    font-family: 'Patrick Hand', cursive;
+    color: #f87171; font-size: 0.85rem; margin-top: 0.6rem; min-height: 1.2rem;
+  }
+
+  /* ── DASHBOARD ── */
+  #dashboard { flex: 1; display: none; flex-direction: column; position: relative; z-index: 1; }
+
+  /* Top bar */
+  .top-bar {
+    padding: 0.8rem 1.5rem;
+    background: var(--board-dark);
+    border-bottom: 1.5px dashed var(--chalk-border);
+    display: flex; align-items: center; gap: 1rem; flex-shrink: 0;
+  }
+  .top-bar .logo {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem; letter-spacing: 3px;
+    color: var(--chalk);
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+  }
+  .top-bar .logo span { color: var(--gold); }
+  .top-bar .badge-admin {
+    background: rgba(240,192,96,0.1);
+    border: 1px dashed rgba(240,192,96,0.35);
+    color: var(--gold);
+    font-family: 'Patrick Hand', cursive; font-size: 0.75rem; letter-spacing: 2px;
+    padding: 0.15rem 0.65rem; border-radius: 20px;
+  }
+  .top-bar .spacer { flex: 1; }
+  .total-unread {
+    background: var(--red); color: #fff;
+    font-family: 'Nunito', sans-serif; font-size: 0.65rem; font-weight: 900;
+    min-width: 22px; height: 22px; border-radius: 99px;
+    display: none; align-items: center; justify-content: center; padding: 0 5px;
+  }
+  .logout-btn {
+    background: transparent;
+    border: 1px dashed var(--chalk-dim);
+    color: var(--chalk-muted);
+    font-family: 'Patrick Hand', cursive; font-size: 0.82rem; letter-spacing: 1px;
+    padding: 0.3rem 0.9rem; border-radius: 8px;
+    cursor: pointer; transition: all 0.18s;
+  }
+  .logout-btn:hover { border-color: #f87171; color: #f87171; }
+
+  .main { flex: 1; display: flex; overflow: hidden; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 264px; flex-shrink: 0;
+    border-right: 1.5px dashed var(--chalk-border);
+    background: var(--board-dark);
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .sidebar-head {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px dashed var(--chalk-border);
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.8rem; letter-spacing: 2px; color: var(--chalk-muted);
+    text-transform: uppercase; flex-shrink: 0;
+  }
+  .sidebar-list { flex: 1; overflow-y: auto; }
+  .sidebar-list::-webkit-scrollbar { width: 3px; }
+  .sidebar-list::-webkit-scrollbar-thumb { background: var(--chalk-dim); border-radius: 99px; }
+
+  .room-item {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px dashed rgba(232,224,208,0.07);
+    cursor: pointer; transition: background 0.15s; position: relative;
+  }
+  .room-item:hover { background: rgba(255,255,255,0.03); }
+  .room-item.active {
+    background: rgba(240,192,96,0.06);
+    border-right: 2.5px solid var(--gold);
+  }
+  .room-item.has-unread { background: rgba(239,68,68,0.05); }
+
+  .room-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.88rem; color: var(--chalk);
+    margin-bottom: 0.25rem;
+    display: flex; align-items: center; gap: 0.4rem;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+  }
+  .room-unread {
+    background: var(--red); color: #fff;
+    font-size: 0.55rem; font-weight: 900;
+    min-width: 16px; height: 16px; border-radius: 99px;
+    display: inline-flex; align-items: center; justify-content: center; padding: 0 3px;
+  }
+  .room-preview {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.78rem; color: var(--chalk-muted);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 190px;
+  }
+  .room-time {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.65rem; color: var(--chalk-dim);
+    position: absolute; top: 0.85rem; right: 0.8rem;
+  }
+  .sidebar-empty {
+    padding: 2rem 1rem; text-align: center;
+    font-family: 'Patrick Hand', cursive;
+    color: var(--chalk-muted); font-size: 0.88rem; line-height: 1.8;
+  }
+
+  /* ── CHAT PANEL ── */
+  .chat-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+  .chat-header {
+    padding: 0.9rem 1.4rem;
+    border-bottom: 1.5px dashed var(--chalk-border);
+    background: var(--board-dark);
+    display: flex; align-items: center; gap: 0.85rem; flex-shrink: 0;
+  }
+  .ch-avatar {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: var(--board-light);
+    border: 1.5px dashed var(--chalk-border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+  .ch-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem; color: var(--chalk);
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.3); letter-spacing: 1px;
+  }
+  .ch-id {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.72rem; color: var(--chalk-muted); margin-top: 1px;
+  }
+
+  .no-chat {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 0.8rem;
+  }
+  .no-chat span { font-size: 3.5rem; opacity: 0.4; }
+  .no-chat p {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.95rem; color: var(--chalk-muted);
+    text-align: center; line-height: 1.8;
+  }
+
+  /* Message list */
+  .msg-list {
+    flex: 1; overflow-y: auto;
+    padding: 1rem 1.2rem;
+    display: flex; flex-direction: column; gap: 0.65rem;
+    scroll-behavior: smooth;
+  }
+  .msg-list::-webkit-scrollbar { width: 3px; }
+  .msg-list::-webkit-scrollbar-thumb { background: var(--chalk-dim); border-radius: 99px; }
+
+  /* Bubbles */
+  .bubble {
+    max-width: 72%; padding: 0.6rem 0.9rem; border-radius: 12px;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.95rem; line-height: 1.55; word-break: break-word;
+  }
+  .bubble.student {
+    align-self: flex-start;
+    background: rgba(232,224,208,0.08);
+    border: 1px dashed rgba(232,224,208,0.25);
+    color: var(--chalk); border-bottom-left-radius: 2px;
+  }
+  .bubble.admin {
+    align-self: flex-end;
+    background: rgba(240,192,96,0.09);
+    border: 1px dashed rgba(240,192,96,0.3);
+    color: var(--chalk); border-bottom-right-radius: 2px;
+  }
+  .bubble .b-sender {
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.62rem; letter-spacing: 1.5px;
+    margin-bottom: 3px; text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+  }
+  .bubble.student .b-sender { color: var(--chalk-muted); }
+  .bubble.admin .b-sender { color: var(--gold); }
+  .bubble .b-time {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.6rem; color: var(--chalk-dim); margin-top: 3px; text-align: right;
+  }
+
+  .date-divider {
+    text-align: center;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.72rem; color: var(--chalk-dim);
+    padding: 0.5rem 0; position: relative;
+  }
+  .date-divider::before {
+    content: ''; position: absolute; top: 50%; left: 0; right: 0;
+    height: 1px; background: var(--chalk-dim);
+  }
+  .date-divider span { background: var(--board); padding: 0 0.8rem; position: relative; }
+
+  /* Reply bar */
+  .reply-bar {
+    padding: 0.7rem 0.9rem;
+    border-top: 1.5px dashed var(--chalk-border);
+    background: var(--board-dark);
+    display: flex; gap: 0.6rem; align-items: flex-end; flex-shrink: 0;
+  }
+  .reply-input {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px dashed var(--chalk-border);
+    color: var(--chalk);
+    padding: 0.6rem 0.85rem; border-radius: 8px;
+    font-family: 'Patrick Hand', cursive; font-size: 0.95rem;
+    outline: none; transition: border-color 0.2s, background 0.2s;
+    resize: none; min-height: 40px; max-height: 100px; line-height: 1.5;
+  }
+  .reply-input:focus { border-color: rgba(232,224,208,0.45); background: rgba(255,255,255,0.06); }
+  .reply-input::placeholder { color: var(--chalk-dim); font-style: italic; }
+  .reply-btn {
+    background: var(--board-light);
+    border: 1.5px dashed var(--chalk-border);
+    color: var(--chalk);
+    height: 40px; padding: 0 1.3rem; border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Fredoka One', cursive; font-size: 0.88rem; letter-spacing: 2px;
+    transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
+  }
+  .reply-btn:hover { background: #3a4a4a; border-color: rgba(232,224,208,0.4); }
+  .reply-btn:disabled { opacity: 0.35; cursor: default; }
+
+  /* ── MOBILE ── */
+  @media(max-width:600px){
+    .sidebar { width:100%; border-right:none; border-bottom:1.5px dashed var(--chalk-border); max-height:220px; }
+    .main { flex-direction:column; }
+    .chat-area { min-height:0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <span class="login-icon">🔐</span>
+    <div class="login-title">MATH ARENA</div>
+    <div class="login-sub">Tutor Dashboard · Masukkan password</div>
+    <input type="password" class="login-input" id="passInput" placeholder="••••••••" maxlength="32"
+      onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">MASUK ✏️</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="top-bar">
+    <span class="logo">MATH <span>ARENA</span></span>
+    <span class="badge-admin">✏️ Tutor</span>
+    <span class="spacer"></span>
+    <span class="total-unread" id="totalUnread">0</span>
+    <button class="logout-btn" onclick="doLogout()">Logout</button>
+  </div>
+  <div class="main">
+    <div class="sidebar">
+      <div class="sidebar-head">📬 Student Rooms</div>
+      <div class="sidebar-list" id="roomList"></div>
+    </div>
+    <div class="chat-area" id="chatArea">
+      <div class="no-chat" id="noChat">
+        <span>✏️</span>
+        <p>Pilih student di sidebar<br>untuk lihat percakapan</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPA_URL = 'https://fjnpaglzdmofdgrfvbth.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqbnBhZ2x6ZG1vZmRncmZ2YnRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyMDUzMDMsImV4cCI6MjA5Njc4MTMwM30.pgP4-x7d_Dca5r5ca4L3viS-qXTzvzRb7smswzJrj1k';
+const ADMIN_PASS = 'math';
+
+let activeRoom = null;
+let lastMsgIds = {}; // per room
+let rooms = {};      // { student_id: { name, unread, lastMsg, lastTime } }
+
+// ── AUTH ──
+function doLogin() {
+  const v = document.getElementById('passInput').value;
+  if (v === ADMIN_PASS) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'flex';
+    initDashboard();
+  } else {
+    const err = document.getElementById('loginErr');
+    err.textContent = '❌ Password salah!';
+    setTimeout(() => { err.textContent = ''; }, 2000);
+  }
+}
+function doLogout() {
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('passInput').value = '';
+  activeRoom = null;
+  rooms = {};
+}
+document.getElementById('passInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+// ── API ──
+function api(path, opts = {}) {
+  return fetch(SUPA_URL + '/rest/v1/' + path, {
+    ...opts,
+    headers: {
+      'apikey': SUPA_KEY,
+      'Authorization': 'Bearer ' + SUPA_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || 'return=minimal',
+      ...(opts.headers || {}),
+    },
+  });
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function fmtTime(iso) {
+  const d = new Date(iso);
+  return d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+}
+function fmtDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+function scrollMsgs() {
+  const ml = document.getElementById('msgList');
+  if (ml) setTimeout(() => { ml.scrollTop = ml.scrollHeight; }, 50);
+}
+
+// ── LOAD ALL ROOMS ──
+async function loadRooms() {
+  const res = await api('messages?order=created_at.desc&select=student_id,student_name,text,sender,is_read,created_at');
+  const data = await res.json();
+
+  rooms = {};
+  data.forEach(m => {
+    const sid = m.student_id;
+    if (!rooms[sid]) {
+      rooms[sid] = { name: m.student_name, unread: 0, lastMsg: m.text, lastTime: m.created_at, lastSender: m.sender };
+    }
+    if (m.sender === 'student' && !m.is_read) rooms[sid].unread++;
+  });
+
+  renderRoomList();
+}
+
+function renderRoomList() {
+  const list = document.getElementById('roomList');
+  const sorted = Object.entries(rooms).sort((a, b) => new Date(b[1].lastTime) - new Date(a[1].lastTime));
+
+  if (!sorted.length) {
+    list.innerHTML = `<div class="sidebar-empty">Belum ada student yang chat.<br>Tunggu dulu ya! 😊</div>`;
+    return;
+  }
+
+  list.innerHTML = '';
+  sorted.forEach(([sid, r]) => {
+    const div = document.createElement('div');
+    div.className = 'room-item' + (r.unread ? ' has-unread' : '') + (activeRoom === sid ? ' active' : '');
+    div.dataset.sid = sid;
+    const timeDiff = getRelTime(r.lastTime);
+    const preview = (r.lastSender === 'admin' ? '↩ Kamu: ' : '') + r.lastMsg;
+    div.innerHTML = `
+      <div class="room-name">
+        ${escHtml(r.name)}
+        ${r.unread ? `<span class="room-unread">${r.unread}</span>` : ''}
+      </div>
+      <div class="room-preview">${escHtml(preview)}</div>
+      <div class="room-time">${timeDiff}</div>
+    `;
+    div.addEventListener('click', () => openRoom(sid, r.name));
+    list.appendChild(div);
+  });
+
+  // Update total unread badge
+  const total = Object.values(rooms).reduce((s, r) => s + r.unread, 0);
+  const tu = document.getElementById('totalUnread');
+  if (total > 0) {
+    tu.textContent = total > 99 ? '99+' : total;
+    tu.style.display = 'flex';
+  } else {
+    tu.style.display = 'none';
+  }
+}
+
+function getRelTime(iso) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return 'baru saja';
+  if (m < 60) return m + 'm';
+  const h = Math.floor(m / 60);
+  if (h < 24) return h + 'j';
+  return Math.floor(h / 24) + 'h';
+}
+
+// ── OPEN ROOM ──
+async function openRoom(sid, name) {
+  activeRoom = sid;
+  document.querySelectorAll('.room-item').forEach(el => el.classList.toggle('active', el.dataset.sid === sid));
+
+  const area = document.getElementById('chatArea');
+  document.getElementById('noChat')?.remove();
+
+  area.innerHTML = `
+    <div class="chat-header">
+      <div class="ch-avatar">🎮</div>
+      <div>
+        <div class="ch-name">${escHtml(name)}</div>
+        <div class="ch-id">${escHtml(sid)}</div>
+      </div>
+    </div>
+    <div class="msg-list" id="msgList"></div>
+    <div class="reply-bar">
+      <textarea class="reply-input" id="replyInput" placeholder="Ketik balasan..." rows="1"></textarea>
+      <button class="reply-btn" id="replyBtn" onclick="sendReply()">KIRIM</button>
+    </div>
+  `;
+
+  document.getElementById('replyInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendReply(); }
+  });
+  document.getElementById('replyInput').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+  });
+
+  await loadRoomMessages(sid);
+  await markRoomRead(sid);
+}
+
+async function loadRoomMessages(sid) {
+  const res = await api(`messages?student_id=eq.${encodeURIComponent(sid)}&order=created_at.asc&select=*`);
+  const data = await res.json();
+  const ml = document.getElementById('msgList');
+  if (!ml) return;
+  ml.innerHTML = '';
+  if (!data.length) {
+    ml.innerHTML = `<div style="text-align:center;color:var(--muted);font-size:0.8rem;padding:2rem;">Belum ada pesan di room ini.</div>`;
+    return;
+  }
+  let lastDate = '';
+  data.forEach(m => {
+    if (!lastMsgIds[sid] || m.id > lastMsgIds[sid]) lastMsgIds[sid] = m.id;
+    const d = fmtDate(m.created_at);
+    if (d !== lastDate) {
+      const div = document.createElement('div');
+      div.className = 'date-divider';
+      div.innerHTML = `<span>${d}</span>`;
+      ml.appendChild(div);
+      lastDate = d;
+    }
+    appendBubble(m);
+  });
+  scrollMsgs();
+}
+
+function appendBubble(m) {
+  const ml = document.getElementById('msgList');
+  if (!ml) return;
+  const div = document.createElement('div');
+  div.className = 'bubble ' + m.sender;
+  div.dataset.id = m.id;
+  const senderLabel = m.sender === 'student'
+    ? `<div class="b-sender">${escHtml(m.student_name || m.student_id)}</div>`
+    : `<div class="b-sender">You</div>`;
+  div.innerHTML = senderLabel + `<div>${escHtml(m.text)}</div><div class="b-time">${fmtTime(m.created_at)}</div>`;
+  ml.appendChild(div);
+}
+
+async function markRoomRead(sid) {
+  await api(`messages?student_id=eq.${encodeURIComponent(sid)}&sender=eq.student&is_read=eq.false`, {
+    method: 'PATCH',
+    body: JSON.stringify({ is_read: true }),
+  });
+  if (rooms[sid]) rooms[sid].unread = 0;
+  renderRoomList();
+}
+
+// ── SEND REPLY ──
+async function sendReply() {
+  const input = document.getElementById('replyInput');
+  const btn = document.getElementById('replyBtn');
+  const text = input?.value.trim();
+  if (!text || !activeRoom) return;
+  input.value = '';
+  input.style.height = 'auto';
+  btn.disabled = true;
+
+  const optimistic = {
+    id: 'tmp_' + Date.now(),
+    student_id: activeRoom,
+    student_name: 'admin',
+    sender: 'admin',
+    text,
+    created_at: new Date().toISOString(),
+  };
+  appendBubble(optimistic);
+  scrollMsgs();
+
+  await api('messages', {
+    method: 'POST',
+    body: JSON.stringify({
+      student_id: activeRoom,
+      student_name: rooms[activeRoom]?.name || activeRoom,
+      sender: 'admin',
+      text,
+      is_read: false,
+    }),
+  });
+
+  btn.disabled = false;
+  // Update room preview
+  if (rooms[activeRoom]) {
+    rooms[activeRoom].lastMsg = text;
+    rooms[activeRoom].lastTime = new Date().toISOString();
+    rooms[activeRoom].lastSender = 'admin';
+    renderRoomList();
+  }
+}
+
+// ── POLLING (realtime) ──
+async function poll() {
+  // Poll all rooms for new messages
+  const res = await api(`messages?order=created_at.desc&select=student_id,student_name,text,sender,is_read,created_at,id`);
+  const data = await res.json();
+
+  // Check for new messages in rooms
+  const latestPerRoom = {};
+  data.forEach(m => {
+    if (!latestPerRoom[m.student_id]) latestPerRoom[m.student_id] = m;
+  });
+
+  let roomsChanged = false;
+  Object.entries(latestPerRoom).forEach(([sid, m]) => {
+    const prevTime = rooms[sid]?.lastTime;
+    if (!prevTime || new Date(m.created_at) > new Date(prevTime)) {
+      if (!rooms[sid]) rooms[sid] = { name: m.student_name, unread: 0, lastMsg: '', lastTime: '' };
+      rooms[sid].lastMsg = m.text;
+      rooms[sid].lastTime = m.created_at;
+      rooms[sid].lastSender = m.sender;
+      // Count new unread for non-active rooms
+      if (m.sender === 'student' && !m.is_read && sid !== activeRoom) {
+        // recount unread
+        const unread = data.filter(x => x.student_id === sid && x.sender === 'student' && !x.is_read).length;
+        rooms[sid].unread = unread;
+      }
+      roomsChanged = true;
+    }
+  });
+  if (roomsChanged) renderRoomList();
+
+  // Poll active room for new bubbles
+  if (activeRoom) {
+    const lastId = lastMsgIds[activeRoom] || 0;
+    const newMsgs = data.filter(m => m.student_id === activeRoom && m.id > lastId);
+    if (newMsgs.length) {
+      const full = await api(`messages?student_id=eq.${encodeURIComponent(activeRoom)}&id=gt.${lastId}&order=created_at.asc&select=*`);
+      const msgs = await full.json();
+      msgs.forEach(m => {
+        if (m.id > (lastMsgIds[activeRoom] || 0)) lastMsgIds[activeRoom] = m.id;
+        if (!document.querySelector(`[data-id="${m.id}"]`)) {
+          // Remove tmp
+          document.querySelectorAll('[data-id^="tmp_"]').forEach(el => el.remove());
+          appendBubble(m);
+        }
+      });
+      scrollMsgs();
+      await markRoomRead(activeRoom);
+    }
+  }
+}
+
+async function initDashboard() {
+  await loadRooms();
+  setInterval(poll, 2500);
+}
+</script>
+</body>
+</html>
