@@ -332,6 +332,7 @@
     .chat-area { min-height:0; }
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 
@@ -340,18 +341,23 @@
   <div class="login-box">
     <span class="login-icon">🔐</span>
     <div class="login-title">MATH ARENA</div>
-    <div class="login-sub">Tutor Dashboard · Masukkan password</div>
-    <input type="password" class="login-input" id="passInput" placeholder="••••••••" maxlength="32"
+    <div class="login-sub">Tutor Dashboard · Login dengan akun tutor</div>
+    <input type="email" class="login-input" id="emailInput" placeholder="email" style="letter-spacing:normal;font-size:0.95rem;margin-bottom:0.6rem;">
+    <input type="password" class="login-input" id="passInput" placeholder="password" maxlength="64"
       onkeydown="if(event.key==='Enter')doLogin()">
     <button class="login-btn" onclick="doLogin()">MASUK ✏️</button>
     <div class="login-err" id="loginErr"></div>
+    <a href="algo_students.html" 
+      style="display:block;margin-top:1rem;font-family:'Patrick Hand',cursive;font-size:0.85rem;color:rgba(232,224,208,0.4);text-decoration:none;text-align:center;transition:color 0.2s;"
+      onmouseover="this.style.color='rgba(232,224,208,0.8)'"
+      onmouseout="this.style.color='rgba(232,224,208,0.4)'">← Kembali</a>
   </div>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard">
   <div class="top-bar">
-    <span class="logo">MATH <span>ARENA</span></span>
+    <a href="index.html" class="logo" style="text-decoration:none;">MATH <span>ARENA</span></a>
     <span class="badge-admin">✏️ Tutor</span>
     <span class="spacer"></span>
     <span class="total-unread" id="totalUnread">0</span>
@@ -374,43 +380,101 @@
 <script>
 const SUPA_URL = 'https://fjnpaglzdmofdgrfvbth.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqbnBhZ2x6ZG1vZmRncmZ2YnRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyMDUzMDMsImV4cCI6MjA5Njc4MTMwM30.pgP4-x7d_Dca5r5ca4L3viS-qXTzvzRb7smswzJrj1k';
-const ADMIN_PASS = 'math';
+
+const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
 
 let activeRoom = null;
-let lastMsgIds = {}; // per room
-let rooms = {};      // { student_id: { name, unread, lastMsg, lastTime } }
+let lastMsgIds = {};
+let rooms = {};
+let userToken = null; // JWT dari Supabase session
 
 // ── AUTH ──
-function doLogin() {
-  const v = document.getElementById('passInput').value;
-  if (v === ADMIN_PASS) {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'flex';
-    initDashboard();
-  } else {
-    const err = document.getElementById('loginErr');
-    err.textContent = '❌ Password salah!';
-    setTimeout(() => { err.textContent = ''; }, 2000);
+async function doLogin() {
+  const email = document.getElementById('emailInput').value.trim();
+  const pass  = document.getElementById('passInput').value;
+  const err   = document.getElementById('loginErr');
+  const btn   = document.querySelector('.login-btn');
+
+  if (!email || !pass) {
+    err.textContent = '✏️ Isi email dan password dulu!';
+    return;
   }
+
+  btn.textContent = 'Loading...';
+  btn.disabled = true;
+
+  const { data, error } = await supa.auth.signInWithPassword({ email, password: pass });
+
+  btn.textContent = 'MASUK ✏️';
+  btn.disabled = false;
+
+  if (error) {
+    err.textContent = '❌ ' + (error.message === 'Invalid login credentials'
+      ? 'Email atau password salah!'
+      : error.message);
+    setTimeout(() => { err.textContent = ''; }, 3000);
+    return;
+  }
+
+  // Verify role = tutor dari profiles
+  const { data: profile, error: profErr } = await supa
+    .from('profiles')
+    .select('role')
+    .eq('id', data.user.id)
+    .single();
+
+  if (profErr || profile?.role !== 'tutor') {
+    await supa.auth.signOut();
+    err.textContent = '🚫 Akun ini bukan tutor!';
+    return;
+  }
+
+  userToken = data.session.access_token;
+  showDashboard();
 }
-function doLogout() {
-  document.getElementById('dashboard').style.display = 'none';
-  document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('passInput').value = '';
+
+async function doLogout() {
+  await supa.auth.signOut();
+  userToken = null;
   activeRoom = null;
   rooms = {};
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('emailInput').value = '';
+  document.getElementById('passInput').value = '';
 }
-document.getElementById('passInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doLogin();
-});
 
-// ── API ──
+// Check existing session on page load
+async function checkSession() {
+  const { data: { session } } = await supa.auth.getSession();
+  if (!session) return;
+
+  const { data: profile } = await supa
+    .from('profiles')
+    .select('role')
+    .eq('id', session.user.id)
+    .single();
+
+  if (profile?.role === 'tutor') {
+    userToken = session.access_token;
+    showDashboard();
+  }
+}
+
+function showDashboard() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'flex';
+  initDashboard();
+}
+
+// ── API — pakai user JWT kalau ada ──
 function api(path, opts = {}) {
+  const token = userToken || SUPA_KEY;
   return fetch(SUPA_URL + '/rest/v1/' + path, {
     ...opts,
     headers: {
       'apikey': SUPA_KEY,
-      'Authorization': 'Bearer ' + SUPA_KEY,
+      'Authorization': 'Bearer ' + token,
       'Content-Type': 'application/json',
       'Prefer': opts.prefer || 'return=minimal',
       ...(opts.headers || {}),
@@ -466,7 +530,7 @@ function renderRoomList() {
     div.className = 'room-item' + (r.unread ? ' has-unread' : '') + (activeRoom === sid ? ' active' : '');
     div.dataset.sid = sid;
     const timeDiff = getRelTime(r.lastTime);
-    const preview = (r.lastSender === 'admin' ? '↩ Kamu: ' : '') + r.lastMsg;
+    const preview = (r.lastSender === 'admin' ? '↩ You: ' : '') + r.lastMsg;
     div.innerHTML = `
       <div class="room-name">
         ${escHtml(r.name)}
@@ -510,7 +574,7 @@ async function openRoom(sid, name) {
 
   area.innerHTML = `
     <div class="chat-header">
-      <div class="ch-avatar">🎮</div>
+      <div class="ch-avatar">🧑🏻‍🎓</div>
       <div>
         <div class="ch-name">${escHtml(name)}</div>
         <div class="ch-id">${escHtml(sid)}</div>
@@ -569,7 +633,7 @@ function appendBubble(m) {
   div.dataset.id = m.id;
   const senderLabel = m.sender === 'student'
     ? `<div class="b-sender">${escHtml(m.student_name || m.student_id)}</div>`
-    : `<div class="b-sender">You</div>`;
+    : `<div class="b-sender">YOU</div>`;
   div.innerHTML = senderLabel + `<div>${escHtml(m.text)}</div><div class="b-time">${fmtTime(m.created_at)}</div>`;
   ml.appendChild(div);
 }
@@ -681,6 +745,9 @@ async function initDashboard() {
   await loadRooms();
   setInterval(poll, 2500);
 }
+
+// Check session on load
+checkSession();
 </script>
 </body>
 </html>
