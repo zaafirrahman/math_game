@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprint · Penyajian Data · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);
+    --red:#e85040;
+    --violet:#7c3aed;--violet-bg:rgba(124,58,237,0.1);--violet-light:#a78bfa;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(124,58,237,0.07) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--red);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  #intro{text-align:center;}
+  .loco-icon{font-size:5rem;display:block;margin-bottom:1.2rem;animation:chug 0.6s ease-in-out infinite alternate;}
+  @keyframes chug{from{transform:translateX(-4px);}to{transform:translateX(4px);}}
+  .sprint-title{font-family:'Rajdhani',sans-serif;font-size:clamp(1.8rem,5vw,2.5rem);font-weight:700;color:var(--amber);letter-spacing:3px;margin-bottom:0.6rem;}
+  .sprint-sub{color:var(--text-muted);line-height:1.7;margin-bottom:2rem;font-size:0.9rem;}
+  .rules-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.4rem 1.8rem;text-align:left;margin-bottom:2rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .rules-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--violet),var(--amber));}
+  .rules-title{font-family:'Rajdhani',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--violet-light);margin-bottom:1rem;}
+  .rule{display:flex;gap:0.8rem;font-size:0.88rem;margin-bottom:0.55rem;color:var(--text-mid);}
+  .rule span{flex-shrink:0;}
+  .start-btn{background:linear-gradient(135deg,var(--violet),#5a1ab8);color:#fff;border:none;padding:1rem 3rem;border-radius:6px;font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:3px;cursor:pointer;box-shadow:0 5px 18px rgba(124,58,237,0.35);transition:all 0.2s;}
+  .start-btn:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(124,58,237,0.45);}
+
+  #game{display:none;}
+  .gauge-wrap{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;gap:1rem;}
+  .hud-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.65rem 1.2rem;text-align:center;flex:1;box-shadow:0 2px 8px var(--shadow);}
+  .hud-val{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.3rem;}
+  .hud-val.sc{color:var(--amber);}
+  .hud-val.qn{color:var(--violet-light);}
+  .hud-lbl{font-size:0.62rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-top:0.1rem;font-family:'Rajdhani',sans-serif;}
+
+  .timer-bar-wrap{margin-bottom:1.5rem;}
+  .timer-bar-bg{background:var(--border);border-radius:4px;height:8px;overflow:hidden;}
+  .timer-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--amber));transition:width 0.1s linear;}
+  .timer-bar.danger{background:linear-gradient(90deg,var(--red),#ff7060);}
+  .timer-lbl{font-family:'Rajdhani',sans-serif;font-size:0.72rem;letter-spacing:2px;color:var(--text-muted);text-align:right;margin-top:0.25rem;}
+
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--violet-light),var(--amber));}
+  .q-tag{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--violet-light);margin-bottom:0.9rem;}
+  .q-text{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.05rem;line-height:1.55;margin-bottom:1.3rem;letter-spacing:0.3px;}
+  .opts{display:flex;flex-direction:column;gap:0.6rem;}
+  .opt-btn{background:var(--track);border:1px solid var(--border2);color:var(--text);padding:0.8rem 1.1rem;border-radius:8px;cursor:pointer;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:700;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover:not(:disabled){border-color:var(--violet-light);background:rgba(124,58,237,0.06);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(232,80,64,0.08);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+
+  .feedback{margin-top:0.9rem;padding:0.75rem 1rem;border-radius:8px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid rgba(72,200,112,0.3);}
+  .feedback.no{background:rgba(232,80,64,0.07);color:var(--red);border:1px solid rgba(232,80,64,0.25);}
+  .feedback.time{background:rgba(240,168,48,0.08);color:var(--amber);border:1px solid rgba(240,168,48,0.3);}
+
+  .data-table{width:100%;border-collapse:collapse;margin:0.8rem 0;font-size:0.85rem;}
+  .data-table th{background:var(--violet-bg);color:var(--violet-light);font-family:'Rajdhani',sans-serif;font-weight:700;padding:0.5rem 0.8rem;border:1px solid rgba(124,58,237,0.3);}
+  .data-table td{padding:0.45rem 0.8rem;border:1px solid var(--border2);color:var(--text-mid);}
+
+  .bar-chart{margin:0.8rem 0;padding:0.8rem;background:var(--track);border:1px solid var(--border2);border-radius:8px;}
+  .bar-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;}
+  .bar-label{font-family:'Rajdhani',sans-serif;font-size:0.75rem;font-weight:600;color:var(--text-muted);min-width:48px;}
+  .bar-wrap{flex:1;background:var(--border);border-radius:3px;height:18px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--violet),#a78bfa);display:flex;align-items:center;padding-left:0.4rem;}
+  .bar-fill.amber{background:linear-gradient(90deg,var(--amber),#f8c870);}
+  .bar-val{font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:700;color:#000;}
+
+  .picto-key{display:flex;align-items:center;gap:0.5rem;background:var(--violet-bg);border:1px solid rgba(124,58,237,0.3);border-radius:6px;padding:0.4rem 0.7rem;font-size:0.8rem;color:var(--violet-light);margin:0.5rem 0;font-family:'Rajdhani',sans-serif;font-weight:600;}
+  .picto-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;}
+  .picto-label{font-family:'Rajdhani',sans-serif;font-size:0.75rem;font-weight:600;color:var(--text-muted);min-width:55px;}
+  .picto-sym{font-size:1.2rem;line-height:1;}
+
+  #results{display:none;text-align:center;padding:2rem 1rem;}
+  .result-icon{font-size:4.5rem;display:block;margin-bottom:1rem;animation:pop 0.5s ease;}
+  @keyframes pop{from{transform:scale(0.5);}to{transform:scale(1);}}
+  .result-score{font-family:'Rajdhani',sans-serif;font-size:3rem;font-weight:700;color:var(--amber);letter-spacing:3px;}
+  .result-label{font-family:'Rajdhani',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.5rem;}
+  .result-msg{color:var(--text-mid);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;max-width:360px;margin-left:auto;margin-right:auto;}
+  .result-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--violet),#5a1ab8);color:#fff;font-weight:800;}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .score-log{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin:1rem 0;}
+  .score-pip{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+  .pip-ok{background:var(--green-bg);border:1px solid rgba(72,200,112,0.4);}
+  .pip-no{background:rgba(232,80,64,0.1);border:1px solid rgba(232,80,64,0.3);}
+  .pip-time{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.3);}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson19.html">LESSON 19</a><span>/</span>
+  <span class="cur">SPRINT</span>
+</nav>
+
+<div class="wrap">
+  <!-- INTRO -->
+  <div id="intro">
+    <span class="loco-icon">📊</span>
+    <div class="sprint-title">SPRINT MODE</div>
+    <p class="sprint-sub">5 soal penyajian data. 20 detik per soal.<br>Baca data, pilih jawaban — secepat kilat!</p>
+    <div class="rules-box">
+      <div class="rules-title">⚡ Peraturan Sprint</div>
+      <div class="rule"><span>⏱️</span><span>20 detik per soal — jawab sebelum waktu habis!</span></div>
+      <div class="rule"><span>🎯</span><span>Jawaban benar = +20 poin. Waktu habis = 0 poin.</span></div>
+      <div class="rule"><span>📊</span><span>Soal campuran: tabel, diagram batang, dan piktogram.</span></div>
+      <div class="rule"><span>🔒</span><span>Tidak bisa kembali ke soal sebelumnya.</span></div>
+    </div>
+    <button class="start-btn" onclick="startGame()">MULAI SPRINT ⚡</button>
+  </div>
+
+  <!-- GAME -->
+  <div id="game">
+    <div class="gauge-wrap">
+      <div class="hud-box"><div class="hud-val sc" id="score">0</div><div class="hud-lbl">Poin</div></div>
+      <div class="hud-box"><div class="hud-val qn" id="qnum">1/5</div><div class="hud-lbl">Soal</div></div>
+    </div>
+    <div class="timer-bar-wrap">
+      <div class="timer-bar-bg"><div class="timer-bar" id="timerBar"></div></div>
+      <div class="timer-lbl" id="timerLbl">20s</div>
+    </div>
+    <div class="q-card" id="qcard"></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results"></div>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    tag: '📋 Tabel',
+    q: 'Tabel berikut menunjukkan penjualan roti di kantin. Hari apa penjualan TERBANYAK?',
+    data: {type:'table', headers:['Hari','Roti Terjual'], rows:[['Senin','12'],['Selasa','18'],['Rabu','15'],['Kamis','9']]},
+    opts:['A. Senin','B. Rabu','C. Selasa','D. Kamis'],
+    ans: 2,
+    exp: 'Selasa punya nilai tertinggi: 18 roti.'
+  },
+  {
+    tag: '📈 Diagram Batang',
+    q: 'Dari diagram batang di bawah, berapa selisih nilai Rini dan Tono?',
+    data: {type:'bar', items:[{label:'Rini',val:85,max:100,amber:true},{label:'Tono',val:65,max:100},{label:'Sari',val:75,max:100}]},
+    opts:['A. 10','B. 15','C. 20','D. 25'],
+    ans: 2,
+    exp: '85 − 65 = 20. Selisih nilai Rini dan Tono adalah 20.'
+  },
+  {
+    tag: '🖼️ Piktogram',
+    q: 'Piktogram menunjukkan jumlah langkah kaki per hari. ⚽ = 1000 langkah. Berapa langkah Rabu?',
+    data: {type:'picto', key:'⚽ = 1.000 langkah', rows:[{label:'Senin',syms:3},{label:'Selasa',syms:5},{label:'Rabu',syms:4},{label:'Kamis',syms:2}]},
+    opts:['A. 3.000','B. 5.000','C. 2.000','D. 4.000'],
+    ans: 3,
+    exp: 'Rabu punya 4 simbol × 1.000 = 4.000 langkah.'
+  },
+  {
+    tag: '📋 Tabel',
+    q: 'Tabel jumlah buku di perpustakaan kelas. Berapa TOTAL buku dari keempat rak?',
+    data: {type:'table', headers:['Rak','Jumlah Buku'], rows:[['A','25'],['B','30'],['C','20'],['D','15']]},
+    opts:['A. 80','B. 85','C. 90','D. 95'],
+    ans: 2,
+    exp: '25 + 30 + 20 + 15 = 90 buku.'
+  },
+  {
+    tag: '📈 Diagram Batang',
+    q: 'Diagram batang menunjukkan jumlah pengunjung toko. Siapa yang paling sedikit dikunjungi?',
+    data: {type:'bar', items:[{label:'Toko A',val:45,max:60},{label:'Toko B',val:30,max:60},{label:'Toko C',val:55,max:60,amber:true},{label:'Toko D',val:20,max:60}]},
+    opts:['A. Toko A','B. Toko B','C. Toko C','D. Toko D'],
+    ans: 3,
+    exp: 'Toko D punya batang terpendek — hanya 20 pengunjung.'
+  }
+];
+
+let cur=0, score=0, timer=null, timeLeft=20, answered=false, results=[];
+
+function startGame(){
+  document.getElementById('intro').style.display='none';
+  document.getElementById('game').style.display='block';
+  showQ();
+}
+
+function renderData(d){
+  if(d.type==='table'){
+    let s=`<table class="data-table"><thead><tr>`;
+    d.headers.forEach(h=>s+=`<th>${h}</th>`);
+    s+=`</tr></thead><tbody>`;
+    d.rows.forEach(r=>{s+=`<tr>`;r.forEach(c=>s+=`<td>${c}</td>`);s+=`</tr>`;});
+    return s+`</tbody></table>`;
+  }
+  if(d.type==='bar'){
+    let s=`<div class="bar-chart">`;
+    d.items.forEach(it=>{
+      const pct = Math.round((it.val/it.max)*100);
+      s+=`<div class="bar-row"><span class="bar-label">${it.label}</span><div class="bar-wrap"><div class="bar-fill${it.amber?' amber':''}" style="width:${pct}%"><span class="bar-val">${it.val}</span></div></div></div>`;
+    });
+    return s+`</div>`;
+  }
+  if(d.type==='picto'){
+    let s=`<div class="picto-key">${d.key}</div>`;
+    d.rows.forEach(r=>{
+      let syms='';
+      for(let i=0;i<r.syms;i++) syms+=`<span class="picto-sym">${d.key.split(' ')[0]}</span>`;
+      s+=`<div class="picto-row"><span class="picto-label">${r.label}</span><div style="display:flex;gap:0.3rem;flex-wrap:wrap;">${syms}</div></div>`;
+    });
+    return s;
+  }
+  return '';
+}
+
+function showQ(){
+  answered=false;
+  timeLeft=20;
+  const q = QUESTIONS[cur];
+  document.getElementById('qnum').textContent = `${cur+1}/5`;
+  const card = document.getElementById('qcard');
+  card.innerHTML = `
+    <div class="q-tag">${q.tag} · Soal ${cur+1}</div>
+    <div class="q-text">${q.q}</div>
+    ${renderData(q.data)}
+    <div class="opts" id="opts">
+      ${q.opts.map((o,i)=>`<button class="opt-btn" onclick="pick(${i})">${o}</button>`).join('')}
+    </div>
+    <div class="feedback" id="fb"></div>
+  `;
+  startTimer();
+}
+
+function startTimer(){
+  clearInterval(timer);
+  updateTimerUI();
+  timer=setInterval(()=>{
+    timeLeft--;
+    updateTimerUI();
+    if(timeLeft<=0){
+      clearInterval(timer);
+      if(!answered) timesUp();
+    }
+  },1000);
+}
+
+function updateTimerUI(){
+  const bar=document.getElementById('timerBar');
+  const lbl=document.getElementById('timerLbl');
+  const pct=(timeLeft/20)*100;
+  bar.style.width=pct+'%';
+  bar.className='timer-bar'+(timeLeft<=6?' danger':'');
+  lbl.textContent=timeLeft+'s';
+}
+
+function pick(idx){
+  if(answered) return;
+  answered=true;
+  clearInterval(timer);
+  const q=QUESTIONS[cur];
+  const correct=idx===q.ans;
+  if(correct) score+=20;
+  results.push(correct?'ok':'no');
+  document.getElementById('score').textContent=score;
+  const opts=document.getElementById('opts').querySelectorAll('.opt-btn');
+  opts.forEach(b=>b.disabled=true);
+  opts[idx].classList.add(correct?'correct':'wrong');
+  if(!correct) opts[q.ans].classList.add('correct');
+  const fb=document.getElementById('fb');
+  fb.className='feedback show '+(correct?'ok':'no');
+  fb.textContent=(correct?'✓ Benar! ':'✗ Salah. ')+q.exp;
+  setTimeout(()=>{
+    if(cur<QUESTIONS.length-1){cur++;showQ();}
+    else showResults();
+  },1800);
+}
+
+function timesUp(){
+  answered=true;
+  results.push('time');
+  const q=QUESTIONS[cur];
+  const opts=document.getElementById('opts').querySelectorAll('.opt-btn');
+  opts.forEach(b=>b.disabled=true);
+  opts[q.ans].classList.add('correct');
+  const fb=document.getElementById('fb');
+  fb.className='feedback show time';
+  fb.textContent='⏰ Waktu habis! '+q.exp;
+  setTimeout(()=>{
+    if(cur<QUESTIONS.length-1){cur++;showQ();}
+    else showResults();
+  },1800);
+}
+
+function showResults(){
+  document.getElementById('game').style.display='none';
+  const div=document.getElementById('results');
+  div.style.display='block';
+  const pct=score/100;
+  const icon=pct>=0.8?'🏆':pct>=0.6?'🎯':pct>=0.4?'📊':'📉';
+  const msg=pct>=0.8?'Luar biasa! Kamu jago membaca data!':pct>=0.6?'Bagus! Terus latihan baca diagram dan tabel ya.':pct>=0.4?'Lumayan! Coba review materi lagi, terutama piktogram.':'Yuk pelajari lagi cara membaca tabel dan diagram!';
+  const pips=results.map(r=>`<div class="score-pip pip-${r}">${r==='ok'?'✓':r==='no'?'✗':'⏰'}</div>`).join('');
+  div.innerHTML=`
+    <span class="result-icon">${icon}</span>
+    <div class="result-score">${score}/100</div>
+    <div class="result-label">Skor Sprint</div>
+    <div class="score-log">${pips}</div>
+    <p class="result-msg">${msg}</p>
+    <div class="result-btns">
+      <button class="btn btn-primary" onclick="location.reload()">🔄 Ulangi Sprint</button>
+      <a href="latihan19.html" class="btn btn-ghost">🏠 Latihan Mandiri</a>
+      <a href="lesson19.html" class="btn btn-ghost">← Lesson</a>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>

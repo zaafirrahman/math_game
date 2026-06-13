@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Penyajian Data · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;
+    --violet:#7c3aed;--violet-bg:rgba(124,58,237,0.1);--violet-light:#a78bfa;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 70% 20%,rgba(124,58,237,0.05) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--violet-light);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--violet-bg);border:1px solid rgba(124,58,237,0.4);color:var(--violet-light);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.3rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:0.6rem;line-height:1.3;letter-spacing:1px;}
+  h1 span{color:var(--violet-light);}
+  .intro{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:8px;height:8px;border-radius:2px;background:var(--border2);transition:all 0.3s;}
+  .dot.active{background:var(--violet-light);box-shadow:0 0 8px rgba(124,58,237,0.5);transform:scaleX(1.5);}
+  .dot.done{background:var(--steel);}
+
+  .slide{display:none;animation:fadeUp 0.35s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--violet-light),transparent);}
+  .card-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.violet{color:var(--violet-light);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.7rem;line-height:1.4;letter-spacing:0.5px;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  /* Data table */
+  .data-table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:0.88rem;}
+  .data-table th{background:var(--violet-bg);color:var(--violet-light);font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;padding:0.6rem 1rem;border:1px solid rgba(124,58,237,0.3);text-align:left;}
+  .data-table td{padding:0.55rem 1rem;border:1px solid var(--border2);color:var(--text-mid);}
+  .data-table tr:hover td{background:rgba(124,58,237,0.04);}
+  .data-table .highlight{background:rgba(240,168,48,0.1);color:var(--amber);font-weight:700;}
+
+  /* Bar chart */
+  .bar-chart{margin:1.2rem 0;padding:1rem;background:var(--track);border:1px solid var(--border2);border-radius:10px;}
+  .bar-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.65rem;}
+  .bar-label{font-family:'Rajdhani',sans-serif;font-size:0.78rem;font-weight:600;color:var(--text-muted);min-width:50px;letter-spacing:0.5px;}
+  .bar-wrap{flex:1;background:var(--border);border-radius:4px;height:22px;position:relative;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--violet),#a78bfa);transition:width 0.8s ease;display:flex;align-items:center;padding-left:0.5rem;}
+  .bar-fill.amber{background:linear-gradient(90deg,var(--amber),#f8c870);}
+  .bar-val{font-family:'Rajdhani',sans-serif;font-size:0.75rem;font-weight:700;color:#000;}
+
+  /* Pictogram */
+  .picto-table{margin:1.2rem 0;}
+  .picto-row{display:flex;align-items:center;gap:0.7rem;margin-bottom:0.7rem;}
+  .picto-label{font-family:'Rajdhani',sans-serif;font-size:0.78rem;font-weight:600;color:var(--text-muted);min-width:60px;}
+  .picto-symbols{display:flex;gap:0.3rem;flex-wrap:wrap;}
+  .picto-sym{font-size:1.3rem;line-height:1;}
+  .picto-key{display:flex;align-items:center;gap:0.5rem;background:var(--violet-bg);border:1px solid rgba(124,58,237,0.3);border-radius:6px;padding:0.5rem 0.8rem;font-size:0.82rem;color:var(--violet-light);margin:0.5rem 0 1rem;font-family:'Rajdhani',sans-serif;font-weight:600;}
+
+  .hl{border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-violet{background:var(--violet-bg);border:1px solid rgba(124,58,237,0.35);}
+  .hl-amber{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);}
+  .hl-green{background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);}
+  .hl-violet strong{color:var(--violet-light);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+
+  .quiz-q{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:1.2rem;line-height:1.5;letter-spacing:0.5px;}
+  .opts{display:flex;flex-direction:column;gap:0.6rem;}
+  .opt-btn{background:var(--track);border:1px solid var(--border2);color:var(--text);padding:0.8rem 1.1rem;border-radius:8px;cursor:pointer;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:700;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover:not(:disabled){border-color:var(--violet-light);background:rgba(124,58,237,0.06);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(232,80,64,0.08);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.8rem;padding:0.75rem 1rem;border-radius:8px;font-size:0.88rem;font-weight:700;display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid rgba(72,200,112,0.3);}
+  .feedback.no{background:rgba(232,80,64,0.07);color:var(--red);border:1px solid rgba(232,80,64,0.25);}
+
+  .callout{display:flex;gap:0.8rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 1rem;margin:1rem 0;font-size:0.87rem;color:var(--text-mid);}
+  .callout-icon{font-size:1.2rem;flex-shrink:0;}
+
+  .tip-list{list-style:none;margin:0.8rem 0;}
+  .tip-list li{display:flex;gap:0.6rem;align-items:flex-start;font-size:0.88rem;color:var(--text-mid);margin-bottom:0.5rem;line-height:1.55;}
+  .tip-list li::before{content:'→';color:var(--violet-light);font-weight:700;flex-shrink:0;}
+
+  .nav-btns{display:flex;gap:0.8rem;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--violet),#5a1ab8);color:#fff;font-weight:800;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(124,58,237,0.35);}
+  .btn:disabled{opacity:0.4;cursor:default;}
+
+  .finish{text-align:center;padding:2.5rem 1.8rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;animation:bounce 1s ease-in-out infinite alternate;}
+  @keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+  .finish-title{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--violet-light);letter-spacing:3px;margin-bottom:0.6rem;}
+  .finish-desc{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);color:var(--amber);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  .step-box{display:flex;gap:0.9rem;margin:0.6rem 0;}
+  .step-num{background:var(--violet-bg);border:1px solid rgba(124,58,237,0.4);color:var(--violet-light);font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:700;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .step-text{font-size:0.88rem;color:var(--text-mid);line-height:1.55;padding-top:0.2rem;}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson19.html">LESSON 19</a><span>/</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📊 Materi · Lesson 19</div>
+  <h1>Penyajian Data: <span>Tabel & Diagram</span></h1>
+  <p class="intro">Data ada di mana-mana! Yuk belajar cara membaca tabel, diagram batang, dan piktogram supaya kamu bisa jadi detektif data handal.</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- SLIDE 1: Apa itu Data? -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">📋 Slide 1 · Konsep Dasar</div>
+        <h2>Apa Itu Data?</h2>
+        <p>Data adalah <strong style="color:var(--violet-light)">kumpulan informasi atau fakta</strong> yang dikumpulkan untuk tujuan tertentu. Data bisa berupa angka, kata-kata, atau gambar.</p>
+        <div class="hl hl-violet" style="margin-top:1rem;">
+          <strong>Contoh data di sekitar kita:</strong>
+        </div>
+        <div class="step-box"><div class="step-num">1</div><div class="step-text">Jumlah buku yang dibaca setiap hari dalam seminggu: <strong style="color:var(--amber)">3, 5, 4, 2, 6, 1, 4</strong></div></div>
+        <div class="step-box"><div class="step-num">2</div><div class="step-text">Nilai ulangan matematika teman-teman sekelas: <strong style="color:var(--amber)">80, 90, 75, 85, 95</strong></div></div>
+        <div class="step-box"><div class="step-num">3</div><div class="step-text">Jumlah siswa yang membawa bekal ke sekolah setiap hari</div></div>
+        <div class="callout" style="margin-top:1rem;">
+          <span class="callout-icon">💡</span>
+          <span>Data mentah (angka-angka acak) lebih mudah dipahami jika <strong style="color:var(--violet-light)">disajikan</strong> dalam bentuk tabel atau diagram.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" disabled>← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Tabel -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">📊 Slide 2 · Tabel Data</div>
+        <h2>Data dalam Bentuk Tabel</h2>
+        <p>Tabel menyusun data dalam baris dan kolom sehingga mudah dibaca dan dibandingkan.</p>
+        <table class="data-table">
+          <thead><tr><th>Hari</th><th>Buku Dibaca</th></tr></thead>
+          <tbody>
+            <tr><td>Senin</td><td>3</td></tr>
+            <tr><td>Selasa</td><td class="highlight">5 ← terbanyak</td></tr>
+            <tr><td>Rabu</td><td>4</td></tr>
+            <tr><td>Kamis</td><td>2</td></tr>
+          </tbody>
+        </table>
+        <div class="hl hl-amber">
+          <strong>Cara membaca tabel:</strong><br>
+          Lihat baris → baca nama/kategori (kolom kiri) · Lihat kolom → baca nilainya (kolom kanan)
+        </div>
+        <div class="step-box"><div class="step-num">✓</div><div class="step-text"><strong style="color:var(--green)">Hari paling banyak:</strong> Selasa (5 buku)</div></div>
+        <div class="step-box"><div class="step-num">✓</div><div class="step-text"><strong style="color:var(--red)">Hari paling sedikit:</strong> Kamis (2 buku)</div></div>
+        <div class="step-box"><div class="step-num">✓</div><div class="step-text"><strong style="color:var(--amber)">Total:</strong> 3 + 5 + 4 + 2 = <strong style="color:var(--amber)">14 buku</strong></div></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Latihan Tabel -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">⚡ Slide 3 · Latihan Tabel</div>
+        <h2>Latihan: Baca Tabel Ini!</h2>
+        <p style="margin-bottom:0.8rem;color:var(--text-muted);font-size:0.88rem;">Data jumlah siswa yang hadir di kelas selama 4 hari:</p>
+        <table class="data-table">
+          <thead><tr><th>Hari</th><th>Siswa Hadir</th></tr></thead>
+          <tbody>
+            <tr><td>Senin</td><td>28</td></tr>
+            <tr><td>Selasa</td><td>30</td></tr>
+            <tr><td>Rabu</td><td>25</td></tr>
+            <tr><td>Kamis</td><td>29</td></tr>
+          </tbody>
+        </table>
+        <div class="quiz-q" id="q3">Pada hari apa jumlah siswa yang hadir paling sedikit?</div>
+        <div class="opts" id="opts3">
+          <button class="opt-btn" onclick="answer(3, this, false)">A. Senin (28 siswa)</button>
+          <button class="opt-btn" onclick="answer(3, this, true)">B. Rabu (25 siswa)</button>
+          <button class="opt-btn" onclick="answer(3, this, false)">C. Selasa (30 siswa)</button>
+          <button class="opt-btn" onclick="answer(3, this, false)">D. Kamis (29 siswa)</button>
+        </div>
+        <div class="feedback" id="fb3"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Diagram Batang -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">📈 Slide 4 · Diagram Batang</div>
+        <h2>Mengenal Diagram Batang</h2>
+        <p>Diagram batang menampilkan data sebagai batang tegak. <strong style="color:var(--violet-light)">Semakin tinggi batangnya, semakin besar nilainya.</strong></p>
+        <div class="bar-chart">
+          <div style="font-family:'Rajdhani',sans-serif;font-size:0.68rem;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;margin-bottom:0.8rem;">Buku Dibaca per Hari</div>
+          <div class="bar-row">
+            <span class="bar-label">Senin</span>
+            <div class="bar-wrap"><div class="bar-fill" style="width:60%"><span class="bar-val">3</span></div></div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Selasa</span>
+            <div class="bar-wrap"><div class="bar-fill amber" style="width:100%"><span class="bar-val">5 ★</span></div></div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Rabu</span>
+            <div class="bar-wrap"><div class="bar-fill" style="width:80%"><span class="bar-val">4</span></div></div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Kamis</span>
+            <div class="bar-wrap"><div class="bar-fill" style="width:40%"><span class="bar-val">2</span></div></div>
+          </div>
+        </div>
+        <ul class="tip-list">
+          <li>Batang terpanjang = nilai <strong style="color:var(--amber)">terbesar</strong> (Selasa: 5)</li>
+          <li>Batang terpendek = nilai <strong style="color:var(--red)">terkecil</strong> (Kamis: 2)</li>
+          <li>Untuk mencari <strong style="color:var(--violet-light)">selisih</strong>: nilai besar − nilai kecil = 5 − 2 = 3</li>
+        </ul>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Latihan Diagram Batang -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">⚡ Slide 5 · Latihan Diagram Batang</div>
+        <h2>Latihan: Baca Diagram Batang!</h2>
+        <div class="bar-chart">
+          <div style="font-family:'Rajdhani',sans-serif;font-size:0.68rem;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;margin-bottom:0.8rem;">Nilai Ulangan IPA (per siswa)</div>
+          <div class="bar-row">
+            <span class="bar-label">Andi</span>
+            <div class="bar-wrap"><div class="bar-fill" style="width:70%"><span class="bar-val">70</span></div></div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Budi</span>
+            <div class="bar-wrap"><div class="bar-fill amber" style="width:90%"><span class="bar-val">90</span></div></div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Cici</span>
+            <div class="bar-wrap"><div class="bar-fill" style="width:80%"><span class="bar-val">80</span></div></div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Dani</span>
+            <div class="bar-wrap"><div class="bar-fill" style="width:60%"><span class="bar-val">60</span></div></div>
+          </div>
+        </div>
+        <div class="quiz-q">Berapa selisih nilai Budi dan Dani?</div>
+        <div class="opts" id="opts5">
+          <button class="opt-btn" onclick="answer(5, this, false)">A. 20</button>
+          <button class="opt-btn" onclick="answer(5, this, true)">B. 30</button>
+          <button class="opt-btn" onclick="answer(5, this, false)">C. 10</button>
+          <button class="opt-btn" onclick="answer(5, this, false)">D. 25</button>
+        </div>
+        <div class="feedback" id="fb5"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Piktogram -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">🖼️ Slide 6 · Piktogram</div>
+        <h2>Mengenal Piktogram</h2>
+        <p>Piktogram menggunakan <strong style="color:var(--violet-light)">simbol gambar</strong> untuk mewakili data. Setiap simbol punya nilai tertentu yang dijelaskan di keterangan.</p>
+        <div class="picto-key">
+          <span>📚 = 2 buku</span>
+        </div>
+        <div class="picto-table">
+          <div class="picto-row">
+            <span class="picto-label">Senin</span>
+            <div class="picto-symbols">
+              <span class="picto-sym">📚</span><span class="picto-sym">📚</span>
+            </div>
+            <span style="font-family:'Rajdhani',sans-serif;font-size:0.78rem;color:var(--text-muted);margin-left:0.5rem;">= 4 buku</span>
+          </div>
+          <div class="picto-row">
+            <span class="picto-label">Selasa</span>
+            <div class="picto-symbols">
+              <span class="picto-sym">📚</span><span class="picto-sym">📚</span><span class="picto-sym">📚</span>
+            </div>
+            <span style="font-family:'Rajdhani',sans-serif;font-size:0.78rem;color:var(--amber);margin-left:0.5rem;">= 6 buku</span>
+          </div>
+          <div class="picto-row">
+            <span class="picto-label">Rabu</span>
+            <div class="picto-symbols">
+              <span class="picto-sym">📚</span><span class="picto-sym">📚</span>
+            </div>
+            <span style="font-family:'Rajdhani',sans-serif;font-size:0.78rem;color:var(--text-muted);margin-left:0.5rem;">= 4 buku</span>
+          </div>
+          <div class="picto-row">
+            <span class="picto-label">Kamis</span>
+            <div class="picto-symbols">
+              <span class="picto-sym">📚</span>
+            </div>
+            <span style="font-family:'Rajdhani',sans-serif;font-size:0.78rem;color:var(--red);margin-left:0.5rem;">= 2 buku</span>
+          </div>
+        </div>
+        <div class="hl hl-violet">
+          <strong>Cara membaca piktogram:</strong><br>
+          Hitung jumlah simbol × nilai per simbol. Contoh: Selasa = 3 simbol × 2 = <strong>6 buku</strong>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Latihan Piktogram -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">⚡ Slide 7 · Latihan Piktogram</div>
+        <h2>Latihan: Baca Piktogram!</h2>
+        <div class="picto-key">
+          <span>🍎 = 3 buah</span>
+        </div>
+        <div class="picto-table">
+          <div class="picto-row">
+            <span class="picto-label">Andi</span>
+            <div class="picto-symbols"><span class="picto-sym">🍎</span><span class="picto-sym">🍎</span></div>
+          </div>
+          <div class="picto-row">
+            <span class="picto-label">Budi</span>
+            <div class="picto-symbols"><span class="picto-sym">🍎</span><span class="picto-sym">🍎</span><span class="picto-sym">🍎</span><span class="picto-sym">🍎</span></div>
+          </div>
+          <div class="picto-row">
+            <span class="picto-label">Cici</span>
+            <div class="picto-symbols"><span class="picto-sym">🍎</span></div>
+          </div>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">Piktogram di atas menunjukkan jumlah buah yang dimakan setiap anak dalam sepekan.</p>
+        <div class="quiz-q">Berapa buah yang dimakan Budi?</div>
+        <div class="opts" id="opts7">
+          <button class="opt-btn" onclick="answer(7, this, false)">A. 4 buah</button>
+          <button class="opt-btn" onclick="answer(7, this, false)">B. 8 buah</button>
+          <button class="opt-btn" onclick="answer(7, this, true)">C. 12 buah</button>
+          <button class="opt-btn" onclick="answer(7, this, false)">D. 6 buah</button>
+        </div>
+        <div class="feedback" id="fb7"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: Tips Membaca Data -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">🔍 Slide 8 · Tips & Strategi</div>
+        <h2>Kunci Sukses Membaca Data</h2>
+        <p style="margin-bottom:1rem;">Sebelum menjawab pertanyaan dari data, selalu lakukan 3 langkah ini:</p>
+        <div class="step-box"><div class="step-num">1</div><div class="step-text"><strong style="color:var(--violet-light)">Baca judulnya</strong> — data tentang apa? siapa? kapan?</div></div>
+        <div class="step-box"><div class="step-num">2</div><div class="step-text"><strong style="color:var(--violet-light)">Perhatikan satuannya</strong> — apakah buah, buku, siswa, atau nilai?</div></div>
+        <div class="step-box"><div class="step-num">3</div><div class="step-text"><strong style="color:var(--violet-light)">Cek keterangannya</strong> — khusus piktogram, 1 simbol = berapa?</div></div>
+        <div class="hl hl-green" style="margin-top:1rem;">
+          <strong>Pertanyaan yang sering muncul:</strong><br>
+          • Nilai/jumlah terbesar → cari yang paling banyak/paling tinggi<br>
+          • Nilai/jumlah terkecil → cari yang paling sedikit/paling pendek<br>
+          • Selisih → nilai besar − nilai kecil<br>
+          • Total/jumlah → tambahkan semua nilai
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: Latihan Campuran -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">⚡ Slide 9 · Latihan Campuran</div>
+        <h2>Latihan Campuran — Semua Jenis!</h2>
+        <p style="margin-bottom:1rem;color:var(--text-muted);font-size:0.88rem;">Data jumlah pengunjung perpustakaan dalam 4 hari:</p>
+        <table class="data-table">
+          <thead><tr><th>Hari</th><th>Pengunjung</th></tr></thead>
+          <tbody>
+            <tr><td>Senin</td><td>15</td></tr>
+            <tr><td>Selasa</td><td>22</td></tr>
+            <tr><td>Rabu</td><td>18</td></tr>
+            <tr><td>Kamis</td><td>10</td></tr>
+          </tbody>
+        </table>
+        <div class="quiz-q">Berapa total pengunjung perpustakaan selama 4 hari?</div>
+        <div class="opts" id="opts9">
+          <button class="opt-btn" onclick="answer(9, this, false)">A. 55</button>
+          <button class="opt-btn" onclick="answer(9, this, false)">B. 60</button>
+          <button class="opt-btn" onclick="answer(9, this, true)">C. 65</button>
+          <button class="opt-btn" onclick="answer(9, this, false)">D. 70</button>
+        </div>
+        <div class="feedback" id="fb9"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: Kesimpulan -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">🏁 Slide 10 · Kesimpulan</div>
+        <h2>Ringkasan: Penyajian Data</h2>
+        <ul class="tip-list">
+          <li><strong style="color:var(--violet-light)">Data</strong> adalah kumpulan informasi yang dikumpulkan untuk tujuan tertentu.</li>
+          <li><strong style="color:var(--amber)">Tabel</strong> menyusun data dalam baris dan kolom — mudah dibandingkan langsung.</li>
+          <li><strong style="color:var(--violet-light)">Diagram batang</strong> menampilkan nilai sebagai batang — batang lebih panjang = nilai lebih besar.</li>
+          <li><strong style="color:var(--green)">Piktogram</strong> menggunakan simbol gambar — hitung simbol × nilai per simbol.</li>
+          <li>Selalu <strong style="color:var(--amber)">baca judul, satuan, dan keterangan</strong> sebelum menjawab pertanyaan.</li>
+        </ul>
+        <div class="hl hl-violet" style="margin-top:1rem;text-align:center;">
+          <strong>Ketiga bentuk penyajian data ini bisa memuat informasi yang SAMA.</strong><br>
+          <span style="font-size:0.82rem;color:var(--text-muted)">Pilih bentuk yang paling memudahkan pembaca memahami informasi.</span>
+        </div>
+      </div>
+
+      <div class="finish">
+        <span class="finish-icon">🎉</span>
+        <div class="finish-title">MATERI SELESAI!</div>
+        <div class="finish-desc">Kamu sudah menguasai dasar penyajian data — tabel, diagram batang, dan piktogram. Sekarang waktunya uji kemampuan!</div>
+        <div class="xp">+120 XP</div>
+        <div class="finish-btns">
+          <a href="soal19.html" class="btn btn-primary">⚡ Sprint Soal</a>
+          <a href="latihan19.html" class="btn btn-ghost">🏠 Latihan Mandiri</a>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-ghost" disabled>Selesai ✓</button>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+</div>
+
+<script>
+  const TOTAL = 10;
+  let cur = 0;
+
+  const dotsEl = document.getElementById('dots');
+  for(let i=0;i<TOTAL;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots(){
+    document.querySelectorAll('.dot').forEach((d,i)=>{
+      d.className = 'dot' + (i===cur?' active':i<cur?' done':'');
+    });
+  }
+
+  function goTo(n){
+    document.querySelectorAll('.slide')[cur].classList.remove('active');
+    cur = n;
+    document.querySelectorAll('.slide')[cur].classList.add('active');
+    updateDots();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function nextSlide(){ if(cur<TOTAL-1) goTo(cur+1); }
+  function prevSlide(){ if(cur>0) goTo(cur-1); }
+
+  // Initialize first slide
+  document.querySelectorAll('.slide')[0].classList.add('active');
+
+  function answer(id, btn, correct){
+    const opts = document.getElementById('opts'+id);
+    const fb = document.getElementById('fb'+id);
+    if(opts.querySelector('.correct')||opts.querySelector('.wrong')) return;
+    opts.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+    btn.classList.add(correct?'correct':'wrong');
+    if(!correct){
+      opts.querySelectorAll('.opt-btn').forEach(b=>{
+        if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+      });
+    }
+    fb.className = 'feedback show ' + (correct?'ok':'no');
+    if(id===3) fb.textContent = correct ? '✓ Benar! Rabu hanya 25 siswa — paling sedikit.' : '✗ Perhatikan nilai terkecil di tabel. Cari angka yang paling kecil!';
+    if(id===5) fb.textContent = correct ? '✓ Tepat! 90 − 60 = 30. Selisih Budi dan Dani adalah 30.' : '✗ Selisih = nilai besar − nilai kecil = 90 − 60 = 30.';
+    if(id===7) fb.textContent = correct ? '✓ Benar! Budi punya 4 simbol × 3 = 12 buah.' : '✗ Hitung simbol Budi: ada 4 simbol × 3 buah per simbol = 12 buah.';
+    if(id===9) fb.textContent = correct ? '✓ Tepat! 15 + 22 + 18 + 10 = 65 pengunjung.' : '✗ Jumlahkan semua: 15 + 22 + 18 + 10 = 65.';
+  }
+</script>
+</body>
+</html>

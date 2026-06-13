@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan · Penyajian Data · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);
+    --red:#e85040;
+    --violet:#7c3aed;--violet-bg:rgba(124,58,237,0.1);--violet-light:#a78bfa;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(124,58,237,0.05) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--green);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  #intro{text-align:center;margin-bottom:1rem;}
+  .home-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .home-title{font-family:'Rajdhani',sans-serif;font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;color:var(--green);letter-spacing:3px;margin-bottom:0.5rem;}
+  .home-sub{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1.5rem;}
+  .info-row{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;}
+  .info-chip{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.5rem 1rem;font-family:'Rajdhani',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:1px;color:var(--text-mid);}
+  .info-chip span{color:var(--violet-light);}
+  .start-btn{background:linear-gradient(135deg,var(--green),#30a860);color:#000;border:none;padding:1rem 3rem;border-radius:6px;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:800;letter-spacing:3px;cursor:pointer;box-shadow:0 5px 18px rgba(72,200,112,0.3);transition:all 0.2s;}
+  .start-btn:hover{transform:translateY(-3px);}
+
+  #quiz{display:none;}
+  .progress-wrap{margin-bottom:1.5rem;}
+  .progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;}
+  .progress-label{font-family:'Rajdhani',sans-serif;font-size:0.72rem;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;}
+  .progress-val{font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:700;color:var(--violet-light);}
+  .progress-bg{background:var(--border);border-radius:4px;height:6px;overflow:hidden;}
+  .progress-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--violet),var(--violet-light));transition:width 0.4s ease;}
+
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent);}
+  .q-tag{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:0.9rem;}
+  .q-text{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.05rem;line-height:1.55;margin-bottom:1.1rem;letter-spacing:0.3px;}
+  .q-context{color:var(--text-muted);font-size:0.86rem;line-height:1.6;margin-bottom:1rem;font-style:italic;}
+
+  .opts{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:0.8rem;}
+  .opt-btn{background:var(--track);border:1px solid var(--border2);color:var(--text);padding:0.8rem 1.1rem;border-radius:8px;cursor:pointer;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:700;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover:not(:disabled){border-color:var(--green);background:rgba(72,200,112,0.05);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(232,80,64,0.08);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{padding:0.8rem 1rem;border-radius:8px;font-size:0.88rem;font-weight:600;display:none;line-height:1.55;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid rgba(72,200,112,0.3);}
+  .feedback.no{background:rgba(232,80,64,0.07);color:var(--red);border:1px solid rgba(232,80,64,0.25);}
+
+  .data-table{width:100%;border-collapse:collapse;margin:0.8rem 0;font-size:0.86rem;}
+  .data-table th{background:var(--violet-bg);color:var(--violet-light);font-family:'Rajdhani',sans-serif;font-weight:700;padding:0.55rem 0.9rem;border:1px solid rgba(124,58,237,0.3);}
+  .data-table td{padding:0.5rem 0.9rem;border:1px solid var(--border2);color:var(--text-mid);}
+
+  .bar-chart{margin:0.8rem 0;padding:0.8rem;background:var(--track);border:1px solid var(--border2);border-radius:8px;}
+  .bar-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;}
+  .bar-label{font-family:'Rajdhani',sans-serif;font-size:0.75rem;font-weight:600;color:var(--text-muted);min-width:55px;}
+  .bar-wrap{flex:1;background:var(--border);border-radius:3px;height:20px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--violet),#a78bfa);display:flex;align-items:center;padding-left:0.4rem;}
+  .bar-fill.amber{background:linear-gradient(90deg,var(--amber),#f8c870);}
+  .bar-fill.green{background:linear-gradient(90deg,var(--green),#80e0a0);}
+  .bar-val{font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:700;color:#000;}
+
+  .picto-key{display:flex;align-items:center;gap:0.5rem;background:var(--violet-bg);border:1px solid rgba(124,58,237,0.3);border-radius:6px;padding:0.4rem 0.8rem;font-size:0.8rem;color:var(--violet-light);margin:0.5rem 0;font-family:'Rajdhani',sans-serif;font-weight:600;}
+  .picto-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;}
+  .picto-label{font-family:'Rajdhani',sans-serif;font-size:0.78rem;font-weight:600;color:var(--text-muted);min-width:65px;}
+  .picto-sym{font-size:1.2rem;line-height:1;}
+
+  .nav-btns{display:flex;gap:0.8rem;margin-top:0.5rem;}
+  .btn{padding:0.7rem 1.4rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-next{background:linear-gradient(135deg,var(--violet),#5a1ab8);color:#fff;font-weight:800;}
+  .btn-next:hover{transform:translateY(-2px);}
+  .btn:disabled{opacity:0.35;cursor:default;pointer-events:none;}
+
+  #results{display:none;text-align:center;padding:1.5rem 0;}
+  .res-icon{font-size:4.5rem;margin-bottom:1rem;display:block;animation:pop 0.5s ease;}
+  @keyframes pop{from{transform:scale(0.5);}to{transform:scale(1);}}
+  .res-score{font-family:'Rajdhani',sans-serif;font-size:2.8rem;font-weight:700;color:var(--amber);letter-spacing:3px;}
+  .res-lbl{font-family:'Rajdhani',sans-serif;font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.2rem;}
+  .res-msg{color:var(--text-mid);font-size:0.9rem;line-height:1.7;margin-bottom:1.5rem;max-width:380px;margin-left:auto;margin-right:auto;}
+  .score-grid{display:flex;gap:0.4rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem;}
+  .sc-pip{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;}
+  .pip-ok{background:var(--green-bg);border:1px solid rgba(72,200,112,0.4);}
+  .pip-no{background:rgba(232,80,64,0.1);border:1px solid rgba(232,80,64,0.3);}
+  .res-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson19.html">LESSON 19</a><span>/</span>
+  <span class="cur">LATIHAN</span>
+</nav>
+
+<div class="wrap">
+  <!-- INTRO -->
+  <div id="intro">
+    <span class="home-icon">🏠</span>
+    <div class="home-title">LATIHAN MANDIRI</div>
+    <p class="home-sub">10 soal penyajian data tanpa timer. Santai, teliti, dan pahami setiap data sebelum menjawab!</p>
+    <div class="info-row">
+      <div class="info-chip"><span>10</span> Soal</div>
+      <div class="info-chip">Tanpa <span>Timer</span></div>
+      <div class="info-chip">Tabel · <span>Batang</span> · Pikto</div>
+    </div>
+    <button class="start-btn" onclick="startQuiz()">MULAI LATIHAN 🏠</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz">
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label">Progress</span>
+        <span class="progress-val" id="progVal">0/10</span>
+      </div>
+      <div class="progress-bg"><div class="progress-bar" id="progBar" style="width:0%"></div></div>
+    </div>
+    <div id="qarea"></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results"></div>
+</div>
+
+<script>
+const QS = [
+  {
+    tag:'📋 Tabel · Soal 1',
+    ctx:'Tabel di bawah menunjukkan jumlah buku yang dibaca Reza setiap hari selama seminggu.',
+    data:{type:'table',headers:['Hari','Buku'],rows:[['Senin','4'],['Selasa','7'],['Rabu','5'],['Kamis','2'],['Jumat','6']]},
+    q:'Pada hari apa Reza membaca buku paling banyak?',
+    opts:['A. Senin','B. Rabu','C. Selasa','D. Jumat'],
+    ans:2,
+    exp:'Selasa adalah nilai terbesar: 7 buku.'
+  },
+  {
+    tag:'📋 Tabel · Soal 2',
+    ctx:'Tabel yang sama seperti soal 1.',
+    data:{type:'table',headers:['Hari','Buku'],rows:[['Senin','4'],['Selasa','7'],['Rabu','5'],['Kamis','2'],['Jumat','6']]},
+    q:'Berapa total buku yang dibaca Reza selama 5 hari?',
+    opts:['A. 22','B. 24','C. 26','D. 20'],
+    ans:1,
+    exp:'4+7+5+2+6 = 24 buku.'
+  },
+  {
+    tag:'📈 Diagram Batang · Soal 3',
+    ctx:'Diagram batang menunjukkan nilai ulangan Bahasa Indonesia 4 siswa.',
+    data:{type:'bar',items:[{label:'Ayu',val:75,max:100},{label:'Beni',val:90,max:100,amber:true},{label:'Caca',val:60,max:100},{label:'Dini',val:80,max:100}]},
+    q:'Siapa siswa dengan nilai tertinggi?',
+    opts:['A. Ayu','B. Dini','C. Caca','D. Beni'],
+    ans:3,
+    exp:'Beni punya batang tertinggi: nilai 90.'
+  },
+  {
+    tag:'📈 Diagram Batang · Soal 4',
+    ctx:'Data yang sama seperti soal 3.',
+    data:{type:'bar',items:[{label:'Ayu',val:75,max:100},{label:'Beni',val:90,max:100,amber:true},{label:'Caca',val:60,max:100},{label:'Dini',val:80,max:100}]},
+    q:'Berapa selisih nilai Beni dan Caca?',
+    opts:['A. 20','B. 25','C. 30','D. 15'],
+    ans:2,
+    exp:'90 − 60 = 30. Selisih nilai Beni dan Caca adalah 30.'
+  },
+  {
+    tag:'🖼️ Piktogram · Soal 5',
+    ctx:'Piktogram menunjukkan jumlah permen yang dikumpulkan anak-anak saat bazaar.',
+    data:{type:'picto',key:'🍬 = 5 permen',sym:'🍬',rows:[{label:'Siti',syms:3},{label:'Rama',syms:5},{label:'Kiki',syms:2},{label:'Lulu',syms:4}]},
+    q:'Berapa permen yang dikumpulkan Siti?',
+    opts:['A. 3','B. 10','C. 15','D. 20'],
+    ans:2,
+    exp:'Siti punya 3 simbol × 5 = 15 permen.'
+  },
+  {
+    tag:'🖼️ Piktogram · Soal 6',
+    ctx:'Data piktogram yang sama seperti soal 5.',
+    data:{type:'picto',key:'🍬 = 5 permen',sym:'🍬',rows:[{label:'Siti',syms:3},{label:'Rama',syms:5},{label:'Kiki',syms:2},{label:'Lulu',syms:4}]},
+    q:'Siapa yang mengumpulkan permen paling sedikit?',
+    opts:['A. Siti','B. Rama','C. Kiki','D. Lulu'],
+    ans:2,
+    exp:'Kiki punya 2 simbol — paling sedikit.'
+  },
+  {
+    tag:'📋 Tabel · Soal 7',
+    ctx:'Tabel jumlah pengunjung kolam renang selama 4 minggu.',
+    data:{type:'table',headers:['Minggu','Pengunjung'],rows:[['1','120'],['2','95'],['3','140'],['4','110']]},
+    q:'Pada minggu ke berapa pengunjung paling sedikit?',
+    opts:['A. Minggu 1','B. Minggu 2','C. Minggu 3','D. Minggu 4'],
+    ans:1,
+    exp:'Minggu 2 punya angka terkecil: 95 pengunjung.'
+  },
+  {
+    tag:'📈 Diagram Batang · Soal 8',
+    ctx:'Diagram batang menunjukkan jumlah buah yang dijual di pasar tiap hari.',
+    data:{type:'bar',items:[{label:'Senin',val:50,max:80},{label:'Selasa',val:70,max:80,amber:true},{label:'Rabu',val:40,max:80},{label:'Kamis',val:65,max:80}]},
+    q:'Berapa total buah yang terjual hari Senin dan Rabu?',
+    opts:['A. 80','B. 85','C. 90','D. 95'],
+    ans:2,
+    exp:'50 + 40 = 90 buah.'
+  },
+  {
+    tag:'🖼️ Piktogram · Soal 9',
+    ctx:'Piktogram jumlah gol yang dicetak tim sepak bola selama 4 pertandingan.',
+    data:{type:'picto',key:'⚽ = 2 gol',sym:'⚽',rows:[{label:'Match 1',syms:2},{label:'Match 2',syms:4},{label:'Match 3',syms:3},{label:'Match 4',syms:1}]},
+    q:'Berapa total gol yang dicetak selama 4 pertandingan?',
+    opts:['A. 18','B. 20','C. 22','D. 16'],
+    ans:1,
+    exp:'Total simbol: 2+4+3+1 = 10 simbol × 2 = 20 gol.'
+  },
+  {
+    tag:'📊 Campuran · Soal 10',
+    ctx:'Tabel nilai ulangan IPA kelas 5A.',
+    data:{type:'table',headers:['Nama','Nilai'],rows:[['Eko','85'],['Fira','92'],['Gani','78'],['Hani','92'],['Ira','70']]},
+    q:'Ada berapa siswa yang mendapat nilai di atas 80?',
+    opts:['A. 2 siswa','B. 3 siswa','C. 4 siswa','D. 1 siswa'],
+    ans:1,
+    exp:'Eko (85), Fira (92), Hani (92) → 3 siswa di atas 80.'
+  }
+];
+
+let cur=0, score=0, results=[], answered=false;
+
+function startQuiz(){
+  document.getElementById('intro').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  renderQ();
+}
+
+function renderData(d){
+  if(d.type==='table'){
+    let s=`<table class="data-table"><thead><tr>`;
+    d.headers.forEach(h=>s+=`<th>${h}</th>`);
+    s+=`</tr></thead><tbody>`;
+    d.rows.forEach(r=>{s+=`<tr>`;r.forEach(c=>s+=`<td>${c}</td>`);s+=`</tr>`;});
+    return s+`</tbody></table>`;
+  }
+  if(d.type==='bar'){
+    let s=`<div class="bar-chart">`;
+    d.items.forEach(it=>{
+      const pct=Math.round((it.val/it.max)*100);
+      s+=`<div class="bar-row"><span class="bar-label">${it.label}</span><div class="bar-wrap"><div class="bar-fill${it.amber?' amber':it.green?' green':''}" style="width:${pct}%"><span class="bar-val">${it.val}</span></div></div></div>`;
+    });
+    return s+`</div>`;
+  }
+  if(d.type==='picto'){
+    let s=`<div class="picto-key">${d.key}</div>`;
+    const symChar=d.sym||d.key.split(' ')[0];
+    d.rows.forEach(r=>{
+      let syms='';
+      for(let i=0;i<r.syms;i++) syms+=`<span class="picto-sym">${symChar}</span>`;
+      s+=`<div class="picto-row"><span class="picto-label">${r.label}</span><div style="display:flex;gap:0.3rem;flex-wrap:wrap;">${syms}</div></div>`;
+    });
+    return s;
+  }
+  return '';
+}
+
+function renderQ(){
+  answered=false;
+  updateProgress();
+  const q=QS[cur];
+  document.getElementById('qarea').innerHTML=`
+    <div class="q-card">
+      <div class="q-tag">${q.tag}</div>
+      ${q.ctx?`<p class="q-context">${q.ctx}</p>`:''}
+      ${renderData(q.data)}
+      <div class="q-text">${q.q}</div>
+      <div class="opts" id="opts">
+        ${q.opts.map((o,i)=>`<button class="opt-btn" onclick="pick(${i})">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb"></div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevQ()" ${cur===0?'disabled':''}>← Soal Sebelumnya</button>
+      <button class="btn btn-next" id="nextBtn" onclick="nextQ()" disabled>${cur===QS.length-1?'Lihat Hasil ✓':'Soal Berikutnya →'}</button>
+    </div>
+  `;
+}
+
+function updateProgress(){
+  const done = results.filter(r=>r!==undefined).length;
+  document.getElementById('progVal').textContent=`${Math.min(cur+1,10)}/10`;
+  document.getElementById('progBar').style.width=(cur/10*100)+'%';
+}
+
+function pick(idx){
+  if(answered) return;
+  answered=true;
+  const q=QS[cur];
+  const correct=idx===q.ans;
+  if(correct&&results[cur]===undefined) score++;
+  results[cur]=correct;
+  const opts=document.getElementById('opts').querySelectorAll('.opt-btn');
+  opts.forEach(b=>b.disabled=true);
+  opts[idx].classList.add(correct?'correct':'wrong');
+  if(!correct) opts[q.ans].classList.add('correct');
+  const fb=document.getElementById('fb');
+  fb.className='feedback show '+(correct?'ok':'no');
+  fb.textContent=(correct?'✓ Benar! ':'✗ Salah. ')+q.exp;
+  document.getElementById('nextBtn').disabled=false;
+}
+
+function nextQ(){
+  if(cur<QS.length-1){cur++;renderQ();}
+  else showResults();
+}
+function prevQ(){
+  if(cur>0){cur--;renderQ();}
+}
+
+function showResults(){
+  document.getElementById('quiz').style.display='none';
+  const div=document.getElementById('results');
+  div.style.display='block';
+  const tot=results.filter(r=>r===true).length;
+  const pct=tot/10;
+  const icon=pct>=0.9?'🏆':pct>=0.7?'🎯':pct>=0.5?'📊':'📉';
+  const msg=pct>=0.9?'Luar biasa! Kamu sudah menguasai penyajian data dengan sangat baik!':pct>=0.7?'Bagus sekali! Terus latihan untuk makin mahir.':pct>=0.5?'Sudah lumayan! Coba review bagian yang masih salah.':'Jangan menyerah! Baca ulang materi dan coba lagi ya.';
+  const pips=Array.from({length:10},(_,i)=>`<div class="sc-pip pip-${results[i]===true?'ok':'no'}">${results[i]===true?'✓':'✗'}</div>`).join('');
+  div.innerHTML=`
+    <span class="res-icon">${icon}</span>
+    <div class="res-score">${tot}/10</div>
+    <div class="res-lbl">Soal Benar</div>
+    <div class="score-grid">${pips}</div>
+    <p class="res-msg">${msg}</p>
+    <div class="res-btns">
+      <button class="btn btn-next" onclick="location.reload()">🔄 Ulangi Latihan</button>
+      <a href="soal19.html" class="btn btn-ghost">⚡ Coba Sprint</a>
+      <a href="lesson19.html" class="btn btn-ghost">← Lesson</a>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>
