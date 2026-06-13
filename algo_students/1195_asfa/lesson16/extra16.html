@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extra PR · Lesson 16 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#7c3aed;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --violet:#a78bfa;--text:#e2e8f0;--muted:#64748b;
+    --orange:#fb923c;--blue:#60a5fa;--pink:#f472b6;
+    --pr:#f472b6;--blue2:#38bdf8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 80%,rgba(244,114,182,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 85% 15%,rgba(167,139,250,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 50%,rgba(0,245,196,0.03) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  nav{
+    padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:100;
+    font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;
+  }
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--pr);}
+
+  .wrapper{max-width:800px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  .pr-banner{background:linear-gradient(135deg,rgba(244,114,182,0.08),rgba(167,139,250,0.08));border:1px solid rgba(244,114,182,0.25);border-radius:20px;padding:2rem 2rem 1.5rem;margin-bottom:2rem;position:relative;overflow:hidden;}
+  .pr-banner::before{content:'☠️';position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);font-size:5rem;opacity:0.08;pointer-events:none;line-height:1;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.3);color:var(--pr);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;margin-bottom:0.5rem;line-height:1.3;}
+  .page-title span{color:var(--pr);}
+  .page-desc{color:var(--muted);font-size:0.9rem;line-height:1.7;max-width:540px;}
+  .pr-pills{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;}
+  .pr-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.72rem;padding:0.2rem 0.7rem;border-radius:20px;font-weight:700;}
+  .pill-pink{background:rgba(244,114,182,0.1);color:var(--pr);border:1px solid rgba(244,114,182,0.3);}
+  .pill-violet{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+  .pill-orange{background:rgba(251,146,60,0.1);color:var(--orange);border:1px solid rgba(251,146,60,0.3);}
+  .pill-cyan{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .pill-neon{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.3);}
+  .pill-blue{background:rgba(56,189,248,0.1);color:var(--blue2);border:1px solid rgba(56,189,248,0.3);}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--pr);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--pr),var(--violet));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+  .prog-stars{display:flex;gap:0.3rem;margin-top:0.5rem;align-items:center;font-size:0.78rem;color:var(--muted);}
+  .star{font-size:0.9rem;opacity:0.25;transition:opacity 0.4s;}
+  .star.lit{opacity:1;}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--neon);}
+  .sd-2{color:var(--orange);}
+  .sd-3{color:var(--violet);}
+  .sd-4{color:var(--cyan);}
+  .sd-5{color:var(--pr);}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;max-width:100%;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;padding:0 0.25rem;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(244,114,182,0.35);background:rgba(244,114,182,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.25);}
+  .ex-tag.tag-2{background:rgba(251,146,60,0.1);color:var(--orange);border:1px solid rgba(251,146,60,0.25);}
+  .ex-tag.tag-3{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.25);}
+  .ex-tag.tag-4{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.25);}
+  .ex-tag.tag-5{background:rgba(244,114,182,0.1);color:var(--pr);border:1px solid rgba(244,114,182,0.25);}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.8rem,3vw,0.95rem);font-weight:900;color:var(--text);margin-bottom:0.5rem;line-height:1.5;word-break:break-word;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--pr);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:1rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--pr);}
+  .ex-input.correct{border-color:var(--pr);color:var(--pr);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.3);color:var(--pr);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(244,114,182,0.22);border-color:var(--pr);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--neon);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.4);color:var(--pr);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+  .attempts-row{margin-top:0.4rem;display:flex;gap:2px;align-items:center;}
+  .attempts-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:2px;}
+
+  .ex-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;}
+  .ex-opt{background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.55rem 0.4rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;transition:all 0.15s;text-align:center;line-height:1.4;}
+  .ex-opt:hover:not(:disabled){border-color:var(--pr);background:rgba(244,114,182,0.06);}
+  .ex-opt.opt-correct{border-color:var(--neon);background:rgba(0,245,196,0.12);color:var(--neon);}
+  .ex-opt.opt-wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .ex-opt:disabled{cursor:default;}
+
+  .ex-card.word-card{border-left:3px solid var(--orange);}
+  .ex-card.word-card.done-card{border-left-color:var(--pr);}
+  .word-story{background:rgba(251,146,60,0.06);border:1px solid rgba(251,146,60,0.2);border-radius:10px;padding:0.7rem 0.9rem;margin-bottom:0.7rem;font-size:0.84rem;color:var(--text);line-height:1.6;}
+  .word-story strong{color:var(--orange);}
+
+  /* XY table for lengkapi pola / fungsi */
+  .xy-table{width:100%;border-collapse:collapse;margin:0.6rem 0 0.8rem;background:#12121c;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+  .xy-table th{font-family:'Orbitron',monospace;font-size:0.7rem;letter-spacing:2px;padding:0.45rem 0;text-align:center;border-bottom:1px solid var(--border);}
+  .xy-table th.th-x{color:var(--blue2);}
+  .xy-table th.th-y{color:var(--accent);}
+  .xy-table td{font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;text-align:center;padding:0.45rem 0;}
+  .xy-table td.td-x{color:var(--blue2);}
+  .xy-table td.td-y{color:var(--accent);}
+  .xy-table td.td-q{color:var(--pr);background:rgba(244,114,182,0.07);}
+  .xy-table tr:not(:last-child) td{border-bottom:1px solid rgba(255,255,255,0.04);}
+
+  .table-pair-wrap{display:flex;gap:0.7rem;flex-wrap:wrap;margin:0.6rem 0 0.8rem;}
+  .table-pair-col{flex:1;min-width:120px;}
+  .table-pair-lbl{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:0.3rem;}
+
+  /* Mini graph display */
+  .graph-disp{background:#12121c;border:1px solid var(--border);border-radius:10px;padding:0.6rem 0.4rem;margin:0.6rem 0 0.8rem;text-align:center;}
+  .graph-legend{display:flex;justify-content:center;gap:0.8rem;margin-top:0.3rem;flex-wrap:wrap;}
+
+  #allDone{display:none;text-align:center;padding:3rem 2rem;}
+  .alldone-icon{font-size:5rem;display:block;margin-bottom:1.5rem;animation:bounce 1s ease infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .alldone-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2rem);color:var(--pr);margin-bottom:0.8rem;}
+  .alldone-desc{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .alldone-xp{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.5rem 1.5rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:2rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--violet);color:var(--violet);}
+  .btn-primary{background:linear-gradient(135deg,#be185d,var(--neon2));color:white;box-shadow:0 4px 15px rgba(190,24,93,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson16.html">LESSON 16</a>
+  <span>›</span>
+  <span class="current">EXTRA PR</span>
+</nav>
+
+<div class="wrapper">
+  <div class="pr-banner">
+    <div class="page-badge">☠️ Skull Mode</div>
+    <div class="page-title">Extra <span>PR Mode</span></div>
+    <div class="page-desc">
+      40 soal grafik fungsi ekstra — dari fungsi ke titik koordinat, lengkapi pola tabel, baca grafik,
+      bandingkan dua garis, sampai soal cerita berbasis grafik!
+      Progress tersimpan otomatis. Ini latihan buat kamu yang mau benar-benar jago baca grafik! 💀
+    </div>
+    <div class="pr-pills">
+      <span class="pr-pill pill-neon">📊 Fungsi → Titik</span>
+      <span class="pr-pill pill-orange">🔍 Lengkapi Pola Tabel</span>
+      <span class="pr-pill pill-violet">📈 Baca Grafik</span>
+      <span class="pr-pill pill-cyan">⚖️ Bandingkan Grafik</span>
+      <span class="pr-pill pill-pink">📖 Soal Cerita Grafik</span>
+    </div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress PR</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      Kumpulkan ⭐ untuk setiap bagian yang diselesaikan!
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+      <span style="margin-left:0.3rem;font-size:0.72rem;">Selesaikan 8 soal per bagian</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">💀</span>
+    <div class="alldone-title">PR SKULL MODE SELESAI!</div>
+    <div class="alldone-desc">
+      GG! Kamu udah menaklukkan 40 soal Extra PR Lesson 16!<br>
+      Tabel, titik koordinat, baca grafik, bandingkan garis, dan soal cerita — semua kamu babat habis! 🔥
+    </div>
+    <div class="alldone-xp">💀 +400 XP — Skull Master Badge Unlocked!</div>
+    <div class="action-btns">
+      <a href="lesson16.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="exercise16.html" class="btn btn-ghost">Exercise Zone</a>
+      <a href="quicktest16.html" class="btn btn-primary">Quick Test ⚡</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson16_extra_v1';
+function loadProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{};}catch(e){return{};}}
+function saveProgress(p){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(p));}catch(e){}}
+let progress = loadProgress();
+
+// Helper: render a simple x/y table, '?' cells highlighted
+function tableDisp(pairs){
+  const rows = pairs.map(([x,y])=>{
+    const yCell = (y==='?') ? `<td class="td-q">?</td>` : `<td class="td-y">${y}</td>`;
+    return `<tr><td class="td-x">${x}</td>${yCell}</tr>`;
+  }).join('');
+  return `<table class="xy-table">
+    <thead><tr><th class="th-x">x</th><th class="th-y">y</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+// Helper: two side-by-side tables for comparison questions
+function tablePairDisp(tableA, tableB){
+  return `<div class="table-pair-wrap">
+    <div class="table-pair-col">
+      <div class="table-pair-lbl">${tableA.label}</div>
+      ${tableDisp(tableA.pairs)}
+    </div>
+    <div class="table-pair-col">
+      <div class="table-pair-lbl">${tableB.label}</div>
+      ${tableDisp(tableB.pairs)}
+    </div>
+  </div>`;
+}
+
+// Helper: render a small SVG graph with one or more line series
+function miniGraph(seriesList, xMax, yMax){
+  const W=220,H=170,padL=30,padB=26,padT=14,padR=14;
+  const innerW=W-padL-padR, innerH=H-padT-padB;
+  const px = x => padL + (x/xMax)*innerW;
+  const py = y => (H-padB) - (y/yMax)*innerH;
+  const xStep = xMax<=4?1:(xMax<=8?2:Math.ceil(xMax/4));
+  const yStep = yMax<=6?1:(yMax<=12?2:Math.ceil(yMax/6));
+  let grid='';
+  for(let x=0;x<=xMax;x+=xStep){
+    grid+=`<line x1="${px(x)}" y1="${padT}" x2="${px(x)}" y2="${H-padB}" stroke="#1e2030" stroke-width="1"/>`;
+    grid+=`<text x="${px(x)}" y="${H-padB+12}" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">${x}</text>`;
+  }
+  for(let y=0;y<=yMax;y+=yStep){
+    grid+=`<line x1="${padL}" y1="${py(y)}" x2="${W-padR}" y2="${py(y)}" stroke="#1e2030" stroke-width="1"/>`;
+    grid+=`<text x="${padL-6}" y="${py(y)+3}" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="end">${y}</text>`;
+  }
+  const axes = `<line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" stroke="#2a2a40" stroke-width="2"/>
+    <line x1="${padL}" y1="${H-padB}" x2="${padL}" y2="${padT}" stroke="#2a2a40" stroke-width="2"/>`;
+  let series='';
+  let legend='';
+  seriesList.forEach(s=>{
+    const ptsStr = s.points.map(([x,y])=>`${px(x).toFixed(1)},${py(y).toFixed(1)}`).join(' ');
+    series+=`<polyline points="${ptsStr}" fill="none" stroke="${s.color}" stroke-width="2.5"/>`;
+    s.points.forEach(([x,y])=>{
+      series+=`<circle cx="${px(x).toFixed(1)}" cy="${py(y).toFixed(1)}" r="4" fill="${s.color}"/>`;
+    });
+    if(s.label){
+      legend+=`<span style="color:${s.color};font-family:'Orbitron',monospace;font-size:0.7rem;">● ${s.label}</span>`;
+    }
+  });
+  return `<div class="graph-disp">
+    <svg width="220" height="170" viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg">
+      ${grid}${axes}${series}
+      <text x="${W-padR}" y="${H-padB+12}" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">x</text>
+      <text x="${padL-6}" y="${padT-2}" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="end">y</text>
+    </svg>
+    ${legend?`<div class="graph-legend">${legend}</div>`:''}
+  </div>`;
+}
+
+const exercises = [
+  // ─── BAGIAN 1: Fungsi → Titik Koordinat (e01–e08) ────────────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Fungsi→Titik',
+    q:'Diketahui y = x + 3. Jika x = 2, titik koordinat (x, y) yang benar adalah?', hint:'y = 2 + 3 = 5',
+    type:'mcq', opts:['(2,4)','(2,5)','(2,6)','(2,3)'], answer:'(2,5)',
+    explain:'✅ y = 2+3 = 5 → titik (2,5) ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Fungsi→Titik',
+    q:'Diketahui y = 3x. Jika x = 4, berapa nilai y?', hint:'y = 3 × 4',
+    type:'text', answers:['12'], explain:'✅ y = 3×4 = 12 ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Fungsi→Titik',
+    q:'Diketahui y = 2x − 1. Jika x = 3, titik koordinat (x, y) yang benar adalah?', hint:'y = 2×3 − 1 = 6 − 1',
+    type:'mcq', opts:['(3,4)','(3,5)','(3,6)','(3,7)'], answer:'(3,5)',
+    explain:'✅ y = 2(3)−1 = 5 → titik (3,5) ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Fungsi→Titik',
+    q:'Diketahui y = x − 2. Jika x = 5, berapa nilai y?', hint:'y = 5 − 2',
+    type:'text', answers:['3'], explain:'✅ y = 5−2 = 3 ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Fungsi→Titik',
+    q:'Diketahui y = 4x. Jika x = 2, titik koordinat (x, y) yang benar adalah?', hint:'y = 4 × 2',
+    type:'mcq', opts:['(2,6)','(2,8)','(2,10)','(2,4)'], answer:'(2,8)',
+    explain:'✅ y = 4(2) = 8 → titik (2,8) ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Fungsi→Titik',
+    q:'Diketahui y = 2x + 3. Jika x = 1, berapa nilai y?', hint:'y = 2(1) + 3',
+    type:'text', answers:['5'], explain:'✅ y = 2(1)+3 = 5 ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Fungsi→Titik',
+    q:'Diketahui y = x + 6. Jika x = 0, titik koordinat (x, y) yang benar adalah?', hint:'y = 0 + 6',
+    type:'mcq', opts:['(0,5)','(0,6)','(0,7)','(0,0)'], answer:'(0,6)',
+    explain:'✅ y = 0+6 = 6 → titik (0,6) ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Fungsi→Titik',
+    q:'Diketahui y = 5x − 2. Jika x = 3, berapa nilai y?', hint:'y = 5(3) − 2 = 15 − 2',
+    type:'text', answers:['13'], explain:'✅ y = 5(3)−2 = 13 ✓' },
+
+  // ─── BAGIAN 2: Lengkapi Pola Tabel (e09–e16) ─────────────────────────
+  { id:'e09', section:'s2', tag:'tag-2', tagLabel:'Lengkapi Tabel',
+    table:{pairs:[[1,4],[2,6],[3,8],[4,'?']]},
+    q:'Lihat pola pada tabel. Berapa nilai y yang hilang (tanda ?)?', hint:'Setiap x naik 1, y naik 2. Polanya y = 2x + 2',
+    type:'text', answers:['10'], explain:'✅ Pola y = 2x+2. Untuk x=4: y = 2(4)+2 = 10 ✓' },
+
+  { id:'e10', section:'s2', tag:'tag-2', tagLabel:'Lengkapi Tabel',
+    table:{pairs:[[0,1],[1,3],[2,5],[3,'?']]},
+    q:'Lihat pola pada tabel. Berapa nilai y yang hilang (tanda ?)?', hint:'Setiap x naik 1, y naik 2. Polanya y = 2x + 1',
+    type:'mcq', opts:['6','7','8','9'], answer:'7',
+    explain:'✅ Pola y = 2x+1. Untuk x=3: y = 2(3)+1 = 7 ✓' },
+
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Lengkapi Tabel',
+    table:{pairs:[[1,5],[2,8],[3,11],[4,'?']]},
+    q:'Lihat pola pada tabel. Berapa nilai y yang hilang (tanda ?)?', hint:'Setiap x naik 1, y naik 3. Polanya y = 3x + 2',
+    type:'text', answers:['14'], explain:'✅ Pola y = 3x+2. Untuk x=4: y = 3(4)+2 = 14 ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Lengkapi Tabel',
+    table:{pairs:[[2,4],[4,8],[6,12],[8,'?']]},
+    q:'Lihat pola pada tabel. Berapa nilai y yang hilang (tanda ?)?', hint:'Polanya y = 2x. Untuk x=8...',
+    type:'mcq', opts:['14','15','16','18'], answer:'16',
+    explain:'✅ Pola y = 2x. Untuk x=8: y = 2(8) = 16 ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Lengkapi Tabel',
+    table:{pairs:[[1,7],[2,6],[3,5],[4,'?']]},
+    q:'Lihat pola pada tabel. Berapa nilai y yang hilang (tanda ?)? (Perhatikan: y-nya turun!)', hint:'Setiap x naik 1, y turun 1. Polanya y = −x + 8',
+    type:'text', answers:['4'], explain:'✅ Pola y = −x+8 (turun). Untuk x=4: y = −4+8 = 4 ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Lengkapi Tabel',
+    table:{pairs:[[0,3],[2,7],[4,11],[6,'?']]},
+    q:'Lihat pola pada tabel. Berapa nilai y yang hilang (tanda ?)?', hint:'Setiap x naik 2, y naik 4. Polanya y = 2x + 3',
+    type:'mcq', opts:['13','14','15','16'], answer:'15',
+    explain:'✅ Pola y = 2x+3. Untuk x=6: y = 2(6)+3 = 15 ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Lengkapi Tabel',
+    table:{pairs:[[1,10],[2,8],[3,6],[4,'?']]},
+    q:'Lihat pola pada tabel. Berapa nilai y yang hilang (tanda ?)? (Perhatikan: y-nya turun!)', hint:'Setiap x naik 1, y turun 2. Polanya y = −2x + 12',
+    type:'text', answers:['4'], explain:'✅ Pola y = −2x+12 (turun). Untuk x=4: y = −2(4)+12 = 4 ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Lengkapi Tabel',
+    table:{pairs:[[3,5],[5,9],[7,13],[9,'?']]},
+    q:'Lihat pola pada tabel. Berapa nilai y yang hilang (tanda ?)?', hint:'Setiap x naik 2, y naik 4. Polanya y = 2x − 1',
+    type:'mcq', opts:['15','16','17','18'], answer:'17',
+    explain:'✅ Pola y = 2x−1. Untuk x=9: y = 2(9)−1 = 17 ✓' },
+
+  // ─── BAGIAN 3: Baca Grafik (e17–e24) ─────────────────────────────────
+  { id:'e17', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[0,1],[1,2],[2,3],[3,4],[4,5]],color:'#00f5c4',label:'y = x + 1'}],xMax:4,yMax:6},
+    q:'Berdasarkan grafik y = x + 1, saat x = 3, berapa nilai y?', hint:'Lihat titik pada garis saat x=3',
+    type:'mcq', opts:['3','4','5','6'], answer:'4',
+    explain:'✅ Garis y=x+1 melewati titik (3,4), jadi y=4 ✓' },
+
+  { id:'e18', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[0,0],[1,2],[2,4],[3,6]],color:'#00f5c4',label:'y = 2x'}],xMax:4,yMax:8},
+    q:'Titik manakah yang dilewati garis pada grafik y = 2x ini?', hint:'Cek tiap titik di garis',
+    type:'mcq', opts:['(2,5)','(3,5)','(2,4)','(1,3)'], answer:'(2,4)',
+    explain:'✅ Untuk x=2: y=2(2)=4, jadi garis melewati (2,4) ✓' },
+
+  { id:'e19', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[0,5],[1,4],[2,3],[3,2],[4,1]],color:'#00f5c4',label:'y = −x + 5'}],xMax:4,yMax:6},
+    q:'Perhatikan grafik di atas. Apakah grafik ini naik atau turun saat x bertambah?', hint:'Lihat arah garis dari kiri ke kanan',
+    type:'mcq', opts:['Naik','Turun','Tetap (horizontal)','Tidak bisa ditentukan'], answer:'Turun',
+    explain:'✅ Semakin besar x, semakin kecil y → grafik ini TURUN ✓' },
+
+  { id:'e20', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[0,0],[1,3],[2,6],[3,9]],color:'#00f5c4',label:'y = 3x'}],xMax:3,yMax:10},
+    q:'Berdasarkan grafik y = 3x, saat x = 2, berapa nilai y?', hint:'Lihat titik pada garis saat x=2',
+    type:'text', answers:['6'], explain:'✅ y = 3(2) = 6, garis melewati (2,6) ✓' },
+
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[1,0],[2,1],[3,2],[4,3]],color:'#00f5c4',label:'y = x − 1'}],xMax:4,yMax:5},
+    q:'Titik manakah yang dilewati garis pada grafik y = x − 1 ini?', hint:'Cek tiap titik di garis',
+    type:'mcq', opts:['(3,2)','(3,3)','(2,2)','(4,4)'], answer:'(3,2)',
+    explain:'✅ Untuk x=3: y=3−1=2, jadi garis melewati (3,2) ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[0,1],[1,3],[2,5],[3,7],[4,9]],color:'#00f5c4',label:'y = 2x + 1'}],xMax:4,yMax:10},
+    q:'Dari grafik y = 2x + 1 di atas, saat y = 7, berapa nilai x?', hint:'Cari titik di garis yang nilai y-nya = 7',
+    type:'mcq', opts:['2','3','4','5'], answer:'3',
+    explain:'✅ Garis melewati titik (3,7), jadi saat y=7, x=3 ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[0,0],[1,1],[2,2],[3,3]],color:'#00f5c4',label:'y = x'},{points:[[0,0],[1,3],[2,6],[3,9]],color:'#fb923c',label:'y = 3x'}],xMax:3,yMax:10},
+    q:'Lihat kedua garis pada grafik. Garis mana yang lebih curam (naik lebih cepat)?', hint:'Garis yang lebih curam adalah yang naik lebih tinggi untuk x yang sama',
+    type:'mcq', opts:['y = x','y = 3x','Sama curam','Tidak bisa dibandingkan'], answer:'y = 3x',
+    explain:'✅ y=3x naik 3 satuan tiap x bertambah 1, jauh lebih curam dari y=x ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[0,8],[1,6],[2,4],[3,2],[4,0]],color:'#00f5c4',label:'y = −2x + 8'}],xMax:4,yMax:8},
+    q:'Grafik di atas (y = −2x + 8) naik atau turun? Dan berapa nilai y saat x = 3?', hint:'Lihat arah garis, lalu cari titik di x=3',
+    type:'mcq', opts:['Naik, y=2','Turun, y=2','Naik, y=6','Turun, y=6'], answer:'Turun, y=2',
+    explain:'✅ Grafik turun (y mengecil saat x membesar). Saat x=3: y=−2(3)+8=2 ✓' },
+
+  // ─── BAGIAN 4: Bandingkan Dua Grafik (e25–e32) ───────────────────────
+  { id:'e25', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    graph:{series:[{points:[[0,1],[1,2],[2,3],[3,4]],color:'#00f5c4',label:'y = x + 1'},{points:[[0,4],[1,5],[2,6],[3,7]],color:'#fb923c',label:'y = x + 4'}],xMax:3,yMax:8},
+    q:'Pada x = 2, garis mana yang punya nilai y lebih tinggi?', hint:'Hitung y untuk masing-masing garis saat x=2',
+    type:'mcq', opts:['y = x + 1','y = x + 4','Sama','Tidak bisa ditentukan'], answer:'y = x + 4',
+    explain:'✅ Saat x=2: y=x+1 → 3, y=x+4 → 6. Jadi y=x+4 lebih tinggi ✓' },
+
+  { id:'e26', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    graph:{series:[{points:[[0,0],[1,2],[2,4],[3,6],[4,8]],color:'#00f5c4',label:'y = 2x'},{points:[[0,3],[1,4],[2,5],[3,6],[4,7]],color:'#fb923c',label:'y = x + 3'}],xMax:4,yMax:9},
+    q:'Di titik manakah kedua garis pada grafik berpotongan (bertemu)?', hint:'Cari titik yang sama-sama dilewati kedua garis',
+    type:'mcq', opts:['(2,5)','(3,6)','(4,7)','(1,4)'], answer:'(3,6)',
+    explain:'✅ Saat x=3: y=2x=6 dan y=x+3=6, jadi kedua garis berpotongan di (3,6) ✓' },
+
+  { id:'e27', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    graph:{series:[{points:[[0,0],[1,1],[2,2],[3,3],[4,4]],color:'#00f5c4',label:'y = x'},{points:[[0,0],[1,2],[2,4],[3,6],[4,8]],color:'#fb923c',label:'y = 2x'}],xMax:4,yMax:9},
+    q:'Lihat kedua garis pada grafik. Garis mana yang lebih curam?', hint:'Garis yang nilai y-nya naik lebih cepat untuk kenaikan x yang sama',
+    type:'mcq', opts:['y = x','y = 2x','Sama curam','Tidak ada yang curam'], answer:'y = 2x',
+    explain:'✅ y=2x naik 2 satuan tiap x bertambah 1, lebih curam dari y=x yang naik 1 satuan ✓' },
+
+  { id:'e28', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    graph:{series:[{points:[[1,1],[2,4],[3,7],[4,10]],color:'#00f5c4',label:'y = 3x − 2'},{points:[[0,2],[1,3],[2,4],[3,5],[4,6]],color:'#fb923c',label:'y = x + 2'}],xMax:4,yMax:10},
+    q:'Di titik manakah kedua garis pada grafik berpotongan?', hint:'Cari pasangan x,y yang sama untuk kedua garis',
+    type:'mcq', opts:['(1,3)','(2,4)','(3,5)','(2,5)'], answer:'(2,4)',
+    explain:'✅ Saat x=2: y=3(2)−2=4 dan y=2+2=4, jadi berpotongan di (2,4) ✓' },
+
+  { id:'e29', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    graph:{series:[{points:[[0,6],[1,5],[2,4],[3,3],[4,2],[5,1],[6,0]],color:'#00f5c4',label:'y = −x + 6'},{points:[[0,0],[1,1],[2,2],[3,3],[4,4],[5,5],[6,6]],color:'#fb923c',label:'y = x'}],xMax:6,yMax:7},
+    q:'Garis A (y = −x + 6) naik atau turun? Lalu garis B (y = x) naik atau turun?', hint:'Perhatikan arah masing-masing garis dari kiri ke kanan',
+    type:'mcq', opts:['A naik, B naik','A turun, B naik','A turun, B turun','A naik, B turun'], answer:'A turun, B naik',
+    explain:'✅ Garis A (hijau) turun karena y mengecil saat x membesar. Garis B (oranye) naik karena y membesar saat x membesar ✓' },
+
+  { id:'e30', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    graph:{series:[{points:[[0,1],[1,3],[2,5],[3,7]],color:'#00f5c4',label:'y = 2x + 1'},{points:[[0,4],[1,6],[2,8],[3,10]],color:'#fb923c',label:'y = 2x + 4'}],xMax:3,yMax:11},
+    q:'Pada x = 0, berapa selisih nilai y antara garis B (y=2x+4) dan garis A (y=2x+1)?', hint:'Hitung nilai y masing-masing garis saat x=0, lalu kurangkan',
+    type:'text', answers:['3'], explain:'✅ Saat x=0: B=4, A=1. Selisih = 4−1 = 3. Kedua garis sejajar, selisihnya selalu 3 ✓' },
+
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    graph:{series:[{points:[[0,4],[1,5],[2,6],[3,7],[4,8]],color:'#00f5c4',label:'y = x + 4'},{points:[[0,0],[1,3],[2,6],[3,9],[4,12]],color:'#fb923c',label:'y = 3x'}],xMax:4,yMax:13},
+    q:'Di titik manakah kedua garis pada grafik berpotongan?', hint:'Cari pasangan x,y yang sama untuk kedua garis',
+    type:'mcq', opts:['(1,5)','(2,6)','(3,7)','(2,7)'], answer:'(2,6)',
+    explain:'✅ Saat x=2: y=x+4=6 dan y=3x=6, jadi berpotongan di (2,6) ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    tables:{tableA:{label:'Tabel A',pairs:[[0,2],[1,3],[2,4]]},tableB:{label:'Tabel B',pairs:[[0,1],[1,4],[2,7]]}},
+    q:'Bandingkan Tabel A dan Tabel B. Fungsi mana yang nilainya naik lebih cepat saat x bertambah?', hint:'Lihat selisih y setiap x bertambah 1, untuk masing-masing tabel',
+    type:'mcq', opts:['Fungsi A','Fungsi B','Sama cepat','Tidak bisa ditentukan'], answer:'Fungsi B',
+    explain:'✅ Fungsi A naik 1 tiap x bertambah 1. Fungsi B naik 3 tiap x bertambah 1. Jadi Fungsi B naik lebih cepat ✓' },
+
+  // ─── BAGIAN 5: Soal Cerita Grafik (e33–e40) ──────────────────────────
+  { id:'e33', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    table:{pairs:[[1,15000],[2,20000],[3,25000]]},
+    story:'Andi menabung setiap hari. Tabel di samping menunjukkan jumlah <strong>total tabungan (Rp)</strong> pada hari ke-x. Polanya konsisten: tabungan awal + tambahan tetap per hari.',
+    q:'Berdasarkan pola tabel, berapa total tabungan Andi di hari ke-5?', hint:'Pola: y = 5000x + 10000. Masukkan x=5',
+    type:'mcq', opts:['30000','32000','35000','40000'], answer:'35000',
+    explain:'✅ Pola y = 5000x + 10000. Untuk x=5: y = 5000(5)+10000 = 35000 ✓' },
+
+  { id:'e34', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    table:{pairs:[[1,60],[2,120],[3,180]]},
+    story:'Sebuah mobil melaju dengan kecepatan tetap. Tabel di samping menunjukkan <strong>jarak tempuh (km)</strong> setelah x jam perjalanan.',
+    q:'Berdasarkan pola tabel, berapa jarak yang ditempuh mobil setelah 5 jam?', hint:'Pola: y = 60x. Masukkan x=5',
+    type:'text', answers:['300'], explain:'✅ Pola y = 60x (kecepatan 60 km/jam). Untuk x=5: y = 60(5) = 300 km ✓' },
+
+  { id:'e35', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    table:{pairs:[[0,2],[1,5],[2,8]]},
+    story:'Sebuah tanaman diukur setiap hari. Tabel di samping menunjukkan <strong>tinggi tanaman (cm)</strong> pada hari ke-x, mulai dari hari ke-0.',
+    q:'Berdasarkan pola tabel, berapa tinggi tanaman pada hari ke-6?', hint:'Pola: y = 3x + 2. Masukkan x=6',
+    type:'mcq', opts:['18','20','22','24'], answer:'20',
+    explain:'✅ Pola y = 3x+2 (tinggi awal 2 cm, tumbuh 3 cm/hari). Untuk x=6: y = 3(6)+2 = 20 ✓' },
+
+  { id:'e36', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    table:{pairs:[[1,5000],[2,8000],[3,11000]]},
+    story:'Tarif parkir mobil terdiri dari biaya awal ditambah biaya per jam. Tabel di samping menunjukkan <strong>total biaya parkir (Rp)</strong> untuk x jam.',
+    q:'Berdasarkan pola tabel, berapa total biaya parkir untuk 4 jam?', hint:'Pola: y = 3000x + 2000. Masukkan x=4',
+    type:'text', answers:['14000'], explain:'✅ Pola y = 3000x+2000. Untuk x=4: y = 3000(4)+2000 = 14000 ✓' },
+
+  { id:'e37', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    table:{pairs:[[0,30],[1,27],[2,24]]},
+    story:'Suhu ruangan ber-AC turun secara bertahap. Tabel di samping menunjukkan <strong>suhu ruangan (°C)</strong> setelah x menit AC dinyalakan.',
+    q:'Berdasarkan pola tabel, berapa suhu ruangan setelah 5 menit?', hint:'Pola: y = −3x + 30. Masukkan x=5',
+    type:'mcq', opts:['12','15','18','21'], answer:'15',
+    explain:'✅ Pola y = −3x+30 (suhu turun 3°C tiap menit). Untuk x=5: y = −3(5)+30 = 15°C ✓' },
+
+  { id:'e38', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    table:{pairs:[[1,10],[2,18],[3,26]]},
+    story:'Sebuah toko kue mencatat penjualan harian. Tabel di samping menunjukkan <strong>jumlah kue terjual</strong> pada hari ke-x.',
+    q:'Berdasarkan pola tabel, berapa jumlah kue yang terjual pada hari ke-5?', hint:'Pola: y = 8x + 2. Masukkan x=5',
+    type:'text', answers:['42'], explain:'✅ Pola y = 8x+2. Untuk x=5: y = 8(5)+2 = 42 ✓' },
+
+  { id:'e39', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    table:{pairs:[[0,100],[1,90],[2,80]]},
+    story:'Baterai HP berkurang secara konstan saat digunakan terus-menerus. Tabel di samping menunjukkan <strong>sisa baterai (%)</strong> setelah x jam pemakaian.',
+    q:'Berdasarkan pola tabel, berapa persen sisa baterai setelah 6 jam?', hint:'Pola: y = −10x + 100. Masukkan x=6',
+    type:'mcq', opts:['30','40','50','60'], answer:'40',
+    explain:'✅ Pola y = −10x+100 (turun 10% per jam). Untuk x=6: y = −10(6)+100 = 40% ✓' },
+
+  { id:'e40', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    table:{pairs:[[0,10],[2,18],[4,26]]},
+    story:'Sebuah kolam diisi air dengan debit tetap. Tabel di samping menunjukkan <strong>tinggi air (cm)</strong> setelah x menit pengisian.',
+    q:'Berdasarkan pola tabel, berapa tinggi air setelah 8 menit?', hint:'Setiap 2 menit, tinggi air naik 8 cm → 4 cm/menit. Pola: y = 4x + 10',
+    type:'text', answers:['42'], explain:'✅ Pola y = 4x+10 (naik 4 cm/menit, mulai dari 10 cm). Untuk x=8: y = 4(8)+10 = 42 ✓' },
+];
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  const total = exercises.length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done >= i*8);
+  }
+  if(done === total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){
+    inp.classList.add('correct'); inp.disabled=true; btn.disabled=true;
+  } else {
+    card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true);
+  }
+  const fb = card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok';
+  fb.textContent = q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){
+    const badge=document.createElement('div');
+    badge.className='done-badge'; badge.textContent='✓ Done';
+    card.appendChild(badge);
+  }
+  progress[q.id]=true;
+  saveProgress(progress);
+  updateProgressBar();
+}
+
+function checkText(id, inp, btn, q){
+  const raw = inp.value.trim().toLowerCase().replace(/\s+/g,' ');
+  if(!raw) return;
+  const correct = q.answers.some(a=>raw===a.toLowerCase());
+  if(correct){
+    markDone(inp.closest('.ex-card'), q, inp, btn);
+  } else {
+    inp.classList.add('wrong-anim');
+    const attRow = inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div'); dot.className='attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(()=>{inp.classList.remove('wrong-anim'); inp.value=''; inp.focus();}, 400);
+    if(attRow.children.length >= 3){
+      const fb = inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no';
+      fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.val===q.answer) b.classList.add('opt-correct');
+  });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb = card.querySelector('.ex-feedback');
+  if(val===q.answer){
+    markDone(card, q, null, null);
+  } else {
+    fb.className='ex-feedback show no';
+    fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+  }
+}
+
+function buildExercises(){
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = '';
+  const groups = [
+    { key:'s1', label:'📊 Bagian 1 — Fungsi → Titik Koordinat',  cls:'sd-1' },
+    { key:'s2', label:'🔍 Bagian 2 — Lengkapi Pola Tabel',        cls:'sd-2' },
+    { key:'s3', label:'📈 Bagian 3 — Baca Grafik',                 cls:'sd-3' },
+    { key:'s4', label:'⚖️ Bagian 4 — Bandingkan Dua Grafik',       cls:'sd-4' },
+    { key:'s5', label:'📖 Bagian 5 — Soal Cerita Grafik',          cls:'sd-5' },
+  ];
+  groups.forEach(g=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      const isWord = !!q.wordProblem;
+      card.className = 'ex-card' + (isWord?' word-card':'') + (isDone?' done-card':'');
+
+      const graphHTML = q.graph ? miniGraph(q.graph.series, q.graph.xMax, q.graph.yMax) : '';
+      const tableHTML = q.table ? tableDisp(q.table.pairs) : '';
+      const tablesHTML = q.tables ? tablePairDisp(q.tables.tableA, q.tables.tableB) : '';
+
+      let inputHTML = '';
+      if(q.type==='text'){
+        inputHTML = `
+          <div class="ex-input-wrap">
+            <div class="ex-input-row">
+              <input type="number" class="ex-input ${isDone?'correct':''}"
+                placeholder="Jawaban?"
+                value="${isDone ? q.answers[0] : ''}"
+                ${isDone?'disabled':''}
+                onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+              <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+            </div>
+            <div class="attempts-row"></div>
+          </div>`;
+      } else {
+        const shuffled = [...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML = `<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      const storyHTML = q.story ? `<div class="word-story">${q.story}</div>` : '';
+
+      card.innerHTML = `
+        <div class="ex-num">Soal ${q.id.replace('e','')}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${storyHTML}
+        ${graphHTML}
+        ${tableHTML}
+        ${tablesHTML}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone ? q.explain : ''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn = card.querySelector('.ex-btn');
+        const inp = card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick = ()=>checkText(q.id, inp, btn, q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{
+          b.onclick = ()=>checkMCQ(b.dataset.val, b, q, card);
+        });
+      }
+      grid.appendChild(card);
+    });
+
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Extra PR Lesson 16? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+</script>
+</body>
+</html>

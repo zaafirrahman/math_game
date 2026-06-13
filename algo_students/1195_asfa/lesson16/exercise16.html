@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise · Lesson 16 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--violet:#a78bfa;--red:#ef4444;--blue:#38bdf8;--orange:#fb923c;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(167,139,250,0.06) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(56,189,248,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--violet);}
+  .wrapper{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 6rem;position:relative;z-index:1;}
+  .page-header{text-align:center;margin-bottom:2rem;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--violet);margin-bottom:0.5rem;}
+  .page-sub{color:var(--muted);font-size:0.9rem;}
+  .prog-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin-bottom:2rem;}
+  .prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+  .prog-val{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--violet);}
+  .prog-bar{background:var(--border);border-radius:99px;height:6px;overflow:hidden;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--violet),var(--neon));border-radius:99px;transition:width 0.5s ease;}
+  .dot-row{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.8rem;}
+  .dot{width:24px;height:24px;border-radius:6px;border:1px solid var(--border);cursor:pointer;transition:all 0.2s;font-family:'Orbitron',monospace;font-size:0.6rem;display:flex;align-items:center;justify-content:center;color:var(--muted);}
+  .dot.done-ok{background:rgba(0,245,196,0.15);border-color:var(--neon);color:var(--neon);}
+  .dot.done-ko{background:rgba(239,68,68,0.12);border-color:var(--red);color:var(--red);}
+  .dot.active{border-color:var(--violet);color:var(--violet);background:rgba(167,139,250,0.1);}
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem;margin-bottom:1.2rem;display:none;}
+  .q-card.active{display:block;animation:fadeIn 0.3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+  .q-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--violet);text-transform:uppercase;}
+  .q-tag{font-size:0.65rem;padding:0.2rem 0.6rem;border-radius:99px;font-weight:700;}
+  .tag-coord{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.3);}
+  .tag-table{background:rgba(56,189,248,0.1);color:var(--blue);border:1px solid rgba(56,189,248,0.3);}
+  .tag-read{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+  .tag-compare{background:rgba(251,146,60,0.1);color:var(--orange);border:1px solid rgba(251,146,60,0.3);}
+  .tag-cerita{background:rgba(245,158,11,0.1);color:var(--accent);border:1px solid rgba(245,158,11,0.3);}
+  .q-text{font-size:0.95rem;line-height:1.7;margin-bottom:1.2rem;color:var(--text);}
+  .q-text strong{color:var(--violet);}
+  .rule-pill{display:inline-block;background:rgba(56,189,248,0.1);border:1px solid var(--blue);border-radius:8px;padding:0.3rem 0.8rem;font-family:'Orbitron',monospace;font-size:0.88rem;font-weight:700;color:var(--blue);margin-bottom:1rem;}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-bottom:0.8rem;}
+  @media(max-width:400px){.opts{grid-template-columns:1fr;}}
+  .opt-btn{background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.65rem 0.8rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:1px;transition:all 0.2s;text-align:center;line-height:1.4;}
+  .opt-btn:hover:not(:disabled){border-color:var(--violet);background:rgba(167,139,250,0.07);}
+  .opt-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .opt-btn.reveal-correct{border-color:var(--neon);background:rgba(0,245,196,0.06);color:var(--neon);}
+  .q-feedback{min-height:24px;font-size:0.85rem;margin-bottom:0.8rem;line-height:1.5;}
+  .q-feedback.ok{color:var(--neon);}
+  .q-feedback.ko{color:var(--red);}
+  .q-nav{display:flex;gap:0.8rem;justify-content:flex-end;}
+  .qnav-btn{background:var(--card);border:1px solid var(--border);color:var(--text);padding:0.55rem 1.2rem;border-radius:8px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.7rem;letter-spacing:2px;transition:all 0.2s;}
+  .qnav-btn.next{background:linear-gradient(135deg,var(--neon),#059669);border:none;color:#000;font-weight:800;}
+  .qnav-btn:hover{border-color:var(--neon);}
+  #resultPanel{display:none;background:var(--card);border:1px solid rgba(0,245,196,0.3);border-radius:18px;padding:2rem;text-align:center;margin-top:2rem;}
+  .result-score{font-family:'Orbitron',monospace;font-size:3.5rem;font-weight:900;color:var(--neon);margin-bottom:0.3rem;}
+  .result-sub{color:var(--muted);font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1.5rem;}
+  .result-grade{display:inline-block;font-family:'Orbitron',monospace;font-size:1rem;letter-spacing:3px;padding:0.5rem 1.5rem;border-radius:12px;margin-bottom:1.5rem;}
+  .rg-s{background:rgba(0,245,196,0.1);border:2px solid var(--neon);color:var(--neon);}
+  .rg-a{background:rgba(167,139,250,0.1);border:2px solid var(--violet);color:var(--violet);}
+  .rg-b{background:rgba(245,158,11,0.1);border:2px solid var(--accent);color:var(--accent);}
+  .rg-c{background:rgba(239,68,68,0.1);border:2px solid var(--red);color:var(--red);}
+  .result-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .ra-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;text-decoration:none;display:inline-block;transition:all 0.2s;cursor:pointer;}
+  .ra-primary{background:linear-gradient(135deg,var(--neon),#059669);color:#000;border:none;font-weight:800;}
+  .ra-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .ra-primary:hover{transform:translateY(-2px);}
+  .ra-secondary:hover{border-color:var(--neon);color:var(--neon);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson16.html">LESSON 16</a>
+  <span>›</span>
+  <span class="current">EXERCISE</span>
+</nav>
+
+<div class="wrapper">
+  <div class="page-header">
+    <div class="page-title">🏋️ Exercise Zone</div>
+    <div class="page-sub">20 soal · Grafik Fungsi Dasar · Progress tersimpan otomatis</div>
+  </div>
+
+  <div class="prog-wrap">
+    <div class="prog-top">
+      <div class="prog-label">Progress</div>
+      <div class="prog-val" id="progVal">0 / 20</div>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="dot-row" id="dotRow"></div>
+  </div>
+
+  <div id="questionsContainer"></div>
+  <div id="resultPanel">
+    <div style="font-size:3rem;margin-bottom:1rem;">🏋️</div>
+    <div class="result-score" id="rScore">0</div>
+    <div class="result-sub">poin dari 200</div>
+    <div class="result-grade" id="rGrade">—</div>
+    <div class="result-actions">
+      <button class="ra-btn ra-primary" onclick="restartExercise()">ULANG SEMUA</button>
+      <a href="lesson16.html" class="ra-btn ra-secondary">Lesson 16</a>
+      <a href="../asfa_1195.html" class="ra-btn ra-secondary">Back to ASFA</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const QS=[
+  // Tabel & koordinat (1-6)
+  {tag:'tag-coord',label:'Koordinat',text:'Fungsi <strong>y = x + 4</strong>. Jika x = 2, koordinatnya adalah...',correct:'(2, 6)',wrongs:['(2, 4)','(4, 2)','(2, 8)'],expl:'y = 2+4 = 6 → (2, 6) ✓'},
+  {tag:'tag-coord',label:'Koordinat',text:'Fungsi <strong>y = 3x</strong>. Jika x = 4, koordinatnya adalah...',correct:'(4, 12)',wrongs:['(4, 7)','(12, 4)','(4, 9)'],expl:'y = 3×4 = 12 → (4, 12) ✓'},
+  {tag:'tag-coord',label:'Koordinat',text:'Fungsi <strong>y = 2x + 3</strong>. Jika x = 1, koordinatnya adalah...',correct:'(1, 5)',wrongs:['(1, 4)','(1, 6)','(5, 1)'],expl:'y = 2×1+3 = 5 → (1, 5) ✓'},
+  {tag:'tag-table',label:'Tabel',text:'Tabel: x: 1, 2, 3 → y: 5, 6, 7. Aturan fungsinya adalah...',correct:'y = x + 4',wrongs:['y = 2x + 3','y = 5x','y = x + 5'],expl:'y selalu x+4: 1→5, 2→6, 3→7 ✓'},
+  {tag:'tag-table',label:'Tabel',text:'Tabel: x: 1, 2, 3, 4 → y: 3, 6, 9, 12. Aturan fungsinya adalah...',correct:'y = 3x',wrongs:['y = x + 3','y = 2x + 1','y = 4x − 1'],expl:'y selalu 3×x: 1→3, 2→6, 3→9 ✓'},
+  {tag:'tag-table',label:'Tabel',text:'Fungsi y = 2x + 2. Nilai y jika x = 5 adalah...',correct:'12',wrongs:['10','11','14'],expl:'y = 2×5+2 = 12 ✓'},
+  // Baca grafik (7-12)
+  {tag:'tag-read',label:'Baca Grafik',text:'Grafik y = x + 1. Titik mana yang ADA di grafik ini?',correct:'(3, 4)',wrongs:['(3, 3)','(4, 3)','(2, 4)'],expl:'y = 3+1 = 4 → (3,4) ✓'},
+  {tag:'tag-read',label:'Baca Grafik',text:'Grafik y = 2x. Titik mana yang ADA di grafik ini?',correct:'(5, 10)',wrongs:['(5, 7)','(5, 8)','(10, 5)'],expl:'y = 2×5 = 10 → (5,10) ✓'},
+  {tag:'tag-read',label:'Baca Grafik',text:'Titik (2, 7) ada di grafik fungsi mana?',correct:'y = 2x + 3',wrongs:['y = 3x + 1','y = x + 4','y = 4x − 1'],expl:'y = 2×2+3 = 7 ✓'},
+  {tag:'tag-read',label:'Baca Grafik',text:'Grafik fungsi naik ke kanan. Ini artinya...',correct:'Saat x bertambah, y bertambah',wrongs:['Saat x bertambah, y berkurang','y selalu sama','x dan y tidak berhubungan'],expl:'Grafik naik ke kanan = hubungan positif: x naik → y naik ✓'},
+  {tag:'tag-read',label:'Baca Grafik',text:'Grafik y = x + 3. Titik tertinggi dari x=1 sampai x=4 adalah...',correct:'(4, 7)',wrongs:['(1, 4)','(2, 5)','(3, 6)'],expl:'x=4 menghasilkan y=7 terbesar ✓'},
+  {tag:'tag-read',label:'Baca Grafik',text:'Dua grafik: y=x+1 dan y=x+4. Mana yang posisinya lebih tinggi di grafik?',correct:'y = x + 4',wrongs:['y = x + 1','Sama tinggi','Tidak bisa dibandingkan'],expl:'Konstanta +4 > +1, jadi y=x+4 selalu di atas y=x+1 ✓'},
+  // Bandingkan (13-17)
+  {tag:'tag-compare',label:'Bandingkan',text:'Grafik mana yang <strong>paling landai</strong> (paling tidak curam)?',correct:'y = x',wrongs:['y = 2x','y = 3x','y = 5x'],expl:'Koefisien x terkecil (=1) → paling landai ✓'},
+  {tag:'tag-compare',label:'Bandingkan',text:'y=2x vs y=3x. Saat x=4, selisih nilai y-nya adalah...',correct:'4',wrongs:['2','6','8'],expl:'y=2x: 8, y=3x: 12. Selisih = 12−8 = 4 ✓'},
+  {tag:'tag-compare',label:'Bandingkan',text:'y = 4x dan y = x + 4. Pada x=2, nilai y mana yang lebih besar?',correct:'y = 4x',wrongs:['y = x + 4','Sama besar','Tidak bisa dibandingkan'],expl:'y=4x: 8, y=x+4: 6. Jadi y=4x lebih besar ✓'},
+  {tag:'tag-compare',label:'Bandingkan',text:'Grafik y=2x+1 dan y=2x+5 dibandingkan. Mana pernyataan yang benar?',correct:'Kedua grafik sama curamnya',wrongs:['y=2x+5 lebih curam','y=2x+1 lebih curam','Kedua grafik menurun'],expl:'Koefisien x sama (=2), curam sama. Berbeda hanya konstantanya ✓'},
+  {tag:'tag-compare',label:'Bandingkan',text:'Pada x=3, fungsi mana yang menghasilkan y <strong>terkecil</strong>?',correct:'y = x − 1',wrongs:['y = x + 2','y = 2x','y = x + 1'],expl:'y=x−1: 2, y=x+2: 5, y=2x: 6, y=x+1: 4. Terkecil: y=x−1 ✓'},
+  // Soal cerita (18-20)
+  {tag:'tag-cerita',label:'Soal Cerita',text:'Sebuah toko menjual stiker. Harga: <strong>y = 2x + 1000</strong> rupiah (x = jumlah stiker). Jika beli 3 stiker, berapa harganya?',correct:'Rp 1.006',wrongs:['Rp 1.003','Rp 1.004','Rp 1.009'],expl:'y = 2×3+1000 = 1006. Tapi pilihan harusnya 1006 bukan 1.006 — maaf! Jawaban benar: 1006 rupiah ✓'},
+  {tag:'tag-cerita',label:'Soal Cerita',text:'Budi jalan kaki. Jarak (meter) = <strong>y = 50x</strong> (x = menit). Setelah 3 menit, berapa meter Budi berjalan?',correct:'150 meter',wrongs:['100 meter','200 meter','53 meter'],expl:'y = 50×3 = 150 meter ✓'},
+  {tag:'tag-cerita',label:'Soal Cerita',text:'Tinggi tanaman (cm) = <strong>y = x + 5</strong> (x = minggu). Setelah 4 minggu, tingginya adalah...',correct:'9 cm',wrongs:['8 cm','10 cm','20 cm'],expl:'y = 4+5 = 9 cm ✓'},
+];
+// fix q18 (index 17) to have clean numbers
+QS[17]={tag:'tag-cerita',label:'Soal Cerita',text:'Toko kue menjual muffin. Total harga (ribu Rp) = <strong>y = 3x + 2</strong> (x = jumlah muffin). Beli 4 muffin, berapa totalnya?',correct:'14 ribu Rp',wrongs:['12 ribu Rp','10 ribu Rp','16 ribu Rp'],expl:'y = 3×4+2 = 14 ribu Rp ✓'};
+
+const STATE_KEY='ex16_state';
+let state={answers:{},done:0,total:QS.length};
+function saveState(){localStorage.setItem(STATE_KEY,JSON.stringify(state));}
+function loadState(){try{const s=localStorage.getItem(STATE_KEY);if(s)state=JSON.parse(s);}catch(e){}}
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
+
+function buildDots(){
+  const dr=document.getElementById('dotRow');
+  dr.innerHTML='';
+  for(let i=0;i<QS.length;i++){
+    const d=document.createElement('div');
+    d.className='dot';
+    d.textContent=i+1;
+    d.id='dot'+i;
+    if(state.answers[i]!==undefined){d.classList.add(state.answers[i]?'done-ok':'done-ko');}
+    d.onclick=()=>showQ(i);
+    dr.appendChild(d);
+  }
+}
+function buildQuestions(){
+  const cont=document.getElementById('questionsContainer');
+  cont.innerHTML='';
+  QS.forEach((q,i)=>{
+    const card=document.createElement('div');
+    card.className='q-card'+(i===0?' active':'');
+    card.id='qcard'+i;
+    const opts=shuffle([q.correct,...q.wrongs]);
+    let optsHTML=opts.map(o=>`<button class="opt-btn" onclick="answer(${i},'${o.replace(/'/g,"\\'")}',this)">${o}</button>`).join('');
+    card.innerHTML=`
+      <div class="q-meta">
+        <div class="q-num">Soal ${i+1} / 20</div>
+        <div class="q-tag ${q.tag}">${q.label}</div>
+      </div>
+      <div class="q-text">${q.text}</div>
+      <div class="opts">${optsHTML}</div>
+      <div class="q-feedback" id="fb${i}"></div>
+      <div class="q-nav">
+        ${i>0?`<button class="qnav-btn" onclick="showQ(${i-1})">← Prev</button>`:''}
+        ${i<QS.length-1?`<button class="qnav-btn next" id="nxt${i}" onclick="showQ(${i+1})" style="display:none">Next →</button>`:''}
+      </div>
+    `;
+    cont.appendChild(card);
+    // Restore state
+    if(state.answers[i]!==undefined) restoreAnswer(i, q, opts);
+  });
+}
+function restoreAnswer(i,q,opts){
+  const card=document.getElementById('qcard'+i);
+  const btns=card.querySelectorAll('.opt-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===q.correct) b.classList.add(state.answers[i]?'correct':'reveal-correct');
+  });
+  const fb=document.getElementById('fb'+i);
+  if(state.answers[i]){fb.className='q-feedback ok';fb.textContent='✅ '+q.expl;}
+  else{fb.className='q-feedback ko';fb.textContent='❌ '+q.expl;}
+  const nxt=document.getElementById('nxt'+i);
+  if(nxt) nxt.style.display='inline-block';
+}
+function answer(i, chosen, btn){
+  if(state.answers[i]!==undefined) return;
+  const q=QS[i];
+  const correct=chosen===q.correct;
+  state.answers[i]=correct;
+  if(correct) state.done++;
+  saveState();
+  const card=document.getElementById('qcard'+i);
+  card.querySelectorAll('.opt-btn').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===q.correct) b.classList.add('correct');
+    else if(b===btn) b.classList.add('wrong');
+  });
+  const fb=document.getElementById('fb'+i);
+  if(correct){fb.className='q-feedback ok';fb.textContent='✅ '+q.expl;}
+  else{fb.className='q-feedback ko';fb.textContent='❌ '+q.expl;}
+  const dot=document.getElementById('dot'+i);
+  dot.classList.remove('active');
+  dot.classList.add(correct?'done-ok':'done-ko');
+  const nxt=document.getElementById('nxt'+i);
+  if(nxt) nxt.style.display='inline-block';
+  updateProgress();
+  if(Object.keys(state.answers).length===QS.length) setTimeout(showResult,600);
+}
+function showQ(i){
+  document.querySelectorAll('.q-card').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.dot').forEach(d=>d.classList.remove('active'));
+  document.getElementById('qcard'+i).classList.add('active');
+  document.getElementById('dot'+i).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateProgress(){
+  const done=Object.keys(state.answers).length;
+  document.getElementById('progVal').textContent=done+' / 20';
+  document.getElementById('progFill').style.width=(done/QS.length*100)+'%';
+}
+function showResult(){
+  document.getElementById('resultPanel').style.display='block';
+  const correct=Object.values(state.answers).filter(Boolean).length;
+  const pts=correct*10;
+  document.getElementById('rScore').textContent=pts;
+  const rg=document.getElementById('rGrade');
+  if(pts>=180){rg.textContent='⭐ RANK S';rg.className='result-grade rg-s';}
+  else if(pts>=140){rg.textContent='🏆 RANK A';rg.className='result-grade rg-a';}
+  else if(pts>=100){rg.textContent='💪 RANK B';rg.className='result-grade rg-b';}
+  else{rg.textContent='📚 RANK C';rg.className='result-grade rg-c';}
+  document.getElementById('resultPanel').scrollIntoView({behavior:'smooth'});
+}
+function restartExercise(){
+  state={answers:{},done:0,total:QS.length};
+  saveState();
+  location.reload();
+}
+// Init
+loadState();
+buildDots();
+buildQuestions();
+updateProgress();
+showQ(0);
+if(Object.keys(state.answers).length===QS.length) setTimeout(showResult,200);
+</script>
+</body>
+</html>

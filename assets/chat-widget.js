@@ -119,7 +119,7 @@
       <button id="cw-fab" title="Tanya ke Tutor">💬<span id="cw-badge">0</span></button>
       <div id="cw-panel">
         <div id="cw-head">
-          <div class="cw-avatar">👨‍🏫</div>
+          <div class="cw-avatar">🧑🏻‍🏫</div>
           <div class="cw-info">
             <div class="cw-title">TANYA TUTOR</div>
             <div class="cw-sub" id="cw-status">Kirim pertanyaanmu!</div>
