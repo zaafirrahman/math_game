@@ -23,20 +23,20 @@
     --fatih-dark: #2a5fa8;
     --fatih-text: #0d2a54;
 
-    --tasya-bg: #f2d4d4;
-    --tasya-mid: #e8b8b8;
-    --tasya-dark: #a03535;
-    --tasya-text: #4a1515;
+    --tasya-bg: #fce7f3;
+    --tasya-mid: #f9a8d4;
+    --tasya-dark: #db2777;
+    --tasya-text: #831843;
 
     --asfa-bg: #ddd4f0;
     --asfa-mid: #c4b4e4;
     --asfa-dark: #5a3d99;
     --asfa-text: #2a1760;
 
-    --shadiq-bg: #fff0c0;
-    --shadiq-mid: #ffd966;
-    --shadiq-dark: #e06000;
-    --shadiq-text: #5a2200;
+    --shadiq-bg: #fee2e2;
+    --shadiq-mid: #fca5a5;
+    --shadiq-dark: #dc2626;
+    --shadiq-text: #7f1d1d;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -263,7 +263,7 @@
   }
   .prog-fill {
     height: 100%; border-radius: 99px;
-    background: var(--c-dark);
+    background: var(--c-prog, var(--c-dark));
     width: 0%;
     transition: width 1.1s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0.8;
@@ -499,9 +499,9 @@
       <div class="corner-doodle">∑</div>
     </div>
 
-    <!-- Tasya — merah pastel -->
+    <!-- Tasya — pink -->
     <div class="student-card"
-      style="--c-bg:var(--tasya-bg);--c-mid:var(--tasya-mid);--c-dark:var(--tasya-dark);--c-text:var(--tasya-text);"
+      style="--c-bg:var(--tasya-bg);--c-mid:var(--tasya-mid);--c-dark:var(--tasya-dark);--c-text:var(--tasya-text);--c-prog:#ec4899;"
       onclick="openModal('tasya')">
       <div class="card-top">
         <div class="card-avatar-wrap">🌸</div>
@@ -545,9 +545,9 @@
       <div class="corner-doodle">×</div>
     </div>
 
-    <!-- Shadiq — kuning-oranye racing -->
+    <!-- Shadiq — red -->
     <div class="student-card"
-      style="--c-bg:var(--shadiq-bg);--c-mid:var(--shadiq-mid);--c-dark:var(--shadiq-dark);--c-text:var(--shadiq-text);"
+      style="--c-bg:var(--shadiq-bg);--c-mid:var(--shadiq-mid);--c-dark:var(--shadiq-dark);--c-text:var(--shadiq-text);--c-prog:#ef4444;"
       onclick="openModal('shadiq')">
       <div class="card-top">
         <div class="card-avatar-wrap">🏍️</div>
