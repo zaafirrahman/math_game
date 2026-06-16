@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 17 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--violet:#a78bfa;--red:#ef4444;--blue:#38bdf8;--orange:#fb923c;--meet:#f472b6;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(56,189,248,0.06) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(251,146,60,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--neon);}
+  .wrapper{max-width:720px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--orange));border-radius:99px;transition:width 0.4s ease;}
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--blue);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title .h1{color:var(--neon);}
+  .slide-title .h2{color:var(--blue);}
+  .slide-title .h3{color:var(--orange);}
+  .slide-title .hm{color:var(--meet);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+
+  .callout{background:rgba(56,189,248,0.05);border-left:3px solid var(--blue);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--blue);}
+  .callout.neon{background:rgba(0,245,196,0.05);border-color:var(--neon);}
+  .callout.neon strong{color:var(--neon);}
+  .callout.orange{background:rgba(251,146,60,0.05);border-color:var(--orange);}
+  .callout.orange strong{color:var(--orange);}
+  .callout.meet{background:rgba(244,114,182,0.06);border-color:var(--meet);}
+  .callout.meet strong{color:var(--meet);}
+
+  .io-wrap{display:flex;justify-content:center;margin:1.2rem 0;overflow-x:auto;}
+  table.iot{border-collapse:collapse;}
+  table.iot th{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding:0.4rem 1rem;border-bottom:1px solid var(--border);}
+  table.iot td{text-align:center;padding:0.55rem 1rem;font-family:'Orbitron',monospace;font-size:1.05rem;font-weight:700;border-top:1px solid rgba(42,42,64,0.5);}
+  table.iot td.iv{color:var(--text);}
+  table.iot td.av{color:var(--blue);}
+  table.iot td.bv{color:var(--orange);}
+  table.iot td.qv{color:var(--muted);}
+  table.iot tr.meet-row td{background:rgba(244,114,182,0.1);}
+  table.iot tr.meet-row td.av,table.iot tr.meet-row td.bv{color:var(--meet);}
+  table.iot td.samev{color:var(--meet);font-size:1.2rem;}
+  table.iot td.samev.no{color:var(--border);font-size:0.9rem;}
+
+  .graph-wrap{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.5rem;margin:1.2rem 0;text-align:center;overflow-x:auto;}
+  .graph-wrap .glbl{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:1rem;}
+
+  .reveal-btn{background:rgba(0,245,196,0.08);border:1px solid rgba(0,245,196,0.35);color:var(--neon);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(0,245,196,0.15);}
+  .reveal-btn.pink{background:rgba(244,114,182,0.08);border-color:rgba(244,114,182,0.4);color:var(--meet);}
+  .reveal-btn.pink:hover{background:rgba(244,114,182,0.15);}
+  .reveal-box{background:rgba(0,245,196,0.05);border:1px solid rgba(0,245,196,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;text-align:center;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+  .reveal-box.pink{background:rgba(244,114,182,0.06);border-color:rgba(244,114,182,0.35);}
+  .reveal-box .rule-text{font-family:'Orbitron',monospace;font-size:1.05rem;font-weight:700;color:var(--neon);margin-bottom:0.4rem;}
+  .reveal-box.pink .rule-text{color:var(--meet);}
+  .reveal-box .rule-sub{font-size:0.85rem;color:var(--muted);}
+
+  .fill-input{background:#12121c;border:1.5px solid var(--border);color:var(--meet);font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;width:64px;text-align:center;border-radius:8px;padding:0.4rem;transition:border-color 0.2s;}
+  .fill-input:focus{outline:none;border-color:var(--meet);}
+  .check-btn{background:linear-gradient(135deg,var(--meet),#d6409f);color:#fff;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;padding:0.5rem 1.2rem;border:none;border-radius:8px;cursor:pointer;margin-top:0.8rem;font-weight:800;display:block;margin-left:auto;margin-right:auto;}
+  .check-result{font-family:'Orbitron',monospace;font-size:0.85rem;margin-top:0.8rem;min-height:22px;text-align:center;line-height:1.6;}
+  .guess-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin:1.2rem 0;text-align:center;}
+  .guess-row{display:flex;align-items:center;justify-content:center;gap:0.6rem;font-family:'Orbitron',monospace;font-size:0.95rem;flex-wrap:wrap;}
+
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:var(--blue);flex-shrink:0;}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .concept-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;}
+  @media(max-width:500px){.concept-grid{grid-template-columns:1fr;}}
+  .concept-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;}
+  .concept-card .icon{font-size:1.8rem;margin-bottom:0.6rem;display:block;}
+  .concept-card .ctitle{font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:700;color:var(--blue);margin-bottom:0.5rem;}
+  .concept-card .cdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--neon),#059669);border:none;color:#000;font-weight:800;}
+  .nav-btn:hover{border-color:var(--neon);color:var(--neon);}
+  .nav-btn.next:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,245,196,0.3);}
+
+  .summary-card{background:var(--card);border:1px solid rgba(244,114,182,0.3);border-radius:18px;padding:2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.9rem;color:var(--meet);letter-spacing:2px;margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .summary-item span{flex-shrink:0;}
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;}
+  .da-primary{background:linear-gradient(135deg,var(--neon),#059669);color:#000;border:none;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,245,196,0.3);}
+  .da-secondary:hover{border-color:var(--neon);color:var(--neon);}
+
+  .dual-notation{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0;}
+  @media(max-width:480px){.dual-notation{grid-template-columns:1fr;}}
+  .notation-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;text-align:center;}
+  .notation-box.ma{border-color:rgba(56,189,248,0.4);}
+  .notation-box.mb{border-color:rgba(251,146,60,0.4);}
+  .notation-tag{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.6rem;}
+  .notation-box.ma .notation-tag{color:var(--blue);}
+  .notation-box.mb .notation-tag{color:var(--orange);}
+  .notation-big{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,5vw,1.7rem);font-weight:900;letter-spacing:1px;margin-bottom:0.5rem;}
+  .notation-box.ma .notation-big{color:var(--blue);}
+  .notation-box.mb .notation-big{color:var(--orange);}
+  .notation-sub{font-size:0.78rem;color:var(--muted);line-height:1.6;}
+
+  .obs-box{background:rgba(0,245,196,0.04);border:1px dashed rgba(0,245,196,0.3);border-radius:12px;padding:1.2rem;margin:1rem 0;}
+  .obs-box.pink{background:rgba(244,114,182,0.05);border-color:rgba(244,114,182,0.35);}
+  .obs-box .obs-q{font-size:0.9rem;color:var(--text);margin-bottom:0.5rem;font-weight:600;}
+  .obs-box .obs-a{font-size:0.85rem;color:var(--muted);line-height:1.6;display:none;}
+  .obs-box.revealed .obs-a{display:block;animation:fadeIn 0.3s ease;}
+  .obs-toggle{background:none;border:none;color:var(--neon);font-family:'Orbitron',monospace;font-size:0.7rem;letter-spacing:1px;cursor:pointer;padding:0.3rem 0;text-decoration:underline;}
+  .obs-box.pink .obs-toggle{color:var(--meet);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson17.html">LESSON 17</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+
+  <!-- SLIDE 1 -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title">Dua <span class="h2">Mesin</span>, Satu <span class="hm">Jawaban</span></div>
+      <div class="slide-sub">Kamu sudah jago dengan satu mesin angka. Sekarang siap-siap, kita akan main dengan DUA mesin sekaligus!</div>
+    </div>
+    <div class="callout meet"><strong>Misteri hari ini:</strong> Dua mesin punya aturan yang berbeda. Tapi, untuk input tertentu, bisa saja keduanya menghasilkan angka yang SAMA. Tugas kita: menemukan titik rahasia itu!</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><div class="stitle">Mesin A punya aturan</div><div class="sdesc">Misalnya: y = x + 2. Mesin ini selalu menambah 2.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><div class="stitle">Mesin B punya aturan berbeda</div><div class="sdesc">Misalnya: y = 2x. Mesin ini selalu mengali 2. Beda total dari Mesin A!</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><div class="stitle">Kadang, hasilnya sama!</div><div class="sdesc">Untuk satu nilai x tertentu, output Mesin A dan Mesin B bisa identik.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body"><div class="stitle">Itulah "Titik Pertemuan"</div><div class="sdesc">Titik spesial ini menjadi dasar konsep SPLDV yang akan kita pelajari!</div></div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Mulai Investigasi →</button></div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Ice Breaking: <span class="h2">Dua Mesin</span> Beraksi</div>
+      <div class="slide-sub">Mesin A: <strong style="color:var(--blue)">Tambah 2</strong> · Mesin B: <strong style="color:var(--orange)">Kali 2</strong>. Coba hitung dulu sebelum klik jawaban!</div>
+    </div>
+    <div class="io-wrap">
+      <table class="iot">
+        <tr><th>x</th><th style="color:var(--blue)">Mesin A</th><th style="color:var(--orange)">Mesin B</th></tr>
+        <tr><td class="iv">1</td><td class="qv">?</td><td class="qv">?</td></tr>
+        <tr><td class="iv">2</td><td class="qv">?</td><td class="qv">?</td></tr>
+        <tr><td class="iv">3</td><td class="qv">?</td><td class="qv">?</td></tr>
+        <tr><td class="iv">4</td><td class="qv">?</td><td class="qv">?</td></tr>
+      </table>
+    </div>
+    <div class="callout meet"><strong>Pertanyaan misteri:</strong> Apakah ada input x yang membuat KEDUA mesin menghasilkan output yang sama? Tebak dulu sebelum melihat jawaban!</div>
+    <button class="reveal-btn pink" onclick="toggleReveal('rv2')">🔍 Lihat Jawaban Tabel</button>
+    <div class="reveal-box pink" id="rv2">
+      <div class="rule-text">x=1: A=3, B=2 · x=2: A=4, B=4 ✨ · x=3: A=5, B=6 · x=4: A=6, B=8</div>
+      <div class="rule-sub">Lihat baris x=2! Mesin A dan Mesin B sama-sama menghasilkan 4. Itu dia titik pertemuannya!</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Selidiki Lagi →</button></div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title">Investigasi <span class="h1">Tabel</span></div>
+      <div class="slide-sub">Sekarang lihat tabel lengkapnya. Baris mana yang istimewa?</div>
+    </div>
+    <div class="io-wrap">
+      <table class="iot">
+        <tr><th>x</th><th style="color:var(--blue)">Mesin A</th><th style="color:var(--orange)">Mesin B</th><th>Sama?</th></tr>
+        <tr><td class="iv">1</td><td class="av">3</td><td class="bv">2</td><td class="samev no">—</td></tr>
+        <tr class="meet-row"><td class="iv">2</td><td class="av">4</td><td class="bv">4</td><td class="samev">✓</td></tr>
+        <tr><td class="iv">3</td><td class="av">5</td><td class="bv">6</td><td class="samev no">—</td></tr>
+        <tr><td class="iv">4</td><td class="av">6</td><td class="bv">8</td><td class="samev no">—</td></tr>
+      </table>
+    </div>
+    <div class="obs-box pink" id="obs3">
+      <div class="obs-q">💭 Kenapa baris x=2 spesial?</div>
+      <button class="obs-toggle" onclick="revealObs('obs3')">Pikirkan dulu, baru klik →</button>
+      <div class="obs-a">Karena di x=2, Mesin A menghasilkan <strong style="color:var(--meet)">4</strong> dan Mesin B juga menghasilkan <strong style="color:var(--meet)">4</strong> — sama persis! Baris-baris lain hasilnya berbeda. Hanya x=2 yang membuat keduanya "sepakat".</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Lihat Aturan Mesin →</button></div>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Aturan <span class="h2">Dua Mesin</span></div>
+      <div class="slide-sub">Tabel di slide sebelumnya datang dari dua aturan fungsi berikut.</div>
+    </div>
+    <div class="dual-notation">
+      <div class="notation-box ma">
+        <div class="notation-tag">Mesin A</div>
+        <div class="notation-big">y = x + 2</div>
+        <div class="notation-sub">Setiap x ditambah 2</div>
+      </div>
+      <div class="notation-box mb">
+        <div class="notation-tag">Mesin B</div>
+        <div class="notation-big">y = 2x</div>
+        <div class="notation-sub">Setiap x dikali 2</div>
+      </div>
+    </div>
+    <div class="callout"><strong>Ingat:</strong> Mesin A naik pelan (selalu +1 setiap x naik 1), sedangkan Mesin B naik lebih cepat (selalu +2 setiap x naik 1). Karena cara naiknya beda, mereka cuma bertemu di SATU titik saja: x=2.</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Lihat di Grafik →</button></div>
+  </div>
+
+  <!-- SLIDE 5 -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title">Dari Tabel ke <span class="h2">Grafik</span></div>
+      <div class="slide-sub">Titik-titik dari Mesin A (biru) dan Mesin B (oranye) kita plot bersama di satu bidang.</div>
+    </div>
+    <div class="graph-wrap">
+      <div class="glbl">Mesin A vs Mesin B</div>
+      <svg width="300" height="260" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#1e2030" stroke-width="1">
+          <line x1="40" y1="20" x2="40" y2="220"/><line x1="80" y1="20" x2="80" y2="220"/><line x1="120" y1="20" x2="120" y2="220"/><line x1="160" y1="20" x2="160" y2="220"/><line x1="200" y1="20" x2="200" y2="220"/>
+          <line x1="20" y1="220" x2="260" y2="220"/><line x1="20" y1="180" x2="260" y2="180"/><line x1="20" y1="140" x2="260" y2="140"/><line x1="20" y1="100" x2="260" y2="100"/><line x1="20" y1="60" x2="260" y2="60"/>
+        </g>
+        <line x1="20" y1="220" x2="260" y2="220" stroke="#2a2a40" stroke-width="2"/>
+        <line x1="20" y1="230" x2="20" y2="15" stroke="#2a2a40" stroke-width="2"/>
+        <text x="266" y="224" fill="#64748b" font-family="Orbitron,monospace" font-size="9">x</text>
+        <text x="14" y="12" fill="#64748b" font-family="Orbitron,monospace" font-size="9">y</text>
+        <text x="40" y="234" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">0</text>
+        <text x="80" y="234" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">1</text>
+        <text x="120" y="234" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">2</text>
+        <text x="160" y="234" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">3</text>
+        <text x="200" y="234" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">4</text>
+        <text x="14" y="224" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="end">0</text>
+        <text x="14" y="184" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="end">2</text>
+        <text x="14" y="144" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="end">4</text>
+        <text x="14" y="104" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="end">6</text>
+        <text x="14" y="64" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="end">8</text>
+        <!-- Mesin A: y=x+2 -->
+        <line x1="40" y1="180" x2="200" y2="100" stroke="#38bdf8" stroke-width="2.5"/>
+        <circle cx="40" cy="180" r="5" fill="#38bdf8"/><circle cx="80" cy="160" r="5" fill="#38bdf8"/><circle cx="120" cy="140" r="5" fill="#38bdf8"/><circle cx="160" cy="120" r="5" fill="#38bdf8"/><circle cx="200" cy="100" r="5" fill="#38bdf8"/>
+        <text x="206" y="96" fill="#38bdf8" font-family="Orbitron,monospace" font-size="9" font-weight="700">y=x+2</text>
+        <!-- Mesin B: y=2x -->
+        <line x1="40" y1="220" x2="200" y2="60" stroke="#fb923c" stroke-width="2.5"/>
+        <circle cx="40" cy="220" r="5" fill="#fb923c"/><circle cx="80" cy="180" r="5" fill="#fb923c"/><circle cx="120" cy="140" r="5" fill="#fb923c"/><circle cx="160" cy="100" r="5" fill="#fb923c"/><circle cx="200" cy="60" r="5" fill="#fb923c"/>
+        <text x="206" y="56" fill="#fb923c" font-family="Orbitron,monospace" font-size="9" font-weight="700">y=2x</text>
+        <!-- Meeting point (hidden until revealed) -->
+        <g id="meetMark5" style="opacity:0;transition:opacity 0.5s ease;">
+          <circle cx="120" cy="140" r="10" fill="none" stroke="#f472b6" stroke-width="2"/>
+          <circle cx="120" cy="140" r="6" fill="#f472b6"/>
+          <text x="128" y="160" fill="#f472b6" font-family="Orbitron,monospace" font-size="9" font-weight="700">(2,4)</text>
+        </g>
+      </svg>
+    </div>
+    <button class="reveal-btn pink" id="btn5" onclick="revealMeet5()">👀 Apa yang terjadi saat dua garis bertemu?</button>
+    <div class="reveal-box pink" id="rv5">
+      <div class="rule-text">Kedua garis berpotongan tepat di titik (2, 4)!</div>
+      <div class="rule-sub">Di titik itu, garis biru (Mesin A) dan garis oranye (Mesin B) saling menyentuh — artinya outputnya sama persis.</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Fokus ke Titiknya →</button></div>
+  </div>
+
+  <!-- SLIDE 6 -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title">Inilah <span class="hm">Titik Pertemuan</span></div>
+      <div class="slide-sub">Mari fokus ke maknanya — bukan cara menghitungnya dulu.</div>
+    </div>
+    <div class="graph-wrap">
+      <div class="glbl">Titik Pertemuan: (2, 4)</div>
+      <svg width="280" height="200" viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#1e2030" stroke-width="1">
+          <line x1="40" y1="20" x2="40" y2="170"/><line x1="80" y1="20" x2="80" y2="170"/><line x1="120" y1="20" x2="120" y2="170"/><line x1="160" y1="20" x2="160" y2="170"/>
+          <line x1="20" y1="170" x2="220" y2="170"/><line x1="20" y1="130" x2="220" y2="130"/><line x1="20" y1="90" x2="220" y2="90"/><line x1="20" y1="50" x2="220" y2="50"/>
+        </g>
+        <line x1="20" y1="170" x2="220" y2="170" stroke="#2a2a40" stroke-width="2"/>
+        <line x1="20" y1="180" x2="20" y2="15" stroke="#2a2a40" stroke-width="2"/>
+        <line x1="40" y1="140" x2="160" y2="80" stroke="#38bdf8" stroke-width="2.5"/>
+        <line x1="40" y1="170" x2="160" y2="50" stroke="#fb923c" stroke-width="2.5"/>
+        <circle cx="100" cy="110" r="11" fill="none" stroke="#f472b6" stroke-width="2"/>
+        <circle cx="100" cy="110" r="7" fill="#f472b6"/>
+        <line x1="100" y1="110" x2="100" y2="170" stroke="#f472b6" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="100" y1="110" x2="20" y2="110" stroke="#f472b6" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="108" y="105" fill="#f472b6" font-family="Orbitron,monospace" font-size="11" font-weight="700">(2, 4)</text>
+        <text x="42" y="36" fill="#38bdf8" font-family="Orbitron,monospace" font-size="9" font-weight="700">y=x+2</text>
+        <text x="155" y="46" fill="#fb923c" font-family="Orbitron,monospace" font-size="9" font-weight="700">y=2x</text>
+      </svg>
+    </div>
+    <div class="callout meet"><strong>Penjelasan intuitif:</strong> Di titik (2, 4), kedua aturan menghasilkan output yang SAMA. Bukan kebetulan — ini adalah satu-satunya tempat di mana "jalan" Mesin A dan "jalan" Mesin B saling bersilangan.</div>
+    <div class="obs-box pink" id="obs6">
+      <div class="obs-q">🔎 Coba buktikan: berapa hasil Mesin A dan Mesin B saat x=2?</div>
+      <button class="obs-toggle" onclick="revealObs('obs6')">Hitung dulu, baru klik →</button>
+      <div class="obs-a">Mesin A: 2+2 = <strong style="color:var(--meet)">4</strong>. Mesin B: 2×2 = <strong style="color:var(--meet)">4</strong>. Sama-sama 4! Titik (2,4) terbukti benar.</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">Challenge Baru →</button></div>
+  </div>
+
+  <!-- SLIDE 7 -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">Challenge <span class="h3">Baru</span> 🧩</div>
+      <div class="slide-sub">Mesin A: <strong style="color:var(--blue)">Tambah 5</strong> · Mesin B: <strong style="color:var(--orange)">Kali 2 lalu Tambah 1</strong>. Bisa kamu tebak titik pertemuannya?</div>
+    </div>
+    <div class="dual-notation">
+      <div class="notation-box ma">
+        <div class="notation-tag">Mesin A</div>
+        <div class="notation-big">y = x + 5</div>
+      </div>
+      <div class="notation-box mb">
+        <div class="notation-tag">Mesin B</div>
+        <div class="notation-big">y = 2x + 1</div>
+      </div>
+    </div>
+    <div class="io-wrap">
+      <table class="iot">
+        <tr><th>x</th><th style="color:var(--blue)">Mesin A</th><th style="color:var(--orange)">Mesin B</th></tr>
+        <tr><td class="iv">1</td><td class="av">6</td><td class="bv">3</td></tr>
+        <tr><td class="iv">2</td><td class="av">7</td><td class="bv">5</td></tr>
+        <tr><td class="iv">3</td><td class="av">8</td><td class="bv">7</td></tr>
+        <tr><td class="iv">4</td><td class="qv">?</td><td class="qv">?</td></tr>
+      </table>
+    </div>
+    <div class="callout meet"><strong>Perhatikan pola:</strong> Selisih Mesin A dan Mesin B makin mengecil — dari 3, ke 2, ke 1. Pada x=4, apa yang akan terjadi?</div>
+    <button class="reveal-btn pink" onclick="toggleReveal('rv7')">🔍 Lihat Jawaban x=4</button>
+    <div class="reveal-box pink" id="rv7">
+      <div class="rule-text">x=4: Mesin A = 4+5 = 9, Mesin B = 2×4+1 = 9</div>
+      <div class="rule-sub">SAMA! Titik pertemuannya adalah (4, 9) 🎉</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Coba Tanpa Grafik →</button></div>
+  </div>
+
+  <!-- SLIDE 8 -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">Menebak <span class="hm">Tanpa Grafik</span></div>
+      <div class="slide-sub">Pakai aturan yang sama: Mesin A = x + 5, Mesin B = 2x + 1. Coba masukkan tebakanmu!</div>
+    </div>
+    <div class="guess-box">
+      <div class="guess-row">
+        <span style="color:var(--muted);">Coba x =</span>
+        <input type="number" class="fill-input" id="guessX" placeholder="?">
+      </div>
+      <button class="check-btn" onclick="checkGuess8()">CEK TEBAKAN</button>
+      <div class="check-result" id="resultGuess8"></div>
+    </div>
+    <div class="callout"><strong>Tips:</strong> Tidak perlu langsung benar! Coba angka kecil dulu, lihat apakah Mesin A lebih besar atau Mesin B lebih besar, lalu sesuaikan tebakanmu. Ini namanya <em>reasoning</em> — coba-coba yang terarah.</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Rahasia SPLDV →</button></div>
+  </div>
+
+  <!-- SLIDE 9 -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">Rahasia <span class="h1">SPLDV</span></div>
+      <div class="slide-sub">Apa yang kita lakukan tadi sebenarnya punya nama keren dalam matematika.</div>
+    </div>
+    <div class="callout meet"><strong>Bocoran:</strong> Matematika punya cara khusus untuk mencari titik pertemuan dua aturan — tanpa perlu coba-coba atau menggambar grafik. Cara itu disebut <strong>SPLDV</strong> (Sistem Persamaan Linear Dua Variabel).</div>
+    <div class="concept-grid">
+      <div class="concept-card" style="border-color:rgba(56,189,248,0.3);">
+        <span class="icon">⚙️</span>
+        <div class="ctitle">Dua Aturan</div>
+        <div class="cdesc">Mesin A dan Mesin B = dua "persamaan" yang harus dipenuhi bersamaan.</div>
+      </div>
+      <div class="concept-card" style="border-color:rgba(244,114,182,0.3);">
+        <span class="icon">📍</span>
+        <div class="ctitle">Titik Pertemuan</div>
+        <div class="cdesc">Inilah yang disebut "solusi" atau "penyelesaian" dari sistem itu.</div>
+      </div>
+    </div>
+    <div class="callout"><strong>Tenang dulu:</strong> Kita BELUM masuk ke cara formal (eliminasi atau substitusi) sekarang. Hari ini cukup paham maknanya dulu — bahwa SPLDV itu sebenarnya cuma soal mencari titik temu dua aturan!</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Penutup →</button></div>
+  </div>
+
+  <!-- SLIDE 10 -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Refleksi & <span class="hm">Penutup</span> 🎉</div>
+    </div>
+    <div class="summary-card">
+      <h3>✅ Yang Kamu Pelajari</h3>
+      <div class="summary-item"><span>⚙️</span> Dua aturan yang berbeda biasanya menghasilkan output yang berbeda</div>
+      <div class="summary-item"><span>🎯</span> Tapi kadang, untuk satu nilai x tertentu, kedua aturan menghasilkan hasil yang SAMA</div>
+      <div class="summary-item"><span>📍</span> Titik di mana itu terjadi disebut "titik pertemuan" — terlihat jelas saat dua grafik berpotongan</div>
+      <div class="summary-item"><span>🧩</span> Kita bisa menemukannya lewat tabel, grafik, atau coba-coba yang terarah</div>
+      <div class="summary-item"><span>🔐</span> Inilah fondasi SPLDV: mencari titik saat dua aturan "sepakat"</div>
+    </div>
+    <div class="callout meet"><strong>"SPLDV sebenarnya adalah proses mencari titik saat dua aturan bertemu."</strong></div>
+    <div class="done-actions">
+      <a href="quicktest17.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise17.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson17.html" class="da-btn da-secondary">Lesson 17</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let currentSlide=1;
+const TOTAL=10;
+function goSlide(n){
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide=n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width=((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleReveal(id){
+  document.getElementById(id).classList.toggle('show');
+}
+function revealObs(id){
+  document.getElementById(id).classList.add('revealed');
+}
+function revealMeet5(){
+  document.getElementById('meetMark5').style.opacity='1';
+  document.getElementById('rv5').classList.add('show');
+  document.getElementById('btn5').disabled=true;
+  document.getElementById('btn5').style.opacity='0.5';
+}
+function checkGuess8(){
+  const v=parseInt(document.getElementById('guessX').value);
+  const res=document.getElementById('resultGuess8');
+  if(isNaN(v)){res.textContent='Masukkan angka dulu ya!';res.style.color='var(--muted)';return;}
+  const a=v+5, b=2*v+1;
+  let verdict='';
+  if(a===b){
+    verdict=`Mesin A = ${v}+5 = ${a}<br>Mesin B = 2×${v}+1 = ${b}<br><strong style="color:var(--meet)">🎉 SAMA! Ini DIA titik pertemuannya: (${v}, ${a})</strong>`;
+  } else if(a>b){
+    verdict=`Mesin A = ${v}+5 = ${a}<br>Mesin B = 2×${v}+1 = ${b}<br>Mesin A masih lebih besar. Coba x yang lebih besar →`;
+  } else {
+    verdict=`Mesin A = ${v}+5 = ${a}<br>Mesin B = 2×${v}+1 = ${b}<br>Mesin B sudah lebih besar. Coba x yang lebih kecil ←`;
+  }
+  res.innerHTML=verdict;
+  res.style.color=a===b?'var(--meet)':'var(--text)';
+}
+</script>
+</body>
+</html>

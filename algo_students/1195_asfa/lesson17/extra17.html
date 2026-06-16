@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extra PR · Lesson 17 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#7c3aed;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --violet:#a78bfa;--text:#e2e8f0;--muted:#64748b;
+    --orange:#fb923c;--blue:#60a5fa;--pink:#f472b6;
+    --pr:#f472b6;--blue2:#38bdf8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 80%,rgba(244,114,182,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 85% 15%,rgba(56,189,248,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 50%,rgba(0,245,196,0.03) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  nav{
+    padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:100;
+    font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;
+  }
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--pr);}
+
+  .wrapper{max-width:800px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  .pr-banner{background:linear-gradient(135deg,rgba(244,114,182,0.08),rgba(56,189,248,0.08));border:1px solid rgba(244,114,182,0.25);border-radius:20px;padding:2rem 2rem 1.5rem;margin-bottom:2rem;position:relative;overflow:hidden;}
+  .pr-banner::before{content:'🕵️';position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);font-size:5rem;opacity:0.08;pointer-events:none;line-height:1;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.3);color:var(--pr);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;margin-bottom:0.5rem;line-height:1.3;}
+  .page-title span{color:var(--pr);}
+  .page-desc{color:var(--muted);font-size:0.9rem;line-height:1.7;max-width:540px;}
+  .pr-pills{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;}
+  .pr-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.72rem;padding:0.2rem 0.7rem;border-radius:20px;font-weight:700;}
+  .pill-pink{background:rgba(244,114,182,0.1);color:var(--pr);border:1px solid rgba(244,114,182,0.3);}
+  .pill-violet{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+  .pill-orange{background:rgba(251,146,60,0.1);color:var(--orange);border:1px solid rgba(251,146,60,0.3);}
+  .pill-cyan{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .pill-neon{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.3);}
+  .pill-blue{background:rgba(56,189,248,0.1);color:var(--blue2);border:1px solid rgba(56,189,248,0.3);}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--pr);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--pr),var(--violet));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+  .prog-stars{display:flex;gap:0.3rem;margin-top:0.5rem;align-items:center;font-size:0.78rem;color:var(--muted);}
+  .star{font-size:0.9rem;opacity:0.25;transition:opacity 0.4s;}
+  .star.lit{opacity:1;}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--neon);}
+  .sd-2{color:var(--blue2);}
+  .sd-3{color:var(--orange);}
+  .sd-4{color:var(--violet);}
+  .sd-5{color:var(--pr);}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;max-width:100%;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;padding:0 0.25rem;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(244,114,182,0.35);background:rgba(244,114,182,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.25);}
+  .ex-tag.tag-2{background:rgba(56,189,248,0.1);color:var(--blue2);border:1px solid rgba(56,189,248,0.25);}
+  .ex-tag.tag-3{background:rgba(251,146,60,0.1);color:var(--orange);border:1px solid rgba(251,146,60,0.25);}
+  .ex-tag.tag-4{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.25);}
+  .ex-tag.tag-5{background:rgba(244,114,182,0.1);color:var(--pr);border:1px solid rgba(244,114,182,0.25);}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.8rem,3vw,0.95rem);font-weight:900;color:var(--text);margin-bottom:0.5rem;line-height:1.5;word-break:break-word;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--pr);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:1rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--pr);}
+  .ex-input.correct{border-color:var(--pr);color:var(--pr);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.3);color:var(--pr);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(244,114,182,0.22);border-color:var(--pr);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--neon);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.4);color:var(--pr);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+  .attempts-row{margin-top:0.4rem;display:flex;gap:2px;align-items:center;}
+  .attempts-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:2px;}
+
+  .ex-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;}
+  .ex-opt{background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.55rem 0.4rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;transition:all 0.15s;text-align:center;line-height:1.4;}
+  .ex-opt:hover:not(:disabled){border-color:var(--pr);background:rgba(244,114,182,0.06);}
+  .ex-opt.opt-correct{border-color:var(--neon);background:rgba(0,245,196,0.12);color:var(--neon);}
+  .ex-opt.opt-wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .ex-opt:disabled{cursor:default;}
+
+  .ex-card.word-card{border-left:3px solid var(--orange);}
+  .ex-card.word-card.done-card{border-left-color:var(--pr);}
+  .word-story{background:rgba(251,146,60,0.06);border:1px solid rgba(251,146,60,0.2);border-radius:10px;padding:0.7rem 0.9rem;margin-bottom:0.7rem;font-size:0.84rem;color:var(--text);line-height:1.6;}
+  .word-story strong{color:var(--orange);}
+
+  /* Dual machine rule display */
+  .dual-rule{display:flex;gap:0.5rem;margin:0 0 0.8rem;}
+  .rule-disp{flex:1;background:#12121c;border:1.5px solid var(--border);border-radius:10px;padding:0.5rem 0.4rem;text-align:center;}
+  .rule-disp.ra{border-color:var(--blue2);}
+  .rule-disp.rb{border-color:var(--orange);}
+  .rule-disp-tag{font-family:'Orbitron',monospace;font-size:0.55rem;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:0.2rem;}
+  .rule-disp.ra .rule-disp-tag{color:var(--blue2);}
+  .rule-disp.rb .rule-disp-tag{color:var(--orange);}
+  .rule-disp-text{font-family:'Orbitron',monospace;font-size:0.82rem;font-weight:900;}
+  .rule-disp.ra .rule-disp-text{color:var(--blue2);}
+  .rule-disp.rb .rule-disp-text{color:var(--orange);}
+
+  /* XY table for dual-machine output */
+  .xy-table{width:100%;border-collapse:collapse;margin:0.6rem 0 0.8rem;background:#12121c;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+  .xy-table th{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:1.5px;padding:0.4rem 0;text-align:center;border-bottom:1px solid var(--border);}
+  .xy-table th.th-x{color:var(--muted);}
+  .xy-table th.th-a{color:var(--blue2);}
+  .xy-table th.th-b{color:var(--orange);}
+  .xy-table td{font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:900;text-align:center;padding:0.4rem 0;}
+  .xy-table td.td-x{color:var(--muted);}
+  .xy-table td.td-a{color:var(--blue2);}
+  .xy-table td.td-b{color:var(--orange);}
+  .xy-table tr:not(:last-child) td{border-bottom:1px solid rgba(255,255,255,0.04);}
+
+  /* Mini graph display */
+  .graph-disp{background:#12121c;border:1px solid var(--border);border-radius:10px;padding:0.6rem 0.4rem;margin:0.6rem 0 0.8rem;text-align:center;}
+  .graph-legend{display:flex;justify-content:center;gap:0.8rem;margin-top:0.3rem;flex-wrap:wrap;}
+
+  #allDone{display:none;text-align:center;padding:3rem 2rem;}
+  .alldone-icon{font-size:5rem;display:block;margin-bottom:1.5rem;animation:bounce 1s ease infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .alldone-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2rem);color:var(--pr);margin-bottom:0.8rem;}
+  .alldone-desc{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .alldone-xp{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.5rem 1.5rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:2rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--violet);color:var(--violet);}
+  .btn-primary{background:linear-gradient(135deg,#be185d,var(--neon2));color:white;box-shadow:0 4px 15px rgba(190,24,93,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson17.html">LESSON 17</a>
+  <span>›</span>
+  <span class="current">EXTRA PR</span>
+</nav>
+
+<div class="wrapper">
+  <div class="pr-banner">
+    <div class="page-badge">🕵️ Detective Mode</div>
+    <div class="page-title">Extra <span>PR Mode</span></div>
+    <div class="page-desc">
+      40 soal ekstra tentang dua mesin angka — dari mencari titik pertemuan, mengecek kesamaan output,
+      membaca tabel & grafik dua mesin sekaligus, membandingkan kecuraman dua garis, sampai soal cerita.
+      Progress tersimpan otomatis. Latihan ini fondasi penting sebelum belajar SPLDV formal! 🔍
+    </div>
+    <div class="pr-pills">
+      <span class="pr-pill pill-neon">🔍 Cari Titik Pertemuan</span>
+      <span class="pr-pill pill-blue">✓ Cek Kesamaan</span>
+      <span class="pr-pill pill-orange">📈 Baca Grafik Dua Mesin</span>
+      <span class="pr-pill pill-violet">⚖️ Bandingkan Dua Mesin</span>
+      <span class="pr-pill pill-pink">📖 Soal Cerita</span>
+    </div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress PR</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      Kumpulkan ⭐ untuk setiap bagian yang diselesaikan!
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+      <span style="margin-left:0.3rem;font-size:0.72rem;">Selesaikan 8 soal per bagian</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🕵️</span>
+    <div class="alldone-title">PR DETEKTIF SELESAI!</div>
+    <div class="alldone-desc">
+      GG! Kamu udah menaklukkan 40 soal Extra PR Lesson 17!<br>
+      Titik pertemuan, cek kesamaan, baca grafik dua mesin, bandingkan garis, dan soal cerita — semua kamu babat habis! 🔥<br>
+      Sekarang kamu sudah siap masuk ke SPLDV formal di pertemuan berikutnya!
+    </div>
+    <div class="alldone-xp">🕵️ +400 XP — Detective Master Badge Unlocked!</div>
+    <div class="action-btns">
+      <a href="lesson17.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="exercise17.html" class="btn btn-ghost">Exercise Zone</a>
+      <a href="quicktest17.html" class="btn btn-primary">Quick Test ⚡</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson17_extra_v1';
+function loadProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{};}catch(e){return{};}}
+function saveProgress(p){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(p));}catch(e){}}
+let progress = loadProgress();
+
+// Helper: render the two-machine rule display (Mesin A / Mesin B)
+function ruleDisp(ruleA, ruleB){
+  return `<div class="dual-rule">
+    <div class="rule-disp ra"><div class="rule-disp-tag">Mesin A</div><div class="rule-disp-text">${ruleA}</div></div>
+    <div class="rule-disp rb"><div class="rule-disp-tag">Mesin B</div><div class="rule-disp-text">${ruleB}</div></div>
+  </div>`;
+}
+
+// Helper: render an x / Mesin A / Mesin B table
+function tableDisp(xs, as, bs){
+  const rows = xs.map((x,i)=>`<tr><td class="td-x">${x}</td><td class="td-a">${as[i]}</td><td class="td-b">${bs[i]}</td></tr>`).join('');
+  return `<table class="xy-table"><thead><tr><th class="th-x">x</th><th class="th-a">Mesin A</th><th class="th-b">Mesin B</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+// Helper: render a small SVG graph with one or more line series
+function miniGraph(seriesList, xMax, yMax){
+  const W=220,H=170,padL=30,padB=26,padT=14,padR=14;
+  const innerW=W-padL-padR, innerH=H-padT-padB;
+  const px = x => padL + (x/xMax)*innerW;
+  const py = y => (H-padB) - (y/yMax)*innerH;
+  const xStep = xMax<=4?1:(xMax<=8?2:Math.ceil(xMax/4));
+  const yStep = yMax<=6?1:(yMax<=12?2:Math.ceil(yMax/6));
+  let grid='';
+  for(let x=0;x<=xMax;x+=xStep){
+    grid+=`<line x1="${px(x)}" y1="${padT}" x2="${px(x)}" y2="${H-padB}" stroke="#1e2030" stroke-width="1"/>`;
+    grid+=`<text x="${px(x)}" y="${H-padB+12}" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">${x}</text>`;
+  }
+  for(let y=0;y<=yMax;y+=yStep){
+    grid+=`<line x1="${padL}" y1="${py(y)}" x2="${W-padR}" y2="${py(y)}" stroke="#1e2030" stroke-width="1"/>`;
+    grid+=`<text x="${padL-6}" y="${py(y)+3}" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="end">${y}</text>`;
+  }
+  const axes = `<line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" stroke="#2a2a40" stroke-width="2"/>
+    <line x1="${padL}" y1="${H-padB}" x2="${padL}" y2="${padT}" stroke="#2a2a40" stroke-width="2"/>`;
+  let series='';
+  let legend='';
+  seriesList.forEach(s=>{
+    const ptsStr = s.points.map(([x,y])=>`${px(x).toFixed(1)},${py(y).toFixed(1)}`).join(' ');
+    series+=`<polyline points="${ptsStr}" fill="none" stroke="${s.color}" stroke-width="2.5"/>`;
+    s.points.forEach(([x,y])=>{
+      series+=`<circle cx="${px(x).toFixed(1)}" cy="${py(y).toFixed(1)}" r="4" fill="${s.color}"/>`;
+    });
+    if(s.label){
+      legend+=`<span style="color:${s.color};font-family:'Orbitron',monospace;font-size:0.7rem;">● ${s.label}</span>`;
+    }
+  });
+  return `<div class="graph-disp">
+    <svg width="220" height="170" viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg">
+      ${grid}${axes}${series}
+      <text x="${W-padR}" y="${H-padB+12}" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">x</text>
+      <text x="${padL-6}" y="${padT-2}" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="end">y</text>
+    </svg>
+    ${legend?`<div class="graph-legend">${legend}</div>`:''}
+  </div>`;
+}
+
+const exercises = [
+  // ─── BAGIAN 1: Cari Titik Pertemuan (e01–e08) ────────────────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Titik Pertemuan',
+    rule:{a:'y = x + 2', b:'y = 2x'},
+    q:'Pada nilai x berapa kedua mesin di atas menghasilkan output yang sama?', hint:'Coba beberapa nilai x, cari yang membuat A = B',
+    type:'mcq', opts:['x = 1','x = 2','x = 3','x = 4'], answer:'x = 2',
+    explain:'✅ x=2: A=2+2=4, B=2(2)=4 → SAMA! ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Titik Pertemuan',
+    rule:{a:'y = x + 5', b:'y = 2x'},
+    q:'Pada nilai x berapa kedua mesin di atas menghasilkan output yang sama?', hint:'Coba beberapa nilai x, cari yang membuat A = B',
+    type:'text', answers:['5'], explain:'✅ x=5: A=5+5=10, B=2(5)=10 → SAMA! ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Titik Pertemuan',
+    rule:{a:'y = x + 4', b:'y = 3x'},
+    q:'Pada nilai x berapa kedua mesin di atas menghasilkan output yang sama?', hint:'Coba beberapa nilai x, cari yang membuat A = B',
+    type:'mcq', opts:['x = 1','x = 2','x = 3','x = 4'], answer:'x = 2',
+    explain:'✅ x=2: A=2+4=6, B=3(2)=6 → SAMA! ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Titik Pertemuan',
+    rule:{a:'y = x + 8', b:'y = 3x'},
+    q:'Pada nilai x berapa kedua mesin di atas menghasilkan output yang sama?', hint:'Coba beberapa nilai x, cari yang membuat A = B',
+    type:'text', answers:['4'], explain:'✅ x=4: A=4+8=12, B=3(4)=12 → SAMA! ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Titik Pertemuan',
+    rule:{a:'y = 2x + 1', b:'y = 3x'},
+    q:'Pada nilai x berapa kedua mesin di atas menghasilkan output yang sama?', hint:'Coba beberapa nilai x, cari yang membuat A = B',
+    type:'mcq', opts:['x = 1','x = 2','x = 3','x = 4'], answer:'x = 1',
+    explain:'✅ x=1: A=2(1)+1=3, B=3(1)=3 → SAMA! ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Titik Pertemuan',
+    rule:{a:'y = x + 6', b:'y = 2x + 1'},
+    q:'Pada nilai x berapa kedua mesin di atas menghasilkan output yang sama?', hint:'Coba beberapa nilai x, cari yang membuat A = B',
+    type:'text', answers:['5'], explain:'✅ x=5: A=5+6=11, B=2(5)+1=11 → SAMA! ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Titik Pertemuan',
+    rule:{a:'y = 2x + 2', b:'y = 3x − 1'},
+    q:'Pada nilai x berapa kedua mesin di atas menghasilkan output yang sama?', hint:'Coba beberapa nilai x, cari yang membuat A = B',
+    type:'mcq', opts:['x = 1','x = 2','x = 3','x = 4'], answer:'x = 3',
+    explain:'✅ x=3: A=2(3)+2=8, B=3(3)−1=8 → SAMA! ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Titik Pertemuan',
+    rule:{a:'y = x + 9', b:'y = 4x'},
+    q:'Pada nilai x berapa kedua mesin di atas menghasilkan output yang sama?', hint:'Coba beberapa nilai x, cari yang membuat A = B',
+    type:'text', answers:['3'], explain:'✅ x=3: A=3+9=12, B=4(3)=12 → SAMA! ✓' },
+
+  // ─── BAGIAN 2: Cek Kesamaan Output (e09–e16) ─────────────────────────
+  { id:'e09', section:'s2', tag:'tag-2', tagLabel:'Cek Kesamaan',
+    rule:{a:'y = x + 3', b:'y = 2x'},
+    q:'Jika x = 3, apakah output kedua mesin SAMA? Berapa nilainya?', hint:'Hitung A dan B saat x=3, lalu bandingkan',
+    type:'mcq', opts:['Sama, nilainya 6','Tidak sama, A=6 B=5','Sama, nilainya 5','Tidak sama, A=5 B=6'], answer:'Sama, nilainya 6',
+    explain:'✅ A=3+3=6, B=2(3)=6 → SAMA, nilainya 6 ✓' },
+
+  { id:'e10', section:'s2', tag:'tag-2', tagLabel:'Cek Kesamaan',
+    rule:{a:'y = x + 1', b:'y = 3x − 3'},
+    q:'Jika x = 2, apakah output kedua mesin SAMA? Berapa nilainya?', hint:'Hitung A dan B saat x=2, lalu bandingkan',
+    type:'text', answers:['3'], explain:'✅ A=2+1=3, B=3(2)−3=3 → SAMA, nilainya 3 ✓' },
+
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Cek Kesamaan',
+    rule:{a:'y = 2x', b:'y = x + 5'},
+    q:'Jika x = 3, apakah output kedua mesin SAMA?', hint:'Hitung A dan B saat x=3, lalu bandingkan',
+    type:'mcq', opts:['Sama, keduanya 6','Tidak sama, A=6 B=8','Tidak sama, A=8 B=6','Sama, keduanya 8'], answer:'Tidak sama, A=6 B=8',
+    explain:'✅ A=2(3)=6, B=3+5=8 → TIDAK sama, A=6 dan B=8 ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Cek Kesamaan',
+    rule:{a:'y = 4x', b:'y = x + 9'},
+    q:'Jika x = 3, apakah output kedua mesin SAMA? Berapa nilainya?', hint:'Hitung A dan B saat x=3, lalu bandingkan',
+    type:'text', answers:['12'], explain:'✅ A=4(3)=12, B=3+9=12 → SAMA, nilainya 12 ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Cek Kesamaan',
+    rule:{a:'y = x + 7', b:'y = 3x + 1'},
+    q:'Jika x = 3, apakah output kedua mesin SAMA? Berapa nilainya?', hint:'Hitung A dan B saat x=3, lalu bandingkan',
+    type:'mcq', opts:['Sama, nilainya 10','Tidak sama, A=10 B=9','Sama, nilainya 9','Tidak sama, A=9 B=10'], answer:'Sama, nilainya 10',
+    explain:'✅ A=3+7=10, B=3(3)+1=10 → SAMA, nilainya 10 ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Cek Kesamaan',
+    rule:{a:'y = 2x + 4', b:'y = 5x − 5'},
+    q:'Jika x = 3, apakah output kedua mesin SAMA? Berapa nilainya?', hint:'Hitung A dan B saat x=3, lalu bandingkan',
+    type:'text', answers:['10'], explain:'✅ A=2(3)+4=10, B=5(3)−5=10 → SAMA, nilainya 10 ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Cek Kesamaan',
+    rule:{a:'y = x + 10', b:'y = 2x + 3'},
+    q:'Jika x = 4, apakah output kedua mesin SAMA?', hint:'Hitung A dan B saat x=4, lalu bandingkan',
+    type:'mcq', opts:['Sama, keduanya 14','Tidak sama, A=14 B=11','Tidak sama, A=11 B=14','Sama, keduanya 11'], answer:'Tidak sama, A=14 B=11',
+    explain:'✅ A=4+10=14, B=2(4)+3=11 → TIDAK sama, A=14 dan B=11 ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Cek Kesamaan',
+    rule:{a:'y = 3x + 2', b:'y = x + 12'},
+    q:'Jika x = 5, apakah output kedua mesin SAMA? Berapa nilainya?', hint:'Hitung A dan B saat x=5, lalu bandingkan',
+    type:'text', answers:['17'], explain:'✅ A=3(5)+2=17, B=5+12=17 → SAMA, nilainya 17 ✓' },
+
+  // ─── BAGIAN 3: Baca Grafik Dua Mesin (e17–e24) ───────────────────────
+  { id:'e17', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[0,1],[1,2],[2,3],[3,4]],color:'#60a5fa',label:'Mesin A: y=x+1'},{points:[[0,-1],[1,1],[2,3],[3,5]],color:'#fb923c',label:'Mesin B: y=2x−1'}],xMax:3,yMax:5},
+    q:'Lihat grafik dua mesin di atas. Pada x berapa kedua garis berpotongan (titik pertemuan)?', hint:'Cari titik yang dilewati KEDUA garis',
+    type:'mcq', opts:['x = 0','x = 1','x = 2','x = 3'], answer:'x = 2',
+    explain:'✅ Saat x=2: A=2+1=3, B=2(2)−1=3 → kedua garis berpotongan di (2,3) ✓' },
+
+  { id:'e18', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[0,2],[1,3],[2,4],[3,5]],color:'#60a5fa',label:'Mesin A: y=x+2'},{points:[[0,-2],[1,1],[2,4],[3,7]],color:'#fb923c',label:'Mesin B: y=3x−2'}],xMax:3,yMax:7},
+    q:'Lihat grafik dua mesin di atas. Pada x berapa kedua garis berpotongan?', hint:'Cari titik yang dilewati KEDUA garis',
+    type:'text', answers:['2'], explain:'✅ Saat x=2: A=2+2=4, B=3(2)−2=4 → berpotongan di x=2 ✓' },
+
+  { id:'e19', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[0,0],[1,2],[2,4],[3,6]],color:'#60a5fa',label:'Mesin A: y=2x'},{points:[[0,3],[1,4],[2,5],[3,6]],color:'#fb923c',label:'Mesin B: y=x+3'}],xMax:3,yMax:7},
+    q:'Lihat grafik dua mesin di atas. Berapa koordinat titik pertemuannya?', hint:'Cari titik (x,y) yang sama-sama dilewati kedua garis',
+    type:'mcq', opts:['(2,4)','(3,6)','(1,3)','(2,5)'], answer:'(3,6)',
+    explain:'✅ Saat x=3: A=2(3)=6, B=3+3=6 → titik pertemuan (3,6) ✓' },
+
+  { id:'e20', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[0,4],[1,5],[2,6],[3,7]],color:'#60a5fa',label:'Mesin A: y=x+4'},{points:[[0,1],[1,3],[2,5],[3,7]],color:'#fb923c',label:'Mesin B: y=2x+1'}],xMax:3,yMax:7},
+    q:'Lihat grafik dua mesin di atas. Berapa koordinat titik pertemuannya?', hint:'Cari titik (x,y) yang sama-sama dilewati kedua garis',
+    type:'text', answers:['(3,7)'], explain:'✅ Saat x=3: A=3+4=7, B=2(3)+1=7 → titik pertemuan (3,7) ✓' },
+
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[0,-1],[1,2],[2,5]],color:'#60a5fa',label:'Mesin A: y=3x−1'},{points:[[0,3],[1,4],[2,5]],color:'#fb923c',label:'Mesin B: y=x+3'}],xMax:2,yMax:5},
+    q:'Lihat grafik dua mesin di atas. Pada x berapa kedua garis berpotongan?', hint:'Cari titik yang dilewati KEDUA garis',
+    type:'mcq', opts:['x = 0','x = 1','x = 2','Tidak pernah'], answer:'x = 2',
+    explain:'✅ Saat x=2: A=3(2)−1=5, B=2+3=5 → berpotongan di x=2 ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[0,5],[1,6],[2,7]],color:'#60a5fa',label:'Mesin A: y=x+5'},{points:[[0,1],[1,4],[2,7]],color:'#fb923c',label:'Mesin B: y=3x+1'}],xMax:2,yMax:7},
+    q:'Lihat grafik dua mesin di atas. Berapa koordinat titik pertemuannya?', hint:'Cari titik (x,y) yang sama-sama dilewati kedua garis',
+    type:'mcq', opts:['(0,5)','(1,6)','(2,7)','(1,4)'], answer:'(2,7)',
+    explain:'✅ Saat x=2: A=2+5=7, B=3(2)+1=7 → titik pertemuan (2,7) ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[0,2],[1,4],[2,6],[3,8]],color:'#60a5fa',label:'Mesin A: y=2x+2'},{points:[[0,5],[1,6],[2,7],[3,8]],color:'#fb923c',label:'Mesin B: y=x+5'}],xMax:3,yMax:8},
+    q:'Lihat grafik dua mesin di atas. Pada x berapa kedua garis berpotongan?', hint:'Cari titik yang dilewati KEDUA garis',
+    type:'text', answers:['3'], explain:'✅ Saat x=3: A=2(3)+2=8, B=3+5=8 → berpotongan di x=3 ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Baca Grafik',
+    graph:{series:[{points:[[0,-2],[1,2],[2,6]],color:'#60a5fa',label:'Mesin A: y=4x−2'},{points:[[0,4],[1,5],[2,6]],color:'#fb923c',label:'Mesin B: y=x+4'}],xMax:2,yMax:6},
+    q:'Lihat grafik dua mesin di atas. Berapa koordinat titik pertemuannya?', hint:'Cari titik (x,y) yang sama-sama dilewati kedua garis',
+    type:'mcq', opts:['(0,4)','(1,5)','(2,6)','(1,2)'], answer:'(2,6)',
+    explain:'✅ Saat x=2: A=4(2)−2=6, B=2+4=6 → titik pertemuan (2,6) ✓' },
+
+  // ─── BAGIAN 4: Bandingkan Dua Mesin (e25–e32) ────────────────────────
+  { id:'e25', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    rule:{a:'y = x + 1', b:'y = x + 6'},
+    q:'Pada x = 3, mesin mana yang menghasilkan output lebih besar?', hint:'Hitung A dan B saat x=3',
+    type:'mcq', opts:['Mesin A','Mesin B','Sama besar','Tidak bisa ditentukan'], answer:'Mesin B',
+    explain:'✅ A=3+1=4, B=3+6=9. Mesin B lebih besar karena konstanta +6 > +1 ✓' },
+
+  { id:'e26', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    rule:{a:'y = 2x', b:'y = 5x'},
+    q:'Mesin mana yang nilainya naik LEBIH CEPAT saat x bertambah (lebih curam jika digambar)?', hint:'Bandingkan koefisien pengali x',
+    type:'mcq', opts:['Mesin A','Mesin B','Sama cepat','Tidak bisa ditentukan'], answer:'Mesin B',
+    explain:'✅ Mesin B (×5) naik lebih cepat dari Mesin A (×2) — koefisien lebih besar = lebih curam ✓' },
+
+  { id:'e27', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    rule:{a:'y = x + 3', b:'y = 4x − 3'},
+    q:'Pada x berapa kedua mesin menghasilkan output yang sama?', hint:'Coba nilai x satu-satu',
+    type:'text', answers:['2'], explain:'✅ x=2: A=2+3=5, B=4(2)−3=5 → SAMA di x=2 ✓' },
+
+  { id:'e28', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    rule:{a:'y = 3x − 1', b:'y = x + 5'},
+    q:'Pada x berapa kedua mesin menghasilkan output yang sama?', hint:'Coba nilai x satu-satu',
+    type:'mcq', opts:['x = 1','x = 2','x = 3','x = 4'], answer:'x = 3',
+    explain:'✅ x=3: A=3(3)−1=8, B=3+5=8 → SAMA di x=3 ✓' },
+
+  { id:'e29', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    rule:{a:'y = x + 2', b:'y = 2x + 2'},
+    q:'Kedua mesin punya konstanta sama (+2). Mesin mana yang naik lebih cepat?', hint:'Bandingkan koefisien pengali x',
+    type:'mcq', opts:['Mesin A','Mesin B','Sama cepat','Tidak bisa ditentukan'], answer:'Mesin B',
+    explain:'✅ Mesin B (koefisien 2) naik lebih cepat dari Mesin A (koefisien 1) ✓' },
+
+  { id:'e30', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    rule:{a:'y = 2x + 5', b:'y = 2x + 1'},
+    q:'Berapa selisih output Mesin A dan Mesin B untuk x berapa pun (selisihnya selalu sama)?', hint:'Hitung A−B pada x=0, lalu cek lagi pada x lain',
+    type:'text', answers:['4'], explain:'✅ Karena koefisien x sama (2x), selisih konstanta selalu 5−1=4, di x berapapun ✓' },
+
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    rule:{a:'y = 5x', b:'y = x + 8'},
+    q:'Pada x berapa kedua mesin menghasilkan output yang sama?', hint:'Coba nilai x satu-satu',
+    type:'mcq', opts:['x = 1','x = 2','x = 3','x = 4'], answer:'x = 2',
+    explain:'✅ x=2: A=5(2)=10, B=2+8=10 → SAMA di x=2 ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Bandingkan',
+    rule:{a:'y = x + 6', b:'y = 3x'},
+    q:'Pada x = 1, apakah Mesin A atau Mesin B yang lebih besar? Berapa selisihnya?', hint:'Hitung A dan B saat x=1, lalu kurangkan',
+    type:'mcq', opts:['A lebih besar, selisih 4','B lebih besar, selisih 4','Sama besar','A lebih besar, selisih 2'], answer:'A lebih besar, selisih 4',
+    explain:'✅ A=1+6=7, B=3(1)=3. A lebih besar, selisih = 7−3 = 4 ✓' },
+
+  // ─── BAGIAN 5: Soal Cerita (e33–e40) ─────────────────────────────────
+  { id:'e33', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    rule:{a:'y = 3.000x', b:'y = 2.000x + 2.000'},
+    story:'Dua tukang ojek online punya tarif berbeda. <strong>Mesin A</strong> = tarif Ojek Cepat (Rp per km), <strong>Mesin B</strong> = tarif Ojek Hemat (Rp per km + biaya buka pintu).',
+    q:'Pada berapa km (x) tarif kedua ojek menjadi SAMA?', hint:'Pola: 3000x = 2000x + 2000',
+    type:'mcq', opts:['1 km','2 km','3 km','4 km'], answer:'2 km',
+    explain:'✅ x=2: A=3000(2)=6000, B=2000(2)+2000=6000 → SAMA di 2 km ✓' },
+
+  { id:'e34', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    rule:{a:'y = 4.000x', b:'y = 2.500x + 3.000'},
+    story:'Dua agen bus antar kota menawarkan tarif berbeda. <strong>Mesin A</strong> = tarif Bus Express, <strong>Mesin B</strong> = tarif Bus Ekonomi (lebih murah per km tapi ada biaya tambahan tetap).',
+    q:'Pada berapa km (x) tarif kedua bus menjadi SAMA?', hint:'Pola: 4000x = 2500x + 3000',
+    type:'text', answers:['2'], explain:'✅ x=2: A=4000(2)=8000, B=2500(2)+3000=8000 → SAMA di 2 km ✓' },
+
+  { id:'e35', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    rule:{a:'y = 2x + 10', b:'y = 4x'},
+    story:'Dua tanaman ditanam dengan pupuk berbeda. <strong>Mesin A</strong> = tinggi Tanaman A (cm, sudah lebih tinggi di awal tapi tumbuh lambat), <strong>Mesin B</strong> = tinggi Tanaman B (cm, mulai dari 0 tapi tumbuh cepat). x = minggu.',
+    q:'Pada minggu ke berapa (x) tinggi kedua tanaman menjadi SAMA?', hint:'Pola: 2x + 10 = 4x',
+    type:'mcq', opts:['3 minggu','4 minggu','5 minggu','6 minggu'], answer:'5 minggu',
+    explain:'✅ x=5: A=2(5)+10=20, B=4(5)=20 → SAMA di minggu ke-5 ✓' },
+
+  { id:'e36', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    rule:{a:'y = 6.000x', b:'y = 4.000x + 4.000'},
+    story:'Dua warnet menawarkan tarif berbeda. <strong>Mesin A</strong> = tarif Warnet Cepat (Rp per jam), <strong>Mesin B</strong> = tarif Warnet Hemat (lebih murah per jam tapi ada biaya member tetap).',
+    q:'Pada berapa jam (x) biaya kedua warnet menjadi SAMA?', hint:'Pola: 6000x = 4000x + 4000',
+    type:'text', answers:['2'], explain:'✅ x=2: A=6000(2)=12000, B=4000(2)+4000=12000 → SAMA di 2 jam ✓' },
+
+  { id:'e37', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    rule:{a:'y = x + 20', b:'y = 3x'},
+    story:'Dua kolam diisi air dengan cara berbeda. <strong>Mesin A</strong> = tinggi air Kolam A (cm, sudah ada air 20 cm tapi diisi lambat), <strong>Mesin B</strong> = tinggi air Kolam B (cm, mulai kosong tapi diisi cepat). x = menit.',
+    q:'Pada menit ke berapa (x) tinggi air kedua kolam menjadi SAMA?', hint:'Pola: x + 20 = 3x',
+    type:'mcq', opts:['8 menit','9 menit','10 menit','12 menit'], answer:'10 menit',
+    explain:'✅ x=10: A=10+20=30, B=3(10)=30 → SAMA di menit ke-10 ✓' },
+
+  { id:'e38', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    rule:{a:'y = 1.500x + 5.000', b:'y = 2.500x'},
+    story:'Dua jasa katering menawarkan harga berbeda untuk acara. <strong>Mesin A</strong> = harga Katering Hemat (per porsi + biaya tetap), <strong>Mesin B</strong> = harga Katering Praktis (per porsi tanpa biaya tetap). x = jumlah porsi.',
+    q:'Pada berapa porsi (x) harga kedua katering menjadi SAMA?', hint:'Pola: 1500x + 5000 = 2500x',
+    type:'text', answers:['5'], explain:'✅ x=5: A=1500(5)+5000=12500, B=2500(5)=12500 → SAMA di 5 porsi ✓' },
+
+  { id:'e39', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    rule:{a:'y = 7.000x', b:'y = 4.000x + 6.000'},
+    story:'Dua tempat fotokopi menawarkan tarif berbeda. <strong>Mesin A</strong> = harga Fotokopi A (Rp per lembar), <strong>Mesin B</strong> = harga Fotokopi B (lebih murah per lembar tapi ada biaya jasa tetap).',
+    q:'Pada berapa lembar (x) harga kedua fotokopi menjadi SAMA?', hint:'Pola: 7000x = 4000x + 6000',
+    type:'mcq', opts:['1 lembar','2 lembar','3 lembar','4 lembar'], answer:'2 lembar',
+    explain:'✅ x=2: A=7000(2)=14000, B=4000(2)+6000=14000 → SAMA di 2 lembar ✓' },
+
+  { id:'e40', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    rule:{a:'y = 50x + 200', b:'y = 100x'},
+    story:'Dua anak mengumpulkan kelereng. <strong>Mesin A</strong> = jumlah kelereng Andi (sudah punya 200 butir, nambah 50/hari), <strong>Mesin B</strong> = jumlah kelereng Budi (mulai dari 0, nambah 100/hari). x = hari.',
+    q:'Pada hari ke berapa (x) jumlah kelereng Andi dan Budi menjadi SAMA?', hint:'Pola: 50x + 200 = 100x',
+    type:'text', answers:['4'], explain:'✅ x=4: A=50(4)+200=400, B=100(4)=400 → SAMA di hari ke-4 ✓' },
+];
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  const total = exercises.length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done >= i*8);
+  }
+  if(done === total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){
+    inp.classList.add('correct'); inp.disabled=true; btn.disabled=true;
+  } else {
+    card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true);
+  }
+  const fb = card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok';
+  fb.textContent = q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){
+    const badge=document.createElement('div');
+    badge.className='done-badge'; badge.textContent='✓ Done';
+    card.appendChild(badge);
+  }
+  progress[q.id]=true;
+  saveProgress(progress);
+  updateProgressBar();
+}
+
+function checkText(id, inp, btn, q){
+  const raw = inp.value.trim().toLowerCase().replace(/\s+/g,' ');
+  if(!raw) return;
+  const correct = q.answers.some(a=>raw===a.toLowerCase());
+  if(correct){
+    markDone(inp.closest('.ex-card'), q, inp, btn);
+  } else {
+    inp.classList.add('wrong-anim');
+    const attRow = inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div'); dot.className='attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(()=>{inp.classList.remove('wrong-anim'); inp.value=''; inp.focus();}, 400);
+    if(attRow.children.length >= 3){
+      const fb = inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no';
+      fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.val===q.answer) b.classList.add('opt-correct');
+  });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb = card.querySelector('.ex-feedback');
+  if(val===q.answer){
+    markDone(card, q, null, null);
+  } else {
+    fb.className='ex-feedback show no';
+    fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+  }
+}
+
+function buildExercises(){
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = '';
+  const groups = [
+    { key:'s1', label:'🔍 Bagian 1 — Cari Titik Pertemuan',     cls:'sd-1' },
+    { key:'s2', label:'✓ Bagian 2 — Cek Kesamaan Output',        cls:'sd-2' },
+    { key:'s3', label:'📈 Bagian 3 — Baca Grafik Dua Mesin',      cls:'sd-3' },
+    { key:'s4', label:'⚖️ Bagian 4 — Bandingkan Dua Mesin',       cls:'sd-4' },
+    { key:'s5', label:'📖 Bagian 5 — Soal Cerita Dua Mesin',      cls:'sd-5' },
+  ];
+  groups.forEach(g=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      const isWord = !!q.wordProblem;
+      card.className = 'ex-card' + (isWord?' word-card':'') + (isDone?' done-card':'');
+
+      const ruleHTML = q.rule ? ruleDisp(q.rule.a, q.rule.b) : '';
+      const graphHTML = q.graph ? miniGraph(q.graph.series, q.graph.xMax, q.graph.yMax) : '';
+
+      let inputHTML = '';
+      if(q.type==='text'){
+        inputHTML = `
+          <div class="ex-input-wrap">
+            <div class="ex-input-row">
+              <input type="text" class="ex-input ${isDone?'correct':''}"
+                placeholder="Jawaban?"
+                value="${isDone ? q.answers[0] : ''}"
+                ${isDone?'disabled':''}
+                onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+              <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+            </div>
+            <div class="attempts-row"></div>
+          </div>`;
+      } else {
+        const shuffled = [...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML = `<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      const storyHTML = q.story ? `<div class="word-story">${q.story}</div>` : '';
+
+      card.innerHTML = `
+        <div class="ex-num">Soal ${q.id.replace('e','')}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${storyHTML}
+        ${ruleHTML}
+        ${graphHTML}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone ? q.explain : ''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn = card.querySelector('.ex-btn');
+        const inp = card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick = ()=>checkText(q.id, inp, btn, q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{
+          b.onclick = ()=>checkMCQ(b.dataset.val, b, q, card);
+        });
+      }
+      grid.appendChild(card);
+    });
+
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Extra PR Lesson 17? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+</script>
+</body>
+</html>
