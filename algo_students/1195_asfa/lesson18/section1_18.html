@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 18 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--violet:#a78bfa;--red:#ef4444;--blue:#38bdf8;--orange:#fb923c;--meet:#f472b6;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(167,139,250,0.07) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(56,189,248,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--neon);}
+  .wrapper{max-width:720px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--violet));border-radius:99px;transition:width 0.4s ease;}
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--blue);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title .h1{color:var(--neon);}
+  .slide-title .h2{color:var(--blue);}
+  .slide-title .h3{color:var(--orange);}
+  .slide-title .hv{color:var(--violet);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+  .slide-sub strong{color:var(--violet);}
+
+  .callout{background:rgba(56,189,248,0.05);border-left:3px solid var(--blue);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--blue);}
+  .callout.neon{background:rgba(0,245,196,0.05);border-color:var(--neon);}
+  .callout.neon strong{color:var(--neon);}
+  .callout.orange{background:rgba(251,146,60,0.05);border-color:var(--orange);}
+  .callout.orange strong{color:var(--orange);}
+  .callout.violet{background:rgba(167,139,250,0.06);border-color:var(--violet);}
+  .callout.violet strong{color:var(--violet);}
+
+  .dual-notation{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0;}
+  @media(max-width:480px){.dual-notation{grid-template-columns:1fr;}}
+  .notation-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;text-align:center;}
+  .notation-box.ma{border-color:rgba(56,189,248,0.4);}
+  .notation-box.mb{border-color:rgba(251,146,60,0.4);}
+  .notation-tag{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.6rem;}
+  .notation-box.ma .notation-tag{color:var(--blue);}
+  .notation-box.mb .notation-tag{color:var(--orange);}
+  .notation-big{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,5vw,1.7rem);font-weight:900;letter-spacing:1px;margin-bottom:0.5rem;}
+  .notation-box.ma .notation-big{color:var(--blue);}
+  .notation-box.mb .notation-big{color:var(--orange);}
+  .notation-sub{font-size:0.78rem;color:var(--muted);line-height:1.6;}
+
+  .reveal-btn{background:rgba(0,245,196,0.08);border:1px solid rgba(0,245,196,0.35);color:var(--neon);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(0,245,196,0.15);}
+  .reveal-btn.violet{background:rgba(167,139,250,0.08);border-color:rgba(167,139,250,0.4);color:var(--violet);}
+  .reveal-btn.violet:hover{background:rgba(167,139,250,0.15);}
+  .reveal-box{background:rgba(0,245,196,0.05);border:1px solid rgba(0,245,196,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;text-align:center;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+  .reveal-box.violet{background:rgba(167,139,250,0.06);border-color:rgba(167,139,250,0.35);}
+  .reveal-box .rule-text{font-family:'Orbitron',monospace;font-size:1.05rem;font-weight:700;color:var(--neon);margin-bottom:0.4rem;}
+  .reveal-box.violet .rule-text{color:var(--violet);}
+  .reveal-box .rule-sub{font-size:0.85rem;color:var(--muted);}
+
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:var(--blue);flex-shrink:0;}
+  .step-num.v{background:rgba(167,139,250,0.12);border-color:rgba(167,139,250,0.4);color:var(--violet);}
+  .step-num.o{background:rgba(251,146,60,0.12);border-color:rgba(251,146,60,0.4);color:var(--orange);}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+  .step-body .sdesc .calc{font-family:'Orbitron',monospace;color:var(--text);font-weight:700;}
+
+  .concept-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;}
+  @media(max-width:500px){.concept-grid{grid-template-columns:1fr;}}
+  .concept-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;}
+  .concept-card .icon{font-size:1.8rem;margin-bottom:0.6rem;display:block;}
+  .concept-card .ctitle{font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:700;color:var(--blue);margin-bottom:0.5rem;}
+  .concept-card .cdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--violet),#7c3aed);border:none;color:#fff;font-weight:800;}
+  .nav-btn:hover{border-color:var(--violet);color:var(--violet);}
+  .nav-btn.next:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(167,139,250,0.3);}
+
+  .summary-card{background:var(--card);border:1px solid rgba(167,139,250,0.3);border-radius:18px;padding:2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.9rem;color:var(--violet);letter-spacing:2px;margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .summary-item span{flex-shrink:0;}
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;}
+  .da-primary{background:linear-gradient(135deg,var(--violet),#7c3aed);color:#fff;border:none;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(167,139,250,0.3);}
+  .da-secondary:hover{border-color:var(--violet);color:var(--violet);}
+
+  /* SPLDV-specific: equation pairs */
+  .eq-pair{display:flex;flex-direction:column;gap:0.6rem;margin:1.2rem 0;align-items:center;}
+  .eq-row{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.8rem 1.5rem;font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:800;min-width:200px;text-align:center;}
+  .eq-row.e1{color:var(--blue);border-color:rgba(56,189,248,0.4);}
+  .eq-row.e2{color:var(--orange);border-color:rgba(251,146,60,0.4);}
+  .eq-tag{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);margin-bottom:0.3rem;text-transform:uppercase;}
+
+  .work-box{background:#12121c;border:1px solid var(--border);border-radius:14px;padding:1.3rem;margin:1rem 0;font-family:'Orbitron',monospace;font-size:0.95rem;line-height:2.1;}
+  .work-box .arrow{color:var(--muted);margin:0 0.4rem;}
+  .work-box .hi{color:var(--violet);font-weight:900;}
+  .work-box .hib{color:var(--blue);font-weight:900;}
+  .work-box .hio{color:var(--orange);font-weight:900;}
+  .work-box .strike{text-decoration:line-through;color:var(--muted);opacity:0.5;}
+
+  .elim-visual{display:flex;flex-direction:column;align-items:center;gap:0;margin:1.5rem 0;background:#12121c;border:1px solid var(--border);border-radius:14px;padding:1.5rem;}
+  .elim-row{font-family:'Orbitron',monospace;font-size:1.15rem;font-weight:800;padding:0.4rem 0;display:flex;align-items:center;gap:0.5rem;}
+  .elim-row .x-part{color:var(--text);}
+  .elim-row .y-part{color:var(--violet);}
+  .elim-row .y-part.cancel{position:relative;}
+  .elim-row .y-part.cancel::after{content:'';position:absolute;left:-4px;right:-4px;top:50%;height:2px;background:var(--red);transform:rotate(-8deg);}
+  .elim-divider{width:100%;height:2px;background:var(--border);margin:0.6rem 0;}
+  .elim-result{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;color:var(--neon);padding-top:0.6rem;}
+
+  .fill-input{background:#12121c;border:1.5px solid var(--border);color:var(--violet);font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;width:64px;text-align:center;border-radius:8px;padding:0.4rem;transition:border-color 0.2s;}
+  .fill-input:focus{outline:none;border-color:var(--violet);}
+  .check-btn{background:linear-gradient(135deg,var(--violet),#7c3aed);color:#fff;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;padding:0.5rem 1.2rem;border:none;border-radius:8px;cursor:pointer;margin-top:0.8rem;font-weight:800;display:block;margin-left:auto;margin-right:auto;}
+  .check-result{font-family:'Orbitron',monospace;font-size:0.85rem;margin-top:0.8rem;min-height:22px;text-align:center;line-height:1.6;}
+  .guess-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin:1.2rem 0;text-align:center;}
+  .guess-row{display:flex;align-items:center;justify-content:center;gap:0.6rem;font-family:'Orbitron',monospace;font-size:0.95rem;flex-wrap:wrap;}
+
+  .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0;}
+  @media(max-width:480px){.compare-grid{grid-template-columns:1fr;}}
+  .compare-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;}
+  .compare-card .ctag{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.6rem;}
+  .compare-card .ceq{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:800;color:var(--text);margin-bottom:0.8rem;line-height:1.8;}
+  .pick-btn{width:100%;background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.6rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:1px;transition:all 0.2s;}
+  .pick-btn:hover:not(:disabled){border-color:var(--violet);}
+  .pick-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .pick-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .pick-feedback{font-size:0.8rem;color:var(--muted);margin-top:0.6rem;line-height:1.6;text-align:center;min-height:20px;}
+
+  .story-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin:1.2rem 0;}
+  .story-card .stext{font-size:0.95rem;line-height:1.8;color:var(--text);margin-bottom:1rem;font-style:italic;}
+  .story-card .stext strong{color:var(--violet);font-style:normal;}
+  .model-arrow{text-align:center;font-size:1.3rem;color:var(--muted);margin:0.6rem 0;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson18.html">LESSON 18</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+
+  <!-- SLIDE 1 -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title">Dari Tebak-Tebakan <span class="hv">ke Rumus Pasti</span></div>
+      <div class="slide-sub">Minggu lalu kamu menemukan "titik pertemuan" dengan tabel dan grafik. Sekarang, mari pelajari cara matematikawan menemukannya — <strong>tanpa coba-coba</strong>!</div>
+    </div>
+    <div class="callout violet"><strong>Hari ini:</strong> Dua jurus formal untuk menyelesaikan SPLDV (Sistem Persamaan Linear Dua Variabel) — <strong>Substitusi</strong> dan <strong>Eliminasi</strong>. Keduanya menemukan titik pertemuan yang sama, cuma caranya beda!</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num v">1</div>
+        <div class="step-body"><div class="stitle">SPLDV = dua persamaan, satu jawaban</div><div class="sdesc">Kita cari pasangan x dan y yang memenuhi KEDUA persamaan sekaligus.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num v">2</div>
+        <div class="step-body"><div class="stitle">Substitusi: ganti satu variabel</div><div class="sdesc">Ambil nilai salah satu variabel dari satu persamaan, lalu "suntikkan" ke persamaan lain.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num v">3</div>
+        <div class="step-body"><div class="stitle">Eliminasi: hilangkan satu variabel</div><div class="sdesc">Jumlahkan atau kurangkan kedua persamaan supaya salah satu variabel hilang.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num v">4</div>
+        <div class="step-body"><div class="stitle">Pilih yang paling cepat</div><div class="sdesc">Matematikawan yang jago bukan yang hafal rumus, tapi yang tahu kapan pakai jurus apa!</div></div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Review Singkat →</button></div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Review: <span class="h2">Dua Aturan</span> Sekaligus</div>
+      <div class="slide-sub">Ingat dua mesin dari Lesson 17? Sekarang kita tulis aturannya dalam bentuk persamaan dua variabel.</div>
+    </div>
+    <div class="dual-notation">
+      <div class="notation-box ma">
+        <div class="notation-tag">Persamaan 1</div>
+        <div class="notation-big">x + y = 7</div>
+        <div class="notation-sub">Dua bilangan yang jumlahnya 7</div>
+      </div>
+      <div class="notation-box mb">
+        <div class="notation-tag">Persamaan 2</div>
+        <div class="notation-big">x − y = 1</div>
+        <div class="notation-sub">Selisih kedua bilangan itu 1</div>
+      </div>
+    </div>
+    <div class="callout violet"><strong>Pertanyaan kunci:</strong> Bagaimana cara mencari nilai x dan y yang memenuhi KEDUA persamaan ini sekaligus — tanpa coba-coba satu per satu?</div>
+    <div class="callout"><strong>Jawabannya:</strong> SPLDV mencari pasangan nilai (x, y) yang membuat kedua persamaan itu BENAR secara bersamaan. Itulah "titik pertemuan" yang kamu cari minggu lalu — sekarang kita punya cara pasti untuk menemukannya.</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Jurus Substitusi →</button></div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title">Jurus 1: <span class="h2">Substitusi</span></div>
+      <div class="slide-sub">Idenya simpel: ambil satu variabel dari satu persamaan, lalu "suntikkan" ke persamaan lainnya.</div>
+    </div>
+    <div class="eq-pair">
+      <div class="eq-row e1">x + y = 6</div>
+      <div class="eq-row e2">y = x − 2</div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><div class="stitle">Ambil nilai y dari persamaan kedua</div><div class="sdesc">Persamaan kedua sudah bilang: <span class="calc">y = x − 2</span></div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><div class="stitle">Ganti y pada persamaan pertama</div><div class="sdesc">x + y = 6 → x + <span class="calc">(x − 2)</span> = 6</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><div class="stitle">Cari x</div><div class="sdesc"><span class="calc">2x − 2 = 6 → 2x = 8 → x = 4</span></div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body"><div class="stitle">Cari y</div><div class="sdesc">Masukkan x=4 ke y = x − 2 → <span class="calc">y = 2</span></div></div>
+      </div>
+    </div>
+    <div class="callout"><strong>Hasil:</strong> x = 4, y = 2. Titik pertemuannya adalah (4, 2)!</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Contoh Lengkap →</button></div>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Substitusi: <span class="h2">Step by Step</span></div>
+      <div class="slide-sub">Sekarang lihat contoh lain dengan tampilan langkah penuh.</div>
+    </div>
+    <div class="eq-pair">
+      <div class="eq-row e1">2x + y = 11</div>
+      <div class="eq-row e2">y = 3x − 4</div>
+    </div>
+    <div class="work-box">
+      <span class="hib">2x + y = 11</span><br>
+      2x + <span class="hi">(3x − 4)</span> = 11 <span class="arrow">← ganti y</span><br>
+      5x − 4 = 11<br>
+      5x = 15<br>
+      <span class="hi">x = 3</span><br>
+      <span class="arrow">cari y:</span> y = 3(3) − 4 = <span class="hi">5</span>
+    </div>
+    <div class="callout violet"><strong>Titik pertemuan: (3, 5)</strong> — cek lagi: 2(3)+5 = 11 ✓ dan 5 = 3(3)−4 = 5 ✓. Kedua persamaan terpenuhi!</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Giliranmu! →</button></div>
+  </div>
+
+  <!-- SLIDE 5 -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title">Latihan <span class="hv">Substitusi</span> ✏️</div>
+      <div class="slide-sub">Giliranmu! Selesaikan sistem ini dengan substitusi sebelum lihat jawabannya.</div>
+    </div>
+    <div class="eq-pair">
+      <div class="eq-row e1">x + y = 9</div>
+      <div class="eq-row e2">y = 2x</div>
+    </div>
+    <div class="callout"><strong>Petunjuk:</strong> Persamaan kedua sudah dalam bentuk "y = ...", jadi tinggal ganti langsung ke persamaan pertama!</div>
+    <div class="guess-box">
+      <div class="guess-row">
+        <span style="color:var(--muted);">x =</span>
+        <input type="number" class="fill-input" id="guessX5" placeholder="?">
+        <span style="color:var(--muted);">y =</span>
+        <input type="number" class="fill-input" id="guessY5" placeholder="?">
+      </div>
+      <button class="check-btn" onclick="checkSlide5()">CEK JAWABAN</button>
+      <div class="check-result" id="resultSlide5"></div>
+    </div>
+    <button class="reveal-btn violet" onclick="toggleReveal('rv5')">🔍 Lihat Cara Penyelesaiannya</button>
+    <div class="reveal-box violet" id="rv5">
+      <div class="rule-text">x + 2x = 9 → 3x = 9 → x = 3, lalu y = 2(3) = 6</div>
+      <div class="rule-sub">Titik pertemuannya adalah (3, 6)!</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Jurus Eliminasi →</button></div>
+  </div>
+
+  <!-- SLIDE 6 -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title">Jurus 2: <span class="h3">Eliminasi</span></div>
+      <div class="slide-sub">Idenya beda: bukan mengganti, tapi MENGHILANGKAN satu variabel dengan menjumlah atau mengurangkan.</div>
+    </div>
+    <div class="eq-pair">
+      <div class="eq-row e1">x + y = 8</div>
+      <div class="eq-row e2">x − y = 2</div>
+    </div>
+    <div class="callout orange"><strong>Perhatikan:</strong> Persamaan pertama punya "+y", persamaan kedua punya "−y". Kalau dijumlahkan, y akan saling menghilangkan!</div>
+    <div class="elim-visual">
+      <div class="elim-row"><span class="x-part">x</span> + <span class="y-part">y</span> <span style="color:var(--muted);">= 8</span></div>
+      <div class="elim-row"><span class="x-part">x</span> − <span class="y-part">y</span> <span style="color:var(--muted);">= 2</span></div>
+      <div class="elim-divider"></div>
+      <div class="elim-row"><span class="x-part">2x</span> + <span class="y-part cancel">0</span> <span style="color:var(--muted);">= 10</span></div>
+      <div class="elim-result">x = 5 🎉</div>
+    </div>
+    <div class="callout"><strong>Kenapa bisa hilang?</strong> +y dan −y kalau dijumlahkan hasilnya 0. Yang tersisa cuma variabel x — jadi gampang dicari!</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">Contoh & Latihan →</button></div>
+  </div>
+
+  <!-- SLIDE 7 -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">Eliminasi: <span class="h3">Coba Sendiri</span> ✏️</div>
+      <div class="slide-sub">Lanjutkan dari slide sebelumnya: x = 5. Sekarang cari y dengan mensubstitusi x ke salah satu persamaan.</div>
+    </div>
+    <div class="eq-pair">
+      <div class="eq-row e1">x + y = 8</div>
+      <div class="eq-row e2">x − y = 2</div>
+    </div>
+    <div class="callout violet"><strong>Tahu x = 5.</strong> Masukkan ke persamaan x + y = 8 untuk mencari y.</div>
+    <div class="guess-box">
+      <div class="guess-row">
+        <span style="color:var(--muted);">y =</span>
+        <input type="number" class="fill-input" id="guessY7" placeholder="?">
+      </div>
+      <button class="check-btn" onclick="checkSlide7()">CEK JAWABAN</button>
+      <div class="check-result" id="resultSlide7"></div>
+    </div>
+    <button class="reveal-btn violet" onclick="toggleReveal('rv7')">🔍 Lihat Cara Penyelesaiannya</button>
+    <div class="reveal-box violet" id="rv7">
+      <div class="rule-text">5 + y = 8 → y = 3</div>
+      <div class="rule-sub">Titik pertemuannya adalah (5, 3). Coba cek di persamaan kedua: 5 − 3 = 2 ✓</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Pilih Jurus →</button></div>
+  </div>
+
+  <!-- SLIDE 8 -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">Mana yang <span class="hv">Lebih Cepat?</span></div>
+      <div class="slide-sub">Lihat dua soal ini. Klik metode mana yang menurutmu lebih efisien untuk masing-masing!</div>
+    </div>
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="ctag">Soal A</div>
+        <div class="ceq">y = 4x − 1<br>3x + y = 13</div>
+        <button class="pick-btn" onclick="pickMethod(this,'subs','a')">Substitusi</button>
+        <button class="pick-btn" onclick="pickMethod(this,'elim','a')">Eliminasi</button>
+        <div class="pick-feedback" id="fbA"></div>
+      </div>
+      <div class="compare-card">
+        <div class="ctag">Soal B</div>
+        <div class="ceq">2x + y = 14<br>2x − y = 6</div>
+        <button class="pick-btn" onclick="pickMethod(this,'subs','b')">Substitusi</button>
+        <button class="pick-btn" onclick="pickMethod(this,'elim','b')">Eliminasi</button>
+        <div class="pick-feedback" id="fbB"></div>
+      </div>
+    </div>
+    <div class="callout violet"><strong>Tips memilih:</strong> Kalau salah satu persamaan sudah bentuk "y = ..." atau "x = ...", pakai <strong>Substitusi</strong>. Kalau ada koefisien yang sama atau berlawanan tanda (seperti +y dan −y, atau 2x dan 2x), pakai <strong>Eliminasi</strong>.</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Soal Cerita →</button></div>
+  </div>
+
+  <!-- SLIDE 9 -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">Soal Cerita: <span class="h1">Dunia Nyata</span> 🌍</div>
+      <div class="slide-sub">SPLDV nggak cuma angka — sering muncul dalam masalah sehari-hari. Yuk ubah cerita jadi persamaan!</div>
+    </div>
+    <div class="story-card">
+      <div class="stext">"Jumlah umur dua saudara adalah <strong>24 tahun</strong>. Selisih umur mereka adalah <strong>4 tahun</strong>. Berapa umur masing-masing?"</div>
+      <div class="model-arrow">⬇️ diubah jadi model</div>
+      <div class="eq-pair" style="margin:0.8rem 0;">
+        <div class="eq-row e1">x + y = 24</div>
+        <div class="eq-row e2">x − y = 4</div>
+      </div>
+    </div>
+    <div class="callout"><strong>Selesaikan dengan eliminasi</strong> (perhatikan +y dan −y!): jumlahkan kedua persamaan → 2x = 28 → x = 14. Lalu y = 24 − 14 = 10.</div>
+    <div class="callout violet"><strong>Jawaban:</strong> Kakak berumur <strong>14 tahun</strong>, adik berumur <strong>10 tahun</strong>.</div>
+    <div class="story-card">
+      <div class="stext">"1 tiket VIP dan 2 tiket reguler berharga <strong>Rp80.000</strong>. 2 tiket VIP dan 1 tiket reguler berharga <strong>Rp100.000</strong>. Berapa harga masing-masing tiket?"</div>
+      <div class="model-arrow">⬇️ diubah jadi model</div>
+      <div class="eq-pair" style="margin:0.8rem 0;">
+        <div class="eq-row e1">v + 2r = 80.000</div>
+        <div class="eq-row e2">2v + r = 100.000</div>
+      </div>
+    </div>
+    <div class="callout orange"><strong>Tantangan:</strong> Koefisien v dan r di sini tidak langsung sama. Coba pikirkan: bagaimana caranya kamu bisa pakai eliminasi di sini? (Bocoran: kalikan salah satu persamaan dulu!)</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Penutup →</button></div>
+  </div>
+
+  <!-- SLIDE 10 -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Refleksi & <span class="hv">Penutup</span> 🎉</div>
+    </div>
+    <div class="summary-card">
+      <h3>✅ Yang Kamu Pelajari</h3>
+      <div class="summary-item"><span>🔄</span> SPLDV mencari pasangan x dan y yang memenuhi DUA persamaan sekaligus — sama seperti titik pertemuan dua mesin</div>
+      <div class="summary-item"><span>🧮</span> <strong>Substitusi:</strong> ambil nilai satu variabel, lalu suntikkan ke persamaan lain</div>
+      <div class="summary-item"><span>➕</span> <strong>Eliminasi:</strong> jumlahkan atau kurangkan persamaan untuk menghilangkan satu variabel</div>
+      <div class="summary-item"><span>⚖️</span> Pilih metode berdasarkan bentuk soal — bukan hafalan, tapi strategi</div>
+      <div class="summary-item"><span>📖</span> Soal cerita sehari-hari (umur, harga tiket) bisa diubah jadi SPLDV dan diselesaikan dengan cara yang sama</div>
+    </div>
+    <div class="callout violet"><strong>"Matematika bukan hanya mencari jawaban, tetapi juga memilih strategi yang paling efektif."</strong></div>
+    <div class="done-actions">
+      <a href="quicktest18.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise18.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson18.html" class="da-btn da-secondary">Lesson 18</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let currentSlide=1;
+const TOTAL=10;
+function goSlide(n){
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide=n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width=((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleReveal(id){
+  document.getElementById(id).classList.toggle('show');
+}
+function checkSlide5(){
+  const x=parseInt(document.getElementById('guessX5').value);
+  const y=parseInt(document.getElementById('guessY5').value);
+  const res=document.getElementById('resultSlide5');
+  if(isNaN(x)||isNaN(y)){res.textContent='Isi kedua kotak dulu ya!';res.style.color='var(--muted)';return;}
+  if(x===3&&y===6){
+    res.innerHTML='🎉 BENAR! x=3, y=6 memenuhi kedua persamaan.';
+    res.style.color='var(--neon)';
+  } else {
+    const c1=x+y===9, c2=y===2*x;
+    let msg='Belum tepat. ';
+    if(!c1) msg+='Cek lagi: x+y harus = 9. ';
+    if(!c2) msg+='Cek lagi: y harus = 2 kali x. ';
+    res.innerHTML=msg;
+    res.style.color='var(--red)';
+  }
+}
+function checkSlide7(){
+  const y=parseInt(document.getElementById('guessY7').value);
+  const res=document.getElementById('resultSlide7');
+  if(isNaN(y)){res.textContent='Masukkan angka dulu ya!';res.style.color='var(--muted)';return;}
+  if(y===3){
+    res.innerHTML='🎉 BENAR! y = 3. Titik pertemuannya (5, 3)!';
+    res.style.color='var(--neon)';
+  } else {
+    res.innerHTML='Belum tepat. Ingat: 5 + y = 8, jadi y = 8 − 5.';
+    res.style.color='var(--red)';
+  }
+}
+const METHOD_ANSWERS={a:'subs',b:'elim'};
+const METHOD_EXPL={
+  a:'y sudah "sendirian" di persamaan pertama (y = 4x − 1), jadi tinggal disuntikkan — Substitusi lebih cepat!',
+  b:'Koefisien y berlawanan tanda (+y dan −y), tinggal dijumlahkan supaya y hilang — Eliminasi lebih cepat!'
+};
+function pickMethod(btn, chosen, soal){
+  const card=btn.closest('.compare-card');
+  const buttons=card.querySelectorAll('.pick-btn');
+  const correct=METHOD_ANSWERS[soal];
+  buttons.forEach(b=>b.disabled=true);
+  buttons.forEach(b=>{
+    const isThisCorrectBtn = b===btn ? chosen===correct : null;
+  });
+  if(chosen===correct){
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    buttons.forEach(b=>{ if(b!==btn) b.classList.add('correct'); });
+  }
+  const fb=document.getElementById('fb'+soal.toUpperCase());
+  fb.textContent=(chosen===correct?'✅ Tepat! ':'❌ Coba lagi lain kali. ')+METHOD_EXPL[soal];
+}
+</script>
+</body>
+</html>

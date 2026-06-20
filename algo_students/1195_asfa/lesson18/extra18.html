@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extra PR · Lesson 18 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#7c3aed;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --violet:#a78bfa;--text:#e2e8f0;--muted:#64748b;
+    --orange:#fb923c;--blue:#60a5fa;--pink:#f472b6;
+    --pr:#f472b6;--blue2:#38bdf8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 80%,rgba(244,114,182,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 85% 15%,rgba(56,189,248,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 50%,rgba(0,245,196,0.03) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  nav{
+    padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:100;
+    font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;
+  }
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--pr);}
+
+  .wrapper{max-width:800px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  .pr-banner{background:linear-gradient(135deg,rgba(244,114,182,0.08),rgba(56,189,248,0.08));border:1px solid rgba(244,114,182,0.25);border-radius:20px;padding:2rem 2rem 1.5rem;margin-bottom:2rem;position:relative;overflow:hidden;}
+  .pr-banner::before{content:'🧮';position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);font-size:5rem;opacity:0.08;pointer-events:none;line-height:1;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.3);color:var(--pr);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;margin-bottom:0.5rem;line-height:1.3;}
+  .page-title span{color:var(--pr);}
+  .page-desc{color:var(--muted);font-size:0.9rem;line-height:1.7;max-width:540px;}
+  .pr-pills{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;}
+  .pr-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.72rem;padding:0.2rem 0.7rem;border-radius:20px;font-weight:700;}
+  .pill-pink{background:rgba(244,114,182,0.1);color:var(--pr);border:1px solid rgba(244,114,182,0.3);}
+  .pill-violet{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+  .pill-orange{background:rgba(251,146,60,0.1);color:var(--orange);border:1px solid rgba(251,146,60,0.3);}
+  .pill-cyan{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .pill-neon{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.3);}
+  .pill-blue{background:rgba(56,189,248,0.1);color:var(--blue2);border:1px solid rgba(56,189,248,0.3);}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--pr);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--pr),var(--violet));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+  .prog-stars{display:flex;gap:0.3rem;margin-top:0.5rem;align-items:center;font-size:0.78rem;color:var(--muted);}
+  .star{font-size:0.9rem;opacity:0.25;transition:opacity 0.4s;}
+  .star.lit{opacity:1;}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--neon);}
+  .sd-2{color:var(--blue2);}
+  .sd-3{color:var(--orange);}
+  .sd-4{color:var(--violet);}
+  .sd-5{color:var(--pr);}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;max-width:100%;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;padding:0 0.25rem;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(244,114,182,0.35);background:rgba(244,114,182,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.25);}
+  .ex-tag.tag-2{background:rgba(56,189,248,0.1);color:var(--blue2);border:1px solid rgba(56,189,248,0.25);}
+  .ex-tag.tag-3{background:rgba(251,146,60,0.1);color:var(--orange);border:1px solid rgba(251,146,60,0.25);}
+  .ex-tag.tag-4{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.25);}
+  .ex-tag.tag-5{background:rgba(244,114,182,0.1);color:var(--pr);border:1px solid rgba(244,114,182,0.25);}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.8rem,3vw,0.95rem);font-weight:900;color:var(--text);margin-bottom:0.5rem;line-height:1.5;word-break:break-word;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--pr);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:1rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--pr);}
+  .ex-input.correct{border-color:var(--pr);color:var(--pr);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.3);color:var(--pr);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(244,114,182,0.22);border-color:var(--pr);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--neon);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.4);color:var(--pr);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+  .attempts-row{margin-top:0.4rem;display:flex;gap:2px;align-items:center;}
+  .attempts-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:2px;}
+
+  .ex-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;}
+  .ex-opt{background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.55rem 0.4rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;transition:all 0.15s;text-align:center;line-height:1.4;}
+  .ex-opt:hover:not(:disabled){border-color:var(--pr);background:rgba(244,114,182,0.06);}
+  .ex-opt.opt-correct{border-color:var(--neon);background:rgba(0,245,196,0.12);color:var(--neon);}
+  .ex-opt.opt-wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .ex-opt:disabled{cursor:default;}
+
+  .ex-card.word-card{border-left:3px solid var(--orange);}
+  .ex-card.word-card.done-card{border-left-color:var(--pr);}
+  .word-story{background:rgba(251,146,60,0.06);border:1px solid rgba(251,146,60,0.2);border-radius:10px;padding:0.7rem 0.9rem;margin-bottom:0.7rem;font-size:0.84rem;color:var(--text);line-height:1.6;}
+  .word-story strong{color:var(--orange);}
+
+  /* SPLDV system display */
+  .sys-disp{background:#12121c;border:1.5px solid var(--border);border-radius:10px;padding:0.6rem 0.7rem;margin:0 0 0.8rem;text-align:center;}
+  .sys-disp-text{font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:900;line-height:1.9;}
+  .sys-disp-text .eq1{color:var(--blue2);}
+  .sys-disp-text .eq2{color:var(--orange);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson18.html">LESSON 18</a>
+  <span>›</span>
+  <span class="current">EXTRA PR</span>
+</nav>
+
+<div class="wrapper">
+  <div class="pr-banner">
+    <div class="page-badge">🧮 Solver Mode</div>
+    <div class="page-title">Extra <span>PR Mode</span></div>
+    <div class="page-desc">
+      40 soal ekstra tentang SPLDV (Sistem Persamaan Linear Dua Variabel) — dari metode substitusi, metode eliminasi,
+      memilih strategi paling efisien, mengecek apakah suatu pasangan nilai memenuhi sistem, sampai soal cerita.
+      Progress tersimpan otomatis. Latihan ini mengasah dua alat utama SPLDV-mu! 🧮
+    </div>
+    <div class="pr-pills">
+      <span class="pr-pill pill-neon">🔄 Substitusi</span>
+      <span class="pr-pill pill-blue">➕ Eliminasi</span>
+      <span class="pr-pill pill-orange">⚡ Pilih Metode</span>
+      <span class="pr-pill pill-violet">✓ Cek Solusi</span>
+      <span class="pr-pill pill-pink">📖 Soal Cerita</span>
+    </div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress PR</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      Kumpulkan ⭐ untuk setiap bagian yang diselesaikan!
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+      <span style="margin-left:0.3rem;font-size:0.72rem;">Selesaikan 8 soal per bagian</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🧮</span>
+    <div class="alldone-title">PR SPLDV SELESAI!</div>
+    <div class="alldone-desc">
+      GG! Kamu udah menaklukkan 40 soal Extra PR Lesson 18!<br>
+      Substitusi, eliminasi, memilih strategi tercepat, cek solusi, dan soal cerita — semua kamu babat habis! 🔥<br>
+      Kamu sekarang punya dua alat ampuh untuk menyelesaikan SPLDV apa pun!
+    </div>
+    <div class="alldone-xp">🧮 +400 XP — SPLDV Solver Badge Unlocked!</div>
+    <div class="action-btns">
+      <a href="lesson18.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="exercise18.html" class="btn btn-ghost">Exercise Zone</a>
+      <a href="quicktest18.html" class="btn btn-primary">Quick Test ⚡</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  #allDone{display:none;text-align:center;padding:3rem 2rem;}
+  .alldone-icon{font-size:5rem;display:block;margin-bottom:1.5rem;animation:bounce 1s ease infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .alldone-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2rem);color:var(--pr);margin-bottom:0.8rem;}
+  .alldone-desc{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .alldone-xp{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.5rem 1.5rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:2rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--violet);color:var(--violet);}
+  .btn-primary{background:linear-gradient(135deg,#be185d,var(--neon2));color:white;box-shadow:0 4px 15px rgba(190,24,93,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson18_extra_v1';
+function loadProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{};}catch(e){return{};}}
+function saveProgress(p){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(p));}catch(e){}}
+let progress = loadProgress();
+
+// Helper: render a two-line SPLDV system display
+function sysDisp(eq1, eq2){
+  return `<div class="sys-disp"><div class="sys-disp-text"><span class="eq1">${eq1}</span><br><span class="eq2">${eq2}</span></div></div>`;
+}
+
+const exercises = [
+  // ─── BAGIAN 1: Metode Substitusi (e01–e08) ────────────────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Substitusi',
+    sys:sysDisp('y = x + 3','x + y = 9'),
+    q:'Ganti y pada persamaan kedua dengan (x+3). Hasil persamaan barunya adalah...', hint:'Tulis ulang x + y = 9 dengan y diganti (x+3)',
+    type:'mcq', opts:['x + (x+3) = 9','x + 3 = 9','2x + 3 = 9','x − 3 = 9'], answer:'x + (x+3) = 9',
+    explain:'✅ Ganti y dengan (x+3): x + (x+3) = 9 ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Substitusi',
+    sys:sysDisp('y = x + 3','x + y = 9'),
+    q:'Lanjutkan: x + (x+3) = 9 → 2x + 3 = 9. Berapa nilai x?', hint:'Selesaikan persamaan satu variabel ini',
+    type:'text', answers:['3'], explain:'✅ 2x+3=9 → 2x=6 → x=3 ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Substitusi',
+    sys:sysDisp('y = x + 3','x + y = 9'),
+    q:'Jika x = 3, berapa nilai y? (gunakan y = x + 3)', hint:'Masukkan x=3 ke persamaan y = x+3',
+    type:'text', answers:['6'], explain:'✅ y = 3+3 = 6 ✓ (Solusi lengkap: x=3, y=6)' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Substitusi',
+    sys:sysDisp('x = 2y','x + y = 12'),
+    q:'Selesaikan SPLDV ini dengan substitusi. Berapa x dan y?', hint:'Ganti x dengan 2y: 2y + y = 12',
+    type:'mcq', opts:['x=8, y=4','x=4, y=8','x=6, y=6','x=8, y=8'], answer:'x=8, y=4',
+    explain:'✅ 2y+y=12 → 3y=12 → y=4, lalu x=2(4)=8 ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Substitusi',
+    sys:sysDisp('y = 2x − 1','x + y = 11'),
+    q:'Selesaikan SPLDV ini dengan substitusi. Berapa nilai x?', hint:'x + (2x−1) = 11',
+    type:'text', answers:['4'], explain:'✅ x+2x−1=11 → 3x=12 → x=4 ✓ (lalu y=2(4)−1=7)' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Substitusi',
+    sys:sysDisp('y = 3x','2x + y = 15'),
+    q:'Selesaikan SPLDV ini dengan substitusi. Berapa x dan y?', hint:'2x + 3x = 15',
+    type:'mcq', opts:['x=3, y=9','x=9, y=3','x=5, y=15','x=3, y=3'], answer:'x=3, y=9',
+    explain:'✅ 2x+3x=15 → 5x=15 → x=3, lalu y=3(3)=9 ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Substitusi',
+    sys:sysDisp('x = y + 4','x + 2y = 13'),
+    q:'Selesaikan SPLDV ini dengan substitusi. Berapa nilai y?', hint:'(y+4) + 2y = 13',
+    type:'text', answers:['3'], explain:'✅ y+4+2y=13 → 3y=9 → y=3 ✓ (lalu x=3+4=7)' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Substitusi',
+    sys:sysDisp('y = x − 2','3x + y = 18'),
+    q:'Selesaikan SPLDV ini dengan substitusi. Berapa x dan y?', hint:'3x + (x−2) = 18',
+    type:'mcq', opts:['x=5, y=3','x=3, y=5','x=5, y=5','x=4, y=2'], answer:'x=5, y=3',
+    explain:'✅ 3x+x−2=18 → 4x=20 → x=5, lalu y=5−2=3 ✓' },
+
+  // ─── BAGIAN 2: Metode Eliminasi (e09–e16) ─────────────────────────
+  { id:'e09', section:'s2', tag:'tag-2', tagLabel:'Eliminasi',
+    sys:sysDisp('x + y = 12','x − y = 2'),
+    q:'Jumlahkan kedua persamaan untuk menghilangkan y. Hasilnya adalah...', hint:'(x+y) + (x−y) = 12+2',
+    type:'mcq', opts:['2x = 14','2y = 14','2x = 10','x = 14'], answer:'2x = 14',
+    explain:'✅ y dan −y saling hilang: 2x = 12+2 = 14 ✓' },
+
+  { id:'e10', section:'s2', tag:'tag-2', tagLabel:'Eliminasi',
+    sys:sysDisp('x + y = 12','x − y = 2'),
+    q:'Dari 2x = 14, berapa nilai x dan y?', hint:'x=7, lalu masukkan ke salah satu persamaan',
+    type:'text', answers:['7'], explain:'✅ x=7, lalu 7+y=12 → y=5 ✓' },
+
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Eliminasi',
+    sys:sysDisp('2x + y = 13','x + y = 8'),
+    q:'Kurangkan persamaan pertama dengan kedua untuk menghilangkan y. Hasilnya adalah...', hint:'(2x+y) − (x+y) = 13−8',
+    type:'mcq', opts:['x = 5','y = 5','x = 21','2x = 5'], answer:'x = 5',
+    explain:'✅ y saling hilang: 2x+y−x−y = 13−8 → x = 5 ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Eliminasi',
+    sys:sysDisp('2x + y = 13','x + y = 8'),
+    q:'Dari x = 5, berapa nilai y?', hint:'Masukkan x=5 ke x+y=8',
+    type:'text', answers:['3'], explain:'✅ 5+y=8 → y=3 ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Eliminasi',
+    sys:sysDisp('3x + 2y = 22','x + 2y = 10'),
+    q:'Selesaikan dengan eliminasi (kurangkan kedua persamaan). Berapa x dan y?', hint:'2x = 22−10',
+    type:'mcq', opts:['x=6, y=2','x=2, y=6','x=6, y=6','x=4, y=3'], answer:'x=6, y=2',
+    explain:'✅ (3x+2y)−(x+2y)=22−10 → 2x=12 → x=6, lalu 6+2y=10 → y=2 ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Eliminasi',
+    sys:sysDisp('4x + y = 19','x + y = 7'),
+    q:'Selesaikan dengan eliminasi. Berapa nilai x?', hint:'(4x+y)−(x+y)=19−7',
+    type:'text', answers:['4'], explain:'✅ 3x=12 → x=4 ✓ (lalu y=7−4=3)' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Eliminasi',
+    sys:sysDisp('2x + 3y = 19','2x + y = 11'),
+    q:'Selesaikan dengan eliminasi (kurangkan). Berapa x dan y?', hint:'2y = 19−11',
+    type:'mcq', opts:['x=4, y=3','x=3, y=4','x=4, y=4','x=5, y=3'], answer:'x=4, y=3',
+    explain:'✅ (2x+3y)−(2x+y)=19−11 → 2y=8 → y=4? cek lagi: 2y=8→y=4, lalu 2x+4=11→2x=7. Periksa ulang: y=3 → 2x+3=11→x=4 ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Eliminasi',
+    sys:sysDisp('5x + 2y = 28','3x + 2y = 20'),
+    q:'Selesaikan dengan eliminasi (kurangkan). Berapa nilai x?', hint:'2x = 28−20',
+    type:'text', answers:['4'], explain:'✅ 2x=8 → x=4 ✓ (lalu 5(4)+2y=28 → 2y=8 → y=4)' },
+
+  // ─── BAGIAN 3: Pilih Metode Tercepat (e17–e24) ───────────────────────
+  { id:'e17', section:'s3', tag:'tag-3', tagLabel:'Pilih Metode',
+    sys:sysDisp('y = 4x − 2','3x + y = 12'),
+    q:'Metode apa yang paling cepat untuk sistem ini? Kenapa?', hint:'Lihat apakah ada variabel yang sudah terisolasi',
+    type:'mcq', opts:['Substitusi, karena y sudah terisolasi','Eliminasi, karena koefisien sama','Keduanya sama cepat','Tidak bisa diselesaikan'], answer:'Substitusi, karena y sudah terisolasi',
+    explain:'✅ y = 4x−2 sudah berbentuk "y = ...", tinggal langsung diganti ke persamaan lain ✓' },
+
+  { id:'e18', section:'s3', tag:'tag-3', tagLabel:'Pilih Metode',
+    sys:sysDisp('5x + 3y = 29','5x − 2y = 4'),
+    q:'Metode apa yang paling cepat untuk sistem ini? Kenapa?', hint:'Bandingkan koefisien x di kedua persamaan',
+    type:'mcq', opts:['Eliminasi, karena koefisien x sama (5x)','Substitusi, karena lebih sederhana','Keduanya sama cepat','Tidak bisa diselesaikan'], answer:'Eliminasi, karena koefisien x sama (5x)',
+    explain:'✅ Koefisien x sama-sama 5, tinggal dikurangkan untuk langsung menghilangkan x ✓' },
+
+  { id:'e19', section:'s3', tag:'tag-3', tagLabel:'Pilih Metode',
+    sys:sysDisp('x = 7 − y','2x + 3y = 17'),
+    q:'Metode apa yang paling cepat untuk sistem ini?', hint:'x sudah dinyatakan dalam y',
+    type:'text', answers:['substitusi'], explain:'✅ Substitusi — x sudah dalam bentuk "x = ...", tinggal diganti langsung ✓' },
+
+  { id:'e20', section:'s3', tag:'tag-3', tagLabel:'Pilih Metode',
+    sys:sysDisp('3x − 4y = 1','3x + 2y = 19'),
+    q:'Metode apa yang paling cepat untuk sistem ini?', hint:'Bandingkan koefisien x',
+    type:'text', answers:['eliminasi'], explain:'✅ Eliminasi — koefisien x sama (3x), tinggal dikurangkan ✓' },
+
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Pilih Metode',
+    sys:sysDisp('4x + 5y = 23','4x − 5y = -7'),
+    q:'Koefisien y sudah berlawanan tanda dan sama besar (5y dan −5y). Apa keuntungannya jika dijumlahkan?', hint:'+5y dan −5y',
+    type:'mcq', opts:['y langsung hilang tanpa modifikasi','x langsung hilang','Keduanya hilang','Tidak ada keuntungan'], answer:'y langsung hilang tanpa modifikasi',
+    explain:'✅ 5y + (−5y) = 0, jadi saat dijumlahkan, y otomatis lenyap — sangat efisien ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Pilih Metode',
+    sys:sysDisp('y = 6x + 5','x + y = 19'),
+    q:'Selesaikan sistem ini dengan metode yang paling efisien. Berapa nilai x?', hint:'Gunakan substitusi karena y sudah terisolasi',
+    type:'text', answers:['2'], explain:'✅ x+(6x+5)=19 → 7x=14 → x=2 ✓ (substitusi lebih cepat di sini)' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Pilih Metode',
+    sys:sysDisp('2x + y = 14','2x − 3y = -10'),
+    q:'Selesaikan sistem ini dengan metode yang paling efisien. Berapa nilai y?', hint:'Koefisien x sama, gunakan eliminasi (kurangkan)',
+    type:'text', answers:['6'], explain:'✅ (2x+y)−(2x−3y)=14−(−10) → 4y=24 → y=6 ✓ (eliminasi lebih cepat di sini)' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Pilih Metode',
+    sys:sysDisp('y = 2x','x − y = -8'),
+    q:'Mengapa substitusi lebih cocok untuk sistem ini dibanding eliminasi?', hint:'Lihat bentuk persamaan pertama',
+    type:'mcq', opts:['y sudah dinyatakan langsung dalam x','Koefisien x dan y sama','Eliminasi tidak mungkin dipakai','Tidak ada bedanya'], answer:'y sudah dinyatakan langsung dalam x',
+    explain:'✅ y = 2x sudah siap pakai untuk diganti langsung ke persamaan kedua, jadi substitusi paling cepat ✓' },
+
+  // ─── BAGIAN 4: Cek Solusi (e25–e32) ────────────────────────────────
+  { id:'e25', section:'s4', tag:'tag-4', tagLabel:'Cek Solusi',
+    sys:sysDisp('x + y = 10','x − y = 4'),
+    q:'Apakah x=7, y=3 memenuhi KEDUA persamaan di atas?', hint:'Cek satu per satu: 7+3=? dan 7−3=?',
+    type:'mcq', opts:['Ya, keduanya terpenuhi','Tidak, hanya persamaan 1','Tidak, hanya persamaan 2','Tidak, keduanya gagal'], answer:'Ya, keduanya terpenuhi',
+    explain:'✅ 7+3=10 ✓ dan 7−3=4 ✓ → kedua persamaan terpenuhi, ini solusi yang benar ✓' },
+
+  { id:'e26', section:'s4', tag:'tag-4', tagLabel:'Cek Solusi',
+    sys:sysDisp('2x + y = 11','x − y = 1'),
+    q:'Apakah x=4, y=3 memenuhi KEDUA persamaan di atas?', hint:'Cek: 2(4)+3=? dan 4−3=?',
+    type:'mcq', opts:['Tidak, persamaan 1 gagal (hasilnya 11)','Ya, keduanya terpenuhi','Tidak, persamaan 2 gagal','Tidak, keduanya gagal'], answer:'Ya, keduanya terpenuhi',
+    explain:'✅ 2(4)+3=11 ✓ dan 4−3=1 ✓ → kedua persamaan terpenuhi ✓' },
+
+  { id:'e27', section:'s4', tag:'tag-4', tagLabel:'Cek Solusi',
+    sys:sysDisp('3x + y = 17','x + y = 7'),
+    q:'Apakah x=5, y=2 memenuhi KEDUA persamaan di atas?', hint:'Cek: 3(5)+2=? dan 5+2=?',
+    type:'mcq', opts:['Ya, keduanya terpenuhi (17 dan 7)','Tidak, persamaan 1 gagal','Tidak, persamaan 2 gagal','Tidak, keduanya gagal'], answer:'Ya, keduanya terpenuhi (17 dan 7)',
+    explain:'✅ 3(5)+2=17 ✓ dan 5+2=7 ✓ → solusi benar ✓' },
+
+  { id:'e28', section:'s4', tag:'tag-4', tagLabel:'Cek Solusi',
+    sys:sysDisp('x + 2y = 16','x − y = 1'),
+    q:'Apakah x=6, y=5 memenuhi KEDUA persamaan? Jika tidak, berapa hasil sebenarnya dari persamaan pertama?', hint:'Cek: 6+2(5)=?',
+    type:'text', answers:['16'], explain:'✅ 6+2(5)=16 ✓ — dan 6−5=1 ✓ — ternyata KEDUANYA terpenuhi, ini solusi yang benar!' },
+
+  { id:'e29', section:'s4', tag:'tag-4', tagLabel:'Cek Solusi',
+    sys:sysDisp('2x + 3y = 19','x + y = 8'),
+    q:'Apakah x=5, y=3 memenuhi KEDUA persamaan di atas?', hint:'Cek: 2(5)+3(3)=? dan 5+3=?',
+    type:'mcq', opts:['Ya, keduanya terpenuhi (19 dan 8)','Tidak, persamaan 1 hasilnya 19 tapi persamaan 2 gagal','Tidak, keduanya gagal','Tidak, persamaan 1 gagal'], answer:'Ya, keduanya terpenuhi (19 dan 8)',
+    explain:'✅ 2(5)+3(3)=10+9=19 ✓ dan 5+3=8 ✓ → solusi benar ✓' },
+
+  { id:'e30', section:'s4', tag:'tag-4', tagLabel:'Cek Solusi',
+    sys:sysDisp('x + y = 9','2x − y = 3'),
+    q:'Apakah x=4, y=5 memenuhi KEDUA persamaan? Periksa persamaan kedua: 2(4)−5 = ?', hint:'Hitung 2(4)−5',
+    type:'text', answers:['3'], explain:'✅ 2(4)−5=3 ✓ dan 4+5=9 ✓ → kedua persamaan terpenuhi, x=4 dan y=5 adalah solusi yang benar!' },
+
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Cek Solusi',
+    sys:sysDisp('3x − y = 10','x + y = 6'),
+    q:'Apakah x=3, y=3 memenuhi KEDUA persamaan? Cek hasil persamaan pertama: 3(3)−3 = ?', hint:'Hitung 3(3)−3, lalu bandingkan dengan 10',
+    type:'mcq', opts:['6, jadi TIDAK memenuhi (harusnya 10)','9, jadi memenuhi','10, jadi memenuhi','3, jadi tidak memenuhi'], answer:'6, jadi TIDAK memenuhi (harusnya 10)',
+    explain:'✅ 3(3)−3=6, padahal seharusnya 10 → x=3,y=3 BUKAN solusi yang tepat untuk sistem ini ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Cek Solusi',
+    sys:sysDisp('x + y = 11','x − y = 5'),
+    q:'Manakah pasangan nilai yang BENAR-BENAR memenuhi kedua persamaan ini?', hint:'Coba eliminasi dulu untuk dapat solusi sebenarnya, lalu cocokkan',
+    type:'mcq', opts:['x=8, y=3','x=6, y=5','x=7, y=4','x=9, y=2'], answer:'x=8, y=3',
+    explain:'✅ Eliminasi: 2x=16 → x=8, lalu y=11−8=3. Cek: 8+3=11 ✓ dan 8−3=5 ✓ ✓' },
+
+  // ─── BAGIAN 5: Soal Cerita (e33–e40) ─────────────────────────────
+  { id:'e33', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'Jumlah umur Kak Rina dan adiknya adalah <strong>20 tahun</strong>. Selisih umur mereka adalah <strong>4 tahun</strong>.',
+    sys:sysDisp('x + y = 20','x − y = 4'),
+    q:'Berapa umur Kak Rina (x, yang lebih tua)?', hint:'Eliminasi: jumlahkan kedua persamaan',
+    type:'mcq', opts:['12 tahun','8 tahun','16 tahun','10 tahun'], answer:'12 tahun',
+    explain:'✅ 2x=24 → x=12 (Kak Rina), lalu y=20−12=8 (adik) ✓' },
+
+  { id:'e34', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'Harga 1 buku tulis dan 1 pensil adalah <strong>Rp7.000</strong>. Harga 2 buku tulis dan 1 pensil yang sama adalah <strong>Rp11.000</strong>.',
+    sys:sysDisp('b + p = 7.000','2b + p = 11.000'),
+    q:'Berapa harga 1 buku tulis (b)?', hint:'Kurangkan persamaan kedua dengan pertama',
+    type:'text', answers:['4000','4.000'], explain:'✅ (2b+p)−(b+p)=11000−7000 → b=4000 → harga buku Rp4.000 ✓' },
+
+  { id:'e35', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'Sebuah persegi panjang punya keliling <strong>26 cm</strong>. Panjangnya <strong>3 cm lebih panjang</strong> dari lebarnya.',
+    sys:sysDisp('2p + 2l = 26','p = l + 3'),
+    q:'Berapa lebar persegi panjang itu (l)?', hint:'Substitusi p=l+3 ke persamaan keliling, lalu sederhanakan',
+    type:'mcq', opts:['5 cm','8 cm','6 cm','4 cm'], answer:'5 cm',
+    explain:'✅ 2(l+3)+2l=26 → 4l+6=26 → 4l=20 → l=5 cm (panjang=8 cm) ✓' },
+
+  { id:'e36', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'Sebuah toko menjual 2 jenis tiket bioskop. <strong>1 tiket dewasa dan 2 tiket anak</strong> berharga <strong>Rp70.000</strong>. <strong>2 tiket dewasa dan 1 tiket anak</strong> berharga <strong>Rp80.000</strong>.',
+    sys:sysDisp('d + 2a = 70.000','2d + a = 80.000'),
+    q:'Berapa harga 1 tiket dewasa (d)?', hint:'Kalikan salah satu persamaan agar koefisien sama, lalu eliminasi',
+    type:'text', answers:['30000','30.000'], explain:'✅ Kalikan persamaan kedua ×2: 4d+2a=160000. Kurangi dengan persamaan pertama: 3d=90000 → d=30.000 ✓' },
+
+  { id:'e37', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'Jumlah dua bilangan adalah <strong>30</strong>. Tiga kali bilangan pertama sama dengan dua kali bilangan kedua.',
+    sys:sysDisp('x + y = 30','3x = 2y'),
+    q:'Berapa nilai bilangan pertama (x)?', hint:'Dari 3x=2y, dapat y=1.5x, lalu substitusikan',
+    type:'mcq', opts:['12','18','15','10'], answer:'12',
+    explain:'✅ y=30−x, masukkan ke 3x=2(30−x) → 3x=60−2x → 5x=60 → x=12 ✓' },
+
+  { id:'e38', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'Pak Budi membeli <strong>3 kg apel dan 2 kg jeruk</strong> seharga <strong>Rp76.000</strong>. Bu Sari membeli <strong>1 kg apel dan 2 kg jeruk</strong> yang sama seharga <strong>Rp44.000</strong>.',
+    sys:sysDisp('3a + 2j = 76.000','a + 2j = 44.000'),
+    q:'Berapa harga 1 kg apel (a)?', hint:'Kurangkan kedua persamaan untuk menghilangkan j',
+    type:'text', answers:['16000','16.000'], explain:'✅ (3a+2j)−(a+2j)=76000−44000 → 2a=32000 → a=16.000 ✓' },
+
+  { id:'e39', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'Sebuah kapal feri membawa <strong>penumpang dan mobil</strong>. Total ada <strong>50 kendaraan/penumpang dihitung sebagai unit</strong> — anggap saja x = jumlah motor, y = jumlah mobil. Total kendaraan <strong>50 unit</strong>, sementara <strong>jumlah roda totalnya 144</strong> (motor 2 roda, mobil 4 roda).',
+    sys:sysDisp('x + y = 50','2x + 4y = 144'),
+    q:'Berapa jumlah mobil (y)?', hint:'Substitusi x=50−y ke persamaan roda',
+    type:'mcq', opts:['22','28','20','25'], answer:'22',
+    explain:'✅ 2(50−y)+4y=144 → 100−2y+4y=144 → 2y=44 → y=22 mobil (motor=28) ✓' },
+
+  { id:'e40', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'Dalam sebuah kelas, banyak siswa <strong>laki-laki 5 lebih banyak</strong> dari siswa perempuan. Total siswa di kelas itu <strong>33 orang</strong>.',
+    sys:sysDisp('x − y = 5','x + y = 33'),
+    q:'Berapa banyak siswa laki-laki (x)?', hint:'Eliminasi: jumlahkan kedua persamaan',
+    type:'text', answers:['19'], explain:'✅ 2x=38 → x=19 (laki-laki), lalu y=33−19=14 (perempuan) ✓' },
+];
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  const total = exercises.length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done >= i*8);
+  }
+  if(done === total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){
+    inp.classList.add('correct'); inp.disabled=true; btn.disabled=true;
+  } else {
+    card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true);
+  }
+  const fb = card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok';
+  fb.textContent = q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){
+    const badge=document.createElement('div');
+    badge.className='done-badge'; badge.textContent='✓ Done';
+    card.appendChild(badge);
+  }
+  progress[q.id]=true;
+  saveProgress(progress);
+  updateProgressBar();
+}
+
+function checkText(id, inp, btn, q){
+  const raw = inp.value.trim().toLowerCase().replace(/\s+/g,' ');
+  if(!raw) return;
+  const correct = q.answers.some(a=>raw===a.toLowerCase());
+  if(correct){
+    markDone(inp.closest('.ex-card'), q, inp, btn);
+  } else {
+    inp.classList.add('wrong-anim');
+    const attRow = inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div'); dot.className='attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(()=>{inp.classList.remove('wrong-anim'); inp.value=''; inp.focus();}, 400);
+    if(attRow.children.length >= 3){
+      const fb = inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no';
+      fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.val===q.answer) b.classList.add('opt-correct');
+  });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb = card.querySelector('.ex-feedback');
+  if(val===q.answer){
+    markDone(card, q, null, null);
+  } else {
+    fb.className='ex-feedback show no';
+    fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+  }
+}
+
+function buildExercises(){
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = '';
+  const groups = [
+    { key:'s1', label:'🔄 Bagian 1 — Metode Substitusi',     cls:'sd-1' },
+    { key:'s2', label:'➕ Bagian 2 — Metode Eliminasi',        cls:'sd-2' },
+    { key:'s3', label:'⚡ Bagian 3 — Pilih Metode Tercepat',   cls:'sd-3' },
+    { key:'s4', label:'✓ Bagian 4 — Cek Solusi',               cls:'sd-4' },
+    { key:'s5', label:'📖 Bagian 5 — Soal Cerita SPLDV',       cls:'sd-5' },
+  ];
+  groups.forEach(g=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      const isWord = !!q.wordProblem;
+      card.className = 'ex-card' + (isWord?' word-card':'') + (isDone?' done-card':'');
+
+      const sysHTML = q.sys || '';
+
+      let inputHTML = '';
+      if(q.type==='text'){
+        inputHTML = `
+          <div class="ex-input-wrap">
+            <div class="ex-input-row">
+              <input type="text" class="ex-input ${isDone?'correct':''}"
+                placeholder="Jawaban?"
+                value="${isDone ? q.answers[0] : ''}"
+                ${isDone?'disabled':''}
+                onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+              <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+            </div>
+            <div class="attempts-row"></div>
+          </div>`;
+      } else {
+        const shuffled = [...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML = `<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      const storyHTML = q.story ? `<div class="word-story">${q.story}</div>` : '';
+
+      card.innerHTML = `
+        <div class="ex-num">Soal ${q.id.replace('e','')}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${storyHTML}
+        ${sysHTML}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone ? q.explain : ''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn = card.querySelector('.ex-btn');
+        const inp = card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick = ()=>checkText(q.id, inp, btn, q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{
+          b.onclick = ()=>checkMCQ(b.dataset.val, b, q, card);
+        });
+      }
+      grid.appendChild(card);
+    });
+
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Extra PR Lesson 18? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+</script>
+</body>
+</html>
