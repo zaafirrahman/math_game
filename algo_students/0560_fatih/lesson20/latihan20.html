@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan · Koordinat Kartesius · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);
+    --red:#e85040;
+    --steel:#4a90b8;--steel-bg:rgba(74,144,184,0.1);--steel-light:#7ab8d8;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(74,144,184,0.05) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--green);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  #intro{text-align:center;margin-bottom:1rem;}
+  .home-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .home-title{font-family:'Rajdhani',sans-serif;font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;color:var(--green);letter-spacing:3px;margin-bottom:0.5rem;}
+  .home-sub{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1.5rem;}
+  .info-row{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;}
+  .info-chip{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.5rem 1rem;font-family:'Rajdhani',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:1px;color:var(--text-mid);}
+  .info-chip span{color:var(--steel-light);}
+  .start-btn{background:linear-gradient(135deg,var(--green),#30a860);color:#000;border:none;padding:1rem 3rem;border-radius:6px;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:800;letter-spacing:3px;cursor:pointer;box-shadow:0 5px 18px rgba(72,200,112,0.3);transition:all 0.2s;}
+  .start-btn:hover{transform:translateY(-3px);}
+
+  #quiz{display:none;}
+  .progress-wrap{margin-bottom:1.5rem;}
+  .progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;}
+  .progress-label{font-family:'Rajdhani',sans-serif;font-size:0.72rem;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;}
+  .progress-val{font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:700;color:var(--steel-light);}
+  .progress-bg{background:var(--border);border-radius:4px;height:6px;overflow:hidden;}
+  .progress-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--steel),var(--steel-light));transition:width 0.4s ease;}
+
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent);}
+  .q-tag{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:0.9rem;}
+  .q-text{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.05rem;line-height:1.55;margin-bottom:1.1rem;letter-spacing:0.3px;}
+  .q-context{color:var(--text-muted);font-size:0.86rem;line-height:1.6;margin-bottom:1rem;font-style:italic;}
+
+  .plane-wrap{display:flex;justify-content:center;margin:0.5rem 0 1.1rem;}
+  .plane-wrap svg{max-width:100%;height:auto;}
+
+  /* Fill-in (isian) inputs */
+  .fillin-row{display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:1rem;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.2rem;}
+  .fillin-row input{width:56px;text-align:center;background:var(--track);border:2px solid var(--border2);border-radius:8px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;padding:0.5rem 0.3rem;}
+  .fillin-row input:focus{outline:none;border-color:var(--steel-light);}
+  .fillin-row input.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .fillin-row input.wrong{border-color:var(--red);background:rgba(232,80,64,0.08);color:var(--red);}
+  .fillin-submit{display:flex;justify-content:center;margin-bottom:0.6rem;}
+
+  .opts{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:0.8rem;}
+  .opt-btn{background:var(--track);border:1px solid var(--border2);color:var(--text);padding:0.8rem 1.1rem;border-radius:8px;cursor:pointer;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:700;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover:not(:disabled){border-color:var(--green);background:rgba(72,200,112,0.05);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(232,80,64,0.08);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{padding:0.8rem 1rem;border-radius:8px;font-size:0.88rem;font-weight:600;display:none;line-height:1.55;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid rgba(72,200,112,0.3);}
+  .feedback.no{background:rgba(232,80,64,0.07);color:var(--red);border:1px solid rgba(232,80,64,0.25);}
+
+  .btn{padding:0.7rem 1.4rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-next{background:linear-gradient(135deg,var(--steel),#2a6a90);color:#fff;font-weight:800;}
+  .btn-next:hover{transform:translateY(-2px);}
+  .btn-check{background:linear-gradient(135deg,var(--green),#30a860);color:#000;font-weight:800;}
+  .btn-check:hover{transform:translateY(-2px);}
+  .btn:disabled{opacity:0.35;cursor:default;pointer-events:none;}
+  .nav-btns{display:flex;gap:0.8rem;margin-top:0.5rem;}
+
+  #results{display:none;text-align:center;padding:1.5rem 0;}
+  .res-icon{font-size:4.5rem;margin-bottom:1rem;display:block;animation:pop 0.5s ease;}
+  @keyframes pop{from{transform:scale(0.5);}to{transform:scale(1);}}
+  .res-score{font-family:'Rajdhani',sans-serif;font-size:2.8rem;font-weight:700;color:var(--amber);letter-spacing:3px;}
+  .res-lbl{font-family:'Rajdhani',sans-serif;font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.2rem;}
+  .res-msg{color:var(--text-mid);font-size:0.9rem;line-height:1.7;margin-bottom:1.5rem;max-width:380px;margin-left:auto;margin-right:auto;}
+  .score-grid{display:flex;gap:0.4rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem;}
+  .sc-pip{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;}
+  .pip-ok{background:var(--green-bg);border:1px solid rgba(72,200,112,0.4);}
+  .pip-no{background:rgba(232,80,64,0.1);border:1px solid rgba(232,80,64,0.3);}
+  .res-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  .pt-dot{cursor:pointer;transition:r 0.12s ease, opacity 0.12s ease;}
+  .pt-dot:hover{opacity:0.85;}
+  .pt-dot.picked{opacity:1;}
+
+  .picked-list{text-align:center;font-family:'Rajdhani',sans-serif;font-size:0.85rem;color:var(--steel-light);margin-bottom:0.6rem;min-height:1.2rem;}
+  .clear-row{display:flex;justify-content:center;margin-bottom:0.8rem;}
+  .clear-btn{background:transparent;border:1px solid var(--border2);color:var(--text-muted);padding:0.4rem 1rem;border-radius:6px;font-family:'Rajdhani',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;letter-spacing:1px;}
+  .clear-btn:hover{border-color:var(--red);color:var(--red);}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson20.html">LESSON 20</a><span>/</span>
+  <span class="cur">LATIHAN</span>
+</nav>
+
+<div class="wrap">
+  <!-- INTRO -->
+  <div id="intro">
+    <span class="home-icon">🏠</span>
+    <div class="home-title">LATIHAN MANDIRI</div>
+    <p class="home-sub">10 soal koordinat Kartesius tanpa timer. Santai, teliti, dan pahami posisi setiap titik sebelum menjawab!</p>
+    <div class="info-row">
+      <div class="info-chip"><span>7</span> Isian Koordinat</div>
+      <div class="info-chip"><span>3</span> Tebak Bentuk</div>
+      <div class="info-chip">Tanpa <span>Timer</span></div>
+    </div>
+    <button class="start-btn" onclick="startQuiz()">MULAI LATIHAN 🏠</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz">
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label">Progress</span>
+        <span class="progress-val" id="progVal">1/10</span>
+      </div>
+      <div class="progress-bg"><div class="progress-bar" id="progBar" style="width:0%"></div></div>
+    </div>
+    <div id="qarea"></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results"></div>
+</div>
+
+<script>
+/* ===================== DATA ===================== */
+// Type "fillin": soal isian baca koordinat titik dari grafik
+// Type "shape": klik beberapa titik di grafik 0-8, lalu pilih bentuknya
+
+const QS = [
+  { type:'fillin', tag:'📍 Isian Koordinat · Soal 1', label:'P', point:{x:2,y:3} },
+  { type:'fillin', tag:'📍 Isian Koordinat · Soal 2', label:'Q', point:{x:5,y:1} },
+  { type:'fillin', tag:'📍 Isian Koordinat · Soal 3', label:'R', point:{x:0,y:4} },
+  { type:'fillin', tag:'📍 Isian Koordinat · Soal 4', label:'S', point:{x:4,y:0} },
+  { type:'fillin', tag:'📍 Isian Koordinat · Soal 5', label:'T', point:{x:1,y:5} },
+  { type:'fillin', tag:'📍 Isian Koordinat · Soal 6', label:'U', point:{x:3,y:2} },
+  { type:'fillin', tag:'📍 Isian Koordinat · Soal 7', label:'V', point:{x:5,y:5} },
+  {
+    type:'shape', tag:'🔺 Tebak Bentuk · Soal 8',
+    ctx:'Klik titik-titik berikut di grafik (boleh urutan bebas), lalu tentukan bentuknya:',
+    coords:[{x:1,y:1},{x:5,y:1},{x:5,y:5},{x:1,y:5}],
+    q:'Titik (1,1), (5,1), (5,5), (1,5) jika dihubungkan membentuk bangun apa?',
+    opts:['A. Segitiga','B. Persegi','C. Persegi Panjang','D. Trapesium'],
+    ans:1,
+    exp:'Keempat sisi sama panjang (4 satuan) dan semua sudut siku-siku → Persegi.'
+  },
+  {
+    type:'shape', tag:'🔺 Tebak Bentuk · Soal 9',
+    ctx:'Klik titik-titik berikut di grafik (boleh urutan bebas), lalu tentukan bentuknya:',
+    coords:[{x:1,y:1},{x:7,y:1},{x:7,y:4},{x:1,y:4}],
+    q:'Titik (1,1), (7,1), (7,4), (1,4) jika dihubungkan membentuk bangun apa?',
+    opts:['A. Persegi','B. Segitiga','C. Persegi Panjang','D. Layang-layang'],
+    ans:2,
+    exp:'Sisi mendatar 6 satuan, sisi tegak 3 satuan (tidak sama panjang) dengan sudut siku-siku → Persegi Panjang.'
+  },
+  {
+    type:'shape', tag:'🔺 Tebak Bentuk · Soal 10',
+    ctx:'Klik titik-titik berikut di grafik (boleh urutan bebas), lalu tentukan bentuknya:',
+    coords:[{x:1,y:1},{x:6,y:1},{x:3,y:6}],
+    q:'Titik (1,1), (6,1), (3,6) jika dihubungkan membentuk bangun apa?',
+    opts:['A. Persegi','B. Segitiga','C. Persegi Panjang','D. Trapesium'],
+    ans:1,
+    exp:'Hanya 3 titik yang dihubungkan dengan 3 garis → Segitiga.'
+  }
+];
+
+let cur=0, score=0, results=[], answered=false;
+let shapeState = {}; // tracks picked points per shape question index
+
+function startQuiz(){
+  document.getElementById('intro').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  renderQ();
+}
+
+/* ===== Static coordinate plane (for fillin questions, 0-5 grid) ===== */
+function renderStaticPlane(max, points){
+  const size = 240;
+  const pad = 28;
+  const step = (size - pad) / max;
+  const toX = v => pad + v*step;
+  const toY = v => (size - pad) - v*step;
+
+  let svg = `<svg width="${size+16}" height="${size+16}" viewBox="0 0 ${size+16} ${size+16}" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">`;
+  svg += `<g transform="translate(8,8)">`;
+  for(let i=0;i<=max;i++){
+    svg += `<line x1="${toX(i)}" y1="${toY(0)}" x2="${toX(i)}" y2="${toY(max)}" stroke="#243140" stroke-width="1"/>`;
+    svg += `<line x1="${toX(0)}" y1="${toY(i)}" x2="${toX(max)}" y2="${toY(i)}" stroke="#243140" stroke-width="1"/>`;
+  }
+  svg += `<line x1="${toX(0)}" y1="${toY(0)}" x2="${toX(max)}" y2="${toY(0)}" stroke="#7ab8d8" stroke-width="2"/>`;
+  svg += `<line x1="${toX(0)}" y1="${toY(0)}" x2="${toX(0)}" y2="${toY(max)}" stroke="#f0a830" stroke-width="2"/>`;
+  svg += `<polygon points="${toX(max)+6},${toY(0)} ${toX(max)-2},${toY(0)-4} ${toX(max)-2},${toY(0)+4}" fill="#7ab8d8"/>`;
+  svg += `<polygon points="${toX(0)},${toY(max)-6} ${toX(0)-4},${toY(max)+2} ${toX(0)+4},${toY(max)+2}" fill="#f0a830"/>`;
+  svg += `<text x="${toX(max)+8}" y="${toY(0)+4}" fill="#7ab8d8" font-family="Rajdhani" font-size="13" font-weight="700">x</text>`;
+  svg += `<text x="${toX(0)-4}" y="${toY(max)-8}" fill="#f0a830" font-family="Rajdhani" font-size="13" font-weight="700" text-anchor="middle">y</text>`;
+  for(let i=0;i<=max;i++){
+    svg += `<text x="${toX(i)}" y="${toY(0)+18}" fill="#586878" font-family="Rajdhani" font-size="10" text-anchor="middle">${i}</text>`;
+    if(i>0) svg += `<text x="${toX(0)-10}" y="${toY(i)+3}" fill="#586878" font-family="Rajdhani" font-size="10" text-anchor="middle">${i}</text>`;
+  }
+  svg += `<text x="${toX(0)-10}" y="${toY(0)+18}" fill="#586878" font-family="Rajdhani" font-size="10" text-anchor="middle">0</text>`;
+  points.forEach(p=>{
+    svg += `<circle cx="${toX(p.x)}" cy="${toY(p.y)}" r="6" fill="${p.color||'#f0a830'}" stroke="#0f1419" stroke-width="2"/>`;
+    svg += `<text x="${toX(p.x)+10}" y="${toY(p.y)-10}" fill="${p.color||'#f0a830'}" font-family="Rajdhani" font-size="13" font-weight="700">${p.label||''}</text>`;
+  });
+  svg += `</g></svg>`;
+  return svg;
+}
+
+/* ===== Clickable coordinate plane (for shape questions, 0-8 grid) ===== */
+function renderShapePlane(max, pickedSet){
+  const size = 300;
+  const pad = 30;
+  const step = (size - pad) / max;
+  const toX = v => pad + v*step;
+  const toY = v => (size - pad) - v*step;
+
+  let svg = `<svg id="shapeSvg" width="${size+20}" height="${size+20}" viewBox="0 0 ${size+20} ${size+20}" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">`;
+  svg += `<g transform="translate(10,10)">`;
+  for(let i=0;i<=max;i++){
+    svg += `<line x1="${toX(i)}" y1="${toY(0)}" x2="${toX(i)}" y2="${toY(max)}" stroke="#243140" stroke-width="1"/>`;
+    svg += `<line x1="${toX(0)}" y1="${toY(i)}" x2="${toX(max)}" y2="${toY(i)}" stroke="#243140" stroke-width="1"/>`;
+  }
+  svg += `<line x1="${toX(0)}" y1="${toY(0)}" x2="${toX(max)}" y2="${toY(0)}" stroke="#7ab8d8" stroke-width="2"/>`;
+  svg += `<line x1="${toX(0)}" y1="${toY(0)}" x2="${toX(0)}" y2="${toY(max)}" stroke="#f0a830" stroke-width="2"/>`;
+  svg += `<polygon points="${toX(max)+6},${toY(0)} ${toX(max)-2},${toY(0)-4} ${toX(max)-2},${toY(0)+4}" fill="#7ab8d8"/>`;
+  svg += `<polygon points="${toX(0)},${toY(max)-6} ${toX(0)-4},${toY(max)+2} ${toX(0)+4},${toY(max)+2}" fill="#f0a830"/>`;
+  svg += `<text x="${toX(max)+8}" y="${toY(0)+4}" fill="#7ab8d8" font-family="Rajdhani" font-size="13" font-weight="700">x</text>`;
+  svg += `<text x="${toX(0)-4}" y="${toY(max)-8}" fill="#f0a830" font-family="Rajdhani" font-size="13" font-weight="700" text-anchor="middle">y</text>`;
+  for(let i=0;i<=max;i++){
+    svg += `<text x="${toX(i)}" y="${toY(0)+18}" fill="#586878" font-family="Rajdhani" font-size="9" text-anchor="middle">${i}</text>`;
+    if(i>0) svg += `<text x="${toX(0)-10}" y="${toY(i)+3}" fill="#586878" font-family="Rajdhani" font-size="9" text-anchor="middle">${i}</text>`;
+  }
+  svg += `<text x="${toX(0)-10}" y="${toY(0)+18}" fill="#586878" font-family="Rajdhani" font-size="9" text-anchor="middle">0</text>`;
+
+  // connecting polygon for already-picked points (in click order)
+  const pickedArr = Array.from(pickedSet).map(k=>{
+    const [px,py] = k.split(',').map(Number);
+    return {x:px,y:py};
+  });
+  if(pickedArr.length>1){
+    const path = pickedArr.map(p=>`${toX(p.x)},${toY(p.y)}`).join(' ');
+    svg += `<polygon points="${path}" fill="rgba(74,144,184,0.12)" stroke="#7ab8d8" stroke-width="2"/>`;
+  }
+
+  // clickable grid intersections
+  for(let gx=0; gx<=max; gx++){
+    for(let gy=0; gy<=max; gy++){
+      const key = gx+','+gy;
+      const isPicked = pickedSet.has(key);
+      svg += `<circle class="pt-dot${isPicked?' picked':''}" data-x="${gx}" data-y="${gy}" cx="${toX(gx)}" cy="${toY(gy)}" r="${isPicked?9:7}" fill="${isPicked?'#f0a830':'#344858'}" stroke="#0f1419" stroke-width="1" opacity="${isPicked?1:0.5}"/>`;
+    }
+  }
+
+  svg += `</g></svg>`;
+  return svg;
+}
+
+/* ===================== RENDER QUESTION ===================== */
+function renderQ(){
+  answered=false;
+  updateProgress();
+  const q = QS[cur];
+
+  if(q.type==='fillin'){
+    document.getElementById('qarea').innerHTML = `
+      <div class="q-card">
+        <div class="q-tag">${q.tag}</div>
+        <p class="q-context">Perhatikan posisi titik <strong style="color:var(--amber)">${q.label}</strong> pada bidang koordinat berikut:</p>
+        <div class="plane-wrap">${renderStaticPlane(5, [{x:q.point.x,y:q.point.y,label:q.label,color:'#f0a830'}])}</div>
+        <div class="q-text" style="text-align:center;">Berapa koordinat titik ${q.label}?</div>
+        <div class="fillin-row">
+          ( <input type="number" id="inX" min="0" max="5" placeholder="x"> , <input type="number" id="inY" min="0" max="5" placeholder="y"> )
+        </div>
+        <div class="fillin-submit"><button class="btn btn-check" id="checkBtn" onclick="checkFillin()">Periksa Jawaban ✓</button></div>
+        <div class="feedback" id="fb"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevQ()" ${cur===0?'disabled':''}>← Soal Sebelumnya</button>
+        <button class="btn btn-next" id="nextBtn" onclick="nextQ()" disabled>${cur===QS.length-1?'Lihat Hasil ✓':'Soal Berikutnya →'}</button>
+      </div>
+    `;
+    document.getElementById('inX').addEventListener('keydown', e=>{ if(e.key==='Enter') checkFillin(); });
+    document.getElementById('inY').addEventListener('keydown', e=>{ if(e.key==='Enter') checkFillin(); });
+  }
+
+  if(q.type==='shape'){
+    if(!shapeState[cur]) shapeState[cur] = new Set();
+    document.getElementById('qarea').innerHTML = `
+      <div class="q-card">
+        <div class="q-tag">${q.tag}</div>
+        <p class="q-context">${q.ctx}</p>
+        <div class="picked-list" id="pickedList"></div>
+        <div class="plane-wrap" id="shapeHolder">${renderShapePlane(8, shapeState[cur])}</div>
+        <div class="clear-row"><button class="clear-btn" onclick="clearShapePicks()">🔄 Hapus Titik Terpilih</button></div>
+        <div class="q-text">${q.q}</div>
+        <div class="opts" id="opts">
+          ${q.opts.map((o,i)=>`<button class="opt-btn" onclick="pickShapeAnswer(${i})">${o}</button>`).join('')}
+        </div>
+        <div class="feedback" id="fb"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevQ()" ${cur===0?'disabled':''}>← Soal Sebelumnya</button>
+        <button class="btn btn-next" id="nextBtn" onclick="nextQ()" disabled>${cur===QS.length-1?'Lihat Hasil ✓':'Soal Berikutnya →'}</button>
+      </div>
+    `;
+    attachShapeHandlers();
+    updatePickedList();
+  }
+}
+
+/* ===================== FILLIN LOGIC ===================== */
+function checkFillin(){
+  if(answered) return;
+  const q = QS[cur];
+  const xVal = document.getElementById('inX').value;
+  const yVal = document.getElementById('inY').value;
+  if(xVal==='' || yVal===''){
+    const fb = document.getElementById('fb');
+    fb.className = 'feedback show no';
+    fb.textContent = '✗ Isi kedua kotak (x dan y) terlebih dahulu.';
+    return;
+  }
+  answered = true;
+  const xIn = document.getElementById('inX');
+  const yIn = document.getElementById('inY');
+  const correctX = parseInt(xVal)===q.point.x;
+  const correctY = parseInt(yVal)===q.point.y;
+  const correct = correctX && correctY;
+  if(correct) score++;
+  results[cur] = correct;
+  xIn.classList.add(correctX?'correct':'wrong');
+  yIn.classList.add(correctY?'correct':'wrong');
+  xIn.disabled = true; yIn.disabled = true;
+  document.getElementById('checkBtn').disabled = true;
+  const fb = document.getElementById('fb');
+  fb.className = 'feedback show ' + (correct?'ok':'no');
+  fb.textContent = correct
+    ? `✓ Benar! Titik ${q.label} berada di (${q.point.x}, ${q.point.y}).`
+    : `✗ Kurang tepat. Titik ${q.label} sebenarnya di (${q.point.x}, ${q.point.y}). Ingat: x dulu (kanan), baru y (atas).`;
+  document.getElementById('nextBtn').disabled = false;
+}
+
+/* ===================== SHAPE LOGIC ===================== */
+function attachShapeHandlers(){
+  document.querySelectorAll('#shapeHolder .pt-dot').forEach(dot=>{
+    dot.addEventListener('click', ()=>{
+      if(answered) return;
+      const gx = parseInt(dot.getAttribute('data-x'));
+      const gy = parseInt(dot.getAttribute('data-y'));
+      const key = gx+','+gy;
+      const set = shapeState[cur];
+      if(set.has(key)) set.delete(key); else set.add(key);
+      document.getElementById('shapeHolder').innerHTML = renderShapePlane(8, set);
+      attachShapeHandlers();
+      updatePickedList();
+    });
+  });
+}
+
+function clearShapePicks(){
+  if(answered) return;
+  shapeState[cur] = new Set();
+  document.getElementById('shapeHolder').innerHTML = renderShapePlane(8, shapeState[cur]);
+  attachShapeHandlers();
+  updatePickedList();
+}
+
+function updatePickedList(){
+  const set = shapeState[cur];
+  const list = document.getElementById('pickedList');
+  if(!list) return;
+  if(set.size===0){
+    list.textContent = 'Belum ada titik dipilih — klik titik di grafik untuk membantu membayangkan bentuknya.';
+  } else {
+    const pts = Array.from(set).map(k=>{
+      const [x,y]=k.split(',');
+      return `(${x},${y})`;
+    }).join(', ');
+    list.textContent = 'Titik terpilih: ' + pts;
+  }
+}
+
+function pickShapeAnswer(idx){
+  if(answered) return;
+  answered = true;
+  const q = QS[cur];
+  const correct = idx===q.ans;
+  if(correct) score++;
+  results[cur] = correct;
+  const opts = document.getElementById('opts').querySelectorAll('.opt-btn');
+  opts.forEach(b=>b.disabled=true);
+  opts[idx].classList.add(correct?'correct':'wrong');
+  if(!correct) opts[q.ans].classList.add('correct');
+  const fb = document.getElementById('fb');
+  fb.className = 'feedback show ' + (correct?'ok':'no');
+  fb.textContent = (correct?'✓ Benar! ':'✗ Belum tepat. ') + q.exp;
+  document.getElementById('nextBtn').disabled = false;
+}
+
+/* ===================== NAV & PROGRESS ===================== */
+function updateProgress(){
+  document.getElementById('progVal').textContent = `${cur+1}/10`;
+  document.getElementById('progBar').style.width = (cur/10*100)+'%';
+}
+
+function nextQ(){
+  if(cur<QS.length-1){ cur++; renderQ(); }
+  else showResults();
+}
+function prevQ(){
+  if(cur>0){ cur--; renderQ(); }
+}
+
+function showResults(){
+  document.getElementById('quiz').style.display='none';
+  const div=document.getElementById('results');
+  div.style.display='block';
+  const tot = results.filter(r=>r===true).length;
+  const pct = tot/10;
+  const icon = pct>=0.9?'🏆':pct>=0.7?'🎯':pct>=0.5?'📍':'📉';
+  const msg = pct>=0.9?'Luar biasa! Kamu sudah menguasai koordinat Kartesius dengan sangat baik!':pct>=0.7?'Bagus sekali! Terus latihan untuk makin mahir membaca titik.':pct>=0.5?'Sudah lumayan! Coba review bagian yang masih salah.':'Jangan menyerah! Baca ulang materi dan coba lagi ya.';
+  const pips = Array.from({length:10},(_,i)=>`<div class="sc-pip pip-${results[i]===true?'ok':'no'}">${results[i]===true?'✓':'✗'}</div>`).join('');
+  div.innerHTML=`
+    <span class="res-icon">${icon}</span>
+    <div class="res-score">${tot}/10</div>
+    <div class="res-lbl">Soal Benar</div>
+    <div class="score-grid">${pips}</div>
+    <p class="res-msg">${msg}</p>
+    <div class="res-btns">
+      <button class="btn btn-next" onclick="location.reload()">🔄 Ulangi Latihan</button>
+      <a href="soal20.html" class="btn btn-ghost">⚡ Coba Sprint</a>
+      <a href="lesson20.html" class="btn btn-ghost">← Lesson</a>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>

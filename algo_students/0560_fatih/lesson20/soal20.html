@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprint · Koordinat Kartesius · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);
+    --red:#e85040;
+    --steel:#4a90b8;--steel-bg:rgba(74,144,184,0.1);--steel-light:#7ab8d8;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(74,144,184,0.07) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--red);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  #intro{text-align:center;}
+  .loco-icon{font-size:5rem;display:block;margin-bottom:1.2rem;animation:chug 0.6s ease-in-out infinite alternate;}
+  @keyframes chug{from{transform:translateX(-4px);}to{transform:translateX(4px);}}
+  .sprint-title{font-family:'Rajdhani',sans-serif;font-size:clamp(1.8rem,5vw,2.5rem);font-weight:700;color:var(--amber);letter-spacing:3px;margin-bottom:0.6rem;}
+  .sprint-sub{color:var(--text-muted);line-height:1.7;margin-bottom:2rem;font-size:0.9rem;}
+  .rules-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.4rem 1.8rem;text-align:left;margin-bottom:2rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .rules-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--steel),var(--amber));}
+  .rules-title{font-family:'Rajdhani',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--steel-light);margin-bottom:1rem;}
+  .rule{display:flex;gap:0.8rem;font-size:0.88rem;margin-bottom:0.55rem;color:var(--text-mid);}
+  .rule span{flex-shrink:0;}
+  .start-btn{background:linear-gradient(135deg,var(--steel),#2a6a90);color:#fff;border:none;padding:1rem 3rem;border-radius:6px;font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:3px;cursor:pointer;box-shadow:0 5px 18px rgba(74,144,184,0.35);transition:all 0.2s;}
+  .start-btn:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(74,144,184,0.45);}
+
+  #game{display:none;}
+  .gauge-wrap{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;gap:1rem;}
+  .hud-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.65rem 1.2rem;text-align:center;flex:1;box-shadow:0 2px 8px var(--shadow);}
+  .hud-val{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.3rem;}
+  .hud-val.sc{color:var(--amber);}
+  .hud-val.qn{color:var(--steel-light);}
+  .hud-lbl{font-size:0.62rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-top:0.1rem;font-family:'Rajdhani',sans-serif;}
+
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--steel-light),var(--amber));}
+  .q-tag{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--steel-light);margin-bottom:0.9rem;}
+  .q-text{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.1rem;line-height:1.55;margin-bottom:1.1rem;letter-spacing:0.3px;text-align:center;}
+  .q-text strong{color:var(--amber);}
+  .q-hint{text-align:center;font-size:0.8rem;color:var(--text-muted);margin-bottom:1rem;}
+
+  .plane-wrap{display:flex;justify-content:center;margin:0.5rem 0 1rem;}
+  .plane-wrap svg{max-width:100%;height:auto;}
+
+  .feedback{margin-top:0.9rem;padding:0.75rem 1rem;border-radius:8px;font-size:0.88rem;font-weight:700;display:none;text-align:center;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid rgba(72,200,112,0.3);}
+  .feedback.no{background:rgba(232,80,64,0.07);color:var(--red);border:1px solid rgba(232,80,64,0.25);}
+
+  #results{display:none;text-align:center;padding:2rem 1rem;}
+  .result-icon{font-size:4.5rem;display:block;margin-bottom:1rem;animation:pop 0.5s ease;}
+  @keyframes pop{from{transform:scale(0.5);}to{transform:scale(1);}}
+  .result-score{font-family:'Rajdhani',sans-serif;font-size:3rem;font-weight:700;color:var(--amber);letter-spacing:3px;}
+  .result-label{font-family:'Rajdhani',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.5rem;}
+  .result-msg{color:var(--text-mid);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;max-width:360px;margin-left:auto;margin-right:auto;}
+  .result-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--steel),#2a6a90);color:#fff;font-weight:800;}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .score-log{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin:1rem 0;}
+  .score-pip{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+  .pip-ok{background:var(--green-bg);border:1px solid rgba(72,200,112,0.4);}
+  .pip-no{background:rgba(232,80,64,0.1);border:1px solid rgba(232,80,64,0.3);}
+
+  .pt-dot{cursor:pointer;transition:r 0.12s ease, opacity 0.12s ease;}
+  .pt-dot:hover{opacity:0.85;}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson20.html">LESSON 20</a><span>/</span>
+  <span class="cur">SPRINT</span>
+</nav>
+
+<div class="wrap">
+  <!-- INTRO -->
+  <div id="intro">
+    <span class="loco-icon">📍</span>
+    <div class="sprint-title">SPRINT MODE</div>
+    <p class="sprint-sub">10 soal koordinat Kartesius. Klik langsung titik yang tepat di grafik!</p>
+    <div class="rules-box">
+      <div class="rules-title">⚡ Peraturan Sprint</div>
+      <div class="rule"><span>📍</span><span>Setiap soal memberi koordinat (x, y) — klik titik yang tepat di grafik 5×5.</span></div>
+      <div class="rule"><span>🎯</span><span>Klik benar tanpa salah = +10 poin. Kalau sempat salah dulu = +5 poin.</span></div>
+      <div class="rule"><span>❌</span><span>Klik salah ditandai merah sebentar — coba klik titik lain sampai benar.</span></div>
+      <div class="rule"><span>🔒</span><span>Tidak bisa kembali ke soal sebelumnya.</span></div>
+    </div>
+    <button class="start-btn" onclick="startGame()">MULAI SPRINT ⚡</button>
+  </div>
+
+  <!-- GAME -->
+  <div id="game">
+    <div class="gauge-wrap">
+      <div class="hud-box"><div class="hud-val sc" id="score">0</div><div class="hud-lbl">Poin</div></div>
+      <div class="hud-box"><div class="hud-val qn" id="qnum">1/10</div><div class="hud-lbl">Soal</div></div>
+    </div>
+    <div class="q-card" id="qcard"></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results"></div>
+</div>
+
+<script>
+const QUESTIONS = [
+  {x:2, y:1},
+  {x:4, y:3},
+  {x:1, y:4},
+  {x:5, y:2},
+  {x:3, y:3},
+  {x:0, y:5},
+  {x:5, y:0},
+  {x:2, y:5},
+  {x:4, y:1},
+  {x:3, y:0}
+];
+
+let cur=0, score=0, answered=false, results=[];
+
+function startGame(){
+  document.getElementById('intro').style.display='none';
+  document.getElementById('game').style.display='block';
+  showQ();
+}
+
+/* ===== Clickable coordinate plane (5x5) ===== */
+function renderClickablePlane(max, onPick){
+  const size = 260;
+  const pad = 30;
+  const step = (size - pad) / max;
+  const toX = v => pad + v*step;
+  const toY = v => (size - pad) - v*step;
+
+  let svg = `<svg id="planeSvg" width="${size+20}" height="${size+20}" viewBox="0 0 ${size+20} ${size+20}" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">`;
+  svg += `<g transform="translate(10,10)">`;
+
+  for(let i=0;i<=max;i++){
+    svg += `<line x1="${toX(i)}" y1="${toY(0)}" x2="${toX(i)}" y2="${toY(max)}" stroke="#243140" stroke-width="1"/>`;
+    svg += `<line x1="${toX(0)}" y1="${toY(i)}" x2="${toX(max)}" y2="${toY(i)}" stroke="#243140" stroke-width="1"/>`;
+  }
+  svg += `<line x1="${toX(0)}" y1="${toY(0)}" x2="${toX(max)}" y2="${toY(0)}" stroke="#7ab8d8" stroke-width="2"/>`;
+  svg += `<line x1="${toX(0)}" y1="${toY(0)}" x2="${toX(0)}" y2="${toY(max)}" stroke="#f0a830" stroke-width="2"/>`;
+  svg += `<polygon points="${toX(max)+6},${toY(0)} ${toX(max)-2},${toY(0)-4} ${toX(max)-2},${toY(0)+4}" fill="#7ab8d8"/>`;
+  svg += `<polygon points="${toX(0)},${toY(max)-6} ${toX(0)-4},${toY(max)+2} ${toX(0)+4},${toY(max)+2}" fill="#f0a830"/>`;
+  svg += `<text x="${toX(max)+8}" y="${toY(0)+4}" fill="#7ab8d8" font-family="Rajdhani" font-size="13" font-weight="700">x</text>`;
+  svg += `<text x="${toX(0)-4}" y="${toY(max)-8}" fill="#f0a830" font-family="Rajdhani" font-size="13" font-weight="700" text-anchor="middle">y</text>`;
+  for(let i=0;i<=max;i++){
+    svg += `<text x="${toX(i)}" y="${toY(0)+19}" fill="#586878" font-family="Rajdhani" font-size="10" text-anchor="middle">${i}</text>`;
+    if(i>0) svg += `<text x="${toX(0)-11}" y="${toY(i)+3}" fill="#586878" font-family="Rajdhani" font-size="10" text-anchor="middle">${i}</text>`;
+  }
+  svg += `<text x="${toX(0)-11}" y="${toY(0)+19}" fill="#586878" font-family="Rajdhani" font-size="10" text-anchor="middle">0</text>`;
+
+  // clickable points at every grid intersection
+  for(let gx=0; gx<=max; gx++){
+    for(let gy=0; gy<=max; gy++){
+      svg += `<circle class="pt-dot" data-x="${gx}" data-y="${gy}" cx="${toX(gx)}" cy="${toY(gy)}" r="9" fill="#344858" stroke="#0f1419" stroke-width="1" opacity="0.55"/>`;
+    }
+  }
+
+  svg += `</g></svg>`;
+  return svg;
+}
+
+function attachPlaneHandlers(container, onPick){
+  container.querySelectorAll('.pt-dot').forEach(dot=>{
+    dot.addEventListener('click', ()=>{
+      const gx = parseInt(dot.getAttribute('data-x'));
+      const gy = parseInt(dot.getAttribute('data-y'));
+      onPick(gx, gy, dot);
+    });
+  });
+}
+
+function showQ(){
+  answered=false;
+  const q = QUESTIONS[cur];
+  let hadMiss = false;
+  showQ.hadMiss = false; // reset miss-tracker for this question
+  document.getElementById('qnum').textContent = `${cur+1}/10`;
+  const card = document.getElementById('qcard');
+  card.innerHTML = `
+    <div class="q-tag">📍 Klik Titik · Soal ${cur+1}</div>
+    <div class="q-text">Klik titik dengan koordinat <strong>(${q.x}, ${q.y})</strong></div>
+    <div class="q-hint">Ingat: x dulu (kanan), baru y (atas)</div>
+    <div class="plane-wrap" id="planeHolder">${renderClickablePlane(5)}</div>
+    <div class="feedback" id="fb"></div>
+  `;
+  attachPlaneHandlers(document.getElementById('planeHolder'), handlePick);
+}
+
+function handlePick(gx, gy, dotEl){
+  if(answered) return;
+  const q = QUESTIONS[cur];
+  const correct = (gx===q.x && gy===q.y);
+  const fb = document.getElementById('fb');
+
+  if(correct){
+    answered = true;
+    // perfect only if no wrong click happened on this question
+    results[cur] = showQ.hadMiss ? 'no' : 'ok';
+    score += showQ.hadMiss ? 5 : 10;
+    document.getElementById('score').textContent = score;
+    dotEl.setAttribute('fill', '#48c870');
+    dotEl.setAttribute('opacity', '1');
+    dotEl.setAttribute('r', '10');
+    document.querySelectorAll('.pt-dot').forEach(d=>d.style.pointerEvents='none');
+    fb.className = 'feedback show ok';
+    fb.textContent = `✓ Tepat! Titik (${q.x}, ${q.y}) ditemukan.`;
+    setTimeout(()=>{
+      if(cur<QUESTIONS.length-1){ cur++; showQ(); }
+      else showResults();
+    }, 1200);
+  } else {
+    showQ.hadMiss = true;
+    dotEl.setAttribute('fill', '#e85040');
+    dotEl.setAttribute('opacity', '0.9');
+    fb.className = 'feedback show no';
+    fb.textContent = `✗ Bukan di situ. Coba klik titik lain — ingat x dulu baru y!`;
+    setTimeout(()=>{
+      dotEl.setAttribute('fill', '#344858');
+      dotEl.setAttribute('opacity', '0.55');
+    }, 700);
+  }
+}
+
+function showResults(){
+  document.getElementById('game').style.display='none';
+  const div=document.getElementById('results');
+  div.style.display='block';
+  const okCount = results.filter(r=>r==='ok').length;
+  const pct = okCount/10;
+  const icon = pct>=0.8?'🏆':pct>=0.6?'🎯':pct>=0.4?'📍':'📉';
+  const msg = pct>=0.8?'Luar biasa! Kamu jago menemukan titik koordinat!':pct>=0.6?'Bagus! Terus latihan membaca sumbu X dan Y ya.':pct>=0.4?'Lumayan! Coba review lagi cara membaca koordinat (x,y).':'Yuk pelajari lagi materi koordinat Kartesius!';
+  const pips = results.map(r=>`<div class="score-pip pip-${r}">${r==='ok'?'✓':'✗'}</div>`).join('');
+  div.innerHTML=`
+    <span class="result-icon">${icon}</span>
+    <div class="result-score">${score}/100</div>
+    <div class="result-label">Skor Sprint</div>
+    <div class="score-log">${pips}</div>
+    <p class="result-msg">${msg}</p>
+    <div class="result-btns">
+      <button class="btn btn-primary" onclick="location.reload()">🔄 Ulangi Sprint</button>
+      <a href="latihan20.html" class="btn btn-ghost">🏠 Latihan Mandiri</a>
+      <a href="lesson20.html" class="btn btn-ghost">← Lesson</a>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>
