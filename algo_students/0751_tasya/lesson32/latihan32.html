@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan · Mandiri · L32 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --acc:#7c5cbf;--acc-light:#b89ee0;--acc-bg:rgba(124,92,191,0.1);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 90%,rgba(124,92,191,0.06) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--acc);}
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--mint);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--acc);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .prog-bar-wrap{background:var(--border);border-radius:99px;height:8px;margin-bottom:0.4rem;overflow:hidden;}
+  .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc-light));border-radius:99px;transition:width 0.4s ease;}
+  .prog-label{display:flex;justify-content:space-between;font-size:0.72rem;font-weight:700;color:var(--text-muted);margin-bottom:1.5rem;}
+
+  .q-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);display:none;animation:fadeUp 0.35s ease;}
+  .q-card.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .tag{display:inline-block;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.2rem 0.7rem;border-radius:99px;margin-bottom:0.9rem;}
+  .tag-hori{background:var(--ocean-bg);color:var(--ocean);border:1.5px solid var(--ocean-light);}
+  .tag-verti{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .tag-diag{background:var(--acc-bg);color:var(--acc);border:1.5px solid var(--acc-light);}
+  .tag-balik{background:var(--gold-bg);color:var(--gold);border:1.5px solid var(--gold-light);}
+  .tag-konteks{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+  .tag-pola{background:rgba(95,191,160,0.1);color:var(--mint);border:1.5px solid var(--mint-light);}
+
+  .coord-display{display:flex;gap:0.6rem;flex-wrap:wrap;margin:0.8rem 0;}
+  .coord-pt{font-family:'Nunito',sans-serif;font-weight:900;font-size:0.95rem;padding:0.4rem 0.85rem;border-radius:10px;}
+  .pt-a{background:var(--acc-bg);border:2px solid var(--acc-light);color:var(--acc);}
+  .pt-b{background:var(--gold-bg);border:2px solid var(--gold-light);color:var(--gold);}
+  .pt-m{background:var(--rose-bg);border:2px solid var(--rose-light);color:var(--rose);}
+
+  .mini-grid{margin:0.8rem 0;border-radius:14px;overflow:hidden;background:#fafafa;border:2px solid var(--border);padding:0.5rem;}
+  .mini-grid svg{width:100%;display:block;}
+
+  .q-text{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;margin-bottom:1rem;line-height:1.5;}
+
+  .hint-toggle{background:var(--acc-bg);border:1.5px solid var(--acc-light);color:var(--acc);padding:0.4rem 1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;margin-bottom:1rem;display:inline-block;transition:all 0.2s;}
+  .hint-toggle:hover{background:var(--acc);color:#fff;}
+  .hint-box{background:var(--acc-bg);border:1.5px solid var(--acc-light);border-radius:12px;padding:0.7rem 1rem;margin-bottom:0.9rem;font-size:0.85rem;color:var(--text-mid);display:none;line-height:1.6;}
+  .hint-box.show{display:block;}
+
+  .opts{display:flex;flex-direction:column;gap:0.65rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.88rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--acc-light);background:var(--acc-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;line-height:1.5;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--acc-light);color:var(--acc);}
+  .btn-primary{background:linear-gradient(135deg,var(--acc),#5a3f99);color:#fff;box-shadow:0 4px 14px rgba(124,92,191,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(124,92,191,0.4);}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+
+  .finish{text-align:center;padding:2.5rem 1.5rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:var(--acc);margin-bottom:0.7rem;}
+  .finish-sub{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1.5rem;max-width:380px;margin-left:auto;margin-right:auto;}
+  .finish-score{font-family:'Nunito',sans-serif;font-size:3rem;font-weight:900;color:var(--acc);margin-bottom:0.3rem;}
+  .finish-label{font-size:0.8rem;color:var(--text-muted);margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .star-row{display:flex;justify-content:center;gap:0.3rem;font-size:2rem;margin-bottom:1rem;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson32.html">L32</a><span>›</span>
+  <span class="cur">LATIHAN</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🌙 Latihan Mandiri · Lesson 32</div>
+  <h1>Titik Tengah — <span>10 Soal</span></h1>
+  <p class="intro">Santai, ada petunjuk! Kerjakan pelan-pelan, pahami setiap langkah.</p>
+
+  <div class="prog-bar-wrap"><div class="prog-bar-fill" id="progFill" style="width:0%"></div></div>
+  <div class="prog-label"><span id="progText">0 / 10 selesai</span><span id="progScore">Skor: 0</span></div>
+
+  <!-- Q1: Horizontal -->
+  <div class="q-card active" id="qc1">
+    <span class="tag tag-hori">Horizontal</span>
+    <div class="coord-display">
+      <span class="coord-pt pt-a">A(1, 5)</span>
+      <span class="coord-pt pt-b">B(9, 5)</span>
+    </div>
+    <div class="q-text">Titik tengah M antara A(1,5) dan B(9,5) adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint('h1')">💡 Petunjuk</button>
+    <div class="hint-box" id="h1">Kalau y-nya sama, cari tengah x saja: (1+9)÷2 = ?</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(0,1,false,this)">(4, 5)</button>
+      <button class="opt-btn" onclick="ans(0,1,true,this)">(5, 5)</button>
+      <button class="opt-btn" onclick="ans(0,1,false,this)">(5, 10)</button>
+      <button class="opt-btn" onclick="ans(0,1,false,this)">(10, 5)</button>
+    </div>
+    <div class="feedback" id="f1"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" disabled>← Sebelumnya</button>
+      <button class="btn btn-primary" id="nb1" onclick="goTo(2)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q2: Vertikal -->
+  <div class="q-card" id="qc2">
+    <span class="tag tag-verti">Vertikal</span>
+    <div class="coord-display">
+      <span class="coord-pt pt-a">A(4, 2)</span>
+      <span class="coord-pt pt-b">B(4, 12)</span>
+    </div>
+    <div class="q-text">Titik tengah M antara A(4,2) dan B(4,12) adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint('h2')">💡 Petunjuk</button>
+    <div class="hint-box" id="h2">Kalau x-nya sama, cari tengah y saja: (2+12)÷2 = ?</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(1,2,false,this)">(4, 5)</button>
+      <button class="opt-btn" onclick="ans(1,2,false,this)">(8, 7)</button>
+      <button class="opt-btn" onclick="ans(1,2,true,this)">(4, 7)</button>
+      <button class="opt-btn" onclick="ans(1,2,false,this)">(4, 14)</button>
+    </div>
+    <div class="feedback" id="f2"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(1)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="nb2" onclick="goTo(3)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q3: Diagonal sederhana -->
+  <div class="q-card" id="qc3">
+    <span class="tag tag-diag">Diagonal</span>
+    <div class="coord-display">
+      <span class="coord-pt pt-a">A(2, 4)</span>
+      <span class="coord-pt pt-b">B(6, 10)</span>
+    </div>
+    <div class="q-text">Titik tengah M antara A(2,4) dan B(6,10) adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint('h3')">💡 Petunjuk</button>
+    <div class="hint-box" id="h3">x_M = (2+6)÷2, y_M = (4+10)÷2</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(2,3,false,this)">(3, 6)</button>
+      <button class="opt-btn" onclick="ans(2,3,true,this)">(4, 7)</button>
+      <button class="opt-btn" onclick="ans(2,3,false,this)">(8, 14)</button>
+      <button class="opt-btn" onclick="ans(2,3,false,this)">(4, 6)</button>
+    </div>
+    <div class="feedback" id="f3"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(2)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="nb3" onclick="goTo(4)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q4: Diagonal dengan koordinat lebih besar -->
+  <div class="q-card" id="qc4">
+    <span class="tag tag-diag">Diagonal</span>
+    <div class="coord-display">
+      <span class="coord-pt pt-a">A(3, 1)</span>
+      <span class="coord-pt pt-b">B(11, 9)</span>
+    </div>
+    <div class="mini-grid">
+      <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+        <defs><pattern id="lg4" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M18 0L0 0 0 18" fill="none" stroke="#f0d6ea" stroke-width="0.8"/></pattern></defs>
+        <rect width="200" height="160" fill="url(#lg4)"/>
+        <line x1="10" y1="148" x2="195" y2="148" stroke="#e8c8e0" stroke-width="1.5"/>
+        <line x1="10" y1="148" x2="10" y2="5" stroke="#e8c8e0" stroke-width="1.5"/>
+        <line x1="28" y1="130" x2="172" y2="22" stroke="#e8c8e0" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <circle cx="28" cy="130" r="5" fill="#7c5cbf"/>
+        <text x="28" y="148" text-anchor="middle" font-family="Nunito" font-size="9" font-weight="900" fill="#7c5cbf">A(3,1)</text>
+        <circle cx="172" cy="22" r="5" fill="#e8a020"/>
+        <text x="172" y="18" text-anchor="middle" font-family="Nunito" font-size="9" font-weight="900" fill="#e8a020">B(11,9)</text>
+        <circle cx="100" cy="76" r="6" fill="white" stroke="#e8628a" stroke-width="2" stroke-dasharray="3,2"/>
+        <text x="114" y="80" font-family="Nunito" font-size="9" font-weight="900" fill="#e8628a">M?</text>
+      </svg>
+    </div>
+    <div class="q-text">Hitung titik tengah M antara A(3,1) dan B(11,9).</div>
+    <button class="hint-toggle" onclick="toggleHint('h4')">💡 Petunjuk</button>
+    <div class="hint-box" id="h4">x_M = (3+11)÷2 = ? dan y_M = (1+9)÷2 = ?</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(3,4,false,this)">(6, 4)</button>
+      <button class="opt-btn" onclick="ans(3,4,false,this)">(8, 10)</button>
+      <button class="opt-btn" onclick="ans(3,4,true,this)">(7, 5)</button>
+      <button class="opt-btn" onclick="ans(3,4,false,this)">(7, 4)</button>
+    </div>
+    <div class="feedback" id="f4"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(3)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="nb4" onclick="goTo(5)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q5: Koordinat desimal ringan -->
+  <div class="q-card" id="qc5">
+    <span class="tag tag-diag">Diagonal</span>
+    <div class="coord-display">
+      <span class="coord-pt pt-a">A(1, 3)</span>
+      <span class="coord-pt pt-b">B(6, 8)</span>
+    </div>
+    <div class="q-text">Titik tengah M antara A(1,3) dan B(6,8) adalah... (hasil boleh pecahan)</div>
+    <button class="hint-toggle" onclick="toggleHint('h5')">💡 Petunjuk</button>
+    <div class="hint-box" id="h5">x_M = (1+6)÷2 = 3.5 dan y_M = (3+8)÷2 = 5.5. Tidak masalah bila hasilnya setengah!</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(4,5,false,this)">(3, 5)</button>
+      <button class="opt-btn" onclick="ans(4,5,true,this)">(3.5, 5.5)</button>
+      <button class="opt-btn" onclick="ans(4,5,false,this)">(7, 11)</button>
+      <button class="opt-btn" onclick="ans(4,5,false,this)">(4, 6)</button>
+    </div>
+    <div class="feedback" id="f5"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(4)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="nb5" onclick="goTo(6)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q6: Balik — cari titik dari tengahnya -->
+  <div class="q-card" id="qc6">
+    <span class="tag tag-balik">Balik — Cari Titik</span>
+    <div class="coord-display">
+      <span class="coord-pt pt-a">A(2, 4)</span>
+      <span class="coord-pt pt-m">M(5, 7)</span>
+    </div>
+    <div class="q-text">Diketahui A(2,4) dan titik tengah M(5,7). Carilah koordinat B.</div>
+    <button class="hint-toggle" onclick="toggleHint('h6')">💡 Petunjuk</button>
+    <div class="hint-box" id="h6">
+      Jika (2 + x_B)÷2 = 5 → x_B = 10 - 2 = ?<br>
+      Jika (4 + y_B)÷2 = 7 → y_B = 14 - 4 = ?
+    </div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(5,6,false,this)">(6, 9)</button>
+      <button class="opt-btn" onclick="ans(5,6,true,this)">(8, 10)</button>
+      <button class="opt-btn" onclick="ans(5,6,false,this)">(7, 10)</button>
+      <button class="opt-btn" onclick="ans(5,6,false,this)">(3, 3)</button>
+    </div>
+    <div class="feedback" id="f6"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(5)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="nb6" onclick="goTo(7)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q7: Balik 2 -->
+  <div class="q-card" id="qc7">
+    <span class="tag tag-balik">Balik — Cari Titik</span>
+    <div class="coord-display">
+      <span class="coord-pt pt-m">M(6, 5)</span>
+      <span class="coord-pt pt-b">B(10, 8)</span>
+    </div>
+    <div class="q-text">Diketahui titik tengah M(6,5) dan B(10,8). Carilah koordinat A.</div>
+    <button class="hint-toggle" onclick="toggleHint('h7')">💡 Petunjuk</button>
+    <div class="hint-box" id="h7">
+      (x_A + 10)÷2 = 6 → x_A = 12 - 10 = ?<br>
+      (y_A + 8)÷2 = 5 → y_A = 10 - 8 = ?
+    </div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(6,7,false,this)">(4, 3)</button>
+      <button class="opt-btn" onclick="ans(6,7,true,this)">(2, 2)</button>
+      <button class="opt-btn" onclick="ans(6,7,false,this)">(8, 6)</button>
+      <button class="opt-btn" onclick="ans(6,7,false,this)">(3, 1)</button>
+    </div>
+    <div class="feedback" id="f7"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(6)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="nb7" onclick="goTo(8)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q8: Kontekstual -->
+  <div class="q-card" id="qc8">
+    <span class="tag tag-konteks">Kontekstual</span>
+    <div class="q-text">Rumah Andi ada di A(1,2) dan rumah Budi ada di B(9,8). Mereka ingin bertemu di titik yang tepat sama jauh dari keduanya. Di mana mereka bertemu?</div>
+    <button class="hint-toggle" onclick="toggleHint('h8')">💡 Petunjuk</button>
+    <div class="hint-box" id="h8">x_M = (1+9)÷2 dan y_M = (2+8)÷2</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(7,8,false,this)">(4, 4)</button>
+      <button class="opt-btn" onclick="ans(7,8,true,this)">(5, 5)</button>
+      <button class="opt-btn" onclick="ans(7,8,false,this)">(10, 10)</button>
+      <button class="opt-btn" onclick="ans(7,8,false,this)">(5, 4)</button>
+    </div>
+    <div class="feedback" id="f8"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(7)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="nb8" onclick="goTo(9)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q9: Pola konseptual -->
+  <div class="q-card" id="qc9">
+    <span class="tag tag-pola">Pola & Konsep</span>
+    <div class="q-text">Manakah pernyataan yang BENAR tentang titik tengah M antara dua titik A dan B?</div>
+    <button class="hint-toggle" onclick="toggleHint('h9')">💡 Petunjuk</button>
+    <div class="hint-box" id="h9">Titik tengah membagi ruas garis menjadi dua bagian yang sama panjang.</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(8,9,false,this)">Jarak AM selalu lebih panjang dari BM</button>
+      <button class="opt-btn" onclick="ans(8,9,true,this)">Koordinat M adalah rata-rata koordinat A dan B</button>
+      <button class="opt-btn" onclick="ans(8,9,false,this)">M selalu berada di luar ruas AB</button>
+      <button class="opt-btn" onclick="ans(8,9,false,this)">M hanya bisa dihitung jika A dan B berada di garis horizontal</button>
+    </div>
+    <div class="feedback" id="f9"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(8)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="nb9" onclick="goTo(10)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q10: Tantangan akhir -->
+  <div class="q-card" id="qc10">
+    <span class="tag tag-diag">Tantangan</span>
+    <div class="q-text">Sebuah tali direntang antara tiang P(0,0) dan tiang Q(12,8). Di mana tepatnya tali itu akan berlubang jika dipotong tepat di tengah-tengahnya?</div>
+    <button class="hint-toggle" onclick="toggleHint('h10')">💡 Petunjuk</button>
+    <div class="hint-box" id="h10">x_M = (0+12)÷2 = 6 dan y_M = (0+8)÷2 = 4</div>
+    <div class="opts">
+      <button class="opt-btn" onclick="ans(9,10,false,this)">(5, 3)</button>
+      <button class="opt-btn" onclick="ans(9,10,false,this)">(12, 8)</button>
+      <button class="opt-btn" onclick="ans(9,10,true,this)">(6, 4)</button>
+      <button class="opt-btn" onclick="ans(9,10,false,this)">(6, 3)</button>
+    </div>
+    <div class="feedback" id="f10"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(9)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="nb10" onclick="showFinish()" disabled>Lihat Hasil →</button>
+    </div>
+  </div>
+
+  <!-- Finish -->
+  <div id="finishScreen" style="display:none;">
+    <div class="finish">
+      <span class="finish-icon" id="finIcon">🌙</span>
+      <div class="star-row" id="finStars"></div>
+      <div class="finish-title" id="finTitle">Latihan Selesai!</div>
+      <div class="finish-score" id="finScore">10/10</div>
+      <div class="finish-label">soal benar</div>
+      <p class="finish-sub" id="finSub">Semua konsep titik tengah sudah kamu kuasai!</p>
+      <div class="finish-btns">
+        <a href="lesson32.html" class="btn btn-ghost">← Kembali</a>
+        <a href="soal32.html" class="btn btn-primary">⚡ Coba Sprint</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let score = 0;
+let answered = new Array(10).fill(false);
+const TOTAL = 10;
+
+const fbs = [
+  {ok:"✅ Tepat! Titik y sama, jadi cari rata-rata x: (1+9)÷2=5. M=(5,5).",no:"❌ Hampir! Untuk garis horizontal, y tetap sama. Rata-ratakan x: (1+9)÷2=5. M=(5,5)."},
+  {ok:"✅ Benar! Titik x sama, rata-ratakan y: (2+12)÷2=7. M=(4,7).",no:"❌ Untuk garis vertikal, x tetap sama. Rata-ratakan y: (2+12)÷2=7. M=(4,7)."},
+  {ok:"✅ Mantap! x=(2+6)÷2=4, y=(4+10)÷2=7. M=(4,7).",no:"❌ Rata-ratakan masing-masing: x=(2+6)÷2=4, y=(4+10)÷2=7. M=(4,7)."},
+  {ok:"✅ Keren! x=(3+11)÷2=7, y=(1+9)÷2=5. M=(7,5).",no:"❌ x=(3+11)÷2=7, y=(1+9)÷2=5. M=(7,5)."},
+  {ok:"✅ Bagus! Hasil setengah itu normal. x=(1+6)÷2=3.5, y=(3+8)÷2=5.5. M=(3.5,5.5).",no:"❌ Tidak apa-apa kalau hasilnya desimal. x=3.5, y=5.5. M=(3.5,5.5)."},
+  {ok:"✅ Tepat! Balik rumusnya: x_B=2×5−2=8, y_B=2×7−4=10. B=(8,10).",no:"❌ Balik rumus: kalau tengah=5 dan A=2, maka B=2×5−2=8. Kalau tengah=7 dan A=4, maka B=2×7−4=10. B=(8,10)."},
+  {ok:"✅ Benar! x_A=2×6−10=2, y_A=2×5−8=2. A=(2,2).",no:"❌ Balik rumus: x_A=2×6−10=2, y_A=2×5−8=2. A=(2,2)."},
+  {ok:"✅ Pas! Titik temu di (5,5). Tepat sama jauh dari keduanya!",no:"❌ x=(1+9)÷2=5, y=(2+8)÷2=5. Titik temu di (5,5)."},
+  {ok:"✅ Betul! Koordinat M adalah rata-rata koordinat A dan B — ini inti dari konsep titik tengah!",no:"❌ Jawaban yang benar: Koordinat M adalah rata-rata koordinat A dan B."},
+  {ok:"✅ Keren banget! x=(0+12)÷2=6, y=(0+8)÷2=4. Titik (6,4)!",no:"❌ x=(0+12)÷2=6, y=(0+8)÷2=4. Titik tengah tali ada di (6,4)."},
+];
+
+function ans(idx, qNum, isCorrect, btn){
+  if(answered[idx]) return;
+  answered[idx] = true;
+  if(isCorrect) score++;
+  // update progress
+  const done = answered.filter(Boolean).length;
+  document.getElementById('progFill').style.width=(done/TOTAL*100)+'%';
+  document.getElementById('progText').textContent=done+' / '+TOTAL+' selesai';
+  document.getElementById('progScore').textContent='Skor: '+score;
+  // feedback
+  const fb = document.getElementById('f'+qNum);
+  fb.className='feedback '+(isCorrect?'ok':'no')+' show';
+  fb.textContent=isCorrect?fbs[idx].ok:fbs[idx].no;
+  btn.classList.add(isCorrect?'correct':'wrong');
+  // disable opts
+  document.querySelectorAll('#qc'+qNum+' .opt-btn').forEach(o=>o.disabled=true);
+  // enable next
+  document.getElementById('nb'+qNum).disabled=false;
+}
+
+function goTo(n){
+  document.querySelectorAll('.q-card').forEach(c=>c.classList.remove('active'));
+  const card = document.getElementById('qc'+n);
+  if(card){ card.classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+}
+
+function toggleHint(id){
+  document.getElementById(id).classList.toggle('show');
+}
+
+function showFinish(){
+  document.querySelectorAll('.q-card').forEach(c=>c.classList.remove('active'));
+  const fs = document.getElementById('finishScreen');
+  fs.style.display='block';
+  document.getElementById('finScore').textContent=score+'/'+TOTAL;
+  const stars = score>=9?3:score>=6?2:1;
+  document.getElementById('finStars').innerHTML='⭐'.repeat(stars)+'<span style="color:var(--border2)">⭐</span>'.repeat(3-stars);
+  const msgs=[
+    {t:"Terus Berlatih!",s:"Masih ada beberapa yang perlu diperkuat. Coba ulangi soal yang salah!",i:"💪"},
+    {t:"Bagus Sekali!",s:"Sebagian besar soal berhasil. Konsep titik tengah hampir sepenuhnya dikuasai!",i:"🌟"},
+    {t:"Sempurna!",s:"Titik tengah sudah sepenuhnya di bawah kendali. Rata-rata koordinat jadi senjata!",i:"🏆"},
+  ];
+  const m=msgs[stars-1];
+  document.getElementById('finTitle').textContent=m.t;
+  document.getElementById('finSub').textContent=m.s;
+  document.getElementById('finIcon').textContent=m.i;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Titik Tengah · L32 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --violet:#7c5cbf;--violet-light:#b89ee0;--vio-bg:rgba(124,92,191,0.08);
+    --acc:#7c5cbf;--acc-light:#b89ee0;--acc-bg:rgba(124,92,191,0.1);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 75% 10%,rgba(124,92,191,0.08) 0%,transparent 50%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--acc);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 2rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--acc-bg);border:1.5px solid var(--acc-light);color:var(--acc);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--acc);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:all 0.3s;cursor:pointer;}
+  .dot.active{background:var(--acc);box-shadow:0 0 0 3px rgba(124,92,191,0.2);transform:scale(1.1);}
+  .dot.done{background:var(--acc-light);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);}
+  .card-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.vio{color:var(--acc);}
+  .card-label.gold{color:var(--gold);}
+  .card-label.mint{color:var(--mint);}
+  .card-label.rose{color:var(--rose);}
+  .card-label.ocean{color:var(--ocean);}
+  .card h2{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.7rem;line-height:1.4;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  .svg-wrap{margin:1rem 0;border-radius:14px;overflow:hidden;background:#fafafa;border:2px solid var(--border);padding:0.5rem;}
+  .svg-wrap svg{width:100%;display:block;}
+
+  .eq-box{border-radius:14px;padding:1.1rem 1.4rem;margin:0.7rem 0;}
+  .eq-box.vio{background:var(--acc-bg);border:1.5px solid var(--acc-light);}
+  .eq-box.gold{background:var(--gold-bg);border:1.5px solid var(--gold-light);}
+  .eq-box.mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .eq-box.rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .eq-text{font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:900;color:var(--text);line-height:1.6;}
+  .eq-text .hi-vio{color:var(--acc);}
+  .eq-text .hi-gold{color:var(--gold);}
+  .eq-text .hi-mint{color:var(--mint);}
+  .eq-text .hi-rose{color:var(--rose);}
+
+  .diskusi-box{border-radius:14px;padding:1rem 1.3rem;background:rgba(232,98,138,0.06);border:1.5px solid var(--rose-light);margin:0.8rem 0;}
+  .diskusi-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:0.5rem;}
+  .diskusi-box p{color:var(--text-mid);font-size:0.88rem;line-height:1.65;}
+
+  .reveal-btn{background:var(--acc-bg);border:1.5px solid var(--acc-light);color:var(--acc);padding:0.5rem 1.2rem;border-radius:99px;font-family:'Nunito',sans-serif;font-size:0.8rem;font-weight:800;cursor:pointer;transition:all 0.2s;margin:0.8rem 0;}
+  .reveal-btn:hover{background:var(--acc);color:#fff;}
+  .reveal-content{display:none;animation:fadeUp 0.3s ease;}
+  .reveal-content.show{display:block;}
+
+  .table-box{overflow-x:auto;margin:0.9rem 0;}
+  table{width:100%;border-collapse:collapse;font-size:0.88rem;}
+  th{background:var(--acc-bg);color:var(--acc);font-family:'Nunito',sans-serif;font-weight:800;padding:0.6rem 1rem;text-align:center;border:1.5px solid var(--acc-light);}
+  td{padding:0.6rem 1rem;text-align:center;border:1.5px solid var(--border);color:var(--text-mid);font-weight:600;}
+  tr:nth-child(even) td{background:#fdf0f8;}
+
+  .formula-hero{text-align:center;padding:1.5rem;background:linear-gradient(135deg,var(--acc-bg),rgba(95,191,160,0.08));border:2px solid var(--acc-light);border-radius:20px;margin:1rem 0;}
+  .formula-hero .f-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--acc);margin-bottom:0.8rem;}
+  .formula-hero .f-text{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:var(--text);line-height:1.5;}
+  .formula-hero .f-sub{font-size:0.82rem;color:var(--text-muted);margin-top:0.6rem;line-height:1.6;}
+
+  .nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:1rem;}
+  .nav-btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .nav-btn.ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .nav-btn.ghost:hover{border-color:var(--acc-light);color:var(--acc);}
+  .nav-btn.primary{background:linear-gradient(135deg,var(--acc),#5a3f99);color:#fff;box-shadow:0 4px 14px rgba(124,92,191,0.3);}
+  .nav-btn.primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(124,92,191,0.4);}
+  .nav-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important;}
+
+  .slide-counter{font-size:0.75rem;font-weight:700;color:var(--text-muted);}
+
+  .callout{border-radius:14px;padding:1rem 1.3rem;margin:0.9rem 0;display:flex;gap:0.8rem;align-items:flex-start;}
+  .callout.insight{background:rgba(124,92,191,0.06);border:1.5px solid var(--acc-light);}
+  .callout-icon{font-size:1.2rem;flex-shrink:0;margin-top:0.05rem;}
+  .callout-text{font-size:0.88rem;color:var(--text-mid);line-height:1.65;}
+  .callout-text strong{color:var(--text);font-weight:700;}
+
+  .coord-badge{display:inline-block;font-family:'Nunito',sans-serif;font-weight:900;font-size:0.95rem;padding:0.3rem 0.9rem;border-radius:10px;}
+  .cb-a{background:var(--acc-bg);border:2px solid var(--acc-light);color:var(--acc);}
+  .cb-b{background:var(--gold-bg);border:2px solid var(--gold-light);color:var(--gold);}
+  .cb-m{background:var(--rose-bg);border:2px solid var(--rose-light);color:var(--rose);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson32.html">L32</a><span>›</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📚 Materi · Lesson 32</div>
+  <h1>Dari Koordinat ke <span>Titik Tengah</span></h1>
+  <p class="intro">Eksplorasi pelan-pelan: mulai dari titik sederhana, temukan polanya, dan rumus akan muncul sendiri.</p>
+
+  <div class="dots" id="dotsContainer"></div>
+
+  <!-- SLIDE 1: Masalah awal -->
+  <div class="slide active" id="slide-1">
+    <div class="card">
+      <div class="card-label vio">🔍 Pertanyaan Pemantik</div>
+      <h2>Di mana tepat "tengahnya"?</h2>
+      <p>Dua teman berdiri di ujung-ujung lapangan. Mereka ingin bertemu di titik yang tepat sama jauh dari keduanya.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label gold">📍 Situasi</div>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.9rem;align-items:center;">
+        <span class="coord-badge cb-a">A(2, 4)</span>
+        <span style="color:var(--text-muted);font-weight:700;">dan</span>
+        <span class="coord-badge cb-b">B(8, 10)</span>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 280 240" xmlns="http://www.w3.org/2000/svg">
+          <!-- grid -->
+          <defs><pattern id="g1" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0L0 0 0 30" fill="none" stroke="#f0d6ea" stroke-width="1"/></pattern></defs>
+          <rect width="280" height="240" fill="url(#g1)"/>
+          <!-- axes -->
+          <line x1="20" y1="220" x2="270" y2="220" stroke="#e8c8e0" stroke-width="2"/>
+          <line x1="20" y1="220" x2="20" y2="10" stroke="#e8c8e0" stroke-width="2"/>
+          <!-- axis labels -->
+          <text x="275" y="224" font-family="Nunito" font-size="10" fill="#b898b4" font-weight="700">x</text>
+          <text x="16" y="8" font-family="Nunito" font-size="10" fill="#b898b4" font-weight="700">y</text>
+          <!-- grid numbers -->
+          <text x="49" y="232" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">2</text>
+          <text x="109" y="232" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">4</text>
+          <text x="169" y="232" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">6</text>
+          <text x="229" y="232" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">8</text>
+          <text x="12" y="193" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">2</text>
+          <text x="12" y="133" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">4</text>
+          <text x="12" y="73" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">6</text>
+          <text x="12" y="43" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">7</text>
+          <!-- garis AB -->
+          <line x1="50" y1="190" x2="230" y2="10" stroke="#e8c8e0" stroke-width="2.5" stroke-dasharray="6,4"/>
+          <!-- titik A -->
+          <circle cx="50" cy="190" r="7" fill="#7c5cbf"/>
+          <text x="30" y="186" font-family="Nunito" font-size="12" font-weight="900" fill="#7c5cbf">A</text>
+          <!-- titik B -->
+          <circle cx="230" cy="10" r="7" fill="#e8a020"/>
+          <text x="238" y="12" font-family="Nunito" font-size="12" font-weight="900" fill="#e8a020">B</text>
+          <!-- tanda tanya di tengah -->
+          <circle cx="140" cy="100" r="9" fill="white" stroke="#e8628a" stroke-width="2.5" stroke-dasharray="4,3"/>
+          <text x="140" y="105" text-anchor="middle" font-family="Nunito" font-size="13" font-weight="900" fill="#e8628a">?</text>
+        </svg>
+      </div>
+      <div class="diskusi-box">
+        <div class="diskusi-label">💬 Diskusi</div>
+        <p>Kira-kira, titik tengah antara A(2,4) dan B(8,10) berada di mana? Tebak dulu sebelum melihat jawabannya!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Eksplorasi horizontal -->
+  <div class="slide" id="slide-2">
+    <div class="card">
+      <div class="card-label ocean">📏 Eksplorasi 1 — Arah Horizontal</div>
+      <h2>Kalau y-nya sama, lebih mudah!</h2>
+      <p>Coba dulu dengan dua titik yang berada di garis horizontal yang sama.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label gold">📍 Kasus Sederhana</div>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.9rem;align-items:center;">
+        <span class="coord-badge cb-a">A(2, 5)</span>
+        <span style="color:var(--text-muted);font-weight:700;">dan</span>
+        <span class="coord-badge cb-b">B(8, 5)</span>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 280 120" xmlns="http://www.w3.org/2000/svg">
+          <defs><pattern id="g2" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0L0 0 0 30" fill="none" stroke="#f0d6ea" stroke-width="1"/></pattern></defs>
+          <rect width="280" height="120" fill="url(#g2)"/>
+          <line x1="20" y1="100" x2="270" y2="100" stroke="#e8c8e0" stroke-width="2"/>
+          <!-- garis horizontal -->
+          <line x1="50" y1="60" x2="230" y2="60" stroke="#e8c8e0" stroke-width="2.5"/>
+          <!-- segmen kiri -->
+          <line x1="50" y1="60" x2="140" y2="60" stroke="#7c5cbf" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- segmen kanan -->
+          <line x1="140" y1="60" x2="230" y2="60" stroke="#5fbfa0" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- titik A -->
+          <circle cx="50" cy="60" r="7" fill="#7c5cbf"/>
+          <text x="50" y="85" text-anchor="middle" font-family="Nunito" font-size="11" font-weight="900" fill="#7c5cbf">A(2,5)</text>
+          <!-- titik B -->
+          <circle cx="230" cy="60" r="7" fill="#e8a020"/>
+          <text x="230" y="85" text-anchor="middle" font-family="Nunito" font-size="11" font-weight="900" fill="#e8a020">B(8,5)</text>
+          <!-- titik M -->
+          <circle cx="140" cy="60" r="8" fill="#e8628a" stroke="#fff" stroke-width="2"/>
+          <text x="140" y="45" text-anchor="middle" font-family="Nunito" font-size="11" font-weight="900" fill="#e8628a">M(?,5)</text>
+          <!-- label jarak -->
+          <text x="95" y="52" text-anchor="middle" font-family="Nunito" font-size="9" fill="#7c5cbf">sama</text>
+          <text x="185" y="52" text-anchor="middle" font-family="Nunito" font-size="9" fill="#5fbfa0">sama</text>
+        </svg>
+      </div>
+
+      <div class="diskusi-box">
+        <div class="diskusi-label">💬 Eksplorasi</div>
+        <p>Dari x = 2 ke x = 8, berapa langkah? Tengahnya berada di x berapa?</p>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal('r2a')">Lihat jawaban →</button>
+      <div class="reveal-content" id="r2a">
+        <div class="eq-box vio">
+          <div class="eq-text">
+            x tengah = <span class="hi-gold">(2 + 8)</span> ÷ 2 = <span class="hi-vio">5</span><br>
+            y tetap = <span class="hi-mint">5</span><br><br>
+            Titik tengah = <span class="hi-rose">(5, 5)</span>
+          </div>
+        </div>
+        <div class="callout insight">
+          <span class="callout-icon">💡</span>
+          <div class="callout-text">Untuk garis horizontal, y-nya tidak berubah. Kita hanya perlu mencari tengah dari nilai x — yaitu <strong>rata-rata x</strong>!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Eksplorasi vertikal -->
+  <div class="slide" id="slide-3">
+    <div class="card">
+      <div class="card-label mint">📏 Eksplorasi 2 — Arah Vertikal</div>
+      <h2>Sekarang coba yang tegak lurus</h2>
+      <p>Dua titik di garis vertikal — x-nya sama, y-nya berbeda.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label gold">📍 Kasus Sederhana</div>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.9rem;align-items:center;">
+        <span class="coord-badge cb-a">A(4, 2)</span>
+        <span style="color:var(--text-muted);font-weight:700;">dan</span>
+        <span class="coord-badge cb-b">B(4, 10)</span>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 140 240" xmlns="http://www.w3.org/2000/svg">
+          <defs><pattern id="g3" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0L0 0 0 30" fill="none" stroke="#f0d6ea" stroke-width="1"/></pattern></defs>
+          <rect width="140" height="240" fill="url(#g3)"/>
+          <line x1="20" y1="230" x2="130" y2="230" stroke="#e8c8e0" stroke-width="2"/>
+          <line x1="20" y1="230" x2="20" y2="10" stroke="#e8c8e0" stroke-width="2"/>
+          <!-- segmen bawah -->
+          <line x1="70" y1="200" x2="70" y2="120" stroke="#7c5cbf" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- segmen atas -->
+          <line x1="70" y1="120" x2="70" y2="40" stroke="#5fbfa0" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- titik A -->
+          <circle cx="70" cy="200" r="7" fill="#7c5cbf"/>
+          <text x="82" y="204" font-family="Nunito" font-size="11" font-weight="900" fill="#7c5cbf">A(4,2)</text>
+          <!-- titik B -->
+          <circle cx="70" cy="40" r="7" fill="#e8a020"/>
+          <text x="82" y="44" font-family="Nunito" font-size="11" font-weight="900" fill="#e8a020">B(4,10)</text>
+          <!-- titik M -->
+          <circle cx="70" cy="120" r="8" fill="#e8628a" stroke="#fff" stroke-width="2"/>
+          <text x="82" y="124" font-family="Nunito" font-size="11" font-weight="900" fill="#e8628a">M(4,?)</text>
+          <!-- label -->
+          <text x="55" y="165" text-anchor="middle" font-family="Nunito" font-size="9" fill="#7c5cbf">sama</text>
+          <text x="55" y="85" text-anchor="middle" font-family="Nunito" font-size="9" fill="#5fbfa0">sama</text>
+        </svg>
+      </div>
+
+      <div class="diskusi-box">
+        <div class="diskusi-label">💬 Eksplorasi</div>
+        <p>Dari y = 2 ke y = 10, ada berapa unit? Titik tengah vertikal ada di y berapa?</p>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal('r3a')">Lihat jawaban →</button>
+      <div class="reveal-content" id="r3a">
+        <div class="eq-box mint">
+          <div class="eq-text">
+            y tengah = <span class="hi-gold">(2 + 10)</span> ÷ 2 = <span class="hi-mint">6</span><br>
+            x tetap = <span class="hi-vio">4</span><br><br>
+            Titik tengah = <span class="hi-rose">(4, 6)</span>
+          </div>
+        </div>
+        <div class="callout insight">
+          <span class="callout-icon">💡</span>
+          <div class="callout-text">Untuk garis vertikal, x-nya tidak berubah. Kita cari rata-rata y. Polanya mulai terlihat!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Gabungkan keduanya -->
+  <div class="slide" id="slide-4">
+    <div class="card">
+      <div class="card-label vio">🔗 Gabungkan — Diagonal</div>
+      <h2>Kembali ke pertanyaan awal</h2>
+      <p>Sekarang kita punya cukup petunjuk. Coba terapkan pola yang sudah kita temukan!</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label gold">📍 Kasus Utama</div>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.9rem;align-items:center;">
+        <span class="coord-badge cb-a">A(2, 4)</span>
+        <span style="color:var(--text-muted);font-weight:700;">dan</span>
+        <span class="coord-badge cb-b">B(8, 10)</span>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg">
+          <defs><pattern id="g4" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0L0 0 0 30" fill="none" stroke="#f0d6ea" stroke-width="1"/></pattern></defs>
+          <rect width="260" height="220" fill="url(#g4)"/>
+          <line x1="20" y1="200" x2="250" y2="200" stroke="#e8c8e0" stroke-width="2"/>
+          <line x1="20" y1="200" x2="20" y2="10" stroke="#e8c8e0" stroke-width="2"/>
+          <!-- garis bantu x -->
+          <line x1="50" y1="200" x2="50" y2="170" stroke="#b89ee0" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="140" y1="200" x2="140" y2="105" stroke="#e8628a" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="230" y1="200" x2="230" y2="40" stroke="#b89ee0" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <!-- garis bantu y -->
+          <line x1="20" y1="170" x2="50" y2="170" stroke="#b89ee0" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="20" y1="105" x2="140" y2="105" stroke="#e8628a" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="20" y1="40" x2="230" y2="40" stroke="#b89ee0" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <!-- sumbu label -->
+          <text x="47" y="212" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">2</text>
+          <text x="137" y="212" text-anchor="middle" font-family="Nunito" font-size="9" fill="#e8628a" font-weight="800">5</text>
+          <text x="227" y="212" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">8</text>
+          <text x="15" y="173" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">4</text>
+          <text x="15" y="108" text-anchor="end" font-family="Nunito" font-size="9" fill="#e8628a" font-weight="800">7</text>
+          <text x="15" y="43" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">10</text>
+          <!-- garis AB -->
+          <line x1="50" y1="170" x2="230" y2="40" stroke="#e8c8e0" stroke-width="2.5"/>
+          <!-- setengah kiri -->
+          <line x1="50" y1="170" x2="140" y2="105" stroke="#7c5cbf" stroke-width="3" stroke-linecap="round"/>
+          <!-- setengah kanan -->
+          <line x1="140" y1="105" x2="230" y2="40" stroke="#5fbfa0" stroke-width="3" stroke-linecap="round"/>
+          <!-- titik A -->
+          <circle cx="50" cy="170" r="7" fill="#7c5cbf"/>
+          <text x="34" y="166" font-family="Nunito" font-size="11" font-weight="900" fill="#7c5cbf">A</text>
+          <!-- titik B -->
+          <circle cx="230" cy="40" r="7" fill="#e8a020"/>
+          <text x="238" y="38" font-family="Nunito" font-size="11" font-weight="900" fill="#e8a020">B</text>
+          <!-- titik M -->
+          <circle cx="140" cy="105" r="9" fill="#e8628a" stroke="#fff" stroke-width="2.5"/>
+          <text x="152" y="101" font-family="Nunito" font-size="12" font-weight="900" fill="#e8628a">M</text>
+        </svg>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal('r4a')">Hitung bersama →</button>
+      <div class="reveal-content" id="r4a">
+        <div class="eq-box vio">
+          <div class="eq-text">
+            Tengah x = <span class="hi-gold">(2 + 8)</span> ÷ 2 = <span class="hi-vio">5</span><br>
+            Tengah y = <span class="hi-gold">(4 + 10)</span> ÷ 2 = <span class="hi-rose">7</span><br><br>
+            Titik tengah M = <span class="hi-rose">(5, 7)</span>
+          </div>
+        </div>
+        <div class="callout insight">
+          <span class="callout-icon">✨</span>
+          <div class="callout-text">Kita cari rata-rata x dan rata-rata y secara terpisah. Keduanya digabung menjadi koordinat titik tengah!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Pola dari tabel -->
+  <div class="slide" id="slide-5">
+    <div class="card">
+      <div class="card-label gold">📊 Menemukan Pola</div>
+      <h2>Apa yang selalu terjadi?</h2>
+      <p>Perhatikan beberapa contoh dan lihat polanya.</p>
+    </div>
+
+    <div class="card">
+      <div class="table-box">
+        <table>
+          <thead>
+            <tr><th>Titik A</th><th>Titik B</th><th>Titik Tengah M</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>A(2, 4)</td><td>B(8, 10)</td><td style="color:var(--rose);font-weight:800;">M(5, 7)</td></tr>
+            <tr><td>A(1, 1)</td><td>B(7, 5)</td><td style="color:var(--rose);font-weight:800;">M(4, 3)</td></tr>
+            <tr><td>A(0, 6)</td><td>B(10, 2)</td><td style="color:var(--rose);font-weight:800;">M(5, 4)</td></tr>
+            <tr><td>A(3, 3)</td><td>B(9, 11)</td><td style="color:var(--rose);font-weight:800;">M(6, 7)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="diskusi-box">
+        <div class="diskusi-label">💬 Diskusi</div>
+        <p>Cek baris pertama: (2+8)÷2 = 5 ✓ dan (4+10)÷2 = 7 ✓. Apakah pola ini berlaku untuk semua baris?</p>
+      </div>
+
+      <div class="callout insight">
+        <span class="callout-icon">🔑</span>
+        <div class="callout-text"><strong>Pola yang ditemukan:</strong> Koordinat titik tengah selalu merupakan rata-rata dari koordinat-koordinat yang bersesuaian. Ini bukan kebetulan — ini selalu benar!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Rumus resmi -->
+  <div class="slide" id="slide-6">
+    <div class="card">
+      <div class="card-label vio">📐 Menemukan Aturannya</div>
+      <h2>Dari pola menjadi rumus</h2>
+      <p>Kita sudah menemukan polanya sendiri. Sekarang tinggal menuliskannya secara formal.</p>
+    </div>
+
+    <div class="formula-hero">
+      <div class="f-label">✨ Rumus Titik Tengah</div>
+      <div class="f-text">
+        M = <span style="color:var(--acc)">( (x₁+x₂)/2 , (y₁+y₂)/2 )</span>
+      </div>
+      <div class="f-sub">
+        di mana A(x₁, y₁) dan B(x₂, y₂) adalah dua titik ujungnya
+      </div>
+    </div>
+
+    <div class="callout insight">
+      <span class="callout-icon">💡</span>
+      <div class="callout-text">Rumus ini <strong>tidak perlu dihafal dari awal</strong>. Kita sudah memahami maknanya: rata-ratakan x, rata-ratakan y. Jika lupa rumusnya, kita bisa temukan lagi dari logika ini!</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label rose">🔗 Hubungan Besar</div>
+      <h2>Geometri ↔ Statistik</h2>
+      <p>Titik tengah dalam geometri ternyata sama dengan konsep rata-rata (mean) dalam statistik. Dua bidang matematika yang berbeda, tapi terhubung oleh ide yang sama!</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Contoh soal -->
+  <div class="slide" id="slide-7">
+    <div class="card">
+      <div class="card-label rose">🧮 Latihan Bersama</div>
+      <h2>Coba terapkan!</h2>
+      <p>Kerjakan step by step, jangan langsung ke jawabannya.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label ocean">Soal 1</div>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center;">
+        <span class="coord-badge cb-a">A(2, 6)</span>
+        <span style="color:var(--text-muted);font-weight:700;">dan</span>
+        <span class="coord-badge cb-b">B(10, 8)</span>
+      </div>
+      <p style="color:var(--text-mid);font-size:0.9rem;margin-bottom:0.8rem;">Carilah titik tengah M.</p>
+      <button class="reveal-btn" onclick="toggleReveal('r7a')">Lihat langkah →</button>
+      <div class="reveal-content" id="r7a">
+        <div class="eq-box vio">
+          <div class="eq-text">
+            x_M = (2 + 10) ÷ 2 = <span class="hi-vio">6</span><br>
+            y_M = (6 + 8) ÷ 2 = <span class="hi-rose">7</span><br><br>
+            M = <span class="hi-rose">(6, 7)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label mint">Soal 2</div>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center;">
+        <span class="coord-badge cb-a">A(1, 3)</span>
+        <span style="color:var(--text-muted);font-weight:700;">dan</span>
+        <span class="coord-badge cb-b">B(9, 11)</span>
+      </div>
+      <p style="color:var(--text-mid);font-size:0.9rem;margin-bottom:0.8rem;">Carilah titik tengah M.</p>
+      <button class="reveal-btn" onclick="toggleReveal('r7b')">Lihat langkah →</button>
+      <div class="reveal-content" id="r7b">
+        <div class="eq-box mint">
+          <div class="eq-text">
+            x_M = (1 + 9) ÷ 2 = <span class="hi-mint">5</span><br>
+            y_M = (3 + 11) ÷ 2 = <span class="hi-rose">7</span><br><br>
+            M = <span class="hi-rose">(5, 7)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label gold">Soal 3 — Lebih Menantang</div>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center;">
+        <span class="coord-badge cb-a">A(4, 4)</span>
+        <span style="color:var(--text-muted);font-weight:700;">dan</span>
+        <span class="coord-badge cb-b">B(12, 16)</span>
+      </div>
+      <p style="color:var(--text-mid);font-size:0.9rem;margin-bottom:0.8rem;">Carilah titik tengah M.</p>
+      <button class="reveal-btn" onclick="toggleReveal('r7c')">Lihat langkah →</button>
+      <div class="reveal-content" id="r7c">
+        <div class="eq-box gold">
+          <div class="eq-text">
+            x_M = (4 + 12) ÷ 2 = <span class="hi-gold">8</span><br>
+            y_M = (4 + 16) ÷ 2 = <span class="hi-rose">10</span><br><br>
+            M = <span class="hi-rose">(8, 10)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Rangkuman -->
+  <div class="slide" id="slide-8">
+    <div class="card">
+      <div class="card-label vio">✅ Rangkuman</div>
+      <h2>Yang sudah kita temukan hari ini</h2>
+    </div>
+
+    <div class="card">
+      <div class="eq-box vio" style="margin-bottom:0.9rem;">
+        <div class="eq-text"><span class="hi-vio">Titik tengah membagi ruas garis menjadi dua bagian sama panjang</span></div>
+      </div>
+      <div class="eq-box mint" style="margin-bottom:0.9rem;">
+        <div class="eq-text"><span class="hi-mint">Koordinat tengah = rata-rata koordinat kedua titik</span></div>
+      </div>
+      <div class="eq-box gold" style="margin-bottom:0.9rem;">
+        <div class="eq-text"><span class="hi-gold">M = ( (x₁+x₂)/2 , (y₁+y₂)/2 )</span></div>
+      </div>
+      <div class="eq-box rose">
+        <div class="eq-text"><span class="hi-rose">Geometri dan statistik terhubung lewat konsep rata-rata!</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label gold">💬 Penutup</div>
+      <p style="font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;color:var(--text);line-height:1.6;">"Sering kali rumus bukan sesuatu yang harus dihafal. Rumus adalah <span style="color:var(--acc);">pola yang berhasil kita temukan</span> bersama."</p>
+    </div>
+
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;">
+      <a href="soal32.html" style="padding:0.75rem 1.6rem;border-radius:99px;background:linear-gradient(135deg,var(--rose),#c0406a);color:#fff;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.88rem;text-decoration:none;box-shadow:0 4px 14px rgba(232,98,138,0.3);">⚡ Sprint — 5 Soal</a>
+      <a href="latihan32.html" style="padding:0.75rem 1.6rem;border-radius:99px;background:linear-gradient(135deg,var(--mint),#3a9f80);color:#fff;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.88rem;text-decoration:none;box-shadow:0 4px 14px rgba(95,191,160,0.3);">🌙 Latihan Mandiri</a>
+    </div>
+  </div>
+
+  <!-- Nav row -->
+  <div class="nav-row">
+    <button class="nav-btn ghost" id="prevBtn" onclick="navigate(-1)" disabled>← Sebelumnya</button>
+    <span class="slide-counter" id="slideCounter">1 / 8</span>
+    <button class="nav-btn primary" id="nextBtn" onclick="navigate(1)">Selanjutnya →</button>
+  </div>
+</div>
+
+<script>
+const totalSlides = 8;
+let current = 1;
+
+function updateDots(){
+  const c = document.getElementById('dotsContainer');
+  c.innerHTML = '';
+  for(let i=1;i<=totalSlides;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===current?' active':i<current?' done':'');
+    d.onclick = ()=>{ goTo(i); };
+    c.appendChild(d);
+  }
+}
+
+function goTo(n){
+  document.getElementById('slide-'+current).classList.remove('active');
+  current = n;
+  document.getElementById('slide-'+current).classList.add('active');
+  document.getElementById('slideCounter').textContent = current+' / '+totalSlides;
+  document.getElementById('prevBtn').disabled = current===1;
+  document.getElementById('nextBtn').disabled = current===totalSlides;
+  document.getElementById('nextBtn').textContent = current===totalSlides ? 'Selesai ✓' : 'Selanjutnya →';
+  updateDots();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function navigate(dir){ goTo(current+dir); }
+
+function toggleReveal(id){
+  const el = document.getElementById(id);
+  el.classList.toggle('show');
+}
+
+updateDots();
+</script>
+</body>
+</html>
