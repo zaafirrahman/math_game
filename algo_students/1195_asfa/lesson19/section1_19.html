@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 19 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--violet:#a78bfa;--red:#ef4444;--cyan:#22d3ee;--emerald:#34d399;--amber:#fbbf24;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(34,211,238,0.07) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(52,211,153,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--neon);}
+  .wrapper{max-width:720px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--emerald));border-radius:99px;transition:width 0.4s ease;}
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title .h1{color:var(--neon);}
+  .slide-title .h2{color:var(--cyan);}
+  .slide-title .h3{color:var(--amber);}
+  .slide-title .hv{color:var(--emerald);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+  .slide-sub strong{color:var(--emerald);}
+
+  .callout{background:rgba(34,211,238,0.05);border-left:3px solid var(--cyan);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--cyan);}
+  .callout.neon{background:rgba(0,245,196,0.05);border-color:var(--neon);}
+  .callout.neon strong{color:var(--neon);}
+  .callout.amber{background:rgba(251,191,36,0.06);border-color:var(--amber);}
+  .callout.amber strong{color:var(--amber);}
+  .callout.emerald{background:rgba(52,211,153,0.06);border-color:var(--emerald);}
+  .callout.emerald strong{color:var(--emerald);}
+
+  /* Decoder translate visual: kalimat -> simbol */
+  .decode-row{display:flex;align-items:center;gap:1rem;margin:1rem 0;flex-wrap:wrap;}
+  .decode-box{flex:1;min-width:140px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem 1.2rem;text-align:center;}
+  .decode-box.kalimat{border-color:rgba(34,211,238,0.4);}
+  .decode-box.simbol{border-color:rgba(52,211,153,0.4);}
+  .decode-tag{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem;}
+  .decode-box.kalimat .decode-tag{color:var(--cyan);}
+  .decode-box.simbol .decode-tag{color:var(--emerald);}
+  .decode-text{font-size:0.95rem;line-height:1.5;color:var(--text);}
+  .decode-symbol{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;color:var(--emerald);}
+  .decode-arrow{font-size:1.4rem;color:var(--muted);flex-shrink:0;}
+  @media(max-width:480px){.decode-row{flex-direction:column;}.decode-arrow{transform:rotate(90deg);}}
+
+  .reveal-btn{background:rgba(0,245,196,0.08);border:1px solid rgba(0,245,196,0.35);color:var(--neon);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(0,245,196,0.15);}
+  .reveal-btn.cyan{background:rgba(34,211,238,0.08);border-color:rgba(34,211,238,0.4);color:var(--cyan);}
+  .reveal-btn.cyan:hover{background:rgba(34,211,238,0.15);}
+  .reveal-box{background:rgba(0,245,196,0.05);border:1px solid rgba(0,245,196,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;text-align:center;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+  .reveal-box.cyan{background:rgba(34,211,238,0.06);border-color:rgba(34,211,238,0.35);}
+  .reveal-box .rule-text{font-family:'Orbitron',monospace;font-size:1.05rem;font-weight:700;color:var(--neon);margin-bottom:0.4rem;}
+  .reveal-box.cyan .rule-text{color:var(--cyan);}
+  .reveal-box .rule-sub{font-size:0.85rem;color:var(--muted);}
+
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(34,211,238,0.12);border:1px solid rgba(34,211,238,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:var(--cyan);flex-shrink:0;}
+  .step-num.v{background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,0.4);color:var(--emerald);}
+  .step-num.o{background:rgba(251,191,36,0.12);border-color:rgba(251,191,36,0.4);color:var(--amber);}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+  .step-body .sdesc .calc{font-family:'Orbitron',monospace;color:var(--text);font-weight:700;}
+
+  /* Kamus table */
+  .dict-table{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin:1.2rem 0;}
+  .dict-table th{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);background:rgba(34,211,238,0.06);padding:0.8rem;text-align:center;}
+  .dict-table td{padding:0.9rem;text-align:center;border-top:1px solid var(--border);font-size:0.95rem;}
+  .dict-table td.sym{font-family:'Orbitron',monospace;font-weight:900;font-size:1.2rem;color:var(--emerald);}
+
+  .term-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:0.9rem;}
+  .term-card .tphrase{font-weight:700;color:var(--text);font-size:0.95rem;margin-bottom:0.5rem;}
+  .term-card .tnote{font-size:0.82rem;color:var(--muted);line-height:1.6;}
+  .term-card .tnote strong{color:var(--cyan);}
+
+  .puzzle-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:1.2rem 0;}
+  @media(max-width:480px){.puzzle-grid{grid-template-columns:1fr;}}
+  .pick-btn{width:100%;background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.7rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.85rem;letter-spacing:1px;transition:all 0.2s;}
+  .pick-btn:hover:not(:disabled){border-color:var(--cyan);}
+  .pick-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .pick-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .pick-feedback{font-size:0.82rem;color:var(--muted);margin-top:0.6rem;line-height:1.6;text-align:center;min-height:20px;}
+
+  .fill-input{background:#12121c;border:1.5px solid var(--border);color:var(--emerald);font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;width:100%;max-width:260px;text-align:center;border-radius:8px;padding:0.55rem;transition:border-color 0.2s;}
+  .fill-input:focus{outline:none;border-color:var(--emerald);}
+  .check-btn{background:linear-gradient(135deg,var(--emerald),#059669);color:#001;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;padding:0.5rem 1.2rem;border:none;border-radius:8px;cursor:pointer;margin-top:0.8rem;font-weight:800;display:block;margin-left:auto;margin-right:auto;}
+  .check-result{font-family:'Orbitron',monospace;font-size:0.85rem;margin-top:0.8rem;min-height:22px;text-align:center;line-height:1.6;}
+  .guess-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin:1.2rem 0;text-align:center;}
+  .guess-row{display:flex;align-items:center;justify-content:center;gap:0.6rem;font-family:'Orbitron',monospace;font-size:0.95rem;flex-wrap:wrap;margin-bottom:0.6rem;}
+  .guess-row:last-child{margin-bottom:0;}
+  .guess-row .qmark{color:var(--muted);font-size:0.85rem;min-width:170px;text-align:right;}
+  @media(max-width:480px){.guess-row .qmark{min-width:0;text-align:center;width:100%;}}
+
+  .story-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin:1.2rem 0;}
+  .story-card .stext{font-size:0.95rem;line-height:1.8;color:var(--text);margin-bottom:1rem;font-style:italic;}
+  .story-card .stext strong{color:var(--emerald);font-style:normal;}
+  .model-arrow{text-align:center;font-size:1.3rem;color:var(--muted);margin:0.6rem 0;}
+
+  .eq-pair{display:flex;flex-direction:column;gap:0.6rem;margin:1.2rem 0;align-items:center;}
+  .eq-row{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.8rem 1.5rem;font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:800;min-width:200px;text-align:center;}
+  .eq-row.e1{color:var(--cyan);border-color:rgba(34,211,238,0.4);}
+  .eq-row.e2{color:var(--amber);border-color:rgba(251,191,36,0.4);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--emerald),#059669);border:none;color:#001;font-weight:800;}
+  .nav-btn:hover{border-color:var(--cyan);color:var(--cyan);}
+  .nav-btn.next:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(52,211,153,0.3);}
+
+  .summary-card{background:var(--card);border:1px solid rgba(52,211,153,0.3);border-radius:18px;padding:2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.9rem;color:var(--emerald);letter-spacing:2px;margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .summary-item span{flex-shrink:0;}
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;}
+  .da-primary{background:linear-gradient(135deg,var(--emerald),#059669);color:#001;border:none;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(52,211,153,0.3);}
+  .da-secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+
+  .scan-icon{font-size:3.5rem;text-align:center;display:block;margin-bottom:1rem;}
+  .ek-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1.2rem 0;}
+  @media(max-width:480px){.ek-grid{grid-template-columns:1fr;}}
+  .ek-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.1rem;text-align:center;}
+  .ek-card .ek-sym{font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:900;color:var(--cyan);margin-bottom:0.5rem;}
+  .ek-card .ek-input{width:100%;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson19.html">LESSON 19</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+
+  <!-- SLIDE 1 -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title">Bahasa <span class="h2">vs</span> Matematika</div>
+      <div class="slide-sub">Setiap kalimat punya "kode" matematikanya sendiri. Tugas seorang <strong>penerjemah</strong> adalah menemukan kode itu.</div>
+    </div>
+    <span class="scan-icon">🕵️‍♂️</span>
+    <div class="decode-row">
+      <div class="decode-box kalimat"><div class="decode-tag">Kalimat</div><div class="decode-text">"Jumlah dua bilangan"</div></div>
+      <div class="decode-arrow">→</div>
+      <div class="decode-box simbol"><div class="decode-tag">Kode</div><div class="decode-symbol">x + y</div></div>
+    </div>
+    <div class="decode-row">
+      <div class="decode-box kalimat"><div class="decode-tag">Kalimat</div><div class="decode-text">"Selisih dua bilangan"</div></div>
+      <div class="decode-arrow">→</div>
+      <div class="decode-box simbol"><div class="decode-tag">Kode</div><div class="decode-symbol">x − y</div></div>
+    </div>
+    <div class="decode-row">
+      <div class="decode-box kalimat"><div class="decode-tag">Kalimat</div><div class="decode-text">"Hasil kali dua bilangan"</div></div>
+      <div class="decode-arrow">→</div>
+      <div class="decode-box simbol"><div class="decode-tag">Kode</div><div class="decode-symbol">xy</div></div>
+    </div>
+    <div class="decode-row">
+      <div class="decode-box kalimat"><div class="decode-tag">Kalimat</div><div class="decode-text">"Hasil bagi dua bilangan"</div></div>
+      <div class="decode-arrow">→</div>
+      <div class="decode-box simbol"><div class="decode-tag">Kode</div><div class="decode-symbol">x / y</div></div>
+    </div>
+    <div class="callout cyan"><strong>Misi hari ini:</strong> Sebelum bisa menyelesaikan SPLDV dan soal cerita yang lebih rumit, kamu harus jago jadi <strong>agen penerjemah</strong> — mengubah kalimat sehari-hari menjadi simbol matematika, dan sebaliknya!</div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Kamus Dasar →</button></div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Kamus <span class="hv">Matematika Dasar</span> 📖</div>
+      <div class="slide-sub">Ini "buku kode" yang dipakai semua agen penerjemah. Hafalkan, karena ini akan terus muncul!</div>
+    </div>
+    <table class="dict-table">
+      <tr><th>Bahasa</th><th>Simbol</th></tr>
+      <tr><td>Jumlah / ditambah / lebih dari</td><td class="sym">+</td></tr>
+      <tr><td>Selisih / dikurangi / kurang dari</td><td class="sym">−</td></tr>
+      <tr><td>Kali / dari (pada pecahan)</td><td class="sym">×</td></tr>
+      <tr><td>Bagi / per</td><td class="sym">÷</td></tr>
+      <tr><td>Sama dengan / menghasilkan / adalah</td><td class="sym">=</td></tr>
+    </table>
+    <div class="callout amber"><strong>Catatan agen:</strong> Satu kata bisa punya beberapa "samaran"! Misalnya "lebih dari" dan "ditambah" dua-duanya berarti <strong>+</strong>. Yang penting kamu kenali maksudnya, bukan cuma kata persisnya.</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Kalimat → Ekspresi →</button></div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title">Kalimat <span class="h2">→</span> Ekspresi ✏️</div>
+      <div class="slide-sub">Sekarang giliranmu jadi penerjemah! Pakai variabel <strong>x</strong> untuk "suatu bilangan", lalu isi kotak di bawah.</div>
+    </div>
+    <div class="guess-box">
+      <div class="guess-row"><span class="qmark">"Lima lebih dari suatu bilangan"</span><input type="text" class="fill-input" id="g3_1" placeholder="contoh: x + 5"></div>
+      <div class="guess-row"><span class="qmark">"Tiga kurang dari suatu bilangan"</span><input type="text" class="fill-input" id="g3_2" placeholder="contoh: x − 3"></div>
+      <div class="guess-row"><span class="qmark">"Dua kali suatu bilangan"</span><input type="text" class="fill-input" id="g3_3" placeholder="contoh: 2x"></div>
+      <div class="guess-row"><span class="qmark">"Setengah dari suatu bilangan"</span><input type="text" class="fill-input" id="g3_4" placeholder="contoh: x/2"></div>
+      <button class="check-btn" onclick="checkSlide3()">CEK SEMUA</button>
+      <div class="check-result" id="resultSlide3"></div>
+    </div>
+    <div class="callout"><strong>Pola yang perlu kamu sadari:</strong> "Lebih dari" → ditambah. "Kurang dari" → dikurang. "Kali" → dikali. "Setengah/sepertiga/dst dari" → dibagi.</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Ekspresi → Kalimat →</button></div>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Ekspresi <span class="h2">→</span> Kalimat 🔄</div>
+      <div class="slide-sub">Agen sejati harus bisa kerja dua arah! Sekarang baliknya: ubah simbol ini jadi bahasa sehari-hari.</div>
+    </div>
+    <div class="ek-grid">
+      <div class="ek-card"><div class="ek-sym">x + 7</div></div>
+      <div class="ek-card"><div class="ek-sym">3x</div></div>
+      <div class="ek-card"><div class="ek-sym">x − 4</div></div>
+      <div class="ek-card"><div class="ek-sym">x / 2</div></div>
+    </div>
+    <div class="callout cyan"><strong>Tantangan:</strong> Coba ucapkan keempatnya dengan suara keras (atau dalam hati) sebagai kalimat sehari-hari, sebelum klik tombol di bawah!</div>
+    <button class="reveal-btn cyan" onclick="toggleReveal('rv4')">🔍 Lihat Contoh Jawaban</button>
+    <div class="reveal-box cyan" id="rv4">
+      <div class="rule-text" style="font-size:0.85rem;font-weight:600;text-align:left;line-height:2;">
+        x + 7 → "Tujuh lebih dari suatu bilangan"<br>
+        3x → "Tiga kali suatu bilangan"<br>
+        x − 4 → "Empat kurang dari suatu bilangan"<br>
+        x / 2 → "Setengah dari suatu bilangan"
+      </div>
+      <div class="rule-sub">Jawabanmu boleh beda kata-katanya, yang penting maknanya sama!</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Kalimat → Persamaan →</button></div>
+  </div>
+
+  <!-- SLIDE 5 -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title">Kalimat <span class="hv">→ Persamaan</span></div>
+      <div class="slide-sub">Kalau ada kata "sama dengan" / "menghasilkan" / "adalah" + sebuah angka pasti, ekspresi berubah jadi <strong>persamaan</strong>!</div>
+    </div>
+    <div class="decode-row">
+      <div class="decode-box kalimat"><div class="decode-tag">Kalimat</div><div class="decode-text">"Suatu bilangan ditambah 5 menghasilkan 12"</div></div>
+      <div class="decode-arrow">→</div>
+      <div class="decode-box simbol"><div class="decode-tag">Persamaan</div><div class="decode-symbol">x + 5 = 12</div></div>
+    </div>
+    <div class="decode-row">
+      <div class="decode-box kalimat"><div class="decode-tag">Kalimat</div><div class="decode-text">"Dua kali suatu bilangan sama dengan 18"</div></div>
+      <div class="decode-arrow">→</div>
+      <div class="decode-box simbol"><div class="decode-tag">Persamaan</div><div class="decode-symbol">2x = 18</div></div>
+    </div>
+    <div class="callout emerald"><strong>Bedanya apa?</strong> Ekspresi (seperti x + 5) belum punya nilai pasti. Persamaan (seperti x + 5 = 12) sudah punya tanda "=" — artinya kita tahu hasilnya, dan bisa cari nilai x!</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Mini Challenge →</button></div>
+  </div>
+
+  <!-- SLIDE 6 -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title">Mini <span class="h2">Challenge</span> 🧩</div>
+      <div class="slide-sub">Fokus pada MODEL-nya dulu, bukan jawabannya. Tulis persamaan/ekspresi yang tepat untuk tiap kalimat ini.</div>
+    </div>
+    <div class="guess-box">
+      <div class="guess-row"><span class="qmark">1. "Jumlah dua bilangan adalah 20"</span><input type="text" class="fill-input" id="g6_1" placeholder="x + y = ?"></div>
+      <div class="guess-row"><span class="qmark">2. "Selisih dua bilangan adalah 4"</span><input type="text" class="fill-input" id="g6_2" placeholder="x − y = ?"></div>
+      <div class="guess-row"><span class="qmark">3. "Hasil kali dua bilangan adalah 24"</span><input type="text" class="fill-input" id="g6_3" placeholder="xy = ?"></div>
+      <button class="check-btn" onclick="checkSlide6()">CEK MODELKU</button>
+      <div class="check-result" id="resultSlide6"></div>
+    </div>
+    <div class="callout amber"><strong>Ingat:</strong> Kita BELUM mencari nilai x dan y di sini. Misinya cuma satu — mengubah kalimat jadi model matematika yang benar!</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">Menuju SPLDV →</button></div>
+  </div>
+
+  <!-- SLIDE 7 -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">Menuju <span class="h3">SPLDV</span> 🔓</div>
+      <div class="slide-sub">Kalau satu cerita punya DUA informasi sekaligus, kamu dapat DUA persamaan — itulah cikal bakal SPLDV!</div>
+    </div>
+    <div class="decode-row">
+      <div class="decode-box kalimat"><div class="decode-tag">Kalimat 1</div><div class="decode-text">"Jumlah dua bilangan adalah 20"</div></div>
+      <div class="decode-arrow">→</div>
+      <div class="decode-box simbol"><div class="decode-tag">Persamaan 1</div><div class="decode-symbol">x + y = 20</div></div>
+    </div>
+    <div class="decode-row">
+      <div class="decode-box kalimat"><div class="decode-tag">Kalimat 2</div><div class="decode-text">"Selisih kedua bilangan itu 4"</div></div>
+      <div class="decode-arrow">→</div>
+      <div class="decode-box simbol"><div class="decode-tag">Persamaan 2</div><div class="decode-symbol">x − y = 4</div></div>
+    </div>
+    <div class="eq-pair">
+      <div class="eq-row e1">x + y = 20</div>
+      <div class="eq-row e2">x − y = 4</div>
+    </div>
+    <div class="callout cyan"><strong>Lihat itu!</strong> Dua kalimat sehari-hari berubah jadi sepasang persamaan — persis seperti yang kamu pelajari di Lesson 18 (SPLDV). Bedanya, sekarang KAMU yang membangun modelnya sendiri dari nol!</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Soal Cerita →</button></div>
+  </div>
+
+  <!-- SLIDE 8 -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">Soal Cerita: <span class="hv">Misi Sungguhan</span> 🎯</div>
+      <div class="slide-sub">Saatnya jadi agen lapangan! Baca ceritanya, tentukan variabel, lalu bangun model matematikanya.</div>
+    </div>
+    <div class="story-card">
+      <div class="stext">"Jumlah umur Andi dan Budi adalah <strong>24 tahun</strong>. Selisih umur mereka adalah <strong>4 tahun</strong>."</div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num v">1</div>
+        <div class="step-body"><div class="stitle">Tentukan variabel</div><div class="sdesc">Misalkan umur Andi = <span class="calc">a</span>, umur Budi = <span class="calc">b</span></div></div>
+      </div>
+      <div class="step">
+        <div class="step-num v">2</div>
+        <div class="step-body"><div class="stitle">Cari kata kunci "jumlah"</div><div class="sdesc">"Jumlah umur ... adalah 24" → <span class="calc">a + b = 24</span></div></div>
+      </div>
+      <div class="step">
+        <div class="step-num v">3</div>
+        <div class="step-body"><div class="stitle">Cari kata kunci "selisih"</div><div class="sdesc">"Selisih umur ... adalah 4" → <span class="calc">a − b = 4</span></div></div>
+      </div>
+    </div>
+    <div class="eq-pair">
+      <div class="eq-row e1">a + b = 24</div>
+      <div class="eq-row e2">a − b = 4</div>
+    </div>
+    <div class="callout emerald"><strong>Cukup sampai sini!</strong> Belum perlu dicari nilai a dan b-nya — itu pekerjaan untuk substitusi/eliminasi yang sudah kamu kuasai. Hari ini fokusnya: membangun model yang BENAR.</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Giliranmu! →</button></div>
+  </div>
+
+  <!-- SLIDE 9 -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">Giliranmu Jadi <span class="h2">Agen</span> 🕵️</div>
+      <div class="slide-sub">Coba sendiri sebelum lihat jawabannya. Pilih dua persamaan yang paling cocok untuk cerita ini.</div>
+    </div>
+    <div class="story-card">
+      <div class="stext">"Harga 1 tiket VIP dan 1 tiket reguler <strong>jumlahnya Rp80.000</strong>. <strong>Selisih</strong> harga keduanya adalah <strong>Rp20.000</strong>, dengan VIP lebih mahal."</div>
+    </div>
+    <div class="puzzle-grid">
+      <button class="pick-btn" onclick="pickP9(this,'a')">v + r = 80000<br>v − r = 20000</button>
+      <button class="pick-btn" onclick="pickP9(this,'b')">v + r = 20000<br>v − r = 80000</button>
+      <button class="pick-btn" onclick="pickP9(this,'c')">v × r = 80000<br>v + r = 20000</button>
+      <button class="pick-btn" onclick="pickP9(this,'d')">v − r = 80000<br>v + r = 20000</button>
+    </div>
+    <div class="pick-feedback" id="fbP9"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Penutup →</button></div>
+  </div>
+
+  <!-- SLIDE 10 -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Refleksi & <span class="hv">Penutup</span> 🎉</div>
+    </div>
+    <div class="summary-card">
+      <h3>✅ Yang Kamu Pelajari</h3>
+      <div class="summary-item"><span>🔤</span> Bahasa matematika adalah cara menulis ide dengan simbol — setiap kata kunci punya "kode" tersendiri</div>
+      <div class="summary-item"><span>🔄</span> Kamu bisa menerjemahkan dua arah: kalimat → simbol, dan simbol → kalimat</div>
+      <div class="summary-item"><span>📐</span> Ekspresi (x+5) belum punya nilai pasti; persamaan (x+5=12) sudah, karena ada tanda "="</div>
+      <div class="summary-item"><span>📖</span> Soal cerita dengan DUA informasi bisa diubah jadi DUA persamaan — bekal langsung untuk SPLDV</div>
+      <div class="summary-item"><span>🎯</span> Menerjemahkan dengan benar adalah langkah PERTAMA sebelum menyelesaikan soal apa pun</div>
+    </div>
+    <div class="callout cyan"><strong>"Sebelum menyelesaikan soal, kita harus bisa menerjemahkannya terlebih dahulu."</strong></div>
+    <div class="done-actions">
+      <a href="quicktest19.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise19.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson19.html" class="da-btn da-secondary">Lesson 19</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let currentSlide=1;
+const TOTAL=10;
+function goSlide(n){
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide=n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width=((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleReveal(id){
+  document.getElementById(id).classList.toggle('show');
+}
+function normalize(s){
+  return s.toLowerCase().replace(/\s+/g,'').replace(/×/g,'*').replace(/x\*2/g,'2x');
+}
+function checkSlide3(){
+  const answers=[
+    {id:'g3_1',accepts:['x+5','5+x']},
+    {id:'g3_2',accepts:['x-3']},
+    {id:'g3_3',accepts:['2x','x*2']},
+    {id:'g3_4',accepts:['x/2','x÷2']},
+  ];
+  let correctCount=0;
+  answers.forEach(a=>{
+    const val=normalize(document.getElementById(a.id).value||'');
+    if(a.accepts.includes(val)) correctCount++;
+  });
+  const res=document.getElementById('resultSlide3');
+  if(correctCount===4){
+    res.innerHTML='🎉 SEMPURNA! Keempat terjemahanmu tepat.';
+    res.style.color='var(--neon)';
+  } else if(correctCount>0){
+    res.innerHTML=`✅ ${correctCount} dari 4 benar. Cek lagi yang belum tepat — ingat pola kata kuncinya!`;
+    res.style.color='var(--amber)';
+  } else {
+    res.innerHTML='Belum ada yang tepat. Coba lihat lagi pola di kamus Slide 2 ya!';
+    res.style.color='var(--red)';
+  }
+}
+function checkSlide6(){
+  const answers=[
+    {id:'g6_1',accepts:['x+y=20','y+x=20']},
+    {id:'g6_2',accepts:['x-y=4']},
+    {id:'g6_3',accepts:['xy=24','x*y=24']},
+  ];
+  let correctCount=0;
+  answers.forEach(a=>{
+    const val=normalize(document.getElementById(a.id).value||'');
+    if(a.accepts.includes(val)) correctCount++;
+  });
+  const res=document.getElementById('resultSlide6');
+  if(correctCount===3){
+    res.innerHTML='🎉 MANTAP! Ketiga model matematikamu tepat.';
+    res.style.color='var(--neon)';
+  } else if(correctCount>0){
+    res.innerHTML=`✅ ${correctCount} dari 3 benar. Periksa lagi kata kunci "jumlah", "selisih", dan "hasil kali"!`;
+    res.style.color='var(--amber)';
+  } else {
+    res.innerHTML='Belum tepat. "Jumlah"→+, "Selisih"→−, "Hasil kali"→×. Coba lagi!';
+    res.style.color='var(--red)';
+  }
+}
+function pickP9(btn,chosen){
+  const buttons=document.querySelectorAll('#slide9 .pick-btn');
+  buttons.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbP9');
+  if(chosen==='a'){
+    btn.classList.add('correct');
+    fb.innerHTML='✅ Tepat! "Jumlahnya 80.000" → v + r = 80000. "Selisih 20.000" → v − r = 20000 (VIP lebih mahal jadi positif).';
+  } else {
+    btn.classList.add('wrong');
+    buttons.forEach(b=>{ if(b.textContent.includes('80000')&&b.textContent.includes('v + r')&&b.textContent.includes('v − r')) b.classList.add('correct'); });
+    fb.innerHTML='❌ Belum tepat. Ingat: "jumlah" → tanda +, "selisih" → tanda −. Jawaban yang benar: v + r = 80000 dan v − r = 20000.';
+  }
+}
+</script>
+</body>
+</html>

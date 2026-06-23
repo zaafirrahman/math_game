@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extra PR · Lesson 19 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#059669;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --emerald:#34d399;--text:#e2e8f0;--muted:#64748b;
+    --amber:#fbbf24;--blue:#60a5fa;--pink:#f472b6;
+    --pr:#22d3ee;--blue2:#38bdf8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 80%,rgba(34,211,238,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 85% 15%,rgba(52,211,153,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 50%,rgba(0,245,196,0.03) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  nav{
+    padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:100;
+    font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;
+  }
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--pr);}
+
+  .wrapper{max-width:800px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  .pr-banner{background:linear-gradient(135deg,rgba(34,211,238,0.08),rgba(52,211,153,0.08));border:1px solid rgba(34,211,238,0.25);border-radius:20px;padding:2rem 2rem 1.5rem;margin-bottom:2rem;position:relative;overflow:hidden;}
+  .pr-banner::before{content:'🕵️';position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);font-size:5rem;opacity:0.08;pointer-events:none;line-height:1;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);color:var(--pr);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;margin-bottom:0.5rem;line-height:1.3;}
+  .page-title span{color:var(--pr);}
+  .page-desc{color:var(--muted);font-size:0.9rem;line-height:1.7;max-width:540px;}
+  .pr-pills{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;}
+  .pr-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.72rem;padding:0.2rem 0.7rem;border-radius:20px;font-weight:700;}
+  .pill-cyan{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .pill-emerald{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.3);}
+  .pill-amber{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.3);}
+  .pill-neon{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.3);}
+  .pill-blue{background:rgba(56,189,248,0.1);color:var(--blue2);border:1px solid rgba(56,189,248,0.3);}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--pr);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--pr),var(--emerald));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+  .prog-stars{display:flex;gap:0.3rem;margin-top:0.5rem;align-items:center;font-size:0.78rem;color:var(--muted);}
+  .star{font-size:0.9rem;opacity:0.25;transition:opacity 0.4s;}
+  .star.lit{opacity:1;}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--neon);}
+  .sd-2{color:var(--blue2);}
+  .sd-3{color:var(--amber);}
+  .sd-4{color:var(--emerald);}
+  .sd-5{color:var(--pr);}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;max-width:100%;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;padding:0 0.25rem;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(34,211,238,0.35);background:rgba(34,211,238,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.25);}
+  .ex-tag.tag-2{background:rgba(56,189,248,0.1);color:var(--blue2);border:1px solid rgba(56,189,248,0.25);}
+  .ex-tag.tag-3{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.25);}
+  .ex-tag.tag-4{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.25);}
+  .ex-tag.tag-5{background:rgba(34,211,238,0.1);color:var(--pr);border:1px solid rgba(34,211,238,0.25);}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.78rem,3vw,0.92rem);font-weight:900;color:var(--text);margin-bottom:0.5rem;line-height:1.5;word-break:break-word;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--pr);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:1rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--pr);}
+  .ex-input.correct{border-color:var(--pr);color:var(--pr);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);color:var(--pr);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(34,211,238,0.22);border-color:var(--pr);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--neon);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.4);color:var(--pr);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+  .attempts-row{margin-top:0.4rem;display:flex;gap:2px;align-items:center;}
+  .attempts-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:2px;}
+
+  .ex-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;}
+  .ex-opt{background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.55rem 0.4rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;transition:all 0.15s;text-align:center;line-height:1.4;}
+  .ex-opt:hover:not(:disabled){border-color:var(--pr);background:rgba(34,211,238,0.06);}
+  .ex-opt.opt-correct{border-color:var(--neon);background:rgba(0,245,196,0.12);color:var(--neon);}
+  .ex-opt.opt-wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .ex-opt:disabled{cursor:default;}
+
+  .ex-card.word-card{border-left:3px solid var(--amber);}
+  .ex-card.word-card.done-card{border-left-color:var(--pr);}
+  .word-story{background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.2);border-radius:10px;padding:0.7rem 0.9rem;margin-bottom:0.7rem;font-size:0.84rem;color:var(--text);line-height:1.6;}
+  .word-story strong{color:var(--amber);}
+
+  .kalimat-disp{background:#12121c;border:1.5px solid var(--border);border-radius:10px;padding:0.7rem 0.9rem;margin:0 0 0.8rem;text-align:center;}
+  .kalimat-disp-text{font-size:0.85rem;font-style:italic;color:var(--cyan);line-height:1.6;}
+
+  /* SPLDV system display */
+  .sys-disp{background:#12121c;border:1.5px solid var(--border);border-radius:10px;padding:0.6rem 0.7rem;margin:0 0 0.8rem;text-align:center;}
+  .sys-disp-text{font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:900;line-height:1.9;}
+  .sys-disp-text .eq1{color:var(--blue2);}
+  .sys-disp-text .eq2{color:var(--amber);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson19.html">LESSON 19</a>
+  <span>›</span>
+  <span class="current">EXTRA PR</span>
+</nav>
+
+<div class="wrapper">
+  <div class="pr-banner">
+    <div class="page-badge">🕵️ Decoder Mode</div>
+    <div class="page-title">Extra <span>PR Mode</span></div>
+    <div class="page-desc">
+      40 soal ekstra tentang Bahasa Matematika — dari kamus kata kunci dasar, menerjemahkan kalimat menjadi ekspresi,
+      menerjemahkan ekspresi menjadi kalimat, membangun persamaan dari kalimat, sampai membangun model SPLDV dari soal cerita.
+      Progress tersimpan otomatis. Latihan ini mengasah skill paling penting sebelum soal cerita yang lebih rumit! 🕵️
+    </div>
+    <div class="pr-pills">
+      <span class="pr-pill pill-neon">📖 Kamus Dasar</span>
+      <span class="pr-pill pill-blue">➡️ Kalimat→Ekspresi</span>
+      <span class="pr-pill pill-amber">⬅️ Ekspresi→Kalimat</span>
+      <span class="pr-pill pill-emerald">🧮 Kalimat→Persamaan</span>
+      <span class="pr-pill pill-cyan">🧩 Soal Cerita</span>
+    </div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress PR</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      Kumpulkan ⭐ untuk setiap bagian yang diselesaikan!
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+      <span style="margin-left:0.3rem;font-size:0.72rem;">Selesaikan 8 soal per bagian</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🕵️</span>
+    <div class="alldone-title">PR DECODER SELESAI!</div>
+    <div class="alldone-desc">
+      GG! Kamu udah menaklukkan 40 soal Extra PR Lesson 19!<br>
+      Kamus dasar, kalimat↔ekspresi, kalimat→persamaan, dan soal cerita — semua kamu babat habis! 🔥<br>
+      Kamu sekarang siap menerjemahkan soal cerita apa pun jadi model matematika!
+    </div>
+    <div class="alldone-xp">🕵️ +400 XP — Math Translator Badge Unlocked!</div>
+    <div class="action-btns">
+      <a href="lesson19.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="exercise19.html" class="btn btn-ghost">Exercise Zone</a>
+      <a href="quicktest19.html" class="btn btn-primary">Quick Test ⚡</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  #allDone{display:none;text-align:center;padding:3rem 2rem;}
+  .alldone-icon{font-size:5rem;display:block;margin-bottom:1.5rem;animation:bounce 1s ease infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .alldone-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2rem);color:var(--pr);margin-bottom:0.8rem;}
+  .alldone-desc{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .alldone-xp{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.5rem 1.5rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:2rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--emerald);color:var(--emerald);}
+  .btn-primary{background:linear-gradient(135deg,#0e7490,var(--neon2));color:white;box-shadow:0 4px 15px rgba(14,116,144,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson19_extra_v1';
+function loadProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{};}catch(e){return{};}}
+function saveProgress(p){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(p));}catch(e){}}
+let progress = loadProgress();
+
+// Helper: render a kalimat (sentence) display
+function kalimatDisp(text){
+  return `<div class="kalimat-disp"><div class="kalimat-disp-text">${text}</div></div>`;
+}
+// Helper: render a two-line SPLDV system display
+function sysDisp(eq1, eq2){
+  return `<div class="sys-disp"><div class="sys-disp-text"><span class="eq1">${eq1}</span><br><span class="eq2">${eq2}</span></div></div>`;
+}
+
+const exercises = [
+  // ─── BAGIAN 1: Kamus & Kata Kunci Dasar (e01–e08) ────────────────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Kamus Dasar',
+    q:'Kata "jumlah" dalam bahasa matematika diterjemahkan menjadi simbol...', hint:'Ingat kamus dasar di Slide 2',
+    type:'mcq', opts:['+','−','×','÷'], answer:'+',
+    explain:'✅ "Jumlah" selalu berarti tanda tambah (+) ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Kamus Dasar',
+    q:'Kata "selisih" dalam bahasa matematika diterjemahkan menjadi simbol...', hint:'Ingat kamus dasar di Slide 2',
+    type:'mcq', opts:['−','+','×','÷'], answer:'−',
+    explain:'✅ "Selisih" selalu berarti tanda kurang (−) ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Kamus Dasar',
+    q:'Frasa "hasil kali" dalam bahasa matematika diterjemahkan menjadi simbol...', hint:'Bukan tambah, bukan kurang...',
+    type:'mcq', opts:['×','+','−','÷'], answer:'×',
+    explain:'✅ "Hasil kali" berarti dikalikan (×) ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Kamus Dasar',
+    q:'Frasa "hasil bagi" dalam bahasa matematika diterjemahkan menjadi simbol...', hint:'Lawan dari "hasil kali"',
+    type:'mcq', opts:['÷','×','+','−'], answer:'÷',
+    explain:'✅ "Hasil bagi" berarti dibagi (÷) ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Kamus Dasar',
+    q:'Kata "lebih dari" pada kalimat "tujuh lebih dari suatu bilangan" berarti operasi...', hint:'Pikirkan: nilai jadi lebih besar',
+    type:'text', answers:['tambah','penjumlahan','+'], explain:'✅ "Lebih dari" = ditambah (+) ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Kamus Dasar',
+    q:'Kata "kurang dari" pada kalimat "lima kurang dari suatu bilangan" berarti operasi...', hint:'Pikirkan: nilai jadi lebih kecil',
+    type:'text', answers:['kurang','pengurangan','-','−'], explain:'✅ "Kurang dari" = dikurang (−) ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Kamus Dasar',
+    q:'Kata "sama dengan" / "menghasilkan" / "adalah" pada sebuah kalimat menandakan akan munculnya simbol...', hint:'Simbol ini membuat ekspresi jadi persamaan',
+    type:'mcq', opts:['=','+','×','÷'], answer:'=',
+    explain:'✅ "Sama dengan", "menghasilkan", dan "adalah" semuanya menandai tanda "=" ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Kamus Dasar',
+    q:'"Setengah dari", "sepertiga dari", dan kata "...dari" pada pecahan biasanya menandakan operasi...', hint:'Pecahan = pembagian',
+    type:'text', answers:['bagi','pembagian','÷','/'], explain:'✅ "...dari" pada konteks pecahan berarti dibagi ✓' },
+
+  // ─── BAGIAN 2: Kalimat → Ekspresi (e09–e16) ─────────────────────────
+  { id:'e09', section:'s2', tag:'tag-2', tagLabel:'Kalimat→Ekspresi',
+    q:'"Delapan lebih dari suatu bilangan" (x = bilangan itu) diterjemahkan menjadi...', hint:'"Lebih dari" = ditambah',
+    type:'mcq', opts:['x + 8','x − 8','8x','x / 8'], answer:'x + 8',
+    explain:'✅ "Lebih dari" = ditambah → x + 8 ✓' },
+
+  { id:'e10', section:'s2', tag:'tag-2', tagLabel:'Kalimat→Ekspresi',
+    q:'"Enam kurang dari suatu bilangan" diterjemahkan menjadi...', hint:'"Kurang dari" = dikurangkan dari bilangan itu',
+    type:'mcq', opts:['x − 6','x + 6','6x','6 − x'], answer:'x − 6',
+    explain:'✅ "Kurang dari" = dikurang → x − 6 ✓' },
+
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Kalimat→Ekspresi',
+    q:'"Lima kali suatu bilangan" diterjemahkan menjadi...', hint:'"Kali" = dikali',
+    type:'text', answers:['5x','x*5','5*x'], explain:'✅ "Kali" = dikali → 5x ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Kalimat→Ekspresi',
+    q:'"Seperempat dari suatu bilangan" diterjemahkan menjadi...', hint:'"...dari" pada pecahan = dibagi',
+    type:'text', answers:['x/4','x÷4'], explain:'✅ "Seperempat dari" = dibagi 4 → x / 4 ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Kalimat→Ekspresi',
+    q:'"Jumlah suatu bilangan dengan 12" diterjemahkan menjadi...', hint:'"Jumlah" = ditambah',
+    type:'mcq', opts:['x + 12','x − 12','12x','x / 12'], answer:'x + 12',
+    explain:'✅ "Jumlah...dengan 12" = ditambah 12 → x + 12 ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Kalimat→Ekspresi',
+    q:'"Tiga lebihnya dari dua kali suatu bilangan" diterjemahkan menjadi...', hint:'Dua kali bilangan dulu, lalu tambah 3',
+    type:'mcq', opts:['2x + 3','3x + 2','2x − 3','x + 2 + 3'], answer:'2x + 3',
+    explain:'✅ "Dua kali bilangan" = 2x, lalu "tiga lebihnya" = ditambah 3 → 2x + 3 ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Kalimat→Ekspresi',
+    q:'"Selisih suatu bilangan dengan 9" diterjemahkan menjadi...', hint:'"Selisih" = dikurang',
+    type:'text', answers:['x-9','x−9'], explain:'✅ "Selisih...dengan 9" → x − 9 ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Kalimat→Ekspresi',
+    q:'"Hasil kali suatu bilangan dengan 7, dikurangi 2" diterjemahkan menjadi...', hint:'Kali 7 dulu, lalu kurangi 2',
+    type:'mcq', opts:['7x − 2','7x + 2','2 − 7x','x − 7 + 2'], answer:'7x − 2',
+    explain:'✅ "Hasil kali...dengan 7" = 7x, lalu "dikurangi 2" → 7x − 2 ✓' },
+
+  // ─── BAGIAN 3: Ekspresi → Kalimat (e17–e24) ───────────────────────
+  { id:'e17', section:'s3', tag:'tag-3', tagLabel:'Ekspresi→Kalimat',
+    sys:kalimatDisp('x + 10'),
+    q:'Manakah kalimat sehari-hari yang paling tepat untuk ekspresi di atas?', hint:'Lihat tanda + nya',
+    type:'mcq', opts:['Sepuluh lebih dari suatu bilangan','Sepuluh kurang dari suatu bilangan','Suatu bilangan dibagi sepuluh','Sepuluh kali suatu bilangan'], answer:'Sepuluh lebih dari suatu bilangan',
+    explain:'✅ x + 10 berarti "sepuluh ditambahkan" pada bilangan itu ✓' },
+
+  { id:'e18', section:'s3', tag:'tag-3', tagLabel:'Ekspresi→Kalimat',
+    sys:kalimatDisp('6x'),
+    q:'Manakah kalimat sehari-hari yang paling tepat untuk ekspresi di atas?', hint:'Lihat tanda kali nya',
+    type:'mcq', opts:['Enam kali suatu bilangan','Enam lebih dari suatu bilangan','Suatu bilangan dibagi enam','Enam kurang dari suatu bilangan'], answer:'Enam kali suatu bilangan',
+    explain:'✅ 6x berarti bilangan itu dikali 6 ✓' },
+
+  { id:'e19', section:'s3', tag:'tag-3', tagLabel:'Ekspresi→Kalimat',
+    sys:kalimatDisp('x − 8'),
+    q:'Manakah kalimat sehari-hari yang paling tepat untuk ekspresi di atas?', hint:'Lihat tanda kurang nya',
+    type:'mcq', opts:['Delapan kurang dari suatu bilangan','Delapan lebih dari suatu bilangan','Delapan kali suatu bilangan','Suatu bilangan dibagi delapan'], answer:'Delapan kurang dari suatu bilangan',
+    explain:'✅ x − 8 berarti "delapan dikurangkan" dari bilangan itu ✓' },
+
+  { id:'e20', section:'s3', tag:'tag-3', tagLabel:'Ekspresi→Kalimat',
+    sys:kalimatDisp('x / 5'),
+    q:'Manakah kalimat sehari-hari yang paling tepat untuk ekspresi di atas?', hint:'Lihat tanda bagi nya',
+    type:'text', answers:['seperlima dari suatu bilangan','suatu bilangan dibagi lima'], explain:'✅ x / 5 berarti "seperlima dari" bilangan itu ✓' },
+
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Ekspresi→Kalimat',
+    sys:kalimatDisp('2x + 4'),
+    q:'Manakah kalimat yang paling tepat untuk ekspresi gabungan di atas?', hint:'Ada dua langkah: kali dulu, baru tambah',
+    type:'mcq', opts:['Empat lebih dari dua kali suatu bilangan','Dua lebih dari empat kali suatu bilangan','Empat kurang dari dua kali suatu bilangan','Dua kali jumlah suatu bilangan dan empat'], answer:'Empat lebih dari dua kali suatu bilangan',
+    explain:'✅ "Dua kali suatu bilangan" = 2x, lalu "empat lebih dari" itu → 2x + 4 ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Ekspresi→Kalimat',
+    sys:kalimatDisp('x + 5 = 13'),
+    q:'Manakah kalimat yang paling tepat untuk PERSAMAAN di atas (bukan cuma ekspresi)?', hint:'Perhatikan tanda "="',
+    type:'mcq', opts:['Suatu bilangan ditambah 5 menghasilkan 13','Suatu bilangan dikurangi 5 menghasilkan 13','Suatu bilangan ditambah 13 menghasilkan 5','Lima kali suatu bilangan adalah 13'], answer:'Suatu bilangan ditambah 5 menghasilkan 13',
+    explain:'✅ x + 5 = 13 → "suatu bilangan ditambah 5 menghasilkan 13" ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Ekspresi→Kalimat',
+    sys:kalimatDisp('3x = 27'),
+    q:'Manakah kalimat yang paling tepat untuk persamaan di atas?', hint:'3x berarti tiga kali bilangan itu',
+    type:'text', answers:['tiga kali suatu bilangan sama dengan 27','tiga kali suatu bilangan adalah 27'], explain:'✅ 3x = 27 → "tiga kali suatu bilangan sama dengan 27" ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Ekspresi→Kalimat',
+    sys:kalimatDisp('x / 2 = 9'),
+    q:'Manakah kalimat yang paling tepat untuk persamaan di atas?', hint:'x/2 berarti setengah dari bilangan itu',
+    type:'mcq', opts:['Setengah dari suatu bilangan adalah 9','Dua kali suatu bilangan adalah 9','Suatu bilangan dikurangi 2 adalah 9','Sembilan dibagi suatu bilangan adalah 2'], answer:'Setengah dari suatu bilangan adalah 9',
+    explain:'✅ x / 2 = 9 → "setengah dari suatu bilangan adalah 9" ✓' },
+
+  // ─── BAGIAN 4: Kalimat → Persamaan (e25–e32) ────────────────────────
+  { id:'e25', section:'s4', tag:'tag-4', tagLabel:'Kalimat→Persamaan',
+    q:'"Suatu bilangan ditambah 6 menghasilkan 15" diterjemahkan menjadi persamaan...', hint:'Cari kata "menghasilkan"',
+    type:'mcq', opts:['x + 6 = 15','x − 6 = 15','6x = 15','x + 15 = 6'], answer:'x + 6 = 15',
+    explain:'✅ "Ditambah 6" → x+6, "menghasilkan" → "=" → x + 6 = 15 ✓' },
+
+  { id:'e26', section:'s4', tag:'tag-4', tagLabel:'Kalimat→Persamaan',
+    q:'"Empat kali suatu bilangan sama dengan 28" diterjemahkan menjadi persamaan...', hint:'"Empat kali" → 4x',
+    type:'text', answers:['4x=28','4x = 28'], explain:'✅ "Empat kali" → 4x, "sama dengan" → "=" → 4x = 28 ✓' },
+
+  { id:'e27', section:'s4', tag:'tag-4', tagLabel:'Kalimat→Persamaan',
+    q:'"Suatu bilangan dikurangi 7 adalah 11" diterjemahkan menjadi persamaan...', hint:'"Dikurangi 7" → x − 7',
+    type:'mcq', opts:['x − 7 = 11','x + 7 = 11','7 − x = 11','7x = 11'], answer:'x − 7 = 11',
+    explain:'✅ "Dikurangi 7" → x−7, "adalah" → "=" → x − 7 = 11 ✓' },
+
+  { id:'e28', section:'s4', tag:'tag-4', tagLabel:'Kalimat→Persamaan',
+    q:'"Sepertiga dari suatu bilangan sama dengan 8" diterjemahkan menjadi persamaan...', hint:'"Sepertiga dari" → x/3',
+    type:'text', answers:['x/3=8','x/3 = 8'], explain:'✅ "Sepertiga dari" → x/3, "sama dengan" → "=" → x/3 = 8 ✓' },
+
+  { id:'e29', section:'s4', tag:'tag-4', tagLabel:'Kalimat→Persamaan',
+    q:'"Dua kali suatu bilangan, ditambah 5, menghasilkan 17" diterjemahkan menjadi persamaan...', hint:'Kali dulu, baru tambah',
+    type:'mcq', opts:['2x + 5 = 17','2x − 5 = 17','5x + 2 = 17','2(x+5) = 17'], answer:'2x + 5 = 17',
+    explain:'✅ "Dua kali bilangan" = 2x, "ditambah 5" = 2x+5, "menghasilkan 17" → 2x + 5 = 17 ✓' },
+
+  { id:'e30', section:'s4', tag:'tag-4', tagLabel:'Kalimat→Persamaan',
+    q:'"Jumlah suatu bilangan dan 9 adalah 24" diterjemahkan menjadi persamaan...', hint:'"Jumlah...dan 9" → x+9',
+    type:'text', answers:['x+9=24','x+9 = 24'], explain:'✅ "Jumlah...dan 9" → x+9, "adalah" → "=" → x + 9 = 24 ✓' },
+
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Kalimat→Persamaan',
+    q:'"Selisih suatu bilangan dengan 4 sama dengan 10" diterjemahkan menjadi persamaan...', hint:'"Selisih...dengan 4" → x−4',
+    type:'mcq', opts:['x − 4 = 10','x + 4 = 10','4 − x = 10','4x = 10'], answer:'x − 4 = 10',
+    explain:'✅ "Selisih...dengan 4" → x−4, "sama dengan" → "=" → x − 4 = 10 ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Kalimat→Persamaan',
+    q:'"Tiga kali suatu bilangan, dikurangi 2, hasilnya 19" diterjemahkan menjadi persamaan...', hint:'Kali dulu, baru kurang',
+    type:'text', answers:['3x-2=19','3x − 2 = 19','3x − 2=19'], explain:'✅ "Tiga kali bilangan" = 3x, "dikurangi 2" = 3x−2, "hasilnya 19" → 3x − 2 = 19 ✓' },
+
+  // ─── BAGIAN 5: Soal Cerita → Model SPLDV (e33–e40) ─────────────────────────
+  { id:'e33', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'"Jumlah dua bilangan adalah <strong>22</strong>. Selisih kedua bilangan itu <strong>6</strong>."',
+    q:'Jika kedua bilangan itu x dan y, manakah SEPASANG model SPLDV yang tepat?', hint:'"Jumlah" → +, "Selisih" → −',
+    type:'mcq', opts:['x + y = 22 dan x − y = 6','x + y = 6 dan x − y = 22','x − y = 22 dan x + y = 6','xy = 22 dan x − y = 6'], answer:'x + y = 22 dan x − y = 6',
+    explain:'✅ "Jumlah...22" → x+y=22. "Selisih...6" → x−y=6 ✓' },
+
+  { id:'e34', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'"Jumlah umur Ayu dan Dina adalah <strong>26 tahun</strong>. Selisih umur mereka adalah <strong>2 tahun</strong>."',
+    q:'Jika umur Ayu = a dan umur Dina = d, manakah SEPASANG model yang tepat?', hint:'"Jumlah umur" → a+d, "Selisih umur" → a−d',
+    type:'mcq', opts:['a + d = 26 dan a − d = 2','a + d = 2 dan a − d = 26','a − d = 26 dan a + d = 2','ad = 26 dan a + d = 2'], answer:'a + d = 26 dan a − d = 2',
+    explain:'✅ "Jumlah umur...26" → a+d=26. "Selisih umur...2" → a−d=2 ✓' },
+
+  { id:'e35', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'"Harga 1 buku dan 1 penghapus jumlahnya <strong>Rp8.000</strong>. Harga buku <strong>Rp2.000 lebih mahal</strong> dari penghapus."',
+    q:'Jika harga buku = b dan harga penghapus = p, manakah SEPASANG model yang tepat?', hint:'"Jumlahnya" → +, "lebih mahal" → −',
+    type:'text', answers:['b+p=8000 dan b-p=2000','b + p = 8000 dan b − p = 2000'], explain:'✅ "Jumlahnya 8.000" → b+p=8000. "Buku 2.000 lebih mahal" → b−p=2000 ✓' },
+
+  { id:'e36', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'"Sebuah bilangan adalah <strong>tiga kali</strong> bilangan lainnya. Jumlah keduanya adalah <strong>32</strong>."',
+    q:'Jika bilangan itu x dan y, dengan x = tiga kali y, manakah SEPASANG model yang tepat?', hint:'"Tiga kali" → x=3y',
+    type:'mcq', opts:['x = 3y dan x + y = 32','y = 3x dan x + y = 32','x = 3y dan x − y = 32','x + y = 3 dan x = 32y'], answer:'x = 3y dan x + y = 32',
+    explain:'✅ "Tiga kali bilangan lainnya" → x=3y. "Jumlah keduanya 32" → x+y=32 ✓' },
+
+  { id:'e37', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'"Keliling sebuah persegi panjang adalah <strong>30 cm</strong>. Panjangnya <strong>4 cm lebih panjang</strong> dari lebarnya."',
+    q:'Jika panjang = p dan lebar = l, manakah model yang tepat untuk hubungan panjang dan lebar?', hint:'"4 cm lebih panjang dari" → p = l + 4',
+    type:'text', answers:['p=l+4','p = l + 4'], explain:'✅ "Panjangnya 4 cm lebih panjang dari lebarnya" → p = l + 4 ✓' },
+
+  { id:'e38', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'"2 tiket anak dan 1 tiket dewasa berharga <strong>Rp65.000</strong>."',
+    q:'Jika harga tiket anak = a dan tiket dewasa = d, manakah model yang tepat?', hint:'"2 tiket anak" → 2a, "1 tiket dewasa" → d',
+    type:'mcq', opts:['2a + d = 65000','a + 2d = 65000','2a − d = 65000','a + d = 65000'], answer:'2a + d = 65000',
+    explain:'✅ "2 tiket anak" → 2a, "1 tiket dewasa" → d, totalnya 65000 → 2a + d = 65000 ✓' },
+
+  { id:'e39', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'"Pak Joko membeli <strong>3 kg mangga dan 2 kg jeruk</strong> seharga <strong>Rp61.000</strong>."',
+    q:'Jika harga 1 kg mangga = m dan 1 kg jeruk = j, manakah model yang tepat?', hint:'"3 kg mangga" → 3m, "2 kg jeruk" → 2j',
+    type:'text', answers:['3m+2j=61000','3m + 2j = 61000'], explain:'✅ "3 kg mangga dan 2 kg jeruk seharga 61.000" → 3m + 2j = 61000 ✓' },
+
+  { id:'e40', section:'s5', tag:'tag-5', tagLabel:'Soal Cerita', wordProblem:true,
+    story:'"Dalam sebuah kelas, banyak siswa perempuan <strong>3 lebih banyak</strong> dari siswa laki-laki. Total siswa di kelas itu <strong>35 orang</strong>."',
+    q:'Jika siswa laki-laki = x dan siswa perempuan = y, manakah SEPASANG model yang tepat?', hint:'"Perempuan 3 lebih banyak dari laki-laki" → y = x + 3',
+    type:'mcq', opts:['y = x + 3 dan x + y = 35','x = y + 3 dan x + y = 35','y = x + 3 dan x − y = 35','y = x − 3 dan x + y = 35'], answer:'y = x + 3 dan x + y = 35',
+    explain:'✅ "Perempuan 3 lebih banyak dari laki-laki" → y = x+3. "Total 35 orang" → x+y=35 ✓' },
+];
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  const total = exercises.length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done >= i*8);
+  }
+  if(done === total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){
+    inp.classList.add('correct'); inp.disabled=true; btn.disabled=true;
+  } else {
+    card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true);
+  }
+  const fb = card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok';
+  fb.textContent = q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){
+    const badge=document.createElement('div');
+    badge.className='done-badge'; badge.textContent='✓ Done';
+    card.appendChild(badge);
+  }
+  progress[q.id]=true;
+  saveProgress(progress);
+  updateProgressBar();
+}
+
+function normalizeAns(s){
+  return s.trim().toLowerCase().replace(/\s+/g,'').replace(/×/g,'*');
+}
+
+function checkText(id, inp, btn, q){
+  const raw = normalizeAns(inp.value);
+  if(!raw) return;
+  const correct = q.answers.some(a=>raw===normalizeAns(a));
+  if(correct){
+    markDone(inp.closest('.ex-card'), q, inp, btn);
+  } else {
+    inp.classList.add('wrong-anim');
+    const attRow = inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div'); dot.className='attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(()=>{inp.classList.remove('wrong-anim'); inp.value=''; inp.focus();}, 400);
+    if(attRow.children.length >= 3){
+      const fb = inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no';
+      fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.val===q.answer) b.classList.add('opt-correct');
+  });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb = card.querySelector('.ex-feedback');
+  if(val===q.answer){
+    markDone(card, q, null, null);
+  } else {
+    fb.className='ex-feedback show no';
+    fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+  }
+}
+
+function buildExercises(){
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = '';
+  const groups = [
+    { key:'s1', label:'📖 Bagian 1 — Kamus & Kata Kunci Dasar',      cls:'sd-1' },
+    { key:'s2', label:'➡️ Bagian 2 — Kalimat → Ekspresi',            cls:'sd-2' },
+    { key:'s3', label:'⬅️ Bagian 3 — Ekspresi → Kalimat',            cls:'sd-3' },
+    { key:'s4', label:'🧮 Bagian 4 — Kalimat → Persamaan',           cls:'sd-4' },
+    { key:'s5', label:'🧩 Bagian 5 — Soal Cerita → Model SPLDV',     cls:'sd-5' },
+  ];
+  groups.forEach(g=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      const isWord = !!q.wordProblem;
+      card.className = 'ex-card' + (isWord?' word-card':'') + (isDone?' done-card':'');
+
+      const sysHTML = q.sys || '';
+
+      let inputHTML = '';
+      if(q.type==='text'){
+        inputHTML = `
+          <div class="ex-input-wrap">
+            <div class="ex-input-row">
+              <input type="text" class="ex-input ${isDone?'correct':''}"
+                placeholder="Jawaban?"
+                value="${isDone ? q.answers[0] : ''}"
+                ${isDone?'disabled':''}
+                onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+              <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+            </div>
+            <div class="attempts-row"></div>
+          </div>`;
+      } else {
+        const shuffled = [...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML = `<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      const storyHTML = q.story ? `<div class="word-story">${q.story}</div>` : '';
+
+      card.innerHTML = `
+        <div class="ex-num">Soal ${q.id.replace('e','')}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${storyHTML}
+        ${sysHTML}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone ? q.explain : ''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn = card.querySelector('.ex-btn');
+        const inp = card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick = ()=>checkText(q.id, inp, btn, q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{
+          b.onclick = ()=>checkMCQ(b.dataset.val, b, q, card);
+        });
+      }
+      grid.appendChild(card);
+    });
+
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Extra PR Lesson 19? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+</script>
+</body>
+</html>
