@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Transformasi Geometri · L33 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --peach:#f0956a;--peach-light:#f7c4a8;--peach-bg:rgba(240,149,106,0.1);
+    --acc:#7c5cbf;--acc-light:#b89ee0;--acc-bg:rgba(124,92,191,0.1);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 75% 10%,rgba(240,149,106,0.08) 0%,transparent 50%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--peach);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--peach-bg);border:1.5px solid var(--peach-light);color:var(--peach);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--peach);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:all 0.3s;cursor:pointer;}
+  .dot.active{background:var(--peach);box-shadow:0 0 0 3px rgba(240,149,106,0.25);transform:scale(1.1);}
+  .dot.done{background:var(--peach-light);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);}
+  .card-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.vio{color:var(--acc);}
+  .card-label.gold{color:var(--gold);}
+  .card-label.mint{color:var(--mint);}
+  .card-label.rose{color:var(--rose);}
+  .card-label.ocean{color:var(--ocean);}
+  .card-label.peach{color:var(--peach);}
+  .card h2{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.7rem;line-height:1.4;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  .svg-wrap{margin:1rem 0;border-radius:14px;overflow:hidden;background:#fafafa;border:2px solid var(--border);padding:0.5rem;}
+  .svg-wrap svg{width:100%;display:block;}
+
+  .eq-box{border-radius:14px;padding:1.1rem 1.4rem;margin:0.7rem 0;}
+  .eq-box.peach{background:var(--peach-bg);border:1.5px solid var(--peach-light);}
+  .eq-box.vio{background:var(--acc-bg);border:1.5px solid var(--acc-light);}
+  .eq-box.mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .eq-box.rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .eq-text{font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:900;color:var(--text);line-height:1.6;}
+  .eq-text .hi-peach{color:var(--peach);}
+  .eq-text .hi-vio{color:var(--acc);}
+  .eq-text .hi-mint{color:var(--mint);}
+  .eq-text .hi-rose{color:var(--rose);}
+  .eq-text .hi-gold{color:var(--gold);}
+
+  .diskusi-box{border-radius:14px;padding:1rem 1.3rem;background:rgba(232,98,138,0.06);border:1.5px solid var(--rose-light);margin:0.8rem 0;}
+  .diskusi-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:0.5rem;}
+  .diskusi-box p{color:var(--text-mid);font-size:0.88rem;line-height:1.65;}
+
+  .reveal-btn{background:var(--peach-bg);border:1.5px solid var(--peach-light);color:var(--peach);padding:0.5rem 1.2rem;border-radius:99px;font-family:'Nunito',sans-serif;font-size:0.8rem;font-weight:800;cursor:pointer;transition:all 0.2s;margin:0.8rem 0;display:inline-block;}
+  .reveal-btn:hover{background:var(--peach);color:#fff;}
+  .reveal-content{display:none;animation:fadeUp 0.3s ease;}
+  .reveal-content.show{display:block;}
+
+  .table-box{overflow-x:auto;margin:0.9rem 0;}
+  table{width:100%;border-collapse:collapse;font-size:0.88rem;}
+  th{background:var(--peach-bg);color:var(--peach);font-family:'Nunito',sans-serif;font-weight:800;padding:0.6rem 1rem;text-align:center;border:1.5px solid var(--peach-light);}
+  td{padding:0.6rem 1rem;text-align:center;border:1.5px solid var(--border);color:var(--text-mid);font-weight:600;}
+  tr:nth-child(even) td{background:#fdf0f8;}
+  td.fill{background:var(--peach-bg);color:var(--peach);font-weight:800;}
+  td input{border:1.5px solid var(--peach-light);border-radius:8px;padding:0.3rem 0.5rem;font-family:'Quicksand',sans-serif;font-size:0.88rem;font-weight:700;color:var(--text);background:var(--card);width:90px;text-align:center;outline:none;}
+  td input:focus{border-color:var(--peach);box-shadow:0 0 0 2px rgba(240,149,106,0.2);}
+
+  .formula-hero{text-align:center;padding:1.5rem;background:linear-gradient(135deg,var(--peach-bg),rgba(95,191,160,0.08));border:2px solid var(--peach-light);border-radius:20px;margin:1rem 0;}
+  .formula-hero .f-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--peach);margin-bottom:0.8rem;}
+  .formula-hero .f-text{font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900;color:var(--text);line-height:1.5;}
+  .formula-hero .f-sub{font-size:0.82rem;color:var(--text-muted);margin-top:0.6rem;line-height:1.6;}
+
+  .callout{border-radius:14px;padding:1rem 1.3rem;margin:0.9rem 0;display:flex;gap:0.8rem;align-items:flex-start;}
+  .callout.insight{background:rgba(124,92,191,0.06);border:1.5px solid var(--acc-light);}
+  .callout.tip{background:rgba(95,191,160,0.06);border:1.5px solid var(--mint-light);}
+  .callout-icon{font-size:1.2rem;flex-shrink:0;margin-top:0.05rem;}
+  .callout-text{font-size:0.88rem;color:var(--text-mid);line-height:1.65;}
+  .callout-text strong{color:var(--text);font-weight:700;}
+
+  .coord-badge{display:inline-block;font-family:'Nunito',sans-serif;font-weight:900;font-size:0.95rem;padding:0.3rem 0.9rem;border-radius:10px;}
+  .cb-a{background:var(--acc-bg);border:2px solid var(--acc-light);color:var(--acc);}
+  .cb-a2{background:var(--peach-bg);border:2px solid var(--peach-light);color:var(--peach);}
+  .cb-ref{background:var(--mint-bg);border:2px solid var(--mint-light);color:var(--mint);}
+
+  .step-row{display:flex;align-items:center;gap:0.7rem;margin:0.6rem 0;font-size:0.9rem;flex-wrap:wrap;}
+  .step-arrow{color:var(--peach);font-weight:900;font-size:1.1rem;}
+
+  .nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:1rem;}
+  .nav-btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .nav-btn.ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .nav-btn.ghost:hover{border-color:var(--peach-light);color:var(--peach);}
+  .nav-btn.primary{background:linear-gradient(135deg,var(--peach),#d46a3a);color:#fff;box-shadow:0 4px 14px rgba(240,149,106,0.35);}
+  .nav-btn.primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(240,149,106,0.4);}
+  .nav-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important;}
+  .slide-counter{font-size:0.75rem;font-weight:700;color:var(--text-muted);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson33.html">L33</a><span>›</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📚 Materi · Lesson 33</div>
+  <h1>Dari Pergeseran ke <span>Pencerminan</span></h1>
+  <p class="intro">Eksplorasi pelan-pelan: amati apa yang terjadi pada koordinat saat sebuah titik bergerak, lalu temukan polanya sendiri.</p>
+
+  <div class="dots" id="dotsContainer"></div>
+
+  <!-- SLIDE 1: Pertanyaan pemantik -->
+  <div class="slide active" id="slide-1">
+    <div class="card">
+      <div class="card-label rose">🔍 Pertanyaan Pemantik</div>
+      <h2>Apa yang terjadi jika sebuah titik berpindah?</h2>
+      <p>Kamu sudah bisa membaca koordinat titik di bidang Kartesius. Sekarang pertanyaannya: bagaimana kalau titik itu <em>bergerak</em> ke posisi baru? Koordinatnya ikut berubah — tapi dengan aturan seperti apa?</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label gold">📍 Titik Awal</div>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.9rem;align-items:center;">
+        <span class="coord-badge cb-a">A(2, 3)</span>
+        <span style="color:var(--text-muted);font-weight:700;">berada di sini</span>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="gm1" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M30 0L0 0 0 30" fill="none" stroke="#f0d6ea" stroke-width="1"/>
+            </pattern>
+          </defs>
+          <rect width="280" height="200" fill="url(#gm1)"/>
+          <line x1="20" y1="170" x2="270" y2="170" stroke="#e8c8e0" stroke-width="2"/>
+          <line x1="20" y1="170" x2="20" y2="10" stroke="#e8c8e0" stroke-width="2"/>
+          <text x="273" y="174" font-family="Nunito" font-size="10" fill="#b898b4" font-weight="700">x</text>
+          <text x="16" y="8" font-family="Nunito" font-size="10" fill="#b898b4" font-weight="700">y</text>
+          <!-- tick marks x -->
+          <text x="50" y="182" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">1</text>
+          <text x="80" y="182" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">2</text>
+          <text x="110" y="182" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">3</text>
+          <text x="140" y="182" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">4</text>
+          <text x="170" y="182" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">5</text>
+          <text x="200" y="182" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">6</text>
+          <!-- tick marks y -->
+          <text x="14" y="144" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">1</text>
+          <text x="14" y="114" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">2</text>
+          <text x="14" y="84" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">3</text>
+          <text x="14" y="54" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">4</text>
+          <!-- point A -->
+          <circle cx="80" cy="80" r="8" fill="#7c5cbf"/>
+          <text x="95" y="76" font-family="Nunito" font-size="12" font-weight="900" fill="#7c5cbf">A(2, 3)</text>
+          <!-- helper lines -->
+          <line x1="20" y1="80" x2="80" y2="80" stroke="#7c5cbf" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+          <line x1="80" y1="170" x2="80" y2="80" stroke="#7c5cbf" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="diskusi-box">
+        <div class="diskusi-label">💬 Diskusi Dulu</div>
+        <p>Jika A(2,3) bergerak <strong>4 langkah ke kanan</strong>, kira-kira berada di koordinat mana? Coba pikirkan dulu sebelum lanjut!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Translasi visual -->
+  <div class="slide" id="slide-2">
+    <div class="card">
+      <div class="card-label peach">➡️ Translasi — Titik yang Bergeser</div>
+      <h2>Ketika titik berpindah posisi</h2>
+      <p>Translasi adalah pergerakan suatu titik ke arah tertentu sejauh tertentu. Posisi berubah, tapi "bentuk"-nya tidak.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label gold">📍 Contoh Translasi</div>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.9rem;align-items:center;">
+        <span class="coord-badge cb-a">A(2, 3)</span>
+        <span class="step-arrow">→ geser +4x, +2y →</span>
+        <span class="coord-badge cb-a2">A'(6, 5)</span>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="gm2" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M30 0L0 0 0 30" fill="none" stroke="#f0d6ea" stroke-width="1"/>
+            </pattern>
+            <marker id="arrowP" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="#f0956a"/>
+            </marker>
+          </defs>
+          <rect width="280" height="200" fill="url(#gm2)"/>
+          <line x1="20" y1="170" x2="270" y2="170" stroke="#e8c8e0" stroke-width="2"/>
+          <line x1="20" y1="170" x2="20" y2="10" stroke="#e8c8e0" stroke-width="2"/>
+          <text x="273" y="174" font-family="Nunito" font-size="10" fill="#b898b4" font-weight="700">x</text>
+          <text x="16" y="8" font-family="Nunito" font-size="10" fill="#b898b4" font-weight="700">y</text>
+          <text x="50" y="182" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">1</text>
+          <text x="80" y="182" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">2</text>
+          <text x="110" y="182" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">3</text>
+          <text x="140" y="182" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">4</text>
+          <text x="170" y="182" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">5</text>
+          <text x="200" y="182" text-anchor="middle" font-family="Nunito" font-size="9" fill="#b898b4">6</text>
+          <text x="14" y="144" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">1</text>
+          <text x="14" y="114" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">2</text>
+          <text x="14" y="84" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">3</text>
+          <text x="14" y="54" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">4</text>
+          <text x="14" y="24" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">5</text>
+          <!-- arrow translasi -->
+          <line x1="80" y1="80" x2="195" y2="45" stroke="#f0956a" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowP)"/>
+          <!-- horizontal component -->
+          <line x1="80" y1="80" x2="200" y2="80" stroke="#f0956a" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.5"/>
+          <text x="140" y="95" text-anchor="middle" font-family="Nunito" font-size="9" font-weight="700" fill="#f0956a">+4 →</text>
+          <!-- vertical component -->
+          <line x1="200" y1="80" x2="200" y2="50" stroke="#f0956a" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.5"/>
+          <text x="218" y="68" font-family="Nunito" font-size="9" font-weight="700" fill="#f0956a">+2 ↑</text>
+          <!-- titik A -->
+          <circle cx="80" cy="80" r="7" fill="#7c5cbf"/>
+          <text x="65" y="72" font-family="Nunito" font-size="11" font-weight="900" fill="#7c5cbf">A(2,3)</text>
+          <!-- titik A' -->
+          <circle cx="200" cy="50" r="7" fill="#f0956a" stroke="#fff" stroke-width="2"/>
+          <text x="210" y="46" font-family="Nunito" font-size="11" font-weight="900" fill="#f0956a">A'(6,5)</text>
+        </svg>
+      </div>
+      <div class="eq-box peach">
+        <div class="eq-text">x bertambah 4 → 2 + 4 = <span class="hi-peach">6</span></div>
+        <div class="eq-text">y bertambah 2 → 3 + 2 = <span class="hi-peach">5</span></div>
+      </div>
+      <div class="diskusi-box">
+        <div class="diskusi-label">💬 Apa yang berubah?</div>
+        <p>Perhatikan x dan y masing-masing. Apa yang terjadi pada koordinat saat kita menggeser titik?</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Pola translasi -->
+  <div class="slide" id="slide-3">
+    <div class="card">
+      <div class="card-label ocean">🔎 Menemukan Pola Translasi</div>
+      <h2>Apakah ada pola yang konsisten?</h2>
+      <p>Amati tabel berikut. Semua titik digeser dengan pergeseran yang sama. Temukan apa yang berubah dari x dan y!</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label peach">📊 Tabel Translasi</div>
+      <div class="table-box">
+        <table>
+          <tr><th>Titik Awal</th><th>Titik Hasil</th><th>Δx</th><th>Δy</th></tr>
+          <tr><td>(1, 2)</td><td>(4, 4)</td><td class="fill">+3</td><td class="fill">+2</td></tr>
+          <tr><td>(3, 5)</td><td>(6, 7)</td><td class="fill">+3</td><td class="fill">+2</td></tr>
+          <tr><td>(5, 1)</td><td>(8, 3)</td><td class="fill">+3</td><td class="fill">+2</td></tr>
+          <tr><td>(0, 4)</td><td>(3, 6)</td><td class="fill">+3</td><td class="fill">+2</td></tr>
+        </table>
+      </div>
+
+      <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show');this.textContent=this.textContent.includes('Lihat')? '▲ Sembunyikan':'▼ Lihat Polanya';">▼ Lihat Polanya</button>
+      <div class="reveal-content">
+        <div class="eq-box peach">
+          <div class="eq-text">Setiap x bertambah <span class="hi-peach">3</span></div>
+          <div class="eq-text">Setiap y bertambah <span class="hi-peach">2</span></div>
+        </div>
+        <div class="callout insight">
+          <span class="callout-icon">💡</span>
+          <div class="callout-text">Translasi selalu konsisten. Jika kita menggeser dengan (a, b), maka koordinat baru adalah <strong>(x + a, y + b)</strong> untuk semua titik.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label rose">✏️ Coba Sendiri</div>
+      <p style="margin-bottom:0.8rem;">Titik P(4, 7) digeser sejauh (+3, −2). Koordinat barunya?</p>
+      <div class="step-row">
+        <span class="coord-badge cb-a">P(4, 7)</span>
+        <span class="step-arrow">→ geser (+3, −2) →</span>
+        <span class="coord-badge cb-a2" id="p-result" style="cursor:pointer;" onclick="document.getElementById('p-reveal').style.display='inline'">P'( ? , ? )</span>
+      </div>
+      <span id="p-reveal" style="display:none;font-family:Nunito;font-weight:900;color:var(--peach);font-size:0.95rem;"> → P'(7, 5) ✓</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Refleksi sumbu X -->
+  <div class="slide" id="slide-4">
+    <div class="card">
+      <div class="card-label mint">🪞 Refleksi — Bayangan Cermin</div>
+      <h2>Apa yang terjadi saat titik "dicerminkan"?</h2>
+      <p>Refleksi adalah pencerminan titik terhadap suatu garis. Bayangan yang terbentuk seolah bercermin terhadap sumbu itu.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label gold">📍 Refleksi terhadap Sumbu X</div>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.9rem;align-items:center;">
+        <span class="coord-badge cb-a">A(3, 4)</span>
+        <span class="step-arrow">→ cermin sumbu X →</span>
+        <span class="coord-badge cb-ref">A'(3, −4)</span>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 280 220" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="gm3" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+              <path d="M28 0L0 0 0 28" fill="none" stroke="#f0d6ea" stroke-width="1"/>
+            </pattern>
+            <marker id="arrowM" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#5fbfa0"/>
+            </marker>
+          </defs>
+          <rect width="280" height="220" fill="url(#gm3)"/>
+          <!-- sumbu X di tengah -->
+          <line x1="20" y1="110" x2="270" y2="110" stroke="#7c5cbf" stroke-width="2.5"/>
+          <text x="273" y="114" font-family="Nunito" font-size="10" fill="#7c5cbf" font-weight="700">x</text>
+          <text x="272" y="106" font-family="Nunito" font-size="8" fill="#7c5cbf" font-weight="700">sumbu X</text>
+          <!-- sumbu Y -->
+          <line x1="140" y1="10" x2="140" y2="210" stroke="#e8c8e0" stroke-width="1.5"/>
+          <text x="136" y="8" font-family="Nunito" font-size="10" fill="#b898b4" font-weight="700">y</text>
+          <!-- grid numbers -->
+          <text x="168" y="125" font-family="Nunito" font-size="9" fill="#b898b4">1</text>
+          <text x="196" y="125" font-family="Nunito" font-size="9" fill="#b898b4">2</text>
+          <text x="224" y="125" font-family="Nunito" font-size="9" fill="#b898b4">3</text>
+          <text x="128" y="86" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">1</text>
+          <text x="128" y="58" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">2</text>
+          <text x="128" y="30" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">3</text>
+          <text x="128" y="138" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">−1</text>
+          <text x="128" y="166" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">−2</text>
+          <text x="128" y="194" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">−3</text>
+          <!-- garis cermin helper -->
+          <line x1="224" y1="26" x2="224" y2="194" stroke="#e8c8e0" stroke-width="1" stroke-dasharray="3,3"/>
+          <!-- panah vertikal refleksi -->
+          <line x1="224" y1="26" x2="224" y2="106" stroke="#5fbfa0" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowM)"/>
+          <!-- titik A -->
+          <circle cx="224" cy="26" r="7" fill="#7c5cbf"/>
+          <text x="234" y="24" font-family="Nunito" font-size="11" font-weight="900" fill="#7c5cbf">A(3,4)</text>
+          <!-- titik A' -->
+          <circle cx="224" cy="194" r="7" fill="#5fbfa0" stroke="#fff" stroke-width="2"/>
+          <text x="234" y="198" font-family="Nunito" font-size="11" font-weight="900" fill="#5fbfa0">A'(3,−4)</text>
+          <!-- label jarak sama -->
+          <text x="210" y="68" text-anchor="middle" font-family="Nunito" font-size="9" fill="#5fbfa0" font-weight="700">4</text>
+          <text x="210" y="155" text-anchor="middle" font-family="Nunito" font-size="9" fill="#5fbfa0" font-weight="700">4</text>
+        </svg>
+      </div>
+      <div class="diskusi-box">
+        <div class="diskusi-label">💬 Apa yang berubah? Apa yang tetap?</div>
+        <p>Bandingkan A(3,4) dan A'(3,−4). Koordinat mana yang berubah? Koordinat mana yang tetap sama?</p>
+      </div>
+      <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show');this.textContent=this.textContent.includes('Lihat')? '▲ Sembunyikan':'▼ Lihat Jawabannya';">▼ Lihat Jawabannya</button>
+      <div class="reveal-content">
+        <div class="eq-box mint">
+          <div class="eq-text">x tetap → <span class="hi-mint">3</span> = 3 ✓</div>
+          <div class="eq-text">y berubah tanda → 4 menjadi <span class="hi-mint">−4</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Refleksi sumbu Y -->
+  <div class="slide" id="slide-5">
+    <div class="card">
+      <div class="card-label vio">🪞 Refleksi terhadap Sumbu Y</div>
+      <h2>Sekarang cerminnya tegak — sumbu Y</h2>
+      <p>Kali ini kita mencerminkan titik terhadap garis vertikal — sumbu Y. Apa yang berubah sekarang?</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label gold">📍 Refleksi terhadap Sumbu Y</div>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.9rem;align-items:center;">
+        <span class="coord-badge cb-a">A(3, 4)</span>
+        <span class="step-arrow">→ cermin sumbu Y →</span>
+        <span class="coord-badge cb-ref">A'(−3, 4)</span>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="gm4" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+              <path d="M28 0L0 0 0 28" fill="none" stroke="#f0d6ea" stroke-width="1"/>
+            </pattern>
+            <marker id="arrowMH" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#7c5cbf"/>
+            </marker>
+          </defs>
+          <rect width="280" height="180" fill="url(#gm4)"/>
+          <!-- sumbu Y di tengah -->
+          <line x1="140" y1="10" x2="140" y2="170" stroke="#7c5cbf" stroke-width="2.5"/>
+          <text x="136" y="8" font-family="Nunito" font-size="10" fill="#7c5cbf" font-weight="700">y</text>
+          <text x="142" y="8" font-family="Nunito" font-size="8" fill="#7c5cbf" font-weight="700">sumbu Y</text>
+          <!-- sumbu X -->
+          <line x1="20" y1="90" x2="270" y2="90" stroke="#e8c8e0" stroke-width="1.5"/>
+          <text x="273" y="94" font-family="Nunito" font-size="10" fill="#b898b4" font-weight="700">x</text>
+          <!-- grid numbers -->
+          <text x="168" y="104" font-family="Nunito" font-size="9" fill="#b898b4">1</text>
+          <text x="196" y="104" font-family="Nunito" font-size="9" fill="#b898b4">2</text>
+          <text x="224" y="104" font-family="Nunito" font-size="9" fill="#b898b4">3</text>
+          <text x="112" y="104" font-family="Nunito" font-size="9" fill="#b898b4">−1</text>
+          <text x="78" y="104" font-family="Nunito" font-size="9" fill="#b898b4">−2</text>
+          <text x="50" y="104" font-family="Nunito" font-size="9" fill="#b898b4">−3</text>
+          <text x="127" y="62" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">1</text>
+          <text x="127" y="34" text-anchor="end" font-family="Nunito" font-size="9" fill="#b898b4">2</text>
+          <!-- panah horizontal refleksi -->
+          <line x1="224" y1="34" x2="60" y2="34" stroke="#7c5cbf" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowMH)"/>
+          <!-- helper garis -->
+          <line x1="224" y1="34" x2="224" y2="90" stroke="#e8c8e0" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="56" y1="34" x2="56" y2="90" stroke="#e8c8e0" stroke-width="1" stroke-dasharray="3,3"/>
+          <!-- jarak label -->
+          <text x="140" y="28" text-anchor="middle" font-family="Nunito" font-size="9" fill="#7c5cbf" font-weight="700">3    |    3</text>
+          <!-- titik A -->
+          <circle cx="224" cy="34" r="7" fill="#7c5cbf"/>
+          <text x="232" y="30" font-family="Nunito" font-size="11" font-weight="900" fill="#7c5cbf">A(3,4)</text>
+          <!-- titik A' -->
+          <circle cx="56" cy="34" r="7" fill="#5fbfa0" stroke="#fff" stroke-width="2"/>
+          <text x="10" y="30" font-family="Nunito" font-size="11" font-weight="900" fill="#5fbfa0">A'(−3,4)</text>
+        </svg>
+      </div>
+      <div class="diskusi-box">
+        <div class="diskusi-label">💬 Apa yang berubah? Apa yang tetap?</div>
+        <p>Bandingkan A(3,4) dan A'(−3,4). Sekarang giliran y yang tetap, atau x?</p>
+      </div>
+      <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show');this.textContent=this.textContent.includes('Lihat')? '▲ Sembunyikan':'▼ Lihat Jawabannya';">▼ Lihat Jawabannya</button>
+      <div class="reveal-content">
+        <div class="eq-box vio">
+          <div class="eq-text">y tetap → <span class="hi-vio">4</span> = 4 ✓</div>
+          <div class="eq-text">x berubah tanda → 3 menjadi <span class="hi-vio">−3</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Eksplorasi pola refleksi -->
+  <div class="slide" id="slide-6">
+    <div class="card">
+      <div class="card-label mint">📊 Eksplorasi Pola Refleksi</div>
+      <h2>Temukan aturannya sendiri!</h2>
+      <p>Lengkapi tabel berikut. Perhatikan kolom refleksi sumbu X dan sumbu Y — apa pola yang muncul?</p>
+    </div>
+
+    <div class="card">
+      <div class="table-box">
+        <table>
+          <tr>
+            <th>Titik Awal</th>
+            <th>Refleksi Sumbu X</th>
+            <th>Refleksi Sumbu Y</th>
+          </tr>
+          <tr>
+            <td>(2, 5)</td>
+            <td><input type="text" placeholder="(?, ?)" id="t1a"/></td>
+            <td><input type="text" placeholder="(?, ?)" id="t1b"/></td>
+          </tr>
+          <tr>
+            <td>(4, 1)</td>
+            <td><input type="text" placeholder="(?, ?)" id="t2a"/></td>
+            <td><input type="text" placeholder="(?, ?)" id="t2b"/></td>
+          </tr>
+          <tr>
+            <td>(7, 3)</td>
+            <td><input type="text" placeholder="(?, ?)" id="t3a"/></td>
+            <td><input type="text" placeholder="(?, ?)" id="t3b"/></td>
+          </tr>
+        </table>
+      </div>
+      <button class="reveal-btn" onclick="revealTable()">▼ Cek Jawabannya</button>
+      <div class="reveal-content" id="tableReveal">
+        <div class="table-box">
+          <table>
+            <tr>
+              <th>Titik Awal</th>
+              <th>Refleksi Sumbu X</th>
+              <th>Refleksi Sumbu Y</th>
+            </tr>
+            <tr>
+              <td>(2, 5)</td>
+              <td class="fill">(2, −5)</td>
+              <td class="fill">(−2, 5)</td>
+            </tr>
+            <tr>
+              <td>(4, 1)</td>
+              <td class="fill">(4, −1)</td>
+              <td class="fill">(−4, 1)</td>
+            </tr>
+            <tr>
+              <td>(7, 3)</td>
+              <td class="fill">(7, −3)</td>
+              <td class="fill">(−7, 3)</td>
+            </tr>
+          </table>
+        </div>
+        <div class="callout insight">
+          <span class="callout-icon">💡</span>
+          <div class="callout-text"><strong>Pola yang kamu temukan:</strong><br>
+          Refleksi sumbu X → x tetap, y ganti tanda: (x, y) → (x, −y)<br>
+          Refleksi sumbu Y → y tetap, x ganti tanda: (x, y) → (−x, y)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Rangkuman aturan -->
+  <div class="slide" id="slide-7">
+    <div class="card">
+      <div class="card-label peach">📐 Rangkuman Aturan Transformasi</div>
+      <h2>Aturan yang selalu berlaku</h2>
+      <p>Dari eksplorasi tadi, kita menemukan tiga aturan yang konsisten. Ini bukan sekadar rumus hafalan — ini pola yang kita temukan sendiri.</p>
+    </div>
+
+    <div class="formula-hero">
+      <div class="f-label">🔀 Translasi</div>
+      <div class="f-text">(x, y) → (x + a, y + b)</div>
+      <div class="f-sub">Geser sejauh a ke arah x, dan b ke arah y</div>
+    </div>
+
+    <div class="card" style="border-color:var(--mint-light)">
+      <div class="card-label mint">🪞 Refleksi Sumbu X</div>
+      <div class="eq-box mint">
+        <div class="eq-text">(x, y) → (x, <span class="hi-mint">−y</span>)</div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-mid);">x tetap, y berganti tanda. Bayangan ada di sisi lain sumbu X.</p>
+    </div>
+
+    <div class="card" style="border-color:var(--acc-light)">
+      <div class="card-label vio">🪞 Refleksi Sumbu Y</div>
+      <div class="eq-box vio">
+        <div class="eq-text">(x, y) → (<span class="hi-vio">−x</span>, y)</div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-mid);">y tetap, x berganti tanda. Bayangan ada di sisi lain sumbu Y.</p>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">🌟</span>
+      <div class="callout-text"><strong>Ingat cara mudahnya:</strong> Sumbu yang jadi cermin adalah sumbu yang <em>tidak berubah</em>. Cermin sumbu X → y yang berubah. Cermin sumbu Y → x yang berubah.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: GeoGebra Challenge -->
+  <div class="slide" id="slide-8">
+    <div class="card">
+      <div class="card-label ocean">🖥️ GeoGebra Challenge</div>
+      <h2>Eksplorasi sendiri di GeoGebra!</h2>
+      <p>Gunakan GeoGebra untuk membuat titik bebas, lalu lakukan translasi dan refleksi. Amati apa yang selalu terjadi!</p>
+    </div>
+
+    <div class="card" style="border-color:var(--ocean-light)">
+      <div class="card-label ocean">📋 Langkah-langkah</div>
+      <div style="display:flex;flex-direction:column;gap:0.75rem;margin-top:0.3rem;">
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.88rem;color:var(--text-mid);">
+          <span style="background:var(--ocean-bg);border:1.5px solid var(--ocean-light);color:var(--ocean);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;flex-shrink:0;">1</span>
+          <span>Buat titik bebas A. Pilih letaknya di kuadran I.</span>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.88rem;color:var(--text-mid);">
+          <span style="background:var(--ocean-bg);border:1.5px solid var(--ocean-light);color:var(--ocean);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;flex-shrink:0;">2</span>
+          <span>Buat titik A' = Translate(A, Vector((3,2))) — ini translasi.</span>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.88rem;color:var(--text-mid);">
+          <span style="background:var(--ocean-bg);border:1.5px solid var(--ocean-light);color:var(--ocean);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;flex-shrink:0;">3</span>
+          <span>Buat titik B = Reflect(A, xAxis) — refleksi sumbu X.</span>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.88rem;color:var(--text-mid);">
+          <span style="background:var(--ocean-bg);border:1.5px solid var(--ocean-light);color:var(--ocean);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;flex-shrink:0;">4</span>
+          <span>Buat titik C = Reflect(A, yAxis) — refleksi sumbu Y.</span>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.88rem;color:var(--text-mid);">
+          <span style="background:var(--ocean-bg);border:1.5px solid var(--ocean-light);color:var(--ocean);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;flex-shrink:0;">5</span>
+          <span>Geser titik A ke berbagai posisi. Amati apa yang berubah pada B dan C!</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="diskusi-box">
+      <div class="diskusi-label">💬 Yang Selalu Terjadi</div>
+      <p>Saat kamu menggeser A, apa yang selalu terjadi dengan koordinat B dan C? Apakah mereka mengikuti aturan yang sudah kita temukan?</p>
+    </div>
+
+    <div class="callout insight">
+      <span class="callout-icon">🔍</span>
+      <div class="callout-text">GeoGebra membuktikan bahwa pola transformasi berlaku untuk <strong>semua titik</strong>, bukan hanya contoh tertentu. Itu yang membuat matematika menarik!</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: Latihan terbimbing -->
+  <div class="slide" id="slide-9">
+    <div class="card">
+      <div class="card-label rose">✏️ Latihan Bersama</div>
+      <h2>Coba selesaikan 4 soal ini!</h2>
+      <p>Kerjakan dengan menggunakan aturan yang sudah kita temukan. Klik tombol untuk melihat jawaban.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label peach">Soal 1 — Translasi</div>
+      <p>Titik A(4, 2) digeser +3 ke kanan dan +5 ke atas. Koordinat A'?</p>
+      <div class="step-row" style="margin-top:0.8rem;">
+        <span class="coord-badge cb-a">A(4, 2)</span>
+        <span class="step-arrow">→ (+3, +5) →</span>
+        <span class="coord-badge cb-a2" style="cursor:pointer;" onclick="this.textContent='A\'(7, 7)'">A'( ? )</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label mint">Soal 2 — Refleksi Sumbu X</div>
+      <p>Titik B(6, 3) dicerminkan terhadap sumbu X. Koordinat B'?</p>
+      <div class="step-row" style="margin-top:0.8rem;">
+        <span class="coord-badge cb-a">B(6, 3)</span>
+        <span class="step-arrow">→ cermin sumbu X →</span>
+        <span class="coord-badge cb-ref" style="cursor:pointer;" onclick="this.textContent='B\'(6, −3)'">B'( ? )</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label vio">Soal 3 — Refleksi Sumbu Y</div>
+      <p>Titik C(2, 8) dicerminkan terhadap sumbu Y. Koordinat C'?</p>
+      <div class="step-row" style="margin-top:0.8rem;">
+        <span class="coord-badge cb-a">C(2, 8)</span>
+        <span class="step-arrow">→ cermin sumbu Y →</span>
+        <span class="coord-badge cb-ref" style="cursor:pointer;" onclick="this.textContent='C\'(−2, 8)'">C'( ? )</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label ocean">Soal 4 — Translasi Negatif</div>
+      <p>Titik D(5, 4) digeser −2 pada x dan +3 pada y. Koordinat D'?</p>
+      <div class="step-row" style="margin-top:0.8rem;">
+        <span class="coord-badge cb-a">D(5, 4)</span>
+        <span class="step-arrow">→ (−2, +3) →</span>
+        <span class="coord-badge cb-a2" style="cursor:pointer;" onclick="this.textContent='D\'(3, 7)'">D'( ? )</span>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">👆</span>
+      <div class="callout-text">Ketuk badge bertanda "?" untuk melihat jawabannya!</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: Kesimpulan -->
+  <div class="slide" id="slide-10">
+    <div class="card">
+      <div class="card-label peach">🏁 Kesimpulan Sesi Ini</div>
+      <h2>Yang kita temukan hari ini</h2>
+    </div>
+
+    <div class="card" style="border-color:var(--peach-light)">
+      <div style="display:flex;flex-direction:column;gap:0.8rem;">
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.9rem;color:var(--text-mid);">
+          <span>📌</span><span>Titik dapat berpindah posisi dengan <strong style="color:var(--text)">aturan tertentu</strong></span>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.9rem;color:var(--text-mid);">
+          <span>➡️</span><span>Translasi mengubah posisi tanpa mengubah <strong style="color:var(--text)">bentuk</strong>: (x+a, y+b)</span>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.9rem;color:var(--text-mid);">
+          <span>🪞</span><span>Refleksi sumbu X: <strong style="color:var(--text)">y berganti tanda</strong>, x tetap</span>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.9rem;color:var(--text-mid);">
+          <span>🪞</span><span>Refleksi sumbu Y: <strong style="color:var(--text)">x berganti tanda</strong>, y tetap</span>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.9rem;color:var(--text-mid);">
+          <span>🔍</span><span>Perubahan koordinat selalu <strong style="color:var(--text)">mengikuti pola</strong> yang konsisten</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,rgba(240,149,106,0.12),rgba(95,191,160,0.12));border:2px solid var(--peach-light);border-radius:20px;padding:1.5rem 1.8rem;margin:1rem 0;text-align:center;">
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--peach);margin-bottom:0.8rem;">💬 Pesan Utama</div>
+      <div style="font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:900;color:var(--text);line-height:1.6;">"Matematika sering kali bukan tentang menghafal aturan,<br>tetapi <span style="color:var(--peach)">menemukan pola yang selalu muncul.</span>"</div>
+    </div>
+
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;">
+      <a href="soal33.html" style="padding:0.8rem 1.8rem;background:linear-gradient(135deg,var(--rose),#c04060);color:#fff;border-radius:99px;font-family:Nunito;font-weight:800;font-size:0.9rem;text-decoration:none;box-shadow:0 4px 14px rgba(232,98,138,0.35);">⚡ Coba Sprint!</a>
+      <a href="latihan33.html" style="padding:0.8rem 1.8rem;background:linear-gradient(135deg,var(--mint),#3a9070);color:#fff;border-radius:99px;font-family:Nunito;font-weight:800;font-size:0.9rem;text-decoration:none;box-shadow:0 4px 14px rgba(95,191,160,0.35);">🌙 Latihan Mandiri</a>
+    </div>
+  </div>
+
+  <!-- NAV ROW -->
+  <div class="nav-row">
+    <button class="nav-btn ghost" id="prevBtn" onclick="changeSlide(-1)" disabled>← Sebelumnya</button>
+    <span class="slide-counter" id="slideCounter">1 / 10</span>
+    <button class="nav-btn primary" id="nextBtn" onclick="changeSlide(1)">Selanjutnya →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL = 10;
+  let cur = 1;
+
+  function buildDots(){
+    const c = document.getElementById('dotsContainer');
+    for(let i=1;i<=TOTAL;i++){
+      const d = document.createElement('div');
+      d.className='dot'+(i===1?' active':'');
+      d.onclick=()=>goTo(i);
+      d.id='dot-'+i;
+      c.appendChild(d);
+    }
+  }
+
+  function goTo(n){
+    document.getElementById('slide-'+cur).classList.remove('active');
+    document.getElementById('dot-'+cur).classList.remove('active');
+    document.getElementById('dot-'+cur).classList.add('done');
+    cur=n;
+    document.getElementById('slide-'+cur).classList.add('active');
+    document.getElementById('dot-'+cur).classList.remove('done');
+    document.getElementById('dot-'+cur).classList.add('active');
+    document.getElementById('slideCounter').textContent=cur+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===1;
+    document.getElementById('nextBtn').disabled=cur===TOTAL;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function changeSlide(dir){ goTo(Math.min(TOTAL,Math.max(1,cur+dir))); }
+
+  function revealTable(){
+    document.getElementById('tableReveal').classList.add('show');
+  }
+
+  buildDots();
+</script>
+</body>
+</html>
