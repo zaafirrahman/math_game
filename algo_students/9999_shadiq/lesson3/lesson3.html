@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stage 03 · Pit Crew · Shadiq · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0d0d0d; --surface:#161616; --card:#1c1c1c; --border:#2a2a2a;
+    --red:#e8001c; --yellow:#ffd700; --green:#00e676; --orange:#ff8c00;
+    --blue:#4fc3f7;
+    --white:#f0f0f0; --muted:#666; --dimmed:#444;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--white);font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;
+    background-image:
+      repeating-linear-gradient(90deg,transparent,transparent 38px,rgba(255,255,255,0.012) 38px,rgba(255,255,255,0.012) 40px),
+      repeating-linear-gradient(0deg,transparent,transparent 38px,rgba(255,255,255,0.012) 38px,rgba(255,255,255,0.012) 40px);
+    pointer-events:none;z-index:0;}
+
+  /* NAV */
+  nav{padding:0.9rem 1.5rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(13,13,13,0.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;}
+  .nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:900;letter-spacing:3px;color:var(--white);text-decoration:none;text-transform:uppercase;}
+  .nav-logo span{color:var(--red);}
+  nav .sep{color:var(--dimmed);}
+  nav .bc{font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;}
+  nav .bc:hover{color:var(--white);}
+  nav .current{font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:2px;color:var(--yellow);text-transform:uppercase;}
+
+  .wrapper{max-width:680px;margin:0 auto;padding:2rem 1.5rem 6rem;position:relative;z-index:1;}
+
+  /* SLIDES */
+  .slide{display:none;}
+  .slide.active{display:block;animation:fadeUp 0.35s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ── CONCEPT ── */
+  .concept-badge{
+    display:inline-flex;align-items:center;gap:0.5rem;
+    background:rgba(232,0,28,0.1);border:1px solid rgba(232,0,28,0.35);
+    color:var(--red);font-family:'Barlow Condensed',sans-serif;
+    font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;
+    padding:0.3rem 0.9rem;border-radius:2px;margin-bottom:1.5rem;
+  }
+  .concept-title{
+    font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,6vw,2.8rem);
+    font-weight:900;letter-spacing:2px;text-transform:uppercase;line-height:1.1;margin-bottom:0.5rem;
+  }
+  .concept-title .hl{color:var(--red);}
+  .concept-title .hl2{color:var(--yellow);}
+  .concept-sub{color:var(--muted);font-size:0.9rem;margin-bottom:2rem;line-height:1.6;}
+
+  /* ── COMPARE DEMO ── */
+  .compare-panel{
+    background:var(--card);border:1px solid var(--border);border-radius:4px;
+    padding:1.8rem 1.5rem;margin-bottom:1.8rem;
+  }
+  .compare-label{font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:1.4rem;}
+  .compare-row{display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.2rem;}
+  .compare-side{text-align:center;flex:1;min-width:120px;}
+  .compare-side-label{font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:0.8rem;}
+  .dot-grid{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:56px;align-items:center;}
+  .dot{
+    width:28px;height:28px;border-radius:50%;
+    font-size:1rem;display:flex;align-items:center;justify-content:center;
+    border:2px solid transparent;
+  }
+  .dot-red{background:rgba(232,0,28,0.2);border-color:rgba(232,0,28,0.5);}
+  .dot-yellow{background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.5);}
+  .compare-symbol{
+    font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:900;
+    color:var(--yellow);text-align:center;min-width:60px;
+    transition:all 0.4s ease;
+  }
+  .compare-count{
+    font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:900;
+    color:var(--white);margin-top:0.4rem;
+  }
+  .compare-slider-wrap{margin-top:1.2rem;}
+  .compare-slider-labels{display:flex;justify-content:space-between;font-size:0.78rem;color:var(--muted);margin-bottom:0.4rem;}
+  input[type=range]{
+    width:100%;accent-color:var(--red);cursor:pointer;
+    height:6px;border-radius:0;
+  }
+  .compare-verdict{
+    margin-top:1rem;text-align:center;
+    font-family:'Barlow Condensed',sans-serif;font-size:1rem;letter-spacing:2px;
+    color:var(--muted);text-transform:uppercase;transition:all 0.3s;
+  }
+  .compare-verdict.show-red{color:var(--red);}
+  .compare-verdict.show-yel{color:var(--yellow);}
+  .compare-verdict.show-grn{color:var(--green);}
+
+  /* ── SYMBOL GUIDE ── */
+  .sym-panel{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1.5rem;margin-bottom:1.8rem;}
+  .sym-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;}
+  .sym-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:4px;
+    padding:1rem;text-align:center;
+  }
+  .sym-big{font-size:2.4rem;font-family:'Barlow Condensed',sans-serif;font-weight:900;margin-bottom:0.3rem;}
+  .sym-big.red-s{color:var(--red);}
+  .sym-big.yel-s{color:var(--yellow);}
+  .sym-big.grn-s{color:var(--green);}
+  .sym-name{font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+
+  /* Trick tip */
+  .concept-tip{
+    background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.2);
+    border-radius:4px;padding:1rem 1.2rem;
+    font-size:0.88rem;color:#ccc;line-height:1.7;margin-bottom:2rem;
+  }
+  .concept-tip strong{color:var(--yellow);}
+
+  .start-btn{
+    width:100%;padding:1rem;background:var(--red);color:var(--white);
+    border:none;border-radius:4px;cursor:pointer;
+    font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;
+    font-weight:900;letter-spacing:3px;text-transform:uppercase;transition:all 0.2s;
+  }
+  .start-btn:hover{background:#ff1a30;transform:translateY(-1px);}
+
+  /* ── QUIZ ── */
+  .progress-bar-wrap{margin-bottom:1.5rem;}
+  .pb-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.5rem;}
+  .pb-label{font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+  .pb-count{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;color:var(--yellow);}
+  .pb-track{height:6px;background:var(--border);overflow:hidden;position:relative;}
+  .pb-track::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 9px,rgba(255,255,255,0.05) 9px,rgba(255,255,255,0.05) 10px);}
+  .pb-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--yellow));transition:width 0.4s ease;position:relative;z-index:1;}
+
+  .dot-row{display:flex;gap:0.4rem;margin-top:0.6rem;flex-wrap:wrap;}
+  .q-dot{width:28px;height:28px;border-radius:3px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+  .q-dot.active{border-color:var(--yellow);color:var(--yellow);background:rgba(255,215,0,0.08);}
+  .q-dot.ok{border-color:var(--green);color:var(--green);background:rgba(0,230,118,0.08);}
+  .q-dot.ko{border-color:var(--red);color:var(--red);background:rgba(232,0,28,0.08);}
+
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1.6rem;}
+  .q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+  .q-num{font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:3px;color:var(--red);text-transform:uppercase;}
+  .q-type{font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;letter-spacing:2px;padding:0.2rem 0.6rem;border-radius:2px;text-transform:uppercase;}
+  .type-more{background:rgba(232,0,28,0.1);color:var(--red);border:1px solid rgba(232,0,28,0.3);}
+  .type-less{background:rgba(255,215,0,0.08);color:var(--yellow);border:1px solid rgba(255,215,0,0.3);}
+  .type-equal{background:rgba(0,230,118,0.08);color:var(--green);border:1px solid rgba(0,230,118,0.3);}
+  .type-choose{background:rgba(79,195,247,0.1);color:var(--blue);border:1px solid rgba(79,195,247,0.3);}
+
+  .q-text{font-size:1.15rem;line-height:1.7;margin-bottom:1.2rem;color:var(--white);}
+  .q-text strong{color:var(--yellow);}
+
+  /* Visual compare cards */
+  .vis-compare{
+    background:var(--surface);border:1px solid var(--border);border-radius:4px;
+    padding:1.2rem;margin-bottom:1.2rem;
+    display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;
+  }
+  .vis-side{text-align:center;}
+  .vis-side-label{font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:0.6rem;}
+  .vis-dots{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;max-width:160px;}
+  .vd{width:26px;height:26px;border-radius:50%;font-size:0.85rem;display:flex;align-items:center;justify-content:center;}
+  .vd-r{background:rgba(232,0,28,0.2);border:2px solid rgba(232,0,28,0.5);}
+  .vd-y{background:rgba(255,215,0,0.15);border:2px solid rgba(255,215,0,0.5);}
+  .vd-b{background:rgba(79,195,247,0.15);border:2px solid rgba(79,195,247,0.5);}
+  .vd-g{background:rgba(0,230,118,0.15);border:2px solid rgba(0,230,118,0.5);}
+  .vis-count{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:var(--white);margin-top:0.4rem;}
+  .vis-symbol{font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:900;color:var(--yellow);}
+
+  /* number scale */
+  .num-scale{
+    background:var(--surface);border:1px solid var(--border);border-radius:4px;
+    padding:1rem 1.2rem;margin-bottom:1.2rem;
+  }
+  .ns-row{display:flex;gap:0.3rem;flex-wrap:wrap;justify-content:center;margin-bottom:0.5rem;}
+  .ns-cell{
+    min-width:32px;height:32px;border-radius:3px;border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;color:var(--muted);
+  }
+  .ns-cell.hi{background:rgba(232,0,28,0.15);border-color:rgba(232,0,28,0.5);color:var(--red);}
+  .ns-cell.lo{background:rgba(255,215,0,0.1);border-color:rgba(255,215,0,0.4);color:var(--yellow);}
+  .ns-label{font-size:0.78rem;color:var(--muted);text-align:center;}
+
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-bottom:0.8rem;}
+  @media(max-width:400px){.opts{grid-template-columns:1fr;}}
+  .opt-btn{
+    background:var(--surface);border:1px solid var(--border);color:var(--white);
+    padding:0.9rem 0.8rem;border-radius:4px;cursor:pointer;
+    font-family:'Fredoka One',cursive;font-size:1.2rem;
+    transition:all 0.2s;text-align:center;
+  }
+  .opt-btn:hover:not(:disabled){border-color:var(--yellow);background:rgba(255,215,0,0.05);}
+  .opt-btn.correct{border-color:var(--green);background:rgba(0,230,118,0.1);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(232,0,28,0.1);color:var(--red);}
+  .opt-btn.reveal{border-color:var(--green);background:rgba(0,230,118,0.06);color:var(--green);}
+
+  .q-feedback{min-height:28px;font-size:0.88rem;margin-bottom:1rem;line-height:1.5;}
+  .fb-ok{color:var(--green);}
+  .fb-ko{color:var(--red);}
+
+  .next-btn{width:100%;padding:0.85rem;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;transition:all 0.2s;display:none;}
+  .next-btn.show{display:block;}
+  .next-btn:hover{border-color:var(--yellow);color:var(--yellow);}
+  .next-btn.last{border-color:var(--red);color:var(--red);}
+  .next-btn.last:hover{background:rgba(232,0,28,0.1);}
+
+  /* FINISH */
+  .finish-screen{display:none;text-align:center;padding:3rem 1rem;animation:fadeUp 0.4s ease;}
+  .finish-screen.show{display:block;}
+  .finish-trophy{font-size:4rem;margin-bottom:1rem;}
+  .finish-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2rem,8vw,3.5rem);font-weight:900;text-transform:uppercase;letter-spacing:3px;color:var(--yellow);margin-bottom:0.5rem;}
+  .finish-score{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;color:var(--muted);letter-spacing:2px;margin-bottom:2rem;}
+  .finish-score span{color:var(--white);}
+  .score-bar-wrap{max-width:320px;margin:0 auto 2rem;}
+  .score-bar-track{height:10px;background:var(--border);}
+  .score-bar-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--yellow));transition:width 1s ease;}
+  .score-msg{font-size:1rem;color:#aaa;line-height:1.7;margin-bottom:2rem;}
+  .replay-btn{display:inline-block;padding:0.85rem 2.5rem;background:var(--red);color:var(--white);border:none;border-radius:4px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;letter-spacing:3px;text-transform:uppercase;transition:all 0.2s;margin-right:0.8rem;}
+  .replay-btn:hover{background:#ff1a30;}
+  .hub-btn{display:inline-block;padding:0.85rem 2rem;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:4px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;transition:all 0.2s;text-decoration:none;}
+  .hub-btn:hover{border-color:var(--yellow);color:var(--yellow);}
+
+  .footer-flag{position:fixed;bottom:0;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,var(--white) 0px,var(--white) 8px,var(--bg) 8px,var(--bg) 16px);z-index:50;opacity:0.15;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../../algo_students.html">Math <span>Arena</span></a>
+  <span class="sep">›</span>
+  <a class="bc" href="../shadiq_9999.html">Shadiq</a>
+  <span class="sep">›</span>
+  <span class="current">Stage 03</span>
+</nav>
+
+<div class="wrapper">
+
+  <!-- ══ SLIDE 0: CONCEPT ══ -->
+  <div class="slide active" id="slide-concept">
+    <div class="concept-badge">⚖️ Stage 03 · Pit Crew</div>
+    <div class="concept-title">Lebih <span class="hl">Banyak</span> atau Lebih <span class="hl2">Sedikit</span>?</div>
+    <p class="concept-sub">Di pit stop, kru balap harus cepat tahu: ban mana yang lebih banyak? Bensin mana yang lebih sedikit? Belajar <em>bandingin jumlah</em> kayak kru profesional!</p>
+
+    <!-- Interactive slider comparison -->
+    <div class="compare-panel">
+      <div class="compare-label">🔧 Simulasi Pit Crew — Geser untuk bandingkan!</div>
+      <div class="compare-row">
+        <div class="compare-side">
+          <div class="compare-side-label">🔴 Garasi Merah</div>
+          <div class="dot-grid" id="dotsLeft"></div>
+          <div class="compare-count" id="countLeft">5</div>
+        </div>
+        <div class="compare-symbol" id="compareSymbol">?</div>
+        <div class="compare-side">
+          <div class="compare-side-label">🟡 Garasi Kuning</div>
+          <div class="dot-grid" id="dotsRight"></div>
+          <div class="compare-count" id="countRight">3</div>
+        </div>
+      </div>
+      <div class="compare-slider-wrap">
+        <div class="compare-slider-labels"><span>Garasi Merah: <strong id="slLabel">5</strong></span><span>Geser!</span></div>
+        <input type="range" min="1" max="10" value="5" id="compareSlider" oninput="updateCompare(this.value)">
+      </div>
+      <div class="compare-verdict" id="compareVerdict">Garasi Merah lebih banyak! 🔴</div>
+    </div>
+
+    <!-- Symbol guide -->
+    <div class="sym-panel">
+      <div class="compare-label" style="margin-bottom:1rem;">📌 Tanda Perbandingan</div>
+      <div class="sym-row">
+        <div class="sym-card">
+          <div class="sym-big red-s">&gt;</div>
+          <div class="sym-name">Lebih Banyak</div>
+        </div>
+        <div class="sym-card">
+          <div class="sym-big grn-s">=</div>
+          <div class="sym-name">Sama Banyak</div>
+        </div>
+        <div class="sym-card">
+          <div class="sym-big yel-s">&lt;</div>
+          <div class="sym-name">Lebih Sedikit</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="concept-tip">
+      <strong>Trik Pit Crew:</strong> Hitung dulu berapa banyak masing-masing. Yang angkanya <strong>lebih besar</strong> = lebih banyak. Yang angkanya <strong>lebih kecil</strong> = lebih sedikit. Angka sama? Berarti <strong>sama banyak</strong>! Gampang kayak ngitung ban mobil 🏎️🔧
+    </div>
+
+    <button class="start-btn" onclick="startQuiz()">🔧 Siap? Mulai Soal!</button>
+  </div>
+
+  <!-- ══ SLIDE 1: QUIZ ══ -->
+  <div class="slide" id="slide-quiz">
+    <div class="progress-bar-wrap">
+      <div class="pb-header">
+        <span class="pb-label">Lap Progress</span>
+        <span class="pb-count" id="pbCount">1 / 10</span>
+      </div>
+      <div class="pb-track"><div class="pb-fill" id="pbFill" style="width:10%"></div></div>
+      <div class="dot-row" id="dotRow"></div>
+    </div>
+
+    <div class="q-card" id="qCard">
+      <div class="q-meta">
+        <span class="q-num" id="qNum">Soal 1</span>
+        <span class="q-type" id="qType"></span>
+      </div>
+      <div class="q-text" id="qText"></div>
+      <div id="qVisual"></div>
+      <div class="opts" id="qOpts"></div>
+      <div class="q-feedback" id="qFeedback"></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- ══ FINISH ══ -->
+  <div class="finish-screen" id="finishScreen">
+    <div class="finish-trophy" id="finishTrophy">🏆</div>
+    <div class="finish-title" id="finishTitle">Finish!</div>
+    <div class="finish-score">Skor kamu: <span id="finishScore">0 / 10</span></div>
+    <div class="score-bar-wrap">
+      <div class="score-bar-track"><div class="score-bar-fill" id="scoreBarFill" style="width:0%"></div></div>
+    </div>
+    <p class="score-msg" id="scoreMsg"></p>
+    <button class="replay-btn" onclick="replay()">🔄 Ulangi</button>
+    <a class="hub-btn" href="../shadiq_9999.html">← Hub</a>
+  </div>
+
+</div>
+
+<div class="footer-flag"></div>
+
+<script>
+// ── INTERACTIVE DEMO ──
+function makeDots(containerId, n, cls) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  const emojis = ['🔴','🟡','🔵','🟢','🟠'];
+  const emoji = cls === 'red' ? '🔴' : '🟡';
+  for (let i = 0; i < n; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot ' + (cls === 'red' ? 'dot-red' : 'dot-yellow');
+    d.textContent = emoji;
+    el.appendChild(d);
+  }
+}
+
+const RIGHT_FIXED = 3;
+makeDots('dotsLeft', 5, 'red');
+makeDots('dotsRight', RIGHT_FIXED, 'yellow');
+
+function updateCompare(val) {
+  val = parseInt(val);
+  document.getElementById('slLabel').textContent = val;
+  document.getElementById('countLeft').textContent = val;
+  makeDots('dotsLeft', val, 'red');
+
+  const sym = document.getElementById('compareSymbol');
+  const verdict = document.getElementById('compareVerdict');
+  verdict.className = 'compare-verdict';
+
+  if (val > RIGHT_FIXED) {
+    sym.textContent = '>';
+    verdict.textContent = `Garasi Merah lebih banyak! (${val} > ${RIGHT_FIXED}) 🔴`;
+    verdict.classList.add('show-red');
+  } else if (val < RIGHT_FIXED) {
+    sym.textContent = '<';
+    verdict.textContent = `Garasi Kuning lebih banyak! (${val} < ${RIGHT_FIXED}) 🟡`;
+    verdict.classList.add('show-yel');
+  } else {
+    sym.textContent = '=';
+    verdict.textContent = `Sama banyak! (${val} = ${RIGHT_FIXED}) ✅`;
+    verdict.classList.add('show-grn');
+  }
+}
+updateCompare(5);
+
+// ── QUESTIONS ──
+const questions = [
+  {
+    typeLabel:'Lebih Banyak', typeCls:'type-more',
+    text:'Mekanik garasi merah punya <strong>7 ban</strong>, garasi biru punya <strong>4 ban</strong>. Garasi mana yang punya ban lebih banyak?',
+    visual:{ kind:'compare', left:{label:'🔴 Garasi Merah', n:7, cls:'vd-r'}, right:{label:'🔵 Garasi Biru', n:4, cls:'vd-b'} },
+    opts:['🔴 Garasi Merah','🔵 Garasi Biru','Sama banyak','Tidak tahu'],
+    ans:'🔴 Garasi Merah',
+    fb:'Betul! 7 > 4, jadi garasi merah punya ban lebih banyak! 🔴🏆'
+  },
+  {
+    typeLabel:'Lebih Sedikit', typeCls:'type-less',
+    text:'Ada <strong>3 botol bensin</strong> di pit stop A dan <strong>8 botol bensin</strong> di pit stop B. Pit stop mana yang lebih sedikit bensinnya?',
+    visual:{ kind:'compare', left:{label:'⛽ Pit Stop A', n:3, cls:'vd-r'}, right:{label:'⛽ Pit Stop B', n:8, cls:'vd-y'} },
+    opts:['⛽ Pit Stop A','⛽ Pit Stop B','Sama sedikit','Sama banyak'],
+    ans:'⛽ Pit Stop A',
+    fb:'Yes! 3 < 8, jadi pit stop A punya bensin lebih sedikit. ⛽'
+  },
+  {
+    typeLabel:'Sama Banyak', typeCls:'type-equal',
+    text:'Tim merah punya <strong>5 mekanik</strong>, tim kuning juga punya <strong>5 mekanik</strong>. Bandingkan jumlahnya!',
+    visual:{ kind:'compare', left:{label:'🔴 Tim Merah', n:5, cls:'vd-r'}, right:{label:'🟡 Tim Kuning', n:5, cls:'vd-y'} },
+    opts:['Tim Merah lebih banyak','Tim Kuning lebih banyak','Sama banyak! ✅','Tidak bisa dibanding'],
+    ans:'Sama banyak! ✅',
+    fb:'Tepat! 5 = 5. Kedua tim punya mekanik yang sama banyak! 🤝'
+  },
+  {
+    typeLabel:'Pilih Tanda', typeCls:'type-choose',
+    text:'Isilah tanda yang tepat: <strong>6 ___ 9</strong>',
+    visual:{ kind:'numscale', a:6, b:9 },
+    opts:['> (lebih besar)','< (lebih kecil)','= (sama)','+ (tambah)'],
+    ans:'< (lebih kecil)',
+    fb:'Benar! 6 < 9, artinya 6 lebih kecil dari 9. Angka kiri lebih sedikit! 📉'
+  },
+  {
+    typeLabel:'Lebih Banyak', typeCls:'type-more',
+    text:'Di garasi ada <strong>2 mobil hijau</strong> dan <strong>6 mobil merah</strong>. Warna mana yang jumlahnya lebih banyak?',
+    visual:{ kind:'compare', left:{label:'🟢 Mobil Hijau', n:2, cls:'vd-g'}, right:{label:'🔴 Mobil Merah', n:6, cls:'vd-r'} },
+    opts:['🟢 Mobil Hijau','🔴 Mobil Merah','Sama banyak','Tidak ada'],
+    ans:'🔴 Mobil Merah',
+    fb:'Mantap! 6 > 2, mobil merah jauh lebih banyak! 🔴🏎️'
+  },
+  {
+    typeLabel:'Pilih Tanda', typeCls:'type-choose',
+    text:'Pilih tanda yang benar: <strong>10 ___ 7</strong>',
+    visual:{ kind:'numscale', a:10, b:7 },
+    opts:['< (lebih kecil)','= (sama)','> (lebih besar)','+ (tambah)'],
+    ans:'> (lebih besar)',
+    fb:'Yes! 10 > 7. Angka 10 ada di sebelah kanan angka 7 di garis bilangan — jadi 10 lebih besar! 📈'
+  },
+  {
+    typeLabel:'Lebih Sedikit', typeCls:'type-less',
+    text:'Shadiq punya <strong>4 tropi</strong>. Kakaknya punya <strong>9 tropi</strong>. Siapa yang punya tropi lebih sedikit?',
+    visual:{ kind:'compare', left:{label:'🏆 Shadiq', n:4, cls:'vd-b'}, right:{label:'🏆 Kakak', n:9, cls:'vd-y'} },
+    opts:['🏆 Shadiq','🏆 Kakak','Sama banyak','Keduanya'],
+    ans:'🏆 Shadiq',
+    fb:'Betul! 4 < 9, jadi Shadiq punya tropi lebih sedikit — tapi semangat terus! 💪🏎️'
+  },
+  {
+    typeLabel:'Pilih Tanda', typeCls:'type-choose',
+    text:'Pilih tanda yang tepat: <strong>8 ___ 8</strong>',
+    visual:{ kind:'numscale', a:8, b:8 },
+    opts:['> (lebih besar)','< (lebih kecil)','= (sama)','≠ (tidak sama)'],
+    ans:'= (sama)',
+    fb:'Tepat sekali! 8 = 8. Kalau angkanya sama, pakai tanda = ! ✅'
+  },
+  {
+    typeLabel:'Lebih Banyak', typeCls:'type-more',
+    text:'Di lomba ada <strong>3 bendera merah</strong> dan <strong>7 bendera kuning</strong>. Bendera mana yang <em>lebih banyak</em>?',
+    visual:{ kind:'compare', left:{label:'🚩 Merah', n:3, cls:'vd-r'}, right:{label:'🏳 Kuning', n:7, cls:'vd-y'} },
+    opts:['🚩 Bendera Merah','🏳 Bendera Kuning','Sama banyak','Tidak ada'],
+    ans:'🏳 Bendera Kuning',
+    fb:'Benar! 7 > 3, bendera kuning lebih banyak! 🏳🎉'
+  },
+  {
+    typeLabel:'Pilih Tanda', typeCls:'type-choose',
+    text:'Kru red bull punya <strong>5 kunci pas</strong>, kru ferrari punya <strong>2 kunci pas</strong>. Pilih tanda yang benar: <strong>5 ___ 2</strong>',
+    visual:{ kind:'compare', left:{label:'🔧 Red Bull', n:5, cls:'vd-b'}, right:{label:'🔧 Ferrari', n:2, cls:'vd-r'} },
+    opts:['< (lebih kecil)','= (sama)','> (lebih besar)','≠ (tidak sama)'],
+    ans:'> (lebih besar)',
+    fb:'Sempurna! 5 > 2. Red Bull punya lebih banyak kunci pas! 🔧🏆'
+  }
+];
+
+let current = 0, score = 0;
+
+function startQuiz() {
+  document.getElementById('slide-concept').classList.remove('active');
+  document.getElementById('slide-quiz').classList.add('active');
+  buildDots();
+  renderQ(0);
+}
+
+function buildDots() {
+  const row = document.getElementById('dotRow');
+  row.innerHTML = '';
+  questions.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'q-dot' + (i === 0 ? ' active' : '');
+    d.textContent = i + 1;
+    d.id = `dot-${i}`;
+    row.appendChild(d);
+  });
+}
+
+function makeVisDots(n, cls) {
+  let html = '';
+  for (let i = 0; i < n; i++) {
+    html += `<div class="vd ${cls}"></div>`;
+  }
+  return html;
+}
+
+function renderQ(idx) {
+  const q = questions[idx];
+  document.getElementById('qNum').textContent = `Soal ${idx + 1}`;
+  document.getElementById('qType').textContent = q.typeLabel;
+  document.getElementById('qType').className = `q-type ${q.typeCls}`;
+  document.getElementById('qText').innerHTML = q.text;
+  document.getElementById('qFeedback').innerHTML = '';
+  document.getElementById('pbCount').textContent = `${idx + 1} / 10`;
+  document.getElementById('pbFill').style.width = `${(idx + 1) * 10}%`;
+
+  const vis = document.getElementById('qVisual');
+  vis.innerHTML = '';
+  if (q.visual) {
+    if (q.visual.kind === 'compare') {
+      const wrap = document.createElement('div');
+      wrap.className = 'vis-compare';
+      const l = q.visual.left, r = q.visual.right;
+      wrap.innerHTML = `
+        <div class="vis-side">
+          <div class="vis-side-label">${l.label}</div>
+          <div class="vis-dots">${makeVisDots(l.n, l.cls)}</div>
+          <div class="vis-count">${l.n}</div>
+        </div>
+        <div class="vis-symbol">?</div>
+        <div class="vis-side">
+          <div class="vis-side-label">${r.label}</div>
+          <div class="vis-dots">${makeVisDots(r.n, r.cls)}</div>
+          <div class="vis-count">${r.n}</div>
+        </div>
+      `;
+      vis.appendChild(wrap);
+    } else if (q.visual.kind === 'numscale') {
+      const a = q.visual.a, b = q.visual.b;
+      const max = Math.max(a, b, 10);
+      const wrap = document.createElement('div');
+      wrap.className = 'num-scale';
+      let cells = '';
+      for (let i = 1; i <= max; i++) {
+        const cls = i === a ? 'hi' : i === b ? 'lo' : '';
+        cells += `<div class="ns-cell ${cls}">${i}</div>`;
+      }
+      wrap.innerHTML = `<div class="ns-row">${cells}</div><div class="ns-label">🔴 = ${a} &nbsp;|&nbsp; 🟡 = ${b}</div>`;
+      vis.appendChild(wrap);
+    }
+  }
+
+  const opts = document.getElementById('qOpts');
+  opts.innerHTML = '';
+  q.opts.forEach(o => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = o;
+    btn.onclick = () => checkAns(o, btn);
+    opts.appendChild(btn);
+  });
+
+  const nb = document.getElementById('nextBtn');
+  nb.classList.remove('show','last');
+  nb.textContent = idx < questions.length - 1 ? 'Lanjut →' : '🏁 Lihat Hasil!';
+  if (idx === questions.length - 1) nb.classList.add('last');
+}
+
+function checkAns(chosen, btn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+  const ok = chosen === q.ans;
+  if (ok) {
+    btn.classList.add('correct');
+    score++;
+    document.getElementById('qFeedback').innerHTML = `<span class="fb-ok">✅ ${q.fb}</span>`;
+    document.getElementById(`dot-${current}`).classList.replace('active','ok');
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.opt-btn').forEach(b => { if (b.textContent === q.ans) b.classList.add('reveal'); });
+    document.getElementById('qFeedback').innerHTML = `<span class="fb-ko">❌ Hampir! Jawaban benar: <strong>${q.ans}</strong>. ${q.fb}</span>`;
+    document.getElementById(`dot-${current}`).classList.replace('active','ko');
+  }
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function nextQ() {
+  current++;
+  if (current >= questions.length) { showFinish(); return; }
+  document.getElementById(`dot-${current}`).classList.add('active');
+  renderQ(current);
+}
+
+function showFinish() {
+  document.getElementById('slide-quiz').classList.remove('active');
+  const fs = document.getElementById('finishScreen');
+  fs.classList.add('show');
+  const pct = Math.round((score / questions.length) * 100);
+  document.getElementById('finishScore').textContent = `${score} / ${questions.length}`;
+  setTimeout(() => { document.getElementById('scoreBarFill').style.width = pct + '%'; }, 300);
+
+  let trophy, title, msg;
+  if (score === 10) {
+    trophy='🏆'; title='Juara Dunia!';
+    msg='Sempurna! 10/10. Kamu bisa bandingin angka kayak kru pit profesional! Lanjut ke Stage berikutnya! 🏎️🔥';
+  } else if (score >= 8) {
+    trophy='🥇'; title='Podium!';
+    msg=`${score}/10 benar — naik podium! Sedikit lagi sempurna, keep it up! 💪`;
+  } else if (score >= 6) {
+    trophy='🥈'; title='Bagus!';
+    msg=`${score}/10 benar. Sudah bagus! Ingat: angka lebih besar = lebih banyak, angka lebih kecil = lebih sedikit. Coba ulangi ya! 😊`;
+  } else {
+    trophy='🔧'; title='Pit Stop!';
+    msg=`${score}/10. Lihat lagi bagian simulasi pit crew di awal ya! Semua mekanik hebat butuh latihan. 🏎️`;
+  }
+  document.getElementById('finishTrophy').textContent = trophy;
+  document.getElementById('finishTitle').textContent = title;
+  document.getElementById('scoreMsg').textContent = msg;
+}
+
+function replay() {
+  current = 0; score = 0;
+  document.getElementById('finishScreen').classList.remove('show');
+  document.getElementById('slide-quiz').classList.add('active');
+  buildDots();
+  renderQ(0);
+}
+</script>
+</body>
+</html>
