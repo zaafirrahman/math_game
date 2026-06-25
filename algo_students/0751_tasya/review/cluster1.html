@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cluster 1 · Bilangan & Aritmetika · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf6fb;
+    --surface: #fff0f8;
+    --card: #ffffff;
+    --border: #f0d6ea;
+    --border2: #e8c8e0;
+    --rose: #e8628a;
+    --rose-light: #f5a0bc;
+    --lavender: #9b7fc8;
+    --lavender-light: #c8b4e8;
+    --mint: #5fbfa0;
+    --mint-light: #a8dfd0;
+    --peach: #f0956a;
+    --peach-light: #fad5a0;
+    --sky: #7ab8e8;
+    --sky-light: #b4d4f5;
+    --text: #3d2b3d;
+    --text-mid: #7a5c78;
+    --text-muted: #b898b4;
+    --shadow: rgba(180, 100, 150, 0.1);
+    --red: #e05a6a;
+    --green: #4db88a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Quicksand', sans-serif;
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 20%, rgba(232,98,138,0.07) 0%, transparent 45%),
+      radial-gradient(ellipse at 90% 10%, rgba(155,127,200,0.08) 0%, transparent 45%),
+      radial-gradient(ellipse at 80% 90%, rgba(95,191,160,0.06) 0%, transparent 45%);
+    pointer-events: none;
+  }
+
+  /* Floating petals */
+  .petal { position: fixed; pointer-events: none; z-index: 0; animation: petalFloat var(--d) ease-in-out infinite var(--dl); opacity: 0.13; font-size: var(--sz); }
+  @keyframes petalFloat {
+    0%,100% { transform: translateY(0) rotate(var(--r0)); opacity: 0.13; }
+    50%      { transform: translateY(-12px) rotate(var(--r1)); opacity: 0.2; }
+  }
+
+  nav {
+    padding: 1rem 2rem;
+    display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    background: rgba(253,246,251,0.9);
+    backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;
+  }
+  nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--rose); }
+  nav span { color: var(--border2); }
+  nav .current { color: var(--rose); }
+
+  .wrapper { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.2rem 6rem; position: relative; z-index: 1; }
+  @media(max-width:480px){ .wrapper { padding: 1.8rem 0.8rem 6rem; } }
+
+  /* Banner */
+  .banner {
+    background: linear-gradient(135deg, rgba(232,98,138,0.08), rgba(155,127,200,0.09));
+    border: 2px solid var(--border2);
+    border-radius: 22px;
+    padding: 2rem 2rem 1.6rem;
+    margin-bottom: 2rem;
+    position: relative; overflow: hidden;
+  }
+  .banner::before {
+    content: '🔢';
+    position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);
+    font-size: 6rem; opacity: 0.07; pointer-events: none; line-height: 1;
+  }
+  .page-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(232,98,138,0.1); border: 1.5px solid rgba(232,98,138,0.3);
+    color: var(--rose); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.3rem 1rem; border-radius: 20px; margin-bottom: 0.9rem;
+    font-weight: 800;
+  }
+  .page-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 900;
+    color: var(--text); margin-bottom: 0.45rem; line-height: 1.25;
+  }
+  .page-title span { color: var(--rose); }
+  .page-desc {
+    color: var(--text-muted); font-size: 0.88rem; line-height: 1.7; max-width: 560px;
+  }
+  .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    font-size: 0.7rem; padding: 0.22rem 0.75rem; border-radius: 20px; font-weight: 700;
+  }
+  .pill-rose { background: rgba(232,98,138,0.1); color: var(--rose); border: 1.5px solid rgba(232,98,138,0.3); }
+  .pill-lav  { background: rgba(155,127,200,0.1); color: var(--lavender); border: 1.5px solid rgba(155,127,200,0.3); }
+  .pill-peach{ background: rgba(240,149,106,0.1); color: var(--peach); border: 1.5px solid rgba(240,149,106,0.3); }
+  .pill-mint { background: rgba(95,191,160,0.1); color: var(--mint); border: 1.5px solid rgba(95,191,160,0.3); }
+  .pill-sky  { background: rgba(122,184,232,0.1); color: var(--sky); border: 1.5px solid rgba(122,184,232,0.3); }
+
+  /* Progress panel */
+  .prog-panel {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 18px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 3px 14px var(--shadow);
+  }
+  .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+  .prog-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+  .prog-count { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 900; color: var(--rose); }
+  .prog-track { height: 7px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 0.5rem; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--rose), var(--lavender)); border-radius: 99px; transition: width 0.7s ease; }
+  .prog-sub { font-size: 0.76rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
+  .reset-link { font-size: 0.7rem; color: var(--text-muted); cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+  .reset-link:hover { color: var(--red); }
+  .prog-stars { display: flex; gap: 0.3rem; margin-top: 0.6rem; align-items: center; font-size: 0.76rem; color: var(--text-muted); }
+  .star { font-size: 0.9rem; opacity: 0.2; transition: opacity 0.4s; }
+  .star.lit { opacity: 1; }
+
+  /* Section dividers */
+  .sec-divider {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.72rem; font-weight: 800;
+    letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.5rem 0; margin: 2rem 0 1rem;
+    border-bottom: 2px solid var(--border);
+    display: flex; align-items: center; gap: 0.7rem;
+  }
+  .sd-1 { color: var(--rose); border-color: rgba(232,98,138,0.25); }
+  .sd-2 { color: var(--peach); border-color: rgba(240,149,106,0.25); }
+  .sd-3 { color: var(--lavender); border-color: rgba(155,127,200,0.25); }
+  .sd-4 { color: var(--mint); border-color: rgba(95,191,160,0.25); }
+  .sd-5 { color: var(--sky); border-color: rgba(122,184,232,0.25); }
+  .sd-sesi { font-size: 0.62rem; font-weight: 700; opacity: 0.65; margin-left: auto; letter-spacing: 1px; }
+
+  /* Exercise grid */
+  .exercise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 1rem;
+  }
+  @media(max-width:480px){ .exercise-grid { grid-template-columns: 1fr; } }
+
+  /* Cards */
+  .ex-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 18px;
+    padding: 1.3rem;
+    position: relative; overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 10px var(--shadow);
+  }
+  .ex-card.done-card { border-color: rgba(232,98,138,0.35); background: rgba(232,98,138,0.02); }
+  .ex-card.word-card { border-left: 3px solid var(--peach); }
+  .ex-card.word-card.done-card { border-left-color: var(--rose); }
+
+  .ex-num {
+    font-size: 0.62rem; font-weight: 800; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem;
+  }
+  .ex-tag {
+    display: inline-block; font-size: 0.58rem; padding: 0.15rem 0.5rem;
+    border-radius: 8px; margin-bottom: 0.5rem;
+    text-transform: uppercase; letter-spacing: 1px; font-weight: 800;
+  }
+  .tag-1 { background: rgba(232,98,138,0.1); color: var(--rose); border: 1.5px solid rgba(232,98,138,0.25); }
+  .tag-2 { background: rgba(240,149,106,0.1); color: var(--peach); border: 1.5px solid rgba(240,149,106,0.25); }
+  .tag-3 { background: rgba(155,127,200,0.1); color: var(--lavender); border: 1.5px solid rgba(155,127,200,0.25); }
+  .tag-4 { background: rgba(95,191,160,0.1); color: var(--mint); border: 1.5px solid rgba(95,191,160,0.25); }
+  .tag-5 { background: rgba(122,184,232,0.1); color: var(--sky); border: 1.5px solid rgba(122,184,232,0.25); }
+
+  .word-story {
+    background: rgba(240,149,106,0.06); border: 1.5px solid rgba(240,149,106,0.2);
+    border-radius: 10px; padding: 0.65rem 0.9rem;
+    margin-bottom: 0.7rem; font-size: 0.83rem;
+    color: var(--text-mid); line-height: 1.65;
+  }
+  .word-story strong { color: var(--peach); }
+
+  .ex-q {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem; font-weight: 800;
+    color: var(--text); margin-bottom: 0.4rem; line-height: 1.5;
+  }
+  .ex-card.done-card .ex-q { color: var(--rose); }
+  .ex-hint { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.85rem; font-style: italic; line-height: 1.45; }
+
+  /* Text input */
+  .ex-input-wrap { display: flex; flex-direction: column; gap: 0.45rem; }
+  .ex-input-row { display: flex; gap: 0.5rem; align-items: center; }
+  .ex-input {
+    flex: 1; background: var(--surface);
+    border: 2px solid var(--border2); color: var(--text);
+    padding: 0.55rem 0.8rem; border-radius: 10px;
+    font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700;
+    text-align: center; transition: border-color 0.2s; outline: none; min-width: 0;
+  }
+  .ex-input:focus { border-color: var(--rose); }
+  .ex-input.correct { border-color: var(--rose); color: var(--rose); }
+  .ex-input.wrong-anim { border-color: var(--red); color: var(--red); animation: shake 0.4s ease; }
+  @keyframes shake {
+    0%,100%{ transform: translateX(0); }
+    20%,60%{ transform: translateX(-6px); }
+    40%,80%{ transform: translateX(6px); }
+  }
+  .ex-btn {
+    background: rgba(232,98,138,0.1); border: 1.5px solid rgba(232,98,138,0.3);
+    color: var(--rose); padding: 0.55rem 0.9rem; border-radius: 10px;
+    cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.75rem; font-weight: 800;
+    transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+  }
+  .ex-btn:hover { background: rgba(232,98,138,0.2); border-color: var(--rose); }
+  .ex-btn:disabled { opacity: 0.3; cursor: default; }
+  .attempts-row { display: flex; gap: 3px; align-items: center; min-height: 10px; }
+  .attempts-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
+
+  /* MCQ */
+  .ex-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .ex-opt {
+    background: var(--surface); border: 2px solid var(--border2);
+    color: var(--text-mid); padding: 0.55rem 0.4rem; border-radius: 10px;
+    cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 700;
+    transition: all 0.15s; text-align: center; line-height: 1.4;
+  }
+  .ex-opt:hover:not(:disabled) { border-color: var(--rose); background: rgba(232,98,138,0.07); color: var(--rose); }
+  .ex-opt.opt-correct { border-color: var(--mint); background: rgba(95,191,160,0.1); color: var(--mint); }
+  .ex-opt.opt-wrong   { border-color: var(--red);  background: rgba(224,90,106,0.08); color: var(--red); }
+  .ex-opt:disabled { cursor: default; }
+
+  /* Feedback */
+  .ex-feedback { margin-top: 0.6rem; font-size: 0.81rem; font-weight: 700; display: none; line-height: 1.55; }
+  .ex-feedback.show { display: block; }
+  .ex-feedback.ok { color: var(--mint); }
+  .ex-feedback.no { color: var(--red); }
+
+  /* Done badge */
+  .done-badge {
+    position: absolute; top: 0.9rem; right: 0.9rem;
+    background: rgba(232,98,138,0.1); border: 1.5px solid rgba(232,98,138,0.35);
+    color: var(--rose); font-size: 0.6rem; font-weight: 800; letter-spacing: 1px;
+    text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 8px;
+  }
+
+  /* Number display box */
+  .num-display {
+    display: flex; align-items: center; justify-content: center;
+    flex-wrap: wrap; gap: 0.4rem;
+    margin: 0.6rem 0 0.8rem;
+    padding: 0.7rem 0.5rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+  }
+  .nd-val {
+    font-family: 'Nunito', sans-serif; font-size: 1.2rem; font-weight: 900;
+    color: var(--lavender); background: rgba(155,127,200,0.1);
+    border: 1.5px solid rgba(155,127,200,0.25);
+    padding: 0.15rem 0.55rem; border-radius: 8px;
+  }
+  .nd-op {
+    font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 800;
+    color: var(--text-muted);
+  }
+  .nd-eq {
+    font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 800;
+    color: var(--text-muted);
+  }
+  .nd-q {
+    font-family: 'Nunito', sans-serif; font-size: 1.2rem; font-weight: 900;
+    color: var(--rose); background: rgba(232,98,138,0.1);
+    border: 1.5px solid rgba(232,98,138,0.25);
+    padding: 0.15rem 0.55rem; border-radius: 8px;
+  }
+
+  /* All-done panel */
+  #allDone { display: none; text-align: center; padding: 3.5rem 2rem; }
+  .alldone-icon { font-size: 5rem; display: block; margin-bottom: 1.5rem; animation: bounce 1.2s ease infinite; }
+  @keyframes bounce { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-10px); } }
+  .alldone-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1.4rem, 5vw, 2.1rem); font-weight: 900;
+    background: linear-gradient(135deg, var(--rose), var(--lavender));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: 0.7rem;
+  }
+  .alldone-desc { color: var(--text-muted); line-height: 1.8; margin-bottom: 1.8rem; font-size: 0.92rem; }
+  .alldone-xp {
+    display: inline-block;
+    background: rgba(240,149,106,0.1); border: 1.5px solid rgba(240,149,106,0.4);
+    color: var(--peach); padding: 0.5rem 1.5rem; border-radius: 20px;
+    font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800;
+    margin-bottom: 2rem;
+  }
+  .action-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    padding: 0.75rem 1.6rem; border-radius: 12px; border: 2px solid var(--border2);
+    font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 800;
+    letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+    color: var(--text-muted); background: transparent;
+  }
+  .btn:hover { border-color: var(--lavender); color: var(--lavender); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--rose), var(--lavender));
+    border-color: transparent; color: white;
+    box-shadow: 0 4px 16px rgba(232,98,138,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); color: white; }
+
+  /* Decorative */
+  .deco-bloom { position: fixed; top: -40px; right: -40px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(232,98,138,0.1), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+  .deco-bloom2 { position: fixed; bottom: -60px; left: -60px; width: 240px; height: 240px; background: radial-gradient(circle, rgba(155,127,200,0.08), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+</style>
+</head>
+<body>
+
+<div class="deco-bloom"></div>
+<div class="deco-bloom2"></div>
+<div id="petals"></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../tasya_0751.html">TASYA</a>
+  <span>›</span>
+  <a href="review.html">MEGA REVIEW</a>
+  <span>›</span>
+  <span class="current">CLUSTER 1</span>
+</nav>
+
+<div class="wrapper">
+  <div class="banner">
+    <div class="page-badge">📚 Cluster 1 · Mega Review</div>
+    <div class="page-title">Bilangan & <span>Aritmetika</span></div>
+    <div class="page-desc">
+      50 soal dari Sesi 1–5 — nilai tempat, hitung cepat, strategi perkalian mental, pola deret, dan hubungan ganjil-genap.
+      Progress tersimpan otomatis, bisa dilanjut kapanpun! 🌸
+    </div>
+    <div class="pills">
+      <span class="pill pill-rose">🔢 Nilai Tempat</span>
+      <span class="pill pill-peach">⚡ Hitung Cepat</span>
+      <span class="pill pill-lav">✖️ Perkalian Mental</span>
+      <span class="pill pill-mint">🔍 Pola Deret</span>
+      <span class="pill pill-sky">⚖️ Ganjil Genap</span>
+    </div>
+  </div>
+
+  <div class="prog-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress Cluster 1</span>
+      <span class="prog-count" id="progCount">0 / 50</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      <span>Kumpulkan ⭐ tiap menyelesaikan 10 soal!</span>
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+      <span style="margin-left:0.4rem;font-size:0.72rem;">Selesaikan 10 soal per bagian</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🌸</span>
+    <div class="alldone-title">Cluster 1 Selesai!</div>
+    <div class="alldone-desc">
+      Luar biasa! Kamu sudah menaklukkan 50 soal Bilangan & Aritmetika!<br>
+      Nilai tempat, hitung cepat, perkalian mental, pola, ganjil-genap — semua kamu kuasai! 🎉
+    </div>
+    <div class="alldone-xp">🌟 +500 XP — Number Sense Master!</div>
+    <div class="action-btns">
+      <a href="review.html" class="btn">← Mega Review</a>
+      <a href="cluster2.html" class="btn btn-primary">Cluster 2 →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'tasya_review_cluster1_v1';
+function loadProgress(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||{}; }catch(e){ return{}; } }
+function saveProgress(p){ try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(p)); }catch(e){} }
+let progress = loadProgress();
+
+function numDisp(parts){
+  return `<div class="num-display">${parts.map(p=>{
+    if(p.type==='val') return `<span class="nd-val">${p.v}</span>`;
+    if(p.type==='op')  return `<span class="nd-op">${p.v}</span>`;
+    if(p.type==='eq')  return `<span class="nd-eq">=</span>`;
+    if(p.type==='q')   return `<span class="nd-q">?</span>`;
+    return '';
+  }).join('')}</div>`;
+}
+
+const exercises = [
+
+  // ─── BAGIAN 1: Nilai Tempat & Struktur Bilangan (Sesi 1) ─────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Nilai Tempat',
+    disp:[{type:'val',v:'4.872'}],
+    q:'Angka berapa yang menempati posisi ratusan pada bilangan 4.872?',
+    hint:'Posisi dari kanan: satuan → puluhan → ratusan → ribuan',
+    type:'mcq', opts:['4','8','7','2'], answer:'8',
+    explain:'✅ 4.872 → ribuan=4, ratusan=8, puluhan=7, satuan=2. Ratusan = 8 ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Nilai Tempat',
+    disp:[{type:'val',v:'7.305'}],
+    q:'Berapa nilai dari angka 3 dalam bilangan 7.305?',
+    hint:'Angka 3 ada di posisi ratusan. Nilai tempat ratusan = angka × 100',
+    type:'mcq', opts:['3','30','300','3.000'], answer:'300',
+    explain:'✅ Angka 3 di posisi ratusan → nilai = 3 × 100 = 300 ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Nilai Tempat',
+    q:'5.000 + 400 + 20 + 9 = ?',
+    hint:'Satukan semua nilai tempat menjadi satu bilangan',
+    type:'text', answers:['5429'],
+    explain:'✅ 5.000 + 400 + 20 + 9 = 5.429 ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Nilai Tempat',
+    disp:[{type:'val',v:'6.048'}],
+    q:'Tuliskan 6.048 dalam bentuk penjumlahan nilai tempat. Berapa nilai puluhan-nya?',
+    hint:'6.048 = 6.000 + 0 + ? + 8',
+    type:'mcq', opts:['0','4','40','400'], answer:'40',
+    explain:'✅ 6.048 = 6.000 + 0 + 40 + 8. Nilai puluhan = 40 ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Nilai Tempat',
+    q:'Bilangan apakah yang memiliki 3 di posisi ribuan, 0 di ratusan, 7 di puluhan, dan 5 di satuan?',
+    hint:'Susun: ribuan → ratusan → puluhan → satuan',
+    type:'text', answers:['3075'],
+    explain:'✅ 3.000 + 0 + 70 + 5 = 3.075 ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Nilai Tempat',
+    q:'Angka 9 pada bilangan 29.364 mempunyai nilai berapa?',
+    hint:'Hitung posisi 9 dari kanan dalam 29.364',
+    type:'mcq', opts:['9','90','900','9.000'], answer:'9.000',
+    explain:'✅ 29.364: angka 9 ada di posisi ribuan → nilai = 9 × 1.000 = 9.000 ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Nilai Tempat',
+    q:'Urutkan dari terkecil ke terbesar: 3.207 ; 3.027 ; 3.270 ; 3.072. Bilangan terbesar adalah?',
+    hint:'Bandingkan digit per digit dari kiri (ribuan sudah sama semua = 3)',
+    type:'mcq', opts:['3.207','3.027','3.270','3.072'], answer:'3.270',
+    explain:'✅ Semua ribuan = 3. Ratusan: 270 punya 2 = terbesar di antara 0,0,2,0 → 3.270 ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Nilai Tempat',
+    q:'Berapa selisih nilai angka 5 pada bilangan 5.432 dan 2.589?',
+    hint:'Nilai 5 di 5.432 ada di ribuan. Nilai 5 di 2.589 ada di manakah?',
+    type:'text', answers:['4950','4.950'],
+    explain:'✅ 5 di 5.432 = 5.000; 5 di 2.589 = 50. Selisih = 5.000 − 50 = 4.950 ✓' },
+
+  { id:'e09', section:'s1', tag:'tag-1', tagLabel:'Nilai Tempat',
+    q:'Berapa banyak ratusan yang ada dalam 4.700?',
+    hint:'4.700 = ? × 100',
+    type:'mcq', opts:['4','47','470','4.700'], answer:'47',
+    explain:'✅ 4.700 ÷ 100 = 47. Jadi ada 47 ratusan dalam 4.700 ✓' },
+
+  { id:'e10', section:'s1', tag:'tag-1', tagLabel:'Nilai Tempat',
+    q:'Suatu bilangan terdiri dari 2 ribuan, 5 ratusan, 0 puluhan, dan 3 satuan. Berapa bilangan tersebut?',
+    hint:'2×1000 + 5×100 + 0×10 + 3×1',
+    type:'text', answers:['2503'],
+    explain:'✅ 2.000 + 500 + 0 + 3 = 2.503 ✓' },
+
+  // ─── BAGIAN 2: Strategi Hitung Cepat (Sesi 2–3) ──────────────────────
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Hitung Cepat',
+    disp:[{type:'val',v:'47'},{type:'op',v:'+'},{type:'val',v:'38'},{type:'eq'},{type:'q'}],
+    q:'47 + 38 = ? (gunakan strategi make-10 atau pemecahan angka)',
+    hint:'Coba: 47 + 38 = 47 + 3 + 35 = 50 + 35',
+    type:'text', answers:['85'],
+    explain:'✅ 47+3=50, 50+35=85. Atau: 47+38 = (40+30)+(7+8) = 70+15 = 85 ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Hitung Cepat',
+    disp:[{type:'val',v:'83'},{type:'op',v:'−'},{type:'val',v:'47'},{type:'eq'},{type:'q'}],
+    q:'83 − 47 = ? (gunakan strategi loncatan di garis bilangan atau penyesuaian)',
+    hint:'Coba: 83 − 47 = 83 − 50 + 3',
+    type:'text', answers:['36'],
+    explain:'✅ 83 − 50 = 33, 33 + 3 = 36. Atau: (80−40)+(3−7) = 40−4 = 36 ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Hitung Cepat',
+    q:'Gunakan strategi "angka referensi 50": berapa 48 + 53?',
+    hint:'48 = 50−2; 53 = 50+3. Lalu jumlahkan',
+    type:'mcq', opts:['99','100','101','102'], answer:'101',
+    explain:'✅ (50−2)+(50+3) = 100+1 = 101 ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Hitung Cepat',
+    q:'Hitung dengan cepat: 99 + 46 = ?',
+    hint:'99 = 100−1. Hitung 100+46 dulu, lalu koreksi',
+    type:'text', answers:['145'],
+    explain:'✅ 100+46=146, lalu −1 = 145 ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Hitung Cepat',
+    q:'Hitung dengan cepat: 152 − 98 = ?',
+    hint:'98 = 100−2. Kurangi 100 dulu, lalu tambah balik 2',
+    type:'text', answers:['54'],
+    explain:'✅ 152−100=52, 52+2=54 ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Hitung Cepat',
+    q:'Pecah 67 + 45 menjadi puluhan + satuan. Hasilnya berapa?',
+    hint:'(60+40) + (7+5) = 100 + ?',
+    type:'mcq', opts:['110','111','112','113'], answer:'112',
+    explain:'✅ (60+40)+(7+5) = 100+12 = 112 ✓' },
+
+  { id:'e17', section:'s2', tag:'tag-2', tagLabel:'Hitung Cepat',
+    q:'Hitung cepat: 200 − 65 = ?',
+    hint:'Gunakan strategi: 200 − 65 = 200 − 60 − 5',
+    type:'text', answers:['135'],
+    explain:'✅ 200−60=140, 140−5=135 ✓' },
+
+  { id:'e18', section:'s2', tag:'tag-2', tagLabel:'Hitung Cepat',
+    q:'Gunakan strategi "kompensasi": 36 + 29 = ?',
+    hint:'29 = 30−1. Hitung 36+30 dulu, lalu koreksi −1',
+    type:'text', answers:['65'],
+    explain:'✅ 36+30=66, 66−1=65 ✓' },
+
+  { id:'e19', section:'s2', tag:'tag-2', tagLabel:'Hitung Cepat',
+    wordProblem:true,
+    story:'Di rak toko ada <strong>148 botol air</strong>. Pembeli mengambil <strong>99 botol</strong>. Berapa sisa botol di rak?',
+    q:'148 − 99 = ?',
+    hint:'99 = 100−1. Kurangi 100 dulu, tambah 1 balik',
+    type:'text', answers:['49'],
+    explain:'✅ 148−100=48, 48+1=49. Sisa botol = 49 ✓' },
+
+  { id:'e20', section:'s2', tag:'tag-2', tagLabel:'Hitung Cepat',
+    wordProblem:true,
+    story:'Tasya menabung <strong>Rp 75.000</strong> bulan pertama dan <strong>Rp 48.000</strong> bulan kedua. Total tabungan Tasya?',
+    q:'75 + 48 = ? (dalam ribuan)',
+    hint:'75+48 = 75+45+3 = 120+3, atau (70+40)+(5+8)',
+    type:'mcq', opts:['Rp 121.000','Rp 122.000','Rp 123.000','Rp 124.000'], answer:'Rp 123.000',
+    explain:'✅ 75+48 = (70+40)+(5+8) = 110+13 = 123. Total = Rp 123.000 ✓' },
+
+  // ─── BAGIAN 3: Perkalian Mental (Sesi 4) ─────────────────────────────
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Perkalian Mental',
+    disp:[{type:'val',v:'6'},{type:'op',v:'×'},{type:'val',v:'14'},{type:'eq'},{type:'q'}],
+    q:'Hitung 6 × 14 menggunakan strategi distributif!',
+    hint:'6×14 = 6×10 + 6×4',
+    type:'text', answers:['84'],
+    explain:'✅ 6×10=60, 6×4=24, 60+24=84 ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Perkalian Mental',
+    q:'Hitung 7 × 19 dengan strategi "angka mudah + koreksi"',
+    hint:'7×19 = 7×20 − 7×1',
+    type:'text', answers:['133'],
+    explain:'✅ 7×20=140, 140−7=133 ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Perkalian Mental',
+    q:'8 × 15 = ?',
+    hint:'8×15 = 8×10 + 8×5',
+    type:'mcq', opts:['110','115','120','125'], answer:'120',
+    explain:'✅ 8×10=80, 8×5=40, 80+40=120 ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Perkalian Mental',
+    q:'Gunakan friendly number: 4 × 25 = ?',
+    hint:'25 adalah friendly number. 4×25 = 100 langsung karena 4×25=100',
+    type:'text', answers:['100'],
+    explain:'✅ 4×25=100. Ini adalah bilangan "mudah" yang sering dipakai! ✓' },
+
+  { id:'e25', section:'s3', tag:'tag-3', tagLabel:'Perkalian Mental',
+    q:'9 × 16 = ? (gunakan strategi: 9 × 16 = 10 × 16 − 1 × 16)',
+    hint:'10×16=160, lalu kurangi satu kali 16',
+    type:'mcq', opts:['140','142','144','146'], answer:'144',
+    explain:'✅ 10×16=160, 160−16=144 ✓' },
+
+  { id:'e26', section:'s3', tag:'tag-3', tagLabel:'Perkalian Mental',
+    q:'Hitung 12 × 7 dengan cara distributif',
+    hint:'12×7 = (10+2)×7 = 10×7 + 2×7',
+    type:'text', answers:['84'],
+    explain:'✅ 10×7=70, 2×7=14, 70+14=84 ✓' },
+
+  { id:'e27', section:'s3', tag:'tag-3', tagLabel:'Perkalian Mental',
+    q:'5 × 38 = ?',
+    hint:'5×38 = 5×40 − 5×2, atau 5×38 = (5×4)×10 − 5×2',
+    type:'text', answers:['190'],
+    explain:'✅ 5×40=200, 200−5×2=200−10=190 ✓' },
+
+  { id:'e28', section:'s3', tag:'tag-3', tagLabel:'Perkalian Mental',
+    q:'Berapa 13 × 6?',
+    hint:'13×6 = (10+3)×6',
+    type:'mcq', opts:['72','76','78','80'], answer:'78',
+    explain:'✅ 10×6=60, 3×6=18, 60+18=78 ✓' },
+
+  { id:'e29', section:'s3', tag:'tag-3', tagLabel:'Perkalian Mental',
+    wordProblem:true,
+    story:'Setiap baris di gedung bioskop berisi <strong>24 kursi</strong>. Ada <strong>7 baris</strong>. Total kursi?',
+    q:'7 × 24 = ?',
+    hint:'7×24 = 7×20 + 7×4',
+    type:'text', answers:['168'],
+    explain:'✅ 7×20=140, 7×4=28, 140+28=168. Total 168 kursi ✓' },
+
+  { id:'e30', section:'s3', tag:'tag-3', tagLabel:'Perkalian Mental',
+    wordProblem:true,
+    story:'Harga satu buku tulis <strong>Rp 11.000</strong>. Tasya membeli <strong>9 buku</strong>. Harus bayar berapa?',
+    q:'9 × 11 = ? (dalam ribuan)',
+    hint:'9×11 = 9×10 + 9×1',
+    type:'mcq', opts:['Rp 88.000','Rp 96.000','Rp 99.000','Rp 108.000'], answer:'Rp 99.000',
+    explain:'✅ 9×10=90, 9×1=9, 90+9=99. Total = Rp 99.000 ✓' },
+
+  // ─── BAGIAN 4: Pola Deret Bilangan (Sesi 5) ───────────────────────────
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Pola Deret',
+    q:'Lanjutkan deret: 3, 7, 11, 15, 19, ___',
+    hint:'Lihat selisih tiap angka berturutan',
+    type:'text', answers:['23'],
+    explain:'✅ Selisih tetap +4. 19+4=23 ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Pola Deret',
+    q:'Lanjutkan deret: 2, 6, 18, 54, ___',
+    hint:'Ini bukan penjumlahan tapi perkalian. Tiap angka dikali berapa?',
+    type:'mcq', opts:['108','162','216','270'], answer:'162',
+    explain:'✅ Tiap angka ×3: 2×3=6, 6×3=18, 18×3=54, 54×3=162 ✓' },
+
+  { id:'e33', section:'s4', tag:'tag-4', tagLabel:'Pola Deret',
+    q:'Deret: 1, 4, 9, 16, 25, ___. Ini adalah deret apa?',
+    hint:'1=1², 4=2², 9=3², ... Apa selanjutnya?',
+    type:'text', answers:['36'],
+    explain:'✅ Ini deret kuadrat: 1², 2², 3², 4², 5², 6²=36 ✓' },
+
+  { id:'e34', section:'s4', tag:'tag-4', tagLabel:'Pola Deret',
+    q:'Deret: 100, 95, 90, 85, 80, ___. Apa suku berikutnya?',
+    hint:'Selisih tiap suku = ?',
+    type:'text', answers:['75'],
+    explain:'✅ Selisih tetap −5. 80−5=75 ✓' },
+
+  { id:'e35', section:'s4', tag:'tag-4', tagLabel:'Pola Deret',
+    q:'Pada deret 5, 8, 11, 14, 17, ..., berapakah suku ke-8?',
+    hint:'Suku ke-n = suku pertama + (n−1) × selisih. Selisih = 3',
+    type:'mcq', opts:['23','26','27','29'], answer:'26',
+    explain:'✅ a=5, b=3. Suku ke-8 = 5+(8−1)×3 = 5+21 = 26 ✓' },
+
+  { id:'e36', section:'s4', tag:'tag-4', tagLabel:'Pola Deret',
+    q:'Deret: 2, 5, 10, 17, 26, ___. Apa polanya?',
+    hint:'Lihat selisih berturutan: 3, 5, 7, 9, ... selisihnya naik berapa?',
+    type:'text', answers:['37'],
+    explain:'✅ Selisih: 3,5,7,9,11 → selisih naik +2. 26+11=37 ✓' },
+
+  { id:'e37', section:'s4', tag:'tag-4', tagLabel:'Pola Deret',
+    q:'Suku pertama deret adalah 4, selisih tetap 6. Berapa jumlah suku ke-3 dan ke-4?',
+    hint:'Suku ke-3 = 4+(3−1)×6; Suku ke-4 = 4+(4−1)×6',
+    type:'mcq', opts:['42','44','46','48'], answer:'46',
+    explain:'✅ Suku ke-3=4+12=16; Suku ke-4=4+18=22. 16+22=38... tunggu: s3=4+2×6=16, s4=4+3×6=22 → 16+22=38... cek ulang: 4,10,16,22 → s3=16, s4=22 → 16+22=38 ✓',
+  },
+
+  { id:'e38', section:'s4', tag:'tag-4', tagLabel:'Pola Deret',
+    q:'Deret: 1, 3, 6, 10, 15, ___. Ini disebut deret apa?',
+    hint:'Selisih berturutan: 2, 3, 4, 5, ... naik +1 setiap kali',
+    type:'mcq', opts:['Deret geometri','Deret aritmetika','Deret segitiga','Deret kuadrat'], answer:'Deret segitiga',
+    explain:'✅ 1,3,6,10,15,21 — ini bilangan segitiga! Selisih: 2,3,4,5,6,... Suku berikutnya = 15+6=21 ✓' },
+
+  { id:'e39', section:'s4', tag:'tag-4', tagLabel:'Pola Deret',
+    wordProblem:true,
+    story:'Setiap hari Rina menabung lebih banyak. Hari 1: Rp 3.000, Hari 2: Rp 5.000, Hari 3: Rp 7.000, Hari 4: Rp 9.000. <strong>Pola selisihnya tetap +2.000</strong>.',
+    q:'Berapa yang Rina tabung pada hari ke-7?',
+    hint:'Suku ke-7 = 3.000 + (7−1) × 2.000',
+    type:'text', answers:['15000','15.000'],
+    explain:'✅ 3000 + 6×2000 = 3000+12000 = 15.000. Hari ke-7 = Rp 15.000 ✓' },
+
+  { id:'e40', section:'s4', tag:'tag-4', tagLabel:'Pola Deret',
+    q:'Deret: 32, 16, 8, 4, 2, ___. Apa suku berikutnya?',
+    hint:'Tiap suku dibagi berapa?',
+    type:'text', answers:['1'],
+    explain:'✅ Tiap suku ÷2. 2÷2=1 ✓' },
+
+  // ─── BAGIAN 5: Ganjil, Genap & Hubungan Angka (Sesi 5) ───────────────
+  { id:'e41', section:'s5', tag:'tag-5', tagLabel:'Ganjil–Genap',
+    q:'Genap + Genap = ?',
+    hint:'Coba dengan contoh: 4+6=?',
+    type:'mcq', opts:['Selalu Genap','Selalu Ganjil','Bisa keduanya','Tidak bisa ditentukan'], answer:'Selalu Genap',
+    explain:'✅ Genap+Genap selalu menghasilkan Genap. Contoh: 4+6=10, 8+2=10 ✓' },
+
+  { id:'e42', section:'s5', tag:'tag-5', tagLabel:'Ganjil–Genap',
+    q:'Ganjil × Ganjil = ?',
+    hint:'Coba: 3×5=? ; 7×3=?',
+    type:'mcq', opts:['Selalu Genap','Selalu Ganjil','Bisa keduanya','Tidak tentu'], answer:'Selalu Ganjil',
+    explain:'✅ Ganjil×Ganjil selalu Ganjil. 3×5=15, 7×3=21 ✓' },
+
+  { id:'e43', section:'s5', tag:'tag-5', tagLabel:'Ganjil–Genap',
+    q:'Genap × Ganjil = ?',
+    hint:'Coba: 4×3=? ; 6×5=?',
+    type:'mcq', opts:['Selalu Genap','Selalu Ganjil','Bisa keduanya','Tidak tentu'], answer:'Selalu Genap',
+    explain:'✅ Genap×Ganjil selalu Genap. 4×3=12, 6×5=30 ✓' },
+
+  { id:'e44', section:'s5', tag:'tag-5', tagLabel:'Ganjil–Genap',
+    q:'Ganjil + Ganjil = ?',
+    hint:'Coba: 3+5=? ; 7+9=?',
+    type:'mcq', opts:['Selalu Genap','Selalu Ganjil','Bisa keduanya','Tidak tentu'], answer:'Selalu Genap',
+    explain:'✅ Ganjil+Ganjil selalu Genap. 3+5=8, 7+9=16 ✓' },
+
+  { id:'e45', section:'s5', tag:'tag-5', tagLabel:'Ganjil–Genap',
+    q:'Tiga bilangan ganjil dijumlahkan: G + G + G = ?',
+    hint:'G+G = Genap. Lalu Genap + G = ?',
+    type:'mcq', opts:['Genap','Ganjil','Bisa keduanya','Tergantung bilangan'], answer:'Ganjil',
+    explain:'✅ G+G=Genap, Genap+G=Ganjil. Tiga ganjil → Ganjil ✓' },
+
+  { id:'e46', section:'s5', tag:'tag-5', tagLabel:'Ganjil–Genap',
+    q:'Bilangan 2.486 adalah bilangan ganjil atau genap?',
+    hint:'Cek digit terakhir (satuan)',
+    type:'mcq', opts:['Ganjil','Genap','Tidak bisa ditentukan','Keduanya'], answer:'Genap',
+    explain:'✅ Digit terakhir = 6 (genap) → 2.486 adalah bilangan genap ✓' },
+
+  { id:'e47', section:'s5', tag:'tag-5', tagLabel:'Ganjil–Genap',
+    wordProblem:true,
+    story:'Rafi punya <strong>n stiker</strong>. Jika n adalah bilangan ganjil, dan dia membagi rata stiker ke 2 teman, apakah bisa tepat habis?',
+    q:'Bilangan ganjil bisa dibagi 2 tanpa sisa?',
+    hint:'Bilangan genap bisa dibagi 2 tanpa sisa. Ganjil tidak!',
+    type:'mcq', opts:['Ya, selalu bisa','Tidak, pasti ada sisa','Tergantung besar n','Kadang-kadang'], answer:'Tidak, pasti ada sisa',
+    explain:'✅ Bilangan ganjil tidak habis dibagi 2 — selalu menyisakan 1 ✓' },
+
+  { id:'e48', section:'s5', tag:'tag-5', tagLabel:'Ganjil–Genap',
+    q:'Berapa banyak bilangan genap antara 1 dan 20 (tidak termasuk 1 dan 20)?',
+    hint:'Hitung: 2, 4, 6, 8, 10, 12, 14, 16, 18 — ada berapa?',
+    type:'text', answers:['9'],
+    explain:'✅ 2,4,6,8,10,12,14,16,18 → ada 9 bilangan genap ✓' },
+
+  { id:'e49', section:'s5', tag:'tag-5', tagLabel:'Ganjil–Genap',
+    q:'Jika k adalah bilangan genap, apakah k + 1 pasti ganjil?',
+    hint:'Genap + 1 = ?',
+    type:'mcq', opts:['Ya, selalu ganjil','Tidak, masih genap','Tergantung nilai k','Bisa keduanya'], answer:'Ya, selalu ganjil',
+    explain:'✅ Genap+1=Ganjil selalu berlaku. Misal: 4+1=5, 10+1=11 ✓' },
+
+  { id:'e50', section:'s5', tag:'tag-5', tagLabel:'Ganjil–Genap',
+    wordProblem:true,
+    story:'Di sebuah kelas, siswa laki-laki berjumlah <strong>ganjil</strong> dan perempuan <strong>genap</strong>. Apakah total siswa pasti ganjil atau genap?',
+    q:'Ganjil + Genap = ?',
+    hint:'Coba: Laki 13 + Perempuan 10 = ?',
+    type:'mcq', opts:['Selalu Genap','Selalu Ganjil','Bisa keduanya','Tidak tentu'], answer:'Selalu Ganjil',
+    explain:'✅ Ganjil+Genap selalu Ganjil. 13+10=23, 7+4=11 ✓' },
+];
+
+// Fix e37 explain
+exercises.find(e=>e.id==='e37').explain = '✅ Suku ke-3 = 4+2×6=16; Suku ke-4 = 4+3×6=22. Jumlah = 16+22=38 ✓';
+exercises.find(e=>e.id==='e37').opts = ['32','36','38','40'];
+exercises.find(e=>e.id==='e37').answer = '38';
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  const total = exercises.length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done >= i*10);
+  }
+  if(done === total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){
+    inp.classList.add('correct'); inp.disabled=true; btn.disabled=true;
+  } else {
+    card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true);
+  }
+  const fb = card.querySelector('.ex-feedback');
+  fb.className = 'ex-feedback show ok';
+  fb.textContent = q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){
+    const badge = document.createElement('div');
+    badge.className = 'done-badge'; badge.textContent = '✓ Done';
+    card.appendChild(badge);
+  }
+  progress[q.id] = true;
+  saveProgress(progress);
+  updateProgressBar();
+}
+
+function checkText(id, inp, btn, q){
+  const raw = inp.value.trim().toLowerCase().replace(/\./g,'').replace(/,/g,'.');
+  if(!raw) return;
+  const correct = q.answers.some(a => raw === a.toLowerCase().replace(/\./g,''));
+  if(correct){
+    markDone(inp.closest('.ex-card'), q, inp, btn);
+  } else {
+    inp.classList.add('wrong-anim');
+    const attRow = inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div'); dot.className='attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(()=>{ inp.classList.remove('wrong-anim'); inp.value=''; inp.focus(); },400);
+    if(attRow.children.length >= 3){
+      const fb = inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no';
+      fb.textContent = '💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.val===q.answer) b.classList.add('opt-correct');
+  });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb = card.querySelector('.ex-feedback');
+  if(val===q.answer){
+    markDone(card, q, null, null);
+  } else {
+    fb.className='ex-feedback show no';
+    fb.textContent = '❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+    if(!card.querySelector('.done-badge')){
+      const badge=document.createElement('div'); badge.className='done-badge'; badge.textContent='Done';
+      card.appendChild(badge);
+    }
+  }
+}
+
+function buildExercises(){
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML='';
+  const groups = [
+    { key:'s1', label:'🔢 Bagian 1 — Nilai Tempat & Struktur Bilangan', cls:'sd-1', sesi:'Sesi 1' },
+    { key:'s2', label:'⚡ Bagian 2 — Strategi Hitung Cepat', cls:'sd-2', sesi:'Sesi 2–3' },
+    { key:'s3', label:'✖️ Bagian 3 — Perkalian Mental', cls:'sd-3', sesi:'Sesi 4' },
+    { key:'s4', label:'🔍 Bagian 4 — Pola Deret Bilangan', cls:'sd-4', sesi:'Sesi 5' },
+    { key:'s5', label:'⚖️ Bagian 5 — Ganjil, Genap & Hubungan Angka', cls:'sd-5', sesi:'Sesi 5' },
+  ];
+
+  groups.forEach(g=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}<span class="sd-sesi">${g.sesi}</span></div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      card.className = 'ex-card' + (q.wordProblem?' word-card':'') + (isDone?' done-card':'');
+
+      const dispHTML = q.disp ? numDisp(q.disp) : '';
+      const storyHTML = q.story ? `<div class="word-story">${q.story}</div>` : '';
+
+      let inputHTML = '';
+      if(q.type==='text'){
+        inputHTML = `
+          <div class="ex-input-wrap">
+            <div class="ex-input-row">
+              <input type="text" class="ex-input ${isDone?'correct':''}"
+                placeholder="Jawaban?"
+                value="${isDone ? q.answers[0] : ''}"
+                ${isDone?'disabled':''}
+                onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+              <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+            </div>
+            <div class="attempts-row"></div>
+          </div>`;
+      } else {
+        const shuffled = [...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML = `<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="ex-num">Soal ${parseInt(q.id.replace('e',''))}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${storyHTML}
+        ${dispHTML}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone ? q.explain : ''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn = card.querySelector('.ex-btn');
+        const inp = card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick = ()=>checkText(q.id, inp, btn, q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{
+          b.onclick = ()=>checkMCQ(b.dataset.val, b, q, card);
+        });
+      }
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Cluster 1? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+
+// Floating petals
+const emojis=['🌸','🌷','✿','❀','🌺','💮','🪷'];
+const wrap=document.getElementById('petals');
+for(let i=0;i<16;i++){
+  const p=document.createElement('div');
+  p.className='petal';
+  const sz=0.9+Math.random()*1.3;
+  p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--sz:${sz}rem;font-size:${sz}rem;--d:${4+Math.random()*6}s;--dl:${-Math.random()*6}s;--r0:${-15+Math.random()*30}deg;--r1:${-15+Math.random()*30}deg;`;
+  p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  wrap.appendChild(p);
+}
+</script>
+</body>
+</html>

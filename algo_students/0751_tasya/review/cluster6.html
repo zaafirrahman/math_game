@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cluster 6 · Statistik & Geometri Koordinat · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf6f6;
+    --surface: #fbecec;
+    --card: #ffffff;
+    --border: #f5d6d6;
+    --border2: #efbcbc;
+    --indigo: #d1495b;
+    --indigo-light: #ec9aa6;
+    --sky: #e0707f;
+    --sky-light: #f0aab3;
+    --rose: #c43d52;
+    --rose-light: #e8929f;
+    --mint: #5fbfa0;
+    --mint-light: #a8dfd0;
+    --amber: #e8a030;
+    --amber-light: #f5d080;
+    --text: #3a2228;
+    --text-mid: #7a5358;
+    --text-muted: #c79ba0;
+    --shadow: rgba(209, 73, 91, 0.1);
+    --red: #b3303f;
+    --green: #4db88a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Quicksand', sans-serif; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 20%, rgba(209,73,91,0.08) 0%, transparent 45%),
+      radial-gradient(ellipse at 90% 10%, rgba(224,112,127,0.07) 0%, transparent 45%),
+      radial-gradient(ellipse at 80% 90%, rgba(232,160,48,0.05) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  .petal { position: fixed; pointer-events: none; z-index: 0; animation: petalFloat var(--d) ease-in-out infinite var(--dl); opacity: 0.12; font-size: var(--sz); }
+  @keyframes petalFloat { 0%,100%{ transform: translateY(0) rotate(var(--r0)); opacity:0.12; } 50%{ transform: translateY(-14px) rotate(var(--r1)); opacity:0.2; } }
+
+  nav {
+    padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    background: rgba(253,246,246,0.92); backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;
+  }
+  nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--indigo); }
+  nav span { color: var(--border2); }
+  nav .current { color: var(--indigo); }
+
+  .wrapper { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.2rem 6rem; position: relative; z-index: 1; }
+  @media(max-width:480px){ .wrapper { padding: 1.8rem 0.8rem 6rem; } }
+
+  /* Banner */
+  .banner {
+    background: linear-gradient(135deg, rgba(209,73,91,0.09), rgba(224,112,127,0.08));
+    border: 2px solid var(--indigo-light);
+    border-radius: 22px; padding: 2rem 2rem 1.6rem;
+    margin-bottom: 2rem; position: relative; overflow: hidden;
+  }
+  .banner::before {
+    content: '📊'; position: absolute; right: 1.5rem; top: 50%;
+    transform: translateY(-50%); font-size: 6rem; opacity: 0.07; pointer-events: none;
+  }
+  .page-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(209,73,91,0.1); border: 1.5px solid rgba(209,73,91,0.35);
+    color: var(--indigo); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.3rem 1rem; border-radius: 20px; margin-bottom: 0.9rem; font-weight: 800;
+  }
+  .page-title { font-family: 'Nunito', sans-serif; font-size: clamp(1.4rem,4vw,2rem); font-weight: 900; color: var(--text); margin-bottom: 0.45rem; line-height: 1.25; }
+  .page-title span { color: var(--indigo); }
+  .page-desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.7; max-width: 560px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .pill { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; padding: 0.22rem 0.75rem; border-radius: 20px; font-weight: 700; }
+  .pill-ind  { background: rgba(209,73,91,0.1);  color: var(--indigo); border: 1.5px solid rgba(209,73,91,0.3); }
+  .pill-sky  { background: rgba(224,112,127,0.1);  color: var(--sky);    border: 1.5px solid rgba(224,112,127,0.3); }
+  .pill-rose { background: rgba(196,61,82,0.1);  color: var(--rose);   border: 1.5px solid rgba(196,61,82,0.3); }
+  .pill-amb  { background: rgba(232,160,48,0.1);  color: var(--amber);  border: 1.5px solid rgba(232,160,48,0.3); }
+  .pill-mint { background: rgba(95,191,160,0.1);  color: var(--mint);   border: 1.5px solid rgba(95,191,160,0.3); }
+
+  /* Progress */
+  .prog-panel { background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 1.2rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 3px 14px var(--shadow); }
+  .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+  .prog-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+  .prog-count { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 900; color: var(--indigo); }
+  .prog-track { height: 7px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 0.5rem; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--indigo), var(--sky)); border-radius: 99px; transition: width 0.7s ease; }
+  .prog-sub { font-size: 0.76rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
+  .reset-link { font-size: 0.7rem; color: var(--text-muted); cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+  .reset-link:hover { color: var(--red); }
+  .prog-stars { display: flex; gap: 0.3rem; margin-top: 0.6rem; align-items: center; font-size: 0.76rem; color: var(--text-muted); }
+  .star { font-size: 0.9rem; opacity: 0.2; transition: opacity 0.4s; }
+  .star.lit { opacity: 1; }
+
+  /* Equation display */
+  .eq-display {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.3rem;
+    margin: 0.6rem 0 0.8rem; padding: 0.7rem 0.6rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+    font-family: 'Nunito', sans-serif; font-weight: 900;
+  }
+  .ed-var  { font-size: 1.15rem; color: var(--indigo); background: rgba(209,73,91,0.1); border: 1.5px solid rgba(209,73,91,0.3); padding: 0.15rem 0.55rem; border-radius: 8px; font-style: italic; }
+  .ed-var2 { font-size: 1.15rem; color: var(--sky);    background: rgba(224,112,127,0.1);  border: 1.5px solid rgba(224,112,127,0.3);  padding: 0.15rem 0.55rem; border-radius: 8px; font-style: italic; }
+  .ed-num  { font-size: 1.15rem; color: var(--text-mid); background: var(--surface); border: 1.5px solid var(--border2); padding: 0.15rem 0.5rem; border-radius: 8px; }
+  .ed-op   { font-size: 1.1rem; color: var(--text-muted); }
+  .ed-eq   { font-size: 1.1rem; color: var(--text-muted); }
+  .ed-ineq { font-size: 1.15rem; color: var(--rose); font-weight: 900; }
+  .ed-q    { font-size: 1.2rem; color: var(--rose); background: rgba(196,61,82,0.1); border: 1.5px solid rgba(196,61,82,0.25); padding: 0.15rem 0.55rem; border-radius: 8px; }
+
+  /* Data set display (for statistics) */
+  .data-display {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.4rem;
+    margin: 0.6rem 0 0.8rem; padding: 0.7rem 0.8rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+  }
+  .data-chip {
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.9rem;
+    color: var(--indigo); background: rgba(209,73,91,0.1); border: 1.5px solid rgba(209,73,91,0.3);
+    padding: 0.25rem 0.7rem; border-radius: 8px; min-width: 2rem; text-align: center;
+  }
+  .data-chip.alt { color: var(--sky); background: rgba(224,112,127,0.1); border-color: rgba(224,112,127,0.3); }
+  .data-chip.hl  { color: var(--mint); background: rgba(95,191,160,0.12); border-color: rgba(95,191,160,0.4); }
+
+  /* Coordinate point display */
+  .coord-display {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.6rem;
+    margin: 0.6rem 0 0.8rem; padding: 0.7rem 0.9rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.95rem;
+  }
+  .coord-point {
+    color: var(--indigo); background: rgba(209,73,91,0.1); border: 1.5px solid rgba(209,73,91,0.3);
+    padding: 0.3rem 0.8rem; border-radius: 10px;
+  }
+  .coord-point.alt { color: var(--sky); background: rgba(224,112,127,0.1); border-color: rgba(224,112,127,0.3); }
+  .coord-arrow { color: var(--text-muted); font-size: 1.1rem; }
+
+  /* Triangle / Pythagoras display */
+  .tri-display {
+    display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;
+    margin: 0.6rem 0 0.8rem; padding: 0.8rem 1rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+  }
+  .tri-side {
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.9rem;
+    color: var(--text-mid); display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
+  }
+  .tri-side .side-label { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .tri-side .side-val { color: var(--indigo); background: rgba(209,73,91,0.1); border: 1.5px solid rgba(209,73,91,0.3); padding: 0.2rem 0.6rem; border-radius: 8px; }
+
+  /* Word story */
+  .word-story { background: rgba(209,73,91,0.05); border: 1.5px solid rgba(209,73,91,0.2); border-radius: 10px; padding: 0.65rem 0.9rem; margin-bottom: 0.7rem; font-size: 0.83rem; color: var(--text-mid); line-height: 1.65; }
+  .word-story strong { color: var(--indigo); }
+
+  /* Section dividers */
+  .sec-divider {
+    font-family: 'Nunito', sans-serif; font-size: 0.72rem; font-weight: 800;
+    letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.5rem 0; margin: 2rem 0 1rem;
+    border-bottom: 2px solid; display: flex; align-items: center; gap: 0.7rem;
+  }
+  .sd-1 { color: var(--indigo); border-color: rgba(209,73,91,0.25); }
+  .sd-2 { color: var(--rose);   border-color: rgba(196,61,82,0.25); }
+  .sd-3 { color: var(--amber);  border-color: rgba(232,160,48,0.25); }
+  .sd-sesi { font-size: 0.62rem; font-weight: 700; opacity: 0.65; margin-left: auto; letter-spacing: 1px; }
+
+  /* Grid & Cards */
+  .exercise-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(290px,1fr)); gap: 1rem; }
+  @media(max-width:480px){ .exercise-grid { grid-template-columns: 1fr; } }
+
+  .ex-card { background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 1.3rem; position: relative; overflow: hidden; transition: border-color 0.2s; box-shadow: 0 2px 10px var(--shadow); }
+  .ex-card.done-card { border-color: rgba(209,73,91,0.4); background: rgba(209,73,91,0.02); }
+  .ex-card.word-card { border-left: 3px solid var(--sky); }
+  .ex-card.word-card.done-card { border-left-color: var(--indigo); }
+
+  .ex-num { font-size: 0.62rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem; }
+  .ex-tag { display: inline-block; font-size: 0.58rem; padding: 0.15rem 0.5rem; border-radius: 8px; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
+  .tag-1 { background: rgba(209,73,91,0.1);  color: var(--indigo); border: 1.5px solid rgba(209,73,91,0.25); }
+  .tag-2 { background: rgba(196,61,82,0.1);  color: var(--rose);   border: 1.5px solid rgba(196,61,82,0.25); }
+  .tag-3 { background: rgba(232,160,48,0.1);  color: var(--amber);  border: 1.5px solid rgba(232,160,48,0.25); }
+
+  .ex-q { font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 800; color: var(--text); margin-bottom: 0.4rem; line-height: 1.5; }
+  .ex-card.done-card .ex-q { color: var(--indigo); }
+  .ex-hint { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.85rem; font-style: italic; line-height: 1.45; }
+
+  /* Inputs */
+  .ex-input-wrap { display: flex; flex-direction: column; gap: 0.45rem; }
+  .ex-input-row { display: flex; gap: 0.5rem; align-items: center; }
+  .ex-input { flex: 1; background: var(--surface); border: 2px solid var(--border2); color: var(--text); padding: 0.55rem 0.8rem; border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; text-align: center; transition: border-color 0.2s; outline: none; min-width: 0; }
+  .ex-input:focus { border-color: var(--indigo); }
+  .ex-input.correct { border-color: var(--indigo); color: var(--indigo); }
+  .ex-input.wrong-anim { border-color: var(--red); color: var(--red); animation: shake 0.4s ease; }
+  @keyframes shake { 0%,100%{ transform:translateX(0); } 20%,60%{ transform:translateX(-6px); } 40%,80%{ transform:translateX(6px); } }
+  .ex-btn { background: rgba(209,73,91,0.1); border: 1.5px solid rgba(209,73,91,0.3); color: var(--indigo); padding: 0.55rem 0.9rem; border-radius: 10px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.75rem; font-weight: 800; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+  .ex-btn:hover { background: rgba(209,73,91,0.2); border-color: var(--indigo); }
+  .ex-btn:disabled { opacity: 0.3; cursor: default; }
+  .attempts-row { display: flex; gap: 3px; align-items: center; min-height: 10px; }
+  .attempts-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
+
+  .ex-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .ex-opt { background: var(--surface); border: 2px solid var(--border2); color: var(--text-mid); padding: 0.55rem 0.4rem; border-radius: 10px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.15s; text-align: center; line-height: 1.4; }
+  .ex-opt:hover:not(:disabled) { border-color: var(--indigo); background: rgba(209,73,91,0.07); color: var(--indigo); }
+  .ex-opt.opt-correct { border-color: var(--mint); background: rgba(95,191,160,0.1); color: var(--mint); }
+  .ex-opt.opt-wrong   { border-color: var(--red);  background: rgba(179,48,63,0.08); color: var(--red); }
+  .ex-opt:disabled { cursor: default; }
+
+  .ex-feedback { margin-top: 0.6rem; font-size: 0.81rem; font-weight: 700; display: none; line-height: 1.55; }
+  .ex-feedback.show { display: block; }
+  .ex-feedback.ok { color: var(--mint); }
+  .ex-feedback.no { color: var(--red); }
+  .done-badge { position: absolute; top: 0.9rem; right: 0.9rem; background: rgba(209,73,91,0.1); border: 1.5px solid rgba(209,73,91,0.35); color: var(--indigo); font-size: 0.6rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 8px; }
+
+  /* All-done */
+  #allDone { display: none; text-align: center; padding: 3.5rem 2rem; }
+  .alldone-icon { font-size: 5rem; display: block; margin-bottom: 1.5rem; animation: bounce 1.2s ease infinite; }
+  @keyframes bounce { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-10px); } }
+  .alldone-title { font-family: 'Nunito', sans-serif; font-size: clamp(1.4rem,5vw,2.1rem); font-weight: 900; background: linear-gradient(135deg, var(--indigo), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.7rem; }
+  .alldone-desc { color: var(--text-muted); line-height: 1.8; margin-bottom: 1.8rem; font-size: 0.92rem; }
+  .alldone-xp { display: inline-block; background: rgba(209,73,91,0.1); border: 1.5px solid rgba(209,73,91,0.4); color: var(--indigo); padding: 0.5rem 1.5rem; border-radius: 20px; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800; margin-bottom: 2rem; }
+  .action-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn { padding: 0.75rem 1.6rem; border-radius: 12px; border: 2px solid var(--border2); font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-muted); background: transparent; }
+  .btn:hover { border-color: var(--indigo); color: var(--indigo); }
+  .btn-primary { background: linear-gradient(135deg, var(--indigo), var(--sky)); border-color: transparent; color: white; box-shadow: 0 4px 16px rgba(209,73,91,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); color: white; }
+
+  .deco-bloom  { position: fixed; top: -40px; right: -40px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(209,73,91,0.1), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+  .deco-bloom2 { position: fixed; bottom: -60px; left: -60px; width: 240px; height: 240px; background: radial-gradient(circle, rgba(224,112,127,0.08), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+</style>
+</head>
+<body>
+<div class="deco-bloom"></div>
+<div class="deco-bloom2"></div>
+<div id="petals"></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../tasya_0751.html">TASYA</a>
+  <span>›</span>
+  <a href="review.html">MEGA REVIEW</a>
+  <span>›</span>
+  <span class="current">CLUSTER 6</span>
+</nav>
+
+<div class="wrapper">
+  <div class="banner">
+    <div class="page-badge">📊 Cluster 6 · Mega Review</div>
+    <div class="page-title">Statistik & <span>Geometri Koordinat</span></div>
+    <div class="page-desc">
+      50 soal dari Sesi 28, 30–33 — mean/median/modus, Teorema Pythagoras, jarak antar titik koordinat, titik tengah (midpoint), hingga translasi & refleksi.
+      Progress tersimpan otomatis! 📊
+    </div>
+    <div class="pills">
+      <span class="pill pill-ind">📊 Statistika</span>
+      <span class="pill pill-rose">📐 Pythagoras</span>
+      <span class="pill pill-sky">📍 Jarak & Midpoint</span>
+      <span class="pill pill-amb">🔄 Transformasi</span>
+    </div>
+  </div>
+
+  <div class="prog-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress Cluster 6</span>
+      <span class="prog-count" id="progCount">0 / 50</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-sub">
+      <span>Kumpulkan ⭐ tiap menyelesaikan 10 soal!</span>
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🎉</span>
+    <div class="alldone-title">Cluster 6 Selesai! Luar Biasa!</div>
+    <div class="alldone-desc">
+      Kamu telah menguasai mean/median/modus, Teorema Pythagoras, jarak antar titik,<br>
+      midpoint, serta translasi & refleksi koordinat! Kerja keras terbayar!
+    </div>
+    <div class="alldone-xp">+350 XP · Master Statistik & Koordinat 📊</div>
+    <div class="action-btns">
+      <a href="cluster5.html" class="btn">← Cluster 5</a>
+      <a href="review.html" class="btn btn-primary">Kembali ke Review →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'tasya_review_cluster6_v1';
+function loadProgress(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||{}; }catch(e){ return{}; } }
+function saveProgress(p){ try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(p)); }catch(e){} }
+let progress = loadProgress();
+
+// Renders a single equation/expression display line
+function eqHTML(parts){
+  return `<div class="eq-display">${parts.map(p=>{
+    if(p.t==='var')   return `<span class="ed-var">${p.v}</span>`;
+    if(p.t==='var2')  return `<span class="ed-var2">${p.v}</span>`;
+    if(p.t==='num')   return `<span class="ed-num">${p.v}</span>`;
+    if(p.t==='op')    return `<span class="ed-op">${p.v}</span>`;
+    if(p.t==='eq')    return `<span class="ed-eq">=</span>`;
+    if(p.t==='ineq')  return `<span class="ed-ineq">${p.v}</span>`;
+    if(p.t==='q')     return `<span class="ed-q">?</span>`;
+    return '';
+  }).join('')}</div>`;
+}
+
+// Renders a dataset as chips, with optional highlighted indices
+function dataHTML(items, hlIdx){
+  hlIdx = hlIdx || [];
+  return `<div class="data-display">${items.map((it,i)=>`<span class="data-chip ${hlIdx.includes(i)?'hl':(i%2?'alt':'')}">${it}</span>`).join('')}</div>`;
+}
+
+// Renders two coordinate points with an arrow between them
+function coordHTML(p1, p2, label1, label2){
+  label1 = label1 || ''; label2 = label2 || '';
+  return `<div class="coord-display">
+    <span class="coord-point">${label1?label1+' ':''}${p1}</span>
+    <span class="coord-arrow">→</span>
+    <span class="coord-point alt">${label2?label2+' ':''}${p2}</span>
+  </div>`;
+}
+
+// Renders a right-triangle side display (a, b, c)
+function triHTML(sides){
+  return `<div class="tri-display">${sides.map(s=>`<div class="tri-side"><span class="side-label">${s.label}</span><span class="side-val">${s.val}</span></div>`).join('<span class="coord-arrow">·</span>')}</div>`;
+}
+
+const exercises = [
+
+  // ─── BAGIAN 1: Statistika — Mean, Median, Modus (Sesi 28) ───────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Mean',
+    dataItems:['4','6','8','10','12'],
+    q:'Data: 4, 6, 8, 10, 12. Berapa nilai Mean (rata-rata) dari data tersebut?',
+    hint:'Mean = jumlah semua data ÷ banyak data',
+    type:'text', answers:['8'],
+    explain:'✅ (4+6+8+10+12)/5 = 40/5 = 8 ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Mean',
+    dataItems:['7','7','9','11','16'],
+    q:'Data: 7, 7, 9, 11, 16. Berapa nilai Mean-nya?',
+    hint:'Jumlahkan semua data, lalu bagi banyak data (5)',
+    type:'text', answers:['10'],
+    explain:'✅ (7+7+9+11+16)/5 = 50/5 = 10 ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Median',
+    dataItems:['3','5','7','9','11'], hlIdx:[2],
+    q:'Data sudah terurut: 3, 5, 7, 9, 11. Berapa nilai Median (nilai tengah)?',
+    hint:'Karena banyak data ganjil (5), median = data ke-3 (tengah)',
+    type:'text', answers:['7'],
+    explain:'✅ Data ke-3 dari 5 data terurut adalah 7. Median = 7 ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Median',
+    dataItems:['2','4','6','8'],
+    q:'Data terurut: 2, 4, 6, 8 (banyak data genap = 4). Bagaimana cara mencari median untuk data genap?',
+    hint:'Untuk data genap, median = rata-rata dari 2 nilai tengah',
+    type:'mcq', opts:['Ambil data ke-2 saja','Ambil data ke-3 saja','Rata-rata dari dua data di tengah','Ambil data terbesar'], answer:'Rata-rata dari dua data di tengah',
+    explain:'✅ Untuk data genap, median = rata-rata dua nilai tengah. Di sini: (4+6)/2 = 5 ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Median',
+    dataItems:['2','4','6','8'], hlIdx:[1,2],
+    q:'Lanjutan: Data 2, 4, 6, 8. Berapa nilai mediannya?',
+    hint:'Dua nilai tengah adalah 4 dan 6. Rata-ratakan keduanya',
+    type:'text', answers:['5'],
+    explain:'✅ Median = (4+6)/2 = 10/2 = 5 ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Modus',
+    dataItems:['2','3','3','5','5','5','7'], hlIdx:[3,4,5],
+    q:'Data: 2, 3, 3, 5, 5, 5, 7. Berapa nilai Modus (data yang paling sering muncul)?',
+    hint:'Hitung frekuensi tiap nilai: 2 muncul 1x, 3 muncul 2x, 5 muncul 3x, 7 muncul 1x',
+    type:'text', answers:['5'],
+    explain:'✅ Nilai 5 muncul 3 kali (paling banyak), jadi Modus = 5 ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Modus',
+    q:'Jika dalam suatu data terdapat DUA nilai yang sama-sama paling sering muncul (misal 4 dan 7 masing-masing 3 kali), maka data tersebut disebut...',
+    hint:'Ingat istilah untuk modus lebih dari satu',
+    type:'mcq', opts:['Unimodal','Bimodal','Tidak memiliki modus','Trimodal'], answer:'Bimodal',
+    explain:'✅ Data dengan 2 modus disebut Bimodal (multimodal jika lebih dari 2) ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Mean',
+    wordProblem:true,
+    story:'Nilai ulangan matematika 6 siswa adalah: <strong>70, 75, 80, 85, 90, 90</strong>.',
+    q:'Berapa nilai rata-rata (Mean) ulangan keenam siswa tersebut?',
+    hint:'Jumlahkan semua nilai, lalu bagi 6',
+    type:'mcq', opts:['80','81.67','82.5','85'], answer:'81.67',
+    explain:'✅ (70+75+80+85+90+90)/6 = 490/6 ≈ 81.67 ✓' },
+
+  { id:'e09', section:'s1', tag:'tag-1', tagLabel:'Median',
+    wordProblem:true,
+    story:'Tinggi badan 7 siswa (dalam cm), setelah diurutkan: <strong>150, 152, 155, 158, 160, 162, 165</strong>.',
+    q:'Berapa median tinggi badan ketujuh siswa tersebut?',
+    hint:'Data ganjil (7), median = data ke-4',
+    type:'text', answers:['158'],
+    explain:'✅ Data ke-4 dari 7 data terurut = 158 cm ✓' },
+
+  { id:'e10', section:'s1', tag:'tag-1', tagLabel:'Mean vs Median',
+    q:'⚠️ Mengapa Median kadang lebih baik daripada Mean untuk menggambarkan data yang punya nilai EKSTREM (outlier)?',
+    hint:'Pikirkan bagaimana 1 nilai sangat besar/kecil mempengaruhi rata-rata',
+    type:'mcq', opts:['Median selalu lebih besar dari mean','Mean sangat terpengaruh oleh nilai ekstrem, sedangkan median tidak','Median lebih sulit dihitung','Tidak ada bedanya'], answer:'Mean sangat terpengaruh oleh nilai ekstrem, sedangkan median tidak',
+    explain:'✅ Nilai ekstrem (misal gaji 1 milyarder di antara gaji biasa) menarik Mean jauh, tapi Median tetap stabil karena hanya melihat posisi tengah ✓' },
+
+  { id:'e11', section:'s1', tag:'tag-1', tagLabel:'Modus',
+    wordProblem:true,
+    story:'Ukuran sepatu yang terjual di toko hari ini: <strong>38, 39, 39, 40, 40, 40, 41, 42</strong>.',
+    q:'Ukuran sepatu berapa yang merupakan Modus dari penjualan hari ini?',
+    hint:'Cari nilai dengan frekuensi terbanyak',
+    type:'text', answers:['40'],
+    explain:'✅ Ukuran 40 muncul 3 kali (paling banyak), jadi Modus = 40 ✓' },
+
+  { id:'e12', section:'s1', tag:'tag-1', tagLabel:'Mean',
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan! Rata-rata nilai 5 siswa adalah <strong>80</strong>. Jika ditambahkan siswa ke-6 dengan nilai <strong>92</strong>, berapa rata-rata baru dari 6 siswa?',
+    hint:'Cari dulu TOTAL nilai 5 siswa (5×80), tambahkan 92, baru bagi 6',
+    type:'mcq', opts:['82','84','86','88'], answer:'82',
+    explain:'✅ Total 5 siswa = 5×80=400. Total 6 siswa = 400+92=492. Mean baru = 492/6 = 82 ✓' },
+
+  { id:'e13', section:'s1', tag:'tag-1', tagLabel:'Median',
+    dataItems:['12','15','9','18','21'],
+    q:'Data BELUM terurut: 12, 15, 9, 18, 21. Langkah PERTAMA sebelum mencari median adalah...',
+    hint:'Median membutuhkan data dalam keadaan tertentu',
+    type:'mcq', opts:['Menjumlahkan semua data','Mengurutkan data dari kecil ke besar (atau sebaliknya)','Mencari modus dulu','Membagi data jadi dua kelompok acak'], answer:'Mengurutkan data dari kecil ke besar (atau sebaliknya)',
+    explain:'✅ Median HANYA bisa dicari setelah data diurutkan! Urutan: 9,12,15,18,21 → median = 15 ✓' },
+
+  { id:'e14', section:'s1', tag:'tag-1', tagLabel:'Statistika Gabungan',
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan! Data nilai ujian: <strong>60, 60, 60, 95, 95</strong>.',
+    q:'Bandingkan Mean dan Modus dari data ini — mana yang lebih besar?',
+    hint:'Hitung Mean = (60+60+60+95+95)/5, lalu bandingkan dengan Modus (nilai tersering)',
+    type:'mcq', opts:['Mean lebih besar dari Modus','Modus lebih besar dari Mean','Mean sama dengan Modus','Tidak bisa dibandingkan'], answer:'Modus lebih besar dari Mean',
+    explain:'✅ Mean = 370/5 = 74. Modus = 60 (muncul 3x). Modus (60) < Mean (74), berarti yang BENAR: Mean lebih besar dari Modus ✓' },
+
+  { id:'e15', section:'s1', tag:'tag-1', tagLabel:'Statistika Gabungan',
+    wordProblem:true,
+    story:'Jumlah anggota keluarga dari 9 rumah di sebuah RT (data sudah terurut): <strong>3, 4, 4, 4, 5, 5, 6, 6, 7</strong>.',
+    q:'Tentukan Median dari data tersebut (data ke berapa yang menjadi median untuk 9 data?)',
+    hint:'9 data (ganjil) → median = data ke-5',
+    type:'text', answers:['5'],
+    explain:'✅ Data ke-5 dari 9 data terurut = 5. Median = 5 (sedangkan Modus-nya = 4, karena muncul paling sering yaitu 3 kali) ✓' },
+
+  { id:'e16', section:'s1', tag:'tag-1', tagLabel:'Mean',
+    wordProblem:true,
+    story:'Rata-rata berat 4 karung beras adalah <strong>25 kg</strong>.',
+    q:'Berapa total berat keempat karung beras tersebut?',
+    hint:'Total = Mean × banyak data',
+    type:'text', answers:['100'],
+    explain:'✅ Total = 25 × 4 = 100 kg ✓' },
+
+  { id:'e17', section:'s1', tag:'tag-1', tagLabel:'Modus',
+    q:'Pada data kategorikal (bukan angka) seperti "warna favorit siswa", ukuran pemusatan data mana yang PALING SESUAI digunakan?',
+    hint:'Mean dan Median butuh data berupa angka yang bisa diurutkan',
+    type:'mcq', opts:['Mean','Median','Modus','Semua sama baiknya'], answer:'Modus',
+    explain:'✅ Data kategorikal (warna, jenis, dll) tidak bisa dijumlahkan atau diurutkan secara numerik, jadi hanya Modus yang bisa dihitung (kategori paling sering muncul) ✓' },
+
+  // ─── BAGIAN 2: Pythagoras & Jarak Koordinat (Sesi 30–31) ────────────────
+  { id:'e18', section:'s2', tag:'tag-2', tagLabel:'Pythagoras Dasar',
+    triSides:[{label:'a',val:'3'},{label:'b',val:'4'},{label:'c',val:'?'}],
+    q:'Segitiga siku-siku punya sisi tegak a=3 dan b=4. Berapa panjang sisi miring c? (c² = a² + b²)',
+    hint:'c² = 3² + 4² = 9 + 16',
+    type:'text', answers:['5'],
+    explain:'✅ c² = 9+16 = 25 → c = √25 = 5 ✓' },
+
+  { id:'e19', section:'s2', tag:'tag-2', tagLabel:'Pythagoras Dasar',
+    triSides:[{label:'a',val:'6'},{label:'b',val:'8'},{label:'c',val:'?'}],
+    q:'Sisi tegak segitiga siku-siku: a=6, b=8. Berapa sisi miring c?',
+    hint:'c² = 6² + 8² = 36+64',
+    type:'text', answers:['10'],
+    explain:'✅ c² = 36+64=100 → c=10 ✓' },
+
+  { id:'e20', section:'s2', tag:'tag-2', tagLabel:'Pythagoras Dasar',
+    eq:[{t:'var',v:'a²'},{t:'op',v:'+'},{t:'var2',v:'b²'},{t:'eq'},{t:'num',v:'c²'}],
+    q:'Rumus Teorema Pythagoras adalah a² + b² = c². Pada rumus ini, sisi c selalu merupakan...',
+    hint:'Sisi mana yang berhadapan dengan sudut siku-siku 90°?',
+    type:'mcq', opts:['Sisi tegak terpanjang','Sisi miring (hipotenusa), sisi terpanjang','Sisi alas saja','Sisi terpendek'], answer:'Sisi miring (hipotenusa), sisi terpanjang',
+    explain:'✅ c adalah hipotenusa/sisi miring, yaitu sisi terpanjang yang berhadapan dengan sudut siku-siku ✓' },
+
+  { id:'e21', section:'s2', tag:'tag-2', tagLabel:'Pythagoras Dasar',
+    triSides:[{label:'a',val:'?'},{label:'b',val:'12'},{label:'c',val:'13'}],
+    q:'Diketahui sisi miring c=13 dan salah satu sisi tegak b=12. Berapa panjang sisi tegak a yang lain?',
+    hint:'a² = c² − b² = 13² − 12²',
+    type:'text', answers:['5'],
+    explain:'✅ a² = 169−144=25 → a=5 ✓' },
+
+  { id:'e22', section:'s2', tag:'tag-2', tagLabel:'Pythagoras Dasar',
+    q:'⚠️ Soal Jebakan! Sebuah segitiga punya sisi 5, 12, dan 13. Apakah ini segitiga siku-siku?',
+    hint:'Cek apakah sisi terpanjang² = jumlah kuadrat dua sisi lain (13² =? 5²+12²)',
+    type:'mcq', opts:['Ya, karena 13²=5²+12² (169=25+144)','Tidak, karena bukan kelipatan bulat sederhana','Tidak bisa ditentukan tanpa gambar','Ya, karena semua bilangan ganjil'], answer:'Ya, karena 13²=5²+12² (169=25+144)',
+    explain:'✅ 5²+12²=25+144=169=13². Karena rumus Pythagoras terpenuhi, ini PASTI segitiga siku-siku (disebut tripel Pythagoras) ✓' },
+
+  { id:'e23', section:'s2', tag:'tag-2', tagLabel:'Jarak Koordinat',
+    coordPts:['A(2,3)','B(6,3)'],
+    q:'Titik A(2,3) dan B(6,3) memiliki nilai y yang SAMA. Berapa jarak AB?',
+    hint:'Jika y sama, jarak = selisih nilai x saja (|x2−x1|)',
+    type:'text', answers:['4'],
+    explain:'✅ Karena segaris horizontal, jarak = |6−2| = 4 ✓' },
+
+  { id:'e24', section:'s2', tag:'tag-2', tagLabel:'Jarak Koordinat',
+    coordPts:['P(0,0)','Q(3,4)'],
+    q:'Jarak dari titik P(0,0) ke Q(3,4) dihitung dengan rumus jarak: d = √((Δx)² + (Δy)²). Berapa nilai Δx dan Δy?',
+    hint:'Δx = x₂−x₁ = 3−0. Δy = y₂−y₁ = 4−0',
+    type:'mcq', opts:['Δx=3, Δy=4','Δx=4, Δy=3','Δx=0, Δy=0','Δx=7, Δy=7'], answer:'Δx=3, Δy=4',
+    explain:'✅ Δx = 3−0=3, Δy = 4−0=4. Ini menjadi sisi tegak segitiga untuk mencari jarak (sisi miring) ✓' },
+
+  { id:'e25', section:'s2', tag:'tag-2', tagLabel:'Jarak Koordinat',
+    coordPts:['P(0,0)','Q(3,4)'],
+    q:'Lanjutan: Δx=3 dan Δy=4 antara P(0,0) dan Q(3,4). Berapa jarak PQ? (gunakan Pythagoras: d=√(Δx²+Δy²))',
+    hint:'d = √(3²+4²) = √(9+16)',
+    type:'text', answers:['5'],
+    explain:'✅ d = √25 = 5. Jarak antar titik = sisi miring dari segitiga Δx, Δy ✓' },
+
+  { id:'e26', section:'s2', tag:'tag-2', tagLabel:'Jarak Koordinat',
+    coordPts:['A(1,2)','B(4,6)'],
+    q:'Titik A(1,2) dan B(4,6). Berapa jarak AB?',
+    hint:'Δx=4−1=3, Δy=6−2=4. Lalu d=√(3²+4²)',
+    type:'mcq', opts:['4','5','6','7'], answer:'5',
+    explain:'✅ Δx=3, Δy=4 → d=√(9+16)=√25=5 ✓' },
+
+  { id:'e27', section:'s2', tag:'tag-2', tagLabel:'Jarak Koordinat',
+    coordPts:['A(-2,1)','B(3,1)'],
+    q:'Titik A(−2,1) dan B(3,1). Karena y sama, berapa jarak AB?',
+    hint:'Jarak horizontal = |x₂−x₁| = |3−(−2)|',
+    type:'text', answers:['5'],
+    explain:'✅ |3−(−2)| = |3+2| = 5 ✓' },
+
+  { id:'e28', section:'s2', tag:'tag-2', tagLabel:'Jarak Koordinat',
+    wordProblem:true,
+    story:'Sebuah drone terbang dari titik <strong>O(0,0)</strong> ke titik <strong>T(8,6)</strong> dalam satuan meter, lurus mengikuti garis lintasan terpendek.',
+    q:'Berapa jarak lintasan drone tersebut (dalam meter)?',
+    hint:'d = √(8²+6²) = √(64+36)',
+    type:'mcq', opts:['9','10','12','14'], answer:'10',
+    explain:'✅ d = √(64+36) = √100 = 10 meter ✓' },
+
+  { id:'e29', section:'s2', tag:'tag-2', tagLabel:'Jarak Koordinat',
+    coordPts:['A(2,5)','B(7,5)'],
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan! Titik A(2,5) dan B(7,5). Seseorang langsung memakai rumus d=√(Δx²+Δy²) walau y-nya sama.',
+    q:'Apakah hasil rumus jarak lengkap (Pythagoras) akan SAMA dengan cara cepat |x₂−x₁| untuk kasus ini?',
+    hint:'Δy=5−5=0, jadi suku Δy² akan hilang dari rumus',
+    type:'mcq', opts:['Ya, karena Δy=0 sehingga rumus jarak otomatis menjadi |Δx| saja','Tidak, hasilnya akan berbeda','Tidak bisa dihitung jika y sama','Hanya berlaku untuk x yang sama'], answer:'Ya, karena Δy=0 sehingga rumus jarak otomatis menjadi |Δx| saja',
+    explain:'✅ d=√(Δx²+0²)=√(Δx²)=|Δx|=|7−2|=5. Rumus jarak penuh tetap konsisten dengan cara cepat saat segaris horizontal/vertikal ✓' },
+
+  { id:'e30', section:'s2', tag:'tag-2', tagLabel:'Pythagoras Aplikasi',
+    wordProblem:true,
+    story:'Sebuah tangga disandarkan ke tembok. Jarak kaki tangga ke tembok = <strong>9 m</strong>, dan tinggi tangga menyentuh tembok = <strong>12 m</strong>.',
+    q:'Berapa panjang tangga tersebut?',
+    hint:'Tangga = sisi miring. tangga² = 9² + 12²',
+    type:'text', answers:['15'],
+    explain:'✅ tangga² = 81+144=225 → tangga=15 m ✓' },
+
+  { id:'e31', section:'s2', tag:'tag-2', tagLabel:'Jarak Koordinat',
+    coordPts:['A(-3,-4)','O(0,0)'],
+    q:'Titik A(−3,−4) dan titik asal O(0,0). Berapa jarak AO?',
+    hint:'Δx=0−(−3)=3, Δy=0−(−4)=4. d=√(3²+4²)',
+    type:'text', answers:['5'],
+    explain:'✅ d=√(9+16)=√25=5. Tanda negatif pada koordinat tidak masalah karena dikuadratkan ✓' },
+
+  { id:'e32', section:'s2', tag:'tag-2', tagLabel:'Jarak Koordinat',
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan! Dua kapal di laut: Kapal A di posisi <strong>(1,1)</strong> dan Kapal B di posisi <strong>(4,5)</strong> (satuan km). Seseorang menghitung jarak dengan menjumlahkan Δx+Δy = 3+4 = 7 km.',
+    hint:'Jarak garis lurus BUKAN dihitung dengan menjumlahkan Δx dan Δy secara langsung',
+    q:'Apakah cara menghitung jarak di atas (menjumlahkan langsung Δx+Δy) BENAR?',
+    type:'mcq', opts:['Benar, jarak = 7 km','Salah, harus menggunakan rumus Pythagoras d=√(Δx²+Δy²), hasilnya 5 km','Benar, tapi harus dibagi 2','Salah, karena Δx dan Δy harus dikalikan'], answer:'Salah, harus menggunakan rumus Pythagoras d=√(Δx²+Δy²), hasilnya 5 km',
+    explain:'✅ Jarak lurus (garis diagonal) HARUS dihitung dengan Pythagoras: d=√(3²+4²)=√25=5 km, BUKAN sekadar dijumlahkan ✓' },
+
+  { id:'e33', section:'s2', tag:'tag-2', tagLabel:'Pythagoras Aplikasi',
+    wordProblem:true,
+    story:'Lapangan berbentuk persegi panjang berukuran <strong>panjang 24 m</strong> dan <strong>lebar 7 m</strong>. Seseorang berjalan diagonal dari satu pojok ke pojok seberangnya.',
+    q:'Berapa panjang lintasan diagonal tersebut?',
+    hint:'diagonal² = panjang² + lebar² = 24² + 7²',
+    type:'mcq', opts:['23 m','25 m','26 m','28 m'], answer:'25 m',
+    explain:'✅ diagonal² = 576+49=625 → diagonal=25 m ✓' },
+
+  { id:'e34', section:'s2', tag:'tag-2', tagLabel:'Jarak Koordinat',
+    coordPts:['C(5,2)','D(1,2)'],
+    q:'Titik C(5,2) dan D(1,2). Berapa jarak CD?',
+    hint:'y sama → jarak = |x₂−x₁|',
+    type:'text', answers:['4'],
+    explain:'✅ |5−1|=4 ✓' },
+
+  // ─── BAGIAN 3: Midpoint & Transformasi Geometri (Sesi 32–33) ───────────
+  { id:'e35', section:'s3', tag:'tag-3', tagLabel:'Midpoint',
+    coordPts:['A(2,4)','B(6,8)'],
+    q:'Rumus titik tengah (midpoint) M antara A(x₁,y₁) dan B(x₂,y₂) adalah M = ((x₁+x₂)/2, (y₁+y₂)/2). Untuk A(2,4) dan B(6,8), berapa koordinat x titik tengahnya?',
+    hint:'x midpoint = (2+6)/2',
+    type:'text', answers:['4'],
+    explain:'✅ x = (2+6)/2 = 8/2 = 4 ✓' },
+
+  { id:'e36', section:'s3', tag:'tag-3', tagLabel:'Midpoint',
+    coordPts:['A(2,4)','B(6,8)'],
+    q:'Lanjutan: A(2,4) dan B(6,8). Berapa koordinat y dari titik tengahnya?',
+    hint:'y midpoint = (4+8)/2',
+    type:'text', answers:['6'],
+    explain:'✅ y = (4+8)/2 = 12/2 = 6. Jadi midpoint = (4,6) ✓' },
+
+  { id:'e37', section:'s3', tag:'tag-3', tagLabel:'Midpoint',
+    coordPts:['P(-2,3)','Q(4,-7)'],
+    q:'Titik P(−2,3) dan Q(4,−7). Berapa koordinat titik tengah PQ?',
+    hint:'x=(−2+4)/2, y=(3+(−7))/2',
+    type:'mcq', opts:['(1,-2)','(2,-1)','(1,2)','(-1,-2)'], answer:'(1,-2)',
+    explain:'✅ x=(−2+4)/2=1, y=(3−7)/2=−4/2=−2. Midpoint=(1,−2) ✓' },
+
+  { id:'e38', section:'s3', tag:'tag-3', tagLabel:'Midpoint',
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan! Sebuah tiang listrik berada tepat di titik tengah antara rumah A(0,0) dan rumah B(10,0). Seseorang menjawab posisi tiang adalah (10,0) karena "ujung garisnya di situ".',
+    q:'Di manakah posisi tiang yang BENAR (titik tengah A dan B)?',
+    hint:'Midpoint BUKAN salah satu ujung, tapi rata-rata posisi keduanya',
+    type:'mcq', opts:['(10,0), karena itu titik B','(0,0), karena itu titik A','(5,0), yaitu rata-rata dari kedua titik','(20,0), yaitu jumlah dari kedua titik'], answer:'(5,0), yaitu rata-rata dari kedua titik',
+    explain:'✅ Midpoint = ((0+10)/2, (0+0)/2) = (5,0). Titik tengah selalu di TENGAH, bukan di salah satu ujung ✓' },
+
+  { id:'e39', section:'s3', tag:'tag-3', tagLabel:'Midpoint',
+    coordPts:['A(-4,-2)','B(2,6)'],
+    q:'Titik A(−4,−2) dan B(2,6). Tentukan koordinat midpoint-nya.',
+    hint:'x=(−4+2)/2=−1, y=(−2+6)/2=2',
+    type:'text', answers:['(-1,2)'],
+    explain:'✅ Midpoint = (−1, 2) ✓' },
+
+  { id:'e40', section:'s3', tag:'tag-3', tagLabel:'Midpoint',
+    q:'Mengapa rumus midpoint M = ((x₁+x₂)/2, (y₁+y₂)/2) disebut menggunakan "logika rata-rata (Mean)"?',
+    hint:'Bandingkan dengan rumus Mean: (jumlah data)/(banyak data)',
+    type:'mcq', opts:['Karena melibatkan pembagian dengan angka genap saja','Karena setiap koordinat x dan y dihitung sebagai rata-rata (mean) dari dua nilai yang bersesuaian','Karena hanya berlaku untuk 2 titik','Karena memakai akar kuadrat seperti Pythagoras'], answer:'Karena setiap koordinat x dan y dihitung sebagai rata-rata (mean) dari dua nilai yang bersesuaian',
+    explain:'✅ x midpoint = mean dari x₁,x₂. y midpoint = mean dari y₁,y₂. Sama persis seperti rumus Mean pada statistika! ✓' },
+
+  { id:'e41', section:'s3', tag:'tag-3', tagLabel:'Translasi',
+    coordPts:['A(3,2)','A\'(?,?)'],
+    q:'Titik A(3,2) ditranslasikan (digeser) sebanyak (x,y) → (x+4, y−1). Berapa koordinat titik A\' (hasil translasi)?',
+    hint:'Tambahkan 4 ke x, dan kurangi 1 dari y',
+    type:'mcq', opts:['(7,1)','(7,3)','(-1,3)','(7,-1)'], answer:'(7,1)',
+    explain:'✅ A\'=(3+4, 2−1)=(7,1) ✓' },
+
+  { id:'e42', section:'s3', tag:'tag-3', tagLabel:'Translasi',
+    coordPts:['B(-2,5)','B\'(?,?)'],
+    q:'Titik B(−2,5) digeser sejauh (x,y) → (x−3, y+2). Berapa koordinat B\'?',
+    hint:'x baru = −2−3, y baru = 5+2',
+    type:'text', answers:['(-5,7)'],
+    explain:'✅ B\'=(−2−3, 5+2)=(−5,7) ✓' },
+
+  { id:'e43', section:'s3', tag:'tag-3', tagLabel:'Translasi',
+    wordProblem:true,
+    story:'Sebuah robot berada di posisi <strong>(5,3)</strong>. Robot diprogram bergerak 6 langkah ke kiri dan 2 langkah ke atas.',
+    q:'Di mana posisi robot setelah bergerak? (kiri = kurangi x, atas = tambah y)',
+    hint:'x baru = 5−6, y baru = 3+2',
+    type:'mcq', opts:['(-1,5)','(1,5)','(-1,1)','(11,5)'], answer:'(-1,5)',
+    explain:'✅ Posisi baru = (5−6, 3+2) = (−1, 5) ✓' },
+
+  { id:'e44', section:'s3', tag:'tag-3', tagLabel:'Refleksi',
+    coordPts:['A(4,3)','A\'(?,?)'],
+    q:'Titik A(4,3) direfleksikan (dicerminkan) terhadap sumbu-X. Apa aturan refleksi terhadap sumbu-X?',
+    hint:'Refleksi terhadap sumbu-X: nilai x tetap, nilai y berubah tanda',
+    type:'mcq', opts:['(x,y) → (x,−y)','(x,y) → (−x,y)','(x,y) → (−x,−y)','(x,y) → (y,x)'], answer:'(x,y) → (x,−y)',
+    explain:'✅ Refleksi terhadap sumbu-X: x tetap, y menjadi lawannya (−y). Jadi A(4,3) → A\'(4,−3) ✓' },
+
+  { id:'e45', section:'s3', tag:'tag-3', tagLabel:'Refleksi',
+    coordPts:['B(5,-2)','B\'(?,?)'],
+    q:'Titik B(5,−2) direfleksikan terhadap sumbu-Y. Aturannya: (x,y) → (−x,y). Berapa koordinat B\'?',
+    hint:'x berubah tanda menjadi −5, y tetap −2',
+    type:'text', answers:['(-5,-2)'],
+    explain:'✅ B\'=(−5,−2). Refleksi sumbu-Y membalik tanda x saja ✓' },
+
+  { id:'e46', section:'s3', tag:'tag-3', tagLabel:'Refleksi',
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan! Titik C(0,5) direfleksikan terhadap sumbu-X. Karena x=0, seseorang berpikir hasilnya tetap (0,5) (tidak berubah).',
+    q:'Apakah anggapan tersebut BENAR?',
+    hint:'Aturan refleksi sumbu-X tetap berlaku: (x,y) → (x,−y), berapapun nilai x',
+    type:'mcq', opts:['Benar, karena x=0 maka titik tidak bergerak','Salah, y tetap berubah tanda menjadi −5 meskipun x=0, hasilnya (0,−5)','Benar, karena titik berada tepat di sumbu-Y','Salah, x yang harus berubah tanda'], answer:'Salah, y tetap berubah tanda menjadi −5 meskipun x=0, hasilnya (0,−5)',
+    explain:'✅ Aturan refleksi sumbu-X (x,−y) berlaku untuk SEMUA titik. C(0,5) → C\'(0,−5), tetap berubah meski x=0 ✓' },
+
+  { id:'e47', section:'s3', tag:'tag-3', tagLabel:'Translasi vs Refleksi',
+    q:'Apa perbedaan UTAMA antara Translasi dan Refleksi pada transformasi geometri?',
+    hint:'Pikirkan apakah objek "digeser" atau "dicerminkan"',
+    type:'mcq', opts:['Translasi mengubah ukuran, refleksi tidak','Translasi menggeser posisi tanpa mencerminkan, refleksi mencerminkan posisi terhadap suatu sumbu','Tidak ada perbedaan, keduanya sama','Refleksi hanya berlaku untuk segitiga'], answer:'Translasi menggeser posisi tanpa mencerminkan, refleksi mencerminkan posisi terhadap suatu sumbu',
+    explain:'✅ Translasi = pergeseran lurus (x+a, y+b). Refleksi = pencerminan terhadap sumbu acuan, menghasilkan "bayangan cermin". Keduanya tidak mengubah ukuran objek ✓' },
+
+  { id:'e48', section:'s3', tag:'tag-3', tagLabel:'Translasi',
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan! Segitiga ABC akan ditranslasikan oleh (x,y) → (x+2, y+5). Diketahui salah satu titik sudutnya adalah A(−3,−5).',
+    q:'Berapa koordinat A\' setelah translasi?',
+    hint:'Tambahkan langsung ke masing-masing koordinat, hati-hati dengan tanda negatif',
+    type:'text', answers:['(-1,0)'],
+    explain:'✅ A\'=(−3+2, −5+5)=(−1, 0). Hati-hati: −3+2=−1 (bukan −5), dan −5+5=0 (bukan −10) ✓' },
+
+  { id:'e49', section:'s3', tag:'tag-3', tagLabel:'Refleksi',
+    coordPts:['D(6,1)','D\'(?,?)'],
+    q:'Titik D(6,1) direfleksikan terhadap sumbu-X, kemudian hasilnya direfleksikan LAGI terhadap sumbu-Y. Berapa koordinat akhirnya?',
+    hint:'Langkah 1: (6,1)→(6,−1) [refleksi sumbu-X]. Langkah 2: (6,−1)→(−6,−1) [refleksi sumbu-Y]',
+    type:'text', answers:['(-6,-1)'],
+    explain:'✅ Refleksi sumbu-X: (6,1)→(6,−1). Refleksi sumbu-Y: (6,−1)→(−6,−1). Hasil akhir = (−6,−1) ✓' },
+
+  { id:'e50', section:'s3', tag:'tag-3', tagLabel:'Transformasi Gabungan',
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan Akhir! Titik E(2,3) pertama ditranslasikan oleh (x,y)→(x+1,y+1) menjadi E\', lalu E\' direfleksikan terhadap sumbu-X menjadi E\'\'.',
+    q:'Tentukan koordinat E\'\' (hasil akhir setelah translasi LALU refleksi).',
+    hint:'Langkah 1 (translasi): E(2,3)→E\'(3,4). Langkah 2 (refleksi sumbu-X): E\'(3,4)→E\'\'(3,−4)',
+    type:'text', answers:['(3,-4)'],
+    explain:'✅ Translasi: (2+1,3+1)=(3,4)=E\'. Refleksi sumbu-X: (3,4)→(3,−4)=E\'\'. Urutan transformasi penting — hasil bisa beda jika dibalik! ✓' },
+
+];
+
+const total = exercises.length;
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = `${(done/total)*100}%`;
+  for(let i=1;i<=5;i++){
+    const el=document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done>=i*10);
+  }
+  if(done===total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){ inp.classList.add('correct'); inp.disabled=true; btn.disabled=true; }
+  else { card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true); }
+  const fb=card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok'; fb.textContent=q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){ const b=document.createElement('div'); b.className='done-badge'; b.textContent='✓ Done'; card.appendChild(b); }
+  progress[q.id]=true; saveProgress(progress); updateProgressBar();
+}
+
+function checkText(id, inp, btn, q){
+  const raw=inp.value.trim().toLowerCase().replace(/\s+/g,'');
+  if(!raw) return;
+  const correct=q.answers.some(a=>raw===a.toLowerCase().replace(/\s+/g,''));
+  if(correct){ markDone(inp.closest('.ex-card'),q,inp,btn); }
+  else {
+    inp.classList.add('wrong-anim');
+    const attRow=inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot=document.createElement('div'); dot.className='attempts-dot'; attRow.appendChild(dot);
+    setTimeout(()=>{ inp.classList.remove('wrong-anim'); inp.value=''; inp.focus(); },400);
+    if(attRow.children.length>=3){
+      const fb=inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no'; fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{ b.disabled=true; if(b.dataset.val===q.answer) b.classList.add('opt-correct'); });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb=card.querySelector('.ex-feedback');
+  if(val===q.answer){ markDone(card,q,null,null); }
+  else {
+    fb.className='ex-feedback show no'; fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+    if(!card.querySelector('.done-badge')){ const b=document.createElement('div'); b.className='done-badge'; b.textContent='Done'; card.appendChild(b); }
+  }
+}
+
+function buildExercises(){
+  const area=document.getElementById('exerciseArea');
+  area.innerHTML='';
+  const groups=[
+    { key:'s1', label:'📊 Bagian 1 — Statistika: Mean, Median, Modus', cls:'sd-1', sesi:'Sesi 28'    },
+    { key:'s2', label:'📐 Bagian 2 — Pythagoras & Jarak Koordinat',    cls:'sd-2', sesi:'Sesi 30–31' },
+    { key:'s3', label:'🔄 Bagian 3 — Midpoint & Transformasi Geometri', cls:'sd-3', sesi:'Sesi 32–33' },
+  ];
+
+  groups.forEach(g=>{
+    const wrap=document.createElement('div');
+    wrap.innerHTML=`<div class="sec-divider ${g.cls}">${g.label}<span class="sd-sesi">${g.sesi}</span></div>`;
+    const grid=document.createElement('div'); grid.className='exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone=!!progress[q.id];
+      const card=document.createElement('div');
+      card.className='ex-card'+(q.wordProblem?' word-card':'')+(isDone?' done-card':'');
+
+      const eqDisp    = q.eq ? eqHTML(q.eq) : '';
+      const dataDisp  = q.dataItems ? dataHTML(q.dataItems, q.hlIdx) : '';
+      const coordDisp = q.coordPts ? coordHTML(q.coordPts[0], q.coordPts[1]) : '';
+      const triDisp   = q.triSides ? triHTML(q.triSides) : '';
+      const storyDisp = q.story ? `<div class="word-story">${q.story}</div>` : '';
+
+      let inputHTML='';
+      if(q.type==='text'){
+        inputHTML=`<div class="ex-input-wrap"><div class="ex-input-row">
+          <input type="text" class="ex-input ${isDone?'correct':''}" placeholder="Jawaban?"
+            value="${isDone?q.answers[0]:''}" ${isDone?'disabled':''}
+            onkeydown="if(event.key==='Enter')this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+          <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+        </div><div class="attempts-row"></div></div>`;
+      } else {
+        const shuffled=[...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML=`<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML=`
+        <div class="ex-num">Soal ${parseInt(q.id.replace('e',''))}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${storyDisp}${eqDisp}${dataDisp}${coordDisp}${triDisp}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone?q.explain:''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn=card.querySelector('.ex-btn'), inp=card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick=()=>checkText(q.id,inp,btn,q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{ b.onclick=()=>checkMCQ(b.dataset.val,b,q,card); });
+      }
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Cluster 6? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+
+// Floating symbols
+const emojis=['📊','📐','📏','📍','🔄','📈','✖️'];
+const wrap=document.getElementById('petals');
+for(let i=0;i<16;i++){
+  const p=document.createElement('div'); p.className='petal';
+  const sz=0.9+Math.random()*1.3;
+  p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--sz:${sz}rem;font-size:${sz}rem;--d:${4+Math.random()*6}s;--dl:${-Math.random()*6}s;--r0:${-15+Math.random()*30}deg;--r1:${-15+Math.random()*30}deg;`;
+  p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  wrap.appendChild(p);
+}
+</script>
+</body>
+</html>

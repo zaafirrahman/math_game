@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cluster 2 · Aljabar Dasar · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf6fb;
+    --surface: #fff0f8;
+    --card: #ffffff;
+    --border: #f0d6ea;
+    --border2: #e8c8e0;
+    --rose: #e8628a;
+    --rose-light: #f5a0bc;
+    --lavender: #9b7fc8;
+    --lavender-light: #c8b4e8;
+    --mint: #5fbfa0;
+    --mint-light: #a8dfd0;
+    --peach: #f0956a;
+    --peach-light: #fad5a0;
+    --sky: #7ab8e8;
+    --sky-light: #b4d4f5;
+    --text: #3d2b3d;
+    --text-mid: #7a5c78;
+    --text-muted: #b898b4;
+    --shadow: rgba(180, 100, 150, 0.1);
+    --red: #e05a6a;
+    --green: #4db88a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Quicksand', sans-serif; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 20%, rgba(155,127,200,0.08) 0%, transparent 45%),
+      radial-gradient(ellipse at 90% 10%, rgba(122,184,232,0.07) 0%, transparent 45%),
+      radial-gradient(ellipse at 80% 90%, rgba(232,98,138,0.06) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  .petal { position: fixed; pointer-events: none; z-index: 0; animation: petalFloat var(--d) ease-in-out infinite var(--dl); opacity: 0.13; font-size: var(--sz); }
+  @keyframes petalFloat { 0%,100%{ transform: translateY(0) rotate(var(--r0)); opacity:0.13; } 50%{ transform: translateY(-12px) rotate(var(--r1)); opacity:0.2; } }
+
+  nav {
+    padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    background: rgba(253,246,251,0.9); backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;
+  }
+  nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--lavender); }
+  nav span { color: var(--border2); }
+  nav .current { color: var(--lavender); }
+
+  .wrapper { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.2rem 6rem; position: relative; z-index: 1; }
+  @media(max-width:480px){ .wrapper { padding: 1.8rem 0.8rem 6rem; } }
+
+  /* Banner — lavender accent for cluster 2 */
+  .banner {
+    background: linear-gradient(135deg, rgba(155,127,200,0.09), rgba(122,184,232,0.08));
+    border: 2px solid var(--lavender-light);
+    border-radius: 22px; padding: 2rem 2rem 1.6rem;
+    margin-bottom: 2rem; position: relative; overflow: hidden;
+  }
+  .banner::before {
+    content: '🔣'; position: absolute; right: 1.5rem; top: 50%;
+    transform: translateY(-50%); font-size: 6rem; opacity: 0.07; pointer-events: none;
+  }
+  .page-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(155,127,200,0.1); border: 1.5px solid rgba(155,127,200,0.35);
+    color: var(--lavender); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.3rem 1rem; border-radius: 20px; margin-bottom: 0.9rem; font-weight: 800;
+  }
+  .page-title { font-family: 'Nunito', sans-serif; font-size: clamp(1.4rem,4vw,2rem); font-weight: 900; color: var(--text); margin-bottom: 0.45rem; line-height: 1.25; }
+  .page-title span { color: var(--lavender); }
+  .page-desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.7; max-width: 560px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .pill { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; padding: 0.22rem 0.75rem; border-radius: 20px; font-weight: 700; }
+  .pill-lav   { background: rgba(155,127,200,0.1); color: var(--lavender); border: 1.5px solid rgba(155,127,200,0.3); }
+  .pill-sky   { background: rgba(122,184,232,0.1); color: var(--sky);      border: 1.5px solid rgba(122,184,232,0.3); }
+  .pill-rose  { background: rgba(232,98,138,0.1);  color: var(--rose);     border: 1.5px solid rgba(232,98,138,0.3); }
+  .pill-mint  { background: rgba(95,191,160,0.1);  color: var(--mint);     border: 1.5px solid rgba(95,191,160,0.3); }
+  .pill-peach { background: rgba(240,149,106,0.1); color: var(--peach);    border: 1.5px solid rgba(240,149,106,0.3); }
+
+  /* Progress */
+  .prog-panel { background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 1.2rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 3px 14px var(--shadow); }
+  .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+  .prog-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+  .prog-count { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 900; color: var(--lavender); }
+  .prog-track { height: 7px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 0.5rem; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--lavender), var(--sky)); border-radius: 99px; transition: width 0.7s ease; }
+  .prog-sub { font-size: 0.76rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
+  .reset-link { font-size: 0.7rem; color: var(--text-muted); cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+  .reset-link:hover { color: var(--red); }
+  .prog-stars { display: flex; gap: 0.3rem; margin-top: 0.6rem; align-items: center; font-size: 0.76rem; color: var(--text-muted); }
+  .star { font-size: 0.9rem; opacity: 0.2; transition: opacity 0.4s; }
+  .star.lit { opacity: 1; }
+
+  /* Section dividers */
+  .sec-divider {
+    font-family: 'Nunito', sans-serif; font-size: 0.72rem; font-weight: 800;
+    letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.5rem 0; margin: 2rem 0 1rem;
+    border-bottom: 2px solid; display: flex; align-items: center; gap: 0.7rem;
+  }
+  .sd-1 { color: var(--lavender); border-color: rgba(155,127,200,0.25); }
+  .sd-2 { color: var(--rose);     border-color: rgba(232,98,138,0.25);  }
+  .sd-3 { color: var(--sky);      border-color: rgba(122,184,232,0.25); }
+  .sd-4 { color: var(--mint);     border-color: rgba(95,191,160,0.25);  }
+  .sd-5 { color: var(--peach);    border-color: rgba(240,149,106,0.25); }
+  .sd-sesi { font-size: 0.62rem; font-weight: 700; opacity: 0.65; margin-left: auto; letter-spacing: 1px; }
+
+  /* Grid & Cards */
+  .exercise-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(290px,1fr)); gap: 1rem; }
+  @media(max-width:480px){ .exercise-grid { grid-template-columns: 1fr; } }
+
+  .ex-card { background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 1.3rem; position: relative; overflow: hidden; transition: border-color 0.2s; box-shadow: 0 2px 10px var(--shadow); }
+  .ex-card.done-card { border-color: rgba(155,127,200,0.4); background: rgba(155,127,200,0.02); }
+  .ex-card.word-card { border-left: 3px solid var(--sky); }
+  .ex-card.word-card.done-card { border-left-color: var(--lavender); }
+
+  .ex-num { font-size: 0.62rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem; }
+  .ex-tag { display: inline-block; font-size: 0.58rem; padding: 0.15rem 0.5rem; border-radius: 8px; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
+  .tag-1 { background: rgba(155,127,200,0.1); color: var(--lavender); border: 1.5px solid rgba(155,127,200,0.25); }
+  .tag-2 { background: rgba(232,98,138,0.1);  color: var(--rose);     border: 1.5px solid rgba(232,98,138,0.25);  }
+  .tag-3 { background: rgba(122,184,232,0.1); color: var(--sky);      border: 1.5px solid rgba(122,184,232,0.25); }
+  .tag-4 { background: rgba(95,191,160,0.1);  color: var(--mint);     border: 1.5px solid rgba(95,191,160,0.25);  }
+  .tag-5 { background: rgba(240,149,106,0.1); color: var(--peach);    border: 1.5px solid rgba(240,149,106,0.25); }
+
+  /* Algebra expression display */
+  .expr-display { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.35rem; margin: 0.6rem 0 0.8rem; padding: 0.7rem 0.6rem; background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border); }
+  .ed-var  { font-family: 'Nunito', sans-serif; font-size: 1.2rem; font-weight: 900; color: var(--lavender); background: rgba(155,127,200,0.1); border: 1.5px solid rgba(155,127,200,0.3); padding: 0.15rem 0.6rem; border-radius: 8px; font-style: italic; }
+  .ed-num  { font-family: 'Nunito', sans-serif; font-size: 1.2rem; font-weight: 900; color: var(--sky); background: rgba(122,184,232,0.1); border: 1.5px solid rgba(122,184,232,0.25); padding: 0.15rem 0.55rem; border-radius: 8px; }
+  .ed-op   { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--text-muted); }
+  .ed-eq   { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--text-muted); }
+  .ed-q    { font-family: 'Nunito', sans-serif; font-size: 1.2rem; font-weight: 900; color: var(--rose); background: rgba(232,98,138,0.1); border: 1.5px solid rgba(232,98,138,0.25); padding: 0.15rem 0.55rem; border-radius: 8px; }
+
+  /* Machine display (Sesi 8) */
+  .machine-display { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.35rem; margin: 0.6rem 0 0.8rem; padding: 0.65rem 0.5rem; background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border); }
+  .md-in  { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 900; color: var(--sky); background: rgba(122,184,232,0.1); border: 1.5px solid rgba(122,184,232,0.3); padding: 0.15rem 0.55rem; border-radius: 8px; }
+  .md-box { font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 800; color: var(--lavender); background: rgba(155,127,200,0.08); border: 1.5px solid rgba(155,127,200,0.25); padding: 0.22rem 0.55rem; border-radius: 8px; }
+  .md-arr { font-size: 0.9rem; color: var(--text-muted); }
+  .md-out { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 900; color: var(--peach); background: rgba(240,149,106,0.1); border: 1.5px solid rgba(240,149,106,0.3); padding: 0.15rem 0.55rem; border-radius: 8px; }
+  .md-q   { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 900; color: var(--rose); background: rgba(232,98,138,0.1); border: 1.5px solid rgba(232,98,138,0.3); padding: 0.15rem 0.55rem; border-radius: 8px; }
+
+  /* Coordinate display (Sesi 9) */
+  .coord-table { width: 100%; border-collapse: collapse; margin: 0.6rem 0 0.8rem; background: var(--surface); border-radius: 12px; overflow: hidden; border: 1.5px solid var(--border); }
+  .coord-table th { font-family: 'Nunito', sans-serif; font-size: 0.72rem; font-weight: 800; letter-spacing: 1.5px; padding: 0.45rem 0; text-align: center; border-bottom: 1.5px solid var(--border); }
+  .th-x { color: var(--sky); }
+  .th-y { color: var(--peach); }
+  .coord-table td { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 800; text-align: center; padding: 0.4rem 0; }
+  .td-x { color: var(--sky); }
+  .td-y { color: var(--peach); }
+  .td-q { color: var(--rose); font-weight: 900; }
+  .coord-table tr:not(:last-child) td { border-bottom: 1px solid rgba(200,150,200,0.1); }
+
+  /* Word problem */
+  .word-story { background: rgba(122,184,232,0.06); border: 1.5px solid rgba(122,184,232,0.2); border-radius: 10px; padding: 0.65rem 0.9rem; margin-bottom: 0.7rem; font-size: 0.83rem; color: var(--text-mid); line-height: 1.65; }
+  .word-story strong { color: var(--sky); }
+
+  .ex-q { font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 800; color: var(--text); margin-bottom: 0.4rem; line-height: 1.5; }
+  .ex-card.done-card .ex-q { color: var(--lavender); }
+  .ex-hint { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.85rem; font-style: italic; line-height: 1.45; }
+
+  /* Inputs */
+  .ex-input-wrap { display: flex; flex-direction: column; gap: 0.45rem; }
+  .ex-input-row { display: flex; gap: 0.5rem; align-items: center; }
+  .ex-input { flex: 1; background: var(--surface); border: 2px solid var(--border2); color: var(--text); padding: 0.55rem 0.8rem; border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; text-align: center; transition: border-color 0.2s; outline: none; min-width: 0; }
+  .ex-input:focus { border-color: var(--lavender); }
+  .ex-input.correct { border-color: var(--lavender); color: var(--lavender); }
+  .ex-input.wrong-anim { border-color: var(--red); color: var(--red); animation: shake 0.4s ease; }
+  @keyframes shake { 0%,100%{ transform:translateX(0); } 20%,60%{ transform:translateX(-6px); } 40%,80%{ transform:translateX(6px); } }
+  .ex-btn { background: rgba(155,127,200,0.1); border: 1.5px solid rgba(155,127,200,0.3); color: var(--lavender); padding: 0.55rem 0.9rem; border-radius: 10px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.75rem; font-weight: 800; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+  .ex-btn:hover { background: rgba(155,127,200,0.2); border-color: var(--lavender); }
+  .ex-btn:disabled { opacity: 0.3; cursor: default; }
+  .attempts-row { display: flex; gap: 3px; align-items: center; min-height: 10px; }
+  .attempts-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
+
+  .ex-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .ex-opt { background: var(--surface); border: 2px solid var(--border2); color: var(--text-mid); padding: 0.55rem 0.4rem; border-radius: 10px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.15s; text-align: center; line-height: 1.4; }
+  .ex-opt:hover:not(:disabled) { border-color: var(--lavender); background: rgba(155,127,200,0.07); color: var(--lavender); }
+  .ex-opt.opt-correct { border-color: var(--mint); background: rgba(95,191,160,0.1); color: var(--mint); }
+  .ex-opt.opt-wrong   { border-color: var(--red);  background: rgba(224,90,106,0.08); color: var(--red); }
+  .ex-opt:disabled { cursor: default; }
+
+  .ex-feedback { margin-top: 0.6rem; font-size: 0.81rem; font-weight: 700; display: none; line-height: 1.55; }
+  .ex-feedback.show { display: block; }
+  .ex-feedback.ok { color: var(--mint); }
+  .ex-feedback.no { color: var(--red); }
+  .done-badge { position: absolute; top: 0.9rem; right: 0.9rem; background: rgba(155,127,200,0.1); border: 1.5px solid rgba(155,127,200,0.35); color: var(--lavender); font-size: 0.6rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 8px; }
+
+  /* All-done */
+  #allDone { display: none; text-align: center; padding: 3.5rem 2rem; }
+  .alldone-icon { font-size: 5rem; display: block; margin-bottom: 1.5rem; animation: bounce 1.2s ease infinite; }
+  @keyframes bounce { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-10px); } }
+  .alldone-title { font-family: 'Nunito', sans-serif; font-size: clamp(1.4rem,5vw,2.1rem); font-weight: 900; background: linear-gradient(135deg, var(--lavender), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.7rem; }
+  .alldone-desc { color: var(--text-muted); line-height: 1.8; margin-bottom: 1.8rem; font-size: 0.92rem; }
+  .alldone-xp { display: inline-block; background: rgba(155,127,200,0.1); border: 1.5px solid rgba(155,127,200,0.4); color: var(--lavender); padding: 0.5rem 1.5rem; border-radius: 20px; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800; margin-bottom: 2rem; }
+  .action-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn { padding: 0.75rem 1.6rem; border-radius: 12px; border: 2px solid var(--border2); font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-muted); background: transparent; }
+  .btn:hover { border-color: var(--lavender); color: var(--lavender); }
+  .btn-primary { background: linear-gradient(135deg, var(--lavender), var(--sky)); border-color: transparent; color: white; box-shadow: 0 4px 16px rgba(155,127,200,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); color: white; }
+
+  .deco-bloom  { position: fixed; top: -40px; right: -40px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(155,127,200,0.1), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+  .deco-bloom2 { position: fixed; bottom: -60px; left: -60px; width: 240px; height: 240px; background: radial-gradient(circle, rgba(122,184,232,0.08), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+</style>
+</head>
+<body>
+<div class="deco-bloom"></div>
+<div class="deco-bloom2"></div>
+<div id="petals"></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../tasya_0751.html">TASYA</a>
+  <span>›</span>
+  <a href="review.html">MEGA REVIEW</a>
+  <span>›</span>
+  <span class="current">CLUSTER 2</span>
+</nav>
+
+<div class="wrapper">
+  <div class="banner">
+    <div class="page-badge">📚 Cluster 2 · Mega Review</div>
+    <div class="page-title">Aljabar <span>Dasar</span></div>
+    <div class="page-desc">
+      50 soal dari Sesi 6–10 — huruf sebagai simbol angka, menyederhanakan bentuk aljabar, mencari nilai x, konsep fungsi mesin, koordinat Kartesius, dan kemiringan garis.
+      Progress tersimpan otomatis! 🔣
+    </div>
+    <div class="pills">
+      <span class="pill pill-lav">🔠 Bentuk Aljabar</span>
+      <span class="pill pill-rose">⚖️ Persamaan Linear</span>
+      <span class="pill pill-sky">⚙️ Fungsi & Mesin</span>
+      <span class="pill pill-mint">📍 Koordinat & Grafik</span>
+      <span class="pill pill-peach">📐 Slope / Kemiringan</span>
+    </div>
+  </div>
+
+  <div class="prog-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress Cluster 2</span>
+      <span class="prog-count" id="progCount">0 / 50</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-sub">
+      <span>Kumpulkan ⭐ tiap menyelesaikan 10 soal!</span>
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+      <span style="margin-left:0.4rem;font-size:0.72rem;">Selesaikan 10 soal per bagian</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🔣</span>
+    <div class="alldone-title">Cluster 2 Selesai!</div>
+    <div class="alldone-desc">
+      Keren banget! 50 soal Aljabar Dasar sudah kamu taklukkan!<br>
+      Simbol, persamaan, fungsi mesin, koordinat, slope — semua dikuasai! ✨
+    </div>
+    <div class="alldone-xp">🌟 +500 XP — Algebra Explorer!</div>
+    <div class="action-btns">
+      <a href="cluster1.html" class="btn">← Cluster 1</a>
+      <a href="review.html" class="btn">Hub Review</a>
+      <a href="cluster3.html" class="btn btn-primary">Cluster 3 →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'tasya_review_cluster2_v1';
+function loadProgress(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||{}; }catch(e){ return{}; } }
+function saveProgress(p){ try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(p)); }catch(e){} }
+let progress = loadProgress();
+
+function machineHTML(inp, rule, out){
+  const inEl  = inp==='?' ? `<span class="md-q">?</span>` : `<span class="md-in">${inp}</span>`;
+  const outEl = out==='?' ? `<span class="md-q">?</span>` : `<span class="md-out">${out}</span>`;
+  return `<div class="machine-display">${inEl}<span class="md-arr">→</span><span class="md-box">${rule}</span><span class="md-arr">→</span>${outEl}</div>`;
+}
+
+function coordTableHTML(pairs, qCol){
+  // qCol: 'x' or 'y' — which column has the '?' cell
+  const rows = pairs.map(([x,y])=>{
+    const xCell = x==='?' ? `<td class="td-q">?</td>` : `<td class="td-x">${x}</td>`;
+    const yCell = y==='?' ? `<td class="td-q">?</td>` : `<td class="td-y">${y}</td>`;
+    return `<tr>${xCell}${yCell}</tr>`;
+  }).join('');
+  return `<table class="coord-table"><thead><tr><th class="th-x">x</th><th class="th-y">y</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function exprHTML(parts){
+  return `<div class="expr-display">${parts.map(p=>{
+    if(p.t==='var') return `<span class="ed-var">${p.v}</span>`;
+    if(p.t==='num') return `<span class="ed-num">${p.v}</span>`;
+    if(p.t==='op')  return `<span class="ed-op">${p.v}</span>`;
+    if(p.t==='eq')  return `<span class="ed-eq">=</span>`;
+    if(p.t==='q')   return `<span class="ed-q">?</span>`;
+    return '';
+  }).join('')}</div>`;
+}
+
+const exercises = [
+
+  // ─── BAGIAN 1: Bentuk Aljabar — Huruf sebagai Simbol Angka (Sesi 6) ─────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Bentuk Aljabar',
+    expr:[{t:'num',v:'3'},{t:'var',v:'x'},{t:'op',v:'+'},{t:'num',v:'2'},{t:'var',v:'x'},{t:'eq'},{t:'q'}],
+    q:'3x + 2x = ? (sederhanakan dengan menggabungkan suku sejenis)',
+    hint:'Keduanya punya variabel x yang sama — koefisiennya bisa dijumlah',
+    type:'mcq', opts:['5x','6x','5x²','5'], answer:'5x',
+    explain:'✅ 3x + 2x = (3+2)x = 5x. Koefisien dijumlahkan, variabel tetap ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Bentuk Aljabar',
+    q:'Sederhanakan: 7a − 3a + 2a',
+    hint:'Hitung koefisien satu per satu dari kiri ke kanan',
+    type:'text', answers:['6a'],
+    explain:'✅ 7a − 3a = 4a, 4a + 2a = 6a ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Bentuk Aljabar',
+    q:'Manakah yang merupakan bentuk paling sederhana dari 4p + 3q − p + 2q?',
+    hint:'Kumpulkan suku p sendiri, suku q sendiri',
+    type:'mcq', opts:['3p + 5q','5p + 5q','3p + q','7pq'], answer:'3p + 5q',
+    explain:'✅ Suku p: 4p − p = 3p. Suku q: 3q + 2q = 5q. Hasil: 3p + 5q ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Bentuk Aljabar',
+    q:'Jika n = 5, berapa nilai dari 3n + 7?',
+    hint:'Ganti n dengan 5, lalu hitung',
+    type:'text', answers:['22'],
+    explain:'✅ 3(5) + 7 = 15 + 7 = 22 ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Bentuk Aljabar',
+    q:'Manakah yang BUKAN suku sejenis dengan 4xy?',
+    hint:'Suku sejenis harus punya variabel yang sama persis (huruf & pangkat sama)',
+    type:'mcq', opts:['7xy','−2xy','3xy','5x'], answer:'5x',
+    explain:'✅ 5x hanya punya variabel x saja, bukan xy — tidak sejenis dengan 4xy ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Bentuk Aljabar',
+    q:'Pola deret: 2, 5, 8, 11, ... Suku ke-n = 3n − 1. Berapa nilai suku ke-6?',
+    hint:'Masukkan n = 6 ke rumus 3n − 1',
+    type:'text', answers:['17'],
+    explain:'✅ 3(6) − 1 = 18 − 1 = 17 ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Bentuk Aljabar',
+    q:'Nilai dari 2m − 3 jika m = 4 adalah...',
+    hint:'Substitusi m = 4',
+    type:'mcq', opts:['3','4','5','6'], answer:'5',
+    explain:'✅ 2(4) − 3 = 8 − 3 = 5 ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Bentuk Aljabar',
+    wordProblem:true,
+    story:'Harga pensil <strong>Rp p ribu</strong> dan harga buku <strong>Rp (p + 3) ribu</strong>. Tasya beli 2 pensil dan 1 buku.',
+    q:'Tulis total biaya dalam bentuk aljabar (dalam ribuan)',
+    hint:'2 × p + 1 × (p+3) = 2p + p + 3',
+    type:'mcq', opts:['3p + 3','2p + 3','3p + 6','4p + 3'], answer:'3p + 3',
+    explain:'✅ 2p + (p+3) = 2p + p + 3 = 3p + 3 ✓' },
+
+  { id:'e09', section:'s1', tag:'tag-1', tagLabel:'Bentuk Aljabar',
+    q:'Sederhanakan: 5k + 8 − 2k − 3',
+    hint:'Kumpulkan suku ber-k, kumpulkan konstanta',
+    type:'text', answers:['3k+5','3k + 5'],
+    explain:'✅ (5k−2k) + (8−3) = 3k + 5 ✓' },
+
+  { id:'e10', section:'s1', tag:'tag-1', tagLabel:'Bentuk Aljabar',
+    q:'Deret: 4, 7, 10, 13, ... Jika rumusnya Un = 3n + 1, berapa suku ke-10?',
+    hint:'Masukkan n = 10',
+    type:'text', answers:['31'],
+    explain:'✅ 3(10) + 1 = 30 + 1 = 31 ✓' },
+
+  // ─── BAGIAN 2: Persamaan Linear — Mencari Nilai x (Sesi 7) ──────────────
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Persamaan Linear',
+    expr:[{t:'num',v:'x'},{t:'op',v:'+'},{t:'num',v:'5'},{t:'eq'},{t:'num',v:'12'}],
+    q:'x + 5 = 12. Berapa nilai x?',
+    hint:'Pindah ruas: x = 12 − 5',
+    type:'text', answers:['7'],
+    explain:'✅ x = 12 − 5 = 7. Cek: 7 + 5 = 12 ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Persamaan Linear',
+    expr:[{t:'num',v:'3'},{t:'var',v:'x'},{t:'eq'},{t:'num',v:'21'}],
+    q:'3x = 21. Berapa nilai x?',
+    hint:'Kedua ruas dibagi 3',
+    type:'text', answers:['7'],
+    explain:'✅ x = 21 ÷ 3 = 7. Cek: 3×7 = 21 ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Persamaan Linear',
+    expr:[{t:'num',v:'2'},{t:'var',v:'x'},{t:'op',v:'+'},{t:'num',v:'3'},{t:'eq'},{t:'num',v:'11'}],
+    q:'2x + 3 = 11. Berapa nilai x?',
+    hint:'Langkah 1: pindah 3 → 2x = 8. Langkah 2: bagi 2',
+    type:'mcq', opts:['3','4','5','6'], answer:'4',
+    explain:'✅ 2x = 11 − 3 = 8, x = 8 ÷ 2 = 4. Cek: 2(4)+3=11 ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Persamaan Linear',
+    q:'5x − 7 = 18. Berapa nilai x?',
+    hint:'Pindah −7 jadi +7, lalu bagi 5',
+    type:'text', answers:['5'],
+    explain:'✅ 5x = 18 + 7 = 25, x = 25 ÷ 5 = 5 ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Persamaan Linear',
+    q:'Persamaan mana yang memiliki penyelesaian x = 6?',
+    hint:'Substitusi x = 6 ke setiap pilihan, mana yang terpenuhi?',
+    type:'mcq', opts:['4x − 2 = 26','3x + 5 = 22','2x + 6 = 18','x + 9 = 14'], answer:'3x + 5 = 22',
+    explain:'✅ 3(6)+5 = 18+5 = 23... cek ulang: 2x+6=18 → 2(6)+6=18 ✓ Jawaban: 2x + 6 = 18',
+  },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Persamaan Linear',
+    wordProblem:true,
+    story:'Rina punya <strong>sejumlah kelereng (x)</strong>. Setelah dapat tambahan <strong>9 kelereng</strong>, ia punya <strong>25 kelereng</strong>.',
+    q:'x + 9 = 25. Berapa kelereng Rina mula-mula?',
+    hint:'Pindah ruas 9 ke kanan',
+    type:'text', answers:['16'],
+    explain:'✅ x = 25 − 9 = 16. Rina awalnya punya 16 kelereng ✓' },
+
+  { id:'e17', section:'s2', tag:'tag-2', tagLabel:'Persamaan Linear',
+    q:'Selesaikan: 4(x − 2) = 12',
+    hint:'Bagi dua ruas dengan 4 dulu: x − 2 = 3, lalu pindah ruas',
+    type:'text', answers:['5'],
+    explain:'✅ x − 2 = 12 ÷ 4 = 3, x = 3 + 2 = 5. Cek: 4(5−2)=4(3)=12 ✓' },
+
+  { id:'e18', section:'s2', tag:'tag-2', tagLabel:'Persamaan Linear',
+    q:'Nilai x yang memenuhi 6x = 42 adalah...',
+    hint:'42 ÷ 6 = ?',
+    type:'mcq', opts:['6','7','8','9'], answer:'7',
+    explain:'✅ x = 42 ÷ 6 = 7 ✓' },
+
+  { id:'e19', section:'s2', tag:'tag-2', tagLabel:'Persamaan Linear',
+    wordProblem:true,
+    story:'Harga <strong>3 buku</strong> sama dengan <strong>Rp 36.000</strong>. Misal harga satu buku = <strong>x ribu</strong>.',
+    q:'3x = 36. Berapa harga satu buku?',
+    hint:'Bagi kedua ruas dengan 3',
+    type:'text', answers:['12'],
+    explain:'✅ x = 36 ÷ 3 = 12. Harga satu buku = Rp 12.000 ✓' },
+
+  { id:'e20', section:'s2', tag:'tag-2', tagLabel:'Persamaan Linear',
+    q:'7 − 2x = 1. Berapa nilai x?',
+    hint:'Pindah 7: −2x = 1 − 7 = −6, lalu bagi −2',
+    type:'mcq', opts:['2','3','4','5'], answer:'3',
+    explain:'✅ −2x = 1 − 7 = −6, x = −6 ÷ −2 = 3. Cek: 7−2(3)=7−6=1 ✓' },
+
+  // ─── BAGIAN 3: Fungsi sebagai Mesin Angka (Sesi 8) ──────────────────────
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Fungsi & Mesin',
+    machine:{inp:4, rule:'× 3 lalu + 5', out:'?'},
+    q:'Input 4 masuk mesin "× 3 lalu + 5". Output = ?',
+    hint:'Hitung step by step: 4×3=12, lalu 12+5',
+    type:'text', answers:['17'],
+    explain:'✅ 4×3=12, 12+5=17. Output = 17 ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Fungsi & Mesin',
+    machine:{inp:'?', rule:'× 2 lalu + 1', out:'13'},
+    q:'Mesin "× 2 lalu + 1" menghasilkan 13. Berapa inputnya?',
+    hint:'Balik: 13−1=12, 12÷2=?',
+    type:'text', answers:['6'],
+    explain:'✅ Balik langkah: 13−1=12, 12÷2=6. Input = 6 ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Fungsi & Mesin',
+    q:'Fungsi f(x) = 2x + 3. Berapa f(5)?',
+    hint:'Masukkan x=5 ke rumus f(x)',
+    type:'mcq', opts:['10','12','13','15'], answer:'13',
+    explain:'✅ f(5) = 2(5)+3 = 10+3 = 13 ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Fungsi & Mesin',
+    q:'Mesin mengubah angka dengan aturan: kalikan 4, lalu kurangi 6. Jika output = 10, berapa input?',
+    hint:'Balik: 10+6=16, 16÷4=?',
+    type:'text', answers:['4'],
+    explain:'✅ Balik: 10+6=16, 16÷4=4. Input = 4 ✓' },
+
+  { id:'e25', section:'s3', tag:'tag-3', tagLabel:'Fungsi & Mesin',
+    q:'f(x) = x − 7. Untuk input berapa f menghasilkan 0?',
+    hint:'x − 7 = 0 → x = ?',
+    type:'text', answers:['7'],
+    explain:'✅ x − 7 = 0 → x = 7. Jadi f(7) = 0 ✓' },
+
+  { id:'e26', section:'s3', tag:'tag-3', tagLabel:'Fungsi & Mesin',
+    wordProblem:true,
+    story:'Mesin cuci koin mengubah <strong>uang kertas (x)</strong> menjadi koin. Aturannya: <strong>setiap Rp 1.000 = 4 koin</strong>. Jadi output = 4x koin.',
+    q:'Berapa koin yang keluar jika memasukkan Rp 7.000?',
+    hint:'f(x) = 4x, x = 7',
+    type:'text', answers:['28'],
+    explain:'✅ f(7) = 4×7 = 28 koin ✓' },
+
+  { id:'e27', section:'s3', tag:'tag-3', tagLabel:'Fungsi & Mesin',
+    q:'Fungsi g(x) = 3x − 2. Berapa nilai x jika g(x) = 10?',
+    hint:'3x − 2 = 10 → 3x = 12 → x = ?',
+    type:'mcq', opts:['3','4','5','6'], answer:'4',
+    explain:'✅ 3x = 10+2 = 12, x = 12÷3 = 4 ✓' },
+
+  { id:'e28', section:'s3', tag:'tag-3', tagLabel:'Fungsi & Mesin',
+    q:'Mesin A aturannya "+5". Mesin B aturannya "×2". Jika input = 3, mana output yang lebih besar: lewat A dulu lalu B, atau B dulu lalu A?',
+    hint:'A→B: (3+5)×2 = ? ; B→A: (3×2)+5 = ?',
+    type:'mcq', opts:['A→B lebih besar','B→A lebih besar','Sama besar','Tidak bisa ditentukan'], answer:'A→B lebih besar',
+    explain:'✅ A→B: (3+5)×2=8×2=16. B→A: (3×2)+5=6+5=11. Jadi A→B lebih besar! Urutan mesin penting ✓' },
+
+  { id:'e29', section:'s3', tag:'tag-3', tagLabel:'Fungsi & Mesin',
+    q:'f(n) = 5n. Berapa f(0)?',
+    hint:'Masukkan n = 0',
+    type:'text', answers:['0'],
+    explain:'✅ f(0) = 5×0 = 0. Input nol selalu menghasilkan output nol pada fungsi jenis ini ✓' },
+
+  { id:'e30', section:'s3', tag:'tag-3', tagLabel:'Fungsi & Mesin',
+    wordProblem:true,
+    story:'Parkir motor dikenakan biaya: <strong>Rp 2.000 per jam (x)</strong> ditambah <strong>biaya masuk Rp 3.000</strong>. Rumusnya: f(x) = 2x + 3 (ribu rupiah).',
+    q:'Berapa biaya parkir selama 4 jam?',
+    hint:'f(4) = 2(4) + 3',
+    type:'mcq', opts:['Rp 9.000','Rp 10.000','Rp 11.000','Rp 12.000'], answer:'Rp 11.000',
+    explain:'✅ f(4) = 2(4)+3 = 8+3 = 11. Biaya parkir = Rp 11.000 ✓' },
+
+  // ─── BAGIAN 4: Koordinat Kartesius & Grafik Fungsi (Sesi 9) ─────────────
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Koordinat & Grafik',
+    q:'Titik A berada di koordinat (3, 5). Artinya dari titik pusat (0,0), A bergerak ke kanan berapa satuan, dan ke atas berapa satuan?',
+    hint:'Koordinat (x, y): x = gerak kiri-kanan, y = gerak atas-bawah',
+    type:'mcq', opts:['Kanan 5, atas 3','Kanan 3, atas 5','Kiri 3, atas 5','Kanan 3, bawah 5'], answer:'Kanan 3, atas 5',
+    explain:'✅ (3, 5) → x=3 berarti 3 ke kanan, y=5 berarti 5 ke atas ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Koordinat & Grafik',
+    q:'Lengkapi tabel fungsi y = x + 2 untuk x = 0, 1, 2, 3. Jika x = 3, berapa y?',
+    hint:'Masukkan x = 3 ke y = x + 2',
+    type:'text', answers:['5'],
+    explain:'✅ y = 3+2 = 5. Tabel: (0,2),(1,3),(2,4),(3,5) ✓' },
+
+  { id:'e33', section:'s4', tag:'tag-4', tagLabel:'Koordinat & Grafik',
+    coords:[[1,3],[2,5],[3,7],[4,'?']],
+    q:'Lihat pola tabel — berapa nilai y ketika x = 4?',
+    hint:'Cari rumusnya dulu: selisih y=2 tiap x naik 1 → y = 2x + ?',
+    type:'text', answers:['9'],
+    explain:'✅ Pola y = 2x+1. x=4 → y=2(4)+1=9 ✓' },
+
+  { id:'e34', section:'s4', tag:'tag-4', tagLabel:'Koordinat & Grafik',
+    q:'Titik mana yang TIDAK terletak di grafik y = 3x?',
+    hint:'Masukkan x tiap titik, cek apakah y-nya cocok',
+    type:'mcq', opts:['(1, 3)','(2, 6)','(3, 10)','(4, 12)'], answer:'(3, 10)',
+    explain:'✅ y=3(3)=9, bukan 10. Jadi (3,10) tidak ada di grafik y=3x ✓' },
+
+  { id:'e35', section:'s4', tag:'tag-4', tagLabel:'Koordinat & Grafik',
+    q:'Grafik fungsi y = x + 4 memotong sumbu-y di titik berapa?',
+    hint:'Sumbu-y artinya x = 0. Hitung y ketika x = 0',
+    type:'mcq', opts:['(0, 0)','(0, 1)','(0, 4)','(4, 0)'], answer:'(0, 4)',
+    explain:'✅ x=0 → y=0+4=4. Grafik memotong sumbu-y di (0,4) ✓' },
+
+  { id:'e36', section:'s4', tag:'tag-4', tagLabel:'Koordinat & Grafik',
+    coords:[[0,1],[1,3],[2,5],['?',7]],
+    q:'Jika y = 7, berapa nilai x pada tabel di atas?',
+    hint:'Cari rumus dari tabel: y = 2x+1. Lalu 2x+1=7',
+    type:'text', answers:['3'],
+    explain:'✅ y=2x+1 → 7=2x+1 → 2x=6 → x=3 ✓' },
+
+  { id:'e37', section:'s4', tag:'tag-4', tagLabel:'Koordinat & Grafik',
+    wordProblem:true,
+    story:'Rima menumpuk buku. Setiap tumpukan ke-x punya <strong>y = 2x buku</strong>. Tumpukan ke-1 ada 2 buku, tumpukan ke-2 ada 4 buku, dst.',
+    q:'Berapa buku di tumpukan ke-7?',
+    hint:'y = 2x, masukkan x = 7',
+    type:'text', answers:['14'],
+    explain:'✅ y = 2×7 = 14 buku ✓' },
+
+  { id:'e38', section:'s4', tag:'tag-4', tagLabel:'Koordinat & Grafik',
+    q:'Di koordinat Kartesius, titik (−2, 3) ada di kuadran berapa?',
+    hint:'x negatif, y positif → kuadran II (kiri atas)',
+    type:'mcq', opts:['Kuadran I','Kuadran II','Kuadran III','Kuadran IV'], answer:'Kuadran II',
+    explain:'✅ x<0, y>0 → Kuadran II (kiri atas) ✓' },
+
+  { id:'e39', section:'s4', tag:'tag-4', tagLabel:'Koordinat & Grafik',
+    q:'Fungsi y = 2x menghasilkan grafik berupa...',
+    hint:'Coba plot (0,0),(1,2),(2,4) — bentuk apa yang terbentuk?',
+    type:'mcq', opts:['Kurva melengkung','Garis lurus','Titik-titik acak','Garis zigzag'], answer:'Garis lurus',
+    explain:'✅ Fungsi linear y = 2x selalu menghasilkan grafik berupa garis lurus ✓' },
+
+  { id:'e40', section:'s4', tag:'tag-4', tagLabel:'Koordinat & Grafik',
+    wordProblem:true,
+    story:'Sebuah lilin setinggi <strong>10 cm</strong> menyusut <strong>1 cm per jam</strong>. Tinggi lilin setelah x jam: <strong>y = 10 − x</strong>.',
+    q:'Setelah 6 jam, berapa tinggi lilin?',
+    hint:'y = 10 − x, x = 6',
+    type:'text', answers:['4'],
+    explain:'✅ y = 10−6 = 4 cm ✓' },
+
+  // ─── BAGIAN 5: Slope — Kemiringan Garis (Sesi 10) ───────────────────────
+  { id:'e41', section:'s5', tag:'tag-5', tagLabel:'Slope / Kemiringan',
+    q:'Garis melewati titik (0, 0) dan (3, 6). Setiap x naik 1, y naik berapa?',
+    hint:'Selisih y ÷ selisih x = (6−0) ÷ (3−0)',
+    type:'text', answers:['2'],
+    explain:'✅ Kenaikan y = 6, kenaikan x = 3 → slope = 6÷3 = 2. Tiap +1 x, y +2 ✓' },
+
+  { id:'e42', section:'s5', tag:'tag-5', tagLabel:'Slope / Kemiringan',
+    q:'Fungsi y = 3x + 1. Seberapa curam garisnya? (berapa slope-nya?)',
+    hint:'Pada y = mx + b, m adalah slope. Apa nilai m di sini?',
+    type:'mcq', opts:['1','2','3','4'], answer:'3',
+    explain:'✅ y = 3x + 1 → slope m = 3. Garis naik 3 satuan tiap x bertambah 1 ✓' },
+
+  { id:'e43', section:'s5', tag:'tag-5', tagLabel:'Slope / Kemiringan',
+    coords:[[0,2],[1,4],[2,6],[3,8]],
+    q:'Dari tabel di atas, berapa slope garisnya?',
+    hint:'Pilih dua titik: (0,2) dan (1,4). Slope = (4−2)÷(1−0)',
+    type:'text', answers:['2'],
+    explain:'✅ Selisih y = 2, selisih x = 1. Slope = 2÷1 = 2 ✓' },
+
+  { id:'e44', section:'s5', tag:'tag-5', tagLabel:'Slope / Kemiringan',
+    q:'Dua garis: Garis A slope = 5, Garis B slope = 2. Mana yang lebih curam?',
+    hint:'Semakin besar nilai slope, semakin curam garisnya',
+    type:'mcq', opts:['Garis A','Garis B','Sama curam','Tidak bisa ditentukan'], answer:'Garis A',
+    explain:'✅ Slope 5 > slope 2 → Garis A lebih curam ✓' },
+
+  { id:'e45', section:'s5', tag:'tag-5', tagLabel:'Slope / Kemiringan',
+    q:'Garis y = x memiliki slope berapa?',
+    hint:'y = x sama dengan y = 1x + 0',
+    type:'text', answers:['1'],
+    explain:'✅ y = 1x + 0 → slope = 1. Garis naik 45° ✓' },
+
+  { id:'e46', section:'s5', tag:'tag-5', tagLabel:'Slope / Kemiringan',
+    wordProblem:true,
+    story:'Tasya bersepeda. Setiap <strong>1 menit</strong> ia menempuh <strong>200 meter</strong>. Grafiknya: sumbu x = waktu (menit), sumbu y = jarak (meter).',
+    q:'Berapa slope grafik perjalanan Tasya?',
+    hint:'Slope = perubahan y ÷ perubahan x = 200 meter ÷ 1 menit',
+    type:'mcq', opts:['100','150','200','250'], answer:'200',
+    explain:'✅ Slope = 200÷1 = 200. Artinya kecepatan Tasya = 200 m/menit ✓' },
+
+  { id:'e47', section:'s5', tag:'tag-5', tagLabel:'Slope / Kemiringan',
+    q:'Garis mendatar (horizontal) memiliki slope berapa?',
+    hint:'Garis datar artinya y tidak berubah sama sekali — perubahan y = ?',
+    type:'mcq', opts:['0','1','Tak terhingga','Tidak ada'], answer:'0',
+    explain:'✅ Garis horizontal: y selalu sama → perubahan y = 0 → slope = 0/apapun = 0 ✓' },
+
+  { id:'e48', section:'s5', tag:'tag-5', tagLabel:'Slope / Kemiringan',
+    q:'Perhatikan dua fungsi: f(x) = 4x + 2 dan g(x) = 4x − 5. Manakah pernyataan yang benar?',
+    hint:'Slope keduanya sama (keduanya punya koefisien x = 4). Apa artinya?',
+    type:'mcq', opts:['Kedua garis sejajar','Kedua garis tegak lurus','Kedua garis berpotongan di (0,0)','Kedua garis identik'], answer:'Kedua garis sejajar',
+    explain:'✅ Slope sama (m=4) tapi intercept beda → kedua garis sejajar, tidak pernah berpotongan ✓' },
+
+  { id:'e49', section:'s5', tag:'tag-5', tagLabel:'Slope / Kemiringan',
+    q:'Garis melewati (2, 3) dan (6, 11). Berapa slope-nya?',
+    hint:'Slope = (y₂−y₁) ÷ (x₂−x₁) = (11−3) ÷ (6−2)',
+    type:'text', answers:['2'],
+    explain:'✅ (11−3)÷(6−2) = 8÷4 = 2. Slope = 2 ✓' },
+
+  { id:'e50', section:'s5', tag:'tag-5', tagLabel:'Slope / Kemiringan',
+    wordProblem:true,
+    story:'Tangki air mulai berisi <strong>50 liter</strong> dan diisi terus. Setelah <strong>1 menit</strong> ada 53 liter, setelah <strong>2 menit</strong> ada 56 liter, setelah <strong>3 menit</strong> ada 59 liter.',
+    q:'Berapa liter air yang masuk per menit? (= slope grafik)',
+    hint:'Perubahan volume ÷ perubahan waktu = (56−53) ÷ (2−1)',
+    type:'mcq', opts:['2 liter/menit','3 liter/menit','5 liter/menit','50 liter/menit'], answer:'3 liter/menit',
+    explain:'✅ (56−53)÷(2−1) = 3÷1 = 3. Air masuk 3 liter/menit (slope = 3) ✓' },
+];
+
+// Fix e15 answer
+exercises.find(e=>e.id==='e15').answer = '2x + 6 = 18';
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  const total = exercises.length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+  for(let i=1;i<=5;i++){
+    const el=document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done>=i*10);
+  }
+  if(done===total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){ inp.classList.add('correct'); inp.disabled=true; btn.disabled=true; }
+  else { card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true); }
+  const fb=card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok'; fb.textContent=q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){ const b=document.createElement('div'); b.className='done-badge'; b.textContent='✓ Done'; card.appendChild(b); }
+  progress[q.id]=true; saveProgress(progress); updateProgressBar();
+}
+
+function checkText(id, inp, btn, q){
+  const raw=inp.value.trim().toLowerCase().replace(/\s+/g,'');
+  if(!raw) return;
+  const correct=q.answers.some(a=>raw===a.toLowerCase().replace(/\s+/g,''));
+  if(correct){ markDone(inp.closest('.ex-card'),q,inp,btn); }
+  else {
+    inp.classList.add('wrong-anim');
+    const attRow=inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot=document.createElement('div'); dot.className='attempts-dot'; attRow.appendChild(dot);
+    setTimeout(()=>{ inp.classList.remove('wrong-anim'); inp.value=''; inp.focus(); },400);
+    if(attRow.children.length>=3){
+      const fb=inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no'; fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{ b.disabled=true; if(b.dataset.val===q.answer) b.classList.add('opt-correct'); });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb=card.querySelector('.ex-feedback');
+  if(val===q.answer){ markDone(card,q,null,null); }
+  else {
+    fb.className='ex-feedback show no'; fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+    if(!card.querySelector('.done-badge')){ const b=document.createElement('div'); b.className='done-badge'; b.textContent='Done'; card.appendChild(b); }
+  }
+}
+
+function buildExercises(){
+  const area=document.getElementById('exerciseArea');
+  area.innerHTML='';
+  const groups=[
+    { key:'s1', label:'🔠 Bagian 1 — Bentuk Aljabar & Huruf sebagai Simbol', cls:'sd-1', sesi:'Sesi 6' },
+    { key:'s2', label:'⚖️ Bagian 2 — Persamaan Linear: Mencari Nilai x',     cls:'sd-2', sesi:'Sesi 7' },
+    { key:'s3', label:'⚙️ Bagian 3 — Fungsi sebagai Mesin Angka',            cls:'sd-3', sesi:'Sesi 8' },
+    { key:'s4', label:'📍 Bagian 4 — Koordinat Kartesius & Grafik Fungsi',   cls:'sd-4', sesi:'Sesi 9' },
+    { key:'s5', label:'📐 Bagian 5 — Slope: Seberapa Cepat Nilai Berubah?',  cls:'sd-5', sesi:'Sesi 10' },
+  ];
+
+  groups.forEach(g=>{
+    const wrap=document.createElement('div');
+    wrap.innerHTML=`<div class="sec-divider ${g.cls}">${g.label}<span class="sd-sesi">${g.sesi}</span></div>`;
+    const grid=document.createElement('div'); grid.className='exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone=!!progress[q.id];
+      const card=document.createElement('div');
+      card.className='ex-card'+(q.wordProblem?' word-card':'')+(isDone?' done-card':'');
+
+      const exprDisp = q.expr   ? exprHTML(q.expr) : '';
+      const machDisp = q.machine? machineHTML(q.machine.inp, q.machine.rule, q.machine.out) : '';
+      const coordDisp= q.coords ? coordTableHTML(q.coords) : '';
+      const storyDisp= q.story  ? `<div class="word-story">${q.story}</div>` : '';
+
+      let inputHTML='';
+      if(q.type==='text'){
+        inputHTML=`<div class="ex-input-wrap"><div class="ex-input-row">
+          <input type="text" class="ex-input ${isDone?'correct':''}" placeholder="Jawaban?"
+            value="${isDone?q.answers[0]:''}" ${isDone?'disabled':''}
+            onkeydown="if(event.key==='Enter')this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+          <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+        </div><div class="attempts-row"></div></div>`;
+      } else {
+        const shuffled=[...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML=`<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML=`
+        <div class="ex-num">Soal ${parseInt(q.id.replace('e',''))}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${storyDisp}${exprDisp}${machDisp}${coordDisp}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone?q.explain:''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn=card.querySelector('.ex-btn'), inp=card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick=()=>checkText(q.id,inp,btn,q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{ b.onclick=()=>checkMCQ(b.dataset.val,b,q,card); });
+      }
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Cluster 2? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+
+// Floating petals
+const emojis=['🌸','🌷','✿','❀','🌺','💮','🪷'];
+const wrap=document.getElementById('petals');
+for(let i=0;i<16;i++){
+  const p=document.createElement('div'); p.className='petal';
+  const sz=0.9+Math.random()*1.3;
+  p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--sz:${sz}rem;font-size:${sz}rem;--d:${4+Math.random()*6}s;--dl:${-Math.random()*6}s;--r0:${-15+Math.random()*30}deg;--r1:${-15+Math.random()*30}deg;`;
+  p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  wrap.appendChild(p);
+}
+</script>
+</body>
+</html>

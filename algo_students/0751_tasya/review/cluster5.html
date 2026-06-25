@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cluster 5 · Peluang & Kombinatorika · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5fbf8;
+    --surface: #eaf6f0;
+    --card: #ffffff;
+    --border: #d2ecdf;
+    --border2: #b9e3cf;
+    --indigo: #2fa876;
+    --indigo-light: #8fd4b6;
+    --sky: #3fb88f;
+    --sky-light: #9adcc4;
+    --rose: #e8628a;
+    --rose-light: #f5a0bc;
+    --mint: #34b27f;
+    --mint-light: #9adfc1;
+    --amber: #e8a030;
+    --amber-light: #f5d080;
+    --text: #1f3a30;
+    --text-mid: #4f6e60;
+    --text-muted: #8fae9d;
+    --shadow: rgba(50, 160, 110, 0.1);
+    --red: #e05a6a;
+    --green: #2fa876;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Quicksand', sans-serif; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 20%, rgba(47,168,118,0.08) 0%, transparent 45%),
+      radial-gradient(ellipse at 90% 10%, rgba(63,184,143,0.07) 0%, transparent 45%),
+      radial-gradient(ellipse at 80% 90%, rgba(232,160,48,0.05) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  .petal { position: fixed; pointer-events: none; z-index: 0; animation: petalFloat var(--d) ease-in-out infinite var(--dl); opacity: 0.12; font-size: var(--sz); }
+  @keyframes petalFloat { 0%,100%{ transform: translateY(0) rotate(var(--r0)); opacity:0.12; } 50%{ transform: translateY(-14px) rotate(var(--r1)); opacity:0.2; } }
+
+  nav {
+    padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    background: rgba(245,251,248,0.92); backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;
+  }
+  nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--indigo); }
+  nav span { color: var(--border2); }
+  nav .current { color: var(--indigo); }
+
+  .wrapper { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.2rem 6rem; position: relative; z-index: 1; }
+  @media(max-width:480px){ .wrapper { padding: 1.8rem 0.8rem 6rem; } }
+
+  /* Banner */
+  .banner {
+    background: linear-gradient(135deg, rgba(47,168,118,0.09), rgba(63,184,143,0.08));
+    border: 2px solid var(--indigo-light);
+    border-radius: 22px; padding: 2rem 2rem 1.6rem;
+    margin-bottom: 2rem; position: relative; overflow: hidden;
+  }
+  .banner::before {
+    content: '🎲'; position: absolute; right: 1.5rem; top: 50%;
+    transform: translateY(-50%); font-size: 6rem; opacity: 0.07; pointer-events: none;
+  }
+  .page-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(47,168,118,0.1); border: 1.5px solid rgba(47,168,118,0.35);
+    color: var(--indigo); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.3rem 1rem; border-radius: 20px; margin-bottom: 0.9rem; font-weight: 800;
+  }
+  .page-title { font-family: 'Nunito', sans-serif; font-size: clamp(1.4rem,4vw,2rem); font-weight: 900; color: var(--text); margin-bottom: 0.45rem; line-height: 1.25; }
+  .page-title span { color: var(--indigo); }
+  .page-desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.7; max-width: 560px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .pill { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; padding: 0.22rem 0.75rem; border-radius: 20px; font-weight: 700; }
+  .pill-ind  { background: rgba(47,168,118,0.1);  color: var(--indigo); border: 1.5px solid rgba(47,168,118,0.3); }
+  .pill-sky  { background: rgba(63,184,143,0.1);  color: var(--sky);    border: 1.5px solid rgba(63,184,143,0.3); }
+  .pill-rose { background: rgba(232,98,138,0.1);  color: var(--rose);   border: 1.5px solid rgba(232,98,138,0.3); }
+  .pill-amb  { background: rgba(232,160,48,0.1);  color: var(--amber);  border: 1.5px solid rgba(232,160,48,0.3); }
+  .pill-mint { background: rgba(52,178,127,0.1);  color: var(--mint);   border: 1.5px solid rgba(52,178,127,0.3); }
+
+  /* Progress */
+  .prog-panel { background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 1.2rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 3px 14px var(--shadow); }
+  .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+  .prog-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+  .prog-count { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 900; color: var(--indigo); }
+  .prog-track { height: 7px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 0.5rem; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--indigo), var(--sky)); border-radius: 99px; transition: width 0.7s ease; }
+  .prog-sub { font-size: 0.76rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
+  .reset-link { font-size: 0.7rem; color: var(--text-muted); cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+  .reset-link:hover { color: var(--red); }
+  .prog-stars { display: flex; gap: 0.3rem; margin-top: 0.6rem; align-items: center; font-size: 0.76rem; color: var(--text-muted); }
+  .star { font-size: 0.9rem; opacity: 0.2; transition: opacity 0.4s; }
+  .star.lit { opacity: 1; }
+
+  /* Equation display */
+  .eq-display {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.3rem;
+    margin: 0.6rem 0 0.8rem; padding: 0.7rem 0.6rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+    font-family: 'Nunito', sans-serif; font-weight: 900;
+  }
+  .ed-var  { font-size: 1.15rem; color: var(--indigo); background: rgba(47,168,118,0.1); border: 1.5px solid rgba(47,168,118,0.3); padding: 0.15rem 0.55rem; border-radius: 8px; font-style: italic; }
+  .ed-var2 { font-size: 1.15rem; color: var(--sky);    background: rgba(63,184,143,0.1);  border: 1.5px solid rgba(63,184,143,0.3);  padding: 0.15rem 0.55rem; border-radius: 8px; font-style: italic; }
+  .ed-num  { font-size: 1.15rem; color: var(--text-mid); background: var(--surface); border: 1.5px solid var(--border2); padding: 0.15rem 0.5rem; border-radius: 8px; }
+  .ed-op   { font-size: 1.1rem; color: var(--text-muted); }
+  .ed-eq   { font-size: 1.1rem; color: var(--text-muted); }
+  .ed-ineq { font-size: 1.15rem; color: var(--rose); font-weight: 900; }
+  .ed-q    { font-size: 1.2rem; color: var(--rose); background: rgba(232,98,138,0.1); border: 1.5px solid rgba(232,98,138,0.25); padding: 0.15rem 0.55rem; border-radius: 8px; }
+
+  /* Sample space / tree visual */
+  .sys-display {
+    margin: 0.6rem 0 0.8rem; padding: 0.75rem 1rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+    font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 800;
+  }
+  .sys-eq { display: flex; align-items: center; gap: 0.4rem; padding: 0.2rem 0; color: var(--text-mid); flex-wrap: wrap; }
+  .sys-eq .sv  { color: var(--indigo); font-style: italic; }
+  .sys-eq .sv2 { color: var(--sky);    font-style: italic; }
+  .sys-eq .sc  { color: var(--text-mid); }
+  .sys-eq .sign{ color: var(--text-muted); font-size: 0.9rem; }
+  .sys-brace { font-size: 2.5rem; color: var(--border2); margin-right: 0.3rem; line-height: 1; display: flex; align-items: center; }
+
+  /* Sample space chip display */
+  .space-display {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.35rem;
+    margin: 0.6rem 0 0.8rem; padding: 0.7rem 0.8rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+  }
+  .space-chip {
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.85rem;
+    color: var(--indigo); background: rgba(47,168,118,0.1); border: 1.5px solid rgba(47,168,118,0.3);
+    padding: 0.25rem 0.7rem; border-radius: 8px;
+  }
+  .space-chip.alt { color: var(--sky); background: rgba(63,184,143,0.1); border-color: rgba(63,184,143,0.3); }
+  .space-chip.fav { color: var(--rose); background: rgba(232,98,138,0.1); border-color: rgba(232,98,138,0.3); }
+
+  /* Word story */
+  .word-story { background: rgba(47,168,118,0.05); border: 1.5px solid rgba(47,168,118,0.2); border-radius: 10px; padding: 0.65rem 0.9rem; margin-bottom: 0.7rem; font-size: 0.83rem; color: var(--text-mid); line-height: 1.65; }
+  .word-story strong { color: var(--indigo); }
+
+  /* Section dividers */
+  .sec-divider {
+    font-family: 'Nunito', sans-serif; font-size: 0.72rem; font-weight: 800;
+    letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.5rem 0; margin: 2rem 0 1rem;
+    border-bottom: 2px solid; display: flex; align-items: center; gap: 0.7rem;
+  }
+  .sd-1 { color: var(--indigo); border-color: rgba(47,168,118,0.25); }
+  .sd-2 { color: var(--rose);   border-color: rgba(232,98,138,0.25); }
+  .sd-3 { color: var(--amber);  border-color: rgba(232,160,48,0.25); }
+  .sd-4 { color: var(--sky);    border-color: rgba(63,184,143,0.25); }
+  .sd-5 { color: var(--mint);   border-color: rgba(52,178,127,0.25); }
+  .sd-sesi { font-size: 0.62rem; font-weight: 700; opacity: 0.65; margin-left: auto; letter-spacing: 1px; }
+
+  /* Grid & Cards */
+  .exercise-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(290px,1fr)); gap: 1rem; }
+  @media(max-width:480px){ .exercise-grid { grid-template-columns: 1fr; } }
+
+  .ex-card { background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 1.3rem; position: relative; overflow: hidden; transition: border-color 0.2s; box-shadow: 0 2px 10px var(--shadow); }
+  .ex-card.done-card { border-color: rgba(47,168,118,0.4); background: rgba(47,168,118,0.02); }
+  .ex-card.word-card { border-left: 3px solid var(--sky); }
+  .ex-card.word-card.done-card { border-left-color: var(--indigo); }
+
+  .ex-num { font-size: 0.62rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem; }
+  .ex-tag { display: inline-block; font-size: 0.58rem; padding: 0.15rem 0.5rem; border-radius: 8px; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
+  .tag-1 { background: rgba(47,168,118,0.1);  color: var(--indigo); border: 1.5px solid rgba(47,168,118,0.25); }
+  .tag-2 { background: rgba(232,98,138,0.1);  color: var(--rose);   border: 1.5px solid rgba(232,98,138,0.25); }
+  .tag-3 { background: rgba(232,160,48,0.1);  color: var(--amber);  border: 1.5px solid rgba(232,160,48,0.25); }
+  .tag-4 { background: rgba(63,184,143,0.1);  color: var(--sky);    border: 1.5px solid rgba(63,184,143,0.25); }
+  .tag-5 { background: rgba(52,178,127,0.1);  color: var(--mint);   border: 1.5px solid rgba(52,178,127,0.25); }
+
+  .ex-q { font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 800; color: var(--text); margin-bottom: 0.4rem; line-height: 1.5; }
+  .ex-card.done-card .ex-q { color: var(--indigo); }
+  .ex-hint { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.85rem; font-style: italic; line-height: 1.45; }
+
+  /* Inputs */
+  .ex-input-wrap { display: flex; flex-direction: column; gap: 0.45rem; }
+  .ex-input-row { display: flex; gap: 0.5rem; align-items: center; }
+  .ex-input { flex: 1; background: var(--surface); border: 2px solid var(--border2); color: var(--text); padding: 0.55rem 0.8rem; border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; text-align: center; transition: border-color 0.2s; outline: none; min-width: 0; }
+  .ex-input:focus { border-color: var(--indigo); }
+  .ex-input.correct { border-color: var(--indigo); color: var(--indigo); }
+  .ex-input.wrong-anim { border-color: var(--red); color: var(--red); animation: shake 0.4s ease; }
+  @keyframes shake { 0%,100%{ transform:translateX(0); } 20%,60%{ transform:translateX(-6px); } 40%,80%{ transform:translateX(6px); } }
+  .ex-btn { background: rgba(47,168,118,0.1); border: 1.5px solid rgba(47,168,118,0.3); color: var(--indigo); padding: 0.55rem 0.9rem; border-radius: 10px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.75rem; font-weight: 800; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+  .ex-btn:hover { background: rgba(47,168,118,0.2); border-color: var(--indigo); }
+  .ex-btn:disabled { opacity: 0.3; cursor: default; }
+  .attempts-row { display: flex; gap: 3px; align-items: center; min-height: 10px; }
+  .attempts-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
+
+  .ex-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .ex-opt { background: var(--surface); border: 2px solid var(--border2); color: var(--text-mid); padding: 0.55rem 0.4rem; border-radius: 10px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.15s; text-align: center; line-height: 1.4; }
+  .ex-opt:hover:not(:disabled) { border-color: var(--indigo); background: rgba(47,168,118,0.07); color: var(--indigo); }
+  .ex-opt.opt-correct { border-color: var(--mint); background: rgba(52,178,127,0.1); color: var(--mint); }
+  .ex-opt.opt-wrong   { border-color: var(--red);  background: rgba(224,90,106,0.08); color: var(--red); }
+  .ex-opt:disabled { cursor: default; }
+
+  .ex-feedback { margin-top: 0.6rem; font-size: 0.81rem; font-weight: 700; display: none; line-height: 1.55; }
+  .ex-feedback.show { display: block; }
+  .ex-feedback.ok { color: var(--mint); }
+  .ex-feedback.no { color: var(--red); }
+  .done-badge { position: absolute; top: 0.9rem; right: 0.9rem; background: rgba(47,168,118,0.1); border: 1.5px solid rgba(47,168,118,0.35); color: var(--indigo); font-size: 0.6rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 8px; }
+
+  /* All-done */
+  #allDone { display: none; text-align: center; padding: 3.5rem 2rem; }
+  .alldone-icon { font-size: 5rem; display: block; margin-bottom: 1.5rem; animation: bounce 1.2s ease infinite; }
+  @keyframes bounce { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-10px); } }
+  .alldone-title { font-family: 'Nunito', sans-serif; font-size: clamp(1.4rem,5vw,2.1rem); font-weight: 900; background: linear-gradient(135deg, var(--indigo), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.7rem; }
+  .alldone-desc { color: var(--text-muted); line-height: 1.8; margin-bottom: 1.8rem; font-size: 0.92rem; }
+  .alldone-xp { display: inline-block; background: rgba(47,168,118,0.1); border: 1.5px solid rgba(47,168,118,0.4); color: var(--indigo); padding: 0.5rem 1.5rem; border-radius: 20px; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800; margin-bottom: 2rem; }
+  .action-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn { padding: 0.75rem 1.6rem; border-radius: 12px; border: 2px solid var(--border2); font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-muted); background: transparent; }
+  .btn:hover { border-color: var(--indigo); color: var(--indigo); }
+  .btn-primary { background: linear-gradient(135deg, var(--indigo), var(--sky)); border-color: transparent; color: white; box-shadow: 0 4px 16px rgba(47,168,118,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); color: white; }
+
+  .deco-bloom  { position: fixed; top: -40px; right: -40px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(47,168,118,0.1), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+  .deco-bloom2 { position: fixed; bottom: -60px; left: -60px; width: 240px; height: 240px; background: radial-gradient(circle, rgba(63,184,143,0.08), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+</style>
+</head>
+<body>
+<div class="deco-bloom"></div>
+<div class="deco-bloom2"></div>
+<div id="petals"></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../tasya_0751.html">TASYA</a>
+  <span>›</span>
+  <a href="review.html">MEGA REVIEW</a>
+  <span>›</span>
+  <span class="current">CLUSTER 5</span>
+</nav>
+
+<div class="wrapper">
+  <div class="banner">
+    <div class="page-badge">🎲 Cluster 5 · Mega Review</div>
+    <div class="page-title">Peluang & <span>Kombinatorika</span></div>
+    <div class="page-desc">
+      50 soal dari Sesi 23–27 — ruang sampel, counting principle, diagram pohon, beda permutasi vs kombinasi, faktorial, hingga aplikasi gabungan kombinatorika & peluang.
+      Progress tersimpan otomatis! 🎲
+    </div>
+    <div class="pills">
+      <span class="pill pill-ind">🎯 Ruang Sampel</span>
+      <span class="pill pill-rose">🌳 Counting & Tree</span>
+      <span class="pill pill-amb">🔀 Permutasi vs Kombinasi</span>
+      <span class="pill pill-sky">❗ Faktorial</span>
+      <span class="pill pill-mint">📊 Peluang Lanjut</span>
+    </div>
+  </div>
+
+  <div class="prog-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress Cluster 5</span>
+      <span class="prog-count" id="progCount">0 / 50</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-sub">
+      <span>Kumpulkan ⭐ tiap menyelesaikan 10 soal!</span>
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🎉</span>
+    <div class="alldone-title">Cluster 5 Selesai! Luar Biasa!</div>
+    <div class="alldone-desc">
+      Kamu telah menguasai ruang sampel, counting principle, permutasi & kombinasi,<br>
+      faktorial, hingga soal peluang tingkat lanjut yang tricky! Kerja keras terbayar!
+    </div>
+    <div class="alldone-xp">+350 XP · Master Peluang 🎲</div>
+    <div class="action-btns">
+      <a href="cluster4.html" class="btn">← Cluster 4</a>
+      <a href="review.html" class="btn btn-primary">Kembali ke Review →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'tasya_review_cluster5_v1';
+function loadProgress(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||{}; }catch(e){ return{}; } }
+function saveProgress(p){ try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(p)); }catch(e){} }
+let progress = loadProgress();
+
+// Renders a sample-space / list display inside a brace (reused visual pattern)
+function sysHTML(eq1, eq2){
+  return `<div class="sys-display"><div style="display:flex;align-items:center;gap:0.5rem">
+    <span class="sys-brace">{</span>
+    <div style="display:flex;flex-direction:column;gap:0.3rem;width:100%">
+      <div class="sys-eq">${eq1}</div>
+      <div class="sys-eq">${eq2}</div>
+    </div>
+  </div></div>`;
+}
+
+// Renders a single equation/expression display line
+function eqHTML(parts){
+  return `<div class="eq-display">${parts.map(p=>{
+    if(p.t==='var')   return `<span class="ed-var">${p.v}</span>`;
+    if(p.t==='var2')  return `<span class="ed-var2">${p.v}</span>`;
+    if(p.t==='num')   return `<span class="ed-num">${p.v}</span>`;
+    if(p.t==='op')    return `<span class="ed-op">${p.v}</span>`;
+    if(p.t==='eq')    return `<span class="ed-eq">=</span>`;
+    if(p.t==='ineq')  return `<span class="ed-ineq">${p.v}</span>`;
+    if(p.t==='q')     return `<span class="ed-q">?</span>`;
+    return '';
+  }).join('')}</div>`;
+}
+
+// Renders a sample space / set of chips
+function spaceHTML(items, favIdx){
+  favIdx = favIdx || [];
+  return `<div class="space-display">${items.map((it,i)=>`<span class="space-chip ${favIdx.includes(i)?'fav':(i%2?'alt':'')}">${it}</span>`).join('')}</div>`;
+}
+
+const exercises = [
+
+  // ─── BAGIAN 1: Peluang Dasar & Ruang Sampel (Sesi 23) ───────────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Ruang Sampel',
+    q:'Sebuah koin dilempar satu kali. Ruang sampel (semua kemungkinan hasil) dari pelemparan tersebut adalah...',
+    hint:'Koin punya 2 sisi: Angka (A) dan Gambar (G)',
+    type:'mcq', opts:['{A}','{G}','{A, G}','{A, A, G, G}'], answer:'{A, G}',
+    explain:'✅ Ruang sampel S = {A, G}, karena hanya ada 2 kemungkinan hasil: Angka atau Gambar ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Ruang Sampel',
+    q:'Sebuah dadu bermata 6 dilempar satu kali. Berapa banyak anggota ruang sampel n(S)?',
+    hint:'Dadu memiliki mata 1 sampai 6',
+    type:'text', answers:['6'],
+    explain:'✅ S = {1,2,3,4,5,6}, jadi n(S) = 6 ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Ruang Sampel',
+    spaceItems:['1','2','3','4','5','6'], favIdx:[2,3,5],
+    q:'Pada pelemparan dadu, kejadian A = "muncul mata dadu lebih dari 3". Berapa banyak anggota n(A)?',
+    hint:'Mata dadu lebih dari 3: 4, 5, 6',
+    type:'text', answers:['3'],
+    explain:'✅ A = {4,5,6}, jadi n(A) = 3 ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Peluang Dasar',
+    q:'Peluang suatu kejadian A dirumuskan sebagai P(A) = ...',
+    hint:'Peluang = bagian per total',
+    type:'mcq', opts:['n(A) + n(S)','n(A) − n(S)','n(A) / n(S)','n(S) / n(A)'], answer:'n(A) / n(S)',
+    explain:'✅ P(A) = n(A)/n(S), yaitu banyak hasil yang diinginkan per total ruang sampel ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Peluang Dasar',
+    eq:[{t:'var',v:'P(A)'},{t:'eq'},{t:'num',v:'n(A)'},{t:'op',v:'/'},{t:'num',v:'n(S)'}],
+    q:'Pada pelemparan dadu, A = "muncul mata genap" = {2,4,6}. Berapa nilai P(A) dalam bentuk pecahan paling sederhana?',
+    hint:'n(A)=3, n(S)=6. Sederhanakan 3/6',
+    type:'text', answers:['1/2','0.5'],
+    explain:'✅ P(A) = 3/6 = 1/2 ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Peluang Dasar',
+    wordProblem:true,
+    story:'Dalam kotak terdapat <strong>4 bola merah</strong> dan <strong>6 bola biru</strong>. Satu bola diambil secara acak.',
+    q:'Berapa peluang terambilnya bola merah?',
+    hint:'n(S) = 4+6 = 10, n(merah) = 4',
+    type:'mcq', opts:['2/5','3/5','1/2','1/3'], answer:'2/5',
+    explain:'✅ P(merah) = 4/10 = 2/5 ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Peluang Dasar',
+    q:'Dua koin dilempar bersamaan. Ruang sampelnya adalah {AA, AG, GA, GG}. Berapa peluang muncul TEPAT satu gambar (G)?',
+    hint:'Tepat satu G berarti: AG atau GA',
+    type:'mcq', opts:['1/4','1/2','3/4','1'], answer:'1/2',
+    explain:'✅ n(S)=4, kejadian "tepat 1 gambar" = {AG, GA} → n(A)=2. P(A) = 2/4 = 1/2 ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Peluang Dasar',
+    q:'Nilai peluang P(A) suatu kejadian SELALU berada pada rentang...',
+    hint:'Peluang tidak mungkin negatif, dan tidak mungkin lebih dari kepastian',
+    type:'mcq', opts:['−1 ≤ P(A) ≤ 1','0 ≤ P(A) ≤ 1','0 < P(A) < 1','1 ≤ P(A) ≤ 100'], answer:'0 ≤ P(A) ≤ 1',
+    explain:'✅ 0 = mustahil terjadi, 1 = pasti terjadi. Semua peluang berada di antaranya ✓' },
+
+  { id:'e09', section:'s1', tag:'tag-1', tagLabel:'Peluang Dasar',
+    wordProblem:true,
+    story:'Sebuah kantong berisi kelereng bernomor <strong>1 sampai 12</strong>. Satu kelereng diambil acak.',
+    q:'Berapa peluang terambilnya kelereng dengan nomor kelipatan 3?',
+    hint:'Kelipatan 3 dari 1-12: 3,6,9,12 → ada berapa?',
+    type:'text', answers:['1/3','4/12'],
+    explain:'✅ Kelipatan 3 = {3,6,9,12}, n(A)=4. P(A) = 4/12 = 1/3 ✓' },
+
+  { id:'e10', section:'s1', tag:'tag-1', tagLabel:'Peluang Dasar',
+    q:'Jika P(A) = 0, maka kejadian A disebut...',
+    hint:'Ingat nilai batas bawah peluang',
+    type:'mcq', opts:['Kejadian pasti','Kejadian mustahil','Kejadian majemuk','Kejadian saling lepas'], answer:'Kejadian mustahil',
+    explain:'✅ P(A)=0 berarti kejadian A tidak mungkin terjadi sama sekali (mustahil) ✓' },
+
+  // ─── BAGIAN 2: Counting Principle & Diagram Pohon (Sesi 24) ─────────────
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Counting Principle',
+    q:'Sebuah koin dilempar lalu sebuah dadu dilempar. Dengan prinsip perkalian, berapa banyak total kemungkinan hasil?',
+    hint:'Banyak hasil koin × banyak hasil dadu',
+    type:'text', answers:['12'],
+    explain:'✅ 2 (sisi koin) × 6 (mata dadu) = 12 kemungkinan ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Counting Principle',
+    wordProblem:true,
+    story:'Sebuah restoran punya <strong>3 pilihan makanan utama</strong> dan <strong>4 pilihan minuman</strong>.',
+    q:'Berapa banyak kombinasi paket makanan+minuman yang bisa dipilih?',
+    hint:'Gunakan prinsip perkalian: pilihan pertama × pilihan kedua',
+    type:'text', answers:['12'],
+    explain:'✅ 3 × 4 = 12 kombinasi paket ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Counting Principle',
+    q:'Aturan dasar dalam prinsip perkalian (counting principle) menyatakan bahwa jika kejadian pertama punya m cara dan kejadian kedua punya n cara, maka total caranya adalah...',
+    hint:'Pikirkan diagram pohon: setiap cabang pertama bercabang lagi',
+    type:'mcq', opts:['m + n','m − n','m × n','m / n'], answer:'m × n',
+    explain:'✅ Total cara = m × n, sesuai prinsip dasar counting ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Diagram Pohon',
+    wordProblem:true,
+    story:'Tasya punya <strong>2 baju (Merah, Biru)</strong> dan <strong>3 celana (Hitam, Putih, Abu)</strong>. Ia ingin membuat diagram pohon untuk semua kombinasi pakaian.',
+    q:'Berapa banyak cabang akhir (kombinasi) pada diagram pohon tersebut?',
+    hint:'2 cabang baju, masing-masing bercabang jadi 3 celana',
+    type:'mcq', opts:['5','6','8','9'], answer:'6',
+    explain:'✅ 2 × 3 = 6 kombinasi: (Merah,Hitam), (Merah,Putih), (Merah,Abu), (Biru,Hitam), (Biru,Putih), (Biru,Abu) ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Counting Principle',
+    wordProblem:true,
+    story:'Sebuah kode keamanan terdiri dari <strong>2 huruf</strong> diikuti <strong>3 angka</strong>. Setiap posisi huruf punya 26 pilihan, dan setiap posisi angka punya 10 pilihan (boleh berulang).',
+    q:'Berapa banyak kode keamanan yang mungkin dibuat?',
+    hint:'26 × 26 × 10 × 10 × 10',
+    type:'mcq', opts:['26² × 10³','26 × 10','(26+10)⁵','26³ × 10²'], answer:'26² × 10³',
+    explain:'✅ 2 posisi huruf (26 pilihan masing-masing) dan 3 posisi angka (10 pilihan masing-masing) → 26² × 10³ = 676.000 ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Listing Teratur',
+    spaceItems:['HH','HA','AH','AA'],
+    q:'Dua koin dilempar secara berurutan (koin pertama, lalu koin kedua). Dengan listing teratur, tulis berapa banyak hasil yang mungkin?',
+    hint:'Buat pasangan terurut (hasil koin 1, hasil koin 2)',
+    type:'text', answers:['4'],
+    explain:'✅ {HH, HA, AH, AA} → 4 kemungkinan (2×2) ✓' },
+
+  { id:'e17', section:'s2', tag:'tag-2', tagLabel:'Counting Principle',
+    wordProblem:true,
+    story:'Sebuah pelat nomor terdiri dari <strong>1 huruf</strong> diikuti <strong>4 angka</strong> (boleh berulang, angka 0-9).',
+    q:'Berapa banyak pelat nomor berbeda yang bisa dibuat jika hanya digunakan huruf vokal (A,I,U,E,O)?',
+    hint:'5 pilihan huruf × 10×10×10×10 pilihan angka',
+    type:'text', answers:['50000'],
+    explain:'✅ 5 × 10⁴ = 5 × 10.000 = 50.000 ✓' },
+
+  { id:'e18', section:'s2', tag:'tag-2', tagLabel:'Diagram Pohon',
+    q:'Pada diagram pohon untuk 3 kali pelemparan koin, berapa total cabang (hasil) di ujung pohon?',
+    hint:'Setiap lemparan punya 2 hasil, dan ada 3 lemparan',
+    type:'mcq', opts:['6','8','9','12'], answer:'8',
+    explain:'✅ 2 × 2 × 2 = 2³ = 8 hasil (AAA, AAG, AGA, AGG, GAA, GAG, GGA, GGG) ✓' },
+
+  { id:'e19', section:'s2', tag:'tag-2', tagLabel:'Counting Principle',
+    wordProblem:true,
+    story:'Tasya akan menyusun jadwal belajar untuk <strong>3 mata pelajaran berbeda</strong> dalam <strong>3 slot waktu berbeda</strong> di satu hari, masing-masing mapel hanya muncul sekali.',
+    q:'Berapa banyak susunan jadwal yang mungkin (urutan penting, tanpa pengulangan)?',
+    hint:'Slot 1: 3 pilihan, slot 2: 2 pilihan (sisa), slot 3: 1 pilihan',
+    type:'text', answers:['6'],
+    explain:'✅ 3 × 2 × 1 = 6 susunan jadwal yang mungkin ✓' },
+
+  { id:'e20', section:'s2', tag:'tag-2', tagLabel:'Counting Principle',
+    q:'Mengapa prinsip perkalian TIDAK bisa langsung digunakan jika ada batasan/larangan tertentu (misal: dua orang tidak boleh duduk bersebelahan)?',
+    hint:'Pikirkan apakah pilihan di setiap langkah masih independen',
+    type:'mcq', opts:['Karena prinsip perkalian hanya untuk dadu','Karena batasan membuat pilihan pada tahap tertentu tidak lagi bebas/independen','Karena hasilnya pasti nol','Karena harus pakai pembagian, bukan perkalian'], answer:'Karena batasan membuat pilihan pada tahap tertentu tidak lagi bebas/independen',
+    explain:'✅ Prinsip perkalian dasar mengasumsikan setiap tahap independen. Saat ada batasan, kita perlu strategi tambahan (misal kurangi kasus terlarang) ✓' },
+
+  // ─── BAGIAN 3: Permutasi vs Kombinasi (Sesi 25) ─────────────────────────
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Permutasi vs Kombinasi',
+    q:'Menyusun 3 orang untuk foto berjajar (posisi kiri-tengah-kanan berbeda makna) adalah contoh kasus...',
+    hint:'Apakah urutan/posisi berpengaruh pada hasil?',
+    type:'mcq', opts:['Kombinasi, karena urutan tidak penting','Permutasi, karena urutan/posisi berpengaruh','Tidak keduanya','Counting principle saja, bukan permutasi/kombinasi'], answer:'Permutasi, karena urutan/posisi berpengaruh',
+    explain:'✅ Posisi kiri-tengah-kanan berbeda, jadi urutan SANGAT penting → ini Permutasi ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Permutasi vs Kombinasi',
+    q:'Memilih 3 orang dari 10 orang untuk menjadi tim (tanpa ada jabatan/posisi berbeda) adalah contoh kasus...',
+    hint:'Apakah peduli siapa duluan dipilih, atau hanya peduli siapa yang terpilih?',
+    type:'mcq', opts:['Permutasi, karena ada banyak orang','Kombinasi, karena hanya peduli siapa yang terpilih, bukan urutannya','Permutasi, karena ada 10 orang','Tidak bisa dihitung'], answer:'Kombinasi, karena hanya peduli siapa yang terpilih, bukan urutannya',
+    explain:'✅ Tim {Andi, Budi, Citra} sama saja dengan {Citra, Andi, Budi} — urutan tidak penting → Kombinasi ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Permutasi vs Kombinasi',
+    wordProblem:true,
+    story:'Sebuah organisasi akan memilih <strong>Ketua, Sekretaris, dan Bendahara</strong> dari 5 kandidat (tiap orang hanya boleh menjabat 1 posisi).',
+    q:'Apakah ini kasus Permutasi atau Kombinasi? Jelaskan alasannya dalam pilihan berikut.',
+    hint:'Apakah "Andi jadi Ketua, Budi jadi Sekretaris" sama dengan "Budi jadi Ketua, Andi jadi Sekretaris"?',
+    type:'mcq', opts:['Kombinasi, karena hanya memilih 3 dari 5','Permutasi, karena setiap posisi berbeda sehingga urutan pemilihan menentukan jabatan','Kombinasi, karena ketiganya tetap teman satu organisasi','Bukan permutasi maupun kombinasi'], answer:'Permutasi, karena setiap posisi berbeda sehingga urutan pemilihan menentukan jabatan',
+    explain:'✅ Posisi Ketua ≠ Sekretaris ≠ Bendahara, jadi siapa menempati posisi mana itu penting → Permutasi ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Permutasi vs Kombinasi',
+    wordProblem:true,
+    story:'Memilih <strong>2 menu</strong> dari 5 menu makanan untuk dipesan bersama (tidak ada menu "utama" atau "kedua", keduanya sama kedudukannya).',
+    q:'Ini termasuk kasus...',
+    hint:'Apakah memesan (Nasi Goreng, Mie Ayam) berbeda dengan (Mie Ayam, Nasi Goreng)?',
+    type:'mcq', opts:['Permutasi','Kombinasi','Counting principle','Diagram pohon saja'], answer:'Kombinasi',
+    explain:'✅ Pesanan (Nasi Goreng, Mie Ayam) sama saja dengan (Mie Ayam, Nasi Goreng) — urutan tidak penting → Kombinasi ✓' },
+
+  { id:'e25', section:'s3', tag:'tag-3', tagLabel:'Permutasi vs Kombinasi',
+    q:'Menyusun angka untuk membentuk kode PIN 4 digit dari angka 0-9 (digit berbeda, urutan menentukan PIN yang berbeda) adalah kasus...',
+    hint:'PIN "1234" berbeda dengan PIN "4321", meski digitnya sama',
+    type:'mcq', opts:['Kombinasi','Permutasi','Bukan keduanya','Faktorial murni'], answer:'Permutasi',
+    explain:'✅ PIN 1234 ≠ PIN 4321 walau digit sama, karena urutan menentukan nilai PIN → Permutasi ✓' },
+
+  { id:'e26', section:'s3', tag:'tag-3', tagLabel:'Permutasi vs Kombinasi',
+    q:'Kalimat kunci yang menandakan soal PERMUTASI biasanya mengandung kata seperti...',
+    hint:'Pikirkan konteks: jabatan, ranking, susunan, kode',
+    type:'mcq', opts:['"dipilih untuk tim", "kelompok", "gabungan"','"disusun", "diurutkan", "posisi/jabatan berbeda", "kode"','"dibagi rata", "campuran"','"semua kemungkinan total"'], answer:'"disusun", "diurutkan", "posisi/jabatan berbeda", "kode"',
+    explain:'✅ Kata kunci "disusun/diurutkan/jabatan/kode" menandakan urutan penting → Permutasi ✓' },
+
+  { id:'e27', section:'s3', tag:'tag-3', tagLabel:'Permutasi vs Kombinasi',
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan! "Sebuah toko roti menjual <strong>5 rasa donat</strong>. Tasya ingin membeli <strong>3 donat berbeda rasa</strong> untuk dimakan sendiri (bukan dibagikan ke orang tertentu)."',
+    q:'Apakah ini Permutasi atau Kombinasi?',
+    hint:'Apakah penting donat mana yang "dimakan pertama"? Atau hanya penting donat APA yang dibeli?',
+    type:'mcq', opts:['Permutasi, karena donat dimakan satu-satu secara berurutan','Kombinasi, karena yang penting hanya SET rasa donat yang terbeli, bukan urutan beli/makan','Permutasi, karena ada 5 rasa','Tidak bisa ditentukan'], answer:'Kombinasi, karena yang penting hanya SET rasa donat yang terbeli, bukan urutan beli/makan',
+    explain:'✅ Jebakannya: urutan dimakan tidak relevan dengan pertanyaan "donat apa yang dibeli". Yang dihitung adalah SET 3 rasa → Kombinasi ✓' },
+
+  { id:'e28', section:'s3', tag:'tag-3', tagLabel:'Permutasi vs Kombinasi',
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan! "Dari 8 finalis lomba, akan dipilih <strong>Juara 1, 2, dan 3</strong>."',
+    q:'Apakah ini Permutasi atau Kombinasi?',
+    hint:'Apakah Juara 1 = Juara 2? Atau posisi juara itu berbeda makna?',
+    type:'mcq', opts:['Kombinasi, karena hanya memilih 3 dari 8 finalis','Permutasi, karena Juara 1, 2, 3 adalah posisi/peringkat yang berbeda','Kombinasi, karena ketiganya sama-sama "pemenang"','Bukan permutasi maupun kombinasi'], answer:'Permutasi, karena Juara 1, 2, 3 adalah posisi/peringkat yang berbeda',
+    explain:'✅ Walau kelihatan seperti "memilih 3", tapi karena Juara 1 ≠ Juara 2 ≠ Juara 3 (peringkat berbeda), urutan SANGAT penting → Permutasi ✓' },
+
+  { id:'e29', section:'s3', tag:'tag-3', tagLabel:'Permutasi vs Kombinasi',
+    q:'Manakah pasangan kata kunci berikut yang TEPAT mewakili Kombinasi?',
+    hint:'Kombinasi = urutan tidak diperhatikan',
+    type:'mcq', opts:['"Susunan huruf membentuk kata baru"','"Memilih anggota panitia tanpa jabatan spesifik"','"Menentukan juara 1 dan 2"','"Menyusun nomor antrian"'], answer:'"Memilih anggota panitia tanpa jabatan spesifik"',
+    explain:'✅ Tanpa jabatan spesifik berarti urutan/posisi tidak relevan → Kombinasi ✓' },
+
+  { id:'e30', section:'s3', tag:'tag-3', tagLabel:'Permutasi vs Kombinasi',
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan! "Sebuah kunci loker menggunakan <strong>kombinasi angka</strong> 3 digit, misalnya 5-2-7."',
+    q:'Meskipun disebut "kombinasi angka" dalam bahasa sehari-hari, secara matematis ini sebenarnya termasuk...',
+    hint:'Apakah kode 5-2-7 sama dengan 7-2-5? Urutan digit menentukan kode yang berbeda',
+    type:'mcq', opts:['Kombinasi, karena namanya memang kombinasi','Permutasi, karena urutan digit menentukan kode yang berbeda','Tidak ada hubungannya dengan permutasi/kombinasi','Faktorial murni'], answer:'Permutasi, karena urutan digit menentukan kode yang berbeda',
+    explain:'✅ Jebakan bahasa sehari-hari! "Kombinasi kunci" secara matematis adalah PERMUTASI karena urutan digit menentukan kode yang berbeda (527 ≠ 725) ✓' },
+
+  // ─── BAGIAN 4: Faktorial & Rumus Lanjut (Sesi 26) ───────────────────────
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Faktorial',
+    eq:[{t:'num',v:'5!'},{t:'eq'},{t:'num',v:'5×4×3×2×1'}],
+    q:'Berapa nilai dari 5! (5 faktorial)?',
+    hint:'5! = 5×4×3×2×1',
+    type:'text', answers:['120'],
+    explain:'✅ 5! = 5×4×3×2×1 = 120 ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Faktorial',
+    q:'Berapa nilai dari 4!?',
+    hint:'4! = 4×3×2×1',
+    type:'text', answers:['24'],
+    explain:'✅ 4! = 4×3×2×1 = 24 ✓' },
+
+  { id:'e33', section:'s4', tag:'tag-4', tagLabel:'Faktorial',
+    q:'Berdasarkan definisi matematika, berapa nilai 0!?',
+    hint:'Ini adalah definisi khusus, bukan hasil perkalian biasa',
+    type:'mcq', opts:['0','1','Tidak terdefinisi','−1'], answer:'1',
+    explain:'✅ Secara definisi, 0! = 1 (kasus khusus dalam matematika) ✓' },
+
+  { id:'e34', section:'s4', tag:'tag-4', tagLabel:'Faktorial',
+    eq:[{t:'num',v:'7!'},{t:'op',v:'/'},{t:'num',v:'5!'}],
+    q:'Sederhanakan: 7! / 5! tanpa menghitung faktorial penuh dulu. Berapa hasilnya?',
+    hint:'7!/5! = (7×6×5×4×3×2×1)/(5×4×3×2×1) = 7×6',
+    type:'text', answers:['42'],
+    explain:'✅ 7!/5! = 7×6 = 42 (suku 5! pada pembilang dan penyebut saling coret) ✓' },
+
+  { id:'e35', section:'s4', tag:'tag-4', tagLabel:'Rumus Permutasi',
+    eq:[{t:'var',v:'P(n,r)'},{t:'eq'},{t:'num',v:'n!'},{t:'op',v:'/'},{t:'num',v:'(n−r)!'}],
+    q:'Rumus permutasi r objek dari n objek adalah P(n,r) = n!/(n−r)!. Hitung P(5,2)!',
+    hint:'P(5,2) = 5!/(5−2)! = 5!/3!',
+    type:'text', answers:['20'],
+    explain:'✅ P(5,2) = 5!/3! = (5×4×3!)/3! = 5×4 = 20 ✓' },
+
+  { id:'e36', section:'s4', tag:'tag-4', tagLabel:'Rumus Kombinasi',
+    eq:[{t:'var',v:'C(n,r)'},{t:'eq'},{t:'num',v:'n!'},{t:'op',v:'/'},{t:'num',v:'(r!(n−r)!)'}],
+    q:'Rumus kombinasi r objek dari n objek adalah C(n,r) = n!/(r!(n−r)!). Hitung C(5,2)!',
+    hint:'C(5,2) = 5!/(2!×3!) = 10/(2×6)... hitung langkah demi langkah',
+    type:'text', answers:['10'],
+    explain:'✅ C(5,2) = 5!/(2!×3!) = 120/(2×6) = 120/12 = 10 ✓' },
+
+  { id:'e37', section:'s4', tag:'tag-4', tagLabel:'Permutasi Lanjut',
+    wordProblem:true,
+    story:'Terdapat <strong>6 buku berbeda</strong> yang akan disusun berjajar di rak, tetapi hanya <strong>4 posisi rak</strong> yang tersedia.',
+    q:'Berapa banyak susunan buku yang mungkin (P(6,4))?',
+    hint:'P(6,4) = 6!/(6−4)! = 6!/2!',
+    type:'mcq', opts:['180','240','360','720'], answer:'360',
+    explain:'✅ P(6,4) = 6×5×4×3 = 360 susunan ✓' },
+
+  { id:'e38', section:'s4', tag:'tag-4', tagLabel:'Kombinasi Lanjut',
+    wordProblem:true,
+    story:'Dari <strong>8 siswa</strong>, akan dipilih <strong>3 siswa</strong> untuk menjadi perwakilan kelas (tanpa jabatan berbeda).',
+    q:'Berapa banyak cara memilih ketiga perwakilan tersebut (C(8,3))?',
+    hint:'C(8,3) = 8!/(3!×5!) = (8×7×6)/(3×2×1)',
+    type:'mcq', opts:['42','56','64','336'], answer:'56',
+    explain:'✅ C(8,3) = (8×7×6)/(3×2×1) = 336/6 = 56 cara ✓' },
+
+  { id:'e39', section:'s4', tag:'tag-4', tagLabel:'Faktorial Lanjut',
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan! Dalam menyusun kata dari huruf "BUKU" (4 huruf, dengan huruf U berulang 2 kali), banyak susunan huruf berbeda dihitung dengan rumus permutasi dengan elemen sama: n!/k!.',
+    q:'Berapa banyak susunan huruf berbeda yang bisa dibentuk dari kata "BUKU"?',
+    hint:'4!/2! karena huruf U berulang sebanyak 2 kali',
+    type:'mcq', opts:['6','12','24','48'], answer:'12',
+    explain:'✅ Total huruf=4, U berulang 2 kali → 4!/2! = 24/2 = 12 susunan berbeda (bukan 24, karena tukar posisi U-U tidak menghasilkan kata baru) ✓' },
+
+  { id:'e40', section:'s4', tag:'tag-4', tagLabel:'Permutasi Siklis',
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan! <strong>5 orang</strong> akan duduk melingkari sebuah meja bundar (permutasi siklis, bukan berjajar).',
+    q:'Berapa banyak susunan duduk yang mungkin? (rumus permutasi siklis: (n−1)!)',
+    hint:'Untuk meja bundar, posisi "siapa di sebelah siapa" yang dihitung, bukan posisi mutlak → gunakan (n−1)!',
+    type:'mcq', opts:['24','60','120','720'], answer:'24',
+    explain:'✅ Permutasi siklis untuk meja bundar = (n−1)! = (5−1)! = 4! = 24. Ini BERBEDA dengan permutasi berjajar (5! = 120) karena rotasi dianggap sama ✓' },
+
+  // ─── BAGIAN 5: Aplikasi Kombinatorika dalam Peluang (Sesi 27) ───────────
+  { id:'e41', section:'s5', tag:'tag-5', tagLabel:'Aplikasi Peluang',
+    wordProblem:true,
+    story:'Dari <strong>10 siswa</strong> (6 putra, 4 putri), akan dipilih <strong>2 siswa secara acak</strong> untuk menjadi perwakilan kelas.',
+    q:'Berapa nilai n(S), yaitu banyak cara memilih 2 siswa dari 10 siswa?',
+    hint:'Gunakan C(10,2) karena urutan pemilihan tidak penting',
+    type:'text', answers:['45'],
+    explain:'✅ n(S) = C(10,2) = (10×9)/(2×1) = 45 ✓' },
+
+  { id:'e42', section:'s5', tag:'tag-5', tagLabel:'Aplikasi Peluang',
+    wordProblem:true,
+    story:'Lanjutan soal sebelumnya: 10 siswa (6 putra, 4 putri), dipilih 2 siswa secara acak. Kejadian A = "kedua siswa yang terpilih adalah putri".',
+    q:'Berapa nilai n(A), yaitu banyak cara memilih 2 putri dari 4 putri?',
+    hint:'Gunakan C(4,2)',
+    type:'text', answers:['6'],
+    explain:'✅ n(A) = C(4,2) = (4×3)/(2×1) = 6 ✓' },
+
+  { id:'e43', section:'s5', tag:'tag-5', tagLabel:'Aplikasi Peluang',
+    wordProblem:true,
+    story:'Dari hasil dua soal sebelumnya: n(S) = 45 dan n(A) = 6 (kedua siswa terpilih putri).',
+    q:'Berapa peluang P(A) bahwa kedua siswa yang terpilih adalah putri? (bentuk pecahan sederhana)',
+    hint:'P(A) = n(A)/n(S) = 6/45, lalu sederhanakan',
+    type:'text', answers:['2/15'],
+    explain:'✅ P(A) = 6/45 = 2/15 ✓' },
+
+  { id:'e44', section:'s5', tag:'tag-5', tagLabel:'Aplikasi Peluang',
+    wordProblem:true,
+    story:'Sebuah kotak berisi <strong>5 kelereng merah</strong> dan <strong>3 kelereng hijau</strong>. Diambil <strong>2 kelereng sekaligus</strong> secara acak.',
+    q:'Berapa peluang terambil 2 kelereng merah sekaligus?',
+    hint:'n(S)=C(8,2)=28. n(A)=C(5,2)=10. P(A)=10/28, sederhanakan',
+    type:'mcq', opts:['5/14','5/28','10/28','1/4'], answer:'5/14',
+    explain:'✅ n(S)=C(8,2)=28, n(A)=C(5,2)=10. P(A)=10/28=5/14 ✓' },
+
+  { id:'e45', section:'s5', tag:'tag-5', tagLabel:'Aplikasi Peluang',
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan! Dari kotak berisi 5 kelereng merah dan 3 kelereng hijau (total 8), diambil 2 kelereng. Seseorang menghitung peluang "1 merah dan 1 hijau" dengan C(5,1)×C(3,1) untuk n(A).',
+    q:'Apakah cara menghitung n(A) = C(5,1) × C(3,1) di atas BENAR untuk kejadian "1 merah dan 1 hijau"?',
+    hint:'Pikirkan: untuk mendapat 1 merah DAN 1 hijau, kita pilih 1 dari merah (cara) dan 1 dari hijau (cara), lalu gabungkan',
+    type:'mcq', opts:['Benar, karena kedua kejadian (pilih merah, pilih hijau) independen sehingga dikalikan','Salah, harusnya dijumlahkan C(5,1)+C(3,1)','Salah, harusnya pakai permutasi P(5,1)×P(3,1)','Salah, totalnya harus dibagi 2!'], answer:'Benar, karena kedua kejadian (pilih merah, pilih hijau) independen sehingga dikalikan',
+    explain:'✅ n(A) = C(5,1)×C(3,1) = 5×3 = 15 itu BENAR. Ini adalah penerapan prinsip perkalian pada hasil kombinasi dari 2 kelompok berbeda ✓' },
+
+  { id:'e46', section:'s5', tag:'tag-5', tagLabel:'Aplikasi Peluang',
+    wordProblem:true,
+    story:'Lanjutan: kotak 5 merah + 3 hijau (total 8 kelereng), diambil 2 sekaligus. n(A) untuk "1 merah dan 1 hijau" = 15 (dari soal sebelumnya), dan n(S) = C(8,2) = 28.',
+    q:'Berapa peluang terambil 1 merah dan 1 hijau?',
+    hint:'P(A) = n(A)/n(S) = 15/28',
+    type:'text', answers:['15/28'],
+    explain:'✅ P(A) = 15/28 (sudah dalam bentuk paling sederhana, karena 15 dan 28 tidak punya faktor sekutu) ✓' },
+
+  { id:'e47', section:'s5', tag:'tag-5', tagLabel:'Aplikasi Peluang',
+    wordProblem:true,
+    story:'Sebuah panitia terdiri dari <strong>4 pria</strong> dan <strong>5 wanita</strong>. Akan dipilih <strong>3 orang</strong> secara acak untuk membentuk sub-panitia.',
+    q:'Berapa nilai n(S), banyak cara memilih 3 orang dari total 9 orang?',
+    hint:'C(9,3) = 9!/(3!×6!)',
+    type:'text', answers:['84'],
+    explain:'✅ n(S) = C(9,3) = (9×8×7)/(3×2×1) = 504/6 = 84 ✓' },
+
+  { id:'e48', section:'s5', tag:'tag-5', tagLabel:'Aplikasi Peluang',
+    wordProblem:true,
+    story:'Lanjutan soal sebelumnya: panitia 4 pria + 5 wanita, dipilih 3 orang. Kejadian B = "tepat 2 wanita dan 1 pria terpilih". n(S) = 84.',
+    q:'Berapa peluang kejadian B (tepat 2 wanita dan 1 pria)?',
+    hint:'n(B) = C(5,2)×C(4,1) = 10×4 = 40. P(B) = 40/84, sederhanakan',
+    type:'mcq', opts:['10/21','5/21','40/84','2/7'], answer:'10/21',
+    explain:'✅ n(B)=C(5,2)×C(4,1)=10×4=40. P(B)=40/84=10/21 ✓' },
+
+  { id:'e49', section:'s5', tag:'tag-5', tagLabel:'Aplikasi Peluang',
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan! Dalam permainan kartu, diambil <strong>5 kartu</strong> dari satu set <strong>52 kartu</strong> sekaligus (tanpa pengembalian, urutan tidak penting).',
+    q:'Manakah rumus yang TEPAT untuk menghitung n(S), banyak cara mengambil 5 kartu dari 52 kartu?',
+    hint:'Karena urutan pengambilan tidak relevan (yang penting set 5 kartu di tangan), gunakan kombinasi',
+    type:'mcq', opts:['P(52,5)','C(52,5)','52⁵','5!'], answer:'C(52,5)',
+    explain:'✅ Karena hanya peduli SET 5 kartu yang didapat (bukan urutan ambilnya), gunakan kombinasi C(52,5), bukan permutasi P(52,5) ✓' },
+
+  { id:'e50', section:'s5', tag:'tag-5', tagLabel:'Aplikasi Peluang',
+    wordProblem:true,
+    story:'⚠️ Soal Jebakan Akhir! Sebuah kotak berisi <strong>4 bola bernomor 1-4</strong>. Diambil <strong>2 bola SEKALIGUS</strong> (bukan satu-satu dengan pengembalian), lalu dicatat sebagai pasangan tak berurutan.',
+    q:'Kejadian A = "jumlah kedua nomor bola adalah 5". Pasangan mana yang termasuk kejadian A? (Petunjuk: cari semua pasangan dari {1,2,3,4} berjumlah 5, lalu hitung peluangnya dari total n(S)=C(4,2)=6)',
+    hint:'Pasangan berjumlah 5 dari {1,2,3,4}: (1,4) dan (2,3). Ada 2 pasangan. P(A) = 2/6',
+    type:'text', answers:['1/3','2/6'],
+    explain:'✅ Pasangan berjumlah 5: {1,4} dan {2,3} → n(A)=2. n(S)=C(4,2)=6. P(A)=2/6=1/3 ✓' },
+
+];
+
+const total = exercises.length;
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = `${(done/total)*100}%`;
+  for(let i=1;i<=5;i++){
+    const el=document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done>=i*10);
+  }
+  if(done===total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){ inp.classList.add('correct'); inp.disabled=true; btn.disabled=true; }
+  else { card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true); }
+  const fb=card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok'; fb.textContent=q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){ const b=document.createElement('div'); b.className='done-badge'; b.textContent='✓ Done'; card.appendChild(b); }
+  progress[q.id]=true; saveProgress(progress); updateProgressBar();
+}
+
+function checkText(id, inp, btn, q){
+  const raw=inp.value.trim().toLowerCase().replace(/\s+/g,'');
+  if(!raw) return;
+  const correct=q.answers.some(a=>raw===a.toLowerCase().replace(/\s+/g,''));
+  if(correct){ markDone(inp.closest('.ex-card'),q,inp,btn); }
+  else {
+    inp.classList.add('wrong-anim');
+    const attRow=inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot=document.createElement('div'); dot.className='attempts-dot'; attRow.appendChild(dot);
+    setTimeout(()=>{ inp.classList.remove('wrong-anim'); inp.value=''; inp.focus(); },400);
+    if(attRow.children.length>=3){
+      const fb=inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no'; fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{ b.disabled=true; if(b.dataset.val===q.answer) b.classList.add('opt-correct'); });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb=card.querySelector('.ex-feedback');
+  if(val===q.answer){ markDone(card,q,null,null); }
+  else {
+    fb.className='ex-feedback show no'; fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+    if(!card.querySelector('.done-badge')){ const b=document.createElement('div'); b.className='done-badge'; b.textContent='Done'; card.appendChild(b); }
+  }
+}
+
+function buildExercises(){
+  const area=document.getElementById('exerciseArea');
+  area.innerHTML='';
+  const groups=[
+    { key:'s1', label:'🎯 Bagian 1 — Peluang Dasar & Ruang Sampel',       cls:'sd-1', sesi:'Sesi 23'    },
+    { key:'s2', label:'🌳 Bagian 2 — Counting Principle & Diagram Pohon', cls:'sd-2', sesi:'Sesi 24'    },
+    { key:'s3', label:'🔀 Bagian 3 — Permutasi vs Kombinasi',            cls:'sd-3', sesi:'Sesi 25'    },
+    { key:'s4', label:'❗ Bagian 4 — Faktorial & Kombinatorika Lanjut',   cls:'sd-4', sesi:'Sesi 26'    },
+    { key:'s5', label:'📊 Bagian 5 — Aplikasi Kombinatorika dalam Peluang', cls:'sd-5', sesi:'Sesi 27' },
+  ];
+
+  groups.forEach(g=>{
+    const wrap=document.createElement('div');
+    wrap.innerHTML=`<div class="sec-divider ${g.cls}">${g.label}<span class="sd-sesi">${g.sesi}</span></div>`;
+    const grid=document.createElement('div'); grid.className='exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone=!!progress[q.id];
+      const card=document.createElement('div');
+      card.className='ex-card'+(q.wordProblem?' word-card':'')+(isDone?' done-card':'');
+
+      const eqDisp  = q.eq  ? eqHTML(q.eq) : '';
+      const sysDisp = q.sys ? sysHTML(q.eq1, q.eq2) : '';
+      const spaceDisp = q.spaceItems ? spaceHTML(q.spaceItems, q.favIdx) : '';
+      const storyDisp = q.story ? `<div class="word-story">${q.story}</div>` : '';
+
+      let inputHTML='';
+      if(q.type==='text'){
+        inputHTML=`<div class="ex-input-wrap"><div class="ex-input-row">
+          <input type="text" class="ex-input ${isDone?'correct':''}" placeholder="Jawaban?"
+            value="${isDone?q.answers[0]:''}" ${isDone?'disabled':''}
+            onkeydown="if(event.key==='Enter')this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+          <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+        </div><div class="attempts-row"></div></div>`;
+      } else {
+        const shuffled=[...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML=`<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML=`
+        <div class="ex-num">Soal ${parseInt(q.id.replace('e',''))}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${storyDisp}${eqDisp}${sysDisp}${spaceDisp}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone?q.explain:''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn=card.querySelector('.ex-btn'), inp=card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick=()=>checkText(q.id,inp,btn,q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{ b.onclick=()=>checkMCQ(b.dataset.val,b,q,card); });
+      }
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Cluster 5? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+
+// Floating symbols
+const emojis=['🎲','🃏','🎯','🌳','🔀','❗','📊'];
+const wrap=document.getElementById('petals');
+for(let i=0;i<16;i++){
+  const p=document.createElement('div'); p.className='petal';
+  const sz=0.9+Math.random()*1.3;
+  p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--sz:${sz}rem;font-size:${sz}rem;--d:${4+Math.random()*6}s;--dl:${-Math.random()*6}s;--r0:${-15+Math.random()*30}deg;--r1:${-15+Math.random()*30}deg;`;
+  p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  wrap.appendChild(p);
+}
+</script>
+</body>
+</html>
