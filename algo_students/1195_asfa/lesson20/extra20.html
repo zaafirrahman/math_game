@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extra PR · Lesson 20 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#059669;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --emerald:#34d399;--text:#e2e8f0;--muted:#64748b;
+    --amber:#fbbf24;--blue:#60a5fa;--pink:#f472b6;
+    --violet:#a78bfa;--blue2:#38bdf8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 80%,rgba(167,139,250,0.06) 0%,transparent 50%),
+               radial-gradient(ellipse at 85% 15%,rgba(34,211,238,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 50%,rgba(52,211,153,0.03) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  nav{
+    padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:100;
+    font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;
+  }
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--violet);}
+
+  .wrapper{max-width:800px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  .pr-banner{background:linear-gradient(135deg,rgba(167,139,250,0.08),rgba(34,211,238,0.08));border:1px solid rgba(167,139,250,0.25);border-radius:20px;padding:2rem 2rem 1.5rem;margin-bottom:2rem;position:relative;overflow:hidden;}
+  .pr-banner::before{content:'🔍';position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);font-size:5rem;opacity:0.08;pointer-events:none;line-height:1;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.3);color:var(--violet);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;margin-bottom:0.5rem;line-height:1.3;}
+  .page-title span{color:var(--violet);}
+  .page-desc{color:var(--muted);font-size:0.9rem;line-height:1.7;max-width:540px;}
+  .pr-pills{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;}
+  .pr-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.72rem;padding:0.2rem 0.7rem;border-radius:20px;font-weight:700;}
+  .pill-cyan{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .pill-emerald{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.3);}
+  .pill-amber{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.3);}
+  .pill-violet{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+  .pill-blue{background:rgba(56,189,248,0.1);color:var(--blue2);border:1px solid rgba(56,189,248,0.3);}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--violet);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+  .prog-stars{display:flex;gap:0.3rem;margin-top:0.5rem;align-items:center;font-size:0.78rem;color:var(--muted);}
+  .star{font-size:0.9rem;opacity:0.25;transition:opacity 0.4s;}
+  .star.lit{opacity:1;}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--violet);}
+  .sd-2{color:var(--cyan);}
+  .sd-3{color:var(--amber);}
+  .sd-4{color:var(--emerald);}
+  .sd-5{color:var(--neon);}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;max-width:100%;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;padding:0 0.25rem;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(167,139,250,0.35);background:rgba(167,139,250,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.25);}
+  .ex-tag.tag-2{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.25);}
+  .ex-tag.tag-3{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.25);}
+  .ex-tag.tag-4{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.25);}
+  .ex-tag.tag-5{background:rgba(0,245,196,0.1);color:var(--neon);border:1px solid rgba(0,245,196,0.25);}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.78rem,3vw,0.92rem);font-weight:900;color:var(--text);margin-bottom:0.5rem;line-height:1.5;word-break:break-word;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--violet);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:1rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--violet);}
+  .ex-input.correct{border-color:var(--violet);color:var(--violet);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.3);color:var(--violet);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(167,139,250,0.22);border-color:var(--violet);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--neon);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.4);color:var(--violet);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+  .attempts-row{margin-top:0.4rem;display:flex;gap:2px;align-items:center;}
+  .attempts-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:2px;}
+
+  .ex-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;}
+  .ex-opt{background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.55rem 0.4rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;transition:all 0.15s;text-align:center;line-height:1.4;}
+  .ex-opt:hover:not(:disabled){border-color:var(--violet);background:rgba(167,139,250,0.06);}
+  .ex-opt.opt-correct{border-color:var(--neon);background:rgba(0,245,196,0.12);color:var(--neon);}
+  .ex-opt.opt-wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .ex-opt:disabled{cursor:default;}
+
+  .ex-card.data-card{border-left:3px solid var(--cyan);}
+  .ex-card.data-card.done-card{border-left-color:var(--violet);}
+
+  /* mini visuals reused from section1/exercise style */
+  .mini-table{width:100%;border-collapse:separate;border-spacing:0;background:#12121c;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:0.8rem;font-size:0.82rem;}
+  .mini-table th{font-family:'Orbitron',monospace;font-size:0.56rem;letter-spacing:1.5px;color:var(--violet);background:rgba(167,139,250,0.07);padding:0.5rem;text-align:center;}
+  .mini-table td{padding:0.45rem;text-align:center;border-top:1px solid var(--border);}
+  .mini-chart{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.8rem 0.5rem 0.5rem;margin-bottom:0.8rem;}
+  .mini-chart-title{font-family:'Orbitron',monospace;font-size:0.5rem;letter-spacing:2px;color:var(--muted);text-align:center;margin-bottom:0.4rem;}
+  .bars-wrap{display:flex;align-items:flex-end;gap:6px;height:62px;justify-content:center;}
+  .bc{display:flex;flex-direction:column;align-items:center;gap:2px;}
+  .bv{font-size:0.58rem;color:var(--muted);}
+  .bf{border-radius:3px 3px 0 0;}
+  .bl{font-size:0.55rem;color:var(--muted);font-family:'Orbitron',monospace;}
+  .raw-box{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.7rem;text-align:center;font-family:'Orbitron',monospace;font-size:0.8rem;color:var(--cyan);letter-spacing:1.5px;margin-bottom:0.8rem;line-height:1.7;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson20.html">LESSON 20</a>
+  <span>›</span>
+  <span class="current">EXTRA PR</span>
+</nav>
+
+<div class="wrapper">
+  <div class="pr-banner">
+    <div class="page-badge">🔍 Data Detective Mode</div>
+    <div class="page-title">Extra <span>PR Mode</span></div>
+    <div class="page-desc">
+      40 soal ekstra tentang Data &amp; Diagram — dari membaca tabel data, membaca diagram batang, membaca diagram garis (tren),
+      menyusun tabel frekuensi dari data mentah, sampai menganalisis dan menarik kesimpulan dari data.
+      Progress tersimpan otomatis. Latihan ini mengasah skill detektif data sebelum lanjut ke materi statistik berikutnya! 🕵️
+    </div>
+    <div class="pr-pills">
+      <span class="pr-pill pill-violet">📋 Baca Tabel</span>
+      <span class="pr-pill pill-cyan">📊 Diagram Batang</span>
+      <span class="pr-pill pill-amber">📈 Diagram Garis</span>
+      <span class="pr-pill pill-emerald">🗂️ Tabel Frekuensi</span>
+      <span class="pr-pill pill-blue">🔍 Analisis Data</span>
+    </div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress PR</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      Kumpulkan ⭐ untuk setiap bagian yang diselesaikan!
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+      <span style="margin-left:0.3rem;font-size:0.72rem;">Selesaikan 8 soal per bagian</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🔍</span>
+    <div class="alldone-title">PR DATA DETECTIVE SELESAI!</div>
+    <div class="alldone-desc">
+      GG! Kamu udah menaklukkan 40 soal Extra PR Lesson 20!<br>
+      Tabel, diagram batang, diagram garis, tabel frekuensi, dan analisis data — semua kamu babat habis! 🔥<br>
+      Kamu sekarang siap membaca dan menganalisis data apa pun yang muncul di depanmu!
+    </div>
+    <div class="alldone-xp">🔍 +400 XP — Data Detective Badge Unlocked!</div>
+    <div class="action-btns">
+      <a href="lesson20.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="exercise20.html" class="btn btn-ghost">Exercise Zone</a>
+      <a href="quicktest20.html" class="btn btn-primary">Quick Test ⚡</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  #allDone{display:none;text-align:center;padding:3rem 2rem;}
+  .alldone-icon{font-size:5rem;display:block;margin-bottom:1.5rem;animation:bounce 1s ease infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .alldone-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2rem);color:var(--violet);margin-bottom:0.8rem;}
+  .alldone-desc{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .alldone-xp{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.5rem 1.5rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:2rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--emerald);color:var(--emerald);}
+  .btn-primary{background:linear-gradient(135deg,#7c3aed,var(--violet));color:white;box-shadow:0 4px 15px rgba(124,58,237,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson20_extra_v1';
+function loadProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{};}catch(e){return{};}}
+function saveProgress(p){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(p));}catch(e){}}
+let progress = loadProgress();
+
+// Helper: render a data table
+function tableDisp(thead, tbody){
+  let h = '<table class="mini-table"><thead><tr>';
+  thead.forEach(t=>h+=`<th>${t}</th>`);
+  h += '</tr></thead><tbody>';
+  tbody.forEach(r=>{h+='<tr>';r.forEach(c=>h+=`<td>${c}</td>`);h+='</tr>';});
+  h += '</tbody></table>';
+  return h;
+}
+// Helper: render a mini bar chart
+function barsDisp(title, data){
+  const mv = Math.max(...data.map(x=>x.val));
+  let h = `<div class="mini-chart"><div class="mini-chart-title">${title}</div><div class="bars-wrap">`;
+  data.forEach(b=>{
+    const bh = Math.round((b.val/mv)*58);
+    h += `<div class="bc"><div class="bv">${b.val}</div><div class="bf" style="width:30px;height:${bh}px;background:${b.c};"></div><div class="bl">${b.lbl}</div></div>`;
+  });
+  h += '</div></div>';
+  return h;
+}
+// Helper: render a mini line chart (tren)
+function lineDisp(title, days, vals){
+  const mv = Math.max(...vals);
+  const xs = [40,95,150,205,260];
+  const ys = vals.map(v=>88-Math.round((v/mv)*68));
+  const pts = xs.slice(0,vals.length).map((x,i)=>`${x},${ys[i]}`).join(' ');
+  const dots = xs.slice(0,vals.length).map((x,i)=>`<circle cx="${x}" cy="${ys[i]}" r="3.5" fill="#a78bfa"/><text x="${x}" y="${ys[i]-7}" fill="#64748b" font-size="8" text-anchor="middle">${vals[i]}</text>`).join('');
+  const xlbls = days.map((d,i)=>`<text x="${xs[i]}" y="104" fill="#64748b" font-size="8" text-anchor="middle">${d}</text>`).join('');
+  return `<div class="mini-chart"><div class="mini-chart-title">${title}</div><svg width="100%" viewBox="0 0 300 116"><line x1="30" y1="96" x2="280" y2="96" stroke="#2a2a40" stroke-width="1.5"/><polyline points="${pts}" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linejoin="round"/>${dots}${xlbls}</svg></div>`;
+}
+// Helper: render raw data string
+function rawDisp(text){
+  return `<div class="raw-box">${text}</div>`;
+}
+
+const exercises = [
+  // ─── BAGIAN 1: Membaca Tabel Data (e01–e08) ────────────────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Baca Tabel',
+    sys:tableDisp(['Hari','Pengunjung Toko'],[['Senin','24'],['Selasa','31'],['Rabu','27'],['Kamis','19'],['Jumat','35']]),
+    q:'Hari apa jumlah pengunjung PALING SEDIKIT?', hint:'Cari angka terkecil di kolom Pengunjung',
+    type:'mcq', opts:['Kamis','Senin','Rabu','Jumat'], answer:'Kamis',
+    explain:'✅ Kamis=19 — angka paling kecil di tabel ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Baca Tabel',
+    sys:tableDisp(['Hari','Pengunjung Toko'],[['Senin','24'],['Selasa','31'],['Rabu','27'],['Kamis','19'],['Jumat','35']]),
+    q:'Berapa selisih pengunjung antara hari tersibuk dan hari paling sepi?', hint:'Tertinggi (Jumat=35) − terendah (Kamis=19)',
+    type:'text', answers:['16'], explain:'✅ 35 − 19 = 16 pengunjung ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Baca Tabel',
+    sys:tableDisp(['Bulan','Hujan (mm)'],[['Jan','180'],['Feb','150'],['Mar','200'],['Apr','120']]),
+    q:'Berapa total curah hujan dari Januari sampai April?', hint:'Tambahkan semua nilai di kolom Hujan',
+    type:'text', answers:['650'], explain:'✅ 180+150+200+120 = 650 mm ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Baca Tabel',
+    sys:tableDisp(['Bulan','Hujan (mm)'],[['Jan','180'],['Feb','150'],['Mar','200'],['Apr','120']]),
+    q:'Bulan apa curah hujannya PALING TINGGI?', hint:'Cari angka terbesar',
+    type:'mcq', opts:['Maret','Januari','Februari','April'], answer:'Maret',
+    explain:'✅ Maret=200 mm — paling tinggi di antara semua bulan ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Baca Tabel',
+    sys:tableDisp(['Toko','Pendapatan (juta)'],[['A','12'],['B','18'],['C','15'],['D','9']]),
+    q:'Berapa rata-rata pendapatan dari keempat toko?', hint:'Total dibagi banyak toko',
+    type:'text', answers:['13.5','13,5'], explain:'✅ (12+18+15+9)÷4 = 54÷4 = 13,5 juta ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Baca Tabel',
+    sys:tableDisp(['Toko','Pendapatan (juta)'],[['A','12'],['B','18'],['C','15'],['D','9']]),
+    q:'Toko mana yang pendapatannya di BAWAH rata-rata (13,5 juta)?', hint:'Bandingkan setiap nilai dengan 13,5',
+    type:'mcq', opts:['A dan D','B dan C','Hanya A','Semua toko'], answer:'A dan D',
+    explain:'✅ A=12 < 13,5 ✓ dan D=9 < 13,5 ✓. B=18 dan C=15 keduanya di atas rata-rata ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Baca Tabel',
+    sys:tableDisp(['Kelas','Jumlah Siswa Suka Matematika'],[['7A','14'],['7B','18'],['7C','11'],['7D','16']]),
+    q:'Berapa total siswa yang suka matematika dari keempat kelas?', hint:'Tambahkan semua angka',
+    type:'text', answers:['59'], explain:'✅ 14+18+11+16 = 59 siswa ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Baca Tabel',
+    sys:tableDisp(['Kelas','Jumlah Siswa Suka Matematika'],[['7A','14'],['7B','18'],['7C','11'],['7D','16']]),
+    q:'Kelas mana yang jumlah siswanya PALING SEDIKIT menyukai matematika?', hint:'Cari angka terkecil',
+    type:'mcq', opts:['7C','7A','7B','7D'], answer:'7C',
+    explain:'✅ 7C=11 — paling kecil di antara semua kelas ✓' },
+
+  // ─── BAGIAN 2: Membaca Diagram Batang (e09–e16) ─────────────────────
+  { id:'e09', section:'s2', tag:'tag-2', tagLabel:'Diagram Batang',
+    sys:barsDisp('Buah Favorit Siswa',[{lbl:'Apel',val:8,c:'rgba(167,139,250,0.8)'},{lbl:'Jeruk',val:14,c:'rgba(34,211,238,0.8)'},{lbl:'Mangga',val:6,c:'rgba(52,211,153,0.8)'},{lbl:'Pisang',val:10,c:'rgba(251,191,36,0.8)'}]),
+    q:'Buah apa yang paling banyak dipilih siswa?', hint:'Cari batang yang paling tinggi',
+    type:'mcq', opts:['Jeruk','Apel','Mangga','Pisang'], answer:'Jeruk',
+    explain:'✅ Batang Jeruk paling tinggi = 14 siswa ✓' },
+
+  { id:'e10', section:'s2', tag:'tag-2', tagLabel:'Diagram Batang',
+    sys:barsDisp('Buah Favorit Siswa',[{lbl:'Apel',val:8,c:'rgba(167,139,250,0.8)'},{lbl:'Jeruk',val:14,c:'rgba(34,211,238,0.8)'},{lbl:'Mangga',val:6,c:'rgba(52,211,153,0.8)'},{lbl:'Pisang',val:10,c:'rgba(251,191,36,0.8)'}]),
+    q:'Berapa total siswa yang disurvei dalam diagram ini?', hint:'Tambahkan semua tinggi batang',
+    type:'text', answers:['38'], explain:'✅ 8+14+6+10 = 38 siswa ✓' },
+
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Diagram Batang',
+    sys:barsDisp('Kendaraan Lewat per Jam',[{lbl:'Motor',val:25,c:'rgba(167,139,250,0.8)'},{lbl:'Mobil',val:15,c:'rgba(34,211,238,0.8)'},{lbl:'Bus',val:5,c:'rgba(52,211,153,0.8)'},{lbl:'Sepeda',val:10,c:'rgba(251,191,36,0.8)'}]),
+    q:'Berapa selisih jumlah motor dan mobil yang lewat?', hint:'Motor − mobil',
+    type:'text', answers:['10'], explain:'✅ 25 − 15 = 10 kendaraan ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Diagram Batang',
+    sys:barsDisp('Kendaraan Lewat per Jam',[{lbl:'Motor',val:25,c:'rgba(167,139,250,0.8)'},{lbl:'Mobil',val:15,c:'rgba(34,211,238,0.8)'},{lbl:'Bus',val:5,c:'rgba(52,211,153,0.8)'},{lbl:'Sepeda',val:10,c:'rgba(251,191,36,0.8)'}]),
+    q:'Kendaraan apa yang PALING JARANG lewat?', hint:'Cari batang paling pendek',
+    type:'mcq', opts:['Bus','Sepeda','Mobil','Motor'], answer:'Bus',
+    explain:'✅ Batang Bus paling pendek = hanya 5 kendaraan ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Diagram Batang',
+    sys:barsDisp('Nilai Ulangan IPA',[{lbl:'60',val:3,c:'rgba(239,68,68,0.7)'},{lbl:'70',val:6,c:'rgba(167,139,250,0.7)'},{lbl:'80',val:9,c:'rgba(0,245,196,0.8)'},{lbl:'90',val:2,c:'rgba(34,211,238,0.7)'}]),
+    q:'Berapa siswa yang mendapat nilai 80 ATAU LEBIH?', hint:'Jumlahkan frekuensi nilai 80 dan 90',
+    type:'text', answers:['11'], explain:'✅ 9 (nilai 80) + 2 (nilai 90) = 11 siswa ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Diagram Batang',
+    sys:barsDisp('Nilai Ulangan IPA',[{lbl:'60',val:3,c:'rgba(239,68,68,0.7)'},{lbl:'70',val:6,c:'rgba(167,139,250,0.7)'},{lbl:'80',val:9,c:'rgba(0,245,196,0.8)'},{lbl:'90',val:2,c:'rgba(34,211,238,0.7)'}]),
+    q:'Berapa persen siswa yang mendapat nilai 60? (Total=20 siswa)', hint:'3 dari 20, ubah ke persen',
+    type:'mcq', opts:['15%','20%','10%','30%'], answer:'15%',
+    explain:'✅ 3/20 × 100% = 15% ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Diagram Batang',
+    sys:barsDisp('Hasil Panen per Petani (kuintal)',[{lbl:'Budi',val:18,c:'rgba(167,139,250,0.8)'},{lbl:'Sari',val:22,c:'rgba(34,211,238,0.8)'},{lbl:'Toni',val:14,c:'rgba(52,211,153,0.8)'},{lbl:'Wati',val:22,c:'rgba(251,191,36,0.8)'}]),
+    q:'Siapa saja petani dengan hasil panen TERBANYAK (sama tinggi)?', hint:'Cari dua batang yang sama tingginya',
+    type:'mcq', opts:['Sari dan Wati','Budi dan Sari','Toni dan Wati','Budi dan Toni'], answer:'Sari dan Wati',
+    explain:'✅ Sari=22 dan Wati=22 — sama-sama paling tinggi ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Diagram Batang',
+    sys:barsDisp('Hasil Panen per Petani (kuintal)',[{lbl:'Budi',val:18,c:'rgba(167,139,250,0.8)'},{lbl:'Sari',val:22,c:'rgba(34,211,238,0.8)'},{lbl:'Toni',val:14,c:'rgba(52,211,153,0.8)'},{lbl:'Wati',val:22,c:'rgba(251,191,36,0.8)'}]),
+    q:'Berapa total hasil panen keempat petani?', hint:'Tambahkan semua nilai',
+    type:'text', answers:['76'], explain:'✅ 18+22+14+22 = 76 kuintal ✓' },
+
+  // ─── BAGIAN 3: Membaca Diagram Garis / Tren (e17–e24) ───────────────
+  { id:'e17', section:'s3', tag:'tag-3', tagLabel:'Diagram Garis',
+    sys:lineDisp('Suhu Harian (°C)',['Sen','Sel','Rab','Kam','Jum'],[26,28,27,31,30]),
+    q:'Pada hari apa suhu sempat TURUN dibanding hari sebelumnya?', hint:'Cari titik yang lebih rendah dari titik sebelum nya',
+    type:'mcq', opts:['Rabu dan Jumat','Selasa saja','Kamis saja','Tidak ada yang turun'], answer:'Rabu dan Jumat',
+    explain:'✅ Rabu(27) < Selasa(28), dan Jumat(30) < Kamis(31) — keduanya mengalami penurunan ✓' },
+
+  { id:'e18', section:'s3', tag:'tag-3', tagLabel:'Diagram Garis',
+    sys:lineDisp('Suhu Harian (°C)',['Sen','Sel','Rab','Kam','Jum'],[26,28,27,31,30]),
+    q:'Berapa selisih suhu tertinggi (Kamis) dan terendah (Senin)?', hint:'31 − 26',
+    type:'text', answers:['5'], explain:'✅ 31 − 26 = 5°C ✓' },
+
+  { id:'e19', section:'s3', tag:'tag-3', tagLabel:'Diagram Garis',
+    sys:lineDisp('Jumlah Penonton Bioskop (ratus)',['Sen','Sel','Rab','Kam','Jum'],[3,3,6,7,9]),
+    q:'Secara keseluruhan, bagaimana tren jumlah penonton dari Senin ke Jumat?', hint:'Lihat arah garis dari kiri ke kanan',
+    type:'mcq', opts:['Terus meningkat','Terus menurun','Naik turun tidak beraturan','Selalu stabil'], answer:'Terus meningkat',
+    explain:'✅ Dari 3→3→6→7→9, nilainya naik (atau tetap) terus dari hari ke hari — tren MENINGKAT ✓' },
+
+  { id:'e20', section:'s3', tag:'tag-3', tagLabel:'Diagram Garis',
+    sys:lineDisp('Jumlah Penonton Bioskop (ratus)',['Sen','Sel','Rab','Kam','Jum'],[3,3,6,7,9]),
+    q:'Antara hari apa kenaikan penonton PALING BESAR terjadi?', hint:'Hitung selisih tiap pasangan hari berurutan, cari yang paling besar',
+    type:'mcq', opts:['Selasa ke Rabu','Senin ke Selasa','Rabu ke Kamis','Kamis ke Jumat'], answer:'Selasa ke Rabu',
+    explain:'✅ Sen→Sel: +0, Sel→Rab: +3, Rab→Kam: +1, Kam→Jum: +2. Kenaikan terbesar terjadi dari Selasa ke Rabu (+3) ✓' },
+
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Diagram Garis',
+    sys:lineDisp('Berat Badan Bayi (kg)',['Bln1','Bln2','Bln3','Bln4','Bln5'],[4,5,6,7,8]),
+    q:'Berapa kenaikan berat badan bayi dari bulan 1 ke bulan 5?', hint:'8 − 4',
+    type:'text', answers:['4'], explain:'✅ 8 − 4 = 4 kg ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Diagram Garis',
+    sys:lineDisp('Berat Badan Bayi (kg)',['Bln1','Bln2','Bln3','Bln4','Bln5'],[4,5,6,7,8]),
+    q:'Berapa kenaikan berat badan bayi RATA-RATA setiap bulan?', hint:'Total kenaikan dibagi jumlah interval (4 interval)',
+    type:'text', answers:['1'], explain:'✅ Kenaikan total 4 kg dalam 4 interval bulan → rata-rata 1 kg/bulan ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Diagram Garis',
+    sys:lineDisp('Harga Saham (ribu Rp)',['Sen','Sel','Rab','Kam','Jum'],[12,15,11,9,13]),
+    q:'Pada hari apa harga saham mencapai titik PALING RENDAH?', hint:'Cari titik terbawah pada garis',
+    type:'mcq', opts:['Kamis','Senin','Selasa','Jumat'], answer:'Kamis',
+    explain:'✅ Kamis=9 — titik paling rendah di antara semua hari ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Diagram Garis',
+    sys:lineDisp('Harga Saham (ribu Rp)',['Sen','Sel','Rab','Kam','Jum'],[12,15,11,9,13]),
+    q:'Apakah pernyataan ini benar: "Harga saham terus naik dari Senin sampai Jumat"?', hint:'Cek apakah ada penurunan di tengah',
+    type:'mcq', opts:['Salah, karena turun di Rabu dan Kamis','Benar, karena Jumat lebih tinggi dari Senin','Benar, karena selalu naik','Salah, karena selalu turun'], answer:'Salah, karena turun di Rabu dan Kamis',
+    explain:'✅ Dari Selasa(15) ke Rabu(11) dan ke Kamis(9), harga justru TURUN — jadi bukan "terus naik" ✓' },
+
+  // ─── BAGIAN 4: Tabel Frekuensi dari Data Mentah (e25–e32) ───────────
+  { id:'e25', section:'s4', tag:'tag-4', tagLabel:'Tabel Frekuensi',
+    sys:rawDisp('6 · 8 · 7 · 6 · 8 · 6 · 7 · 8 · 6 · 7'),
+    q:'Berapa frekuensi nilai 6 pada data mentah di atas?', hint:'Hitung berapa kali angka 6 muncul',
+    type:'text', answers:['4'], explain:'✅ Nilai 6 muncul di posisi 1,4,6,9 → 4 kali ✓' },
+
+  { id:'e26', section:'s4', tag:'tag-4', tagLabel:'Tabel Frekuensi',
+    sys:rawDisp('6 · 8 · 7 · 6 · 8 · 6 · 7 · 8 · 6 · 7'),
+    q:'Nilai apa yang frekuensinya PALING SEDIKIT?', hint:'Hitung satu-satu: 6, 7, dan 8',
+    type:'mcq', opts:['7 dan 8 (sama)','6 saja','7 saja','8 saja'], answer:'7 dan 8 (sama)',
+    explain:'✅ 6 muncul 4×, sedangkan 7 muncul 3× dan 8 muncul 3× — keduanya sama-sama paling sedikit ✓' },
+
+  { id:'e27', section:'s4', tag:'tag-4', tagLabel:'Tabel Frekuensi',
+    sys:rawDisp('Merah · Biru · Hijau · Biru · Merah · Biru · Hijau · Biru · Merah · Biru'),
+    q:'Berapa frekuensi warna "Biru"?', hint:'Hitung berapa kali "Biru" muncul',
+    type:'text', answers:['5'], explain:'✅ Biru muncul di posisi 2,4,6,8,10 → 5 kali ✓' },
+
+  { id:'e28', section:'s4', tag:'tag-4', tagLabel:'Tabel Frekuensi',
+    sys:rawDisp('Merah · Biru · Hijau · Biru · Merah · Biru · Hijau · Biru · Merah · Biru'),
+    q:'Berapa banyak data secara keseluruhan?', hint:'Hitung semua item dalam daftar',
+    type:'text', answers:['10'], explain:'✅ Ada 10 data: 3 Merah + 5 Biru + 2 Hijau = 10 ✓' },
+
+  { id:'e29', section:'s4', tag:'tag-4', tagLabel:'Tabel Frekuensi',
+    sys:rawDisp('3 · 5 · 4 · 3 · 5 · 5 · 4 · 3 · 5 · 4 · 3 · 5'),
+    q:'Susun tabel frekuensi: berapa frekuensi nilai 5?', hint:'Hitung kemunculan angka 5',
+    type:'text', answers:['5'], explain:'✅ Nilai 5 muncul di posisi 2,5,6,9,12 → 5 kali ✓' },
+
+  { id:'e30', section:'s4', tag:'tag-4', tagLabel:'Tabel Frekuensi',
+    sys:rawDisp('3 · 5 · 4 · 3 · 5 · 5 · 4 · 3 · 5 · 4 · 3 · 5'),
+    q:'Nilai apa yang menjadi MODUS (paling sering muncul) dari data ini?', hint:'Modus = nilai dengan frekuensi terbesar',
+    type:'mcq', opts:['5','3','4','Semua sama'], answer:'5',
+    explain:'✅ 5 muncul 5×, 3 muncul 4×, 4 muncul 3× — modusnya adalah 5 ✓' },
+
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Tabel Frekuensi',
+    sys:rawDisp('85 · 90 · 75 · 85 · 80 · 90 · 85 · 75 · 80 · 85'),
+    q:'Jika disusun jadi tabel frekuensi, berapa banyak NILAI BERBEDA (kategori) yang muncul?', hint:'Cari semua angka unik: 75, 80, 85, 90',
+    type:'text', answers:['4'], explain:'✅ Nilai unik: 75, 80, 85, 90 → ada 4 kategori berbeda ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Tabel Frekuensi',
+    sys:rawDisp('85 · 90 · 75 · 85 · 80 · 90 · 85 · 75 · 80 · 85'),
+    q:'Berapa frekuensi nilai 85, dan apakah totalnya sama dengan banyak data (10)?', hint:'Hitung 85, lalu cek total semua frekuensi',
+    type:'mcq', opts:['4, dan total tetap 10','4, tapi total jadi 9','3, dan total tetap 10','5, dan total jadi 11'], answer:'4, dan total tetap 10',
+    explain:'✅ 85 muncul 4×. Total frekuensi semua nilai (75:2, 80:2, 85:4, 90:2) = 10, sama dengan banyak data asli ✓' },
+
+  // ─── BAGIAN 5: Analisis & Menarik Kesimpulan (e33–e40) ──────────────
+  { id:'e33', section:'s5', tag:'tag-5', tagLabel:'Analisis Data',
+    sys:tableDisp(['Kelas','Rata-rata Nilai'],[['8A','76'],['8B','84'],['8C','79'],['8D','88']]),
+    q:'Kesimpulan mana yang PALING TEPAT dari tabel ini?', hint:'Bandingkan semua rata-rata',
+    type:'mcq', opts:['Kelas 8D memiliki performa akademik terbaik','Kelas 8A memiliki performa akademik terbaik','Semua kelas memiliki nilai yang sama','Kelas 8C nilai rata-ratanya paling tinggi'], answer:'Kelas 8D memiliki performa akademik terbaik',
+    explain:'✅ 8D=88 adalah rata-rata tertinggi di antara semua kelas, jadi performanya paling baik ✓' },
+
+  { id:'e34', section:'s5', tag:'tag-5', tagLabel:'Analisis Data',
+    sys:barsDisp('Penjualan Es Krim (musim panas vs hujan)',[{lbl:'Panas',val:18,c:'rgba(251,191,36,0.8)'},{lbl:'Hujan',val:5,c:'rgba(34,211,238,0.8)'}]),
+    q:'Kesimpulan apa yang bisa ditarik dari diagram ini?', hint:'Bandingkan dua musim',
+    type:'mcq', opts:['Es krim lebih banyak terjual saat musim panas','Es krim lebih banyak terjual saat musim hujan','Penjualan sama di kedua musim','Cuaca tidak memengaruhi penjualan'], answer:'Es krim lebih banyak terjual saat musim panas',
+    explain:'✅ 18 > 5 — penjualan saat musim panas jauh lebih tinggi, jadi cuaca panas mendorong penjualan es krim ✓' },
+
+  { id:'e35', section:'s5', tag:'tag-5', tagLabel:'Analisis Data',
+    sys:tableDisp(['Diagram','Pola Batang'],[['A','Tinggi hampir sama semua'],['B','Satu batang sangat dominan']]),
+    q:'Diagram dengan batang "tinggi hampir sama semua" menunjukkan data yang...', hint:'Pikirkan kata yang menggambarkan kesetaraan',
+    type:'mcq', opts:['Terdistribusi merata','Sangat tidak merata','Tidak bisa dibandingkan','Pasti salah datanya'], answer:'Terdistribusi merata',
+    explain:'✅ Jika tinggi batang hampir sama, artinya frekuensi tiap kategori mirip → data tersebar MERATA ✓' },
+
+  { id:'e36', section:'s5', tag:'tag-5', tagLabel:'Analisis Data',
+    sys:lineDisp('Penjualan Toko Online (juta)',['Q1','Q2','Q3','Q4'],[20,35,30,50]),
+    q:'Berdasarkan tren ini, prediksi yang PALING WAJAR untuk Q5 (kuartal berikutnya) adalah...', hint:'Lihat arah tren secara umum, bukan hanya naik-turun terakhir',
+    type:'mcq', opts:['Kemungkinan naik, karena tren keseluruhan meningkat','Pasti turun drastis ke 10 juta','Pasti sama persis dengan Q1','Tidak bisa diprediksi sama sekali'], answer:'Kemungkinan naik, karena tren keseluruhan meningkat',
+    explain:'✅ Meski sempat turun di Q3, tren keseluruhan dari Q1(20) ke Q4(50) MENINGKAT — jadi wajar memprediksi kenaikan lagi ✓' },
+
+  { id:'e37', section:'s5', tag:'tag-5', tagLabel:'Analisis Data',
+    sys:tableDisp(['Hari','Jumlah Komplain'],[['Sen','12'],['Sel','8'],['Rab','15'],['Kam','6'],['Jum','9']]),
+    q:'Seorang manajer ingin tahu hari mana yang perlu PERHATIAN EKSTRA karena komplain tertinggi. Hari apa itu?', hint:'Cari angka komplain terbesar',
+    type:'mcq', opts:['Rabu','Senin','Jumat','Kamis'], answer:'Rabu',
+    explain:'✅ Rabu=15 komplain — tertinggi, jadi paling butuh perhatian ekstra ✓' },
+
+  { id:'e38', section:'s5', tag:'tag-5', tagLabel:'Analisis Data',
+    sys:tableDisp(['Toko','Jan','Feb','Mar'],[['Toko X','50','55','60'],['Toko Y','70','65','60']]),
+    q:'Manakah kesimpulan yang TEPAT dari data dua toko ini?', hint:'Bandingkan arah perubahan, bukan hanya nilai akhir',
+    type:'mcq', opts:['Toko X tren naik, Toko Y tren turun','Toko X tren turun, Toko Y tren naik','Keduanya tren naik','Keduanya tren turun'], answer:'Toko X tren naik, Toko Y tren turun',
+    explain:'✅ Toko X: 50→55→60 (naik terus). Toko Y: 70→65→60 (turun terus) — meski di Maret keduanya sama (60) ✓' },
+
+  { id:'e39', section:'s5', tag:'tag-5', tagLabel:'Analisis Data',
+    sys:rawDisp('Nilai ujian 10 siswa: 90,40,85,88,92,87,85,90,86,89'),
+    q:'Salah satu nilai (40) sangat jauh berbeda dari yang lain. Jika kita menghitung rata-rata SEMUA nilai termasuk 40, apa yang terjadi pada rata-rata tersebut?', hint:'Nilai ekstrem yang sangat rendah akan menarik rata-rata ke bawah',
+    type:'mcq', opts:['Rata-rata akan tertarik turun, jadi kurang mewakili mayoritas siswa','Rata-rata tidak akan terpengaruh sama sekali','Rata-rata akan naik karena ada nilai ekstrem','Nilai 40 harus diabaikan tanpa alasan'], answer:'Rata-rata akan tertarik turun, jadi kurang mewakili mayoritas siswa',
+    explain:'✅ Nilai 40 jauh di bawah nilai-nilai lain (85-92) — nilai ekstrem seperti ini menarik rata-rata turun, sehingga rata-rata jadi kurang mencerminkan performa mayoritas siswa ✓' },
+
+  { id:'e40', section:'s5', tag:'tag-5', tagLabel:'Analisis Data',
+    sys:tableDisp(['Provinsi','Penduduk (juta)','Luas (km²)'],[['P','10','5.000'],['Q','10','20.000']]),
+    q:'Kedua provinsi punya jumlah penduduk yang SAMA (10 juta). Kesimpulan apa yang TETAP bisa berbeda dari data ini?', hint:'Pikirkan tentang kepadatan = penduduk dibagi luas',
+    type:'mcq', opts:['Kepadatan penduduknya berbeda, P lebih padat dari Q','Kedua provinsi pasti identik dalam segala hal','Luas wilayah tidak relevan untuk dianalisis','Data ini tidak bisa disimpulkan apa-apa'], answer:'Kepadatan penduduknya berbeda, P lebih padat dari Q',
+    explain:'✅ P: 10 juta di 5.000 km² (lebih padat). Q: 10 juta di 20.000 km² (lebih lapang). Meski penduduknya sama, KEPADATAN-nya jauh berbeda — ini contoh menarik kesimpulan lebih dalam dari data ✓' },
+];
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  const total = exercises.length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done >= i*8);
+  }
+  if(done === total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){
+    inp.classList.add('correct'); inp.disabled=true; btn.disabled=true;
+  } else {
+    card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true);
+  }
+  const fb = card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok';
+  fb.textContent = q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){
+    const badge=document.createElement('div');
+    badge.className='done-badge'; badge.textContent='✓ Done';
+    card.appendChild(badge);
+  }
+  progress[q.id]=true;
+  saveProgress(progress);
+  updateProgressBar();
+}
+
+function normalizeAns(s){
+  return s.trim().toLowerCase().replace(/\s+/g,'').replace(/×/g,'*');
+}
+
+function checkText(id, inp, btn, q){
+  const raw = normalizeAns(inp.value);
+  if(!raw) return;
+  const correct = q.answers.some(a=>raw===normalizeAns(a));
+  if(correct){
+    markDone(inp.closest('.ex-card'), q, inp, btn);
+  } else {
+    inp.classList.add('wrong-anim');
+    const attRow = inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div'); dot.className='attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(()=>{inp.classList.remove('wrong-anim'); inp.value=''; inp.focus();}, 400);
+    if(attRow.children.length >= 3){
+      const fb = inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no';
+      fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.val===q.answer) b.classList.add('opt-correct');
+  });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb = card.querySelector('.ex-feedback');
+  if(val===q.answer){
+    markDone(card, q, null, null);
+  } else {
+    fb.className='ex-feedback show no';
+    fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+  }
+}
+
+function buildExercises(){
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = '';
+  const groups = [
+    { key:'s1', label:'📋 Bagian 1 — Membaca Tabel Data',          cls:'sd-1' },
+    { key:'s2', label:'📊 Bagian 2 — Membaca Diagram Batang',      cls:'sd-2' },
+    { key:'s3', label:'📈 Bagian 3 — Membaca Diagram Garis',       cls:'sd-3' },
+    { key:'s4', label:'🗂️ Bagian 4 — Tabel Frekuensi',             cls:'sd-4' },
+    { key:'s5', label:'🔍 Bagian 5 — Analisis & Kesimpulan',       cls:'sd-5' },
+  ];
+  groups.forEach(g=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      card.className = 'ex-card data-card' + (isDone?' done-card':'');
+
+      const sysHTML = q.sys || '';
+
+      let inputHTML = '';
+      if(q.type==='text'){
+        inputHTML = `
+          <div class="ex-input-wrap">
+            <div class="ex-input-row">
+              <input type="text" class="ex-input ${isDone?'correct':''}"
+                placeholder="Jawaban?"
+                value="${isDone ? q.answers[0] : ''}"
+                ${isDone?'disabled':''}
+                onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+              <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+            </div>
+            <div class="attempts-row"></div>
+          </div>`;
+      } else {
+        const shuffled = [...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML = `<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="ex-num">Soal ${q.id.replace('e','')}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${sysHTML}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone ? q.explain : ''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn = card.querySelector('.ex-btn');
+        const inp = card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick = ()=>checkText(q.id, inp, btn, q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{
+          b.onclick = ()=>checkMCQ(b.dataset.val, b, q, card);
+        });
+      }
+      grid.appendChild(card);
+    });
+
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Extra PR Lesson 20? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+</script>
+</body>
+</html>

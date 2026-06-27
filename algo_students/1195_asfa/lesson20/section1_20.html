@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 20 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--violet:#a78bfa;--red:#ef4444;--cyan:#22d3ee;--emerald:#34d399;--amber:#fbbf24;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(167,139,250,0.07) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(34,211,238,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--violet);}
+  .wrapper{max-width:720px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:99px;transition:width 0.4s ease;}
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--violet);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title .hv{color:var(--violet);}
+  .slide-title .hc{color:var(--cyan);}
+  .slide-title .he{color:var(--emerald);}
+  .slide-title .ha{color:var(--amber);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+  .slide-sub strong{color:var(--violet);}
+
+  .callout{background:rgba(167,139,250,0.05);border-left:3px solid var(--violet);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--violet);}
+  .callout.cyan{background:rgba(34,211,238,0.05);border-color:var(--cyan);}
+  .callout.cyan strong{color:var(--cyan);}
+  .callout.emerald{background:rgba(52,211,153,0.05);border-color:var(--emerald);}
+  .callout.emerald strong{color:var(--emerald);}
+  .callout.amber{background:rgba(251,191,36,0.06);border-color:var(--amber);}
+  .callout.amber strong{color:var(--amber);}
+
+  /* Data table */
+  .data-table{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin:1.2rem 0;}
+  .data-table th{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--violet);background:rgba(167,139,250,0.06);padding:0.75rem;text-align:center;}
+  .data-table td{padding:0.75rem;text-align:center;border-top:1px solid var(--border);font-size:0.9rem;}
+  .data-table td.hi{color:var(--cyan);font-weight:700;}
+  .data-table td.lo{color:var(--amber);font-weight:700;}
+  .data-table td.max{color:var(--neon);font-weight:800;}
+
+  /* Bar chart visual */
+  .chart-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem 1.5rem 1rem;margin:1.2rem 0;}
+  .chart-label{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--violet);text-transform:uppercase;margin-bottom:1rem;text-align:center;}
+  .bars-area{display:flex;align-items:flex-end;gap:10px;height:120px;border-bottom:2px solid var(--border);padding-bottom:0;justify-content:center;}
+  .bc{display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .bv{font-size:0.7rem;color:var(--muted);}
+  .bf{border-radius:4px 4px 0 0;transition:height 0.5s ease;}
+  .bl{font-size:0.7rem;color:var(--muted);margin-top:4px;font-family:'Orbitron',monospace;}
+
+  /* Line chart SVG */
+  .line-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin:1.2rem 0;}
+  .line-label{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;margin-bottom:1rem;text-align:center;}
+
+  /* Freq table builder */
+  .raw-data{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:1rem;text-align:center;font-family:'Orbitron',monospace;font-size:1rem;color:var(--cyan);letter-spacing:2px;margin-bottom:1rem;line-height:1.8;}
+
+  /* Steps */
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:var(--violet);flex-shrink:0;}
+  .step-num.c{background:rgba(34,211,238,0.12);border-color:rgba(34,211,238,0.4);color:var(--cyan);}
+  .step-num.e{background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,0.4);color:var(--emerald);}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  /* pick/reveal */
+  .reveal-btn{background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.35);color:var(--violet);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(167,139,250,0.15);}
+  .reveal-box{background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+  .reveal-box .rule-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--violet);margin-bottom:0.4rem;}
+  .reveal-box .rule-sub{font-size:0.85rem;color:var(--muted);}
+
+  .pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:1.2rem 0;}
+  @media(max-width:480px){.pick-grid{grid-template-columns:1fr;}}
+  .pick-btn{width:100%;background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.7rem;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.88rem;transition:all 0.2s;line-height:1.4;}
+  .pick-btn:hover:not(:disabled){border-color:var(--violet);}
+  .pick-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .pick-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .pick-fb{font-size:0.82rem;color:var(--muted);margin-top:0.6rem;line-height:1.6;text-align:center;min-height:20px;}
+
+  /* Conclusion cards */
+  .conclude-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1.2rem 0;}
+  @media(max-width:480px){.conclude-grid{grid-template-columns:1fr;}}
+  .con-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem;font-size:0.85rem;line-height:1.6;}
+  .con-card .icon{font-size:1.3rem;display:block;margin-bottom:0.4rem;}
+  .con-card.v{border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.04);}
+  .con-card.c{border-color:rgba(34,211,238,0.3);background:rgba(34,211,238,0.04);}
+  .con-card.e{border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.04);}
+  .con-card.a{border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.04);}
+
+  /* Summary */
+  .summary-card{background:var(--card);border:1px solid rgba(167,139,250,0.3);border-radius:16px;padding:1.5rem 2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:2px;color:var(--violet);margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .summary-item span{flex-shrink:0;font-size:1rem;}
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;text-decoration:none;display:inline-block;transition:all 0.2s;}
+  .da-primary{background:linear-gradient(135deg,var(--violet),#7c3aed);color:#fff;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);}
+  .da-secondary:hover{border-color:var(--violet);color:var(--violet);}
+
+  /* Fill input */
+  .fill-row{display:flex;align-items:center;gap:0.8rem;margin:0.6rem 0;flex-wrap:wrap;}
+  .fill-lbl{font-size:0.9rem;color:var(--text);}
+  .fill-input{background:#12121c;border:1.5px solid var(--border);color:var(--violet);font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;width:80px;text-align:center;border-radius:8px;padding:0.4rem;transition:border-color 0.2s;}
+  .fill-input:focus{outline:none;border-color:var(--violet);}
+  .check-btn{background:linear-gradient(135deg,var(--violet),#7c3aed);color:#fff;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:2px;padding:0.45rem 1rem;border:none;border-radius:8px;cursor:pointer;font-weight:800;}
+  .check-result{font-family:'Orbitron',monospace;font-size:0.85rem;margin-top:0.6rem;min-height:22px;text-align:center;line-height:1.6;}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--violet),#7c3aed);border:none;color:#fff;font-weight:800;}
+  .nav-btn:hover:not(.next){border-color:var(--violet);color:var(--violet);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson20.html">LESSON 20</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+
+  <!-- SLIDE 1: Intro -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title">Jadi <span class="hv">Data Detective</span> 🕵️</div>
+      <div class="slide-sub">Data ada di mana-mana. Tapi data mentah itu berantakan dan susah dibaca. Tugas kita sebagai <strong>Data Detective</strong>: mengorganisir, menyajikan, dan menemukan cerita di balik angka-angka itu!</div>
+    </div>
+    <div class="callout"><strong>Apa itu Data?</strong> Data adalah kumpulan informasi berupa angka atau fakta yang dikumpulkan untuk diteliti. Contoh: nilai ujian, jumlah pengunjung toko, suhu harian.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><div class="stitle">📋 Baca Tabel</div><div class="sdesc">Tabel menyusun data dalam baris dan kolom — mudah untuk mencari nilai spesifik.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num c">2</div>
+        <div class="step-body"><div class="stitle">📊 Baca Diagram Batang</div><div class="sdesc">Batang tinggi = nilai besar. Diagram batang bagus untuk membandingkan kategori.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num e">3</div>
+        <div class="step-body"><div class="stitle">📈 Baca Diagram Garis</div><div class="sdesc">Garis yang naik/turun menunjukkan TREN atau perubahan data dari waktu ke waktu.</div></div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Misi 1: Baca Tabel →</button></div>
+  </div>
+
+  <!-- SLIDE 2: Baca Tabel -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Misi 1: <span class="hc">Baca Tabel</span> 📋</div>
+      <div class="slide-sub">Tabel ini mencatat jumlah pengunjung perpustakaan. Jadi detektif — baca datanya!</div>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Hari</th><th>Jumlah Pengunjung</th></tr></thead>
+      <tbody>
+        <tr><td>Senin</td><td>20</td></tr>
+        <tr><td>Selasa</td><td class="hi">32</td></tr>
+        <tr><td>Rabu</td><td>28</td></tr>
+        <tr><td>Kamis</td><td class="max">35</td></tr>
+        <tr><td>Jumat</td><td>25</td></tr>
+      </tbody>
+    </table>
+    <div class="callout cyan"><strong>Cara membaca tabel:</strong> Cari BARIS untuk kategorinya (hari), cari KOLOM untuk nilainya (pengunjung), lalu ketemu di persilangannya!</div>
+    <p style="font-size:0.9rem;color:var(--muted);margin-bottom:0.8rem;">Dari tabel ini, kita bisa langsung menjawab:</p>
+    <div class="conclude-grid">
+      <div class="con-card v"><span class="icon">🏆</span>Hari paling ramai: <strong style="color:var(--violet)">Kamis</strong> (35 orang)</div>
+      <div class="con-card c"><span class="icon">📉</span>Hari paling sepi: <strong style="color:var(--cyan)">Senin</strong> (20 orang)</div>
+      <div class="con-card e"><span class="icon">➕</span>Selisih terbanyak−tersedikit: 35−20 = <strong style="color:var(--emerald)">15 orang</strong></div>
+      <div class="con-card a"><span class="icon">∑</span>Total: 20+32+28+35+25 = <strong style="color:var(--amber)">140 orang</strong></div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Misi 2: Diagram Batang →</button></div>
+  </div>
+
+  <!-- SLIDE 3: Diagram Batang -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title">Misi 2: <span class="hc">Diagram Batang</span> 📊</div>
+      <div class="slide-sub">Data yang sama dari tabel Slide 2 kini disajikan sebagai diagram batang. Apa bedanya?</div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-label">Pengunjung Perpustakaan per Hari</div>
+      <div class="bars-area" id="barsArea1">
+        <div class="bc"><div class="bv">20</div><div class="bf" style="width:42px;height:69px;background:rgba(167,139,250,0.7);"></div><div class="bl">Sen</div></div>
+        <div class="bc"><div class="bv">32</div><div class="bf" style="width:42px;height:110px;background:rgba(34,211,238,0.7);"></div><div class="bl">Sel</div></div>
+        <div class="bc"><div class="bv">28</div><div class="bf" style="width:42px;height:96px;background:rgba(52,211,153,0.7);"></div><div class="bl">Rab</div></div>
+        <div class="bc"><div class="bv" style="color:var(--neon);font-weight:700;">35</div><div class="bf" style="width:42px;height:120px;background:rgba(0,245,196,0.8);"></div><div class="bl">Kam</div></div>
+        <div class="bc"><div class="bv">25</div><div class="bf" style="width:42px;height:86px;background:rgba(251,191,36,0.7);"></div><div class="bl">Jum</div></div>
+      </div>
+    </div>
+    <div class="callout"><strong>Keunggulan Diagram Batang:</strong> Kita bisa langsung melihat mana yang paling tinggi/pendek TANPA membaca angka satu per satu. Batang Kamis jelas paling tinggi!</div>
+    <div class="callout cyan"><strong>Tabel vs Diagram:</strong> Tabel = lebih presisi untuk angka spesifik. Diagram = lebih cepat untuk perbandingan visual. Keduanya berguna, tergantung kebutuhan!</div>
+    <p style="font-size:0.9rem;color:var(--muted);margin-bottom:0.8rem;">Coba tebak — batang mana yang paling mudah dibandingkan dari diagram ini?</p>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS3(this,'a')">Kamis (tertinggi) vs Senin (terendah)</button>
+      <button class="pick-btn" onclick="pickS3(this,'b')">Selasa vs Rabu saja</button>
+    </div>
+    <div class="pick-fb" id="fbS3"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Misi 3: Diagram Garis →</button></div>
+  </div>
+
+  <!-- SLIDE 4: Diagram Garis -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Misi 3: <span class="he">Diagram Garis</span> 📈</div>
+      <div class="slide-sub">Diagram garis menunjukkan <strong>TREN</strong> — apakah data naik, turun, atau berfluktuasi dari waktu ke waktu.</div>
+    </div>
+    <div class="line-wrap">
+      <div class="line-label">Pemain Game Online per Hari</div>
+      <svg width="100%" viewBox="0 0 380 160" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><polygon points="0 0,6 3,0 6" fill="#64748b"/></marker>
+        </defs>
+        <!-- grid -->
+        <line x1="50" y1="20" x2="360" y2="20" stroke="#2a2a40" stroke-width="1"/>
+        <line x1="50" y1="60" x2="360" y2="60" stroke="#2a2a40" stroke-width="1"/>
+        <line x1="50" y1="100" x2="360" y2="100" stroke="#2a2a40" stroke-width="1"/>
+        <line x1="50" y1="135" x2="360" y2="135" stroke="#64748b" stroke-width="1.5"/>
+        <line x1="50" y1="20" x2="50" y2="140" stroke="#64748b" stroke-width="1.5"/>
+        <!-- y labels -->
+        <text x="42" y="24" fill="#64748b" font-size="9" text-anchor="end">200</text>
+        <text x="42" y="64" fill="#64748b" font-size="9" text-anchor="end">150</text>
+        <text x="42" y="104" fill="#64748b" font-size="9" text-anchor="end">100</text>
+        <!-- data points: Mon=120, Tue=90, Wed=150, Thu=130, Fri=200 -->
+        <!-- scale: 200→y=20, 0→y=135. range=115px for 200 units. 1unit=0.575px -->
+        <!-- Mon=120 → y=135-(120*0.575)=135-69=66 -->
+        <!-- Tue=90  → y=135-(90*0.575)=135-51.75=83.25 -->
+        <!-- Wed=150 → y=135-(150*0.575)=135-86.25=48.75 -->
+        <!-- Thu=130 → y=135-(130*0.575)=135-74.75=60.25 -->
+        <!-- Fri=200 → y=135-(200*0.575)=135-115=20 -->
+        <!-- x positions: 80,140,200,260,330 -->
+        <polyline points="80,66 140,83 200,49 260,60 330,20" fill="none" stroke="url(#lineGrad)" stroke-width="2.5" stroke-linejoin="round"/>
+        <defs><linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>
+        <!-- dots -->
+        <circle cx="80" cy="66" r="5" fill="#a78bfa"/>
+        <circle cx="140" cy="83" r="5" fill="#c084fc"/>
+        <circle cx="200" cy="49" r="5" fill="#34d399"/>
+        <circle cx="260" cy="60" r="5" fill="#22d3ee"/>
+        <circle cx="330" cy="20" r="6" fill="#00f5c4" stroke="#fff" stroke-width="1.5"/>
+        <!-- values -->
+        <text x="80" y="58" fill="#a78bfa" font-size="9" text-anchor="middle">120</text>
+        <text x="140" y="76" fill="#c084fc" font-size="9" text-anchor="middle">90</text>
+        <text x="200" y="41" fill="#34d399" font-size="9" text-anchor="middle">150</text>
+        <text x="260" y="52" fill="#22d3ee" font-size="9" text-anchor="middle">130</text>
+        <text x="330" y="13" fill="#00f5c4" font-size="9" text-anchor="middle" font-weight="700">200</text>
+        <!-- x labels -->
+        <text x="80" y="152" fill="#64748b" font-size="9" text-anchor="middle">Sen</text>
+        <text x="140" y="152" fill="#64748b" font-size="9" text-anchor="middle">Sel</text>
+        <text x="200" y="152" fill="#64748b" font-size="9" text-anchor="middle">Rab</text>
+        <text x="260" y="152" fill="#64748b" font-size="9" text-anchor="middle">Kam</text>
+        <text x="330" y="152" fill="#64748b" font-size="9" text-anchor="middle">Jum</text>
+      </svg>
+    </div>
+    <div class="callout emerald"><strong>Cara membaca tren:</strong> Lihat arah garis secara keseluruhan. Naik ke kanan = tren NAIK. Turun ke kanan = tren TURUN. Garis bisa naik-turun sesaat, tapi trennya tetap bisa naik.</div>
+    <p style="font-size:0.9rem;color:var(--muted);margin-bottom:0.8rem;">Apa yang terjadi pada Selasa? Dan apa tren keseluruhannya?</p>
+    <button class="reveal-btn" onclick="toggleReveal('rv4')">🔍 Lihat Analisis</button>
+    <div class="reveal-box" id="rv4">
+      <div class="rule-text">📉 Selasa: sempat TURUN dari 120 ke 90</div>
+      <div class="rule-sub" style="margin-top:0.5rem;">Tapi secara keseluruhan, dari Senin (120) ke Jumat (200), trennya <strong style="color:#a78bfa">NAIK</strong>. Puncaknya di Jumat dengan 200 pemain! Diagram garis membantu kita melihat ini dengan cepat.</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Misi 4: Data Mentah →</button></div>
+  </div>
+
+  <!-- SLIDE 5: Data Mentah -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title">Misi 4: <span class="ha">Data Mentah</span> 🗂️</div>
+      <div class="slide-sub">Sebelum kita bisa membuat tabel atau diagram, kita sering menerima <strong>data mentah</strong> — angka-angka yang belum diorganisir.</div>
+    </div>
+    <div class="raw-data">80 · 75 · 90 · 80 · 70 · 75 · 80 · 95 · 90 · 80</div>
+    <div class="callout amber"><strong>Masalah data mentah:</strong> Susah langsung menjawab "nilai apa yang paling sering muncul?" atau "berapa siswa yang dapat nilai 80?" Harus dihitung manual satu per satu!</div>
+    <p style="font-size:0.9rem;color:var(--muted);margin-bottom:0.8rem;">Coba hitung sendiri: berapa kali nilai <strong style="color:var(--violet)">80</strong> muncul dalam data di atas?</p>
+    <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem;">
+      <input class="fill-input" id="raw5" placeholder="?" maxlength="3"/>
+      <button class="check-btn" onclick="checkRaw5()">CEK</button>
+    </div>
+    <div class="check-result" id="resRaw5"></div>
+    <div class="callout"><strong>Solusinya:</strong> Kita butuh <strong>Tabel Frekuensi</strong> — cara paling rapi untuk mengorganisir data mentah. Kita pelajari di slide berikutnya!</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Tabel Frekuensi →</button></div>
+  </div>
+
+  <!-- SLIDE 6: Tabel Frekuensi -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title">Membuat <span class="hv">Tabel Frekuensi</span> 📋</div>
+      <div class="slide-sub">Frekuensi = berapa kali suatu nilai muncul dalam data. Tabel frekuensi = tabel yang merangkum ini semua!</div>
+    </div>
+    <div class="raw-data" style="font-size:0.85rem;">Data: 80 · 75 · 90 · 80 · 70 · 75 · 80 · 95 · 90 · 80</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><div class="stitle">Identifikasi nilai unik</div><div class="sdesc">Dari data di atas, nilai uniknya: 70, 75, 80, 90, 95.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num c">2</div>
+        <div class="step-body"><div class="stitle">Hitung frekuensi tiap nilai</div><div class="sdesc">Hitung berapa kali tiap nilai muncul dengan cara tally (coret-coretan).</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num e">3</div>
+        <div class="step-body"><div class="stitle">Susun ke tabel</div><div class="sdesc">Nilai di kolom kiri, frekuensi di kolom kanan. Total frekuensi harus = jumlah data!</div></div>
+      </div>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Nilai</th><th>Frekuensi</th></tr></thead>
+      <tbody>
+        <tr><td>70</td><td>1</td></tr>
+        <tr><td>75</td><td>2</td></tr>
+        <tr><td class="hi">80</td><td class="max">4 ← terbanyak!</td></tr>
+        <tr><td>90</td><td>2</td></tr>
+        <tr><td>95</td><td>1</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong style="color:var(--violet)">10 ✓</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="callout emerald"><strong>Cek selalu:</strong> Total frekuensi harus sama dengan jumlah data asli. Di sini totalnya 1+2+4+2+1 = 10 ✓ (sesuai dengan 10 data mentah tadi!)</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">Dari Tabel ke Diagram →</button></div>
+  </div>
+
+  <!-- SLIDE 7: Dari Tabel ke Diagram -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">Dari Tabel ke <span class="hc">Diagram</span> 📊</div>
+      <div class="slide-sub">Tabel frekuensi tadi bisa kita ubah jadi diagram batang untuk memvisualisasikan data!</div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-label">Distribusi Nilai Ujian (n=10)</div>
+      <div class="bars-area">
+        <div class="bc"><div class="bv">1</div><div class="bf" style="width:38px;height:30px;background:rgba(167,139,250,0.7);"></div><div class="bl">70</div></div>
+        <div class="bc"><div class="bv">2</div><div class="bf" style="width:38px;height:60px;background:rgba(34,211,238,0.7);"></div><div class="bl">75</div></div>
+        <div class="bc"><div class="bv" style="color:var(--neon);font-weight:700;">4</div><div class="bf" style="width:38px;height:120px;background:rgba(0,245,196,0.8);"></div><div class="bl" style="color:var(--neon);">80</div></div>
+        <div class="bc"><div class="bv">2</div><div class="bf" style="width:38px;height:60px;background:rgba(34,211,238,0.7);"></div><div class="bl">90</div></div>
+        <div class="bc"><div class="bv">1</div><div class="bf" style="width:38px;height:30px;background:rgba(167,139,250,0.7);"></div><div class="bl">95</div></div>
+      </div>
+    </div>
+    <div class="callout"><strong>Yang langsung terlihat dari diagram:</strong> Batang nilai <strong>80</strong> paling tinggi — artinya nilai 80 paling sering muncul. Kita bilang nilai 80 adalah nilai yang paling <strong>dominan</strong> dalam data ini.</div>
+    <p style="font-size:0.9rem;color:var(--muted);margin-bottom:0.8rem;">Dari diagram ini, jawab pertanyaan investigasi:</p>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS7(this,'a')">Nilai paling jarang: 70 dan 95</button>
+      <button class="pick-btn" onclick="pickS7(this,'b')">Nilai paling jarang: 80</button>
+      <button class="pick-btn" onclick="pickS7(this,'c')">Semua nilai sama seringnya</button>
+      <button class="pick-btn" onclick="pickS7(this,'d')">Nilai paling jarang: 75 dan 90</button>
+    </div>
+    <div class="pick-fb" id="fbS7"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Mini Investigasi →</button></div>
+  </div>
+
+  <!-- SLIDE 8: Mini Investigasi -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">🔬 Mini <span class="hv">Investigasi</span></div>
+      <div class="slide-sub">Sekarang kamu yang jadi detektifnya! Susun tabel frekuensi dari data baru ini.</div>
+    </div>
+    <p style="font-size:0.9rem;color:var(--muted);margin-bottom:0.5rem;">Jumlah buku yang dibaca siswa dalam seminggu:</p>
+    <div class="raw-data">2 · 5 · 4 · 3 · 5 · 4 · 5 · 2 · 1 · 4</div>
+    <p style="font-size:0.9rem;color:var(--muted);margin:1rem 0 0.5rem;">Lengkapi tabel frekuensi berikut:</p>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;align-items:flex-start;">
+      <table class="data-table" style="max-width:260px;">
+        <thead><tr><th>Jumlah Buku</th><th>Frekuensi</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><input class="fill-input" id="f1" placeholder="?" maxlength="2" style="width:60px;font-size:0.9rem;padding:0.3rem;"/></td></tr>
+          <tr><td>2</td><td><input class="fill-input" id="f2" placeholder="?" maxlength="2" style="width:60px;font-size:0.9rem;padding:0.3rem;"/></td></tr>
+          <tr><td>3</td><td><input class="fill-input" id="f3" placeholder="?" maxlength="2" style="width:60px;font-size:0.9rem;padding:0.3rem;"/></td></tr>
+          <tr><td>4</td><td><input class="fill-input" id="f4" placeholder="?" maxlength="2" style="width:60px;font-size:0.9rem;padding:0.3rem;"/></td></tr>
+          <tr><td>5</td><td><input class="fill-input" id="f5" placeholder="?" maxlength="2" style="width:60px;font-size:0.9rem;padding:0.3rem;"/></td></tr>
+        </tbody>
+      </table>
+      <div>
+        <button class="check-btn" onclick="checkSlide8()">CEK TABEL</button>
+        <div class="check-result" id="resSlide8" style="max-width:280px;text-align:left;margin-top:0.8rem;"></div>
+      </div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Detective Challenge →</button></div>
+  </div>
+
+  <!-- SLIDE 9: Detective Challenge -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">🕵️ <span class="hv">Detective</span> Challenge</div>
+      <div class="slide-sub">Dua diagram batang ini menampilkan data berbeda. Analisis dan bandingkan keduanya!</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+      <div class="chart-wrap" style="padding:1rem;">
+        <div class="chart-label" style="font-size:0.55rem;">Diagram A: Nilai Kelas 8A</div>
+        <div class="bars-area" style="height:90px;gap:7px;">
+          <div class="bc"><div class="bv" style="font-size:0.6rem;">3</div><div class="bf" style="width:28px;height:67px;background:rgba(167,139,250,0.7);"></div><div class="bl" style="font-size:0.55rem;">70</div></div>
+          <div class="bc"><div class="bv" style="font-size:0.6rem;">3</div><div class="bf" style="width:28px;height:67px;background:rgba(34,211,238,0.7);"></div><div class="bl" style="font-size:0.55rem;">75</div></div>
+          <div class="bc"><div class="bv" style="font-size:0.6rem;">4</div><div class="bf" style="width:28px;height:90px;background:rgba(52,211,153,0.7);"></div><div class="bl" style="font-size:0.55rem;">80</div></div>
+          <div class="bc"><div class="bv" style="font-size:0.6rem;">3</div><div class="bf" style="width:28px;height:67px;background:rgba(251,191,36,0.7);"></div><div class="bl" style="font-size:0.55rem;">85</div></div>
+          <div class="bc"><div class="bv" style="font-size:0.6rem;">3</div><div class="bf" style="width:28px;height:67px;background:rgba(239,68,68,0.7);"></div><div class="bl" style="font-size:0.55rem;">90</div></div>
+        </div>
+      </div>
+      <div class="chart-wrap" style="padding:1rem;">
+        <div class="chart-label" style="font-size:0.55rem;">Diagram B: Nilai Kelas 8B</div>
+        <div class="bars-area" style="height:90px;gap:7px;">
+          <div class="bc"><div class="bv" style="font-size:0.6rem;">1</div><div class="bf" style="width:28px;height:23px;background:rgba(167,139,250,0.7);"></div><div class="bl" style="font-size:0.55rem;">70</div></div>
+          <div class="bc"><div class="bv" style="font-size:0.6rem;">2</div><div class="bf" style="width:28px;height:45px;background:rgba(34,211,238,0.7);"></div><div class="bl" style="font-size:0.55rem;">75</div></div>
+          <div class="bc"><div class="bv" style="font-size:0.6rem;">8</div><div class="bf" style="width:28px;height:90px;background:rgba(0,245,196,0.8);"></div><div class="bl" style="font-size:0.55rem;color:var(--neon);">80</div></div>
+          <div class="bc"><div class="bv" style="font-size:0.6rem;">2</div><div class="bf" style="width:28px;height:45px;background:rgba(251,191,36,0.7);"></div><div class="bl" style="font-size:0.55rem;">85</div></div>
+          <div class="bc"><div class="bv" style="font-size:0.6rem;">3</div><div class="bf" style="width:28px;height:67px;background:rgba(239,68,68,0.7);"></div><div class="bl" style="font-size:0.55rem;">90</div></div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:0.9rem;color:var(--muted);margin:1rem 0 0.5rem;">Diagram mana yang menunjukkan nilai lebih MERATA di antara semua siswa?</p>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS9(this,'a')">Diagram A — lebih merata</button>
+      <button class="pick-btn" onclick="pickS9(this,'b')">Diagram B — lebih merata</button>
+    </div>
+    <div class="pick-fb" id="fbS9"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Refleksi →</button></div>
+  </div>
+
+  <!-- SLIDE 10: Refleksi -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Refleksi &amp; <span class="he">Penutup</span> 🎉</div>
+    </div>
+    <div class="summary-card">
+      <h3>✅ Yang Kamu Pelajari</h3>
+      <div class="summary-item"><span>📋</span>Tabel menyusun data rapi dalam baris dan kolom — cocok untuk mencari nilai spesifik</div>
+      <div class="summary-item"><span>📊</span>Diagram batang membantu perbandingan antar kategori secara visual — batang paling tinggi = nilai terbesar</div>
+      <div class="summary-item"><span>📈</span>Diagram garis menunjukkan TREN perubahan data dari waktu ke waktu</div>
+      <div class="summary-item"><span>🗂️</span>Tabel frekuensi mengorganisir data mentah menjadi ringkasan yang bermakna — total frekuensi harus = jumlah data</div>
+      <div class="summary-item"><span>🔍</span>Menarik kesimpulan = membandingkan, menemukan pola, dan menjelaskan APA yang data ceritakan</div>
+    </div>
+    <div class="callout emerald"><strong>"Data bukan hanya kumpulan angka. Jika disusun dengan baik, data dapat menceritakan sebuah kisah."</strong></div>
+    <div class="callout cyan"><strong>Preview selanjutnya:</strong> Kalau kita hanya boleh menjelaskan seluruh data menggunakan SATU angka saja... angka apa yang paling tepat? 🤔</div>
+    <div class="done-actions">
+      <a href="quicktest20.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise20.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson20.html" class="da-btn da-secondary">Lesson 20</a>
+    </div>
+  </div>
+
+</div>
+<script>
+let currentSlide=1;
+const TOTAL=10;
+function goSlide(n){
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide=n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width=((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleReveal(id){document.getElementById(id).classList.toggle('show');}
+function pickS3(btn,ans){
+  document.querySelectorAll('#slide3 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS3');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Perbandingan paling jelas memang antara yang tertinggi (Kamis) dan terendah (Senin) — perbedaannya langsung terlihat dari panjang batang!';}
+  else{btn.classList.add('wrong');document.querySelectorAll('#slide3 .pick-btn')[0].classList.add('correct');fb.innerHTML='❌ Sebenarnya jawaban A lebih tepat — perbandingan paling mencolok adalah antara nilai tertinggi dan terendah!';}
+}
+function pickS7(btn,ans){
+  document.querySelectorAll('#slide7 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS7');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Benar! Nilai 70 dan 95 masing-masing hanya muncul 1 kali — batangnya paling pendek, jadi paling jarang muncul!';}
+  else{btn.classList.add('wrong');document.querySelectorAll('#slide7 .pick-btn')[0].classList.add('correct');fb.innerHTML='❌ Cek lagi! Nilai 70 dan 95 punya frekuensi 1 (terendah = paling jarang). Nilai 80 justru yang paling SERING!';}
+}
+function pickS9(btn,ans){
+  document.querySelectorAll('#slide9 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS9');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Diagram A: batang-batangnya hampir sama tinggi (3,3,4,3,3) → data terdistribusi merata. Diagram B: didominasi nilai 80 (frekuensi 8) → ada nilai yang sangat dominan!';}
+  else{btn.classList.add('wrong');document.querySelectorAll('#slide9 .pick-btn')[0].classList.add('correct');fb.innerHTML='❌ Diagram B justru punya nilai dominan (80 muncul 8 kali dari 16 data!). Diagram A yang batangnya lebih seragam = data lebih merata!';}
+}
+function checkRaw5(){
+  const val=(document.getElementById('raw5').value||'').trim();
+  const res=document.getElementById('resRaw5');
+  if(val==='4'){res.innerHTML='🎉 BENAR! Nilai 80 muncul di posisi 1, 4, 7, 10 → total 4 kali.';res.style.color='var(--neon)';}
+  else if(val===''){res.innerHTML='Isi dulu jawabannya ya!';res.style.color='var(--muted)';}
+  else{res.innerHTML='❌ Belum tepat. Hitung lagi dari kiri: posisi 1, 4, 7, 10 — semuanya angka 80!';res.style.color='var(--red)';}
+}
+function checkSlide8(){
+  const answers={f1:'1',f2:'2',f3:'1',f4:'3',f5:'3'};
+  let correct=0,total=5;
+  Object.entries(answers).forEach(([id,expected])=>{
+    const val=(document.getElementById(id).value||'').trim();
+    if(val===expected) correct++;
+  });
+  const res=document.getElementById('resSlide8');
+  if(correct===5){res.innerHTML='🎉 SEMPURNA! Jawaban benar semua!\n1:1, 2:2, 3:1, 4:3, 5:3. Total=10 ✓';res.style.color='var(--neon)';}
+  else if(correct>0){res.innerHTML=`✅ ${correct} dari 5 benar.\nJawaban: 1→1, 2→2, 3→1, 4→3, 5→3\nTotal harus 10!`;res.style.color='var(--amber)';}
+  else{res.innerHTML='Belum ada yang benar. Hitung satu per satu dari data:\n2,5,4,3,5,4,5,2,1,4';res.style.color='var(--red)';}
+}
+</script>
+</body>
+</html>

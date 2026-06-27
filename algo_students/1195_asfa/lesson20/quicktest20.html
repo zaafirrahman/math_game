@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Test · Lesson 20 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--red:#ef4444;--cyan:#22d3ee;--emerald:#34d399;--amber:#fbbf24;--violet:#a78bfa;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 25%,rgba(245,158,11,0.08) 0%,transparent 50%),radial-gradient(ellipse at 85% 70%,rgba(167,139,250,0.07) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--accent);}
+  .wrapper{max-width:660px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  #intro{text-align:center;}
+  .boss-icon{font-size:4.5rem;display:block;margin-bottom:1.2rem;animation:pulse 1.2s ease infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+  .boss-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,5vw,2rem);font-weight:900;color:var(--accent);margin-bottom:0.7rem;text-shadow:0 0 30px rgba(245,158,11,0.4);}
+  .boss-sub{color:var(--muted);line-height:1.7;margin-bottom:2rem;font-size:0.92rem;}
+  .boss-sub strong{color:var(--accent);}
+  .info-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
+  @media(max-width:480px){.info-cards{grid-template-columns:1fr;}}
+  .info-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;text-align:center;}
+  .info-val{font-family:'Orbitron',monospace;font-size:1.8rem;font-weight:900;color:var(--accent);margin-bottom:0.3rem;}
+  .info-lbl{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+  .start-btn{background:linear-gradient(135deg,var(--accent),#d97706);color:#000;font-weight:800;padding:1rem 3rem;border-radius:14px;border:none;font-family:'Orbitron',monospace;font-size:1rem;letter-spacing:3px;cursor:pointer;box-shadow:0 4px 20px rgba(245,158,11,0.4);transition:all 0.2s;}
+  .start-btn:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(245,158,11,0.5);}
+  #game{display:none;}
+  .hud{display:flex;gap:0.8rem;margin-bottom:1.5rem;}
+  .hud-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.7rem 1rem;text-align:center;flex:1;}
+  .hud-val{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:700;}
+  .hud-lbl{font-size:0.6rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:0.1rem;}
+  .hud-val.sv{color:var(--accent);}
+  .hud-val.qv{color:var(--violet);}
+  .hud-val.tv{color:var(--text);transition:color 0.3s;}
+  .hud-val.tv.warn{color:var(--red);animation:blink 0.5s ease infinite;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.4;}}
+  .timer-bar{height:5px;background:var(--border);border-radius:99px;margin-bottom:1.5rem;overflow:hidden;}
+  .timer-fill{height:100%;background:linear-gradient(90deg,var(--accent),#f59e0b);border-radius:99px;transition:width 0.25s linear;}
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem;margin-bottom:1.2rem;}
+  .q-label{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:0.8rem;}
+  .q-text{font-size:0.95rem;line-height:1.7;color:var(--text);margin-bottom:1.2rem;}
+  /* mini table */
+  .mini-table{width:100%;border-collapse:separate;border-spacing:0;background:#12121c;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1rem;font-size:0.85rem;}
+  .mini-table th{font-family:'Orbitron',monospace;font-size:0.58rem;letter-spacing:2px;color:var(--violet);background:rgba(167,139,250,0.07);padding:0.55rem;text-align:center;}
+  .mini-table td{padding:0.5rem;text-align:center;border-top:1px solid var(--border);}
+  /* mini chart */
+  .mini-chart{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.8rem 0.5rem 0.4rem;margin-bottom:1rem;}
+  .mini-chart-title{font-family:'Orbitron',monospace;font-size:0.5rem;letter-spacing:2px;color:var(--muted);text-align:center;margin-bottom:0.4rem;}
+  .bars-wrap{display:flex;align-items:flex-end;gap:5px;height:60px;justify-content:center;}
+  .bc{display:flex;flex-direction:column;align-items:center;gap:2px;}
+  .bv{font-size:0.58rem;color:var(--muted);}
+  .bf{border-radius:3px 3px 0 0;}
+  .bl{font-size:0.58rem;color:var(--muted);font-family:'Orbitron',monospace;}
+  /* raw */
+  .raw-box{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.75rem;text-align:center;font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--cyan);letter-spacing:2px;margin-bottom:1rem;line-height:1.8;}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;}
+  @media(max-width:360px){.opts{grid-template-columns:1fr;}}
+  .opt-btn{background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.7rem 0.8rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:1px;transition:all 0.2s;text-align:center;line-height:1.4;}
+  .opt-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(245,158,11,0.07);}
+  .opt-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .feedback{text-align:center;font-size:0.8rem;letter-spacing:1px;min-height:28px;margin-top:0.7rem;line-height:1.5;font-family:'Orbitron',monospace;}
+  .feedback.ok{color:var(--neon);}
+  .feedback.ko{color:var(--red);}
+  #result{display:none;text-align:center;}
+  .score-big{font-family:'Orbitron',monospace;font-size:clamp(3rem,12vw,5rem);font-weight:900;color:var(--accent);line-height:1;margin-bottom:0.5rem;}
+  .score-label{font-size:0.85rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:2rem;}
+  .grade-badge{display:inline-block;font-family:'Orbitron',monospace;font-size:1.1rem;letter-spacing:3px;padding:0.5rem 1.5rem;border-radius:12px;margin-bottom:2rem;}
+  .gs{background:rgba(0,245,196,0.1);border:2px solid var(--neon);color:var(--neon);}
+  .ga{background:rgba(245,158,11,0.1);border:2px solid var(--accent);color:var(--accent);}
+  .gb{background:rgba(167,139,250,0.1);border:2px solid var(--violet);color:var(--violet);}
+  .gc{background:rgba(239,68,68,0.1);border:2px solid var(--red);color:var(--red);}
+  .result-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .act-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;}
+  .act-primary{background:linear-gradient(135deg,var(--accent),#d97706);color:#000;border:none;font-weight:800;}
+  .act-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .act-primary:hover{transform:translateY(-2px);}
+  .act-secondary:hover{border-color:var(--accent);color:var(--accent);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson20.html">LESSON 20</a>
+  <span>›</span>
+  <span class="current">QUICK TEST</span>
+</nav>
+<div class="wrapper">
+  <div id="intro">
+    <span class="boss-icon">⚡</span>
+    <div class="boss-title">Quick Test · Investigasi Data</div>
+    <div class="boss-sub">Saatnya tes kemampuan Data Detective kamu! <strong>10 soal analisis data</strong> dengan timer 30 detik per soal. Siap investigasi?</div>
+    <div class="info-cards">
+      <div class="info-card"><div class="info-val">10</div><div class="info-lbl">Soal</div></div>
+      <div class="info-card"><div class="info-val" style="color:var(--accent)">30s</div><div class="info-lbl">Timer</div></div>
+      <div class="info-card"><div class="info-val">+10</div><div class="info-lbl">Per Soal</div></div>
+    </div>
+    <button class="start-btn" onclick="startGame()">MULAI INVESTIGASI 🔍</button>
+  </div>
+  <div id="game">
+    <div class="hud">
+      <div class="hud-item"><div class="hud-val sv" id="scoreV">0</div><div class="hud-lbl">Skor</div></div>
+      <div class="hud-item"><div class="hud-val qv" id="qV">1/10</div><div class="hud-lbl">Soal</div></div>
+      <div class="hud-item"><div class="hud-val tv" id="timerV">30</div><div class="hud-lbl">Detik</div></div>
+    </div>
+    <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+    <div class="q-card">
+      <div class="q-label" id="qLabel">⚡ Investigasi Data</div>
+      <div id="visualDiv"></div>
+      <div class="q-text" id="questionText"></div>
+      <div class="opts" id="optsDiv"></div>
+      <div class="feedback" id="feedbackDiv"></div>
+    </div>
+  </div>
+  <div id="result">
+    <div style="font-size:4rem;margin-bottom:1rem;">🏆</div>
+    <div class="score-big" id="finalScore">0</div>
+    <div class="score-label">poin dari 100</div>
+    <div class="grade-badge" id="gradeBadge">—</div>
+    <div class="result-actions">
+      <button class="act-btn act-primary" onclick="resetGame()">ULANG</button>
+      <a href="exercise20.html" class="act-btn act-secondary">Exercise 🏋️</a>
+      <a href="lesson20.html" class="act-btn act-secondary">Lesson 20</a>
+    </div>
+  </div>
+</div>
+<script>
+const QS=[
+  {
+    type:'table',thead:['Hari','Pengunjung'],
+    tbody:[['Senin','20'],['Selasa','32'],['Rabu','28'],['Kamis','35'],['Jumat','25']],
+    q:'Berapa selisih pengunjung terbanyak dan tersedikit?',
+    cx:'15', wx:['12','10','7'],
+    expl:'Terbanyak Kamis=35, tersedikit Senin=20. Selisih=35−20=15.'
+  },
+  {
+    type:'bars',chartTitle:'Nilai Ulangan Harian',
+    data:[{lbl:'Ali',val:70,c:'rgba(167,139,250,0.8)'},{lbl:'Budi',val:85,c:'rgba(34,211,238,0.8)'},{lbl:'Cici',val:90,c:'rgba(0,245,196,0.8)'},{lbl:'Dini',val:75,c:'rgba(251,191,36,0.8)'},{lbl:'Eko',val:60,c:'rgba(239,68,68,0.8)'}],
+    q:'Siapa yang mendapat nilai di atas 80?',
+    cx:'Budi dan Cici', wx:['Ali dan Dini','Cici saja','Budi, Cici, dan Dini'],
+    expl:'Budi=85>80 ✓, Cici=90>80 ✓. Ali=70, Dini=75, Eko=60 semuanya di bawah 80.'
+  },
+  {
+    type:'table',thead:['Nilai','Frekuensi'],
+    tbody:[['60','2'],['70','5'],['80','8'],['90','3'],['100','2']],
+    q:'Berapa total siswa yang datanya tercatat dalam tabel ini?',
+    cx:'20', wx:['18','22','15'],
+    expl:'Total=2+5+8+3+2=20 siswa.'
+  },
+  {
+    type:'raw',rawStr:'5 · 3 · 4 · 5 · 3 · 5 · 4 · 5 · 3 · 4',
+    q:'Dari data di atas, berapa frekuensi nilai 5?',
+    cx:'4', wx:['3','5','2'],
+    expl:'Nilai 5 muncul di posisi 1,4,6,8 → 4 kali.'
+  },
+  {
+    type:'table',thead:['Nilai','Frekuensi'],
+    tbody:[['60','2'],['70','5'],['80','8'],['90','3'],['100','2']],
+    q:'Nilai apa yang paling sering muncul?',
+    cx:'80', wx:['70','90','60'],
+    expl:'Nilai 80 punya frekuensi 8 — tertinggi dalam tabel.'
+  },
+  {
+    type:'bars',chartTitle:'Buku Dibaca per Minggu',
+    data:[{lbl:'1',val:2,c:'rgba(167,139,250,0.7)'},{lbl:'2',val:3,c:'rgba(34,211,238,0.7)'},{lbl:'3',val:1,c:'rgba(52,211,153,0.7)'},{lbl:'4',val:4,c:'rgba(0,245,196,0.8)'},{lbl:'5',val:2,c:'rgba(251,191,36,0.7)'}],
+    q:'Berapa buku yang paling sering dibaca siswa?',
+    cx:'4 buku', wx:['2 buku','5 buku','3 buku'],
+    expl:'Batang "4" paling tinggi dengan frekuensi 4 → nilai 4 paling sering muncul.'
+  },
+  {
+    type:'raw',rawStr:'80 · 75 · 90 · 80 · 70 · 75 · 80 · 95 · 90 · 80',
+    q:'Berapa banyak nilai BERBEDA dalam data di atas?',
+    cx:'5', wx:['4','6','10'],
+    expl:'Nilai unik: 70, 75, 80, 90, 95 → ada 5 nilai berbeda.'
+  },
+  {
+    type:'tren',
+    days:['Sen','Sel','Rab','Kam','Jum'],
+    vals:[50,60,55,70,80],
+    q:'Secara keseluruhan, tren data dari Senin ke Jumat adalah?',
+    cx:'Meningkat (naik)', wx:['Menurun (turun)','Stabil (tetap)','Tidak berpola'],
+    expl:'Meski Rabu sempat turun ke 55, secara keseluruhan tren dari 50 ke 80 adalah NAIK.'
+  },
+  {
+    type:'table',thead:['Hari','Pengunjung'],
+    tbody:[['Senin','45'],['Selasa','60'],['Rabu','55'],['Kamis','70'],['Jumat','50']],
+    q:'Pada hari apa terjadi penurunan dibanding hari sebelumnya?',
+    cx:'Rabu dan Jumat', wx:['Selasa dan Kamis','Rabu saja','Jumat saja'],
+    expl:'Rabu(55)<Selasa(60) → turun. Jumat(50)<Kamis(70) → turun. Selasa dan Kamis naik.'
+  },
+  {
+    type:'bars',chartTitle:'Nilai Kelas 8C',
+    data:[{lbl:'65',val:2,c:'rgba(239,68,68,0.7)'},{lbl:'75',val:4,c:'rgba(251,191,36,0.7)'},{lbl:'85',val:6,c:'rgba(52,211,153,0.8)'},{lbl:'95',val:3,c:'rgba(34,211,238,0.7)'}],
+    q:'Berapa persen siswa yang mendapat nilai 85? (Total=15)',
+    cx:'40%', wx:['30%','50%','25%'],
+    expl:'Nilai 85 ada 6 dari 15 siswa. 6/15 × 100% = 40%.'
+  },
+];
+
+let cur=0, score=0, timerI=null, answered=false;
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
+function renderVisual(q){
+  const d=document.getElementById('visualDiv');
+  if(q.type==='table'){
+    let h='<table class="mini-table"><thead><tr>';
+    q.thead.forEach(t=>h+=`<th>${t}</th>`);
+    h+='</tr></thead><tbody>';
+    q.tbody.forEach(r=>{h+='<tr>';r.forEach(c=>h+=`<td>${c}</td>`);h+='</tr>';});
+    h+='</tbody></table>';
+    d.innerHTML=h;
+  } else if(q.type==='bars'){
+    const mv=Math.max(...q.data.map(x=>x.val));
+    let h=`<div class="mini-chart"><div class="mini-chart-title">${q.chartTitle}</div><div class="bars-wrap">`;
+    q.data.forEach(b=>{
+      const bh=Math.round((b.val/mv)*58);
+      h+=`<div class="bc"><div class="bv">${b.val}</div><div class="bf" style="width:34px;height:${bh}px;background:${b.c};"></div><div class="bl">${b.lbl}</div></div>`;
+    });
+    h+='</div></div>';
+    d.innerHTML=h;
+  } else if(q.type==='raw'){
+    d.innerHTML=`<div class="raw-box">${q.rawStr}</div>`;
+  } else if(q.type==='tren'){
+    // simple SVG line chart
+    const vals=q.vals, days=q.days;
+    const mv=Math.max(...vals), n=vals.length;
+    const xs=[55,105,155,205,255];
+    const ys=vals.map(v=>100-Math.round((v/mv)*75));
+    let pts=xs.map((x,i)=>`${x},${ys[i]}`).join(' ');
+    let dots=xs.map((x,i)=>`<circle cx="${x}" cy="${ys[i]}" r="4" fill="#a78bfa"/><text x="${x}" y="${ys[i]-8}" fill="#64748b" font-size="8" text-anchor="middle">${vals[i]}</text>`).join('');
+    let xlbls=days.map((d,i)=>`<text x="${xs[i]}" y="118" fill="#64748b" font-size="8" text-anchor="middle">${d}</text>`).join('');
+    d.innerHTML=`<div class="mini-chart"><div class="mini-chart-title">Tren Data Harian</div><svg width="100%" viewBox="0 0 310 130"><line x1="40" y1="110" x2="280" y2="110" stroke="#2a2a40" stroke-width="1.5"/><polyline points="${pts}" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linejoin="round"/>${dots}${xlbls}</svg></div>`;
+  }
+}
+function showQ(){
+  if(cur>=QS.length){endGame();return;}
+  answered=false;
+  const q=QS[cur];
+  document.getElementById('qV').textContent=(cur+1)+'/10';
+  renderVisual(q);
+  document.getElementById('questionText').innerHTML=q.q;
+  const opts=shuffle([q.cx,...q.wx]);
+  const od=document.getElementById('optsDiv');
+  od.innerHTML='';
+  opts.forEach(v=>{
+    const b=document.createElement('button');
+    b.className='opt-btn'; b.textContent=v; b.dataset.v=v;
+    b.onclick=()=>pick(v,q.cx);
+    od.appendChild(b);
+  });
+  document.getElementById('feedbackDiv').textContent='';
+  document.getElementById('feedbackDiv').className='feedback';
+  startTimer();
+}
+function startTimer(){
+  clearInterval(timerI);
+  let t=30;
+  const tv=document.getElementById('timerV');
+  const tf=document.getElementById('timerFill');
+  tv.textContent=t; tv.classList.remove('warn');
+  tf.style.width='100%';
+  timerI=setInterval(()=>{
+    t--;
+    tv.textContent=t;
+    tf.style.width=(t/30*100)+'%';
+    if(t<=8) tv.classList.add('warn');
+    if(t<=0){clearInterval(timerI);if(!answered)pick('__timeout__',QS[cur].cx);}
+  },1000);
+}
+function pick(chosen,correct){
+  if(answered)return;
+  answered=true; clearInterval(timerI);
+  document.querySelectorAll('.opt-btn').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.v===chosen&&chosen===correct) b.classList.add('correct');
+    else if(b.dataset.v===chosen) b.classList.add('wrong');
+    else if(b.dataset.v===correct) b.classList.add('correct');
+  });
+  const fb=document.getElementById('feedbackDiv');
+  if(chosen===correct){
+    score+=10; document.getElementById('scoreV').textContent=score;
+    fb.className='feedback ok'; fb.textContent='✅ BENAR! '+QS[cur].expl;
+  } else {
+    fb.className='feedback ko';
+    fb.textContent=chosen==='__timeout__'?'⏱ WAKTU! '+QS[cur].expl:'❌ '+QS[cur].expl;
+  }
+  setTimeout(()=>{cur++;showQ();},2000);
+}
+function endGame(){
+  document.getElementById('game').style.display='none';
+  document.getElementById('result').style.display='block';
+  document.getElementById('finalScore').textContent=score;
+  const gb=document.getElementById('gradeBadge');
+  if(score>=90){gb.textContent='⭐ RANK S — DATA MASTER';gb.className='grade-badge gs';}
+  else if(score>=70){gb.textContent='🏆 RANK A — DETECTIVE';gb.className='grade-badge ga';}
+  else if(score>=50){gb.textContent='💪 RANK B — ANALYST';gb.className='grade-badge gb';}
+  else{gb.textContent='📚 RANK C — TRAINEE';gb.className='grade-badge gc';}
+}
+function startGame(){
+  cur=0;score=0;
+  document.getElementById('intro').style.display='none';
+  document.getElementById('game').style.display='block';
+  showQ();
+}
+function resetGame(){
+  cur=0;score=0;
+  document.getElementById('scoreV').textContent='0';
+  document.getElementById('result').style.display='none';
+  document.getElementById('game').style.display='block';
+  showQ();
+}
+</script>
+</body>
+</html>
