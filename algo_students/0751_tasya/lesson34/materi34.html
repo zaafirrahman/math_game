@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Rotasi · L34 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --peach:#f0956a;--peach-light:#f7c4a8;--peach-bg:rgba(240,149,106,0.1);
+    --acc:#4a9fd4;--acc-light:#a0cfee;--acc-bg:rgba(74,159,212,0.1);
+    --vio:#7c5cbf;--vio-light:#b89ee0;--vio-bg:rgba(124,92,191,0.1);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 75% 10%,rgba(74,159,212,0.08) 0%,transparent 50%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--ocean);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--acc-bg);border:1.5px solid var(--acc-light);color:var(--acc);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--ocean);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:all 0.3s;cursor:pointer;}
+  .dot.active{background:var(--ocean);box-shadow:0 0 0 3px rgba(74,159,212,0.25);transform:scale(1.1);}
+  .dot.done{background:var(--acc-light);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);}
+  .card-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.ocean{color:var(--ocean);}
+  .card-label.gold{color:var(--gold);}
+  .card-label.mint{color:var(--mint);}
+  .card-label.rose{color:var(--rose);}
+  .card-label.vio{color:var(--vio);}
+  .card-label.peach{color:var(--peach);}
+  .card h2{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.7rem;line-height:1.4;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  .svg-wrap{margin:1rem 0;border-radius:14px;overflow:hidden;background:#fafafa;border:2px solid var(--border);padding:0.5rem;}
+  .svg-wrap svg{width:100%;display:block;}
+
+  .eq-box{border-radius:14px;padding:1.1rem 1.4rem;margin:0.7rem 0;}
+  .eq-box.ocean{background:var(--acc-bg);border:1.5px solid var(--acc-light);}
+  .eq-box.vio{background:var(--vio-bg);border:1.5px solid var(--vio-light);}
+  .eq-box.mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .eq-box.rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .eq-box.peach{background:var(--peach-bg);border:1.5px solid var(--peach-light);}
+  .eq-box.gold{background:var(--gold-bg);border:1.5px solid var(--gold-light);}
+  .eq-text{font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:900;color:var(--text);line-height:1.6;}
+  .eq-text .hi-ocean{color:var(--ocean);}
+  .eq-text .hi-vio{color:var(--vio);}
+  .eq-text .hi-mint{color:var(--mint);}
+  .eq-text .hi-rose{color:var(--rose);}
+  .eq-text .hi-gold{color:var(--gold);}
+  .eq-text .hi-peach{color:var(--peach);}
+
+  .diskusi-box{border-radius:14px;padding:1rem 1.3rem;background:rgba(232,98,138,0.06);border:1.5px solid var(--rose-light);margin:0.8rem 0;}
+  .diskusi-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:0.5rem;}
+  .diskusi-box p{color:var(--text-mid);font-size:0.88rem;line-height:1.65;}
+
+  .reveal-btn{background:var(--acc-bg);border:1.5px solid var(--acc-light);color:var(--acc);padding:0.5rem 1.2rem;border-radius:99px;font-family:'Nunito',sans-serif;font-size:0.8rem;font-weight:800;cursor:pointer;transition:all 0.2s;margin:0.8rem 0;display:inline-block;}
+  .reveal-btn:hover{background:var(--ocean);color:#fff;}
+  .reveal-content{display:none;animation:fadeUp 0.3s ease;}
+  .reveal-content.show{display:block;}
+
+  .table-box{overflow-x:auto;margin:0.9rem 0;}
+  table{width:100%;border-collapse:collapse;font-size:0.88rem;}
+  th{background:var(--acc-bg);color:var(--ocean);font-family:'Nunito',sans-serif;font-weight:800;padding:0.6rem 1rem;text-align:center;border:1.5px solid var(--acc-light);}
+  td{padding:0.6rem 1rem;text-align:center;border:1.5px solid var(--border);color:var(--text-mid);font-weight:600;}
+  tr:nth-child(even) td{background:#f5f8fc;}
+  td.fill{background:var(--acc-bg);color:var(--ocean);font-weight:800;}
+  td input{border:1.5px solid var(--acc-light);border-radius:8px;padding:0.3rem 0.5rem;font-family:'Quicksand',sans-serif;font-size:0.88rem;font-weight:700;color:var(--text);background:var(--card);width:90px;text-align:center;outline:none;}
+  td input:focus{border-color:var(--ocean);box-shadow:0 0 0 2px rgba(74,159,212,0.2);}
+
+  .formula-hero{text-align:center;padding:1.5rem;background:linear-gradient(135deg,var(--acc-bg),rgba(124,92,191,0.08));border:2px solid var(--acc-light);border-radius:20px;margin:1rem 0;}
+  .formula-hero .f-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ocean);margin-bottom:0.8rem;}
+  .formula-hero .f-text{font-family:'Nunito',sans-serif;font-size:1.35rem;font-weight:900;color:var(--text);line-height:1.6;}
+  .formula-hero .f-sub{font-size:0.82rem;color:var(--text-muted);margin-top:0.6rem;line-height:1.6;}
+
+  .callout{border-radius:14px;padding:1rem 1.3rem;margin:0.9rem 0;display:flex;gap:0.8rem;align-items:flex-start;}
+  .callout.insight{background:rgba(74,159,212,0.06);border:1.5px solid var(--acc-light);}
+  .callout.tip{background:rgba(95,191,160,0.06);border:1.5px solid var(--mint-light);}
+  .callout.warn{background:rgba(232,160,32,0.06);border:1.5px solid var(--gold-light);}
+  .callout-icon{font-size:1.2rem;flex-shrink:0;margin-top:0.05rem;}
+  .callout-text{font-size:0.88rem;color:var(--text-mid);line-height:1.65;}
+  .callout-text strong{color:var(--text);font-weight:700;}
+
+  .coord-badge{display:inline-block;font-family:'Nunito',sans-serif;font-weight:900;font-size:0.95rem;padding:0.3rem 0.9rem;border-radius:10px;}
+  .cb-ori{background:var(--vio-bg);border:2px solid var(--vio-light);color:var(--vio);}
+  .cb-90{background:var(--acc-bg);border:2px solid var(--acc-light);color:var(--ocean);}
+  .cb-180{background:var(--peach-bg);border:2px solid var(--peach-light);color:var(--peach);}
+  .cb-270{background:var(--mint-bg);border:2px solid var(--mint-light);color:var(--mint);}
+
+  .step-row{display:flex;align-items:center;gap:0.7rem;margin:0.6rem 0;font-size:0.9rem;flex-wrap:wrap;}
+  .step-arrow{color:var(--ocean);font-weight:900;font-size:1.1rem;}
+
+  .three-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;margin:0.9rem 0;}
+  .formula-mini{text-align:center;padding:0.9rem 0.6rem;border-radius:14px;border:2px solid var(--border);}
+  .formula-mini .fm-label{font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .formula-mini .fm-rule{font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:900;line-height:1.5;}
+
+  .nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:1rem;}
+  .nav-btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .nav-btn.ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .nav-btn.ghost:hover{border-color:var(--acc-light);color:var(--ocean);}
+  .nav-btn.primary{background:linear-gradient(135deg,var(--ocean),#2a6fa0);color:#fff;box-shadow:0 4px 14px rgba(74,159,212,0.35);}
+  .nav-btn.primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(74,159,212,0.4);}
+  .nav-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important;}
+  .slide-counter{font-size:0.75rem;font-weight:700;color:var(--text-muted);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson34.html">L34</a><span>›</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📚 Materi · Lesson 34</div>
+  <h1>Berputar Tapi Tidak <span>Berubah</span></h1>
+  <p class="intro">Eksplorasi pelan-pelan: amati apa yang terjadi pada koordinat saat sebuah titik diputar, lalu temukan polanya sendiri.</p>
+
+  <div class="dots" id="dotsContainer"></div>
+
+  <!-- SLIDE 1 -->
+  <div class="slide active" id="slide-1">
+    <div class="card">
+      <div class="card-label ocean">🌀 Slide 1 — Pertanyaan Pemantik</div>
+      <h2>Apa yang terjadi jika sebuah titik diputar?</h2>
+      <p>Kita sudah tahu titik bisa bergeser (translasi) dan mencerminkan diri (refleksi). Kali ini, kita akan melihat apa yang terjadi saat titik <strong>diputar</strong> mengelilingi sebuah pusat.</p>
+    </div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- grid -->
+        <g fill="#f0d6ea" opacity="0.5">
+          <circle cx="50" cy="40" r="2"/><circle cx="100" cy="40" r="2"/><circle cx="150" cy="40" r="2"/><circle cx="200" cy="40" r="2"/><circle cx="250" cy="40" r="2"/>
+          <circle cx="50" cy="80" r="2"/><circle cx="100" cy="80" r="2"/><circle cx="200" cy="80" r="2"/><circle cx="250" cy="80" r="2"/>
+          <circle cx="50" cy="110" r="2"/><circle cx="100" cy="110" r="2"/><circle cx="200" cy="110" r="2"/><circle cx="250" cy="110" r="2"/>
+          <circle cx="50" cy="140" r="2"/><circle cx="100" cy="140" r="2"/><circle cx="200" cy="140" r="2"/><circle cx="250" cy="140" r="2"/>
+          <circle cx="50" cy="180" r="2"/><circle cx="100" cy="180" r="2"/><circle cx="150" cy="180" r="2"/><circle cx="200" cy="180" r="2"/><circle cx="250" cy="180" r="2"/>
+        </g>
+        <line x1="20" y1="110" x2="285" y2="110" stroke="#e8c8e0" stroke-width="1.5"/>
+        <line x1="150" y1="15" x2="150" y2="200" stroke="#e8c8e0" stroke-width="1.5"/>
+        <text x="288" y="114" font-family="Nunito" font-size="10" fill="#b898b4" font-weight="700">x</text>
+        <text x="146" y="12" font-family="Nunito" font-size="10" fill="#b898b4" font-weight="700">y</text>
+        <!-- radius circle -->
+        <circle cx="150" cy="110" r="60" fill="none" stroke="#e8c8e0" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <!-- center -->
+        <circle cx="150" cy="110" r="3.5" fill="#b898b4"/>
+        <text x="155" y="122" font-family="Nunito" font-size="9" fill="#b898b4" font-weight="700">O(0,0)</text>
+        <!-- A(3,2) = (150+45, 110-30) = (195, 80) -->
+        <circle cx="195" cy="80" r="8" fill="#7c5cbf"/>
+        <text x="200" y="75" font-family="Nunito" font-size="10" font-weight="900" fill="#7c5cbf">A(3,2)</text>
+        <!-- radius line -->
+        <line x1="150" y1="110" x2="195" y2="80" stroke="#7c5cbf" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <!-- question mark positions -->
+        <circle cx="120" cy="60" r="8" fill="#4a9fd4" opacity="0.5" stroke="#4a9fd4" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="104" y="55" font-family="Nunito" font-size="9" fill="#4a9fd4" font-weight="700">90°?</text>
+        <circle cx="105" cy="140" r="8" fill="#f0956a" opacity="0.5" stroke="#f0956a" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="88" y="158" font-family="Nunito" font-size="9" fill="#f0956a" font-weight="700">180°?</text>
+        <circle cx="180" cy="160" r="8" fill="#5fbfa0" opacity="0.5" stroke="#5fbfa0" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="178" y="177" font-family="Nunito" font-size="9" fill="#5fbfa0" font-weight="700">270°?</text>
+      </svg>
+    </div>
+
+    <div class="diskusi-box">
+      <div class="diskusi-label">💬 Diskusi</div>
+      <p>Lihat titik A(3,2) di atas. Jika ia diputar mengelilingi titik O(0,0)...</p>
+      <p style="margin-top:0.5rem;">• Apakah jaraknya ke O berubah?</p>
+      <p>• Apa yang kira-kira berubah?</p>
+      <p>• Apa yang tetap sama?</p>
+    </div>
+
+    <div class="callout insight">
+      <span class="callout-icon">🔑</span>
+      <div class="callout-text">Hint: lihat garis putus-putus dari O ke A. Apakah saat A berputar, panjang garis itu berubah?</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="slide" id="slide-2">
+    <div class="card">
+      <div class="card-label ocean">📖 Slide 2 — Apa Itu Rotasi?</div>
+      <h2>Rotasi = Perputaran dengan Jarak Tetap</h2>
+      <p>Rotasi adalah transformasi yang memutar suatu titik (atau bangun) mengelilingi sebuah <strong>titik pusat</strong> sebesar sudut tertentu.</p>
+    </div>
+
+    <div class="eq-box ocean">
+      <div class="eq-text">
+        Yang <span class="hi-mint">tetap sama</span>: jarak titik ke pusat rotasi<br>
+        Yang <span class="hi-ocean">berubah</span>: arah / posisi titik tersebut
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label mint">🌀 Bayangkan ini</div>
+      <p>Bayangkan jarum jam yang berputar. Ujung jarum selalu sejauh yang sama dari pusat jam — tapi posisinya terus berubah. Itulah rotasi!</p>
+    </div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+        <!-- clock face analogy -->
+        <circle cx="140" cy="90" r="70" fill="#fafafa" stroke="#e8c8e0" stroke-width="2"/>
+        <circle cx="140" cy="90" r="4" fill="#7c5cbf"/>
+        <!-- 12 o'clock position - titik asli -->
+        <line x1="140" y1="90" x2="140" y2="25" stroke="#7c5cbf" stroke-width="2" stroke-dasharray="5,3"/>
+        <circle cx="140" cy="25" r="8" fill="#7c5cbf"/>
+        <text x="148" y="22" font-family="Nunito" font-size="9" font-weight="900" fill="#7c5cbf">A</text>
+        <!-- 3 o'clock - 90° CW -->
+        <line x1="140" y1="90" x2="205" y2="90" stroke="#f0956a" stroke-width="2" stroke-dasharray="5,3"/>
+        <circle cx="205" cy="90" r="8" fill="#f0956a"/>
+        <text x="212" y="93" font-family="Nunito" font-size="9" font-weight="900" fill="#f0956a">90°</text>
+        <!-- 6 o'clock - 180° -->
+        <line x1="140" y1="90" x2="140" y2="155" stroke="#4a9fd4" stroke-width="2" stroke-dasharray="5,3"/>
+        <circle cx="140" cy="155" r="8" fill="#4a9fd4"/>
+        <text x="148" y="172" font-family="Nunito" font-size="9" font-weight="900" fill="#4a9fd4">180°</text>
+        <!-- 9 o'clock - 270° -->
+        <line x1="140" y1="90" x2="75" y2="90" stroke="#5fbfa0" stroke-width="2" stroke-dasharray="5,3"/>
+        <circle cx="75" cy="90" r="8" fill="#5fbfa0"/>
+        <text x="30" y="93" font-family="Nunito" font-size="9" font-weight="900" fill="#5fbfa0">270°</text>
+        <!-- arc indicator -->
+        <path d="M 140 32 A 58 58 0 0 1 198 90" fill="none" stroke="#f0956a" stroke-width="1.5" stroke-dasharray="4,3"/>
+      </svg>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div class="callout-text">Dalam matematika, kita biasanya menggunakan rotasi <strong>berlawanan arah jarum jam (CCW)</strong> sebagai arah positif. Tapi kita akan lihat keduanya!</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide" id="slide-3">
+    <div class="card">
+      <div class="card-label ocean">🔍 Slide 3 — Eksplorasi Rotasi 90°</div>
+      <h2>Apa yang terjadi saat A(3,2) diputar 90°?</h2>
+      <p>Mari kita amati perubahan koordinat saat titik A diputar 90° berlawanan arah jarum jam terhadap O(0,0).</p>
+    </div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg">
+        <!-- grid lines -->
+        <g stroke="#f0d6ea" stroke-width="0.8" opacity="0.7">
+          <line x1="30" y1="50" x2="270" y2="50"/><line x1="30" y1="90" x2="270" y2="90"/>
+          <line x1="30" y1="130" x2="270" y2="130"/><line x1="30" y1="170" x2="270" y2="170"/>
+          <line x1="30" y1="210" x2="270" y2="210"/>
+          <line x1="70" y1="20" x2="70" y2="240"/><line x1="110" y1="20" x2="110" y2="240"/>
+          <line x1="150" y1="20" x2="150" y2="240"/><line x1="190" y1="20" x2="190" y2="240"/>
+          <line x1="230" y1="20" x2="230" y2="240"/>
+        </g>
+        <!-- axes -->
+        <line x1="20" y1="130" x2="280" y2="130" stroke="#c8a8c0" stroke-width="2"/>
+        <line x1="150" y1="15" x2="150" y2="250" stroke="#c8a8c0" stroke-width="2"/>
+        <text x="283" y="134" font-family="Nunito" font-size="10" fill="#b898b4" font-weight="700">x</text>
+        <text x="146" y="12" font-family="Nunito" font-size="10" fill="#b898b4" font-weight="700">y</text>
+        <!-- axis labels -->
+        <text x="186" y="143" font-family="Nunito" font-size="8" fill="#b898b4">1</text>
+        <text x="226" y="143" font-family="Nunito" font-size="8" fill="#b898b4">2</text>
+        <text x="106" y="143" font-family="Nunito" font-size="8" fill="#b898b4">-1</text>
+        <text x="62" y="143" font-family="Nunito" font-size="8" fill="#b898b4">-2</text>
+        <text x="155" y="91" font-family="Nunito" font-size="8" fill="#b898b4">2</text>
+        <text x="155" y="51" font-family="Nunito" font-size="8" fill="#b898b4">4</text>
+        <text x="155" y="171" font-family="Nunito" font-size="8" fill="#b898b4">-2</text>
+        <!-- center -->
+        <circle cx="150" cy="130" r="3" fill="#b898b4"/>
+        <!-- radius circle -->
+        <circle cx="150" cy="130" r="72" fill="none" stroke="#e8c8e0" stroke-width="1" stroke-dasharray="4,4"/>
+
+        <!-- A(3,2) = cx=150+3*40/2=150+60 no, each unit ≈ 40px, (3,2)=(150+3*20,130-2*20)=(210,90) but 3 units = 3*20=60 too wide, use scale 16px/unit -->
+        <!-- scale: 1 unit = 20px, so A(3,2) = (150+60, 130-40) = (210, 90) -->
+        <!-- radius = sqrt(9+4)*20 = sqrt(13)*20 ≈ 72 -->
+        <!-- A'(-2,3) = (150-40, 130-60) = (110, 70) -->
+        <!-- radius line A -->
+        <line x1="150" y1="130" x2="210" y2="90" stroke="#7c5cbf" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+        <!-- radius line A' -->
+        <line x1="150" y1="130" x2="110" y2="70" stroke="#4a9fd4" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+        <!-- arc from A to A' -->
+        <defs>
+          <marker id="a1" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#4a9fd4"/>
+          </marker>
+        </defs>
+        <path d="M 210 90 A 72 72 0 0 0 110 70" fill="none" stroke="#4a9fd4" stroke-width="2.5" marker-end="url(#a1)"/>
+
+        <!-- A original -->
+        <circle cx="210" cy="90" r="9" fill="#7c5cbf" stroke="#fff" stroke-width="2"/>
+        <text x="217" y="86" font-family="Nunito" font-size="10" font-weight="900" fill="#7c5cbf">A(3,2)</text>
+
+        <!-- A' -->
+        <circle cx="110" cy="70" r="9" fill="#4a9fd4" stroke="#fff" stroke-width="2"/>
+        <text x="58" y="66" font-family="Nunito" font-size="10" font-weight="900" fill="#4a9fd4">A'(?,?)</text>
+
+        <!-- 90° arc label -->
+        <text x="162" y="80" font-family="Nunito" font-size="10" font-weight="800" fill="#4a9fd4">90° CCW</text>
+      </svg>
+    </div>
+
+    <div class="diskusi-box">
+      <div class="diskusi-label">🤔 Amati & Diskusi</div>
+      <p>Titik A ada di (3,2). Setelah diputar 90° berlawanan jarum jam, ia pindah ke titik biru.</p>
+      <p style="margin-top:0.5rem;">Berdasarkan gambar, kira-kira koordinat A' adalah... apa?</p>
+    </div>
+
+    <button class="reveal-btn" onclick="document.getElementById('rev3').classList.add('show')">Lihat Jawabannya →</button>
+    <div class="reveal-content" id="rev3">
+      <div class="eq-box ocean">
+        <div class="eq-text">A(3,2) <span class="hi-ocean">→ rotasi 90° CCW →</span> A'(<span class="hi-ocean">−2, 3</span>)</div>
+      </div>
+      <div class="callout insight">
+        <span class="callout-icon">👀</span>
+        <div class="callout-text">Perhatikan: x yang lama (3) menjadi y yang baru. Dan y yang lama (2) menjadi x baru dengan tanda negatif (−2). Ada pola di sini!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="slide" id="slide-4">
+    <div class="card">
+      <div class="card-label gold">📊 Slide 4 — Menemukan Pola 90°</div>
+      <h2>Coba beberapa titik — apa polanya?</h2>
+      <p>Rotasikan beberapa titik 90° berlawanan jarum jam. Isi koordinat hasilnya, lalu cari pola yang selalu muncul.</p>
+    </div>
+
+    <div class="table-box">
+      <table>
+        <thead>
+          <tr><th>Titik Asal (x,y)</th><th>Rotasi 90° CCW</th><th>Hubungan</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="fill">A(3, 2)</td><td><input id="t4a" placeholder="(?, ?)"></td><td id="p4a" style="font-size:0.8rem;color:var(--text-muted)">—</td></tr>
+          <tr><td class="fill">B(2, 1)</td><td><input id="t4b" placeholder="(?, ?)"></td><td id="p4b" style="font-size:0.8rem;color:var(--text-muted)">—</td></tr>
+          <tr><td class="fill">C(4, 3)</td><td><input id="t4c" placeholder="(?, ?)"></td><td id="p4c" style="font-size:0.8rem;color:var(--text-muted)">—</td></tr>
+          <tr><td class="fill">D(5, 2)</td><td><input id="t4d" placeholder="(?, ?)"></td><td id="p4d" style="font-size:0.8rem;color:var(--text-muted)">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button class="reveal-btn" onclick="revealTable4()">Tampilkan Jawaban Tabel →</button>
+    <div class="reveal-content" id="rev4">
+      <div class="table-box">
+        <table>
+          <thead>
+            <tr><th>Titik Asal (x,y)</th><th>Rotasi 90° CCW</th><th>Hubungan</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="fill">A(3, 2)</td><td class="fill">(−2, 3)</td><td style="font-size:0.82rem;color:var(--text-mid)">x→−y, y→x</td></tr>
+            <tr><td class="fill">B(2, 1)</td><td class="fill">(−1, 2)</td><td style="font-size:0.82rem;color:var(--text-mid)">x→−y, y→x</td></tr>
+            <tr><td class="fill">C(4, 3)</td><td class="fill">(−3, 4)</td><td style="font-size:0.82rem;color:var(--text-mid)">x→−y, y→x</td></tr>
+            <tr><td class="fill">D(5, 2)</td><td class="fill">(−2, 5)</td><td style="font-size:0.82rem;color:var(--text-mid)">x→−y, y→x</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="diskusi-box">
+        <div class="diskusi-label">💬 Diskusi</div>
+        <p>Apa pola yang selalu muncul? Perhatikan kolom "Hubungan" — ada sesuatu yang konsisten di sana!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 -->
+  <div class="slide" id="slide-5">
+    <div class="card">
+      <div class="card-label ocean">✅ Slide 5 — Aturan Rotasi 90°</div>
+      <h2>Kita temukan aturannya!</h2>
+      <p>Dari tabel sebelumnya, polanya selalu sama. Sekarang kita bisa merumuskannya.</p>
+    </div>
+
+    <div class="formula-hero">
+      <div class="f-label">📐 Rotasi 90° Berlawanan Jarum Jam (CCW)</div>
+      <div class="f-text">(x, y) <span style="color:var(--ocean)">→</span> (−y, x)</div>
+      <div class="f-sub">x lama menjadi y baru • y lama menjadi x baru dengan tanda berubah</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label mint">🔍 Verifikasi</div>
+      <div class="step-row">
+        <span class="coord-badge cb-ori">A(3, 2)</span>
+        <span class="step-arrow">→ 90° CCW →</span>
+        <span class="coord-badge cb-90">A'(−2, 3)</span>
+      </div>
+      <p style="margin-top:0.7rem;">Cek: x=3 → x baru = −y = −2 ✓ &nbsp; y=2 → y baru = x = 3 ✓</p>
+    </div>
+
+    <div class="callout warn">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-text"><strong>Ingat:</strong> Aturan ini kita <em>temukan</em> dari pengamatan, bukan dihafalkan dari awal. Itulah cara matematika bekerja — pola muncul dari data!</div>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">🧠</span>
+      <div class="callout-text">Rotasi 90° searah jarum jam (CW) memiliki aturan berbeda: (x,y) → (y, −x). Kita akan fokus pada CCW dulu.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 -->
+  <div class="slide" id="slide-6">
+    <div class="card">
+      <div class="card-label peach">🔄 Slide 6 — Eksplorasi Rotasi 180°</div>
+      <h2>Apa yang terjadi saat kita putar 180°?</h2>
+      <p>Putar titik A(3,2) sebesar 180° — setengah lingkaran penuh! Amati ke mana ia pindah.</p>
+    </div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#f0d6ea" stroke-width="0.8" opacity="0.6">
+          <line x1="30" y1="50" x2="270" y2="50"/><line x1="30" y1="90" x2="270" y2="90"/>
+          <line x1="30" y1="120" x2="270" y2="120"/><line x1="30" y1="150" x2="270" y2="150"/>
+          <line x1="30" y1="190" x2="270" y2="190"/>
+          <line x1="70" y1="20" x2="70" y2="220"/><line x1="110" y1="20" x2="110" y2="220"/>
+          <line x1="150" y1="20" x2="150" y2="220"/><line x1="190" y1="20" x2="190" y2="220"/>
+          <line x1="230" y1="20" x2="230" y2="220"/>
+        </g>
+        <line x1="20" y1="120" x2="280" y2="120" stroke="#c8a8c0" stroke-width="2"/>
+        <line x1="150" y1="15" x2="150" y2="230" stroke="#c8a8c0" stroke-width="2"/>
+        <circle cx="150" cy="120" r="3" fill="#b898b4"/>
+        <!-- radius circle -->
+        <circle cx="150" cy="120" r="72" fill="none" stroke="#e8c8e0" stroke-width="1" stroke-dasharray="4,4"/>
+        <!-- A(3,2): scale 20px/unit, (150+60, 120-40)=(210,80) -->
+        <!-- A''(-3,-2): (150-60, 120+40)=(90,160) -->
+        <line x1="150" y1="120" x2="210" y2="80" stroke="#7c5cbf" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+        <line x1="150" y1="120" x2="90" y2="160" stroke="#f0956a" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+        <defs>
+          <marker id="a2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#f0956a"/>
+          </marker>
+        </defs>
+        <!-- 180° arc: go the long way -->
+        <path d="M 210 80 A 72 72 0 0 0 90 160" fill="none" stroke="#f0956a" stroke-width="2.5" marker-end="url(#a2)"/>
+        <!-- A original -->
+        <circle cx="210" cy="80" r="9" fill="#7c5cbf" stroke="#fff" stroke-width="2"/>
+        <text x="217" y="76" font-family="Nunito" font-size="10" font-weight="900" fill="#7c5cbf">A(3,2)</text>
+        <!-- A'' -->
+        <circle cx="90" cy="160" r="9" fill="#f0956a" stroke="#fff" stroke-width="2"/>
+        <text x="40" y="176" font-family="Nunito" font-size="10" font-weight="900" fill="#f0956a">A''(?,?)</text>
+        <text x="152" y="108" font-family="Nunito" font-size="10" font-weight="800" fill="#f0956a">180°</text>
+      </svg>
+    </div>
+
+    <div class="diskusi-box">
+      <div class="diskusi-label">🤔 Amati</div>
+      <p>A ada di kuadran I (kanan atas). Setelah diputar 180°, ia pindah ke kuadran III (kiri bawah). Koordinat baru A''?</p>
+    </div>
+
+    <div class="table-box">
+      <table>
+        <thead><tr><th>Titik Asal</th><th>Rotasi 180°</th></tr></thead>
+        <tbody>
+          <tr><td class="fill">A(3, 2)</td><td><input id="t6a" placeholder="(?, ?)"></td></tr>
+          <tr><td class="fill">B(2, 1)</td><td><input id="t6b" placeholder="(?, ?)"></td></tr>
+          <tr><td class="fill">C(−4, 3)</td><td><input id="t6c" placeholder="(?, ?)"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button class="reveal-btn" onclick="document.getElementById('rev6').classList.add('show')">Tampilkan Jawaban →</button>
+    <div class="reveal-content" id="rev6">
+      <div class="formula-hero" style="background:linear-gradient(135deg,rgba(240,149,106,0.1),rgba(74,159,212,0.08));border-color:var(--peach-light);">
+        <div class="f-label" style="color:var(--peach)">📐 Rotasi 180° (CCW atau CW — sama saja!)</div>
+        <div class="f-text">(x, y) <span style="color:var(--peach)">→</span> (−x, −y)</div>
+        <div class="f-sub">Kedua koordinat berganti tanda!</div>
+      </div>
+      <div class="callout insight">
+        <span class="callout-icon">💡</span>
+        <div class="callout-text">Rotasi 180° sama dengan mencerminkan titik terhadap titik asal O(0,0). Keduanya menghasilkan koordinat yang sama persis!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 -->
+  <div class="slide" id="slide-7">
+    <div class="card">
+      <div class="card-label mint">🌀 Slide 7 — Eksplorasi Rotasi 270°</div>
+      <h2>Akhirnya: rotasi 270°</h2>
+      <p>Rotasi 270° CCW = sama dengan 90° CW (searah jarum jam). Amati apa yang terjadi pada koordinat.</p>
+    </div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#f0d6ea" stroke-width="0.8" opacity="0.6">
+          <line x1="30" y1="50" x2="270" y2="50"/><line x1="30" y1="90" x2="270" y2="90"/>
+          <line x1="30" y1="130" x2="270" y2="130"/><line x1="30" y1="170" x2="270" y2="170"/>
+          <line x1="30" y1="210" x2="270" y2="210"/>
+          <line x1="70" y1="20" x2="70" y2="240"/><line x1="110" y1="20" x2="110" y2="240"/>
+          <line x1="150" y1="20" x2="150" y2="240"/><line x1="190" y1="20" x2="190" y2="240"/>
+          <line x1="230" y1="20" x2="230" y2="240"/>
+        </g>
+        <line x1="20" y1="130" x2="280" y2="130" stroke="#c8a8c0" stroke-width="2"/>
+        <line x1="150" y1="15" x2="150" y2="250" stroke="#c8a8c0" stroke-width="2"/>
+        <circle cx="150" cy="130" r="3" fill="#b898b4"/>
+        <circle cx="150" cy="130" r="72" fill="none" stroke="#e8c8e0" stroke-width="1" stroke-dasharray="4,4"/>
+        <!-- A(3,2)=(210,90), A'''(2,-3)=(190,190) -->
+        <line x1="150" y1="130" x2="210" y2="90" stroke="#7c5cbf" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+        <line x1="150" y1="130" x2="190" y2="190" stroke="#5fbfa0" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+        <defs>
+          <marker id="a3" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#5fbfa0"/>
+          </marker>
+        </defs>
+        <!-- 270° arc CCW -->
+        <path d="M 210 90 A 72 72 0 1 0 190 190" fill="none" stroke="#5fbfa0" stroke-width="2.5" marker-end="url(#a3)"/>
+        <circle cx="210" cy="90" r="9" fill="#7c5cbf" stroke="#fff" stroke-width="2"/>
+        <text x="217" y="86" font-family="Nunito" font-size="10" font-weight="900" fill="#7c5cbf">A(3,2)</text>
+        <circle cx="190" cy="190" r="9" fill="#5fbfa0" stroke="#fff" stroke-width="2"/>
+        <text x="196" y="210" font-family="Nunito" font-size="10" font-weight="900" fill="#5fbfa0">A'''(?,?)</text>
+        <text x="90" y="95" font-family="Nunito" font-size="10" font-weight="800" fill="#5fbfa0">270° CCW</text>
+      </svg>
+    </div>
+
+    <div class="table-box">
+      <table>
+        <thead><tr><th>Titik Asal</th><th>Rotasi 270° CCW</th></tr></thead>
+        <tbody>
+          <tr><td class="fill">A(3, 2)</td><td><input id="t7a" placeholder="(?, ?)"></td></tr>
+          <tr><td class="fill">B(2, 1)</td><td><input id="t7b" placeholder="(?, ?)"></td></tr>
+          <tr><td class="fill">C(4, 3)</td><td><input id="t7c" placeholder="(?, ?)"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button class="reveal-btn" onclick="document.getElementById('rev7').classList.add('show')">Tampilkan Jawaban →</button>
+    <div class="reveal-content" id="rev7">
+      <div class="formula-hero" style="background:linear-gradient(135deg,var(--mint-bg),rgba(74,159,212,0.06));border-color:var(--mint-light);">
+        <div class="f-label" style="color:var(--mint)">📐 Rotasi 270° CCW (= 90° CW)</div>
+        <div class="f-text">(x, y) <span style="color:var(--mint)">→</span> (y, −x)</div>
+        <div class="f-sub">y menjadi x baru • x menjadi y baru dengan tanda negatif</div>
+      </div>
+      <div class="diskusi-box">
+        <div class="diskusi-label">💬 Bandingkan</div>
+        <p>Rotasi 90° CCW: (x,y) → (−y, x)</p>
+        <p>Rotasi 270° CCW: (x,y) → (y, −x)</p>
+        <p style="margin-top:0.4rem;">Perhatikan: keduanya menukar x dan y, tapi tanda negatifnya berbeda posisi!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8 -->
+  <div class="slide" id="slide-8">
+    <div class="card">
+      <div class="card-label vio">🏆 Slide 8 — Rangkuman Semua Aturan Rotasi</div>
+      <h2>Tiga aturan yang kita temukan</h2>
+      <p>Dari observasi tadi, kita berhasil menemukan ketiga aturan rotasi terhadap pusat O(0,0).</p>
+    </div>
+
+    <div class="three-cols">
+      <div class="formula-mini" style="background:var(--acc-bg);border-color:var(--acc-light);">
+        <div class="fm-label" style="color:var(--ocean)">Rotasi 90° CCW</div>
+        <div class="fm-rule" style="color:var(--ocean)">(x, y)<br>→<br>(−y, x)</div>
+      </div>
+      <div class="formula-mini" style="background:var(--peach-bg);border-color:var(--peach-light);">
+        <div class="fm-label" style="color:var(--peach)">Rotasi 180°</div>
+        <div class="fm-rule" style="color:var(--peach)">(x, y)<br>→<br>(−x, −y)</div>
+      </div>
+      <div class="formula-mini" style="background:var(--mint-bg);border-color:var(--mint-light);">
+        <div class="fm-label" style="color:var(--mint)">Rotasi 270° CCW</div>
+        <div class="fm-rule" style="color:var(--mint)">(x, y)<br>→<br>(y, −x)</div>
+      </div>
+    </div>
+
+    <div class="callout insight">
+      <span class="callout-icon">🔑</span>
+      <div class="callout-text"><strong>Kunci untuk mengingat:</strong> Setiap rotasi menukar atau mengubah tanda x dan y secara berbeda. Daripada menghafal, pahami polanya — koordinat selalu "berpindah peran"!</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label gold">⚡ Latihan Cepat</div>
+      <p>Titik P(4, 1). Terapkan aturan yang sudah kita temukan:</p>
+      <div class="step-row" style="margin-top:0.8rem;">
+        <span class="coord-badge cb-ori">P(4,1)</span>
+        <span class="step-arrow">→ 90° →</span>
+        <span class="coord-badge cb-90" style="cursor:pointer;" onclick="this.textContent='(−1, 4)'">?</span>
+      </div>
+      <div class="step-row">
+        <span class="coord-badge cb-ori">P(4,1)</span>
+        <span class="step-arrow">→ 180° →</span>
+        <span class="coord-badge cb-180" style="cursor:pointer;" onclick="this.textContent='(−4, −1)'">?</span>
+      </div>
+      <div class="step-row">
+        <span class="coord-badge cb-ori">P(4,1)</span>
+        <span class="step-arrow">→ 270° →</span>
+        <span class="coord-badge cb-270" style="cursor:pointer;" onclick="this.textContent='(1, −4)'">?</span>
+      </div>
+      <div class="callout tip" style="margin-top:0.7rem;">
+        <span class="callout-icon">👆</span>
+        <div class="callout-text">Ketuk badge "?" untuk melihat jawabannya!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9 -->
+  <div class="slide" id="slide-9">
+    <div class="card">
+      <div class="card-label ocean">🔥 Slide 9 — Latihan Penerapan</div>
+      <h2>Saatnya menerapkan aturan!</h2>
+      <p>Kerjakan dengan menggunakan aturan yang sudah kita temukan. Ketuk "?" untuk melihat jawaban.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label ocean">Soal 1 — Rotasi 90° CCW</div>
+      <p>Titik A(2, 5) dirotasi 90° berlawanan jarum jam. Koordinat A'?</p>
+      <div class="step-row" style="margin-top:0.8rem;">
+        <span class="coord-badge cb-ori">A(2, 5)</span>
+        <span class="step-arrow">→ 90° CCW →</span>
+        <span class="coord-badge cb-90" style="cursor:pointer;" onclick="this.textContent='A\'(−5, 2)'">A'(?)</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label peach">Soal 2 — Rotasi 180°</div>
+      <p>Titik B(4, 1) dirotasi 180°. Koordinat B'?</p>
+      <div class="step-row" style="margin-top:0.8rem;">
+        <span class="coord-badge cb-ori">B(4, 1)</span>
+        <span class="step-arrow">→ 180° →</span>
+        <span class="coord-badge cb-180" style="cursor:pointer;" onclick="this.textContent='B\'(−4, −1)'">B'(?)</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label mint">Soal 3 — Rotasi 270° CCW</div>
+      <p>Titik C(6, 2) dirotasi 270° berlawanan jarum jam. Koordinat C'?</p>
+      <div class="step-row" style="margin-top:0.8rem;">
+        <span class="coord-badge cb-ori">C(6, 2)</span>
+        <span class="step-arrow">→ 270° CCW →</span>
+        <span class="coord-badge cb-270" style="cursor:pointer;" onclick="this.textContent='C\'(2, −6)'">C'(?)</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label vio">Soal 4 — Identifikasi Rotasi</div>
+      <p>Titik D(3, 4) menjadi D'(−4, 3). Rotasi berapa derajat yang terjadi?</p>
+      <div class="step-row" style="margin-top:0.8rem;">
+        <span class="coord-badge cb-ori">D(3, 4)</span>
+        <span class="step-arrow">→ ??? →</span>
+        <span class="coord-badge cb-90" style="cursor:pointer;" onclick="this.textContent='90° CCW'">D'(−4, 3)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10 -->
+  <div class="slide" id="slide-10">
+    <div class="card">
+      <div class="card-label ocean">🏁 Slide 10 — Kesimpulan Sesi Ini</div>
+      <h2>Yang kita temukan hari ini</h2>
+    </div>
+
+    <div class="card" style="border-color:var(--acc-light)">
+      <div style="display:flex;flex-direction:column;gap:0.8rem;">
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.9rem;color:var(--text-mid);">
+          <span>🔄</span><span>Rotasi adalah <strong style="color:var(--text)">perputaran titik</strong> mengelilingi pusat O(0,0)</span>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.9rem;color:var(--text-mid);">
+          <span>📏</span><span>Jarak titik ke pusat rotasi <strong style="color:var(--text)">selalu tetap</strong></span>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.9rem;color:var(--text-mid);">
+          <span>🔵</span><span>Rotasi 90° CCW: <strong style="color:var(--ocean)">(x,y) → (−y, x)</strong></span>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.9rem;color:var(--text-mid);">
+          <span>🟠</span><span>Rotasi 180°: <strong style="color:var(--peach)">(x,y) → (−x, −y)</strong></span>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.9rem;color:var(--text-mid);">
+          <span>🟢</span><span>Rotasi 270° CCW: <strong style="color:var(--mint)">(x,y) → (y, −x)</strong></span>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.9rem;color:var(--text-mid);">
+          <span>🔍</span><span>Aturan ini <strong style="color:var(--text)">kita temukan sendiri</strong> melalui observasi, bukan dihafalkan</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,rgba(74,159,212,0.12),rgba(124,92,191,0.1));border:2px solid var(--acc-light);border-radius:20px;padding:1.5rem 1.8rem;margin:1rem 0;text-align:center;">
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ocean);margin-bottom:0.8rem;">💬 Pesan Utama</div>
+      <div style="font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:900;color:var(--text);line-height:1.6;">"Matematika tidak hanya menghitung posisi,<br>tetapi juga <span style="color:var(--ocean)">menggambarkan bagaimana suatu objek bergerak.</span>"</div>
+    </div>
+
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;">
+      <a href="soal34.html" style="padding:0.8rem 1.8rem;background:linear-gradient(135deg,var(--rose),#c04060);color:#fff;border-radius:99px;font-family:Nunito;font-weight:800;font-size:0.9rem;text-decoration:none;box-shadow:0 4px 14px rgba(232,98,138,0.35);">⚡ Coba Sprint!</a>
+      <a href="latihan34.html" style="padding:0.8rem 1.8rem;background:linear-gradient(135deg,var(--mint),#3a9070);color:#fff;border-radius:99px;font-family:Nunito;font-weight:800;font-size:0.9rem;text-decoration:none;box-shadow:0 4px 14px rgba(95,191,160,0.35);">🌙 Latihan Mandiri</a>
+    </div>
+  </div>
+
+  <!-- NAV ROW -->
+  <div class="nav-row">
+    <button class="nav-btn ghost" id="prevBtn" onclick="changeSlide(-1)" disabled>← Sebelumnya</button>
+    <span class="slide-counter" id="slideCounter">1 / 10</span>
+    <button class="nav-btn primary" id="nextBtn" onclick="changeSlide(1)">Selanjutnya →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL = 10;
+  let cur = 1;
+  function buildDots(){
+    const c = document.getElementById('dotsContainer');
+    for(let i=1;i<=TOTAL;i++){
+      const d = document.createElement('div');
+      d.className='dot'+(i===1?' active':'');
+      d.onclick=()=>goTo(i);
+      d.id='dot-'+i;
+      c.appendChild(d);
+    }
+  }
+  function goTo(n){
+    document.getElementById('slide-'+cur).classList.remove('active');
+    document.getElementById('dot-'+cur).classList.remove('active');
+    document.getElementById('dot-'+cur).classList.add('done');
+    cur=n;
+    document.getElementById('slide-'+cur).classList.add('active');
+    document.getElementById('dot-'+cur).classList.remove('done');
+    document.getElementById('dot-'+cur).classList.add('active');
+    document.getElementById('slideCounter').textContent=cur+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===1;
+    document.getElementById('nextBtn').disabled=cur===TOTAL;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function changeSlide(dir){ goTo(Math.min(TOTAL,Math.max(1,cur+dir))); }
+  function revealTable4(){
+    document.getElementById('rev4').classList.add('show');
+  }
+  buildDots();
+</script>
+</body>
+</html>

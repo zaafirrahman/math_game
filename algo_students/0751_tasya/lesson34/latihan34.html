@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan · Mandiri · L34 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --peach:#f0956a;--peach-light:#f7c4a8;--peach-bg:rgba(240,149,106,0.1);
+    --acc:#4a9fd4;--acc-light:#a0cfee;--acc-bg:rgba(74,159,212,0.1);
+    --vio:#7c5cbf;--vio-light:#b89ee0;--vio-bg:rgba(124,92,191,0.1);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 90%,rgba(74,159,212,0.07) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--mint);}
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--mint);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--ocean);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  /* formula reference bar */
+  .formula-bar{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:0.9rem 1.2rem;margin-bottom:1.5rem;display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center;box-shadow:0 2px 8px var(--shadow);}
+  .formula-bar-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);flex-basis:100%;}
+  .frm{font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:800;padding:0.3rem 0.8rem;border-radius:99px;}
+  .frm-90{background:var(--acc-bg);color:var(--ocean);border:1.5px solid var(--acc-light);}
+  .frm-180{background:var(--peach-bg);color:var(--peach);border:1.5px solid var(--peach-light);}
+  .frm-270{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+
+  .prog-bar-wrap{background:var(--border);border-radius:99px;height:8px;margin-bottom:0.4rem;overflow:hidden;}
+  .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--ocean),var(--acc-light));border-radius:99px;transition:width 0.4s ease;}
+  .prog-label{display:flex;justify-content:space-between;font-size:0.72rem;font-weight:700;color:var(--text-muted);margin-bottom:1.5rem;}
+
+  .q-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);display:none;animation:fadeUp 0.35s ease;}
+  .q-card.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .tag{display:inline-block;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.2rem 0.7rem;border-radius:99px;margin-bottom:0.9rem;}
+  .tag-90{background:var(--acc-bg);color:var(--ocean);border:1.5px solid var(--acc-light);}
+  .tag-180{background:var(--peach-bg);color:var(--peach);border:1.5px solid var(--peach-light);}
+  .tag-270{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .tag-combo{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+  .tag-konteks{background:var(--ocean-bg);color:var(--ocean);border:1.5px solid var(--ocean-light);}
+  .tag-identif{background:var(--vio-bg);color:var(--vio);border:1.5px solid var(--vio-light);}
+
+  .coord-display{display:flex;gap:0.6rem;flex-wrap:wrap;margin:0.8rem 0;}
+  .coord-pt{font-family:'Nunito',sans-serif;font-weight:900;font-size:0.95rem;padding:0.4rem 0.85rem;border-radius:10px;}
+  .pt-ori{background:var(--vio-bg);border:2px solid var(--vio-light);color:var(--vio);}
+  .pt-info{background:var(--acc-bg);border:2px solid var(--acc-light);color:var(--ocean);}
+
+  .q-text{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;margin-bottom:1rem;line-height:1.5;}
+
+  .hint-toggle{background:var(--acc-bg);border:1.5px solid var(--acc-light);color:var(--ocean);padding:0.4rem 1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;margin-bottom:1rem;display:inline-block;transition:all 0.2s;}
+  .hint-toggle:hover{background:var(--ocean);color:#fff;}
+  .hint-box{background:var(--acc-bg);border:1.5px solid var(--acc-light);border-radius:12px;padding:0.7rem 1rem;margin-bottom:0.9rem;font-size:0.85rem;color:var(--text-mid);display:none;line-height:1.6;}
+  .hint-box.show{display:block;}
+
+  .opts{display:flex;flex-direction:column;gap:0.65rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.88rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--acc-light);background:var(--acc-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;line-height:1.5;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--acc-light);color:var(--ocean);}
+  .btn-primary{background:linear-gradient(135deg,var(--ocean),#2a6fa0);color:#fff;box-shadow:0 4px 14px rgba(74,159,212,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn:disabled{opacity:0.3;cursor:not-allowed;transform:none!important;}
+
+  .finish-screen{display:none;text-align:center;padding:2rem 0;}
+  .finish-screen.show{display:block;}
+  .finish-icon{font-size:4rem;margin-bottom:1rem;display:block;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.8rem;font-weight:900;color:var(--ocean);margin-bottom:0.5rem;}
+  .finish-score{font-family:'Nunito',sans-serif;font-size:3.2rem;font-weight:900;color:var(--gold);margin-bottom:0.3rem;}
+  .finish-sub{color:var(--text-muted);margin-bottom:1.8rem;line-height:1.7;font-size:0.9rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson34.html">L34</a><span>›</span>
+  <span class="cur">LATIHAN</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🌙 Latihan Mandiri · Lesson 34</div>
+  <h1>Rotasi — Latihan <span>Mandiri</span></h1>
+  <p class="intro">10 soal rotasi bertahap: dari yang sederhana sampai kontekstual. Ada petunjuk dan penjelasan aturan di tiap soal!</p>
+
+  <!-- Formula reference -->
+  <div class="formula-bar">
+    <div class="formula-bar-label">📐 Ingat Aturannya</div>
+    <span class="frm frm-90">90° CCW: (x,y)→(−y,x)</span>
+    <span class="frm frm-180">180°: (x,y)→(−x,−y)</span>
+    <span class="frm frm-270">270° CCW: (x,y)→(y,−x)</span>
+  </div>
+
+  <div class="prog-bar-wrap"><div class="prog-bar-fill" id="progFill" style="width:10%"></div></div>
+  <div class="prog-label"><span id="progText">Soal 1 dari 10</span><span id="scoreText">Skor: 0</span></div>
+
+  <!-- Q1 -->
+  <div class="q-card active" id="q-1">
+    <span class="tag tag-90">Rotasi 90° CCW</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">A(2, 3)</span></div>
+    <div class="q-text">Titik A(2,3) dirotasi 90° berlawanan jarum jam terhadap O(0,0). Koordinat A' adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(1)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-1">Gunakan aturan: (x,y) → (−y, x). Jadi x baru = −y = −3, dan y baru = x = 2.</div>
+    <div class="opts" id="opts-1">
+      <button class="opt-btn" onclick="answer(1,0,1)">(3, 2)</button>
+      <button class="opt-btn" onclick="answer(1,1,1)">(−3, 2)</button>
+      <button class="opt-btn" onclick="answer(1,2,1)">(−2, 3)</button>
+      <button class="opt-btn" onclick="answer(1,3,1)">(2, −3)</button>
+    </div>
+    <div class="feedback" id="fb-1"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" disabled>← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-1" onclick="goTo(2)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="q-2">
+    <span class="tag tag-180">Rotasi 180°</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">B(5, 3)</span></div>
+    <div class="q-text">Titik B(5,3) dirotasi 180° terhadap O(0,0). Koordinat B' adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(2)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-2">Gunakan aturan: (x,y) → (−x, −y). Kedua koordinat berganti tanda!</div>
+    <div class="opts" id="opts-2">
+      <button class="opt-btn" onclick="answer(2,0,2)">(3, 5)</button>
+      <button class="opt-btn" onclick="answer(2,1,2)">(5, −3)</button>
+      <button class="opt-btn" onclick="answer(2,2,2)">(−5, −3)</button>
+      <button class="opt-btn" onclick="answer(2,3,2)">(−3, 5)</button>
+    </div>
+    <div class="feedback" id="fb-2"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(1)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-2" onclick="goTo(3)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="q-3">
+    <span class="tag tag-270">Rotasi 270° CCW</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">C(4, 1)</span></div>
+    <div class="q-text">Titik C(4,1) dirotasi 270° berlawanan jarum jam terhadap O(0,0). Koordinat C' adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(3)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-3">Gunakan aturan: (x,y) → (y, −x). Jadi x baru = y = 1, dan y baru = −x = −4.</div>
+    <div class="opts" id="opts-3">
+      <button class="opt-btn" onclick="answer(3,0,1)">(1, −4)</button>
+      <button class="opt-btn" onclick="answer(3,1,1)">(−1, 4)</button>
+      <button class="opt-btn" onclick="answer(3,2,1)">(4, −1)</button>
+      <button class="opt-btn" onclick="answer(3,3,1)">(−4, 1)</button>
+    </div>
+    <div class="feedback" id="fb-3"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(2)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-3" onclick="goTo(4)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="q-4">
+    <span class="tag tag-identif">Identifikasi Rotasi</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">D(3, 5)</span><span style="font-size:1.1rem;color:var(--text-muted)">→</span><span class="coord-pt pt-info">D'(−3, −5)</span></div>
+    <div class="q-text">Titik D(3,5) berubah menjadi D'(−3,−5). Rotasi apa yang terjadi?</div>
+    <button class="hint-toggle" onclick="toggleHint(4)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-4">Cek aturan mana yang cocok: 90° CCW → (−y,x) = (−5,3) ✗ | 180° → (−x,−y) = (−3,−5) ✓</div>
+    <div class="opts" id="opts-4">
+      <button class="opt-btn" onclick="answer(4,0,1)">Rotasi 90° CCW</button>
+      <button class="opt-btn" onclick="answer(4,1,1)">Rotasi 180°</button>
+      <button class="opt-btn" onclick="answer(4,2,1)">Rotasi 270° CCW</button>
+      <button class="opt-btn" onclick="answer(4,3,1)">Bukan rotasi</button>
+    </div>
+    <div class="feedback" id="fb-4"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(3)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-4" onclick="goTo(5)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="q-5">
+    <span class="tag tag-90">Rotasi 90° CCW</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">E(−2, 4)</span></div>
+    <div class="q-text">Titik E(−2,4) dirotasi 90° berlawanan jarum jam. Koordinat E' adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(5)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-5">Aturan: (x,y)→(−y,x). Di sini x=−2 dan y=4. Jadi x baru = −y = −4, y baru = x = −2.</div>
+    <div class="opts" id="opts-5">
+      <button class="opt-btn" onclick="answer(5,0,0)">(4, −2)</button>
+      <button class="opt-btn" onclick="answer(5,1,0)">(2, 4)</button>
+      <button class="opt-btn" onclick="answer(5,2,0)">(−4, −2)</button>
+      <button class="opt-btn" onclick="answer(5,3,0)">(4, 2)</button>
+    </div>
+    <div class="feedback" id="fb-5"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(4)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-5" onclick="goTo(6)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card" id="q-6">
+    <span class="tag tag-180">Rotasi 180°</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">F(−3, −2)</span></div>
+    <div class="q-text">Titik F(−3,−2) dirotasi 180° terhadap O(0,0). Koordinat F' adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(6)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-6">Aturan 180°: (x,y)→(−x,−y). Perhatikan: kedua koordinat negatif, lalu kita balik tanda lagi!</div>
+    <div class="opts" id="opts-6">
+      <button class="opt-btn" onclick="answer(6,0,2)">(3, 2)</button>
+      <button class="opt-btn" onclick="answer(6,1,2)">(−2, −3)</button>
+      <button class="opt-btn" onclick="answer(6,2,2)">(2, 3)</button>
+      <button class="opt-btn" onclick="answer(6,3,2)">(−3, 2)</button>
+    </div>
+    <div class="feedback" id="fb-6"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(5)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-6" onclick="goTo(7)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card" id="q-7">
+    <span class="tag tag-combo">Rotasi Dua Kali</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">G(1, 3)</span></div>
+    <div class="q-text">Titik G(1,3) dirotasi 90° CCW, lalu hasilnya dirotasi 90° CCW lagi. Koordinat akhirnya adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(7)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-7">Langkah 1: G(1,3) → 90° CCW → (−3,1). Langkah 2: (−3,1) → 90° CCW → (−1,−3). Atau ingat: 90°+90° = 180°!</div>
+    <div class="opts" id="opts-7">
+      <button class="opt-btn" onclick="answer(7,0,3)">(3, −1)</button>
+      <button class="opt-btn" onclick="answer(7,1,3)">(−1, 3)</button>
+      <button class="opt-btn" onclick="answer(7,2,3)">(−3, 1)</button>
+      <button class="opt-btn" onclick="answer(7,3,3)">(−1, −3)</button>
+    </div>
+    <div class="feedback" id="fb-7"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(6)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-7" onclick="goTo(8)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card" id="q-8">
+    <span class="tag tag-identif">Identifikasi dari Dua Titik</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">H(4, 2)</span><span style="font-size:1.1rem;color:var(--text-muted)">→</span><span class="coord-pt pt-info">H'(2, −4)</span></div>
+    <div class="q-text">Titik H(4,2) berubah menjadi H'(2,−4). Rotasi apa yang dilakukan?</div>
+    <button class="hint-toggle" onclick="toggleHint(8)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-8">Cek satu per satu: 90° CCW → (−2,4) ✗ | 180° → (−4,−2) ✗ | 270° CCW → (y,−x) = (2,−4) ✓</div>
+    <div class="opts" id="opts-8">
+      <button class="opt-btn" onclick="answer(8,0,2)">Rotasi 90° CCW</button>
+      <button class="opt-btn" onclick="answer(8,1,2)">Rotasi 180°</button>
+      <button class="opt-btn" onclick="answer(8,2,2)">Rotasi 270° CCW</button>
+      <button class="opt-btn" onclick="answer(8,3,2)">Bukan rotasi</button>
+    </div>
+    <div class="feedback" id="fb-8"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(7)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-8" onclick="goTo(9)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card" id="q-9">
+    <span class="tag tag-konteks">Kontekstual</span>
+    <div class="q-text">Sebuah robot berada di titik P(3,1) pada peta koordinat. Robot berputar 90° berlawanan arah jarum jam mengelilingi pusat kota O(0,0). Di titik mana kini robot berada?</div>
+    <button class="hint-toggle" onclick="toggleHint(9)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-9">Rotasi 90° CCW: (x,y)→(−y,x). Robot di P(3,1): x baru = −1, y baru = 3.</div>
+    <div class="opts" id="opts-9">
+      <button class="opt-btn" onclick="answer(9,0,1)">(1, 3)</button>
+      <button class="opt-btn" onclick="answer(9,1,1)">(−1, 3)</button>
+      <button class="opt-btn" onclick="answer(9,2,1)">(3, −1)</button>
+      <button class="opt-btn" onclick="answer(9,3,1)">(−3, −1)</button>
+    </div>
+    <div class="feedback" id="fb-9"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(8)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-9" onclick="goTo(10)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card" id="q-10">
+    <span class="tag tag-combo">Pola & Analisis</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">Q(a, b)</span></div>
+    <div class="q-text">Titik Q(a,b) dirotasi 360° (satu putaran penuh) terhadap O(0,0). Apa koordinat Q' yang dihasilkan?</div>
+    <button class="hint-toggle" onclick="toggleHint(10)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-10">360° = kembali ke posisi awal. Atau pikirkan: 90°+90°+90°+90° = 360°. Setelah empat rotasi 90°, titik kembali ke posisi asalnya!</div>
+    <div class="opts" id="opts-10">
+      <button class="opt-btn" onclick="answer(10,0,1)">(a, b)</button>
+      <button class="opt-btn" onclick="answer(10,1,1)">(−a, −b)</button>
+      <button class="opt-btn" onclick="answer(10,2,1)">(b, a)</button>
+      <button class="opt-btn" onclick="answer(10,3,1)">(−b, a)</button>
+    </div>
+    <div class="feedback" id="fb-10"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(9)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-10" onclick="showFinish()" disabled>Lihat Hasil 🏆</button>
+    </div>
+  </div>
+
+  <!-- Finish -->
+  <div class="finish-screen" id="finishScreen">
+    <span class="finish-icon" id="finishIcon">🏆</span>
+    <div class="finish-title">Latihan Selesai!</div>
+    <div class="finish-score" id="finalScore">0/10</div>
+    <p class="finish-sub" id="finalMsg">Hebat!</p>
+    <div class="finish-btns">
+      <button class="btn btn-primary" onclick="restart()" style="background:linear-gradient(135deg,var(--ocean),#2a6fa0);color:#fff;box-shadow:0 4px 14px rgba(74,159,212,0.3);">🔄 Ulangi Latihan</button>
+      <a href="soal34.html" class="btn" style="background:linear-gradient(135deg,var(--rose),#c04060);color:#fff;box-shadow:0 4px 14px rgba(232,98,138,0.35);">⚡ Coba Sprint</a>
+      <a href="lesson34.html" class="btn btn-ghost">← Lesson 34</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const TOTAL=10;
+let cur=1, score=0;
+
+const feedbacks = {
+  1:{ok:'✅ Benar! (x,y)→(−y,x): A(2,3) → (−3, 2) ✓',no:'❌ Ingat aturan 90° CCW: (x,y)→(−y,x). A(2,3): x baru=−3, y baru=2 → (−3,2)'},
+  2:{ok:'✅ Benar! 180°: (x,y)→(−x,−y). B(5,3) → (−5,−3) ✓',no:'❌ Aturan 180°: (x,y)→(−x,−y). B(5,3) → (−5,−3)'},
+  3:{ok:'✅ Benar! 270° CCW: (x,y)→(y,−x). C(4,1): x baru=1, y baru=−4 → (1,−4) ✓',no:'❌ Aturan 270° CCW: (x,y)→(y,−x). C(4,1) → (1,−4)'},
+  4:{ok:'✅ Benar! 180°: (x,y)→(−x,−y). D(3,5) → (−3,−5) ✓',no:'❌ Cek: aturan 180° → (−x,−y) = (−3,−5). Itulah yang terjadi!'},
+  5:{ok:'✅ Benar! (x,y)→(−y,x): E(−2,4) → x baru=−4, y baru=−2 → (−4,−2) ✓',no:'❌ Hati-hati tanda! E(−2,4): −y=−4, x=−2. Jadi E\'(−4,−2)'},
+  6:{ok:'✅ Benar! F(−3,−2) → (3,2). Kedua tanda negatif jadi positif! ✓',no:'❌ Aturan 180°: (x,y)→(−x,−y). F(−3,−2) → (3,2). Negatif × negatif = positif!'},
+  7:{ok:'✅ Benar! Dua rotasi 90° = satu rotasi 180°. G(1,3) → (−1,−3) ✓',no:'❌ Dua kali 90° CCW = 180°. G(1,3) → (−1,−3). Coba hitung langkah demi langkah!'},
+  8:{ok:'✅ Benar! 270° CCW: (x,y)→(y,−x). H(4,2) → (2,−4) ✓',no:'❌ Cek 270° CCW: (y,−x) = (2,−4). Itulah H\'!'},
+  9:{ok:'✅ Benar! Robot kini di P\'(−1,3). Rotasi 90° CCW membawa titik ke kuadran berbeda ✓',no:'❌ P(3,1) dirotasi 90° CCW: (−y,x) = (−1,3). Robot ada di (−1,3)!'},
+  10:{ok:'✅ Benar! Rotasi 360° = kembali ke posisi awal. Q\'(a,b) = Q(a,b) ✓',no:'❌ Rotasi 360° = satu putaran penuh = kembali ke tempat asal! Q\'(a,b)'}
+};
+
+function toggleHint(n){
+  const h=document.getElementById('hint-'+n);
+  h.classList.toggle('show');
+}
+
+function answer(qNum, chosen, correct){
+  const opts=document.querySelectorAll(`#opts-${qNum} .opt-btn`);
+  opts.forEach(o=>o.disabled=true);
+  const fb=document.getElementById('fb-'+qNum);
+  if(chosen===correct){
+    opts[chosen].classList.add('correct');
+    score++;
+    fb.textContent=feedbacks[qNum].ok;
+    fb.className='feedback ok show';
+  } else {
+    opts[chosen].classList.add('wrong');
+    opts[correct].classList.add('correct');
+    fb.textContent=feedbacks[qNum].no;
+    fb.className='feedback no show';
+  }
+  document.getElementById('next-'+qNum).disabled=false;
+  document.getElementById('scoreText').textContent='Skor: '+score;
+}
+
+function goTo(n){
+  document.getElementById('q-'+cur).classList.remove('active');
+  cur=n;
+  document.getElementById('q-'+cur).classList.add('active');
+  const pct=((cur-1)/TOTAL*100)+10;
+  document.getElementById('progFill').style.width=Math.min(pct,100)+'%';
+  document.getElementById('progText').textContent='Soal '+cur+' dari '+TOTAL;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showFinish(){
+  document.getElementById('q-10').classList.remove('active');
+  document.getElementById('progFill').style.width='100%';
+  const fs=document.getElementById('finishScreen');
+  fs.classList.add('show');
+  document.getElementById('finalScore').textContent=score+'/10';
+  const msgs=['Tetap semangat! Baca kembali materi rotasinya ya 💪','Sudah mulai paham! Latihan lagi untuk lebih mantap 🙌','Bagus! Kamu sudah memahami dasar-dasar rotasi 🔥','Keren banget! Hampir sempurna ✨','Sempurna! Kamu ahli rotasi sekarang! 🏆'];
+  const idx=Math.min(Math.floor(score/2),4);
+  document.getElementById('finalMsg').textContent=msgs[idx];
+  document.getElementById('finishIcon').textContent=['😊','🙂','😄','🌟','🏆'][idx];
+}
+
+function restart(){
+  score=0;cur=1;
+  document.getElementById('finishScreen').classList.remove('show');
+  document.getElementById('progFill').style.width='10%';
+  document.getElementById('progText').textContent='Soal 1 dari 10';
+  document.getElementById('scoreText').textContent='Skor: 0';
+  for(let i=1;i<=TOTAL;i++){
+    document.getElementById('q-'+i).classList.remove('active');
+    const opts=document.querySelectorAll(`#opts-${i} .opt-btn`);
+    opts.forEach(o=>{o.disabled=false;o.classList.remove('correct','wrong');});
+    const fb=document.getElementById('fb-'+i);
+    fb.className='feedback';fb.textContent='';
+    document.getElementById('next-'+i).disabled=true;
+    const hint=document.getElementById('hint-'+i);
+    if(hint)hint.classList.remove('show');
+  }
+  document.getElementById('q-1').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
