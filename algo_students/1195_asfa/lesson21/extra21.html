@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extra PR · Lesson 21 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#059669;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --emerald:#34d399;--text:#e2e8f0;--muted:#64748b;
+    --amber:#fbbf24;--blue:#60a5fa;--pink:#f472b6;
+    --violet:#a78bfa;--blue2:#38bdf8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 80%,rgba(34,211,238,0.06) 0%,transparent 50%),
+               radial-gradient(ellipse at 85% 15%,rgba(52,211,153,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 50%,rgba(251,191,36,0.03) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  nav{
+    padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:100;
+    font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;
+  }
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--cyan);}
+
+  .wrapper{max-width:800px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  .pr-banner{background:linear-gradient(135deg,rgba(34,211,238,0.08),rgba(52,211,153,0.08));border:1px solid rgba(34,211,238,0.25);border-radius:20px;padding:2rem 2rem 1.5rem;margin-bottom:2rem;position:relative;overflow:hidden;}
+  .pr-banner::before{content:'🕵️';position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);font-size:5rem;opacity:0.08;pointer-events:none;line-height:1;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);color:var(--cyan);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;margin-bottom:0.5rem;line-height:1.3;}
+  .page-title span{color:var(--cyan);}
+  .page-desc{color:var(--muted);font-size:0.9rem;line-height:1.7;max-width:540px;}
+  .pr-pills{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;}
+  .pr-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.72rem;padding:0.2rem 0.7rem;border-radius:20px;font-weight:700;}
+  .pill-cyan{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .pill-emerald{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.3);}
+  .pill-amber{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.3);}
+  .pill-red{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.3);}
+  .pill-violet{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--cyan);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--emerald));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+  .prog-stars{display:flex;gap:0.3rem;margin-top:0.5rem;align-items:center;font-size:0.78rem;color:var(--muted);}
+  .star{font-size:0.9rem;opacity:0.25;transition:opacity 0.4s;}
+  .star.lit{opacity:1;}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--cyan);}
+  .sd-2{color:var(--emerald);}
+  .sd-3{color:var(--amber);}
+  .sd-4{color:#f87171;}
+  .sd-5{color:var(--violet);}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;max-width:100%;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;padding:0 0.25rem;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(34,211,238,0.35);background:rgba(34,211,238,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.25);}
+  .ex-tag.tag-2{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.25);}
+  .ex-tag.tag-3{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.25);}
+  .ex-tag.tag-4{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.25);}
+  .ex-tag.tag-5{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.25);}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.78rem,3vw,0.92rem);font-weight:900;color:var(--text);margin-bottom:0.5rem;line-height:1.5;word-break:break-word;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--cyan);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:1rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--cyan);}
+  .ex-input.correct{border-color:var(--cyan);color:var(--cyan);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);color:var(--cyan);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(34,211,238,0.22);border-color:var(--cyan);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--neon);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.4);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+  .attempts-row{margin-top:0.4rem;display:flex;gap:2px;align-items:center;}
+  .attempts-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:2px;}
+
+  .ex-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;}
+  .ex-opt{background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.55rem 0.4rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;transition:all 0.15s;text-align:center;line-height:1.4;}
+  .ex-opt:hover:not(:disabled){border-color:var(--cyan);background:rgba(34,211,238,0.06);}
+  .ex-opt.opt-correct{border-color:var(--neon);background:rgba(0,245,196,0.12);color:var(--neon);}
+  .ex-opt.opt-wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .ex-opt:disabled{cursor:default;}
+
+  .ex-card.data-card{border-left:3px solid var(--cyan);}
+  .ex-card.data-card.done-card{border-left-color:var(--cyan);}
+
+  /* mini visuals reused from section1/exercise style */
+  .mini-table{width:100%;border-collapse:separate;border-spacing:0;background:#12121c;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:0.8rem;font-size:0.82rem;}
+  .mini-table th{font-family:'Orbitron',monospace;font-size:0.56rem;letter-spacing:1.5px;color:var(--cyan);background:rgba(34,211,238,0.07);padding:0.5rem;text-align:center;}
+  .mini-table td{padding:0.45rem;text-align:center;border-top:1px solid var(--border);}
+  .raw-box{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.7rem;text-align:center;font-family:'Orbitron',monospace;font-size:0.8rem;color:var(--cyan);letter-spacing:1.5px;margin-bottom:0.8rem;line-height:1.7;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson21.html">LESSON 21</a>
+  <span>›</span>
+  <span class="current">EXTRA PR</span>
+</nav>
+
+<div class="wrapper">
+  <div class="pr-banner">
+    <div class="page-badge">🕵️ Analyst Mode</div>
+    <div class="page-title">Extra <span>PR Mode</span></div>
+    <div class="page-desc">
+      40 soal ekstra tentang Mean, Median, dan Modus — dari menghitung mean, mencari median, menentukan modus,
+      memahami pengaruh outlier, sampai memilih ukuran tendensi sentral yang paling tepat untuk berbagai situasi nyata.
+      Progress tersimpan otomatis. Latihan ini mengasah insting analis data sebelum lanjut ke materi peluang! 🎲
+    </div>
+    <div class="pr-pills">
+      <span class="pr-pill pill-cyan">🧮 Mean</span>
+      <span class="pr-pill pill-emerald">⚖️ Median</span>
+      <span class="pr-pill pill-amber">👟 Modus</span>
+      <span class="pr-pill pill-red">⚠️ Outlier</span>
+      <span class="pr-pill pill-violet">🎯 Pilih Ukuran</span>
+    </div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress PR</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      Kumpulkan ⭐ untuk setiap bagian yang diselesaikan!
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+      <span style="margin-left:0.3rem;font-size:0.72rem;">Selesaikan 8 soal per bagian</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🕵️</span>
+    <div class="alldone-title">PR ANALIS DATA SELESAI!</div>
+    <div class="alldone-desc">
+      GG! Kamu udah menaklukkan 40 soal Extra PR Lesson 21!<br>
+      Mean, median, modus, pengaruh outlier, sampai memilih ukuran tendensi sentral yang tepat — semua kamu babat habis! 🔥<br>
+      Kamu sekarang siap meringkas data apa pun jadi satu angka yang paling jujur mewakilinya!
+    </div>
+    <div class="alldone-xp">🕵️ +400 XP — Data Analyst Badge Unlocked!</div>
+    <div class="action-btns">
+      <a href="lesson21.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="exercise21.html" class="btn btn-ghost">Exercise Zone</a>
+      <a href="quicktest21.html" class="btn btn-primary">Quick Test ⚡</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  #allDone{display:none;text-align:center;padding:3rem 2rem;}
+  .alldone-icon{font-size:5rem;display:block;margin-bottom:1.5rem;animation:bounce 1s ease infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .alldone-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2rem);color:var(--cyan);margin-bottom:0.8rem;}
+  .alldone-desc{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .alldone-xp{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.5rem 1.5rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:2rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--emerald);color:var(--emerald);}
+  .btn-primary{background:linear-gradient(135deg,#0891b2,var(--cyan));color:#000;box-shadow:0 4px 15px rgba(34,211,238,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson21_extra_v1';
+function loadProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{};}catch(e){return{};}}
+function saveProgress(p){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(p));}catch(e){}}
+let progress = loadProgress();
+
+// Helper: render a data table
+function tableDisp(thead, tbody){
+  let h = '<table class="mini-table"><thead><tr>';
+  thead.forEach(t=>h+=`<th>${t}</th>`);
+  h += '</tr></thead><tbody>';
+  tbody.forEach(r=>{h+='<tr>';r.forEach(c=>h+=`<td>${c}</td>`);h+='</tr>';});
+  h += '</tbody></table>';
+  return h;
+}
+// Helper: render raw data string
+function rawDisp(text){
+  return `<div class="raw-box">${text}</div>`;
+}
+
+const exercises = [
+  // ─── BAGIAN 1: Menghitung Mean (e01–e08) ────────────────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Mean',
+    sys:rawDisp('Data: 10, 12, 14'),
+    q:'Berapa MEAN dari data tersebut?', hint:'Jumlahkan semua data, lalu bagi banyak data',
+    type:'text', answers:['12'], explain:'✅ (10+12+14) ÷ 3 = 36 ÷ 3 = 12 ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Mean',
+    sys:rawDisp('Data: 5, 7, 9, 11, 13'),
+    q:'Berapa MEAN dari data tersebut?', hint:'Total dibagi 5',
+    type:'text', answers:['9'], explain:'✅ (5+7+9+11+13) ÷ 5 = 45 ÷ 5 = 9 ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Mean',
+    sys:rawDisp('Data: 20, 30, 40, 50'),
+    q:'Berapa MEAN dari data tersebut?', hint:'Total dibagi 4',
+    type:'text', answers:['35'], explain:'✅ (20+30+40+50) ÷ 4 = 140 ÷ 4 = 35 ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Mean',
+    sys:rawDisp('Data: 6, 6, 9, 9'),
+    q:'Berapa MEAN dari data tersebut?', hint:'Total dibagi 4',
+    type:'text', answers:['7.5','7,5'], explain:'✅ (6+6+9+9) ÷ 4 = 30 ÷ 4 = 7,5 ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Mean',
+    sys:tableDisp(['Siswa','Nilai Ujian'],[['Ani','70'],['Budi','75'],['Citra','80'],['Dewi','95']]),
+    q:'Berapa MEAN nilai ujian keempat siswa di atas?', hint:'Total nilai dibagi 4 siswa',
+    type:'mcq', opts:['80','75','85','78'], answer:'80',
+    explain:'✅ (70+75+80+95) ÷ 4 = 320 ÷ 4 = 80 ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Mean',
+    sys:rawDisp('Mean dari 3 data adalah 20. Dua data sudah diketahui: 18 dan 24. Data ketiga (x) = ?'),
+    q:'Berapa nilai x?', hint:'Total ketiga data = 20 × 3 = 60. Kurangi dengan dua data yang sudah diketahui',
+    type:'mcq', opts:['18','20','22','24'], answer:'18',
+    explain:'✅ Total = 20×3 = 60. x = 60 − 18 − 24 = 18 ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Mean',
+    sys:rawDisp('Data: 100, 200, 300'),
+    q:'Berapa MEAN dari data tersebut?', hint:'Total dibagi 3',
+    type:'text', answers:['200'], explain:'✅ (100+200+300) ÷ 3 = 600 ÷ 3 = 200 ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Mean',
+    sys:rawDisp('Jumlah dari 5 data adalah 150.'),
+    q:'Berapa MEAN dari kelima data tersebut?', hint:'Jumlah dibagi banyak data (5)',
+    type:'text', answers:['30'], explain:'✅ 150 ÷ 5 = 30 ✓' },
+
+  // ─── BAGIAN 2: Mencari Median (e09–e16) ─────────────────────
+  { id:'e09', section:'s2', tag:'tag-2', tagLabel:'Median',
+    sys:rawDisp('Data: 2, 5, 9'),
+    q:'Berapa MEDIAN dari data tersebut?', hint:'Data sudah terurut dan ganjil, ambil nilai tengah',
+    type:'text', answers:['5'], explain:'✅ 3 data terurut, nilai tengah (posisi ke-2) = 5 ✓' },
+
+  { id:'e10', section:'s2', tag:'tag-2', tagLabel:'Median',
+    sys:rawDisp('Data: 4, 8, 12, 16'),
+    q:'Berapa MEDIAN dari data tersebut? (jumlah data genap)', hint:'Rata-rata dua nilai tengah',
+    type:'text', answers:['10'], explain:'✅ Dua nilai tengah = 8 dan 12. Median = (8+12) ÷ 2 = 10 ✓' },
+
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Median',
+    sys:rawDisp('Data: 1, 1, 2, 5, 9, 9'),
+    q:'Berapa MEDIAN dari data tersebut?', hint:'6 data, ambil rata-rata posisi ke-3 dan ke-4',
+    type:'text', answers:['3.5','3,5'], explain:'✅ Dua nilai tengah = 2 dan 5. Median = (2+5) ÷ 2 = 3,5 ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Median',
+    sys:rawDisp('Data (belum terurut): 7, 3, 9, 1, 5'),
+    q:'Berapa MEDIAN dari data tersebut? Urutkan dulu sebelum mencari!', hint:'Urutkan: 1,3,5,7,9 — baru cari nilai tengah',
+    type:'text', answers:['5'], explain:'✅ Urutkan dulu: 1,3,5,7,9. Nilai tengah (posisi ke-3 dari 5) = 5 ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Median',
+    sys:rawDisp('Data (belum terurut): 12, 15, 11, 18, 14, 16'),
+    q:'Berapa MEDIAN dari data tersebut?', hint:'Urutkan dulu: 11,12,14,15,16,18 — lalu rata-ratakan dua nilai tengah',
+    type:'text', answers:['14.5','14,5'], explain:'✅ Urutan: 11,12,14,15,16,18. Median = (14+15) ÷ 2 = 14,5 ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Median',
+    sys:rawDisp('Konsep Median'),
+    q:'Mengapa data HARUS diurutkan terlebih dahulu sebelum mencari median?', hint:'Median adalah ukuran berdasarkan POSISI, bukan nilai',
+    type:'mcq', opts:['Karena median dicari berdasarkan posisi/urutan data, bukan jumlahnya','Karena median sama dengan mean','Karena urutan tidak penting sama sekali','Karena median selalu sama dengan modus'], answer:'Karena median dicari berdasarkan posisi/urutan data, bukan jumlahnya',
+    explain:'✅ Median = nilai di posisi TENGAH setelah data diurutkan. Tanpa diurutkan, kita tidak tahu mana posisi tengahnya ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Median',
+    sys:rawDisp('Data: 3, 3, 3, 5, 7'),
+    q:'Berapa MEDIAN dari data tersebut?', hint:'Data sudah terurut, ambil nilai tengah',
+    type:'mcq', opts:['3','5','7','4'], answer:'3',
+    explain:'✅ 5 data terurut, nilai tengah (posisi ke-3) = 3 ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Median',
+    sys:rawDisp('Data: 2, 4, 6, 8, 10, 12, 14'),
+    q:'Berapa MEDIAN dari data tersebut?', hint:'7 data (ganjil), ambil posisi ke-4',
+    type:'text', answers:['8'], explain:'✅ 7 data terurut, posisi tengah (ke-4) = 8 ✓' },
+
+  // ─── BAGIAN 3: Menentukan Modus (e17–e24) ───────────────────
+  { id:'e17', section:'s3', tag:'tag-3', tagLabel:'Modus',
+    sys:rawDisp('Data: 2, 2, 3, 4, 4, 4'),
+    q:'Berapa MODUS dari data tersebut?', hint:'Cari nilai yang paling sering muncul',
+    type:'text', answers:['4'], explain:'✅ Angka 4 muncul 3 kali — paling sering dari semua nilai lain ✓' },
+
+  { id:'e18', section:'s3', tag:'tag-3', tagLabel:'Modus',
+    sys:rawDisp('Data: 5, 6, 7, 8'),
+    q:'Apa MODUS dari data tersebut?', hint:'Cek apakah ada nilai yang muncul lebih dari satu kali',
+    type:'mcq', opts:['Tidak ada modus','5','6.5','8'], answer:'Tidak ada modus',
+    explain:'✅ Semua nilai hanya muncul 1 kali — tidak ada nilai yang lebih sering dari yang lain, jadi TIDAK ADA MODUS ✓' },
+
+  { id:'e19', section:'s3', tag:'tag-3', tagLabel:'Modus',
+    sys:rawDisp('Data: 1, 1, 2, 2, 3'),
+    q:'Apa MODUS dari data tersebut?', hint:'Ada dua nilai yang sama-sama paling sering muncul',
+    type:'mcq', opts:['1 dan 2 (bimodal)','Hanya 1','Hanya 2','3'], answer:'1 dan 2 (bimodal)',
+    explain:'✅ 1 muncul 2× dan 2 muncul 2× — keduanya sama-sama paling sering. Data seperti ini disebut BIMODAL ✓' },
+
+  { id:'e20', section:'s3', tag:'tag-3', tagLabel:'Modus',
+    sys:rawDisp('Warna baju terjual: Merah, Biru, Merah, Hijau, Biru, Merah'),
+    q:'Apa MODUS warna baju yang terjual?', hint:'Hitung kemunculan tiap warna',
+    type:'text', answers:['Merah','merah'], explain:'✅ Merah muncul 3 kali — paling sering dibanding Biru (2×) dan Hijau (1×) ✓' },
+
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Modus',
+    sys:rawDisp('Data: 9, 9, 9, 9, 5, 3'),
+    q:'Berapa MODUS dari data tersebut?', hint:'Cari nilai paling sering muncul',
+    type:'text', answers:['9'], explain:'✅ Angka 9 muncul 4 kali — paling sering dari semua nilai lain ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Modus',
+    sys:rawDisp('Konsep Modus'),
+    q:'Kapan MODUS lebih berguna dibanding mean?', hint:'Pikirkan jenis data yang tidak bisa dihitung rata-ratanya',
+    type:'mcq', opts:['Saat data berupa kategori (bukan angka), seperti warna atau merek','Saat semua data berupa angka tanpa pengulangan','Saat ingin tahu jumlah total data','Saat data sangat sedikit, hanya 2 angka'], answer:'Saat data berupa kategori (bukan angka), seperti warna atau merek',
+    explain:'✅ Untuk data kategori (warna, merek, ukuran), kita tidak bisa menghitung "rata-rata" — yang berguna adalah nilai yang PALING SERING muncul, yaitu Modus ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Modus',
+    sys:rawDisp('Ukuran sepatu terjual: 38, 39, 39, 40, 39, 41'),
+    q:'Berapa MODUS ukuran sepatu yang terjual?', hint:'Hitung kemunculan tiap ukuran',
+    type:'text', answers:['39'], explain:'✅ Ukuran 39 muncul 3 kali — paling sering terjual ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Modus',
+    sys:rawDisp('Data: 10, 20, 20, 30, 30, 30, 40'),
+    q:'Berapa MODUS dari data tersebut?', hint:'Cari nilai dengan frekuensi terbesar',
+    type:'text', answers:['30'], explain:'✅ Angka 30 muncul 3 kali — paling sering dari semua nilai lain ✓' },
+
+  // ─── BAGIAN 4: Outlier & Representasi Data (e25–e32) ──────────────
+  { id:'e25', section:'s4', tag:'tag-4', tagLabel:'Outlier',
+    sys:rawDisp('Data: 10, 11, 12, 13, 100'),
+    q:'Berapa MEAN dari data tersebut?', hint:'Total dibagi 5',
+    type:'text', answers:['29.2','29,2'], explain:'✅ (10+11+12+13+100) ÷ 5 = 146 ÷ 5 = 29,2 — nilai 100 menarik mean jauh ke atas! ✓' },
+
+  { id:'e26', section:'s4', tag:'tag-4', tagLabel:'Outlier',
+    sys:rawDisp('Data: 10, 11, 12, 13, 100'),
+    q:'Berapa MEDIAN dari data tersebut?', hint:'Data sudah terurut, ambil nilai tengah',
+    type:'text', answers:['12'], explain:'✅ Data terurut, nilai tengah (posisi ke-3 dari 5) = 12 — jauh lebih representatif dari mean (29,2)! ✓' },
+
+  { id:'e27', section:'s4', tag:'tag-4', tagLabel:'Outlier',
+    sys:tableDisp(['Ukuran','Mean','Median'],[['Data: 10,11,12,13,100','29,2','12']]),
+    q:'Untuk data di atas (ada outlier 100), ukuran mana yang LEBIH representatif?', hint:'Bandingkan seberapa dekat tiap ukuran dengan mayoritas data',
+    type:'mcq', opts:['Median, karena tidak terpengaruh outlier','Mean, karena memakai semua data','Keduanya sama representatifnya','Tidak ada yang representatif'], answer:'Median, karena tidak terpengaruh outlier',
+    explain:'✅ Median (12) jauh lebih dekat dengan mayoritas data (10,11,12,13) dibanding mean (29,2) yang tertarik oleh outlier 100 ✓' },
+
+  { id:'e28', section:'s4', tag:'tag-4', tagLabel:'Outlier',
+    sys:rawDisp('Data: 5, 6, 6, 7, 50'),
+    q:'Berapa MEAN dari data tersebut?', hint:'Total dibagi 5',
+    type:'text', answers:['14.8','14,8'], explain:'✅ (5+6+6+7+50) ÷ 5 = 74 ÷ 5 = 14,8 ✓' },
+
+  { id:'e29', section:'s4', tag:'tag-4', tagLabel:'Outlier',
+    sys:rawDisp('Data: 5, 6, 6, 7, 50'),
+    q:'Berapa MEDIAN dari data tersebut?', hint:'Data sudah terurut, ambil nilai tengah',
+    type:'text', answers:['6'], explain:'✅ Data terurut, nilai tengah (posisi ke-3 dari 5) = 6 — jauh lebih mewakili mayoritas data dibanding mean (14,8) ✓' },
+
+  { id:'e30', section:'s4', tag:'tag-4', tagLabel:'Outlier',
+    sys:tableDisp(['Pegawai','Gaji (juta)'],[['A','4'],['B','5'],['C','5'],['D','50']]),
+    q:'Berapa MEAN gaji keempat pegawai di atas?', hint:'Total dibagi 4',
+    type:'mcq', opts:['16','5','14,5','64'], answer:'16',
+    explain:'✅ (4+5+5+50) ÷ 4 = 64 ÷ 4 = 16 juta — gaji pegawai D menarik mean jauh ke atas! ✓' },
+
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Outlier',
+    sys:tableDisp(['Pegawai','Gaji (juta)'],[['A','4'],['B','5'],['C','5'],['D','50']]),
+    q:'Berapa MEDIAN gaji keempat pegawai di atas?', hint:'Urutkan: 4,5,5,50 — rata-rata dua nilai tengah',
+    type:'text', answers:['5'], explain:'✅ Urutan: 4,5,5,50. Median = (5+5) ÷ 2 = 5 juta — jauh lebih mewakili "gaji tipikal" dibanding mean (16 juta) ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Outlier',
+    sys:rawDisp('Konsep Outlier'),
+    q:'Mengapa median lebih cocok untuk data gaji yang memiliki outlier (seperti gaji direktur)?', hint:'Pikirkan bagaimana median memperlakukan nilai ekstrem',
+    type:'mcq', opts:['Karena median hanya peduli posisi tengah, tidak terseret oleh nilai ekstrem','Karena median selalu lebih besar dari mean','Karena median menghitung semua data secara merata','Karena median sama dengan modus'], answer:'Karena median hanya peduli posisi tengah, tidak terseret oleh nilai ekstrem',
+    explain:'✅ Median ditentukan oleh POSISI di tengah, bukan oleh besar-kecilnya nilai — jadi outlier seperti gaji direktur tidak menariknya ke atas ✓' },
+
+  // ─── BAGIAN 5: Memilih Ukuran Tendensi Sentral yang Tepat (e33–e40) ──
+  { id:'e33', section:'s5', tag:'tag-5', tagLabel:'Pilih Ukuran',
+    sys:rawDisp('Situasi: Tinggi badan siswa sekelas, tidak ada nilai yang sangat ekstrem.'),
+    q:'Ukuran tendensi sentral mana yang paling cocok digunakan?', hint:'Tanpa outlier, ukuran mana yang memakai seluruh data secara adil?',
+    type:'mcq', opts:['Mean','Median','Modus','Tidak perlu dihitung'], answer:'Mean',
+    explain:'✅ Tanpa outlier, Mean cukup adil mewakili tinggi badan rata-rata karena melibatkan semua data ✓' },
+
+  { id:'e34', section:'s5', tag:'tag-5', tagLabel:'Pilih Ukuran',
+    sys:rawDisp('Situasi: Harga rumah di suatu kompleks, ada 1 rumah mewah yang harganya jauh lebih mahal dari yang lain.'),
+    q:'Ukuran tendensi sentral mana yang paling cocok digunakan?', hint:'Ada outlier — ukuran mana yang tahan terhadap nilai ekstrem?',
+    type:'mcq', opts:['Median','Mean','Modus','Semua sama baiknya'], answer:'Median',
+    explain:'✅ Rumah mewah akan menarik Mean jauh ke atas. Median lebih jujur mewakili "harga rumah tipikal" di kompleks itu ✓' },
+
+  { id:'e35', section:'s5', tag:'tag-5', tagLabel:'Pilih Ukuran',
+    sys:rawDisp('Situasi: Merek HP yang paling laris dibeli pelanggan di sebuah toko.'),
+    q:'Ukuran tendensi sentral mana yang paling cocok digunakan?', hint:'Merek adalah data kategori, bukan angka',
+    type:'mcq', opts:['Modus','Mean','Median','Tidak bisa dianalisis'], answer:'Modus',
+    explain:'✅ Merek HP adalah data kategori — kita hanya bisa mencari yang PALING SERING dibeli, yaitu Modus ✓' },
+
+  { id:'e36', section:'s5', tag:'tag-5', tagLabel:'Pilih Ukuran',
+    sys:rawDisp('Situasi: Nilai try out yang datanya merata tanpa nilai ekstrem (pencilan).'),
+    q:'Ukuran tendensi sentral mana yang paling cocok digunakan?', hint:'Tanpa outlier, ukuran mana yang paling informatif?',
+    type:'mcq', opts:['Mean','Median','Modus','Tidak penting dihitung'], answer:'Mean',
+    explain:'✅ Tanpa nilai ekstrem, Mean memberikan gambaran paling lengkap karena memakai seluruh data ✓' },
+
+  { id:'e37', section:'s5', tag:'tag-5', tagLabel:'Pilih Ukuran',
+    sys:tableDisp(['Set Data','Mean','Median'],[['Ada outlier besar','Berubah jauh','Tetap stabil']]),
+    q:'Untuk data yang memiliki outlier besar, ukuran mana yang LEBIH representatif?', hint:'Lihat mana yang tetap stabil',
+    type:'mcq', opts:['Median','Mean','Keduanya sama','Tidak ada yang representatif'], answer:'Median',
+    explain:'✅ Median tetap stabil meski ada outlier, sehingga lebih representatif dibanding Mean yang berubah jauh ✓' },
+
+  { id:'e38', section:'s5', tag:'tag-5', tagLabel:'Pilih Ukuran',
+    sys:rawDisp('Pernyataan tentang Median'),
+    q:'Pernyataan mana yang BENAR tentang median?', hint:'Pikirkan sifat median terhadap nilai ekstrem',
+    type:'mcq', opts:['Median tidak terpengaruh oleh nilai ekstrem (outlier)','Median selalu sama dengan mean','Median menggunakan seluruh nilai data','Median hanya bisa dihitung jika datanya genap'], answer:'Median tidak terpengaruh oleh nilai ekstrem (outlier)',
+    explain:'✅ Karena median hanya bergantung pada posisi tengah, ia tidak "ditarik" oleh nilai yang sangat besar atau kecil ✓' },
+
+  { id:'e39', section:'s5', tag:'tag-5', tagLabel:'Pilih Ukuran',
+    sys:rawDisp('Pernyataan tentang Mean'),
+    q:'Pernyataan mana yang BENAR tentang mean?', hint:'Pikirkan bagaimana mean dihitung',
+    type:'mcq', opts:['Mean memperhitungkan seluruh nilai data, termasuk outlier','Mean selalu sama dengan modus','Mean tidak terpengaruh oleh nilai ekstrem','Mean hanya bisa dihitung untuk data kategori'], answer:'Mean memperhitungkan seluruh nilai data, termasuk outlier',
+    explain:'✅ Mean dihitung dengan menjumlahkan SEMUA data, jadi nilai ekstrem (outlier) pasti ikut memengaruhi hasilnya ✓' },
+
+  { id:'e40', section:'s5', tag:'tag-5', tagLabel:'Pilih Ukuran',
+    sys:rawDisp('Kesimpulan Akhir: Mean, Median, Modus'),
+    q:'Manakah kesimpulan yang PALING TEPAT tentang memilih ukuran tendensi sentral?', hint:'Pikirkan kembali semua yang sudah kamu pelajari di Lesson 21',
+    type:'mcq', opts:['Pilihan tergantung pada karakteristik data, terutama ada/tidaknya outlier','Mean selalu paling benar untuk semua jenis data','Median selalu paling benar untuk semua jenis data','Modus hanya bisa dipakai untuk data angka'], answer:'Pilihan tergantung pada karakteristik data, terutama ada/tidaknya outlier',
+    explain:'✅ Tidak ada ukuran yang selalu paling benar — sebagai analis data, kita harus memilih sesuai konteks: Mean untuk data tanpa outlier, Median jika ada outlier, dan Modus untuk data kategori ✓' },
+];
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  const total = exercises.length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done >= i*8);
+  }
+  if(done === total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){
+    inp.classList.add('correct'); inp.disabled=true; btn.disabled=true;
+  } else {
+    card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true);
+  }
+  const fb = card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok';
+  fb.textContent = q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){
+    const badge=document.createElement('div');
+    badge.className='done-badge'; badge.textContent='✓ Done';
+    card.appendChild(badge);
+  }
+  progress[q.id]=true;
+  saveProgress(progress);
+  updateProgressBar();
+}
+
+function normalizeAns(s){
+  return s.trim().toLowerCase().replace(/\s+/g,'').replace(/×/g,'*');
+}
+
+function checkText(id, inp, btn, q){
+  const raw = normalizeAns(inp.value);
+  if(!raw) return;
+  const correct = q.answers.some(a=>raw===normalizeAns(a));
+  if(correct){
+    markDone(inp.closest('.ex-card'), q, inp, btn);
+  } else {
+    inp.classList.add('wrong-anim');
+    const attRow = inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div'); dot.className='attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(()=>{inp.classList.remove('wrong-anim'); inp.value=''; inp.focus();}, 400);
+    if(attRow.children.length >= 3){
+      const fb = inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no';
+      fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.val===q.answer) b.classList.add('opt-correct');
+  });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb = card.querySelector('.ex-feedback');
+  if(val===q.answer){
+    markDone(card, q, null, null);
+  } else {
+    fb.className='ex-feedback show no';
+    fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+  }
+}
+
+function buildExercises(){
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = '';
+  const groups = [
+    { key:'s1', label:'🧮 Bagian 1 — Menghitung Mean',                   cls:'sd-1' },
+    { key:'s2', label:'⚖️ Bagian 2 — Mencari Median',                    cls:'sd-2' },
+    { key:'s3', label:'👟 Bagian 3 — Menentukan Modus',                  cls:'sd-3' },
+    { key:'s4', label:'⚠️ Bagian 4 — Outlier &amp; Representasi Data',   cls:'sd-4' },
+    { key:'s5', label:'🎯 Bagian 5 — Memilih Ukuran yang Tepat',         cls:'sd-5' },
+  ];
+  groups.forEach(g=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      card.className = 'ex-card data-card' + (isDone?' done-card':'');
+
+      const sysHTML = q.sys || '';
+
+      let inputHTML = '';
+      if(q.type==='text'){
+        inputHTML = `
+          <div class="ex-input-wrap">
+            <div class="ex-input-row">
+              <input type="text" class="ex-input ${isDone?'correct':''}"
+                placeholder="Jawaban?"
+                value="${isDone ? q.answers[0] : ''}"
+                ${isDone?'disabled':''}
+                onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+              <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+            </div>
+            <div class="attempts-row"></div>
+          </div>`;
+      } else {
+        const shuffled = [...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML = `<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="ex-num">Soal ${q.id.replace('e','')}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${sysHTML}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone ? q.explain : ''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn = card.querySelector('.ex-btn');
+        const inp = card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick = ()=>checkText(q.id, inp, btn, q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{
+          b.onclick = ()=>checkMCQ(b.dataset.val, b, q, card);
+        });
+      }
+      grid.appendChild(card);
+    });
+
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Extra PR Lesson 21? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+</script>
+</body>
+</html>
