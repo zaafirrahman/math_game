@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 21 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--violet:#a78bfa;--red:#ef4444;--cyan:#22d3ee;--emerald:#34d399;--amber:#fbbf24;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(34,211,238,0.07) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(52,211,153,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--cyan);}
+  .wrapper{max-width:720px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--emerald));border-radius:99px;transition:width 0.4s ease;}
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title .hv{color:var(--violet);}
+  .slide-title .hc{color:var(--cyan);}
+  .slide-title .he{color:var(--emerald);}
+  .slide-title .ha{color:var(--amber);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+  .slide-sub strong{color:var(--cyan);}
+
+  .callout{background:rgba(167,139,250,0.05);border-left:3px solid var(--violet);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--violet);}
+  .callout.cyan{background:rgba(34,211,238,0.05);border-color:var(--cyan);}
+  .callout.cyan strong{color:var(--cyan);}
+  .callout.emerald{background:rgba(52,211,153,0.05);border-color:var(--emerald);}
+  .callout.emerald strong{color:var(--emerald);}
+  .callout.amber{background:rgba(251,191,36,0.06);border-color:var(--amber);}
+  .callout.amber strong{color:var(--amber);}
+
+  .data-table{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin:1.2rem 0;}
+  .data-table th{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);background:rgba(34,211,238,0.06);padding:0.7rem 0.5rem;text-align:center;}
+  .data-table td{padding:0.7rem 0.5rem;text-align:center;border-top:1px solid var(--border);font-size:0.88rem;}
+  .data-table td.cy{color:var(--cyan);font-weight:700;}
+  .data-table td.em{color:var(--emerald);font-weight:700;}
+  .data-table td.am{color:var(--amber);font-weight:700;}
+  .data-table td.hi{color:var(--red);font-weight:800;}
+
+  .raw-data{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:1rem;text-align:center;font-family:'Orbitron',monospace;font-size:1.05rem;color:var(--cyan);letter-spacing:2px;margin-bottom:1rem;line-height:1.8;}
+
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(34,211,238,0.12);border:1px solid rgba(34,211,238,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:var(--cyan);flex-shrink:0;}
+  .step-num.e{background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,0.4);color:var(--emerald);}
+  .step-num.a{background:rgba(251,191,36,0.12);border-color:rgba(251,191,36,0.4);color:var(--amber);}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .reveal-btn{background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.35);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(34,211,238,0.15);}
+  .reveal-box{background:rgba(34,211,238,0.05);border:1px solid rgba(34,211,238,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+  .reveal-box .rule-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--cyan);margin-bottom:0.4rem;}
+  .reveal-box .rule-sub{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:1.2rem 0;}
+  @media(max-width:480px){.pick-grid{grid-template-columns:1fr;}}
+  .pick-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
+  @media(max-width:560px){.pick-grid.cols3{grid-template-columns:1fr;}}
+  .pick-btn{width:100%;background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.7rem;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.88rem;transition:all 0.2s;line-height:1.4;}
+  .pick-btn:hover:not(:disabled){border-color:var(--cyan);}
+  .pick-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .pick-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .pick-fb{font-size:0.82rem;color:var(--muted);margin-top:0.6rem;line-height:1.6;text-align:center;min-height:20px;}
+
+  .conclude-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1.2rem 0;}
+  @media(max-width:480px){.conclude-grid{grid-template-columns:1fr;}}
+  .con-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem;font-size:0.85rem;line-height:1.6;}
+  .con-card .icon{font-size:1.3rem;display:block;margin-bottom:0.4rem;}
+  .con-card.v{border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.04);}
+  .con-card.c{border-color:rgba(34,211,238,0.3);background:rgba(34,211,238,0.04);}
+  .con-card.e{border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.04);}
+  .con-card.a{border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.04);}
+
+  .summary-card{background:var(--card);border:1px solid rgba(34,211,238,0.3);border-radius:16px;padding:1.5rem 2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:2px;color:var(--cyan);margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .summary-item span{flex-shrink:0;font-size:1rem;}
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;text-decoration:none;display:inline-block;transition:all 0.2s;}
+  .da-primary{background:linear-gradient(135deg,var(--cyan),#0891b2);color:#000;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);}
+  .da-secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+
+  .fill-row{display:flex;align-items:center;gap:0.8rem;margin:0.6rem 0;flex-wrap:wrap;}
+  .fill-lbl{font-size:0.9rem;color:var(--text);min-width:130px;}
+  .fill-input{background:#12121c;border:1.5px solid var(--border);color:var(--cyan);font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;width:90px;text-align:center;border-radius:8px;padding:0.4rem;transition:border-color 0.2s;}
+  .fill-input:focus{outline:none;border-color:var(--cyan);}
+  .check-btn{background:linear-gradient(135deg,var(--cyan),#0891b2);color:#000;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:2px;padding:0.55rem 1.2rem;border:none;border-radius:8px;cursor:pointer;font-weight:800;margin:1rem auto 0;display:block;}
+  .check-result{font-family:'Orbitron',monospace;font-size:0.82rem;margin-top:0.8rem;min-height:22px;text-align:center;line-height:1.7;white-space:pre-line;}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--cyan),#0891b2);border:none;color:#000;font-weight:800;}
+  .nav-btn:hover:not(.next){border-color:var(--cyan);color:var(--cyan);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson21.html">LESSON 21</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+
+  <!-- SLIDE 1: Cover -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title"><span class="hc">Satu Data,</span> <span class="he">Satu Angka?</span> 🕵️</div>
+      <div class="slide-sub">"Bisakah ribuan data diringkas hanya dengan satu angka?" Mulai hari ini, kamu berperan sebagai <strong>analis data</strong> yang harus memilih SATU angka terbaik untuk mewakili seluruh kumpulan data.</div>
+    </div>
+    <div class="callout cyan"><strong>Tema misi:</strong> Setiap data punya cerita. Tugasmu — temukan angka tunggal yang paling jujur menceritakan cerita itu.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">x̄</div>
+        <div class="step-body"><div class="stitle">Mean</div><div class="sdesc">Menggunakan SELURUH data — dikenal sebagai rata-rata.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num e">Me</div>
+        <div class="step-body"><div class="stitle">Median</div><div class="sdesc">Menggunakan posisi TENGAH dari data yang sudah diurutkan.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num a">Mo</div>
+        <div class="step-body"><div class="stitle">Modus</div><div class="sdesc">Menggunakan nilai yang paling SERING muncul.</div></div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Misi 1: Pilih Angka Terbaik →</button></div>
+  </div>
+
+  <!-- SLIDE 2: Misi 1 - Pilih Angka Terbaik -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Misi 1: <span class="hc">Pilih Angka Terbaik</span> 🎯</div>
+      <div class="slide-sub">Berikut data nilai ulangan 6 siswa.</div>
+    </div>
+    <div class="raw-data">70, 75, 80, 80, 85, 90</div>
+    <div class="callout"><strong>Pertanyaan:</strong> Kalau kamu hanya boleh menjelaskan data ini menggunakan SATU angka, angka berapa yang akan kamu pilih?</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS2(this,'75')">75</button>
+      <button class="pick-btn" onclick="pickS2(this,'80')">80</button>
+      <button class="pick-btn" onclick="pickS2(this,'85')">85</button>
+      <button class="pick-btn" onclick="pickS2(this,'90')">90</button>
+    </div>
+    <div class="pick-fb" id="fbS2"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Lihat Caranya →</button></div>
+  </div>
+
+  <!-- SLIDE 3: Mean Lahir -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title"><span class="hc">Mean</span> Lahir 🧮</div>
+      <div class="slide-sub">Salah satu cara paling adil: libatkan SEMUA data sekaligus.</div>
+    </div>
+    <div class="raw-data">70, 75, 80, 80, 85, 90</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><div class="stitle">Jumlahkan semua data</div><div class="sdesc">70+75+80+80+85+90 = 480</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><div class="stitle">Bagi dengan banyak data</div><div class="sdesc">480 ÷ 6 = 80</div></div>
+      </div>
+    </div>
+    <div class="callout cyan"><strong>Mean = 80.</strong> Mean menggunakan SELURUH nilai data — setiap data ikut "bersuara" menentukan hasil akhirnya.</div>
+    <button class="reveal-btn" onclick="toggleReveal('rb3')">💡 Kenapa disebut rata-rata?</button>
+    <div class="reveal-box" id="rb3">
+      <div class="rule-text">Mean = Rata-rata</div>
+      <div class="rule-sub">Karena mean membagi total data secara MERATA ke semua anggota — seolah semua nilai "disamaratakan" menjadi satu angka tunggal yang adil untuk semua.</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Mean Bermasalah →</button></div>
+  </div>
+
+  <!-- SLIDE 4: Ketika Mean Mulai Bermasalah -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Ketika Mean <span style="color:var(--red)">Mulai Bermasalah</span> ⚠️</div>
+      <div class="slide-sub">Bagaimana kalau satu siswa nilainya sangat ekstrem?</div>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Versi</th><th>Data</th><th>Mean</th></tr></thead>
+      <tbody>
+        <tr><td>Data Lama</td><td>70,75,80,80,85,90</td><td class="cy">80</td></tr>
+        <tr><td>Data Baru</td><td>70,75,80,80,85,<span style="color:var(--red);font-weight:800;">200</span></td><td class="hi" id="meanNewS4">?</td></tr>
+      </tbody>
+    </table>
+    <button class="reveal-btn" onclick="revealMeanS4()">🧮 Hitung Mean Baru</button>
+    <div class="reveal-box" id="rb4">
+      <div class="rule-text">Mean Baru ≈ 98,3</div>
+      <div class="rule-sub">70+75+80+80+85+200 = 590 → 590 ÷ 6 ≈ 98,3. Mean melonjak jauh dari 80!</div>
+    </div>
+    <div class="callout" style="border-color:var(--red);"><strong style="color:#f87171;">Pertanyaan:</strong> Apakah angka 98,3 itu masih mewakili kondisi sebenarnya? Padahal 5 dari 6 siswa nilainya di sekitar 70–85!</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS4(this,'tidak')">Tidak, mean jadi menyesatkan</button>
+      <button class="pick-btn" onclick="pickS4(this,'ya')">Ya, mean tetap mewakili</button>
+    </div>
+    <div class="pick-fb" id="fbS4"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Median Menyelamatkan →</button></div>
+  </div>
+
+  <!-- SLIDE 5: Median Menyelamatkan -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title"><span class="he">Median</span> Menyelamatkan ⚖️</div>
+      <div class="slide-sub">Gunakan data yang sama (dengan outlier 200), tapi cari nilai TENGAHnya.</div>
+    </div>
+    <div class="raw-data">Urutkan: 70, 75, 80, 80, 85, 200</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num e">1</div>
+        <div class="step-body"><div class="stitle">Data sudah terurut, ada 6 data (genap)</div><div class="sdesc">Dua nilai tengah berada di posisi ke-3 dan ke-4: 80 dan 80</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num e">2</div>
+        <div class="step-body"><div class="stitle">Median = rata-rata dua nilai tengah</div><div class="sdesc">(80+80) ÷ 2 = 80</div></div>
+      </div>
+    </div>
+    <div class="callout emerald"><strong>Median = 80.</strong> Hampir tidak berubah dibanding data lama — meskipun ada outlier 200!</div>
+    <div class="callout">⚖️ <strong>Ilustrasi keseimbangan:</strong> Bayangkan median seperti jungkat-jungkit — ia hanya peduli pada POSISI tengah, bukan seberapa jauh nilai ekstrem itu melenceng. Jadi 200 atau 2000 sekalipun, median tetap di 80!</div>
+    <div class="callout cyan"><strong>Kesimpulan:</strong> Median cocok digunakan ketika data memiliki nilai ekstrem (outlier).</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Modus Muncul →</button></div>
+  </div>
+
+  <!-- SLIDE 6: Modus Muncul -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title"><span class="ha">Modus</span> Muncul 👟</div>
+      <div class="slide-sub">Bayangkan kamu punya toko sepatu. Berikut data ukuran sepatu yang terjual minggu ini.</div>
+    </div>
+    <div class="raw-data">40, 40, 40, 41, 42, 43</div>
+    <div class="callout amber"><strong>Pertanyaan:</strong> Kalau kamu punya toko sepatu, ukuran mana yang harus diperbanyak stoknya?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS6(this,'40')">Ukuran 40</button>
+      <button class="pick-btn" onclick="pickS6(this,'rata')">Rata-rata semua (≈41)</button>
+      <button class="pick-btn" onclick="pickS6(this,'43')">Ukuran 43</button>
+    </div>
+    <div class="pick-fb" id="fbS6"></div>
+    <div class="reveal-box show" style="margin-top:1.2rem;">
+      <div class="rule-text">Inilah Modus</div>
+      <div class="rule-sub">Modus = nilai yang PALING SERING muncul. Di sini, ukuran 40 muncul 3 kali — jadi itulah yang harus diperbanyak. Mean (rata-rata ≈41) justru tidak berguna di sini — toko tidak bisa stok "sepatu ukuran 41,3"!</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">Simulasi Data →</button></div>
+  </div>
+
+  <!-- SLIDE 7: Simulasi Perubahan Data -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">Simulasi Perubahan Data 🔬</div>
+      <div class="slide-sub">Bandingkan tiga kumpulan data berikut.</div>
+    </div>
+    <table class="data-table" style="margin-bottom:0.6rem;">
+      <thead><tr><th>Set</th><th>Data</th></tr></thead>
+      <tbody>
+        <tr><td>A · Normal</td><td>70,75,80,80,85,90</td></tr>
+        <tr><td>B · Outlier Besar</td><td>70,75,80,80,85,<span style="color:var(--red);font-weight:800;">200</span></td></tr>
+        <tr><td>C · Banyak Nilai Sama</td><td>80,80,80,80,85,90</td></tr>
+      </tbody>
+    </table>
+    <button class="reveal-btn" onclick="toggleReveal('rb7')">📊 Tampilkan Mean / Median / Modus</button>
+    <div class="reveal-box" id="rb7">
+      <table class="data-table" style="margin:0;">
+        <thead><tr><th>Set</th><th>Mean</th><th>Median</th><th>Modus</th></tr></thead>
+        <tbody>
+          <tr><td>A · Normal</td><td class="cy">80</td><td class="em">80</td><td class="am">80</td></tr>
+          <tr><td>B · Outlier Besar</td><td class="hi">≈98,3</td><td class="em">80</td><td class="am">80</td></tr>
+          <tr><td>C · Banyak Sama</td><td class="cy">82,5</td><td class="em">80</td><td class="am">80</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.9rem;color:var(--muted);margin:1rem 0 0.5rem;">Dari tabel ini, mana yang PALING berubah ketika ada outlier?</p>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS7(this,'mean')">Mean — paling berubah</button>
+      <button class="pick-btn" onclick="pickS7(this,'median')">Median — paling berubah</button>
+    </div>
+    <div class="pick-fb" id="fbS7"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Pilih Alat Tepat →</button></div>
+  </div>
+
+  <!-- SLIDE 8: Pilih Alat yang Tepat -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">Pilih Alat yang <span class="hc">Tepat</span> 🛠️</div>
+      <div class="slide-sub">Sebagai analis data, kamu harus memilih ukuran yang paling tepat untuk tiap situasi.</div>
+    </div>
+
+    <div class="callout"><strong>Situasi 1:</strong> Nilai ujian satu kelas (sebagian besar nilainya berdekatan, tidak ada yang ekstrem).</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS8(this,'sit1','mean')">Mean</button>
+      <button class="pick-btn" onclick="pickS8(this,'sit1','median')">Median</button>
+      <button class="pick-btn" onclick="pickS8(this,'sit1','modus')">Modus</button>
+    </div>
+    <div class="pick-fb" id="fbsit1"></div>
+
+    <div class="callout" style="margin-top:1.5rem;"><strong>Situasi 2:</strong> Gaji pegawai sebuah perusahaan (gaji direktur jauh lebih tinggi dari karyawan lain).</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS8(this,'sit2','mean')">Mean</button>
+      <button class="pick-btn" onclick="pickS8(this,'sit2','median')">Median</button>
+      <button class="pick-btn" onclick="pickS8(this,'sit2','modus')">Modus</button>
+    </div>
+    <div class="pick-fb" id="fbsit2"></div>
+
+    <div class="callout" style="margin-top:1.5rem;"><strong>Situasi 3:</strong> Ukuran sepatu yang paling banyak dibeli pelanggan.</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS8(this,'sit3','modus')">Modus</button>
+      <button class="pick-btn" onclick="pickS8(this,'sit3','mean')">Mean</button>
+      <button class="pick-btn" onclick="pickS8(this,'sit3','median')">Median</button>
+    </div>
+    <div class="pick-fb" id="fbsit3"></div>
+
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Detective Challenge →</button></div>
+  </div>
+
+  <!-- SLIDE 9: Detective Challenge -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">Detective <span class="hc">Challenge</span> 🕵️‍♀️</div>
+      <div class="slide-sub">Data baru. Saatnya kamu yang menghitung sendiri sebagai analis data sejati!</div>
+    </div>
+    <div class="raw-data">60, 65, 65, 70, 75, 150</div>
+    <div class="fill-row"><span class="fill-lbl">Mean =</span><input type="text" class="fill-input" id="ch_mean" placeholder="?"></div>
+    <div class="fill-row"><span class="fill-lbl">Median =</span><input type="text" class="fill-input" id="ch_median" placeholder="?"></div>
+    <div class="fill-row"><span class="fill-lbl">Modus =</span><input type="text" class="fill-input" id="ch_modus" placeholder="?"></div>
+    <button class="check-btn" onclick="checkS9()">CEK JAWABAN</button>
+    <div class="check-result" id="resS9"></div>
+    <div class="callout cyan" style="margin-top:1.2rem;"><strong>Pertanyaan terakhir:</strong> Dari ketiganya, angka mana yang PALING TEPAT mewakili data ini? Jelaskan alasanmu sebelum lanjut!</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS9(this,'median')">Median — karena ada outlier (150)</button>
+      <button class="pick-btn" onclick="pickS9(this,'mean')">Mean — karena pakai semua data</button>
+    </div>
+    <div class="pick-fb" id="fbS9"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Refleksi →</button></div>
+  </div>
+
+  <!-- SLIDE 10: Refleksi -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Refleksi &amp; <span class="he">Penutup</span> 🎉</div>
+    </div>
+    <div class="summary-card">
+      <h3>✅ Yang Kamu Pelajari</h3>
+      <div class="summary-item"><span>🧮</span><strong style="color:var(--cyan)">Mean</strong> menggunakan semua data — cocok kalau data tidak punya nilai ekstrem</div>
+      <div class="summary-item"><span>⚖️</span><strong style="color:var(--emerald)">Median</strong> menggunakan posisi tengah — tahan terhadap outlier</div>
+      <div class="summary-item"><span>👟</span><strong style="color:var(--amber)">Modus</strong> menggunakan frekuensi terbanyak — cocok untuk data kategori atau "paling laku"</div>
+      <div class="summary-item"><span>🚫</span>Tidak ada ukuran yang SELALU paling benar — semua tergantung konteks data</div>
+    </div>
+    <div class="callout emerald"><strong>"Matematika bukan hanya menghitung, tetapi memilih alat yang paling tepat untuk setiap situasi."</strong></div>
+    <div class="callout cyan"><strong>Preview selanjutnya:</strong> Bagaimana kalau hasil suatu kejadian belum pasti? Bisakah kita menghitung KEMUNGKINAN terjadinya? 🎲</div>
+    <div class="done-actions">
+      <a href="quicktest21.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise21.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson21.html" class="da-btn da-secondary">Lesson 21</a>
+    </div>
+  </div>
+
+</div>
+<script>
+let currentSlide=1;
+const TOTAL=10;
+function goSlide(n){
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide=n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width=((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleReveal(id){document.getElementById(id).classList.toggle('show');}
+
+function pickS2(btn,ans){
+  document.querySelectorAll('#slide2 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS2');
+  if(ans==='80'){btn.classList.add('correct');fb.innerHTML='✅ Banyak yang memilih 80 secara intuitif — itu adalah MEAN (rata-rata) data ini! Yuk lihat caranya di slide berikutnya.';}
+  else{btn.classList.add('wrong');fb.innerHTML='🤔 Menarik! Tebakan boleh apa saja — yuk kita cek cara matematis untuk menemukan angka yang paling representatif di slide berikutnya.';}
+}
+function revealMeanS4(){
+  document.getElementById('meanNewS4').textContent='≈98,3';
+  document.getElementById('rb4').classList.add('show');
+}
+function pickS4(btn,ans){
+  document.querySelectorAll('#slide4 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS4');
+  if(ans==='tidak'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Mean 98,3 lebih tinggi dari nilai HAMPIR SEMUA siswa (5 dari 6 siswa nilainya di bawah itu). Mean jadi "tertarik" oleh satu nilai ekstrem.';}
+  else{btn.classList.add('wrong');document.querySelectorAll('#slide4 .pick-btn')[0].classList.add('correct');fb.innerHTML='❌ Coba pikirkan lagi — 5 dari 6 siswa nilainya jauh di bawah 98,3. Mean di sini justru menyesatkan!';}
+}
+function pickS6(btn,ans){
+  document.querySelectorAll('#slide6 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS6');
+  if(ans==='40'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Ukuran 40 paling sering terjual (3 dari 6) — itulah yang harus diperbanyak stoknya.';}
+  else{btn.classList.add('wrong');document.querySelectorAll('#slide6 .pick-btn')[0].classList.add('correct');fb.innerHTML='❌ Ukuran 40 muncul paling sering (3 kali) — itu yang paling laku dan harus diperbanyak!';}
+}
+function pickS7(btn,ans){
+  document.querySelectorAll('#slide7 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS7');
+  if(ans==='mean'){btn.classList.add('correct');fb.innerHTML='✅ Benar! Mean melonjak dari 80 ke ≈98,3 ketika ada outlier. Median dan modus tetap stabil di 80 pada ketiga set data!';}
+  else{btn.classList.add('wrong');document.querySelectorAll('#slide7 .pick-btn')[0].classList.add('correct');fb.innerHTML='❌ Justru Median paling STABIL (tetap 80 di ketiga set). Mean yang paling berubah — dari 80 jadi ≈98,3!';}
+}
+const ansS8={sit1:'mean',sit2:'median',sit3:'modus'};
+const expS8={
+  sit1:'Nilai ujian sekelas biasanya tidak punya outlier ekstrem, jadi Mean cukup adil mewakili performa kelas.',
+  sit2:'Gaji direktur yang sangat tinggi akan menarik Mean jauh ke atas. Median lebih jujur menggambarkan "gaji tipikal" karyawan.',
+  sit3:'Toko tidak butuh "rata-rata ukuran" — yang penting ukuran mana yang PALING LAKU. Itulah Modus.'
+};
+function pickS8(btn,sit,ans){
+  document.querySelectorAll(`[onclick^="pickS8(this,'${sit}'"]`).forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb'+sit);
+  if(ans===ansS8[sit]){btn.classList.add('correct');fb.innerHTML='✅ Tepat! '+expS8[sit];}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS8(this,'${sit}','${ansS8[sit]}')"]`).classList.add('correct');fb.innerHTML='❌ Jawaban yang lebih tepat: '+ansS8[sit].toUpperCase()+'. '+expS8[sit];}
+}
+function checkS9(){
+  const m=(document.getElementById('ch_mean').value||'').trim().replace(',','.');
+  const med=(document.getElementById('ch_median').value||'').trim().replace(',','.');
+  const mo=(document.getElementById('ch_modus').value||'').trim();
+  const res=document.getElementById('resS9');
+  // data: 60,65,65,70,75,150 sum=485 mean=80.83 median=(65+70)/2=67.5 modus=65
+  const meanOk=Math.abs(parseFloat(m)-80.83)<0.5 || m==='80.83'||m==='80,83'||m==='485/6';
+  const medOk=parseFloat(med)===67.5;
+  const moOk=mo==='65';
+  let correct=0; if(meanOk)correct++; if(medOk)correct++; if(moOk)correct++;
+  if(correct===3){res.innerHTML='🎉 SEMPURNA! Mean≈80,83 · Median=67,5 · Modus=65';res.style.color='var(--neon)';}
+  else if(correct>0){res.innerHTML=`✅ ${correct} dari 3 benar.\nJawaban: Mean≈80,83 · Median=67,5 · Modus=65`;res.style.color='var(--amber)';}
+  else{res.innerHTML='Belum tepat. Urutkan dulu: 60,65,65,70,75,150\nMean=jumlah÷6, Median=rata-rata 2 nilai tengah, Modus=paling sering muncul.';res.style.color='var(--red)';}
+}
+function pickS9(btn,ans){
+  document.querySelectorAll('#slide9 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS9');
+  if(ans==='median'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Nilai 150 adalah outlier yang menarik Mean jauh ke atas (≈80,83). Median (67,5) jauh lebih mewakili 5 dari 6 data yang berkumpul di 60–75.';}
+  else{btn.classList.add('wrong');document.querySelectorAll('#slide9 .pick-btn')[0].classList.add('correct');fb.innerHTML='❌ Coba pikirkan lagi — nilai 150 menarik Mean terlalu jauh ke atas. Median (67,5) lebih jujur mewakili sebagian besar data!';}
+}
+</script>
+</body>
+</html>
