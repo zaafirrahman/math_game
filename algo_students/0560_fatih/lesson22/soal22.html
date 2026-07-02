@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprint · Konversi Satuan · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);
+    --red:#e85040;
+    --steel:#4a90b8;--steel-bg:rgba(74,144,184,0.1);--steel-light:#7ab8d8;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(74,144,184,0.07) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--amber);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--red);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  #intro{text-align:center;}
+  .loco-icon{font-size:5rem;display:block;margin-bottom:1.2rem;animation:chug 0.6s ease-in-out infinite alternate;}
+  @keyframes chug{from{transform:translateX(-4px);}to{transform:translateX(4px);}}
+  .sprint-title{font-family:'Rajdhani',sans-serif;font-size:clamp(1.8rem,5vw,2.5rem);font-weight:700;color:var(--amber);letter-spacing:3px;margin-bottom:0.6rem;}
+  .sprint-sub{color:var(--text-muted);line-height:1.7;margin-bottom:2rem;font-size:0.9rem;}
+  .rules-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.4rem 1.8rem;text-align:left;margin-bottom:2rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .rules-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--steel),var(--amber));}
+  .rules-title{font-family:'Rajdhani',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--steel-light);margin-bottom:1rem;}
+  .rule{display:flex;gap:0.8rem;font-size:0.88rem;margin-bottom:0.55rem;color:var(--text-mid);}
+  .rule span{flex-shrink:0;}
+  .start-btn{background:linear-gradient(135deg,var(--steel),#2a6a90);color:#fff;border:none;padding:1rem 3rem;border-radius:6px;font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:3px;cursor:pointer;box-shadow:0 5px 18px rgba(74,144,184,0.35);transition:all 0.2s;}
+  .start-btn:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(74,144,184,0.45);}
+
+  #game{display:none;}
+  .gauge-wrap{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;gap:1rem;}
+  .hud-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.65rem 1.2rem;text-align:center;flex:1;box-shadow:0 2px 8px var(--shadow);}
+  .hud-val{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.3rem;}
+  .hud-val.sc{color:var(--amber);}
+  .hud-val.qn{color:var(--steel-light);}
+  .hud-lbl{font-size:0.62rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-top:0.1rem;font-family:'Rajdhani',sans-serif;}
+
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--steel-light),var(--amber));}
+  .q-tag{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--steel-light);margin-bottom:0.9rem;}
+  .q-text{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.2rem;line-height:1.55;margin-bottom:0.4rem;letter-spacing:0.3px;text-align:center;}
+  .q-text strong{color:var(--amber);}
+  .q-hint{text-align:center;font-size:0.8rem;color:var(--text-muted);margin-bottom:1.3rem;}
+
+  .opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-bottom:0.5rem;}
+  .opt-btn{background:var(--track);border:2px solid var(--border2);color:var(--text);padding:1rem 0.8rem;border-radius:10px;cursor:pointer;font-size:1.05rem;font-family:'Rajdhani',sans-serif;font-weight:700;text-align:center;transition:all 0.15s;}
+  .opt-btn:hover:not(:disabled){border-color:var(--steel-light);background:rgba(74,144,184,0.06);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(232,80,64,0.1);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+
+  .feedback{margin-top:0.9rem;padding:0.75rem 1rem;border-radius:8px;font-size:0.88rem;font-weight:700;display:none;text-align:center;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid rgba(72,200,112,0.3);}
+  .feedback.no{background:rgba(232,80,64,0.07);color:var(--red);border:1px solid rgba(232,80,64,0.25);}
+
+  #results{display:none;text-align:center;padding:2rem 1rem;}
+  .result-icon{font-size:4.5rem;display:block;margin-bottom:1rem;animation:pop 0.5s ease;}
+  @keyframes pop{from{transform:scale(0.5);}to{transform:scale(1);}}
+  .result-score{font-family:'Rajdhani',sans-serif;font-size:3rem;font-weight:700;color:var(--amber);letter-spacing:3px;}
+  .result-label{font-family:'Rajdhani',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.5rem;}
+  .result-msg{color:var(--text-mid);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;max-width:360px;margin-left:auto;margin-right:auto;}
+  .result-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--steel),#2a6a90);color:#fff;font-weight:800;}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .score-log{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin:1rem 0;}
+  .score-pip{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+  .pip-ok{background:var(--green-bg);border:1px solid rgba(72,200,112,0.4);}
+  .pip-no{background:rgba(232,80,64,0.1);border:1px solid rgba(232,80,64,0.3);}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson22.html">LESSON 22</a><span>/</span>
+  <span class="cur">SPRINT</span>
+</nav>
+
+<div class="wrap">
+  <!-- INTRO -->
+  <div id="intro">
+    <span class="loco-icon">📏</span>
+    <div class="sprint-title">SPRINT MODE</div>
+    <p class="sprint-sub">10 soal konversi satuan panjang, berat, dan waktu. Klik langsung jawaban yang tepat!</p>
+    <div class="rules-box">
+      <div class="rules-title">⚡ Peraturan Sprint</div>
+      <div class="rule"><span>📏</span><span>Setiap soal memberi soal konversi — klik salah satu dari 4 pilihan jawaban.</span></div>
+      <div class="rule"><span>🎯</span><span>Klik benar tanpa salah = +10 poin. Kalau sempat salah dulu = +5 poin.</span></div>
+      <div class="rule"><span>❌</span><span>Klik salah ditandai merah sebentar — coba klik pilihan lain sampai benar.</span></div>
+      <div class="rule"><span>🔒</span><span>Tidak bisa kembali ke soal sebelumnya.</span></div>
+    </div>
+    <button class="start-btn" onclick="startGame()">MULAI SPRINT ⚡</button>
+  </div>
+
+  <!-- GAME -->
+  <div id="game">
+    <div class="gauge-wrap">
+      <div class="hud-box"><div class="hud-val sc" id="score">0</div><div class="hud-lbl">Poin</div></div>
+      <div class="hud-box"><div class="hud-val qn" id="qnum">1/10</div><div class="hud-lbl">Soal</div></div>
+    </div>
+    <div class="q-card" id="qcard"></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results"></div>
+</div>
+
+<script>
+const QUESTIONS = [
+  { text:"3 m = ... cm", opts:["30","300","3000","0,3"], ans:1 },
+  { text:"450 cm = ... m", opts:["0,45","4,5","45","450"], ans:1 },
+  { text:"2 km = ... m", opts:["200","2000","20000","0,2"], ans:1 },
+  { text:"5 kg = ... g", opts:["50","500","5000","50000"], ans:2 },
+  { text:"2500 g = ... kg", opts:["0,25","2,5","25","250"], ans:1 },
+  { text:"7 m = ... cm", opts:["70","700","7000","0,7"], ans:1 },
+  { text:"2 jam = ... menit", opts:["60","90","120","150"], ans:2 },
+  { text:"180 menit = ... jam", opts:["2","3","4","5"], ans:1 },
+  { text:"3 hari = ... jam", opts:["48","60","72","84"], ans:2 },
+  { text:"2 minggu = ... hari", opts:["10","12","14","21"], ans:2 }
+];
+
+let cur=0, score=0, answered=false, results=[];
+
+function startGame(){
+  document.getElementById('intro').style.display='none';
+  document.getElementById('game').style.display='block';
+  showQ();
+}
+
+function showQ(){
+  answered=false;
+  showQ.hadMiss = false;
+  const q = QUESTIONS[cur];
+  document.getElementById('qnum').textContent = `${cur+1}/10`;
+  const card = document.getElementById('qcard');
+  card.innerHTML = `
+    <div class="q-tag">📏 Soal ${cur+1}</div>
+    <div class="q-text">${q.text}</div>
+    <div class="q-hint">Klik jawaban yang tepat</div>
+    <div class="opt-grid" id="optGrid">
+      ${q.opts.map((o,i)=>`<button class="opt-btn" data-i="${i}">${o}</button>`).join('')}
+    </div>
+    <div class="feedback" id="fb"></div>
+  `;
+  document.querySelectorAll('#optGrid .opt-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>handlePick(parseInt(btn.getAttribute('data-i')), btn));
+  });
+}
+
+function handlePick(idx, btn){
+  if(answered) return;
+  const q = QUESTIONS[cur];
+  const correct = (idx===q.ans);
+  const fb = document.getElementById('fb');
+
+  if(correct){
+    answered = true;
+    results[cur] = showQ.hadMiss ? 'no' : 'ok';
+    score += showQ.hadMiss ? 5 : 10;
+    document.getElementById('score').textContent = score;
+    btn.classList.add('correct');
+    document.querySelectorAll('#optGrid .opt-btn').forEach(b=>b.disabled=true);
+    fb.className = 'feedback show ok';
+    fb.textContent = `✓ Tepat! ${q.text.replace('...', q.opts[q.ans])}`;
+    setTimeout(()=>{
+      if(cur<QUESTIONS.length-1){ cur++; showQ(); }
+      else showResults();
+    }, 1200);
+  } else {
+    showQ.hadMiss = true;
+    btn.classList.add('wrong');
+    fb.className = 'feedback show no';
+    fb.textContent = `✗ Bukan itu. Coba hitung lagi langkah pada tangga satuan atau hubungan waktunya!`;
+    setTimeout(()=>{
+      btn.classList.remove('wrong');
+    }, 700);
+  }
+}
+
+function showResults(){
+  document.getElementById('game').style.display='none';
+  const div=document.getElementById('results');
+  div.style.display='block';
+  const okCount = results.filter(r=>r==='ok').length;
+  const pct = okCount/10;
+  const icon = pct>=0.8?'🏆':pct>=0.6?'🎯':pct>=0.4?'📏':'📉';
+  const msg = pct>=0.8?'Luar biasa! Kamu jago mengonversi satuan!':pct>=0.6?'Bagus! Terus latihan tangga satuan dan hubungan waktu ya.':pct>=0.4?'Lumayan! Coba review lagi cara menghitung langkah di tangga satuan.':'Yuk pelajari lagi materi konversi satuan!';
+  const pips = results.map(r=>`<div class="score-pip pip-${r}">${r==='ok'?'✓':'✗'}</div>`).join('');
+  div.innerHTML=`
+    <span class="result-icon">${icon}</span>
+    <div class="result-score">${score}/100</div>
+    <div class="result-label">Skor Sprint</div>
+    <div class="score-log">${pips}</div>
+    <p class="result-msg">${msg}</p>
+    <div class="result-btns">
+      <button class="btn btn-primary" onclick="location.reload()">🔄 Ulangi Sprint</button>
+      <a href="latihan22.html" class="btn btn-ghost">🏠 Latihan Mandiri</a>
+      <a href="lesson22.html" class="btn btn-ghost">← Lesson</a>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>
