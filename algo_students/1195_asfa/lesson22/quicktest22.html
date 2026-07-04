@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Test · Lesson 22 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--red:#ef4444;--cyan:#22d3ee;--emerald:#34d399;--amber:#fbbf24;--violet:#a78bfa;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 25%,rgba(245,158,11,0.08) 0%,transparent 50%),radial-gradient(ellipse at 85% 70%,rgba(167,139,250,0.07) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--accent);}
+  .wrapper{max-width:660px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  #intro{text-align:center;}
+  .boss-icon{font-size:4.5rem;display:block;margin-bottom:1.2rem;animation:pulse 1.2s ease infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+  .boss-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,5vw,2rem);font-weight:900;color:var(--accent);margin-bottom:0.7rem;text-shadow:0 0 30px rgba(245,158,11,0.4);}
+  .boss-sub{color:var(--muted);line-height:1.7;margin-bottom:2rem;font-size:0.92rem;}
+  .boss-sub strong{color:var(--accent);}
+  .info-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
+  @media(max-width:480px){.info-cards{grid-template-columns:1fr;}}
+  .info-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;text-align:center;}
+  .info-val{font-family:'Orbitron',monospace;font-size:1.8rem;font-weight:900;color:var(--accent);margin-bottom:0.3rem;}
+  .info-lbl{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+  .start-btn{background:linear-gradient(135deg,var(--accent),#d97706);color:#000;font-weight:800;padding:1rem 3rem;border-radius:14px;border:none;font-family:'Orbitron',monospace;font-size:1rem;letter-spacing:3px;cursor:pointer;box-shadow:0 4px 20px rgba(245,158,11,0.4);transition:all 0.2s;}
+  .start-btn:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(245,158,11,0.5);}
+  #game{display:none;}
+  .hud{display:flex;gap:0.8rem;margin-bottom:1.5rem;}
+  .hud-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.7rem 1rem;text-align:center;flex:1;}
+  .hud-val{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:700;}
+  .hud-lbl{font-size:0.6rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:0.1rem;}
+  .hud-val.sv{color:var(--accent);}
+  .hud-val.qv{color:var(--cyan);}
+  .hud-val.tv{color:var(--text);transition:color 0.3s;}
+  .hud-val.tv.warn{color:var(--red);animation:blink 0.5s ease infinite;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.4;}}
+  .timer-bar{height:5px;background:var(--border);border-radius:99px;margin-bottom:1.5rem;overflow:hidden;}
+  .timer-fill{height:100%;background:linear-gradient(90deg,var(--accent),#f59e0b);border-radius:99px;transition:width 0.25s linear;}
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem;margin-bottom:1.2rem;}
+  .q-label{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:0.8rem;}
+  .q-text{font-size:0.95rem;line-height:1.7;color:var(--text);margin-bottom:1.2rem;}
+  .raw-box{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.9rem;text-align:center;font-family:'Orbitron',monospace;font-size:0.9rem;color:var(--cyan);letter-spacing:1px;margin-bottom:1rem;line-height:1.8;}
+  .raw-box.sit{font-family:'Nunito',sans-serif;font-size:0.88rem;color:var(--text);letter-spacing:0;font-weight:700;}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;}
+  @media(max-width:360px){.opts{grid-template-columns:1fr;}}
+  .opt-btn{background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.7rem 0.8rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:1px;transition:all 0.2s;text-align:center;line-height:1.4;}
+  .opt-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(245,158,11,0.07);}
+  .opt-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .feedback{text-align:center;font-size:0.8rem;letter-spacing:1px;min-height:28px;margin-top:0.7rem;line-height:1.5;font-family:'Orbitron',monospace;}
+  .feedback.ok{color:var(--neon);}
+  .feedback.ko{color:var(--red);}
+  #result{display:none;text-align:center;}
+  .score-big{font-family:'Orbitron',monospace;font-size:clamp(3rem,12vw,5rem);font-weight:900;color:var(--accent);line-height:1;margin-bottom:0.5rem;}
+  .score-label{font-size:0.85rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:2rem;}
+  .grade-badge{display:inline-block;font-family:'Orbitron',monospace;font-size:1.1rem;letter-spacing:3px;padding:0.5rem 1.5rem;border-radius:12px;margin-bottom:2rem;}
+  .gs{background:rgba(0,245,196,0.1);border:2px solid var(--neon);color:var(--neon);}
+  .ga{background:rgba(245,158,11,0.1);border:2px solid var(--accent);color:var(--accent);}
+  .gb{background:rgba(34,211,238,0.1);border:2px solid var(--cyan);color:var(--cyan);}
+  .gc{background:rgba(239,68,68,0.1);border:2px solid var(--red);color:var(--red);}
+  .result-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .act-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;}
+  .act-primary{background:linear-gradient(135deg,var(--accent),#d97706);color:#000;border:none;font-weight:800;}
+  .act-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .act-primary:hover{transform:translateY(-2px);}
+  .act-secondary:hover{border-color:var(--accent);color:var(--accent);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson22.html">LESSON 22</a>
+  <span>›</span>
+  <span class="current">QUICK TEST</span>
+</nav>
+<div class="wrapper">
+  <div id="intro">
+    <span class="boss-icon">🕵️</span>
+    <div class="boss-title">Quick Test · Kasus Sudut Hilang</div>
+    <div class="boss-sub">Saatnya tes kemampuan detektifmu! <strong>10 kasus sudut berpelurus, bertolak belakang &amp; penyiku</strong> dengan timer 30 detik per soal. Siap memecahkan kasus?</div>
+    <div class="info-cards">
+      <div class="info-card"><div class="info-val">10</div><div class="info-lbl">Soal</div></div>
+      <div class="info-card"><div class="info-val" style="color:var(--accent)">30s</div><div class="info-lbl">Timer</div></div>
+      <div class="info-card"><div class="info-val">+10</div><div class="info-lbl">Per Soal</div></div>
+    </div>
+    <button class="start-btn" onclick="startGame()">MULAI INVESTIGASI 🔍</button>
+  </div>
+  <div id="game">
+    <div class="hud">
+      <div class="hud-item"><div class="hud-val sv" id="scoreV">0</div><div class="hud-lbl">Skor</div></div>
+      <div class="hud-item"><div class="hud-val qv" id="qV">1/10</div><div class="hud-lbl">Soal</div></div>
+      <div class="hud-item"><div class="hud-val tv" id="timerV">30</div><div class="hud-lbl">Detik</div></div>
+    </div>
+    <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+    <div class="q-card">
+      <div class="q-label" id="qLabel">🕵️ Kasus Sudut</div>
+      <div id="visualDiv"></div>
+      <div class="q-text" id="questionText"></div>
+      <div class="opts" id="optsDiv"></div>
+      <div class="feedback" id="feedbackDiv"></div>
+    </div>
+  </div>
+  <div id="result">
+    <div style="font-size:4rem;margin-bottom:1rem;">🏆</div>
+    <div class="score-big" id="finalScore">0</div>
+    <div class="score-label">poin dari 100</div>
+    <div class="grade-badge" id="gradeBadge">—</div>
+    <div class="result-actions">
+      <button class="act-btn act-primary" onclick="resetGame()">ULANG</button>
+      <a href="exercise22.html" class="act-btn act-secondary">Exercise 🏋️</a>
+      <a href="lesson22.html" class="act-btn act-secondary">Lesson 22</a>
+    </div>
+  </div>
+</div>
+<script>
+const QS = [
+  {
+    type:'raw', dataStr:'Garis lurus: 128° dan ?',
+    q:'Berapa besar sudut yang berpelurus dengannya?',
+    cx:'52°', wx:['62°','42°','38°'],
+    expl:'Sudut berpelurus jumlahnya 180°. 180° − 128° = 52°.'
+  },
+  {
+    type:'raw', dataStr:'Dua garis berpotongan: 84° dan sudut yang berhadapan (?)',
+    q:'Berapa besar sudut yang bertolak belakang dengannya?',
+    cx:'84°', wx:['96°','42°','168°'],
+    expl:'Sudut bertolak belakang selalu SAMA BESAR, yaitu 84°.'
+  },
+  {
+    type:'raw', dataStr:'Penyiku: 27° dan ?',
+    q:'Berapa besar sudut pasangannya?',
+    cx:'63°', wx:['73°','53°','27°'],
+    expl:'Sudut penyiku jumlahnya 90°. 90° − 27° = 63°.'
+  },
+  {
+    type:'raw', dataStr:'Garis lurus: 90° dan ?',
+    q:'Berapa besar sudut yang berpelurus dengannya?',
+    cx:'90°', wx:['80°','100°','45°'],
+    expl:'180° − 90° = 90°. Kedua sudut siku-siku bisa saling berpelurus.'
+  },
+  {
+    type:'situation', dataStr:'Situasi: Dua rel kereta berpotongan membentuk sudut 62° di salah satu sisi.',
+    q:'Berapa besar sudut yang berhadapan dengannya di seberang persimpangan?',
+    cx:'62°', wx:['118°','28°','90°'],
+    expl:'Sudut yang berhadapan pada dua garis berpotongan adalah Bertolak Belakang — selalu sama besar, yaitu 62°.'
+  },
+  {
+    type:'raw', dataStr:'Sudut penyiku: 81° dan ?',
+    q:'Berapa besar sudut pasangannya?',
+    cx:'9°', wx:['19°','99°','81°'],
+    expl:'90° − 81° = 9°.'
+  },
+  {
+    type:'raw', dataStr:'Dua garis berpotongan: 143° dan sudut di sampingnya (?)',
+    q:'Berapa besar sudut yang bersebelahan (berpelurus) dengannya?',
+    cx:'37°', wx:['47°','53°','143°'],
+    expl:'Sudut bersebelahan pada dua garis berpotongan itu berpelurus. 180° − 143° = 37°.'
+  },
+  {
+    type:'situation', dataStr:'Situasi: Sebuah pintu dibuka hingga membentuk sudut 55° dengan tembok di belakangnya.',
+    q:'Berapa besar sudut sisanya agar pintu dan tembok membentuk garis lurus (180°)?',
+    cx:'125°', wx:['115°','35°','145°'],
+    expl:'180° − 55° = 125°. Dua sudut ini berpelurus.'
+  },
+  {
+    type:'raw', dataStr:'Sudut siku-siku dibagi menjadi dua: 48° dan ?',
+    q:'Berapa besar bagian yang hilang?',
+    cx:'42°', wx:['52°','38°','48°'],
+    expl:'90° − 48° = 42°. Kedua bagian ini saling penyiku.'
+  },
+  {
+    type:'situation', dataStr:'Situasi: Dua garis lurus saling berpotongan di satu titik, membentuk 4 sudut.',
+    q:'Dua sudut yang letaknya saling berhadapan (diagonal) pada perpotongan itu disebut sudut...',
+    cx:'Bertolak Belakang', wx:['Berpelurus','Penyiku','Siku-siku'],
+    expl:'Sudut yang saling berhadapan pada dua garis berpotongan disebut Bertolak Belakang, dan besarnya selalu sama.'
+  },
+];
+
+let cur=0, score=0, timerI=null, answered=false;
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
+function renderVisual(q){
+  const d=document.getElementById('visualDiv');
+  if(q.type==='situation'){
+    d.innerHTML=`<div class="raw-box sit">${q.dataStr}</div>`;
+  } else {
+    d.innerHTML=`<div class="raw-box">${q.dataStr}</div>`;
+  }
+}
+function showQ(){
+  if(cur>=QS.length){endGame();return;}
+  answered=false;
+  const q=QS[cur];
+  document.getElementById('qV').textContent=(cur+1)+'/10';
+  renderVisual(q);
+  document.getElementById('questionText').innerHTML=q.q;
+  const opts=shuffle([q.cx,...q.wx]);
+  const od=document.getElementById('optsDiv');
+  od.innerHTML='';
+  opts.forEach(v=>{
+    const b=document.createElement('button');
+    b.className='opt-btn'; b.textContent=v; b.dataset.v=v;
+    b.onclick=()=>pick(v,q.cx);
+    od.appendChild(b);
+  });
+  document.getElementById('feedbackDiv').textContent='';
+  document.getElementById('feedbackDiv').className='feedback';
+  startTimer();
+}
+function startTimer(){
+  clearInterval(timerI);
+  let t=30;
+  const tv=document.getElementById('timerV');
+  const tf=document.getElementById('timerFill');
+  tv.textContent=t; tv.classList.remove('warn');
+  tf.style.width='100%';
+  timerI=setInterval(()=>{
+    t--;
+    tv.textContent=t;
+    tf.style.width=(t/30*100)+'%';
+    if(t<=8) tv.classList.add('warn');
+    if(t<=0){clearInterval(timerI);if(!answered)pick('__timeout__',QS[cur].cx);}
+  },1000);
+}
+function pick(chosen,correct){
+  if(answered)return;
+  answered=true; clearInterval(timerI);
+  document.querySelectorAll('.opt-btn').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.v===chosen&&chosen===correct) b.classList.add('correct');
+    else if(b.dataset.v===chosen) b.classList.add('wrong');
+    else if(b.dataset.v===correct) b.classList.add('correct');
+  });
+  const fb=document.getElementById('feedbackDiv');
+  if(chosen===correct){
+    score+=10; document.getElementById('scoreV').textContent=score;
+    fb.className='feedback ok'; fb.textContent='✅ BENAR! '+QS[cur].expl;
+  } else {
+    fb.className='feedback ko';
+    fb.textContent=chosen==='__timeout__'?'⏱ WAKTU! '+QS[cur].expl:'❌ '+QS[cur].expl;
+  }
+  setTimeout(()=>{cur++;showQ();},2000);
+}
+function endGame(){
+  document.getElementById('game').style.display='none';
+  document.getElementById('result').style.display='block';
+  document.getElementById('finalScore').textContent=score;
+  const gb=document.getElementById('gradeBadge');
+  if(score>=90){gb.textContent='⭐ RANK S — MASTER DETECTIVE';gb.className='grade-badge gs';}
+  else if(score>=70){gb.textContent='🏆 RANK A — DETECTIVE';gb.className='grade-badge ga';}
+  else if(score>=50){gb.textContent='💪 RANK B — JUNIOR DETECTIVE';gb.className='grade-badge gb';}
+  else{gb.textContent='📚 RANK C — TRAINEE';gb.className='grade-badge gc';}
+}
+function startGame(){
+  cur=0;score=0;
+  document.getElementById('intro').style.display='none';
+  document.getElementById('game').style.display='block';
+  showQ();
+}
+function resetGame(){
+  cur=0;score=0;
+  document.getElementById('scoreV').textContent='0';
+  document.getElementById('result').style.display='none';
+  document.getElementById('game').style.display='block';
+  showQ();
+}
+</script>
+</body>
+</html>
