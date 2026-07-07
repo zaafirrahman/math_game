@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise · Lesson 23 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--red:#ef4444;--cyan:#22d3ee;--emerald:#34d399;--amber:#fbbf24;--violet:#a78bfa;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(34,211,238,0.06) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(167,139,250,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--emerald);}
+  .wrapper{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 6rem;position:relative;z-index:1;}
+  .page-header{text-align:center;margin-bottom:2rem;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--emerald);margin-bottom:0.5rem;}
+  .page-sub{color:var(--muted);font-size:0.9rem;}
+  .prog-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin-bottom:2rem;}
+  .prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+  .prog-val{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--emerald);}
+  .prog-bar{background:var(--border);border-radius:99px;height:6px;overflow:hidden;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--neon));border-radius:99px;transition:width 0.5s ease;}
+  .dot-row{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.8rem;}
+  .dot{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);cursor:pointer;transition:all 0.2s;font-family:'Orbitron',monospace;font-size:0.6rem;display:flex;align-items:center;justify-content:center;color:var(--muted);}
+  .dot.done-ok{background:rgba(0,245,196,0.15);border-color:var(--neon);color:var(--neon);}
+  .dot.done-ko{background:rgba(239,68,68,0.12);border-color:var(--red);color:var(--red);}
+  .dot.active{border-color:var(--cyan);color:var(--cyan);background:rgba(34,211,238,0.1);}
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem;margin-bottom:1.2rem;display:none;}
+  .q-card.active{display:block;animation:fadeIn 0.3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+  .q-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;}
+  .q-tag{font-size:0.65rem;padding:0.2rem 0.6rem;border-radius:99px;font-weight:700;}
+  .tag-sehadap{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .tag-dalam{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.3);}
+  .tag-luar{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+  .tag-sepihak{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.3);}
+  .tag-pilih{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.3);}
+  .q-text{font-size:0.95rem;line-height:1.7;margin-bottom:1rem;color:var(--text);}
+  .q-text strong{color:var(--cyan);}
+  .raw-box{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.85rem;text-align:center;font-family:'Orbitron',monospace;font-size:0.88rem;color:var(--cyan);letter-spacing:1px;margin-bottom:1rem;line-height:1.8;}
+  .raw-box.sit{font-family:'Nunito',sans-serif;font-size:0.86rem;color:var(--text);letter-spacing:0;font-weight:700;}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-bottom:0.8rem;}
+  @media(max-width:400px){.opts{grid-template-columns:1fr;}}
+  .opt-btn{background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.65rem 0.8rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.76rem;letter-spacing:1px;transition:all 0.2s;text-align:center;line-height:1.4;}
+  .opt-btn:hover:not(:disabled){border-color:var(--cyan);background:rgba(34,211,238,0.07);}
+  .opt-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .opt-btn.reveal-correct{border-color:var(--neon);background:rgba(0,245,196,0.06);color:var(--neon);}
+  .q-feedback{min-height:24px;font-size:0.85rem;margin-bottom:0.8rem;line-height:1.5;}
+  .q-feedback.ok{color:var(--neon);}
+  .q-feedback.ko{color:var(--red);}
+  .q-nav{display:flex;gap:0.8rem;justify-content:flex-end;}
+  .qnav-btn{background:var(--card);border:1px solid var(--border);color:var(--text);padding:0.55rem 1.2rem;border-radius:8px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.7rem;letter-spacing:2px;transition:all 0.2s;}
+  .qnav-btn.next{background:linear-gradient(135deg,var(--cyan),#0891b2);border:none;color:#000;font-weight:800;}
+  .qnav-btn:hover:not(.next){border-color:var(--cyan);}
+  #resultPanel{display:none;background:var(--card);border:1px solid rgba(34,211,238,0.3);border-radius:18px;padding:2rem;text-align:center;margin-top:2rem;}
+  .result-score{font-family:'Orbitron',monospace;font-size:3.5rem;font-weight:900;color:var(--cyan);margin-bottom:0.3rem;}
+  .result-sub{color:var(--muted);font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1.5rem;}
+  .result-grade{display:inline-block;font-family:'Orbitron',monospace;font-size:1rem;letter-spacing:3px;padding:0.5rem 1.5rem;border-radius:12px;margin-bottom:1.5rem;}
+  .rg-s{background:rgba(0,245,196,0.1);border:2px solid var(--neon);color:var(--neon);}
+  .rg-a{background:rgba(34,211,238,0.1);border:2px solid var(--cyan);color:var(--cyan);}
+  .rg-b{background:rgba(245,158,11,0.1);border:2px solid var(--accent);color:var(--accent);}
+  .rg-c{background:rgba(239,68,68,0.1);border:2px solid var(--red);color:var(--red);}
+  .result-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .ra-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;text-decoration:none;display:inline-block;transition:all 0.2s;cursor:pointer;}
+  .ra-primary{background:linear-gradient(135deg,var(--cyan),#0891b2);color:#000;border:none;font-weight:800;}
+  .ra-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .ra-primary:hover{transform:translateY(-2px);}
+  .ra-secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+  .reset-link{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--muted);cursor:pointer;text-decoration:underline;display:block;text-align:right;margin-top:0.5rem;}
+  .reset-link:hover{color:var(--red);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson23.html">LESSON 23</a>
+  <span>›</span>
+  <span class="current">EXERCISE</span>
+</nav>
+<div class="wrapper">
+  <div class="page-header">
+    <div class="page-title">🏋️ Exercise Zone</div>
+    <div class="page-sub">20 soal sehadap, dalam &amp; luar berseberangan, dan dalam sepihak · Progress tersimpan otomatis</div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-top">
+      <div class="prog-label">Progress</div>
+      <div class="prog-val" id="progVal">0 / 20</div>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="dot-row" id="dotRow"></div>
+    <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+  </div>
+  <div id="questionsDiv"></div>
+  <div id="resultPanel">
+    <div style="font-size:3rem;margin-bottom:1rem;">🎉</div>
+    <div class="result-score" id="rScore">0</div>
+    <div class="result-sub">DARI 200 POIN</div>
+    <div class="result-grade" id="rGrade">—</div>
+    <div class="result-actions">
+      <button class="ra-btn ra-primary" onclick="resetProgress()">ULANGI</button>
+      <a href="quicktest23.html" class="ra-btn ra-secondary">Quick Test ⚡</a>
+      <a href="lesson23.html" class="ra-btn ra-secondary">Lesson 23</a>
+    </div>
+  </div>
+</div>
+<script>
+const KEY='asfa_ex23_v1';
+const QS=[
+  {tag:'sehadap',dataStr:'Sehadap: ∠1 = 68° dan ∠5 = ?',q:'Berapa besar sudut yang hilang?',cx:'68°',wx:['112°','22°','78°'],expl:'Sudut sehadap selalu SAMA BESAR, yaitu 68°.'},
+  {tag:'sehadap',dataStr:'Sehadap: ∠8 = 145° dan ∠4 = ?',q:'Berapa besar sudut yang hilang?',cx:'145°',wx:['35°','55°','125°'],expl:'Sudut sehadap selalu SAMA BESAR, yaitu 145°.'},
+  {tag:'dalam',dataStr:'Dalam Berseberangan: ∠3 = 96° dan ∠5 = ?',q:'Berapa besar sudut yang hilang?',cx:'96°',wx:['84°','90°','6°'],expl:'Sudut dalam berseberangan selalu SAMA BESAR, yaitu 96°.'},
+  {tag:'dalam',dataStr:'Dalam Berseberangan: ∠4 = 51° dan ∠6 = ?',q:'Berapa besar sudut yang hilang?',cx:'51°',wx:['129°','39°','90°'],expl:'Sudut dalam berseberangan selalu SAMA BESAR, yaitu 51°.'},
+  {tag:'luar',dataStr:'Luar Berseberangan: ∠1 = 74° dan ∠7 = ?',q:'Berapa besar sudut yang hilang?',cx:'74°',wx:['106°','16°','90°'],expl:'Sudut luar berseberangan selalu SAMA BESAR, yaitu 74°.'},
+  {tag:'luar',dataStr:'Luar Berseberangan: ∠2 = 121° dan ∠8 = ?',q:'Berapa besar sudut yang hilang?',cx:'121°',wx:['59°','31°','90°'],expl:'Sudut luar berseberangan selalu SAMA BESAR, yaitu 121°.'},
+  {tag:'sepihak',dataStr:'Dalam Sepihak: ∠3 = 113° dan ∠6 = ?',q:'Berapa besar sudut yang hilang?',cx:'67°',wx:['113°','23°','77°'],expl:'Sudut dalam sepihak berjumlah 180°. 180° − 113° = 67°.'},
+  {tag:'sepihak',dataStr:'Dalam Sepihak: ∠4 = 38° dan ∠5 = ?',q:'Berapa besar sudut yang hilang?',cx:'142°',wx:['38°','52°','128°'],expl:'Sudut dalam sepihak berjumlah 180°. 180° − 38° = 142°.'},
+  {tag:'sehadap',dataStr:'Sehadap: ∠2 = 89° dan ∠6 = ?',q:'Berapa besar sudut yang hilang?',cx:'89°',wx:['91°','1°','179°'],expl:'Sudut sehadap selalu SAMA BESAR, yaitu 89°.'},
+  {tag:'pilih',dataStr:'Situasi: Dua garis sejajar dipotong sebuah transversal membentuk sudut 42° dan sudut lain di posisi yang sama persis di titik potong kedua.',q:'Apakah kedua sudut ini pasangan sehadap?',cx:'Ya, karena posisinya sama persis',wx:['Tidak, ini pasangan dalam sepihak','Tidak, ini pasangan luar berseberangan','Tidak, harus dijumlah dulu'],expl:'Betul — dua sudut yang menempati posisi sama persis pada dua titik potong adalah pasangan sehadap.'},
+  {tag:'dalam',dataStr:'Dalam Berseberangan: ∠5 = 27° dan ∠3 = ?',q:'Berapa besar sudut yang hilang?',cx:'27°',wx:['153°','63°','90°'],expl:'Sudut dalam berseberangan selalu SAMA BESAR, yaitu 27°.'},
+  {tag:'luar',dataStr:'Luar Berseberangan: ∠7 = 88° dan ∠1 = ?',q:'Berapa besar sudut yang hilang?',cx:'88°',wx:['92°','2°','90°'],expl:'Sudut luar berseberangan selalu SAMA BESAR, yaitu 88°.'},
+  {tag:'sepihak',dataStr:'Dalam Sepihak: ∠6 = 150° dan ∠3 = ?',q:'Berapa besar sudut yang hilang?',cx:'30°',wx:['150°','60°','120°'],expl:'Sudut dalam sepihak berjumlah 180°. 180° − 150° = 30°.'},
+  {tag:'sehadap',dataStr:'Sehadap: ∠4 = 103° dan ∠8 = ?',q:'Berapa besar sudut yang hilang?',cx:'103°',wx:['77°','90°','13°'],expl:'Sudut sehadap selalu SAMA BESAR, yaitu 103°.'},
+  {tag:'pilih',dataStr:'Konsep: Dua sudut di antara garis sejajar, pada sisi yang sama dari transversal, dan berjumlah 180° disebut sudut...',q:'Pilih istilah yang tepat!',cx:'Dalam Sepihak',wx:['Sehadap','Dalam Berseberangan','Luar Berseberangan'],expl:'Dua sudut di antara garis sejajar, pada sisi yang sama, dan berjumlah 180° disebut Dalam Sepihak.'},
+  {tag:'pilih',dataStr:'Konsep: Dua sudut di antara garis sejajar, tapi berada di sisi yang berlawanan dari transversal, dan selalu sama besar disebut sudut...',q:'Pilih istilah yang tepat!',cx:'Dalam Berseberangan',wx:['Sehadap','Dalam Sepihak','Luar Berseberangan'],expl:'Dua sudut di antara garis sejajar, di sisi berlawanan transversal, dan selalu sama besar disebut Dalam Berseberangan.'},
+  {tag:'pilih',dataStr:'Konsep: Dua sudut di LUAR garis sejajar, di sisi yang berlawanan dari transversal, dan selalu sama besar disebut sudut...',q:'Pilih istilah yang tepat!',cx:'Luar Berseberangan',wx:['Sehadap','Dalam Berseberangan','Dalam Sepihak'],expl:'Dua sudut di luar garis sejajar, di sisi berlawanan transversal, dan selalu sama besar disebut Luar Berseberangan.'},
+  {tag:'dalam',dataStr:'Dalam Berseberangan: ∠6 = 71° dan ∠4 = ?',q:'Berapa besar sudut yang hilang?',cx:'71°',wx:['109°','19°','90°'],expl:'Sudut dalam berseberangan selalu SAMA BESAR, yaitu 71°.'},
+  {tag:'luar',dataStr:'Luar Berseberangan: ∠8 = 154° dan ∠2 = ?',q:'Berapa besar sudut yang hilang?',cx:'154°',wx:['26°','90°','64°'],expl:'Sudut luar berseberangan selalu SAMA BESAR, yaitu 154°.'},
+  {tag:'sepihak',dataStr:'Dalam Sepihak: ∠5 = 61° dan ∠4 = ?',q:'Berapa besar sudut yang hilang?',cx:'119°',wx:['61°','29°','151°'],expl:'Sudut dalam sepihak berjumlah 180°. 180° − 61° = 119°.'},
+];
+const TAG_LABEL={sehadap:'Sehadap',dalam:'Dalam Berseberangan',luar:'Luar Berseberangan',sepihak:'Dalam Sepihak',pilih:'Konsep'};
+
+let state={};
+function loadState(){
+  try{const s=localStorage.getItem(KEY);if(s){state=JSON.parse(s);}}catch(e){state={};}
+  if(!state.answers) state.answers={};
+}
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
+
+function renderVisual(q){
+  const cls = q.tag==='pilih' ? 'raw-box sit' : 'raw-box';
+  return `<div class="${cls}">${q.dataStr}</div>`;
+}
+
+function renderAll(){
+  const qd=document.getElementById('questionsDiv');
+  qd.innerHTML='';
+  QS.forEach((q,i)=>{
+    const ans=state.answers[i];
+    const done=ans!==undefined;
+    const opts=shuffle([q.cx,...q.wx]);
+    const tagClass='tag-'+q.tag;
+    let optsHtml='';
+    opts.forEach(v=>{
+      let cls='opt-btn';
+      if(done){
+        if(v===q.cx) cls+=' reveal-correct';
+        if(v===ans&&ans!==q.cx) cls+=' wrong';
+      }
+      optsHtml+=`<button class="${cls}" onclick="pickQ(${i},'${v.replace(/'/g,"\\'")}',this)" ${done?'disabled':''}>${v}</button>`;
+    });
+    let fbHtml='';
+    if(done){
+      const ok=ans===q.cx;
+      fbHtml=`<div class="q-feedback ${ok?'ok':'ko'}">${ok?'✅ '+q.expl:'❌ Benar: '+q.cx+'. '+q.expl}</div>`;
+    } else {
+      fbHtml=`<div class="q-feedback" id="fb${i}"></div>`;
+    }
+    const isActive=(i===currentQ())?'active':'';
+    qd.innerHTML+=`
+    <div class="q-card ${isActive}" id="qcard${i}">
+      <div class="q-meta">
+        <div class="q-num">Soal ${i+1} / 20</div>
+        <span class="q-tag ${tagClass}">${TAG_LABEL[q.tag]}</span>
+      </div>
+      ${renderVisual(q)}
+      <div class="q-text">${q.q}</div>
+      <div class="opts">${optsHtml}</div>
+      ${fbHtml}
+      <div class="q-nav">
+        ${i>0?`<button class="qnav-btn" onclick="jumpQ(${i-1})">← Prev</button>`:''}
+        ${i<19?`<button class="qnav-btn next" onclick="jumpQ(${i+1})">Next →</button>`:'<button class="qnav-btn next" onclick="showResult()">Lihat Hasil 🎉</button>'}
+      </div>
+    </div>`;
+  });
+  updateProgress();
+}
+
+function currentQ(){
+  for(let i=0;i<20;i++){if(state.answers[i]===undefined)return i;}
+  return 19;
+}
+function jumpQ(n){
+  document.querySelectorAll('.q-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('qcard'+n).classList.add('active');
+  window.scrollTo({top:document.getElementById('qcard'+n).offsetTop-80,behavior:'smooth'});
+}
+function pickQ(idx,chosen,btn){
+  if(state.answers[idx]!==undefined)return;
+  state.answers[idx]=chosen;
+  saveState();
+  const q=QS[idx];
+  const btns=btn.closest('.opts').querySelectorAll('.opt-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    const v=b.textContent;
+    if(v===q.cx) b.classList.add('reveal-correct');
+    if(v===chosen&&chosen!==q.cx) b.classList.add('wrong');
+  });
+  const fb=document.getElementById('fb'+idx);
+  if(fb){
+    const ok=chosen===q.cx;
+    fb.className='q-feedback '+(ok?'ok':'ko');
+    fb.textContent=ok?'✅ '+q.expl:'❌ Benar: '+q.cx+'. '+q.expl;
+  }
+  updateProgress();
+  if(idx<19) setTimeout(()=>jumpQ(idx+1),1600);
+  else setTimeout(()=>showResult(),1600);
+}
+function updateProgress(){
+  const done=Object.keys(state.answers).length;
+  document.getElementById('progVal').textContent=done+' / 20';
+  document.getElementById('progFill').style.width=(done/20*100)+'%';
+  const dr=document.getElementById('dotRow');
+  dr.innerHTML='';
+  for(let i=0;i<20;i++){
+    const a=state.answers[i];
+    let cls='dot';
+    if(a!==undefined) cls+=(a===QS[i].cx?' done-ok':' done-ko');
+    else if(i===currentQ()) cls+=' active';
+    dr.innerHTML+=`<div class="${cls}" onclick="jumpQ(${i})" title="Soal ${i+1}">${i+1}</div>`;
+  }
+}
+function showResult(){
+  const done=Object.keys(state.answers).length;
+  if(done<20){jumpQ(currentQ());return;}
+  let correct=0;
+  QS.forEach((q,i)=>{if(state.answers[i]===q.cx)correct++;});
+  const pts=correct*10;
+  document.getElementById('resultPanel').style.display='block';
+  document.getElementById('rScore').textContent=pts;
+  const rg=document.getElementById('rGrade');
+  if(correct>=18){rg.textContent='⭐ RANK S — MASTER DETECTIVE';rg.className='result-grade rg-s';}
+  else if(correct>=14){rg.textContent='🏆 RANK A — DETECTIVE';rg.className='result-grade rg-a';}
+  else if(correct>=10){rg.textContent='💪 RANK B — JUNIOR DETECTIVE';rg.className='result-grade rg-b';}
+  else{rg.textContent='📚 RANK C — TRAINEE';rg.className='result-grade rg-c';}
+  document.getElementById('resultPanel').scrollIntoView({behavior:'smooth'});
+}
+function resetProgress(){
+  if(!confirm('Reset semua progress Exercise 23?'))return;
+  state={answers:{}};
+  saveState();
+  renderAll();
+  document.getElementById('resultPanel').style.display='none';
+}
+loadState();
+renderAll();
+</script>
+</body>
+</html>

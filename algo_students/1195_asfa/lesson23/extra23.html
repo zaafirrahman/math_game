@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extra PR · Lesson 23 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#059669;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --emerald:#34d399;--text:#e2e8f0;--muted:#64748b;
+    --amber:#fbbf24;--blue:#60a5fa;--pink:#f472b6;
+    --violet:#a78bfa;--blue2:#38bdf8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 80%,rgba(34,211,238,0.06) 0%,transparent 50%),
+               radial-gradient(ellipse at 85% 15%,rgba(167,139,250,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 50%,rgba(251,191,36,0.03) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  nav{
+    padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:100;
+    font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;
+  }
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--violet);}
+
+  .wrapper{max-width:800px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  .pr-banner{background:linear-gradient(135deg,rgba(167,139,250,0.08),rgba(34,211,238,0.08));border:1px solid rgba(167,139,250,0.25);border-radius:20px;padding:2rem 2rem 1.5rem;margin-bottom:2rem;position:relative;overflow:hidden;}
+  .pr-banner::before{content:'🕵️';position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);font-size:5rem;opacity:0.08;pointer-events:none;line-height:1;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.3);color:var(--violet);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;margin-bottom:0.5rem;line-height:1.3;}
+  .page-title span{color:var(--violet);}
+  .page-desc{color:var(--muted);font-size:0.9rem;line-height:1.7;max-width:560px;}
+  .pr-pills{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;}
+  .pr-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.72rem;padding:0.2rem 0.7rem;border-radius:20px;font-weight:700;}
+  .pill-cyan{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .pill-emerald{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.3);}
+  .pill-amber{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.3);}
+  .pill-red{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.3);}
+  .pill-violet{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--violet);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+  .prog-stars{display:flex;gap:0.3rem;margin-top:0.5rem;align-items:center;font-size:0.78rem;color:var(--muted);}
+  .star{font-size:0.9rem;opacity:0.25;transition:opacity 0.4s;}
+  .star.lit{opacity:1;}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--cyan);}
+  .sd-2{color:var(--emerald);}
+  .sd-3{color:var(--violet);}
+  .sd-4{color:var(--amber);}
+  .sd-5{color:#f87171;}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;max-width:100%;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;padding:0 0.25rem;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(34,211,238,0.35);background:rgba(34,211,238,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.25);}
+  .ex-tag.tag-2{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.25);}
+  .ex-tag.tag-3{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.25);}
+  .ex-tag.tag-4{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.25);}
+  .ex-tag.tag-5{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.25);}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.78rem,3vw,0.92rem);font-weight:900;color:var(--text);margin-bottom:0.5rem;line-height:1.5;word-break:break-word;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--cyan);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:1rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--cyan);}
+  .ex-input.correct{border-color:var(--cyan);color:var(--cyan);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);color:var(--cyan);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(34,211,238,0.22);border-color:var(--cyan);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--neon);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.4);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+  .attempts-row{margin-top:0.4rem;display:flex;gap:2px;align-items:center;}
+  .attempts-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:2px;}
+
+  .ex-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;}
+  .ex-opt{background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.55rem 0.4rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;transition:all 0.15s;text-align:center;line-height:1.4;}
+  .ex-opt:hover:not(:disabled){border-color:var(--cyan);background:rgba(34,211,238,0.06);}
+  .ex-opt.opt-correct{border-color:var(--neon);background:rgba(0,245,196,0.12);color:var(--neon);}
+  .ex-opt.opt-wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .ex-opt:disabled{cursor:default;}
+
+  .ex-card.data-card{border-left:3px solid var(--cyan);}
+  .ex-card.data-card.done-card{border-left-color:var(--cyan);}
+
+  .mini-table{width:100%;border-collapse:separate;border-spacing:0;background:#12121c;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:0.8rem;font-size:0.82rem;}
+  .mini-table th{font-family:'Orbitron',monospace;font-size:0.56rem;letter-spacing:1.5px;color:var(--cyan);background:rgba(34,211,238,0.07);padding:0.5rem;text-align:center;}
+  .mini-table td{padding:0.45rem;text-align:center;border-top:1px solid var(--border);}
+  .raw-box{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.7rem;text-align:center;font-family:'Orbitron',monospace;font-size:0.8rem;color:var(--cyan);letter-spacing:1.5px;margin-bottom:0.8rem;line-height:1.7;}
+  .raw-box.sit{font-family:'Nunito',sans-serif;font-size:0.82rem;color:var(--text);letter-spacing:0;font-weight:700;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson23.html">LESSON 23</a>
+  <span>›</span>
+  <span class="current">EXTRA PR</span>
+</nav>
+
+<div class="wrapper">
+  <div class="pr-banner">
+    <div class="page-badge">🕵️ Detective Mode</div>
+    <div class="page-title">Extra <span>PR Mode</span></div>
+    <div class="page-desc">
+      40 soal ekstra: mulai dari sudut sehadap, dalam berseberangan, luar berseberangan, dan dalam sepihak pada dua garis sejajar yang dipotong satu transversal,
+      sampai review PR Lesson 22 (sudut berpelurus, bertolak belakang, penyiku) supaya insting detektif geometri kamu tetap tajam.
+      Progress tersimpan otomatis di perangkat ini. Selesaikan semua kasus, detektif! 🔍
+    </div>
+    <div class="pr-pills">
+      <span class="pr-pill pill-cyan">🔷 Sehadap</span>
+      <span class="pr-pill pill-emerald">🟢 Dalam Berseberangan</span>
+      <span class="pr-pill pill-violet">🟣 Luar Berseberangan</span>
+      <span class="pr-pill pill-amber">🟡 Dalam Sepihak</span>
+      <span class="pr-pill pill-red">📊 Review L22</span>
+    </div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress PR</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      Kumpulkan ⭐ untuk setiap bagian yang diselesaikan!
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+      <span style="margin-left:0.3rem;font-size:0.72rem;">Selesaikan 8 soal per bagian</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🕵️</span>
+    <div class="alldone-title">PR DETEKTIF SELESAI!</div>
+    <div class="alldone-desc">
+      GG! Kamu udah menaklukkan 40 soal Extra PR Lesson 23!<br>
+      Sehadap, dalam berseberangan, luar berseberangan, dalam sepihak, sampai review berpelurus-bertolak belakang-penyiku dari Lesson 22 — semua kamu babat habis! 🔥<br>
+      Kamu sekarang makin jago memecahkan kasus sudut pada garis sejajar tanpa busur derajat!
+    </div>
+    <div class="alldone-xp">🕵️ +400 XP — Master Geometry Detective Badge Unlocked!</div>
+    <div class="action-btns">
+      <a href="lesson23.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="exercise23.html" class="btn btn-ghost">Exercise Zone</a>
+      <a href="quicktest23.html" class="btn btn-primary">Quick Test ⚡</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  #allDone{display:none;text-align:center;padding:3rem 2rem;}
+  .alldone-icon{font-size:5rem;display:block;margin-bottom:1.5rem;animation:bounce 1s ease infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .alldone-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2rem);color:var(--violet);margin-bottom:0.8rem;}
+  .alldone-desc{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .alldone-xp{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.5rem 1.5rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:2rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--violet);color:var(--violet);}
+  .btn-primary{background:linear-gradient(135deg,#0891b2,var(--cyan));color:#000;box-shadow:0 4px 15px rgba(34,211,238,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson23_extra_v1';
+function loadProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{};}catch(e){return{};}}
+function saveProgress(p){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(p));}catch(e){}}
+let progress = loadProgress();
+
+// Helper: render a data table
+function tableDisp(thead, tbody){
+  let h = '<table class="mini-table"><thead><tr>';
+  thead.forEach(t=>h+=`<th>${t}</th>`);
+  h += '</tr></thead><tbody>';
+  tbody.forEach(r=>{h+='<tr>';r.forEach(c=>h+=`<td>${c}</td>`);h+='</tr>';});
+  h += '</tbody></table>';
+  return h;
+}
+// Helper: render raw data string
+function rawDisp(text){
+  return `<div class="raw-box">${text}</div>`;
+}
+// Helper: render a situational sentence
+function sitDisp(text){
+  return `<div class="raw-box sit">${text}</div>`;
+}
+
+const exercises = [
+  // ─── BAGIAN 1: Sudut Sehadap (e01–e08) ───────────────────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Sehadap',
+    sys:rawDisp('Sehadap: ∠1 = 72° dan ∠5 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Sudut sehadap selalu sama besar',
+    type:'text', answers:['72','72°'], explain:'✅ Sudut sehadap selalu SAMA BESAR, yaitu 72° ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Sehadap',
+    sys:rawDisp('Sehadap: ∠2 = 95° dan ∠6 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Sudut sehadap selalu sama besar',
+    type:'text', answers:['95','95°'], explain:'✅ Sudut sehadap selalu SAMA BESAR, yaitu 95° ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Sehadap',
+    sys:rawDisp('Sehadap: ∠3 = 110° dan ∠7 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Sudut sehadap terletak pada posisi yang sama di kedua titik potong',
+    type:'mcq', opts:['110°','70°','20°','90°'], answer:'110°',
+    explain:'✅ Sudut sehadap selalu SAMA BESAR, yaitu 110° ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Sehadap',
+    sys:tableDisp(['Sudut','Besar'],[['A (diketahui)','64°'],['B (sehadap dgn A)','?']]),
+    q:'Berapa besar sudut B?', hint:'A dan B saling sehadap',
+    type:'mcq', opts:['64°','116°','26°','90°'], answer:'64°',
+    explain:'✅ Sudut sehadap selalu SAMA BESAR, yaitu 64° ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Sehadap',
+    sys:rawDisp('Sehadap: ∠4 = 133° dan ∠8 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Sudut sehadap selalu sama besar',
+    type:'text', answers:['133','133°'], explain:'✅ Sudut sehadap selalu SAMA BESAR, yaitu 133° ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Sehadap',
+    sys:sitDisp('Situasi: Dua tiang pagar sejajar dipotong seutas kabel penghubung. Salah satu sudut sehadap di tiang pertama besarnya 58°.'),
+    q:'Berapa besar sudut sehadap yang bersesuaian di tiang kedua?', hint:'Sudut sehadap selalu sama besar, di posisi yang sama pada tiang lainnya',
+    type:'mcq', opts:['58°','122°','32°','90°'], answer:'58°',
+    explain:'✅ Sudut sehadap selalu SAMA BESAR, yaitu 58° ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Sehadap',
+    sys:rawDisp('Konsep Sudut Sehadap'),
+    q:'Bagaimana sifat besar sudut yang sehadap pada dua garis sejajar?', hint:'Ingat kembali definisi dasarnya',
+    type:'mcq', opts:['Selalu sama besar','Selalu berjumlah 180°','Selalu berjumlah 90°','Salah satunya selalu siku-siku'], answer:'Selalu sama besar',
+    explain:'✅ Sudut sehadap terletak pada posisi yang sama di kedua titik potong dan selalu SAMA BESAR ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Sehadap',
+    sys:rawDisp('Sehadap: ∠6 = 27° dan ∠2 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Sudut sehadap selalu sama besar, arah pasangannya bisa dibalik',
+    type:'text', answers:['27','27°'], explain:'✅ Sudut sehadap selalu SAMA BESAR, yaitu 27° ✓' },
+
+  // ─── BAGIAN 2: Sudut Dalam Berseberangan (e09–e16) ───────────────
+  { id:'e09', section:'s2', tag:'tag-2', tagLabel:'Dalam Berseberangan',
+    sys:rawDisp('Dalam Berseberangan: ∠3 = 96° dan ∠5 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Sudut dalam berseberangan selalu sama besar',
+    type:'text', answers:['96','96°'], explain:'✅ Sudut dalam berseberangan selalu SAMA BESAR, yaitu 96° ✓' },
+
+  { id:'e10', section:'s2', tag:'tag-2', tagLabel:'Dalam Berseberangan',
+    sys:rawDisp('Dalam Berseberangan: ∠4 = 51° dan ∠6 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Sudut dalam berseberangan selalu sama besar',
+    type:'text', answers:['51','51°'], explain:'✅ Sudut dalam berseberangan selalu SAMA BESAR, yaitu 51° ✓' },
+
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Dalam Berseberangan',
+    sys:rawDisp('Dalam Berseberangan: ∠3 = 124° dan ∠5 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Kedua sudut ini terletak di antara dua garis sejajar dan bersilangan',
+    type:'mcq', opts:['124°','56°','90°','180°'], answer:'124°',
+    explain:'✅ Sudut dalam berseberangan selalu SAMA BESAR, yaitu 124° ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Dalam Berseberangan',
+    sys:tableDisp(['Sudut','Besar'],[['X (diketahui)','88°'],['Y (dalam berseberangan dgn X)','?']]),
+    q:'Berapa besar sudut Y?', hint:'X dan Y saling dalam berseberangan',
+    type:'mcq', opts:['88°','92°','2°','90°'], answer:'88°',
+    explain:'✅ Sudut dalam berseberangan selalu SAMA BESAR, yaitu 88° ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Dalam Berseberangan',
+    sys:rawDisp('Dalam Berseberangan: ∠4 = 77° dan ∠6 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Sudut dalam berseberangan selalu sama besar',
+    type:'text', answers:['77','77°'], explain:'✅ Sudut dalam berseberangan selalu SAMA BESAR, yaitu 77° ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Dalam Berseberangan',
+    sys:sitDisp('Situasi: Dua jalan sejajar dipotong sebuah jalan penghubung. Sudut dalam di jalan pertama besarnya 63°.'),
+    q:'Berapa besar sudut dalam berseberangan di jalan kedua?', hint:'Sudut dalam berseberangan selalu sama besar',
+    type:'mcq', opts:['63°','117°','27°','90°'], answer:'63°',
+    explain:'✅ Sudut dalam berseberangan selalu SAMA BESAR, yaitu 63° ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Dalam Berseberangan',
+    sys:rawDisp('Konsep Sudut Dalam Berseberangan'),
+    q:'Bagaimana sifat besar sudut yang dalam berseberangan pada dua garis sejajar?', hint:'Ingat kembali definisi dasarnya',
+    type:'mcq', opts:['Selalu sama besar','Selalu berjumlah 180°','Selalu berjumlah 90°','Salah satunya selalu tumpul'], answer:'Selalu sama besar',
+    explain:'✅ Sudut dalam berseberangan terletak di antara kedua garis sejajar dan berseberangan sisi, selalu SAMA BESAR ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Dalam Berseberangan',
+    sys:rawDisp('Dalam Berseberangan: ∠5 = 142° dan ∠3 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Pasangan dalam berseberangan bisa dibaca dari arah manapun, tetap sama besar',
+    type:'text', answers:['142','142°'], explain:'✅ Sudut dalam berseberangan selalu SAMA BESAR, yaitu 142° ✓' },
+
+  // ─── BAGIAN 3: Sudut Luar Berseberangan (e17–e24) ────────────────
+  { id:'e17', section:'s3', tag:'tag-3', tagLabel:'Luar Berseberangan',
+    sys:rawDisp('Luar Berseberangan: ∠1 = 74° dan ∠7 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Sudut luar berseberangan selalu sama besar',
+    type:'text', answers:['74','74°'], explain:'✅ Sudut luar berseberangan selalu SAMA BESAR, yaitu 74° ✓' },
+
+  { id:'e18', section:'s3', tag:'tag-3', tagLabel:'Luar Berseberangan',
+    sys:rawDisp('Luar Berseberangan: ∠2 = 121° dan ∠8 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Sudut luar berseberangan selalu sama besar',
+    type:'text', answers:['121','121°'], explain:'✅ Sudut luar berseberangan selalu SAMA BESAR, yaitu 121° ✓' },
+
+  { id:'e19', section:'s3', tag:'tag-3', tagLabel:'Luar Berseberangan',
+    sys:rawDisp('Luar Berseberangan: ∠1 = 39° dan ∠7 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Kedua sudut ini terletak di luar dua garis sejajar dan bersilangan',
+    type:'mcq', opts:['39°','141°','51°','90°'], answer:'39°',
+    explain:'✅ Sudut luar berseberangan selalu SAMA BESAR, yaitu 39° ✓' },
+
+  { id:'e20', section:'s3', tag:'tag-3', tagLabel:'Luar Berseberangan',
+    sys:tableDisp(['Sudut','Besar'],[['P (diketahui)','105°'],['Q (luar berseberangan dgn P)','?']]),
+    q:'Berapa besar sudut Q?', hint:'P dan Q saling luar berseberangan',
+    type:'mcq', opts:['105°','75°','15°','90°'], answer:'105°',
+    explain:'✅ Sudut luar berseberangan selalu SAMA BESAR, yaitu 105° ✓' },
+
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Luar Berseberangan',
+    sys:rawDisp('Luar Berseberangan: ∠2 = 88° dan ∠8 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Sudut luar berseberangan selalu sama besar',
+    type:'text', answers:['88','88°'], explain:'✅ Sudut luar berseberangan selalu SAMA BESAR, yaitu 88° ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Luar Berseberangan',
+    sys:sitDisp('Situasi: Dua pagar sejajar dipotong sebuah tiang penyangga miring. Sudut luar di pagar pertama besarnya 47°.'),
+    q:'Berapa besar sudut luar berseberangan di pagar kedua?', hint:'Sudut luar berseberangan selalu sama besar',
+    type:'mcq', opts:['47°','133°','43°','90°'], answer:'47°',
+    explain:'✅ Sudut luar berseberangan selalu SAMA BESAR, yaitu 47° ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Luar Berseberangan',
+    sys:rawDisp('Konsep Sudut Luar Berseberangan'),
+    q:'Bagaimana sifat besar sudut yang luar berseberangan pada dua garis sejajar?', hint:'Ingat kembali definisi dasarnya',
+    type:'mcq', opts:['Selalu sama besar','Selalu berjumlah 180°','Selalu berjumlah 90°','Salah satunya selalu lancip'], answer:'Selalu sama besar',
+    explain:'✅ Sudut luar berseberangan terletak di luar kedua garis sejajar dan berseberangan sisi, selalu SAMA BESAR ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Luar Berseberangan',
+    sys:rawDisp('Luar Berseberangan: ∠7 = 99° dan ∠1 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Pasangan luar berseberangan bisa dibaca dari arah manapun, tetap sama besar',
+    type:'text', answers:['99','99°'], explain:'✅ Sudut luar berseberangan selalu SAMA BESAR, yaitu 99° ✓' },
+
+  // ─── BAGIAN 4: Dalam Sepihak & Kasus Campuran (e25–e32) ──────────
+  { id:'e25', section:'s4', tag:'tag-4', tagLabel:'Dalam Sepihak',
+    sys:rawDisp('Dalam Sepihak: ∠3 = 113° dan ∠6 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Sudut dalam sepihak berjumlah 180°',
+    type:'text', answers:['67','67°'], explain:'✅ 180° − 113° = 67°. Sudut dalam sepihak berjumlah 180° ✓' },
+
+  { id:'e26', section:'s4', tag:'tag-4', tagLabel:'Dalam Sepihak',
+    sys:rawDisp('Dalam Sepihak: ∠4 = 38° dan ∠5 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'180° dikurangi sudut yang diketahui',
+    type:'text', answers:['142','142°'], explain:'✅ 180° − 38° = 142°. Sudut dalam sepihak berjumlah 180° ✓' },
+
+  { id:'e27', section:'s4', tag:'tag-4', tagLabel:'Dalam Sepihak',
+    sys:tableDisp(['Sudut','Besar'],[['A (diketahui, dalam sepihak)','100°'],['B (dalam sepihak dgn A)','?']]),
+    q:'Berapa besar sudut B?', hint:'A dan B saling dalam sepihak, jumlahnya 180°',
+    type:'mcq', opts:['80°','100°','260°','10°'], answer:'80°',
+    explain:'✅ 180° − 100° = 80° ✓' },
+
+  { id:'e28', section:'s4', tag:'tag-4', tagLabel:'Dalam Sepihak',
+    sys:sitDisp('Situasi: Sebuah tangga disandarkan melewati dua pagar horizontal yang sejajar. Sudut dalam di pagar atas besarnya 70°.'),
+    q:'Berapa besar sudut dalam sepihak di pagar bawah?', hint:'Sudut dalam sepihak berjumlah 180°',
+    type:'mcq', opts:['110°','70°','20°','90°'], answer:'110°',
+    explain:'✅ 180° − 70° = 110°. Sudut dalam sepihak berjumlah 180° ✓' },
+
+  { id:'e29', section:'s4', tag:'tag-4', tagLabel:'Dalam Sepihak',
+    sys:rawDisp('Konsep Sudut Dalam Sepihak'),
+    q:'Bagaimana sifat jumlah sudut yang dalam sepihak pada dua garis sejajar?', hint:'Berbeda dengan sehadap, dalam, dan luar berseberangan',
+    type:'mcq', opts:['Selalu berjumlah 180°','Selalu sama besar','Selalu berjumlah 90°','Salah satunya pasti 90°'], answer:'Selalu berjumlah 180°',
+    explain:'✅ Sudut dalam sepihak terletak di sisi yang sama di antara dua garis sejajar dan berjumlah 180° ✓' },
+
+  { id:'e30', section:'s4', tag:'tag-4', tagLabel:'Campuran',
+    sys:rawDisp('Sehadap: ∠1 = 85° dan ∠5 = ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Sudut sehadap selalu sama besar',
+    type:'text', answers:['85','85°'], explain:'✅ Sudut sehadap selalu SAMA BESAR, yaitu 85° ✓' },
+
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Campuran',
+    sys:rawDisp('∠3 = 118° (dalam berseberangan dengan ∠5). ∠3 dan ∠4 terletak pada satu garis lurus (berpelurus).'),
+    q:'Berapa besar ∠4?', hint:'∠4 berpelurus dengan ∠3, jumlahnya 180°',
+    type:'mcq', opts:['62°','118°','28°','90°'], answer:'62°',
+    explain:'✅ ∠4 berpelurus dengan ∠3, sehingga 180° − 118° = 62° ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Campuran',
+    sys:rawDisp('Dua garis sejajar dipotong satu transversal, membentuk 8 sudut di dua titik potong.'),
+    q:'Pasangan sudut mana yang TIDAK selalu sama besar (melainkan berjumlah 180°)?', hint:'Ingat kembali empat hubungan sudut yang sudah dipelajari',
+    type:'mcq', opts:['Dalam Sepihak','Sehadap','Dalam Berseberangan','Luar Berseberangan'], answer:'Dalam Sepihak',
+    explain:'✅ Sehadap, dalam berseberangan, dan luar berseberangan selalu sama besar. Hanya dalam sepihak yang berjumlah 180° ✓' },
+
+  // ─── BAGIAN 5: Review PR Lesson 22 — Berpelurus, Bertolak Belakang, Penyiku (e33–e40) ──
+  { id:'e33', section:'s5', tag:'tag-5', tagLabel:'Review Berpelurus',
+    sys:rawDisp('Garis lurus: 128° dan ?'),
+    q:'Berapa besar sudut yang berpelurus dengannya?', hint:'Sudut berpelurus jumlahnya 180°',
+    type:'text', answers:['52','52°'], explain:'✅ 180° − 128° = 52° ✓' },
+
+  { id:'e34', section:'s5', tag:'tag-5', tagLabel:'Review Bertolak Belakang',
+    sys:rawDisp('Dua garis berpotongan: 84° dan sudut yang berhadapan (?)'),
+    q:'Berapa besar sudut yang bertolak belakang dengannya?', hint:'Sudut bertolak belakang selalu sama besar',
+    type:'text', answers:['84','84°'], explain:'✅ Sudut bertolak belakang selalu SAMA BESAR, yaitu 84° ✓' },
+
+  { id:'e35', section:'s5', tag:'tag-5', tagLabel:'Review Penyiku',
+    sys:rawDisp('Penyiku: 37° dan ?'),
+    q:'Berapa besar sudut pasangannya?', hint:'Sudut penyiku jumlahnya 90°',
+    type:'text', answers:['53','53°'], explain:'✅ 90° − 37° = 53° ✓' },
+
+  { id:'e36', section:'s5', tag:'tag-5', tagLabel:'Review Berpelurus',
+    sys:tableDisp(['Sudut','Besar'],[['A (diketahui)','150°'],['B (pasangan pada garis lurus)','?']]),
+    q:'Berapa besar sudut B?', hint:'A dan B terletak pada satu garis lurus',
+    type:'mcq', opts:['30°','40°','50°','130°'], answer:'30°',
+    explain:'✅ 180° − 150° = 30° ✓' },
+
+  { id:'e37', section:'s5', tag:'tag-5', tagLabel:'Review Bertolak Belakang',
+    sys:sitDisp('Situasi: Dua tongkat disilangkan membentuk sudut 52° pada salah satu sisi.'),
+    q:'Berapa besar sudut di seberangnya (diagonal) pada persilangan itu?', hint:'Sudut yang berhadapan pada dua garis berpotongan itu bertolak belakang',
+    type:'mcq', opts:['52°','128°','26°','90°'], answer:'52°',
+    explain:'✅ Sudut yang berhadapan pada dua garis berpotongan adalah bertolak belakang — selalu sama besar, yaitu 52° ✓' },
+
+  { id:'e38', section:'s5', tag:'tag-5', tagLabel:'Review Penyiku',
+    sys:sitDisp('Situasi: Pojok sebuah buku (siku-siku) dibagi menjadi dua bagian. Salah satu bagiannya 34°.'),
+    q:'Berapa besar bagian sisanya agar keduanya membentuk pojok siku-siku (90°)?', hint:'90° dikurangi sudut yang diketahui',
+    type:'text', answers:['56','56°'], explain:'✅ 90° − 34° = 56°. Kedua sudut ini saling penyiku ✓' },
+
+  { id:'e39', section:'s5', tag:'tag-5', tagLabel:'Review Campuran',
+    sys:rawDisp('Garis lurus dibagi 3 sudut: 40°, 65°, ?'),
+    q:'Berapa besar sudut yang hilang?', hint:'Ketiga sudut pada garis lurus jumlahnya 180°',
+    type:'text', answers:['75','75°'], explain:'✅ 180° − 40° − 65° = 75° ✓' },
+
+  { id:'e40', section:'s5', tag:'tag-5', tagLabel:'Review Konsep',
+    sys:rawDisp('Identifikasi Hubungan Sudut'),
+    q:'Pasangan sudut mana yang SELALU sama besar (bukan berpelurus ataupun penyiku)?', hint:'Ingat kembali tiga hubungan sudut dari Lesson 22',
+    type:'mcq', opts:['Bertolak Belakang','Berpelurus','Penyiku','Dalam Sepihak'], answer:'Bertolak Belakang',
+    explain:'✅ Sudut bertolak belakang (berhadapan pada dua garis berpotongan) selalu SAMA BESAR ✓' },
+];
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  const total = exercises.length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done >= i*8);
+  }
+  if(done === total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){
+    inp.classList.add('correct'); inp.disabled=true; btn.disabled=true;
+  } else {
+    card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true);
+  }
+  const fb = card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok';
+  fb.textContent = q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){
+    const badge=document.createElement('div');
+    badge.className='done-badge'; badge.textContent='✓ Done';
+    card.appendChild(badge);
+  }
+  progress[q.id]=true;
+  saveProgress(progress);
+  updateProgressBar();
+}
+
+function normalizeAns(s){
+  return s.trim().toLowerCase().replace(/\s+/g,'').replace(/°/g,'').replace(/×/g,'*');
+}
+
+function checkText(id, inp, btn, q){
+  const raw = normalizeAns(inp.value);
+  if(!raw) return;
+  const correct = q.answers.some(a=>raw===normalizeAns(a));
+  if(correct){
+    markDone(inp.closest('.ex-card'), q, inp, btn);
+  } else {
+    inp.classList.add('wrong-anim');
+    const attRow = inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div'); dot.className='attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(()=>{inp.classList.remove('wrong-anim'); inp.value=''; inp.focus();}, 400);
+    if(attRow.children.length >= 3){
+      const fb = inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no';
+      fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.val===q.answer) b.classList.add('opt-correct');
+  });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb = card.querySelector('.ex-feedback');
+  if(val===q.answer){
+    markDone(card, q, null, null);
+  } else {
+    fb.className='ex-feedback show no';
+    fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+  }
+}
+
+function buildExercises(){
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = '';
+  const groups = [
+    { key:'s1', label:'🔷 Bagian 1 — Sudut Sehadap',                                        cls:'sd-1' },
+    { key:'s2', label:'🟢 Bagian 2 — Sudut Dalam Berseberangan',                              cls:'sd-2' },
+    { key:'s3', label:'🟣 Bagian 3 — Sudut Luar Berseberangan',                               cls:'sd-3' },
+    { key:'s4', label:'🟡 Bagian 4 — Dalam Sepihak &amp; Kasus Campuran',                     cls:'sd-4' },
+    { key:'s5', label:'📊 Bagian 5 — Review PR Lesson 22 (Berpelurus, Bertolak Belakang, Penyiku)', cls:'sd-5' },
+  ];
+  groups.forEach(g=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      card.className = 'ex-card data-card' + (isDone?' done-card':'');
+
+      const sysHTML = q.sys || '';
+
+      let inputHTML = '';
+      if(q.type==='text'){
+        inputHTML = `
+          <div class="ex-input-wrap">
+            <div class="ex-input-row">
+              <input type="text" class="ex-input ${isDone?'correct':''}"
+                placeholder="Jawaban?"
+                value="${isDone ? q.answers[0] : ''}"
+                ${isDone?'disabled':''}
+                onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+              <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+            </div>
+            <div class="attempts-row"></div>
+          </div>`;
+      } else {
+        const shuffled = [...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML = `<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="ex-num">Soal ${q.id.replace('e','')}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${sysHTML}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone ? q.explain : ''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn = card.querySelector('.ex-btn');
+        const inp = card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick = ()=>checkText(q.id, inp, btn, q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{
+          b.onclick = ()=>checkMCQ(b.dataset.val, b, q, card);
+        });
+      }
+      grid.appendChild(card);
+    });
+
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Extra PR Lesson 23? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+</script>
+</body>
+</html>
