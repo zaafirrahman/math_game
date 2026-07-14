@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 24 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--violet:#a78bfa;--red:#ef4444;--cyan:#22d3ee;--emerald:#34d399;--amber:#fbbf24;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(34,211,238,0.07) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(167,139,250,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--cyan);}
+  .wrapper{max-width:720px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:99px;transition:width 0.4s ease;}
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title .hv{color:var(--violet);}
+  .slide-title .hc{color:var(--cyan);}
+  .slide-title .he{color:var(--emerald);}
+  .slide-title .ha{color:var(--amber);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+  .slide-sub strong{color:var(--cyan);}
+
+  .callout{background:rgba(167,139,250,0.05);border-left:3px solid var(--violet);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--violet);}
+  .callout.cyan{background:rgba(34,211,238,0.05);border-color:var(--cyan);}
+  .callout.cyan strong{color:var(--cyan);}
+  .callout.emerald{background:rgba(52,211,153,0.05);border-color:var(--emerald);}
+  .callout.emerald strong{color:var(--emerald);}
+  .callout.amber{background:rgba(251,191,36,0.06);border-color:var(--amber);}
+  .callout.amber strong{color:var(--amber);}
+
+  .diagram-box{background:#12121c;border:1.5px solid var(--border);border-radius:14px;padding:1rem;margin:1.2rem 0;display:flex;justify-content:center;}
+  .diagram-note{text-align:center;font-size:0.75rem;color:var(--muted);margin-top:-0.6rem;margin-bottom:1rem;font-style:italic;}
+
+  .data-table{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin:1.2rem 0;}
+  .data-table th{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);background:rgba(34,211,238,0.06);padding:0.7rem 0.5rem;text-align:center;}
+  .data-table td{padding:0.7rem 0.5rem;text-align:center;border-top:1px solid var(--border);font-size:0.88rem;}
+  .data-table td.cy{color:var(--cyan);font-weight:700;}
+  .data-table td.em{color:var(--emerald);font-weight:700;}
+  .data-table td.am{color:var(--amber);font-weight:700;}
+  .data-table td.vi{color:var(--violet);font-weight:700;}
+  .data-table td.hi{color:var(--red);font-weight:800;}
+
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(34,211,238,0.12);border:1px solid rgba(34,211,238,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;color:var(--cyan);flex-shrink:0;}
+  .step-num.e{background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,0.4);color:var(--emerald);}
+  .step-num.a{background:rgba(251,191,36,0.12);border-color:rgba(251,191,36,0.4);color:var(--amber);}
+  .step-num.v{background:rgba(167,139,250,0.12);border-color:rgba(167,139,250,0.4);color:var(--violet);}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .reveal-btn{background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.35);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(34,211,238,0.15);}
+  .reveal-box{background:rgba(34,211,238,0.05);border:1px solid rgba(34,211,238,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+  .reveal-box .rule-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--cyan);margin-bottom:0.4rem;}
+  .reveal-box .rule-sub{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+  .reveal-box.emerald{background:rgba(52,211,153,0.05);border-color:rgba(52,211,153,0.3);}
+  .reveal-box.emerald .rule-text{color:var(--emerald);}
+  .reveal-box.violet{background:rgba(167,139,250,0.05);border-color:rgba(167,139,250,0.3);}
+  .reveal-box.violet .rule-text{color:var(--violet);}
+  .reveal-box.amber{background:rgba(251,191,36,0.05);border-color:rgba(251,191,36,0.3);}
+  .reveal-box.amber .rule-text{color:var(--amber);}
+
+  .pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:1.2rem 0;}
+  @media(max-width:480px){.pick-grid{grid-template-columns:1fr;}}
+  .pick-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
+  @media(max-width:560px){.pick-grid.cols3{grid-template-columns:1fr;}}
+  .pick-btn{width:100%;background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.7rem;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.88rem;transition:all 0.2s;line-height:1.4;}
+  .pick-btn:hover:not(:disabled){border-color:var(--cyan);}
+  .pick-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .pick-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .pick-fb{font-size:0.82rem;color:var(--muted);margin-top:0.6rem;line-height:1.6;text-align:center;min-height:20px;}
+
+  .conclude-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1.2rem 0;}
+  @media(max-width:480px){.conclude-grid{grid-template-columns:1fr;}}
+  .con-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem;font-size:0.85rem;line-height:1.6;}
+  .con-card .icon{font-size:1.3rem;display:block;margin-bottom:0.4rem;}
+  .con-card.v{border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.04);}
+  .con-card.c{border-color:rgba(34,211,238,0.3);background:rgba(34,211,238,0.04);}
+  .con-card.e{border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.04);}
+  .con-card.a{border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.04);}
+
+  .summary-card{background:var(--card);border:1px solid rgba(34,211,238,0.3);border-radius:16px;padding:1.5rem 2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:2px;color:var(--cyan);margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .summary-item span{flex-shrink:0;font-size:1rem;}
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;text-decoration:none;display:inline-block;transition:all 0.2s;}
+  .da-primary{background:linear-gradient(135deg,var(--cyan),#0891b2);color:#000;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);}
+  .da-secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+
+  .fill-row{display:flex;align-items:center;gap:0.8rem;margin:0.6rem 0;flex-wrap:wrap;}
+  .fill-lbl{font-size:0.9rem;color:var(--text);min-width:170px;}
+  .fill-input{background:#12121c;border:1.5px solid var(--border);color:var(--cyan);font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;width:90px;text-align:center;border-radius:8px;padding:0.4rem;transition:border-color 0.2s;}
+  .fill-input:focus{outline:none;border-color:var(--cyan);}
+
+  .check-btn{background:linear-gradient(135deg,var(--cyan),#0891b2);color:#000;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:2px;padding:0.55rem 1.2rem;border:none;border-radius:8px;cursor:pointer;font-weight:800;margin:1rem auto 0;display:block;}
+  .check-result{font-family:'Orbitron',monospace;font-size:0.82rem;margin-top:0.8rem;min-height:22px;text-align:center;line-height:1.7;white-space:pre-line;}
+
+  .think-box{background:#12121c;border:1.5px dashed var(--border);border-radius:12px;padding:0.9rem;margin-top:1rem;}
+  .think-box textarea{width:100%;background:transparent;border:none;color:var(--text);font-family:'Nunito',sans-serif;font-size:0.88rem;line-height:1.6;resize:vertical;min-height:70px;}
+  .think-box textarea:focus{outline:none;}
+  .think-lbl{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem;}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--cyan),#0891b2);border:none;color:#000;font-weight:800;}
+  .nav-btn:hover:not(.next){border-color:var(--cyan);color:var(--cyan);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson24.html">LESSON 24</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+
+  <!-- SLIDE 1: Cover -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title"><span class="hc">Geometry</span> <span class="hv">Detective III</span> 🕵️</div>
+      <div class="slide-sub">"Mengungkap Rahasia Segitiga." Segitiga adalah bangun paling penting dalam matematika — dan di baliknya tersembunyi pola sudut yang berlaku untuk SEMUA segitiga, sebesar apa pun bentuknya. Tugasmu sebagai detektif: temukan pola itu sendiri, sebelum dikasih tahu namanya.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="300" height="180" viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="40,150 260,150 150,25" fill="none" stroke="#e2e8f0" stroke-width="2.5"/>
+        <text x="35" y="168" fill="#22d3ee" font-family="Orbitron,monospace" font-size="12" font-weight="900">?</text>
+        <text x="255" y="168" fill="#34d399" font-family="Orbitron,monospace" font-size="12" font-weight="900" text-anchor="end">?</text>
+        <text x="150" y="22" fill="#fbbf24" font-family="Orbitron,monospace" font-size="12" font-weight="900" text-anchor="middle">?</text>
+      </svg>
+    </div>
+    <div class="callout cyan"><strong>Tema misi:</strong> Sekali kamu menemukan pola jumlah sudutnya, kamu bisa menemukan sudut yang hilang pada SEGITIGA APAPUN — tanpa pernah mengukurnya dengan busur derajat.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">🔷🟢🟣🟡</div>
+        <div class="step-body"><div class="stitle">Bekal dari Lesson 23</div><div class="sdesc">Sudut sehadap, dalam &amp; luar berseberangan, dalam sepihak pada garis sejajar — semua akan kita pakai lagi hari ini.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num e">180°</div>
+        <div class="step-body"><div class="stitle">Misi 1: Jumlah Sudut</div><div class="sdesc">Berapa jumlah ketiga sudut dalam segitiga? Kamu akan menemukannya sendiri.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num a">🆕</div>
+        <div class="step-body"><div class="stitle">Misi 2 &amp; 3: Jenis Segitiga + Sudut Luar</div><div class="sdesc">Mengelompokkan segitiga berdasarkan sisi &amp; sudut, lalu mengungkap hubungan sudut luarnya.</div></div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Misi 1: Sudut yang Hilang →</button></div>
+  </div>
+
+  <!-- SLIDE 2: Misi 1 -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Misi 1: <span class="hc">Sudut yang Hilang</span> 🔍</div>
+      <div class="slide-sub">Perhatikan segitiga ini. Dua sudutnya diketahui, satu masih misteri.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="280" height="200" viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="30,170 250,170 140,30" fill="none" stroke="#e2e8f0" stroke-width="2.5"/>
+        <text x="30" y="190" fill="#22d3ee" font-family="Orbitron,monospace" font-size="13" font-weight="900">40°</text>
+        <text x="250" y="190" fill="#34d399" font-family="Orbitron,monospace" font-size="13" font-weight="900" text-anchor="end">70°</text>
+        <text x="140" y="26" fill="#fbbf24" font-family="Orbitron,monospace" font-size="15" font-weight="900" text-anchor="middle">?</text>
+      </svg>
+    </div>
+    <div class="diagram-note">(gambar tidak sesuai skala — jangan mengukur langsung dari gambar!)</div>
+    <div class="callout"><strong>Pertanyaan:</strong> Tanpa mengukur, menurutmu berapa besar sudut yang hilang itu? Tebak dulu, belum perlu benar!</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS2(this,'a')">70° (sama dengan sudut satunya)</button>
+      <button class="pick-btn" onclick="pickS2(this,'b')">70° (180° − 40° − 70°)</button>
+      <button class="pick-btn" onclick="pickS2(this,'c')">90° (harus siku-siku)</button>
+      <button class="pick-btn" onclick="pickS2(this,'d')">Tidak bisa ditentukan</button>
+    </div>
+    <div class="pick-fb" id="fbS2"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Menemukan Pola →</button></div>
+  </div>
+
+  <!-- SLIDE 3: Menemukan Pola -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title">Menemukan <span class="hc">Pola</span> 🧩</div>
+      <div class="slide-sub">Coba hitung sudut ketiga pada tiga segitiga berikut, lalu jumlahkan SEMUA sudutnya (termasuk yang sudah diketahui).</div>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Segitiga</th><th>Sudut Diketahui</th><th>Sudut Ketiga</th><th>Jumlah Semua</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>50°, 60°</td><td class="cy">70°</td><td>180°</td></tr>
+        <tr><td>B</td><td>90°, 35°</td><td class="cy">55°</td><td>180°</td></tr>
+        <tr><td>C</td><td>80°, 45°</td><td class="cy">55°</td><td>180°</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Pertanyaan:</strong> Apa pola yang selalu muncul di ketiga contoh ini?</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS3(this,true)">Jumlah ketiga sudutnya SELALU 180°</button>
+      <button class="pick-btn" onclick="pickS3(this,false)">Jumlahnya tergantung bentuk segitiganya</button>
+    </div>
+    <div class="pick-fb" id="fbS3"></div>
+    <button class="reveal-btn" onclick="toggleReveal('rb3')">💡 Lihat kesimpulannya</button>
+    <div class="reveal-box" id="rb3">
+      <div class="rule-text">Jumlah Sudut Segitiga = 180°</div>
+      <div class="rule-sub">Berapa pun bentuk atau ukuran segitiganya — lancip, tumpul, besar, kecil — jumlah ketiga sudut dalamnya SELALU 180°. Ini berlaku untuk SEMUA segitiga tanpa kecuali.</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Misi 2: Mengenal Segitiga →</button></div>
+  </div>
+
+  <!-- SLIDE 4: Misi 2 - Jenis berdasarkan sisi -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Misi 2: <span class="he">Mengenal Segitiga</span> 📐</div>
+      <div class="slide-sub">Perhatikan tiga segitiga ini (belum diberi nama). Bandingkan panjang sisi-sisinya.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="320" height="150" viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="20,130 100,130 60,30" fill="none" stroke="#e2e8f0" stroke-width="2.2"/>
+        <text x="60" y="148" fill="#64748b" font-family="Orbitron,monospace" font-size="9" text-anchor="middle">Segitiga 1</text>
+        <polygon points="130,130 230,130 155,25" fill="none" stroke="#e2e8f0" stroke-width="2.2"/>
+        <text x="180" y="148" fill="#64748b" font-family="Orbitron,monospace" font-size="9" text-anchor="middle">Segitiga 2</text>
+        <polygon points="250,130 300,130 260,20" fill="none" stroke="#e2e8f0" stroke-width="2.2"/>
+        <text x="275" y="148" fill="#64748b" font-family="Orbitron,monospace" font-size="9" text-anchor="middle">Segitiga 3</text>
+      </svg>
+    </div>
+    <div class="callout emerald"><strong>Pertanyaan:</strong> Segitiga 1 punya tiga sisi sama panjang. Segitiga 2 punya dua sisi sama panjang. Segitiga 3 semua sisinya berbeda panjang. Menurutmu, apa istilah yang cocok untuk masing-masing?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS4(this,'a')">1=Sama Sisi, 2=Sama Kaki, 3=Sembarang</button>
+      <button class="pick-btn" onclick="pickS4(this,'b')">1=Sama Kaki, 2=Sama Sisi, 3=Sembarang</button>
+      <button class="pick-btn" onclick="pickS4(this,'c')">Ketiganya sembarang</button>
+    </div>
+    <div class="pick-fb" id="fbS4"></div>
+    <div class="reveal-box emerald" id="rb4" style="margin-top:1rem;">
+      <div class="rule-text">Sama Sisi · Sama Kaki · Sembarang</div>
+      <div class="rule-sub"><strong>Segitiga Sama Sisi</strong> = ketiga sisinya sama panjang (dan ketiga sudutnya JUGA sama besar, yaitu 60° masing-masing, karena 180°÷3=60°). <strong>Segitiga Sama Kaki</strong> = ada dua sisi sama panjang. <strong>Segitiga Sembarang</strong> = ketiga sisinya berbeda panjang.</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Berdasarkan Sudut →</button></div>
+  </div>
+
+  <!-- SLIDE 5: Berdasarkan Sudut -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title">Segitiga <span class="hv">Berdasarkan Sudut</span> 🔺</div>
+      <div class="slide-sub">Sekarang perhatikan tiga segitiga ini dari sudut-sudutnya, bukan sisinya.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="320" height="150" viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="20,130 95,130 60,35" fill="none" stroke="#e2e8f0" stroke-width="2.2"/>
+        <text x="57" y="148" fill="#64748b" font-family="Orbitron,monospace" font-size="9" text-anchor="middle">Segitiga X</text>
+        <polygon points="130,130 220,130 130,40" fill="none" stroke="#e2e8f0" stroke-width="2.2"/>
+        <rect x="130" y="118" width="12" height="12" fill="none" stroke="#e2e8f0" stroke-width="1.5"/>
+        <text x="175" y="148" fill="#64748b" font-family="Orbitron,monospace" font-size="9" text-anchor="middle">Segitiga Y</text>
+        <polygon points="240,130 310,130 260,55" fill="none" stroke="#e2e8f0" stroke-width="2.2"/>
+        <text x="275" y="148" fill="#64748b" font-family="Orbitron,monospace" font-size="9" text-anchor="middle">Segitiga Z</text>
+      </svg>
+    </div>
+    <div class="callout"><strong>Pertanyaan:</strong> Segitiga X semua sudutnya kurang dari 90°. Segitiga Y punya satu sudut tepat 90° (kotak kecil menandakan siku-siku). Segitiga Z punya satu sudut lebih dari 90°. Apa yang membedakan ketiganya?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS5(this,'a')">X=Lancip, Y=Siku-siku, Z=Tumpul</button>
+      <button class="pick-btn" onclick="pickS5(this,'b')">X=Tumpul, Y=Lancip, Z=Siku-siku</button>
+      <button class="pick-btn" onclick="pickS5(this,'c')">Ketiganya sama saja</button>
+    </div>
+    <div class="pick-fb" id="fbS5"></div>
+    <div class="reveal-box violet" id="rb5" style="margin-top:1rem;">
+      <div class="rule-text">Lancip · Siku-siku · Tumpul</div>
+      <div class="rule-sub"><strong>Segitiga Lancip</strong> = SEMUA sudutnya kurang dari 90°. <strong>Segitiga Siku-siku</strong> = ada TEPAT satu sudut 90°. <strong>Segitiga Tumpul</strong> = ada satu sudut LEBIH dari 90°. Ingat: sebuah segitiga tidak mungkin punya dua sudut ≥90°, karena jumlahnya akan melebihi 180°!</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Misi 3: Sudut Luar →</button></div>
+  </div>
+
+  <!-- SLIDE 6: Misi 3 - Sudut Luar -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title">Misi 3: <span class="ha">Sudut Luar</span> 📤</div>
+      <div class="slide-sub">Salah satu sisi segitiga diperpanjang, sehingga terbentuk sudut luar di titik sudut itu.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="60,160 200,160 130,40" fill="none" stroke="#e2e8f0" stroke-width="2.5"/>
+        <line x1="60" y1="160" x2="270" y2="160" stroke="#a78bfa" stroke-width="2" stroke-dasharray="4,3"/>
+        <text x="130" y="36" fill="#22d3ee" font-family="Orbitron,monospace" font-size="13" font-weight="900" text-anchor="middle">45°</text>
+        <text x="60" y="180" fill="#64748b" font-family="Orbitron,monospace" font-size="11" font-weight="900">?</text>
+        <text x="225" y="152" fill="#fbbf24" font-family="Orbitron,monospace" font-size="13" font-weight="900" text-anchor="middle">120°</text>
+        <text x="196" y="180" fill="#64748b" font-family="Nunito,sans-serif" font-size="9">sudut luar</text>
+      </svg>
+    </div>
+    <div class="diagram-note">Garis putus-putus ungu = perpanjangan sisi segitiga, membentuk sudut luar 120°</div>
+    <div class="callout amber"><strong>Pertanyaan:</strong> Sudut luar = 120°, salah satu sudut dalam = 45°. Berapa sudut dalam lainnya (yang ditandai "?")? Coba gunakan sudut berpelurus + jumlah sudut segitiga.</div>
+    <div class="fill-row">
+      <span class="fill-lbl">Sudut dalam yang berpelurus dengan 120°:</span>
+      <input type="text" class="fill-input" id="p6_a" placeholder="?">
+    </div>
+    <div class="fill-row">
+      <span class="fill-lbl">Sudut dalam yang ditandai "?":</span>
+      <input type="text" class="fill-input" id="p6_b" placeholder="?">
+    </div>
+    <button class="check-btn" onclick="checkS6()">CEK JAWABAN</button>
+    <div class="check-result" id="resS6"></div>
+    <div class="reveal-box amber" id="rb6" style="display:none;margin-top:1rem;">
+      <div class="rule-text">Teorema Sudut Luar</div>
+      <div class="rule-sub">Sudut luar segitiga SELALU SAMA dengan jumlah dua sudut dalam yang tidak berdekatan dengannya. Cek: 45° + 75° = 120° ✓. Ini adalah jalan pintas — kamu tidak perlu selalu memakai sudut berpelurus dulu!</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">Detective Challenge →</button></div>
+  </div>
+
+  <!-- SLIDE 7: Detective Challenge -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">Detective <span class="hc">Challenge</span> 🕵️</div>
+      <div class="slide-sub">Tiga kasus menggabungkan jumlah sudut, sudut luar, dan sudut berpelurus. Pecahkan satu per satu!</div>
+    </div>
+
+    <div class="callout"><strong>Kasus 1:</strong> Sebuah segitiga punya dua sudut dalam 65° dan 55°. Berapa besar sudut LUAR di titik sudut ketiga?</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS7(this,'p1','120')">120°</button>
+      <button class="pick-btn" onclick="pickS7(this,'p1','60')">60°</button>
+      <button class="pick-btn" onclick="pickS7(this,'p1','115')">115°</button>
+      <button class="pick-btn" onclick="pickS7(this,'p1','125')">125°</button>
+    </div>
+    <div class="pick-fb" id="fbp1"></div>
+
+    <div class="callout" style="margin-top:1.8rem;"><strong>Kasus 2:</strong> Sudut luar suatu segitiga = 105°. Salah satu sudut dalam yang TIDAK berdekatan dengannya = 40°. Berapa sudut dalam jauh satunya?</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS7(this,'p2','65')">65°</button>
+      <button class="pick-btn" onclick="pickS7(this,'p2','105')">105°</button>
+      <button class="pick-btn" onclick="pickS7(this,'p2','145')">145°</button>
+      <button class="pick-btn" onclick="pickS7(this,'p2','25')">25°</button>
+    </div>
+    <div class="pick-fb" id="fbp2"></div>
+
+    <div class="callout" style="margin-top:1.8rem;"><strong>Kasus 3:</strong> Sudut luar suatu segitiga = 128°. Salah satu sudut dalam lainnya (bukan yang berpelurus dengan sudut luar ini) = 40°. Berapa sudut dalam ketiga?</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS7(this,'p3','88')">88°</button>
+      <button class="pick-btn" onclick="pickS7(this,'p3','52')">52°</button>
+      <button class="pick-btn" onclick="pickS7(this,'p3','128')">128°</button>
+      <button class="pick-btn" onclick="pickS7(this,'p3','92')">92°</button>
+    </div>
+    <div class="pick-fb" id="fbp3"></div>
+
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Mixed Puzzle →</button></div>
+  </div>
+
+  <!-- SLIDE 8: Mixed Puzzle -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">Mixed <span class="he">Puzzle</span> 🧩</div>
+      <div class="slide-sub">Segitiga ABC punya sudut B = 65° dan sudut C = 40°. Sebuah garis melalui titik A dibuat SEJAJAR dengan sisi BC. Garis ini membagi sudut lurus di A menjadi tiga bagian.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="300" height="210" viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+        <line x1="30" y1="40" x2="270" y2="40" stroke="#a78bfa" stroke-width="2" stroke-dasharray="4,3"/>
+        <polygon points="60,170 240,170 150,40" fill="none" stroke="#e2e8f0" stroke-width="2.5"/>
+        <text x="150" y="32" fill="#64748b" font-family="Nunito,sans-serif" font-size="9" text-anchor="middle">garis sejajar BC melalui A</text>
+        <text x="90" y="55" fill="#22d3ee" font-family="Orbitron,monospace" font-size="11" font-weight="900" text-anchor="middle">?</text>
+        <text x="150" y="65" fill="#fbbf24" font-family="Orbitron,monospace" font-size="11" font-weight="900" text-anchor="middle">?</text>
+        <text x="210" y="55" fill="#34d399" font-family="Orbitron,monospace" font-size="11" font-weight="900" text-anchor="middle">?</text>
+        <text x="60" y="190" fill="#22d3ee" font-family="Orbitron,monospace" font-size="12" font-weight="900">65°</text>
+        <text x="240" y="190" fill="#34d399" font-family="Orbitron,monospace" font-size="12" font-weight="900" text-anchor="end">40°</text>
+      </svg>
+    </div>
+    <div class="callout cyan"><strong>Petunjuk:</strong> Karena garis melalui A SEJAJAR dengan BC, garis AB dan AC menjadi transversal. Ingat pelajaran Lesson 23: sudut DALAM BERSEBERANGAN pada garis sejajar selalu SAMA BESAR!</div>
+    <div class="fill-row"><span class="fill-lbl">Sudut kiri di A (sejajar dgn ∠B):</span><input type="text" class="fill-input" id="ch8_1"></div>
+    <div class="fill-row"><span class="fill-lbl">Sudut tengah di A (∠BAC segitiga):</span><input type="text" class="fill-input" id="ch8_2"></div>
+    <div class="fill-row"><span class="fill-lbl">Sudut kanan di A (sejajar dgn ∠C):</span><input type="text" class="fill-input" id="ch8_3"></div>
+    <button class="check-btn" onclick="checkS8()">CEK JAWABAN</button>
+    <div class="check-result" id="resS8"></div>
+    <div class="callout emerald" id="rb8" style="display:none;"><strong>Ini membuktikan jumlah sudut segitiga = 180°!</strong> Ketiga bagian di garis lurus A (65° + 75° + 40°) berjumlah 180° karena membentuk sudut lurus. Karena sudut kiri = ∠B dan sudut kanan = ∠C (sudut dalam berseberangan), maka ∠A + ∠B + ∠C = 180° juga. Garis sejajar dari Lesson 23 ternyata bisa MEMBUKTIKAN aturan segitiga hari ini!</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Master Detective →</button></div>
+  </div>
+
+  <!-- SLIDE 9: Master Detective Challenge -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">Master Detective <span class="hv">Challenge</span> 🏆</div>
+      <div class="slide-sub">Dua garis sejajar dipotong satu transversal (seperti Lesson 23), membentuk 8 sudut. Di titik potong kedua, sebuah garis tambahan membentuk segitiga dengan satu sudut lain yang diketahui.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="300" height="230" viewBox="0 0 300 230" xmlns="http://www.w3.org/2000/svg">
+        <line x1="20" y1="55" x2="280" y2="55" stroke="#e2e8f0" stroke-width="2.5"/>
+        <line x1="20" y1="150" x2="280" y2="150" stroke="#e2e8f0" stroke-width="2.5"/>
+        <line x1="55" y1="10" x2="235" y2="195" stroke="#a78bfa" stroke-width="2.2"/>
+        <circle cx="105" cy="55" r="3" fill="#e2e8f0"/>
+        <circle cx="185" cy="150" r="3" fill="#e2e8f0"/>
+        <text x="80" y="48" fill="#22d3ee" font-family="Orbitron,monospace" font-size="11" font-weight="900" text-anchor="middle">52°(∠1)</text>
+        <line x1="185" y1="150" x2="250" y2="210" stroke="#fbbf24" stroke-width="2.2"/>
+        <text x="252" y="218" fill="#64748b" font-family="Nunito,sans-serif" font-size="9">R</text>
+        <text x="222" y="200" fill="#34d399" font-family="Orbitron,monospace" font-size="10" font-weight="900">65°</text>
+      </svg>
+    </div>
+    <div class="diagram-note">∠1 = 52°. Garis kuning ke titik R membentuk segitiga di titik potong kedua, dengan sudut R = 65°.</div>
+    <div class="callout"><strong>Instruksi:</strong> Gunakan pola sehadap / dalam &amp; luar berseberangan / dalam sepihak untuk mencari ∠2–∠8, LALU gunakan jumlah sudut segitiga untuk mencari sudut puncak segitiga itu.</div>
+    <div class="fill-row"><span class="fill-lbl">∠2 =</span><input type="text" class="fill-input" id="ch9_2"></div>
+    <div class="fill-row"><span class="fill-lbl">∠3 =</span><input type="text" class="fill-input" id="ch9_3"></div>
+    <div class="fill-row"><span class="fill-lbl">∠4 =</span><input type="text" class="fill-input" id="ch9_4"></div>
+    <div class="fill-row"><span class="fill-lbl">∠5 =</span><input type="text" class="fill-input" id="ch9_5"></div>
+    <div class="fill-row"><span class="fill-lbl">∠6 =</span><input type="text" class="fill-input" id="ch9_6"></div>
+    <div class="fill-row"><span class="fill-lbl">∠7 =</span><input type="text" class="fill-input" id="ch9_7"></div>
+    <div class="fill-row"><span class="fill-lbl">∠8 =</span><input type="text" class="fill-input" id="ch9_8"></div>
+    <div class="fill-row"><span class="fill-lbl">Sudut puncak segitiga (di titik potong ke-2 – ∠5 – R) =</span><input type="text" class="fill-input" id="ch9_9"></div>
+    <button class="check-btn" onclick="checkS9()">CEK SEMUA JAWABAN</button>
+    <div class="check-result" id="resS9"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Refleksi & Penutup →</button></div>
+  </div>
+
+  <!-- SLIDE 10: Refleksi & Penutup -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Refleksi &amp; <span class="hc">Penutup</span> 🎓</div>
+      <div class="slide-sub">Kasus segitiga hari ini berhasil dipecahkan! Ini rangkuman temuanmu:</div>
+    </div>
+    <div class="summary-card">
+      <h3>📋 CATATAN DETEKTIF</h3>
+      <div class="summary-item"><span>🔷</span><strong style="color:var(--cyan)">Jumlah Sudut Segitiga</strong> — SELALU 180°, untuk segitiga apapun</div>
+      <div class="summary-item"><span>🟢</span><strong style="color:var(--emerald)">Jenis berdasarkan Sisi</strong> — Sama Sisi (3 sisi sama), Sama Kaki (2 sisi sama), Sembarang (semua beda)</div>
+      <div class="summary-item"><span>🟣</span><strong style="color:var(--violet)">Jenis berdasarkan Sudut</strong> — Lancip (semua &lt;90°), Siku-siku (satu =90°), Tumpul (satu &gt;90°)</div>
+      <div class="summary-item"><span>🟡</span><strong style="color:var(--amber)">Sudut Luar</strong> — sama dengan jumlah dua sudut dalam yang tidak berdekatan dengannya</div>
+      <div class="summary-item"><span>🕵️</span>Garis sejajar dari Lesson 23 bahkan bisa membuktikan MENGAPA jumlah sudut segitiga = 180°!</div>
+    </div>
+    <div class="callout emerald"><strong>"Semakin banyak pola yang kamu kenali, semakin sedikit yang perlu kamu hafalkan."</strong></div>
+    <div class="callout cyan"><strong>Preview selanjutnya:</strong> Apakah bangun bersisi empat juga memiliki pola sudut yang menarik? 🔲</div>
+    <div class="done-actions">
+      <a href="quicktest24.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise24.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson24.html" class="da-btn da-secondary">Lesson 24</a>
+    </div>
+  </div>
+
+</div>
+<script>
+let currentSlide=1;
+const TOTAL=10;
+function goSlide(n){
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide=n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width=((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleReveal(id){document.getElementById(id).classList.toggle('show');}
+
+function pickS2(btn,ans){
+  document.querySelectorAll('#slide2 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS2');
+  if(ans==='b'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Sudut ketiga = 180° − 40° − 70° = 70°. Yuk buktikan polanya di slide berikutnya!';}
+  else{btn.classList.add('wrong');fb.innerHTML='🤔 Menarik tebakannya! Yuk kita buktikan bersama di slide berikutnya.';}
+}
+function pickS3(btn,ans){
+  document.querySelectorAll('#slide3 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS3');
+  if(ans===true){btn.classList.add('correct');fb.innerHTML='✅ Betul! Jumlah ketiga sudut segitiga SELALU 180°, apapun bentuknya.';}
+  else{btn.classList.add('wrong');fb.innerHTML='❌ Bukan itu. Perhatikan lagi tabelnya — jumlahnya selalu SAMA, yaitu 180°.';}
+}
+function pickS4(btn,ans){
+  document.querySelectorAll('#slide4 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS4');
+  document.getElementById('rb4').classList.add('show');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat!';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS4(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Yang benar: Segitiga 1 = Sama Sisi, Segitiga 2 = Sama Kaki, Segitiga 3 = Sembarang.';}
+}
+function pickS5(btn,ans){
+  document.querySelectorAll('#slide5 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS5');
+  document.getElementById('rb5').classList.add('show');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat!';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS5(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Yang benar: X = Lancip, Y = Siku-siku, Z = Tumpul.';}
+}
+function checkS6(){
+  const a=parseFloat((document.getElementById('p6_a').value||'').replace(',','.').replace('°',''));
+  const b=parseFloat((document.getElementById('p6_b').value||'').replace(',','.').replace('°',''));
+  const res=document.getElementById('resS6');
+  if(a===60&&b===75){
+    res.innerHTML='🎉 TEPAT! Sudut berpelurus dengan 120° = 180°−120° = 60°. Sudut "?" = 180°−60°−45° = 75°.';
+    res.style.color='var(--neon)';
+    document.getElementById('rb6').style.display='block';
+  } else if(!isNaN(a)||!isNaN(b)){
+    res.innerHTML='Belum tepat. Ingat: sudut berpelurus dgn 120° berjumlah 180°. Lalu pakai jumlah sudut segitiga = 180° untuk sudut "?".';
+    res.style.color='var(--red)';
+  } else {
+    res.innerHTML='Isi dulu jawabanmu ya!';
+    res.style.color='var(--amber)';
+  }
+}
+function pickS7(btn,puz,ans){
+  document.querySelectorAll(`[onclick^="pickS7(this,'${puz}'"]`).forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb'+puz);
+  const correctAns={p1:'120',p2:'65',p3:'88'};
+  const expl={
+    p1:'Sudut dalam ketiga = 180°−65°−55°=60°. Sudut luarnya berpelurus: 180°−60°=120°.',
+    p2:'Sudut luar = jumlah dua sudut dalam yang tidak berdekatan: 105°=40°+x → x=65°.',
+    p3:'Sudut yang berpelurus dgn sudut luar = 180°−128°=52°. Sudut ketiga = 180°−52°−40°=88°.'
+  };
+  if(ans===correctAns[puz]){btn.classList.add('correct');fb.innerHTML='✅ Tepat! '+expl[puz];}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS7(this,'${puz}','${correctAns[puz]}')"]`).classList.add('correct');fb.innerHTML='❌ Jawaban yang benar: '+correctAns[puz]+'°. '+expl[puz];}
+}
+function checkS8(){
+  const a=parseFloat((document.getElementById('ch8_1').value||'').replace(',','.').replace('°',''));
+  const b=parseFloat((document.getElementById('ch8_2').value||'').replace(',','.').replace('°',''));
+  const c=parseFloat((document.getElementById('ch8_3').value||'').replace(',','.').replace('°',''));
+  const res=document.getElementById('resS8');
+  if(a===65&&b===75&&c===40){
+    res.innerHTML='🎉 TEPAT! Kiri=65° (=∠B, dalam berseberangan), Tengah=75° (=180°−65°−40°), Kanan=40° (=∠C, dalam berseberangan).';
+    res.style.color='var(--neon)';
+    document.getElementById('rb8').style.display='block';
+  } else if(!isNaN(a)||!isNaN(b)||!isNaN(c)){
+    res.innerHTML='Belum tepat. Ingat: sudut kiri & kanan = dalam berseberangan dengan ∠B & ∠C (Lesson 23). Sudut tengah pakai jumlah sudut segitiga.';
+    res.style.color='var(--red)';
+  } else {
+    res.innerHTML='Isi dulu ketiga jawabanmu ya!';
+    res.style.color='var(--amber)';
+  }
+}
+function checkS9(){
+  const ids=['ch9_2','ch9_3','ch9_4','ch9_5','ch9_6','ch9_7','ch9_8','ch9_9'];
+  const correctVals=[128,52,128,52,128,52,128,63];
+  const labels=['∠2=128°','∠3=52°','∠4=128°','∠5=52°','∠6=128°','∠7=52°','∠8=128°','Puncak=63°'];
+  let correct=0;
+  ids.forEach((id,i)=>{
+    const v=parseFloat((document.getElementById(id).value||'').replace(',','.').replace('°',''));
+    if(v===correctVals[i])correct++;
+  });
+  const res=document.getElementById('resS9');
+  if(correct===8){res.innerHTML='🎉 MASTER DETECTIVE! Semua benar: '+labels.join(' · ');res.style.color='var(--neon)';}
+  else if(correct>0){res.innerHTML=`✅ ${correct} dari 8 benar.\nJawaban: `+labels.join(' · ');res.style.color='var(--amber)';}
+  else{res.innerHTML='Belum tepat. Ingat: ∠1=52°. Pola sehadap/berseberangan/sepihak dari Lesson 23 berlaku sama. Untuk sudut puncak segitiga, pakai ∠5=52° + 65° lalu 180° dikurangi keduanya.';res.style.color='var(--red)';}
+}
+</script>
+</body>
+</html>

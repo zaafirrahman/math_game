@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 24 · Asfa · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--surface:#12121c;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--cyan:#22d3ee;--emerald:#34d399;--amber:#fbbf24;--red:#ef4444;--violet:#a78bfa;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 20%,rgba(34,211,238,0.07) 0%,transparent 50%),
+               radial-gradient(ellipse at 85% 75%,rgba(167,139,250,0.06) 0%,transparent 50%);
+    pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--neon);}
+  .hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative;z-index:1;}
+  .session-badge{display:inline-block;background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.35);color:var(--violet);font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1.2rem;font-family:'Orbitron',monospace;}
+  .lesson-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,4vw,2.4rem);font-weight:900;margin-bottom:0.8rem;line-height:1.3;}
+  .lesson-title .t1{color:var(--cyan);}
+  .lesson-title .t2{color:var(--violet);}
+  .lesson-desc{color:var(--muted);max-width:620px;margin:0 auto 2.5rem;line-height:1.7;font-size:0.95rem;}
+  .lesson-desc strong{color:var(--cyan);}
+  .hero-viz{display:flex;justify-content:center;margin:0 auto 2.5rem;}
+  .pulse-c{animation:pulseD 2s ease-in-out infinite alternate;}
+  .pulse-m{animation:pulseD 2s ease-in-out infinite alternate;animation-delay:0.25s;}
+  .pulse-a{animation:pulseD 2s ease-in-out infinite alternate;animation-delay:0.5s;}
+  .pulse-v{animation:pulseD 2s ease-in-out infinite alternate;animation-delay:0.75s;}
+  .pulse-q{animation:blinkQ 1s ease-in-out infinite alternate;}
+  @keyframes pulseD{0%{transform:scale(0.92);opacity:0.75;}100%{transform:scale(1);opacity:1;}}
+  @keyframes blinkQ{0%{opacity:0.4;}100%{opacity:1;}}
+  .objectives{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem 2rem;max-width:620px;margin:0 auto 3rem;text-align:left;}
+  .obj-title{font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--cyan);letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;}
+  .obj-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.7rem;font-size:0.9rem;}
+  .obj-item span{font-size:1rem;flex-shrink:0;}
+  .section-label{text-align:center;font-size:0.8rem;color:var(--cyan);letter-spacing:4px;text-transform:uppercase;margin-bottom:2rem;opacity:0.7;position:relative;z-index:1;}
+  .sections-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem;max-width:960px;margin:0 auto;padding:0 2rem 4rem;position:relative;z-index:1;}
+  .sec-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.6rem;text-decoration:none;color:inherit;display:block;transition:all 0.3s ease;position:relative;overflow:hidden;}
+  .sec-card.unlocked:hover{transform:translateY(-3px);border-color:var(--cyan);box-shadow:0 0 25px rgba(34,211,238,0.12);}
+  .sec-card .num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;margin-bottom:0.7rem;}
+  .sec-card .icon{font-size:2rem;margin-bottom:0.7rem;display:block;}
+  .sec-card .title{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;margin-bottom:0.5rem;line-height:1.4;}
+  .sec-card .desc{font-size:0.82rem;color:var(--muted);line-height:1.6;}
+  .type-badge{display:inline-block;font-size:0.65rem;padding:0.2rem 0.55rem;border-radius:20px;margin-top:1rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .type-warmup{background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.3);}
+  .type-learn{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .type-boss{background:rgba(245,158,11,0.1);color:var(--accent);border:1px solid rgba(245,158,11,0.3);}
+  .type-exercise{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.3);}
+  .legend{display:flex;flex-wrap:wrap;gap:0.6rem;justify-content:center;max-width:660px;margin:0 auto 2.5rem;position:relative;z-index:1;}
+  .leg-chip{font-size:0.72rem;padding:0.35rem 0.8rem;border-radius:20px;font-family:'Orbitron',monospace;letter-spacing:0.5px;}
+  .leg-jumlah{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .leg-sisi{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.3);}
+  .leg-sudut{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+  .leg-luar{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.3);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <span class="current">LESSON 24</span>
+</nav>
+
+<div class="hero">
+  <div class="session-badge">Sesi 24 · Segitiga</div>
+  <div class="lesson-title"><span class="t1">Geometry</span> <span class="t2">Detective III</span></div>
+  <div class="lesson-desc">
+    Kasus baru: <strong>segitiga</strong>, bangun paling penting dalam matematika. Sebagai <strong>detektif geometri</strong>, kamu akan menemukan sendiri kenapa jumlah sudutnya selalu 180°, mengenali jenis-jenis segitiga, dan mengungkap hubungan sudut luar — semua tanpa busur derajat.
+  </div>
+
+  <!-- Hero: triangles with question marks on angles -->
+  <div class="hero-viz">
+    <svg width="340" height="180" viewBox="0 0 340 180" xmlns="http://www.w3.org/2000/svg">
+      <text x="170" y="14" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle" letter-spacing="2">MISTERI SUDUT SEGITIGA</text>
+      <polygon points="30,150 140,150 85,45" fill="none" stroke="#e2e8f0" stroke-width="2.2"/>
+      <text x="30" y="168" fill="#22d3ee" font-family="Orbitron,monospace" font-size="11" font-weight="900">40°</text>
+      <text x="118" y="168" fill="#34d399" font-family="Orbitron,monospace" font-size="11" font-weight="900">70°</text>
+      <text x="85" y="40" fill="#fbbf24" font-family="Orbitron,monospace" font-size="13" font-weight="900" text-anchor="middle" class="pulse-q">?</text>
+      <text x="150" y="100" fill="#64748b" font-size="14" text-anchor="middle">→</text>
+      <!-- three dials -->
+      <g class="pulse-c">
+        <circle cx="205" cy="55" r="24" fill="rgba(34,211,238,0.12)" stroke="#22d3ee" stroke-width="2"/>
+        <text x="205" y="51" fill="#22d3ee" font-family="Orbitron,monospace" font-size="5.5" text-anchor="middle" font-weight="700">JUMLAH</text>
+        <text x="205" y="59" fill="#22d3ee" font-family="Orbitron,monospace" font-size="5.5" text-anchor="middle" font-weight="700">SUDUT</text>
+        <text x="205" y="67" fill="#22d3ee" font-size="7.5" text-anchor="middle">=180°</text>
+      </g>
+      <g class="pulse-a">
+        <circle cx="270" cy="55" r="24" fill="rgba(52,211,153,0.12)" stroke="#34d399" stroke-width="2"/>
+        <text x="270" y="51" fill="#34d399" font-family="Orbitron,monospace" font-size="5.5" text-anchor="middle" font-weight="700">JENIS</text>
+        <text x="270" y="59" fill="#34d399" font-family="Orbitron,monospace" font-size="5.5" text-anchor="middle" font-weight="700">SEGITIGA</text>
+        <text x="270" y="67" fill="#34d399" font-size="7.5" text-anchor="middle">△ △ △</text>
+      </g>
+      <g class="pulse-v">
+        <circle cx="238" cy="125" r="24" fill="rgba(167,139,250,0.12)" stroke="#a78bfa" stroke-width="2"/>
+        <text x="238" y="121" fill="#a78bfa" font-family="Orbitron,monospace" font-size="5.5" text-anchor="middle" font-weight="700">SUDUT</text>
+        <text x="238" y="129" fill="#a78bfa" font-family="Orbitron,monospace" font-size="5.5" text-anchor="middle" font-weight="700">LUAR</text>
+        <text x="238" y="137" fill="#a78bfa" font-size="7.5" text-anchor="middle">A+B=C</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="legend">
+    <span class="leg-chip leg-jumlah">🔷 Jumlah Sudut = 180°</span>
+    <span class="leg-chip leg-sisi">🟢 Jenis Segitiga (Sisi)</span>
+    <span class="leg-chip leg-sudut">🟣 Jenis Segitiga (Sudut)</span>
+    <span class="leg-chip leg-luar">🟡 Sudut Luar</span>
+  </div>
+
+  <div class="objectives">
+    <div class="obj-title">🎯 Yang akan kamu kuasai</div>
+    <div class="obj-item"><span>🔍</span> Menemukan sendiri bahwa jumlah sudut dalam segitiga selalu 180°</div>
+    <div class="obj-item"><span>📐</span> Mengenali jenis segitiga berdasarkan sisi (sama sisi, sama kaki, sembarang) dan sudut (lancip, siku-siku, tumpul)</div>
+    <div class="obj-item"><span>🧩</span> Memahami hubungan sudut luar dengan sudut dalam segitiga</div>
+    <div class="obj-item"><span>🕵️</span> Memecahkan puzzle geometri gabungan tanpa mengukur langsung</div>
+  </div>
+</div>
+
+<div class="section-label">— Pilih Section —</div>
+<div class="sections-grid">
+  <a href="warmup24.html" class="sec-card unlocked">
+    <div class="num">Warmup</div>
+    <span class="icon">⚡</span>
+    <div class="title">Warmup: Hitung Kilat</div>
+    <div class="desc">10 soal cepat — refleks dasar jumlah sudut, jenis segitiga, dan sudut luar.</div>
+    <span class="type-badge type-warmup">Warmup</span>
+  </a>
+  <a href="section1_24.html" class="sec-card unlocked">
+    <div class="num">Section 01</div>
+    <span class="icon">🕵️</span>
+    <div class="title">Geometry Detective III: Misteri Segitiga</div>
+    <div class="desc">Jadi detektif geometri lagi: temukan sendiri pola sudut dalam, jenis segitiga, dan sudut luar.</div>
+    <span class="type-badge type-learn">Learn</span>
+  </a>
+  <a href="quicktest24.html" class="sec-card unlocked">
+    <div class="num">Quick Test</div>
+    <span class="icon">⚡</span>
+    <div class="title">Quick Test · Kasus Segitiga</div>
+    <div class="desc">10 soal — pecahkan kasus jumlah sudut, jenis, dan sudut luar segitiga. Timer 30 detik!</div>
+    <span class="type-badge type-boss">Boss Stage</span>
+  </a>
+  <a href="exercise24.html" class="sec-card unlocked">
+    <div class="num">Exercise</div>
+    <span class="icon">🏋️</span>
+    <div class="title">Exercise Zone</div>
+    <div class="desc">20 soal latihan jumlah sudut, jenis segitiga, dan sudut luar. Progress tersimpan otomatis!</div>
+    <span class="type-badge type-exercise">Exercise</span>
+  </a>
+  <a href="extra24.html" class="sec-card unlocked">
+    <div class="num">Extra PR</div>
+    <span class="icon">🕵️</span>
+    <div class="title">Extra PR: Kasus Detektif Lanjutan</div>
+    <div class="desc">40 soal ekstra jumlah sudut, jenis segitiga, sudut luar, plus review PR Lesson 23. Progress tersimpan otomatis!</div>
+    <span class="type-badge type-exercise">Extra PR</span>
+  </a>
+</div>
+</body>
+</html>
