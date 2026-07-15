@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extra PR · Lesson 25 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#059669;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --emerald:#34d399;--text:#e2e8f0;--muted:#64748b;
+    --amber:#fbbf24;--blue:#60a5fa;--pink:#f472b6;
+    --violet:#a78bfa;--blue2:#38bdf8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 80%,rgba(34,211,238,0.06) 0%,transparent 50%),
+               radial-gradient(ellipse at 85% 15%,rgba(167,139,250,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 50%,rgba(251,191,36,0.03) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  nav{
+    padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:100;
+    font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;
+  }
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--violet);}
+
+  .wrapper{max-width:800px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  .pr-banner{background:linear-gradient(135deg,rgba(167,139,250,0.08),rgba(34,211,238,0.08));border:1px solid rgba(167,139,250,0.25);border-radius:20px;padding:2rem 2rem 1.5rem;margin-bottom:2rem;position:relative;overflow:hidden;}
+  .pr-banner::before{content:'🕵️';position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);font-size:5rem;opacity:0.08;pointer-events:none;line-height:1;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.3);color:var(--violet);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;margin-bottom:0.5rem;line-height:1.3;}
+  .page-title span{color:var(--violet);}
+  .page-desc{color:var(--muted);font-size:0.9rem;line-height:1.7;max-width:560px;}
+  .pr-pills{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;}
+  .pr-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.72rem;padding:0.2rem 0.7rem;border-radius:20px;font-weight:700;}
+  .pill-cyan{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .pill-emerald{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.3);}
+  .pill-amber{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.3);}
+  .pill-red{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.3);}
+  .pill-violet{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--violet);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+  .prog-stars{display:flex;gap:0.3rem;margin-top:0.5rem;align-items:center;font-size:0.78rem;color:var(--muted);}
+  .star{font-size:0.9rem;opacity:0.25;transition:opacity 0.4s;}
+  .star.lit{opacity:1;}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--cyan);}
+  .sd-2{color:var(--emerald);}
+  .sd-3{color:var(--violet);}
+  .sd-4{color:var(--amber);}
+  .sd-5{color:#f87171;}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;max-width:100%;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;padding:0 0.25rem;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(34,211,238,0.35);background:rgba(34,211,238,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.25);}
+  .ex-tag.tag-2{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.25);}
+  .ex-tag.tag-3{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.25);}
+  .ex-tag.tag-4{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.25);}
+  .ex-tag.tag-5{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.25);}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.78rem,3vw,0.92rem);font-weight:900;color:var(--text);margin-bottom:0.5rem;line-height:1.5;word-break:break-word;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--cyan);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:1rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--cyan);}
+  .ex-input.correct{border-color:var(--cyan);color:var(--cyan);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);color:var(--cyan);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(34,211,238,0.22);border-color:var(--cyan);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--neon);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.4);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+  .attempts-row{margin-top:0.4rem;display:flex;gap:2px;align-items:center;}
+  .attempts-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:2px;}
+
+  .ex-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;}
+  .ex-opt{background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.55rem 0.4rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;transition:all 0.15s;text-align:center;line-height:1.4;}
+  .ex-opt:hover:not(:disabled){border-color:var(--cyan);background:rgba(34,211,238,0.06);}
+  .ex-opt.opt-correct{border-color:var(--neon);background:rgba(0,245,196,0.12);color:var(--neon);}
+  .ex-opt.opt-wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .ex-opt:disabled{cursor:default;}
+
+  .ex-card.data-card{border-left:3px solid var(--cyan);}
+  .ex-card.data-card.done-card{border-left-color:var(--cyan);}
+
+  .mini-table{width:100%;border-collapse:separate;border-spacing:0;background:#12121c;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:0.8rem;font-size:0.82rem;}
+  .mini-table th{font-family:'Orbitron',monospace;font-size:0.56rem;letter-spacing:1.5px;color:var(--cyan);background:rgba(34,211,238,0.07);padding:0.5rem;text-align:center;}
+  .mini-table td{padding:0.45rem;text-align:center;border-top:1px solid var(--border);}
+  .raw-box{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.7rem;text-align:center;font-family:'Orbitron',monospace;font-size:0.8rem;color:var(--cyan);letter-spacing:1.5px;margin-bottom:0.8rem;line-height:1.7;}
+  .raw-box.sit{font-family:'Nunito',sans-serif;font-size:0.82rem;color:var(--text);letter-spacing:0;font-weight:700;}
+
+  #allDone{display:none;text-align:center;padding:3rem 2rem;}
+  .alldone-icon{font-size:5rem;display:block;margin-bottom:1.5rem;animation:bounce 1s ease infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .alldone-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2rem);color:var(--violet);margin-bottom:0.8rem;}
+  .alldone-desc{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .alldone-xp{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.5rem 1.5rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:2rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--violet);color:var(--violet);}
+  .btn-primary{background:linear-gradient(135deg,#0891b2,var(--cyan));color:#000;box-shadow:0 4px 15px rgba(34,211,238,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson25.html">LESSON 25</a>
+  <span>›</span>
+  <span class="current">EXTRA PR</span>
+</nav>
+
+<div class="wrapper">
+  <div class="pr-banner">
+    <div class="page-badge">🕵️ Detective Mode</div>
+    <div class="page-title">Extra <span>PR Mode</span></div>
+    <div class="page-desc">
+      40 soal ekstra: mulai dari sisi &amp; kesejajaran, sudut, diagonal, klasifikasi &amp; hubungan antar segiempat,
+      sampai review PR Lesson 24 (jumlah sudut segitiga, jenis segitiga berdasarkan sisi &amp; sudut, sudut luar) supaya insting detektif geometri kamu tetap tajam.
+      Progress tersimpan otomatis di perangkat ini. Selesaikan semua kasus, detektif! 🔍
+    </div>
+    <div class="pr-pills">
+      <span class="pr-pill pill-cyan">🔷 Sisi &amp; Sejajar</span>
+      <span class="pr-pill pill-emerald">🟢 Sudut</span>
+      <span class="pr-pill pill-violet">🟣 Diagonal</span>
+      <span class="pr-pill pill-amber">🟡 Klasifikasi</span>
+      <span class="pr-pill pill-red">📊 Review L24</span>
+    </div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress PR</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      Kumpulkan ⭐ untuk setiap bagian yang diselesaikan!
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+      <span style="margin-left:0.3rem;font-size:0.72rem;">Selesaikan 8 soal per bagian</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🕵️</span>
+    <div class="alldone-title">PR DETEKTIF SELESAI!</div>
+    <div class="alldone-desc">
+      GG! Kamu udah menaklukkan 40 soal Extra PR Lesson 25!<br>
+      Sisi &amp; kesejajaran, sudut, diagonal, klasifikasi &amp; hubungan segiempat, sampai review jumlah sudut-jenis-sudut luar segitiga dari Lesson 24 — semua kamu babat habis! 🔥<br>
+      Kamu sekarang makin jago mengenali segiempat apapun tanpa penggaris atau busur derajat!
+    </div>
+    <div class="alldone-xp">🕵️ +400 XP — Master Geometry Detective Badge Unlocked!</div>
+    <div class="action-btns">
+      <a href="lesson25.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="exercise25.html" class="btn btn-ghost">Exercise Zone</a>
+      <a href="quicktest25.html" class="btn btn-primary">Quick Test ⚡</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson25_extra_v1';
+function loadProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{};}catch(e){return{};}}
+function saveProgress(p){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(p));}catch(e){}}
+let progress = loadProgress();
+
+// Helper: render a data table
+function tableDisp(thead, tbody){
+  let h = '<table class="mini-table"><thead><tr>';
+  thead.forEach(t=>h+=`<th>${t}</th>`);
+  h += '</tr></thead><tbody>';
+  tbody.forEach(r=>{h+='<tr>';r.forEach(c=>h+=`<td>${c}</td>`);h+='</tr>';});
+  h += '</tbody></table>';
+  return h;
+}
+// Helper: render raw data string
+function rawDisp(text){
+  return `<div class="raw-box">${text}</div>`;
+}
+// Helper: render a situational sentence
+function sitDisp(text){
+  return `<div class="raw-box sit">${text}</div>`;
+}
+
+const exercises = [
+  // ─── BAGIAN 1: Sisi & Kesejajaran Segiempat (e01–e08) ─────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Sisi & Sejajar',
+    sys:rawDisp('Persegi Panjang ABCD: sisi AB = 12 cm.'),
+    q:'Berapa panjang sisi CD (yang berhadapan dengan AB)?', hint:'Sisi berhadapan pada persegi panjang sama panjang',
+    type:'text', answers:['12','12cm','12 cm'], explain:'✅ Sisi berhadapan pada persegi panjang selalu sama panjang: CD = AB = 12 cm ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Sisi & Sejajar',
+    sys:rawDisp('Trapesium ABCD: AB sejajar CD, sedangkan AD tidak sejajar BC.'),
+    q:'Berapa pasang sisi sejajar yang dimiliki trapesium ini?', hint:'Hitung pasangan yang benar-benar sejajar saja',
+    type:'mcq', opts:['1 pasang','2 pasang','0 pasang','3 pasang'], answer:'1 pasang',
+    explain:'✅ Hanya AB & CD yang sejajar → 1 pasang. Ini ciri khas trapesium ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Sisi & Sejajar',
+    sys:rawDisp('Jajar Genjang: sisi AB = 9 cm, sisi BC = 6 cm.'),
+    q:'Berapa panjang sisi CD (berhadapan dengan AB)?', hint:'Sisi berhadapan pada jajar genjang sama panjang',
+    type:'text', answers:['9','9cm','9 cm'], explain:'✅ CD berhadapan dengan AB, jadi CD = AB = 9 cm ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Sisi & Sejajar',
+    sys:tableDisp(['Sisi','Panjang'],[['AB','7 cm'],['BC','7 cm'],['CD','7 cm'],['DA','7 cm']]),
+    q:'Segiempat dengan keempat sisi sama panjang ini PASTI punya berapa pasang sisi sejajar (minimal)?', hint:'Bangun sisi sama panjang seperti ini adalah belah ketupat',
+    type:'mcq', opts:['2 pasang','1 pasang','0 pasang','3 pasang'], answer:'2 pasang',
+    explain:'✅ Segiempat dengan semua sisi sama panjang (belah ketupat) selalu punya 2 pasang sisi sejajar ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Sisi & Sejajar',
+    sys:sitDisp('Situasi: Bingkai foto berbentuk jajar genjang punya sisi berselang-seling 15 cm dan 9 cm.'),
+    q:'Berapa panjang sisi yang berhadapan dengan sisi 15 cm?', hint:'Sisi berhadapan pada jajar genjang sama panjang',
+    type:'text', answers:['15','15cm','15 cm'], explain:'✅ Sisi berhadapan pada jajar genjang selalu sama panjang, yaitu 15 cm ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Sisi & Sejajar',
+    sys:rawDisp('Layang-layang: AB = AD = 6 cm, CB = CD = 10 cm.'),
+    q:'Pasangan sisi yang sama panjang pada layang-layang ini letaknya...', hint:'Perhatikan titik sudut mana yang menghubungkan tiap pasangan',
+    type:'mcq', opts:['Berdekatan (bersebelahan)','Berhadapan','Sejajar','Diagonal'], answer:'Berdekatan (bersebelahan)',
+    explain:'✅ AB & AD berdekatan lewat titik A; CB & CD berdekatan lewat titik C — ini pola khas layang-layang ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Konsep',
+    sys:rawDisp('Konsep Sisi Segiempat'),
+    q:'Segiempat manakah yang punya sisi berhadapan sejajar SEKALIGUS semua sisi sama panjang?', hint:'Ini gabungan sifat jajar genjang + sisi sama panjang',
+    type:'mcq', opts:['Belah Ketupat','Trapesium','Layang-layang','Sembarang'], answer:'Belah Ketupat',
+    explain:'✅ Belah Ketupat = jajar genjang (sisi berhadapan sejajar) + syarat ekstra semua sisi sama panjang ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Sisi & Sejajar',
+    sys:rawDisp('Persegi dengan panjang sisi 5 cm.'),
+    q:'Berapa keliling persegi tersebut?', hint:'Keliling = jumlah keempat sisi (semua sama panjang)',
+    type:'text', answers:['20','20cm','20 cm'], explain:'✅ Keliling = 4 × 5 cm = 20 cm ✓' },
+
+  // ─── BAGIAN 2: Sudut Segiempat (e09–e16) ──────────────────────────
+  { id:'e09', section:'s2', tag:'tag-2', tagLabel:'Sudut',
+    sys:rawDisp('Persegi: keempat sudutnya siku-siku (90°).'),
+    q:'Berapa jumlah keempat sudut pada persegi?', hint:'4 × 90° = ?',
+    type:'mcq', opts:['360°','180°','270°','90°'], answer:'360°',
+    explain:'✅ 4 × 90° = 360°. Jumlah sudut segiempat mana pun selalu 360° ✓' },
+
+  { id:'e10', section:'s2', tag:'tag-2', tagLabel:'Sudut',
+    sys:rawDisp('Jajar Genjang: sudut A = 110°.'),
+    q:'Berapa besar sudut B yang berdekatan dengan sudut A?', hint:'Sudut berdekatan pada jajar genjang berjumlah 180°',
+    type:'text', answers:['70','70°'], explain:'✅ 180° − 110° = 70° ✓' },
+
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Sudut',
+    sys:rawDisp('Belah Ketupat: salah satu sudutnya = 95°.'),
+    q:'Berapa besar sudut yang ada di hadapannya?', hint:'Sudut berhadapan pada belah ketupat sama besar',
+    type:'text', answers:['95','95°'], explain:'✅ Sudut berhadapan selalu sama besar, yaitu 95° ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Sudut',
+    sys:tableDisp(['Sudut','Besar'],[['P','68°'],['Q','?'],['R','68°'],['S','?']]),
+    q:'Berapa besar sudut Q (berdekatan dengan P) pada jajar genjang PQRS?', hint:'Sudut berdekatan berjumlah 180°',
+    type:'mcq', opts:['112°','68°','180°','22°'], answer:'112°',
+    explain:'✅ 180° − 68° = 112° ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Sudut',
+    sys:sitDisp('Situasi: Hiasan dinding layang-layang punya sepasang sudut berhadapan (antara sisi yang tidak sama panjang) yang sama besar, salah satunya 95°.'),
+    q:'Berapa besar sudut pasangannya?', hint:'Sepasang sudut ini pada layang-layang sama besar',
+    type:'text', answers:['95','95°'], explain:'✅ Sepasang sudut berhadapan (antara sisi tak sama) pada layang-layang sama besar, yaitu 95° ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Sudut',
+    sys:rawDisp('Trapesium sama kaki: sudut alas kiri = 72°.'),
+    q:'Berapa besar sudut alas kanan?', hint:'Sudut alas trapesium sama kaki selalu sama besar',
+    type:'text', answers:['72','72°'], explain:'✅ Kedua sudut alas trapesium sama kaki selalu sama besar, yaitu 72° ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Konsep',
+    sys:rawDisp('Konsep Sudut Segiempat'),
+    q:'Jumlah keempat sudut pada SEGIEMPAT APAPUN (apapun jenisnya) selalu...', hint:'Ingat kembali pola yang kamu temukan',
+    type:'mcq', opts:['360°','180°','270°','720°'], answer:'360°',
+    explain:'✅ Jumlah sudut segiempat SELALU 360°, apapun bentuk atau jenisnya ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Sudut',
+    sys:sitDisp('Situasi: Sebuah jajar genjang punya sudut lancip 55°.'),
+    q:'Berapa besar sudut tumpul yang berdekatan dengannya?', hint:'Sudut berdekatan pada jajar genjang berjumlah 180°',
+    type:'text', answers:['125','125°'], explain:'✅ 180° − 55° = 125° ✓' },
+
+  // ─── BAGIAN 3: Diagonal Segiempat (e17–e24) ───────────────────────
+  { id:'e17', section:'s3', tag:'tag-3', tagLabel:'Diagonal',
+    sys:rawDisp('Persegi Panjang: diagonal AC = 14 cm.'),
+    q:'Berapa panjang diagonal BD?', hint:'Diagonal persegi panjang selalu sama panjang',
+    type:'text', answers:['14','14cm','14 cm'], explain:'✅ Diagonal persegi panjang selalu sama panjang: BD = AC = 14 cm ✓' },
+
+  { id:'e18', section:'s3', tag:'tag-3', tagLabel:'Diagonal',
+    sys:rawDisp('Belah Ketupat: diagonal saling tegak lurus.'),
+    q:'Berapa besar sudut yang dibentuk perpotongan kedua diagonal belah ketupat?', hint:'"Tegak lurus" artinya membentuk sudut ini',
+    type:'mcq', opts:['90°','45°','180°','60°'], answer:'90°',
+    explain:'✅ Tegak lurus = membentuk sudut 90° tepat di titik potongnya ✓' },
+
+  { id:'e19', section:'s3', tag:'tag-3', tagLabel:'Diagonal',
+    sys:rawDisp('Persegi: diagonal sama panjang DAN saling tegak lurus.'),
+    q:'Sifat diagonal persegi ini merupakan gabungan sifat diagonal dari...', hint:'Sama panjang dari satu bangun, tegak lurus dari bangun lain',
+    type:'mcq', opts:['Persegi Panjang + Belah Ketupat','Trapesium + Layang-layang','Jajar Genjang saja','Layang-layang saja'], answer:'Persegi Panjang + Belah Ketupat',
+    explain:'✅ Sama panjang → sifat diagonal persegi panjang. Tegak lurus → sifat diagonal belah ketupat. Persegi punya keduanya ✓' },
+
+  { id:'e20', section:'s3', tag:'tag-3', tagLabel:'Diagonal',
+    sys:rawDisp('Segiempat apa pun (persegi, trapesium, layang-layang, dsb).'),
+    q:'Berapa banyak garis diagonal yang dimiliki sebuah segiempat?', hint:'Hubungkan sudut-sudut yang tidak berdekatan',
+    type:'mcq', opts:['2','1','3','4'], answer:'2',
+    explain:'✅ Segiempat punya 4 titik sudut, dan tepat 2 garis diagonal yang menghubungkan sudut-sudut yang tidak berdekatan ✓' },
+
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Diagonal',
+    sys:sitDisp('Situasi: Diagonal AC sebuah jajar genjang dipotong oleh diagonal BD di titik O, dengan AO = 6 cm.'),
+    q:'Berapa panjang OC?', hint:'Diagonal jajar genjang saling membagi dua sama panjang di titik potongnya',
+    type:'text', answers:['6','6cm','6 cm'], explain:'✅ Diagonal jajar genjang saling membagi dua sama panjang: OC = AO = 6 cm ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Diagonal',
+    sys:rawDisp('Layang-layang: diagonal saling tegak lurus, tapi hanya satu diagonal yang dibagi dua sama panjang oleh yang lain.'),
+    q:'Berapa besar sudut potong kedua diagonal layang-layang tersebut?', hint:'"Tegak lurus" artinya sudut ini',
+    type:'text', answers:['90','90°'], explain:'✅ Diagonal layang-layang tetap saling tegak lurus, yaitu 90° di titik potongnya ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Konsep',
+    sys:rawDisp('Konsep Diagonal Segiempat'),
+    q:'Segiempat manakah yang diagonalnya SELALU sama panjang DAN saling tegak lurus SEKALIGUS?', hint:'Bangun ini gabungan sifat persegi panjang & belah ketupat',
+    type:'mcq', opts:['Persegi','Trapesium','Layang-layang','Jajar Genjang'], answer:'Persegi',
+    explain:'✅ Hanya Persegi yang diagonalnya sama panjang (dari persegi panjang) DAN tegak lurus (dari belah ketupat) sekaligus ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Diagonal',
+    sys:sitDisp('Situasi: Sebuah belah ketupat punya diagonal pertama sepanjang 16 cm, dipotong tepat di titik tengahnya oleh diagonal kedua.'),
+    q:'Berapa panjang setengah dari diagonal pertama tersebut?', hint:'Diagonal belah ketupat saling membagi dua sama panjang',
+    type:'text', answers:['8','8cm','8 cm'], explain:'✅ 16 cm ÷ 2 = 8 cm, karena diagonal belah ketupat saling membagi dua sama panjang ✓' },
+
+  // ─── BAGIAN 4: Klasifikasi & Hubungan Segiempat (e25–e32) ─────────
+  { id:'e25', section:'s4', tag:'tag-4', tagLabel:'Klasifikasi',
+    sys:rawDisp('Bangun dengan 4 sisi sama panjang DAN 4 sudut siku-siku.'),
+    q:'Segiempat apakah ini?', hint:'Gabungan sifat belah ketupat & persegi panjang',
+    type:'mcq', opts:['Persegi','Belah Ketupat','Persegi Panjang','Jajar Genjang'], answer:'Persegi',
+    explain:'✅ Sisi sama panjang (ciri belah ketupat) + sudut siku-siku (ciri persegi panjang) = Persegi ✓' },
+
+  { id:'e26', section:'s4', tag:'tag-4', tagLabel:'Klasifikasi',
+    sys:rawDisp('Bangun dengan dua pasang sisi berdekatan sama panjang, dan diagonal saling tegak lurus.'),
+    q:'Segiempat apakah ini?', hint:'Sisi sama panjangnya letaknya berdekatan, bukan berhadapan',
+    type:'mcq', opts:['Layang-layang','Belah Ketupat','Jajar Genjang','Trapesium'], answer:'Layang-layang',
+    explain:'✅ Sisi berdekatan (bukan berhadapan) yang sama panjang adalah ciri khas Layang-layang ✓' },
+
+  { id:'e27', section:'s4', tag:'tag-4', tagLabel:'Klasifikasi',
+    sys:rawDisp('Bangun dengan hanya SATU pasang sisi sejajar, sisi lainnya tidak sejajar.'),
+    q:'Segiempat apakah ini?', hint:'Ciri paling khas dari bangun ini',
+    type:'text', answers:['trapesium'], explain:'✅ Satu pasang sisi sejajar saja adalah ciri paling khas dari Trapesium ✓' },
+
+  { id:'e28', section:'s4', tag:'tag-4', tagLabel:'Klasifikasi',
+    sys:rawDisp('Pernyataan: "Semua persegi adalah persegi panjang."'),
+    q:'Benar atau salah?', hint:'Cek apakah persegi memenuhi semua syarat persegi panjang',
+    type:'mcq', opts:['Benar','Salah'], answer:'Benar',
+    explain:'✅ BENAR. Persegi memenuhi semua syarat persegi panjang (sudut 90°, sisi berhadapan sama & sejajar), plus syarat ekstra sisi sama panjang ✓' },
+
+  { id:'e29', section:'s4', tag:'tag-4', tagLabel:'Klasifikasi',
+    sys:rawDisp('Pernyataan: "Semua persegi panjang adalah persegi."'),
+    q:'Benar atau salah?', hint:'Cek apakah persegi panjang PASTI punya semua sisi sama panjang',
+    type:'mcq', opts:['Salah','Benar'], answer:'Salah',
+    explain:'✅ SALAH. Persegi panjang belum tentu punya semua sisi sama panjang — itu syarat KHUSUS persegi ✓' },
+
+  { id:'e30', section:'s4', tag:'tag-4', tagLabel:'Klasifikasi',
+    sys:rawDisp('Pernyataan: "Semua belah ketupat adalah persegi."'),
+    q:'Benar atau salah?', hint:'Cek apakah belah ketupat PASTI punya sudut 90°',
+    type:'mcq', opts:['Salah','Benar'], answer:'Salah',
+    explain:'✅ SALAH. Belah ketupat belum tentu punya sudut 90° — itu syarat KHUSUS persegi ✓' },
+
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Klasifikasi',
+    sys:rawDisp('Pernyataan: "Semua persegi adalah belah ketupat."'),
+    q:'Benar atau salah?', hint:'Cek apakah persegi memenuhi semua syarat belah ketupat',
+    type:'mcq', opts:['Benar','Salah'], answer:'Benar',
+    explain:'✅ BENAR. Persegi memenuhi semua syarat belah ketupat (sisi sama panjang, sisi berhadapan sejajar), plus syarat ekstra sudut 90° ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Konsep',
+    sys:rawDisp('Konsep Hubungan Segiempat'),
+    q:'Segiempat manakah yang TIDAK termasuk jajar genjang, karena hanya punya satu pasang sisi sejajar?', hint:'Jajar genjang butuh DUA pasang sisi sejajar',
+    type:'mcq', opts:['Trapesium','Belah Ketupat','Persegi','Persegi Panjang'], answer:'Trapesium',
+    explain:'✅ Trapesium hanya punya SATU pasang sisi sejajar, jadi ia tidak memenuhi syarat jajar genjang ✓' },
+
+  // ─── BAGIAN 5: Review PR Lesson 24 (Segitiga) (e33–e40) ───────────
+  { id:'e33', section:'s5', tag:'tag-5', tagLabel:'Review: Jumlah Sudut',
+    sys:rawDisp('Segitiga: 50° + 65° + ? = 180°'),
+    q:'Berapa besar sudut yang hilang?', hint:'Jumlah sudut segitiga selalu 180°',
+    type:'text', answers:['65','65°'], explain:'✅ 180° − 50° − 65° = 65° ✓' },
+
+  { id:'e34', section:'s5', tag:'tag-5', tagLabel:'Review: Jenis (Sisi)',
+    sys:rawDisp('Panjang sisi: 6 cm, 6 cm, 6 cm'),
+    q:'Segitiga ini termasuk jenis apa (berdasarkan sisi)?', hint:'Bandingkan panjang ketiga sisinya',
+    type:'text', answers:['sama sisi'], explain:'✅ Ketiga sisinya sama panjang → Segitiga Sama Sisi ✓' },
+
+  { id:'e35', section:'s5', tag:'tag-5', tagLabel:'Review: Jenis (Sudut)',
+    sys:rawDisp('Sudut: 95°, 50°, 35°'),
+    q:'Segitiga ini termasuk jenis apa (berdasarkan sudut)?', hint:'Perhatikan apakah ada sudut lebih dari 90°',
+    type:'mcq', opts:['Tumpul','Lancip','Siku-siku','Sembarang'], answer:'Tumpul',
+    explain:'✅ Ada satu sudut lebih dari 90° (95°) → Segitiga Tumpul ✓' },
+
+  { id:'e36', section:'s5', tag:'tag-5', tagLabel:'Review: Sudut Luar',
+    sys:rawDisp('Dua sudut dalam segitiga yang tidak berdekatan dengan suatu sudut luar: 48° dan 37°.'),
+    q:'Berapa besar sudut luar tersebut?', hint:'Sudut luar = jumlah dua sudut dalam tak berdekatan',
+    type:'mcq', opts:['85°','95°','75°','132°'], answer:'85°',
+    explain:'✅ Sudut luar = 48° + 37° = 85° ✓' },
+
+  { id:'e37', section:'s5', tag:'tag-5', tagLabel:'Review Campuran',
+    sys:rawDisp('Segitiga sama kaki punya sudut puncak 50°. Kedua sudut alasnya sama besar.'),
+    q:'Berapa besar masing-masing sudut alas?', hint:'180°−50°=130°, lalu bagi dua karena sama besar',
+    type:'text', answers:['65','65°'], explain:'✅ (180° − 50°) ÷ 2 = 130° ÷ 2 = 65° ✓' },
+
+  { id:'e38', section:'s5', tag:'tag-5', tagLabel:'Review Konsep',
+    sys:rawDisp('Konsep Jumlah Sudut Segitiga'),
+    q:'Jumlah ketiga sudut dalam segitiga apa pun, berapa pun bentuknya, selalu...', hint:'Ingat kembali pola yang kamu temukan di Lesson 24',
+    type:'mcq', opts:['180°','360°','90°','270°'], answer:'180°',
+    explain:'✅ Jumlah sudut dalam segitiga SELALU 180°, apapun bentuk atau ukurannya ✓' },
+
+  { id:'e39', section:'s5', tag:'tag-5', tagLabel:'Review: Jenis (Sudut)',
+    sys:rawDisp('Segitiga siku-siku: sudut 90°, 35°, ?'),
+    q:'Berapa besar sudut ketiga?', hint:'Jumlah sudut segitiga selalu 180°',
+    type:'text', answers:['55','55°'], explain:'✅ 180° − 90° − 35° = 55° ✓' },
+
+  { id:'e40', section:'s5', tag:'tag-5', tagLabel:'Review Konsep',
+    sys:rawDisp('Konsep Sudut Luar Segitiga'),
+    q:'Sudut luar segitiga selalu berpelurus dengan sudut dalam di titik sudut yang...', hint:'Ingat definisi sudut berpelurus',
+    type:'mcq', opts:['Sama (berdekatan)','Berbeda (jauh)','Semua titik sudut','Tidak ada hubungan'], answer:'Sama (berdekatan)',
+    explain:'✅ Sudut luar dan sudut dalam pada titik sudut YANG SAMA membentuk garis lurus (berpelurus, jumlah 180°) ✓' },
+];
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  const total = exercises.length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done >= i*8);
+  }
+  if(done === total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){
+    inp.classList.add('correct'); inp.disabled=true; btn.disabled=true;
+  } else {
+    card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true);
+  }
+  const fb = card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok';
+  fb.textContent = q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){
+    const badge=document.createElement('div');
+    badge.className='done-badge'; badge.textContent='✓ Done';
+    card.appendChild(badge);
+  }
+  progress[q.id]=true;
+  saveProgress(progress);
+  updateProgressBar();
+}
+
+function normalizeAns(s){
+  return s.trim().toLowerCase().replace(/\s+/g,'').replace(/°/g,'').replace(/×/g,'*');
+}
+
+function checkText(id, inp, btn, q){
+  const raw = normalizeAns(inp.value);
+  if(!raw) return;
+  const correct = q.answers.some(a=>raw===normalizeAns(a));
+  if(correct){
+    markDone(inp.closest('.ex-card'), q, inp, btn);
+  } else {
+    inp.classList.add('wrong-anim');
+    const attRow = inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div'); dot.className='attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(()=>{inp.classList.remove('wrong-anim'); inp.value=''; inp.focus();}, 400);
+    if(attRow.children.length >= 3){
+      const fb = inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no';
+      fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.val===q.answer) b.classList.add('opt-correct');
+  });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb = card.querySelector('.ex-feedback');
+  if(val===q.answer){
+    markDone(card, q, null, null);
+  } else {
+    fb.className='ex-feedback show no';
+    fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+  }
+}
+
+function buildExercises(){
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = '';
+  const groups = [
+    { key:'s1', label:'🔷 Bagian 1 — Sisi &amp; Kesejajaran Segiempat',                          cls:'sd-1' },
+    { key:'s2', label:'🟢 Bagian 2 — Sudut Segiempat',                                           cls:'sd-2' },
+    { key:'s3', label:'🟣 Bagian 3 — Diagonal Segiempat',                                        cls:'sd-3' },
+    { key:'s4', label:'🟡 Bagian 4 — Klasifikasi &amp; Hubungan Segiempat',                       cls:'sd-4' },
+    { key:'s5', label:'📊 Bagian 5 — Review PR Lesson 24 (Jumlah Sudut, Jenis, Sudut Luar Segitiga)', cls:'sd-5' },
+  ];
+  groups.forEach(g=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      card.className = 'ex-card data-card' + (isDone?' done-card':'');
+
+      const sysHTML = q.sys || '';
+
+      let inputHTML = '';
+      if(q.type==='text'){
+        inputHTML = `
+          <div class="ex-input-wrap">
+            <div class="ex-input-row">
+              <input type="text" class="ex-input ${isDone?'correct':''}"
+                placeholder="Jawaban?"
+                value="${isDone ? q.answers[0] : ''}"
+                ${isDone?'disabled':''}
+                onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+              <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+            </div>
+            <div class="attempts-row"></div>
+          </div>`;
+      } else {
+        const shuffled = [...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML = `<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="ex-num">Soal ${q.id.replace('e','')}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${sysHTML}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone ? q.explain : ''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn = card.querySelector('.ex-btn');
+        const inp = card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick = ()=>checkText(q.id, inp, btn, q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{
+          b.onclick = ()=>checkMCQ(b.dataset.val, b, q, card);
+        });
+      }
+      grid.appendChild(card);
+    });
+
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Extra PR Lesson 25? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+</script>
+</body>
+</html>
