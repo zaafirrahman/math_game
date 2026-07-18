@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise · Lesson 26 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--red:#ef4444;--cyan:#22d3ee;--emerald:#34d399;--amber:#fbbf24;--violet:#a78bfa;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(34,211,238,0.06) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(167,139,250,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--emerald);}
+  .wrapper{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 6rem;position:relative;z-index:1;}
+  .page-header{text-align:center;margin-bottom:2rem;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--emerald);margin-bottom:0.5rem;}
+  .page-sub{color:var(--muted);font-size:0.9rem;}
+  .prog-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin-bottom:2rem;}
+  .prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+  .prog-val{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--emerald);}
+  .prog-bar{background:var(--border);border-radius:99px;height:6px;overflow:hidden;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--neon));border-radius:99px;transition:width 0.5s ease;}
+  .dot-row{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.8rem;}
+  .dot{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);cursor:pointer;transition:all 0.2s;font-family:'Orbitron',monospace;font-size:0.6rem;display:flex;align-items:center;justify-content:center;color:var(--muted);}
+  .dot.done-ok{background:rgba(0,245,196,0.15);border-color:var(--neon);color:var(--neon);}
+  .dot.done-ko{background:rgba(239,68,68,0.12);border-color:var(--red);color:var(--red);}
+  .dot.active{border-color:var(--cyan);color:var(--cyan);background:rgba(34,211,238,0.1);}
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem;margin-bottom:1.2rem;display:none;}
+  .q-card.active{display:block;animation:fadeIn 0.3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+  .q-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;}
+  .q-tag{font-size:0.65rem;padding:0.2rem 0.6rem;border-radius:99px;font-weight:700;}
+  .tag-miring{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .tag-siku{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.3);}
+  .tag-pola{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+  .tag-konteks{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.3);}
+  .q-text{font-size:0.95rem;line-height:1.7;margin-bottom:1rem;color:var(--text);}
+  .q-text strong{color:var(--cyan);}
+  .raw-box{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.85rem;text-align:center;font-family:'Orbitron',monospace;font-size:0.88rem;color:var(--cyan);letter-spacing:1px;margin-bottom:1rem;line-height:1.8;}
+  .raw-box.sit{font-family:'Nunito',sans-serif;font-size:0.86rem;color:var(--text);letter-spacing:0;font-weight:700;}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-bottom:0.8rem;}
+  @media(max-width:400px){.opts{grid-template-columns:1fr;}}
+  .opt-btn{background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.65rem 0.8rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.76rem;letter-spacing:1px;transition:all 0.2s;text-align:center;line-height:1.4;}
+  .opt-btn:hover:not(:disabled){border-color:var(--cyan);background:rgba(34,211,238,0.07);}
+  .opt-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .opt-btn.reveal-correct{border-color:var(--neon);background:rgba(0,245,196,0.06);color:var(--neon);}
+  .q-feedback{min-height:24px;font-size:0.85rem;margin-bottom:0.8rem;line-height:1.5;}
+  .q-feedback.ok{color:var(--neon);}
+  .q-feedback.ko{color:var(--red);}
+  .q-nav{display:flex;gap:0.8rem;justify-content:flex-end;}
+  .qnav-btn{background:var(--card);border:1px solid var(--border);color:var(--text);padding:0.55rem 1.2rem;border-radius:8px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.7rem;letter-spacing:2px;transition:all 0.2s;}
+  .qnav-btn.next{background:linear-gradient(135deg,var(--cyan),#0891b2);border:none;color:#000;font-weight:800;}
+  .qnav-btn:hover:not(.next){border-color:var(--cyan);}
+  #resultPanel{display:none;background:var(--card);border:1px solid rgba(34,211,238,0.3);border-radius:18px;padding:2rem;text-align:center;margin-top:2rem;}
+  .result-score{font-family:'Orbitron',monospace;font-size:3.5rem;font-weight:900;color:var(--cyan);margin-bottom:0.3rem;}
+  .result-sub{color:var(--muted);font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1.5rem;}
+  .result-grade{display:inline-block;font-family:'Orbitron',monospace;font-size:1rem;letter-spacing:3px;padding:0.5rem 1.5rem;border-radius:12px;margin-bottom:1.5rem;}
+  .rg-s{background:rgba(0,245,196,0.1);border:2px solid var(--neon);color:var(--neon);}
+  .rg-a{background:rgba(34,211,238,0.1);border:2px solid var(--cyan);color:var(--cyan);}
+  .rg-b{background:rgba(245,158,11,0.1);border:2px solid var(--accent);color:var(--accent);}
+  .rg-c{background:rgba(239,68,68,0.1);border:2px solid var(--red);color:var(--red);}
+  .result-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .ra-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;text-decoration:none;display:inline-block;transition:all 0.2s;cursor:pointer;}
+  .ra-primary{background:linear-gradient(135deg,var(--cyan),#0891b2);color:#000;border:none;font-weight:800;}
+  .ra-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .ra-primary:hover{transform:translateY(-2px);}
+  .ra-secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+  .reset-link{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--muted);cursor:pointer;text-decoration:underline;display:block;text-align:right;margin-top:0.5rem;}
+  .reset-link:hover{color:var(--red);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson26.html">LESSON 26</a>
+  <span>›</span>
+  <span class="current">EXERCISE</span>
+</nav>
+<div class="wrapper">
+  <div class="page-header">
+    <div class="page-title">🏋️ Exercise Zone</div>
+    <div class="page-sub">20 soal sisi miring, sisi siku-siku, pola, dan konteks Pythagoras · Progress tersimpan otomatis</div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-top">
+      <div class="prog-label">Progress</div>
+      <div class="prog-val" id="progVal">0 / 20</div>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="dot-row" id="dotRow"></div>
+    <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+  </div>
+  <div id="questionsDiv"></div>
+  <div id="resultPanel">
+    <div style="font-size:3rem;margin-bottom:1rem;">🎉</div>
+    <div class="result-score" id="rScore">0</div>
+    <div class="result-sub">DARI 200 POIN</div>
+    <div class="result-grade" id="rGrade">—</div>
+    <div class="result-actions">
+      <button class="ra-btn ra-primary" onclick="resetProgress()">ULANGI</button>
+      <a href="quicktest26.html" class="ra-btn ra-secondary">Quick Test ⚡</a>
+      <a href="lesson26.html" class="ra-btn ra-secondary">Lesson 26</a>
+    </div>
+  </div>
+</div>
+<script>
+const KEY='asfa_ex26_v1';
+const QS=[
+  {tag:'miring',dataStr:'Segitiga siku-siku: a = 8, b = 15.',q:'Berapa panjang sisi miring c?',cx:'17',wx:['23','7','16'],expl:'c² = 8²+15² = 64+225 = 289, c = √289 = 17. Triplet 8-15-17!'},
+  {tag:'miring',dataStr:'Segitiga siku-siku: a = 5, b = 12.',q:'Berapa panjang sisi miring c?',cx:'13',wx:['17','7','144'],expl:'c² = 5²+12² = 25+144 = 169, c = √169 = 13. Triplet 5-12-13!'},
+  {tag:'miring',dataStr:'Segitiga siku-siku: a = 9, b = 12.',q:'Berapa panjang sisi miring c?',cx:'15',wx:['21','13','225'],expl:'c² = 81+144 = 225, c = √225 = 15. Kelipatan 3 dari triplet 3-4-5!'},
+  {tag:'miring',dataStr:'Segitiga siku-siku: a = 20, b = 21.',q:'Berapa panjang sisi miring c?',cx:'29',wx:['41','31','25'],expl:'c² = 400+441 = 841, c = √841 = 29. Triplet 20-21-29!'},
+  {tag:'miring',dataStr:'Segitiga siku-siku sama kaki: a = 1, b = 1.',q:'Berapa panjang sisi miring c?',cx:'√2',wx:['2','1','1.5'],expl:'c² = 1²+1² = 2, jadi c = √2 (bukan bilangan bulat — tetap sah!).'},
+  {tag:'siku',dataStr:'Segitiga siku-siku: c = 25, a = 7.',q:'Berapa panjang sisi siku-siku b?',cx:'24',wx:['18','32','576'],expl:'b² = 25²−7² = 625−49 = 576, b = √576 = 24. Triplet 7-24-25!'},
+  {tag:'siku',dataStr:'Segitiga siku-siku: c = 15, b = 9.',q:'Berapa panjang sisi siku-siku a?',cx:'12',wx:['6','24','144'],expl:'a² = 15²−9² = 225−81 = 144, a = √144 = 12. Triplet 9-12-15!'},
+  {tag:'siku',dataStr:'Segitiga siku-siku: c = 41, a = 9.',q:'Berapa panjang sisi siku-siku b?',cx:'40',wx:['32','50','1600'],expl:'b² = 41²−9² = 1681−81 = 1600, b = √1600 = 40. Triplet 9-40-41!'},
+  {tag:'siku',dataStr:'Segitiga siku-siku: c = 10, a = 6.',q:'Berapa panjang sisi siku-siku b?',cx:'8',wx:['4','16','64'],expl:'b² = 10²−6² = 100−36 = 64, b = √64 = 8. Triplet 6-8-10!'},
+  {tag:'siku',dataStr:'Segitiga siku-siku: c = 29, b = 20.',q:'Berapa panjang sisi siku-siku a?',cx:'21',wx:['9','49','441'],expl:'a² = 29²−20² = 841−400 = 441, a = √441 = 21. Triplet 20-21-29!'},
+  {tag:'pola',dataStr:'Situasi: Sebuah segitiga punya sisi 6 cm, 7 cm, dan 8 cm.',q:'Apakah segitiga ini segitiga siku-siku?',cx:'Bukan, karena 6²+7² ≠ 8²',wx:['Ya, karena semua sisi berbeda panjang','Ya, karena jumlah ketiganya 21','Tidak bisa ditentukan tanpa mengukur sudutnya'],expl:'6²+7² = 36+49 = 85, sedangkan 8² = 64. Karena 85 ≠ 64, segitiga ini BUKAN segitiga siku-siku.'},
+  {tag:'pola',dataStr:'Situasi: Sebuah segitiga punya sisi 9 cm, 40 cm, dan 41 cm.',q:'Apakah segitiga ini segitiga siku-siku?',cx:'Ya, karena 9²+40² = 41²',wx:['Bukan, karena sisi-sisinya terlalu panjang','Bukan, karena tidak ada pola yang cocok','Tidak bisa ditentukan tanpa mengukur sudutnya'],expl:'9²+40² = 81+1600 = 1681, dan 41² = 1681. Karena keduanya SAMA, ini segitiga siku-siku (triplet 9-40-41)!'},
+  {tag:'pola',dataStr:'Konsep: dalam a² + b² = c², bagian a² mewakili luas apa?',q:'a² artinya luas persegi dengan sisi sepanjang...',cx:'a',wx:['b','c','a+b'],expl:'a² = a × a = luas persegi dengan panjang sisi a.'},
+  {tag:'pola',dataStr:'Konsep: Teorema Pythagoras berlaku untuk segitiga jenis apa?',q:'Teorema Pythagoras (a²+b²=c²) HANYA berlaku pada segitiga...',cx:'Siku-siku',wx:['Sama sisi','Sembarang (semua jenis)','Sama kaki saja'],expl:'Teorema Pythagoras hanya berlaku pada segitiga SIKU-SIKU — segitiga dengan salah satu sudutnya tepat 90°.'},
+  {tag:'pola',dataStr:'Segitiga siku-siku dengan a = 10, b = 24.',q:'Berapa hasil dari a² + b² (sebelum diakarkan)?',cx:'676',wx:['576','700','34'],expl:'10² + 24² = 100 + 576 = 676 (dan √676 = 26, triplet 10-24-26).'},
+  {tag:'konteks',dataStr:'Situasi: Layar kapal berbentuk segitiga siku-siku dengan alas 6 m dan tinggi 8 m.',q:'Berapa panjang tepi miring layar tersebut?',cx:'10 m',wx:['14 m','12 m','7 m'],expl:'tepi² = 6²+8² = 36+64 = 100, tepi = √100 = 10 m.'},
+  {tag:'konteks',dataStr:'Situasi: Lapangan berbentuk persegi panjang berukuran 12 m × 5 m.',q:'Berapa panjang diagonal lapangan tersebut?',cx:'13 m',wx:['17 m','7 m','60 m'],expl:'diagonal² = 12²+5² = 144+25 = 169, diagonal = √169 = 13 m. Triplet 5-12-13!'},
+  {tag:'konteks',dataStr:'Situasi: Layar TV berbentuk persegi panjang dengan diagonal 25 inci dan lebar 20 inci.',q:'Berapa tinggi layar TV tersebut?',cx:'15 inci',wx:['20 inci','5 inci','45 inci'],expl:'tinggi² = 25²−20² = 625−400 = 225, tinggi = √225 = 15 inci. Triplet 15-20-25 (kelipatan 3-4-5)!'},
+  {tag:'konteks',dataStr:'Situasi: Benang layang-layang membentang dengan jarak horizontal 5 m dan ketinggian layang-layang 12 m dari tanah.',q:'Berapa panjang benang layang-layang tersebut (garis lurus)?',cx:'13 m',wx:['17 m','7 m','60 m'],expl:'benang² = 5²+12² = 25+144 = 169, benang = √169 = 13 m. Triplet 5-12-13!'},
+  {tag:'konteks',dataStr:'Konsep: Peta digital (GPS) sering menghitung jarak garis lurus antara dua titik koordinat.',q:'Mengapa Teorema Pythagoras cocok dipakai untuk ini?',cx:'Karena selisih horizontal & vertikal antar titik membentuk dua sisi siku-siku, dan jarak lurusnya adalah sisi miring',wx:['Karena semua peta berbentuk persegi','Karena GPS hanya bisa menghitung sudut 90°','Karena jarak lurus selalu sama dengan jumlah selisih horizontal dan vertikal'],expl:'Selisih posisi horizontal dan vertikal antara dua titik pada peta membentuk dua sisi siku-siku — jarak garis lurus (hipotenusa) dihitung pakai a²+b²=c².'},
+];
+const TAG_LABEL={miring:'Cari Sisi Miring',siku:'Cari Sisi Siku-siku',pola:'Konsep & Pola',konteks:'Konteks Nyata'};
+
+let state={};
+function loadState(){
+  try{const s=localStorage.getItem(KEY);if(s){state=JSON.parse(s);}}catch(e){state={};}
+  if(!state.answers) state.answers={};
+}
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
+
+function renderVisual(q){
+  const cls = q.tag==='pola'||q.tag==='konteks' ? 'raw-box sit' : 'raw-box';
+  return `<div class="${cls}">${q.dataStr}</div>`;
+}
+
+function renderAll(){
+  const qd=document.getElementById('questionsDiv');
+  qd.innerHTML='';
+  QS.forEach((q,i)=>{
+    const ans=state.answers[i];
+    const done=ans!==undefined;
+    const opts=shuffle([q.cx,...q.wx]);
+    const tagClass='tag-'+q.tag;
+    let optsHtml='';
+    opts.forEach(v=>{
+      let cls='opt-btn';
+      if(done){
+        if(v===q.cx) cls+=' reveal-correct';
+        if(v===ans&&ans!==q.cx) cls+=' wrong';
+      }
+      optsHtml+=`<button class="${cls}" onclick="pickQ(${i},'${v.replace(/'/g,"\\'")}',this)" ${done?'disabled':''}>${v}</button>`;
+    });
+    let fbHtml='';
+    if(done){
+      const ok=ans===q.cx;
+      fbHtml=`<div class="q-feedback ${ok?'ok':'ko'}">${ok?'✅ '+q.expl:'❌ Benar: '+q.cx+'. '+q.expl}</div>`;
+    } else {
+      fbHtml=`<div class="q-feedback" id="fb${i}"></div>`;
+    }
+    const isActive=(i===currentQ())?'active':'';
+    qd.innerHTML+=`
+    <div class="q-card ${isActive}" id="qcard${i}">
+      <div class="q-meta">
+        <div class="q-num">Soal ${i+1} / 20</div>
+        <span class="q-tag ${tagClass}">${TAG_LABEL[q.tag]}</span>
+      </div>
+      ${renderVisual(q)}
+      <div class="q-text">${q.q}</div>
+      <div class="opts">${optsHtml}</div>
+      ${fbHtml}
+      <div class="q-nav">
+        ${i>0?`<button class="qnav-btn" onclick="jumpQ(${i-1})">← Prev</button>`:''}
+        ${i<19?`<button class="qnav-btn next" onclick="jumpQ(${i+1})">Next →</button>`:'<button class="qnav-btn next" onclick="showResult()">Lihat Hasil 🎉</button>'}
+      </div>
+    </div>`;
+  });
+  updateProgress();
+}
+
+function currentQ(){
+  for(let i=0;i<20;i++){if(state.answers[i]===undefined)return i;}
+  return 19;
+}
+function jumpQ(n){
+  document.querySelectorAll('.q-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('qcard'+n).classList.add('active');
+  window.scrollTo({top:document.getElementById('qcard'+n).offsetTop-80,behavior:'smooth'});
+}
+function pickQ(idx,chosen,btn){
+  if(state.answers[idx]!==undefined)return;
+  state.answers[idx]=chosen;
+  saveState();
+  const q=QS[idx];
+  const btns=btn.closest('.opts').querySelectorAll('.opt-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    const v=b.textContent;
+    if(v===q.cx) b.classList.add('reveal-correct');
+    if(v===chosen&&chosen!==q.cx) b.classList.add('wrong');
+  });
+  const fb=document.getElementById('fb'+idx);
+  if(fb){
+    const ok=chosen===q.cx;
+    fb.className='q-feedback '+(ok?'ok':'ko');
+    fb.textContent=ok?'✅ '+q.expl:'❌ Benar: '+q.cx+'. '+q.expl;
+  }
+  updateProgress();
+  if(idx<19) setTimeout(()=>jumpQ(idx+1),1600);
+  else setTimeout(()=>showResult(),1600);
+}
+function updateProgress(){
+  const done=Object.keys(state.answers).length;
+  document.getElementById('progVal').textContent=done+' / 20';
+  document.getElementById('progFill').style.width=(done/20*100)+'%';
+  const dr=document.getElementById('dotRow');
+  dr.innerHTML='';
+  for(let i=0;i<20;i++){
+    const a=state.answers[i];
+    let cls='dot';
+    if(a!==undefined) cls+=(a===QS[i].cx?' done-ok':' done-ko');
+    else if(i===currentQ()) cls+=' active';
+    dr.innerHTML+=`<div class="${cls}" onclick="jumpQ(${i})" title="Soal ${i+1}">${i+1}</div>`;
+  }
+}
+function showResult(){
+  const done=Object.keys(state.answers).length;
+  if(done<20){jumpQ(currentQ());return;}
+  let correct=0;
+  QS.forEach((q,i)=>{if(state.answers[i]===q.cx)correct++;});
+  const pts=correct*10;
+  document.getElementById('resultPanel').style.display='block';
+  document.getElementById('rScore').textContent=pts;
+  const rg=document.getElementById('rGrade');
+  if(correct>=18){rg.textContent='⭐ RANK S — MASTER DETECTIVE';rg.className='result-grade rg-s';}
+  else if(correct>=14){rg.textContent='🏆 RANK A — DETECTIVE';rg.className='result-grade rg-a';}
+  else if(correct>=10){rg.textContent='💪 RANK B — JUNIOR DETECTIVE';rg.className='result-grade rg-b';}
+  else{rg.textContent='📚 RANK C — TRAINEE';rg.className='result-grade rg-c';}
+  document.getElementById('resultPanel').scrollIntoView({behavior:'smooth'});
+}
+function resetProgress(){
+  if(!confirm('Reset semua progress Exercise 26?'))return;
+  state={answers:{}};
+  saveState();
+  renderAll();
+  document.getElementById('resultPanel').style.display='none';
+}
+loadState();
+renderAll();
+</script>
+</body>
+</html>

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 26 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--violet:#a78bfa;--red:#ef4444;--cyan:#22d3ee;--emerald:#34d399;--amber:#fbbf24;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(34,211,238,0.07) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(167,139,250,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--cyan);}
+  .wrapper{max-width:720px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:99px;transition:width 0.4s ease;}
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title .hv{color:var(--violet);}
+  .slide-title .hc{color:var(--cyan);}
+  .slide-title .he{color:var(--emerald);}
+  .slide-title .ha{color:var(--amber);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+  .slide-sub strong{color:var(--cyan);}
+
+  .callout{background:rgba(167,139,250,0.05);border-left:3px solid var(--violet);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--violet);}
+  .callout.cyan{background:rgba(34,211,238,0.05);border-color:var(--cyan);}
+  .callout.cyan strong{color:var(--cyan);}
+  .callout.emerald{background:rgba(52,211,153,0.05);border-color:var(--emerald);}
+  .callout.emerald strong{color:var(--emerald);}
+  .callout.amber{background:rgba(251,191,36,0.06);border-color:var(--amber);}
+  .callout.amber strong{color:var(--amber);}
+
+  .diagram-box{background:#12121c;border:1.5px solid var(--border);border-radius:14px;padding:1rem;margin:1.2rem 0;display:flex;justify-content:center;flex-wrap:wrap;gap:0.8rem;}
+  .diagram-note{text-align:center;font-size:0.75rem;color:var(--muted);margin-top:-0.6rem;margin-bottom:1rem;font-style:italic;}
+
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(34,211,238,0.12);border:1px solid rgba(34,211,238,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;color:var(--cyan);flex-shrink:0;}
+  .step-num.e{background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,0.4);color:var(--emerald);}
+  .step-num.a{background:rgba(251,191,36,0.12);border-color:rgba(251,191,36,0.4);color:var(--amber);}
+  .step-num.v{background:rgba(167,139,250,0.12);border-color:rgba(167,139,250,0.4);color:var(--violet);}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .reveal-btn{background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.35);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(34,211,238,0.15);}
+  .reveal-box{background:rgba(34,211,238,0.05);border:1px solid rgba(34,211,238,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+  .reveal-box .rule-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--cyan);margin-bottom:0.4rem;}
+  .reveal-box .rule-sub{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .formula-hero{text-align:center;padding:1.4rem;background:rgba(167,139,250,0.06);border:1.5px solid rgba(167,139,250,0.3);border-radius:18px;margin:1.2rem 0;}
+  .formula-text{font-family:'Orbitron',monospace;font-size:2rem;font-weight:900;color:var(--violet);}
+  .formula-sub{display:flex;gap:1rem;justify-content:center;margin-top:0.8rem;flex-wrap:wrap;}
+  .formula-sub span{font-size:0.78rem;font-weight:700;color:var(--muted);background:#12121c;border:1px solid var(--border);padding:0.3rem 0.8rem;border-radius:99px;}
+
+  .sq-row{display:flex;gap:0.8rem;flex-wrap:wrap;margin:1rem 0;align-items:flex-end;justify-content:center;}
+  .sq-item{text-align:center;}
+  .sq-box{border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-weight:900;font-size:0.8rem;}
+  .sq-label{font-size:0.68rem;font-weight:700;color:var(--muted);margin-top:0.4rem;letter-spacing:0.5px;}
+  .sq-eq{font-family:'Orbitron',monospace;font-weight:900;font-size:1.3rem;color:var(--muted);align-self:center;padding-bottom:1.4rem;}
+
+  .check-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;margin:1.2rem 0;}
+  @media(max-width:480px){.check-grid{grid-template-columns:1fr;}}
+  .check-cell{border-radius:12px;padding:1rem 0.7rem;text-align:center;}
+  .check-cell.cy{background:rgba(34,211,238,0.08);border:1.5px solid rgba(34,211,238,0.3);}
+  .check-cell.am{background:rgba(251,191,36,0.08);border:1.5px solid rgba(251,191,36,0.3);}
+  .check-cell.em{background:rgba(52,211,153,0.08);border:1.5px solid rgba(52,211,153,0.3);}
+  .check-n{font-size:0.62rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:0.4rem;color:var(--muted);}
+  .check-val{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;color:var(--text);}
+
+  .pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:1.2rem 0;}
+  @media(max-width:480px){.pick-grid{grid-template-columns:1fr;}}
+  .pick-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
+  @media(max-width:560px){.pick-grid.cols3{grid-template-columns:1fr;}}
+  .pick-btn{width:100%;background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.7rem;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.88rem;transition:all 0.2s;line-height:1.4;}
+  .pick-btn:hover:not(:disabled){border-color:var(--cyan);}
+  .pick-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .pick-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .pick-fb{font-size:0.82rem;color:var(--muted);margin-top:0.6rem;line-height:1.6;text-align:center;min-height:20px;}
+
+  .summary-card{background:var(--card);border:1px solid rgba(34,211,238,0.3);border-radius:16px;padding:1.5rem 2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:2px;color:var(--cyan);margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .summary-item span{flex-shrink:0;font-size:1rem;}
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;text-decoration:none;display:inline-block;transition:all 0.2s;}
+  .da-primary{background:linear-gradient(135deg,var(--cyan),#0891b2);color:#000;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);}
+  .da-secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+
+  .big-quote{background:rgba(167,139,250,0.06);border:1.5px solid rgba(167,139,250,0.3);border-radius:18px;padding:1.6rem;text-align:center;margin:1.2rem 0;}
+  .big-quote-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--violet);line-height:1.8;}
+  .big-quote-text em{color:var(--amber);font-style:normal;}
+
+  .shape-lbl{text-align:center;font-family:'Orbitron',monospace;font-size:0.6rem;color:var(--muted);margin-top:0.3rem;letter-spacing:1px;}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--cyan),#0891b2);border:none;color:#000;font-weight:800;}
+  .nav-btn:hover:not(.next){border-color:var(--cyan);color:var(--cyan);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson26.html">LESSON 26</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+
+  <!-- SLIDE 1: Masalah Awal -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title">Sisi Miring yang <span class="hc">Misterius</span> 📐</div>
+      <div class="slide-sub">Bayangkan sebuah segitiga siku-siku: alas = 3, tinggi = 4. Tapi sisi miringnya... berapa? Sebagai detektif geometri, kamu akan menemukan caranya sendiri.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="260" height="200" viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="40,160 160,160 160,40" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="2.5"/>
+        <polyline points="148,160 148,148 160,148" fill="none" stroke="#34d399" stroke-width="2"/>
+        <text x="100" y="178" text-anchor="middle" font-family="Orbitron,monospace" font-size="12" font-weight="900" fill="#a78bfa">a = 3</text>
+        <text x="172" y="105" text-anchor="start" font-family="Orbitron,monospace" font-size="12" font-weight="900" fill="#fbbf24">b = 4</text>
+        <text x="82" y="95" text-anchor="middle" font-family="Orbitron,monospace" font-size="12" font-weight="900" fill="#22d3ee">c = ?</text>
+        <circle cx="100" cy="100" r="16" fill="rgba(34,211,238,0.12)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="100" y="106" text-anchor="middle" font-family="Orbitron,monospace" font-size="16" font-weight="900" fill="#22d3ee" class="pulse-q">?</text>
+      </svg>
+    </div>
+    <div class="callout cyan"><strong>Kasus:</strong> Ada cara PASTI untuk menghitung sisi miring — dan cara itu bukan rumus yang muncul tiba-tiba. Ada pola visual di baliknya, dan kamu akan menemukannya sendiri lewat luas persegi.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">🔍</div>
+        <div class="step-body"><div class="stitle">Petunjuk 1: Ingat Persegi</div><div class="sdesc">Kita akan mulai dari sesuatu yang sudah kamu kenal: luas persegi.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num e">🟩</div>
+        <div class="step-body"><div class="stitle">Petunjuk 2: Tempelkan Persegi</div><div class="sdesc">Tempelkan persegi pada setiap sisi segitiga, lalu amati luasnya.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num a">💡</div>
+        <div class="step-body"><div class="stitle">Petunjuk 3: Temukan Polanya</div><div class="sdesc">Dari situ, pola a² + b² = c² akan muncul dengan sendirinya.</div></div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Ingat Persegi →</button></div>
+  </div>
+
+  <!-- SLIDE 2: Ingat Persegi -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Ingat <span class="ha">Persegi</span> 🟦</div>
+      <div class="slide-sub">Sebelum lanjut, ingat dulu: ketika kita bilang "3 kuadrat" atau 3², artinya kita menghitung luas persegi dengan sisi 3.</div>
+    </div>
+    <div class="sq-row">
+      <div class="sq-item"><div class="sq-box" style="width:66px;height:66px;background:rgba(167,139,250,0.15);border:2px solid #a78bfa;color:#a78bfa;">3²=9</div><div class="sq-label">Sisi = 3</div></div>
+      <div class="sq-eq">=</div>
+      <div class="sq-item"><div class="sq-box" style="width:66px;height:66px;background:rgba(251,191,36,0.15);border:2px solid #fbbf24;color:#fbbf24;font-size:0.68rem;">Luas 9<br>satuan²</div><div class="sq-label">9 kotak</div></div>
+    </div>
+    <div class="sq-row">
+      <div class="sq-item"><div class="sq-box" style="width:88px;height:88px;background:rgba(251,191,36,0.15);border:2px solid #fbbf24;color:#fbbf24;">4²=16</div><div class="sq-label">Sisi = 4</div></div>
+      <div class="sq-eq">=</div>
+      <div class="sq-item"><div class="sq-box" style="width:88px;height:88px;background:rgba(52,211,153,0.15);border:2px solid #34d399;color:#34d399;font-size:0.68rem;">Luas 16<br>satuan²</div><div class="sq-label">16 kotak</div></div>
+    </div>
+    <div class="callout amber"><strong>Koneksi penting:</strong> Kuadrat bilangan = luas persegi dengan sisi sepanjang bilangan itu. 5² = 25 artinya persegi sisi 5 punya luas 25.</div>
+    <div class="callout"><strong>Cek pemahaman:</strong> Kalau sisi persegi = 5, berapa luasnya?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS2(this,'a')">25</button>
+      <button class="pick-btn" onclick="pickS2(this,'b')">10</button>
+      <button class="pick-btn" onclick="pickS2(this,'c')">20</button>
+    </div>
+    <div class="pick-fb" id="fbS2"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Persegi di Setiap Sisi →</button></div>
+  </div>
+
+  <!-- SLIDE 3: Persegi di Setiap Sisi -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title">Tempel <span class="hc">Persegi</span> di Setiap Sisi 🔍</div>
+      <div class="slide-sub">Sekarang tempelkan sebuah persegi pada setiap sisi segitiga siku-siku 3-4-5. Perhatikan luas setiap persegi.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="280" height="240" viewBox="0 0 280 240" xmlns="http://www.w3.org/2000/svg">
+        <rect x="60" y="150" width="54" height="54" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="2" rx="3"/>
+        <text x="87" y="182" text-anchor="middle" font-family="Orbitron,monospace" font-size="11" font-weight="900" fill="#a78bfa">9</text>
+        <rect x="114" y="0" width="70" height="70" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="2" rx="3"/>
+        <text x="149" y="39" text-anchor="middle" font-family="Orbitron,monospace" font-size="11" font-weight="900" fill="#fbbf24">16</text>
+        <polygon points="60,150 114,150 114,80" fill="rgba(52,211,153,0.18)" stroke="#34d399" stroke-width="2.5"/>
+        <polyline points="103,150 103,140 114,140" fill="none" stroke="#34d399" stroke-width="2"/>
+        <text x="87" y="143" text-anchor="middle" font-family="Orbitron,monospace" font-size="11" font-weight="900" fill="#a78bfa">a=3</text>
+        <text x="120" y="115" text-anchor="start" font-family="Orbitron,monospace" font-size="11" font-weight="900" fill="#fbbf24">b=4</text>
+        <text x="68" y="105" text-anchor="middle" font-family="Orbitron,monospace" font-size="11" font-weight="900" fill="#22d3ee">c=?</text>
+        <rect x="5" y="80" width="50" height="50" fill="rgba(34,211,238,0.12)" stroke="#22d3ee" stroke-width="2" stroke-dasharray="5,3" rx="3"/>
+        <text x="30" y="110" text-anchor="middle" font-family="Orbitron,monospace" font-size="11" font-weight="900" fill="#22d3ee">c²=?</text>
+        <text x="140" y="200" text-anchor="middle" font-family="Orbitron,monospace" font-size="9" font-weight="700" fill="#64748b">Luas persegi miring = ?</text>
+      </svg>
+    </div>
+    <div class="callout"><strong>Diskusi:</strong> Persegi pada sisi a punya luas 9 (karena a=3), dan persegi pada sisi b punya luas 16 (karena b=4). Kalau kamu jumlahkan keduanya, dapat berapa?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS3(this,'a')">9 + 16 = 25</button>
+      <button class="pick-btn" onclick="pickS3(this,'b')">9 + 16 = 20</button>
+      <button class="pick-btn" onclick="pickS3(this,'c')">9 + 16 = 13</button>
+    </div>
+    <div class="pick-fb" id="fbS3"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Menemukan Pola →</button></div>
+  </div>
+
+  <!-- SLIDE 4: Menemukan Pola -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Menemukan <span class="he">Pola</span> 💡</div>
+      <div class="slide-sub">9 + 16 = 25. Sekarang mari kita hitung lebih detail.</div>
+    </div>
+    <div class="check-grid">
+      <div class="check-cell cy"><div class="check-n">a²</div><div class="check-val">3² = 9</div></div>
+      <div class="check-cell am"><div class="check-n">b²</div><div class="check-val">4² = 16</div></div>
+      <div class="check-cell em"><div class="check-n">a² + b²</div><div class="check-val">25</div></div>
+    </div>
+    <div class="callout emerald"><strong>Pertanyaan:</strong> Kalau c² = 25, berapa c? Ingat: luas persegi = sisi², jadi sisi = √luas.</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS4(this,'a')">c = 5</button>
+      <button class="pick-btn" onclick="pickS4(this,'b')">c = 12.5</button>
+      <button class="pick-btn" onclick="pickS4(this,'c')">c = 50</button>
+    </div>
+    <div class="pick-fb" id="fbS4"></div>
+    <div class="callout" id="rb4" style="display:none;margin-top:1rem;"><strong>Yang terjadi:</strong> Luas dua persegi kecil (9 + 16) sama persis dengan luas persegi besar pada sisi miring (25). Ini bukan kebetulan — ini SELALU terjadi pada segitiga siku-siku!</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Rumus Formal →</button></div>
+  </div>
+
+  <!-- SLIDE 5: Rumus Formal -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title">Teorema <span class="hv">Pythagoras</span> 📐</div>
+      <div class="slide-sub">Pola yang kita temukan dari luas persegi ternyata berlaku untuk SEMUA segitiga siku-siku. Inilah Teorema Pythagoras.</div>
+    </div>
+    <div class="formula-hero">
+      <div class="formula-text">a² + b² = c²</div>
+      <div class="formula-sub">
+        <span>a, b = sisi siku-siku</span>
+        <span>c = sisi miring (hipotenusa)</span>
+      </div>
+    </div>
+    <div class="callout cyan"><strong>Ingat:</strong> Rumus ini bukan muncul dari langit. Rumus ini berasal dari POLA LUAS PERSEGI yang kamu eksplorasi sendiri di slide sebelumnya. Saat kamu hafal rumusnya, kamu juga tahu dari mana asalnya.</div>
+    <div class="callout"><strong>Quick Check:</strong> Pada Teorema Pythagoras a² + b² = c², huruf c mewakili...</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS5(this,'a')">Salah satu sisi tegak</button>
+      <button class="pick-btn" onclick="pickS5(this,'b')">Sisi miring (hipotenusa)</button>
+      <button class="pick-btn" onclick="pickS5(this,'c')">Tinggi segitiga</button>
+    </div>
+    <div class="pick-fb" id="fbS5"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Contoh: Cari Sisi Miring →</button></div>
+  </div>
+
+  <!-- SLIDE 6: Contoh Mencari Sisi Miring -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title">Mencari Sisi <span class="hc">Miring (c)</span> 📝</div>
+      <div class="slide-sub">Segitiga siku-siku dengan a = 6 dan b = 8. Cari c!</div>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="stitle">Tulis rumusnya</div><div class="sdesc">c² = a² + b²</div></div></div>
+      <div class="step"><div class="step-num a">2</div><div class="step-body"><div class="stitle">Substitusi</div><div class="sdesc">c² = 6² + 8² = 36 + 64</div></div></div>
+      <div class="step"><div class="step-num e">3</div><div class="step-body"><div class="stitle">Hitung</div><div class="sdesc">c² = 100</div></div></div>
+      <div class="step"><div class="step-num v">4</div><div class="step-body"><div class="stitle">Akar kuadrat</div><div class="sdesc">c = √100 = <strong>10</strong></div></div></div>
+    </div>
+    <div class="callout cyan"><strong>Hasil:</strong> c = 10. Segitiga 6-8-10 adalah segitiga siku-siku! (kelipatan 2 dari triplet 3-4-5)</div>
+    <div class="callout"><strong>Coba sendiri:</strong> a = 5, b = 12. Berapa c?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS6(this,'a')">c = 13</button>
+      <button class="pick-btn" onclick="pickS6(this,'b')">c = 17</button>
+      <button class="pick-btn" onclick="pickS6(this,'c')">c = 60</button>
+    </div>
+    <div class="pick-fb" id="fbS6"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">Contoh: Cari Sisi Siku-siku →</button></div>
+  </div>
+
+  <!-- SLIDE 7: Contoh Mencari Sisi Siku-siku -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">Mencari Sisi <span class="he">Siku-siku (b)</span> 📝</div>
+      <div class="slide-sub">Kali ini sisi miringnya yang diketahui: c = 13, a = 5. Cari b!</div>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="stitle">Tulis rumusnya</div><div class="sdesc">a² + b² = c²</div></div></div>
+      <div class="step"><div class="step-num a">2</div><div class="step-body"><div class="stitle">Pindahkan a²</div><div class="sdesc">b² = c² − a²</div></div></div>
+      <div class="step"><div class="step-num e">3</div><div class="step-body"><div class="stitle">Substitusi</div><div class="sdesc">b² = 13² − 5² = 169 − 25 = 144</div></div></div>
+      <div class="step"><div class="step-num v">4</div><div class="step-body"><div class="stitle">Akar kuadrat</div><div class="sdesc">b = √144 = <strong>12</strong></div></div></div>
+    </div>
+    <div class="callout amber"><strong>Perbedaan kunci:</strong> Cari c → JUMLAHKAN a² + b². Cari a atau b → KURANGKAN dari c².</div>
+    <div class="callout"><strong>Quick Check:</strong> Segitiga siku-siku dengan c = 10 dan a = 6. Untuk mencari b, langkah awalnya adalah...</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS7(this,'a')">b² = 10² + 6² = 136</button>
+      <button class="pick-btn" onclick="pickS7(this,'b')">b² = 10² − 6² = 64</button>
+      <button class="pick-btn" onclick="pickS7(this,'c')">b = 10 − 6 = 4</button>
+    </div>
+    <div class="pick-fb" id="fbS7"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Konteks Nyata →</button></div>
+  </div>
+
+  <!-- SLIDE 8: Contoh Kontekstual -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">Pythagoras dalam <span class="ha">Kehidupan Sehari-hari</span> 🌍</div>
+      <div class="slide-sub">Tangga setinggi 4 meter disandarkan ke dinding. Ujung bawah tangga berjarak 3 meter dari dinding. Berapa panjang tangga?</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="220" height="180" viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg">
+        <rect x="150" y="15" width="10" height="140" fill="#2a2a40" rx="2"/>
+        <text x="165" y="90" font-family="Orbitron,monospace" font-size="8" fill="#64748b">Dinding</text>
+        <rect x="20" y="150" width="140" height="8" fill="#2a2a40" rx="2"/>
+        <line x1="35" y1="150" x2="155" y2="40" stroke="#22d3ee" stroke-width="3" stroke-linecap="round"/>
+        <line x1="35" y1="150" x2="155" y2="150" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="155" y1="40" x2="155" y2="150" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+        <polyline points="143,150 143,138 155,138" fill="none" stroke="#34d399" stroke-width="2"/>
+        <text x="92" y="167" text-anchor="middle" font-family="Orbitron,monospace" font-size="11" font-weight="900" fill="#a78bfa">3 m</text>
+        <text x="163" y="100" font-family="Orbitron,monospace" font-size="11" font-weight="900" fill="#fbbf24">4 m</text>
+        <text x="78" y="90" text-anchor="middle" font-family="Orbitron,monospace" font-size="11" font-weight="900" fill="#22d3ee">? m</text>
+      </svg>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="stitle">Identifikasi</div><div class="sdesc">a = 3 (jarak dari dinding), b = 4 (tinggi dinding), c = ? (panjang tangga)</div></div></div>
+      <div class="step"><div class="step-num a">2</div><div class="step-body"><div class="stitle">Rumus</div><div class="sdesc">c² = a² + b² = 9 + 16 = 25</div></div></div>
+      <div class="step"><div class="step-num e">3</div><div class="step-body"><div class="stitle">Jawab</div><div class="sdesc">c = √25 = <strong>5 meter</strong></div></div></div>
+    </div>
+    <div class="callout"><strong>Diskusi:</strong> Sisi mana yang menjadi sisi miring pada kasus tangga ini?</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS8(this,'a')">Panjang tangga itu sendiri</button>
+      <button class="pick-btn" onclick="pickS8(this,'b')">Jarak dari dinding (3 m)</button>
+      <button class="pick-btn" onclick="pickS8(this,'c')">Tinggi dinding (4 m)</button>
+    </div>
+    <div class="pick-fb" id="fbS8"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Latihan Bersama →</button></div>
+  </div>
+
+  <!-- SLIDE 9: Latihan Bersama -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">Latihan <span class="hv">Bersama</span> ✏️</div>
+      <div class="slide-sub">Tiga soal — kerjakan langkah demi langkah bersama.</div>
+    </div>
+    <div class="callout cyan"><strong>Soal 1:</strong> a = 5, b = 12. Cari c.</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">→</div><div class="step-body"><div class="sdesc">c² = 5² + 12² = 25 + 144 = 169</div></div></div>
+      <div class="step"><div class="step-num a">→</div><div class="step-body"><div class="sdesc">c = √169 = <strong>13</strong></div></div></div>
+    </div>
+    <div class="callout amber" style="margin-top:1.4rem;"><strong>Soal 2:</strong> a = 8, b = 15. Cari c.</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">→</div><div class="step-body"><div class="sdesc">c² = 8² + 15² = 64 + 225 = 289</div></div></div>
+      <div class="step"><div class="step-num a">→</div><div class="step-body"><div class="sdesc">c = √289 = <strong>17</strong></div></div></div>
+    </div>
+    <div class="callout" style="margin-top:1.4rem;"><strong>Soal 3:</strong> c = 17, a = 8. Cari b.</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">→</div><div class="step-body"><div class="sdesc">b² = 17² − 8² = 289 − 64 = 225</div></div></div>
+      <div class="step"><div class="step-num a">→</div><div class="step-body"><div class="sdesc">b = √225 = <strong>15</strong></div></div></div>
+    </div>
+    <div class="callout emerald"><strong>Perhatikan:</strong> Soal 2 dan soal 3 sama-sama pakai angka 8, 15/17! Apa yang bisa kamu simpulkan?</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS9(this,'a')">Keduanya bagian dari triplet Pythagoras yang sama: 8-15-17</button>
+      <button class="pick-btn" onclick="pickS9(this,'b')">Kebetulan saja, tidak ada hubungannya</button>
+    </div>
+    <div class="pick-fb" id="fbS9"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Kesimpulan →</button></div>
+  </div>
+
+  <!-- SLIDE 10: Kesimpulan -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Rangkuman &amp; <span class="hc">Penutup</span> 🎓</div>
+      <div class="slide-sub">Kasus sisi miring yang misterius berhasil dipecahkan! Ini rangkuman temuanmu:</div>
+    </div>
+    <div class="summary-card">
+      <h3>📋 CATATAN DETEKTIF</h3>
+      <div class="summary-item"><span>📐</span>Segitiga siku-siku punya hubungan khusus antara ketiga sisinya.</div>
+      <div class="summary-item"><span>🟦</span>Kuadrat berasal dari luas persegi — bukan angka abstrak.</div>
+      <div class="summary-item"><span>🔍</span>Luas dua persegi kecil (a² + b²) = luas persegi besar (c²).</div>
+      <div class="summary-item"><span>📝</span><strong style="color:var(--violet)">Teorema Pythagoras: a² + b² = c²</strong></div>
+      <div class="summary-item"><span>✍️</span>Bisa dipakai untuk mencari sisi miring maupun sisi siku-siku.</div>
+      <div class="summary-item"><span>🌍</span>Berlaku di kehidupan nyata — dari tangga sampai rangka jembatan.</div>
+    </div>
+    <div class="big-quote">
+      <div class="big-quote-text">"Pythagoras bukan sekadar rumus.<br>Pythagoras adalah <em>pola yang selalu muncul</em><br>pada setiap segitiga siku-siku."</div>
+    </div>
+    <div class="callout cyan"><strong>Preview selanjutnya:</strong> Semakin banyak triplet Pythagoras yang kamu kenali, semakin cepat kamu memecahkan kasus tanpa kalkulator! 🔢</div>
+    <div class="done-actions">
+      <a href="quicktest26.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise26.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson26.html" class="da-btn da-secondary">Lesson 26</a>
+    </div>
+  </div>
+
+</div>
+<script>
+let currentSlide=1;
+const TOTAL=10;
+function goSlide(n){
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide=n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width=((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function pickS2(btn,ans){
+  document.querySelectorAll('#slide2 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS2');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Luas = 5 × 5 = 25.';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS2(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Luas persegi = sisi × sisi = 5 × 5 = 25, bukan penjumlahan atau perkalian biasa.';}
+}
+function pickS3(btn,ans){
+  document.querySelectorAll('#slide3 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS3');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! 9 + 16 = 25. Simpan angka ini, kita akan pakai di slide berikutnya!';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS3(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ 9 + 16 = 25, coba hitung ulang penjumlahannya.';}
+}
+function pickS4(btn,ans){
+  document.querySelectorAll('#slide4 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS4');
+  document.getElementById('rb4').classList.add('show');
+  document.getElementById('rb4').style.display='block';
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! c = √25 = 5. Cocok dengan tebakan awal kita di slide 1!';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS4(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ c² = 25, jadi c = √25 = 5 (bukan dibagi 2 atau dikali 2).';}
+}
+function pickS5(btn,ans){
+  document.querySelectorAll('#slide5 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS5');
+  if(ans==='b'){btn.classList.add('correct');fb.innerHTML='✅ Betul! c adalah sisi miring, sisi yang berhadapan dengan sudut siku-siku.';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS5(this,'b')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. c adalah sisi miring (hipotenusa) — sisi terpanjang yang berhadapan dengan sudut siku-siku.';}
+}
+function pickS6(btn,ans){
+  document.querySelectorAll('#slide6 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS6');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! c² = 5²+12² = 25+144 = 169, c = √169 = 13. Triplet 5-12-13!';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS6(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ c² = 25+144 = 169, c = √169 = 13.';}
+}
+function pickS7(btn,ans){
+  document.querySelectorAll('#slide7 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS7');
+  if(ans==='b'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! b² = c² − a² = 10² − 6² = 100−36 = 64, jadi b = 8.';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS7(this,'b')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. Karena b yang dicari, kita pindahkan a² ke kanan: b² = c² − a² = 64.';}
+}
+function pickS8(btn,ans){
+  document.querySelectorAll('#slide8 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS8');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Tangga itu sendiri adalah sisi miring — sisi terpanjang, berhadapan dengan sudut siku-siku di lantai.';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS8(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Sisi miring pada kasus ini adalah PANJANG TANGGA itu sendiri, bukan jarak atau tinggi dinding — keduanya adalah sisi siku-siku.';}
+}
+function pickS9(btn,ans){
+  document.querySelectorAll('#slide9 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS9');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! 8-15-17 adalah triplet Pythagoras — begitu kamu mengenalinya, kamu tidak perlu hitung ulang dari nol lagi.';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS9(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Bukan kebetulan! 8-15-17 adalah triplet Pythagoras yang sudah pasti memenuhi a²+b²=c².';}
+}
+</script>
+</body>
+</html>
