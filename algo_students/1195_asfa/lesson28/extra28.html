@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extra PR · Lesson 28 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#059669;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --emerald:#34d399;--text:#e2e8f0;--muted:#64748b;
+    --amber:#fbbf24;--blue:#60a5fa;--pink:#f472b6;
+    --violet:#a78bfa;--blue2:#38bdf8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 80%,rgba(52,211,153,0.06) 0%,transparent 50%),
+               radial-gradient(ellipse at 85% 15%,rgba(167,139,250,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 50%,rgba(34,211,238,0.03) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  nav{
+    padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:100;
+    font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;
+  }
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--violet);}
+
+  .wrapper{max-width:800px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  .pr-banner{background:linear-gradient(135deg,rgba(52,211,153,0.08),rgba(167,139,250,0.08));border:1px solid rgba(52,211,153,0.25);border-radius:20px;padding:2rem 2rem 1.5rem;margin-bottom:2rem;position:relative;overflow:hidden;}
+  .pr-banner::before{content:'🕹️';position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);font-size:5rem;opacity:0.08;pointer-events:none;line-height:1;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);color:var(--emerald);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;margin-bottom:0.5rem;line-height:1.3;}
+  .page-title span{color:var(--emerald);}
+  .page-desc{color:var(--muted);font-size:0.9rem;line-height:1.7;max-width:560px;}
+  .pr-pills{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;}
+  .pr-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.72rem;padding:0.2rem 0.7rem;border-radius:20px;font-weight:700;}
+  .pill-cyan{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .pill-emerald{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.3);}
+  .pill-amber{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.3);}
+  .pill-red{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.3);}
+  .pill-violet{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--emerald);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--emerald));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+  .prog-stars{display:flex;gap:0.3rem;margin-top:0.5rem;align-items:center;font-size:0.78rem;color:var(--muted);}
+  .star{font-size:0.9rem;opacity:0.25;transition:opacity 0.4s;}
+  .star.lit{opacity:1;}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--emerald);}
+  .sd-2{color:var(--cyan);}
+  .sd-3{color:var(--violet);}
+  .sd-4{color:var(--amber);}
+  .sd-5{color:#f87171;}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;max-width:100%;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;padding:0 0.25rem;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(34,211,238,0.35);background:rgba(34,211,238,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.25);}
+  .ex-tag.tag-2{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.25);}
+  .ex-tag.tag-3{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.25);}
+  .ex-tag.tag-4{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.25);}
+  .ex-tag.tag-5{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.25);}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.78rem,3vw,0.92rem);font-weight:900;color:var(--text);margin-bottom:0.5rem;line-height:1.5;word-break:break-word;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--cyan);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:1rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--cyan);}
+  .ex-input.correct{border-color:var(--cyan);color:var(--cyan);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);color:var(--cyan);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(34,211,238,0.22);border-color:var(--cyan);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--neon);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.4);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+  .attempts-row{margin-top:0.4rem;display:flex;gap:2px;align-items:center;}
+  .attempts-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:2px;}
+
+  .ex-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;}
+  .ex-opt{background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.55rem 0.4rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;transition:all 0.15s;text-align:center;line-height:1.4;}
+  .ex-opt:hover:not(:disabled){border-color:var(--cyan);background:rgba(34,211,238,0.06);}
+  .ex-opt.opt-correct{border-color:var(--neon);background:rgba(0,245,196,0.12);color:var(--neon);}
+  .ex-opt.opt-wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .ex-opt:disabled{cursor:default;}
+
+  .ex-card.data-card{border-left:3px solid var(--emerald);}
+  .ex-card.data-card.done-card{border-left-color:var(--cyan);}
+
+  .mini-table{width:100%;border-collapse:separate;border-spacing:0;background:#12121c;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:0.8rem;font-size:0.82rem;}
+  .mini-table th{font-family:'Orbitron',monospace;font-size:0.56rem;letter-spacing:1.5px;color:var(--cyan);background:rgba(34,211,238,0.07);padding:0.5rem;text-align:center;}
+  .mini-table td{padding:0.45rem;text-align:center;border-top:1px solid var(--border);}
+  .raw-box{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.7rem;text-align:center;font-family:'Orbitron',monospace;font-size:0.8rem;color:var(--cyan);letter-spacing:1.5px;margin-bottom:0.8rem;line-height:1.7;}
+  .raw-box.sit{font-family:'Nunito',sans-serif;font-size:0.82rem;color:var(--text);letter-spacing:0;font-weight:700;}
+
+  #allDone{display:none;text-align:center;padding:3rem 2rem;}
+  .alldone-icon{font-size:5rem;display:block;margin-bottom:1.5rem;animation:bounce 1s ease infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .alldone-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2rem);color:var(--emerald);margin-bottom:0.8rem;}
+  .alldone-desc{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .alldone-xp{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.5rem 1.5rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:2rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--emerald);color:var(--emerald);}
+  .btn-primary{background:linear-gradient(135deg,#0891b2,var(--cyan));color:#000;box-shadow:0 4px 15px rgba(34,211,238,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson28.html">LESSON 28</a>
+  <span>›</span>
+  <span class="current">EXTRA PR</span>
+</nav>
+
+<div class="wrapper">
+  <div class="pr-banner">
+    <div class="page-badge">🕹️ Portal Master Mode</div>
+    <div class="page-title">Extra <span>PR Mode</span></div>
+    <div class="page-desc">
+      40 soal ekstra: mulai dari portal translasi (geser), portal refleksi sumbu-x, portal refleksi sumbu-y, gabungan transformasi &amp; konteks nyata,
+      sampai review PR Lesson 27 (jarak dua titik &amp; titik tengah) supaya bekal peta transformasimu makin lengkap.
+      Progress tersimpan otomatis di perangkat ini. Taklukkan semua portal, pemain! 🎮
+    </div>
+    <div class="pr-pills">
+      <span class="pr-pill pill-emerald">🟢 Translasi</span>
+      <span class="pr-pill pill-cyan">🔷 Refleksi Sumbu-X</span>
+      <span class="pr-pill pill-violet">🟣 Refleksi Sumbu-Y</span>
+      <span class="pr-pill pill-amber">🟡 Gabungan &amp; Konteks Nyata</span>
+      <span class="pr-pill pill-red">📊 Review L27</span>
+    </div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress PR</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      Kumpulkan ⭐ untuk setiap bagian yang diselesaikan!
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+      <span style="margin-left:0.3rem;font-size:0.72rem;">Selesaikan 8 soal per bagian</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🕹️</span>
+    <div class="alldone-title">PR PORTAL SELESAI!</div>
+    <div class="alldone-desc">
+      GG! Kamu udah menaklukkan 40 soal Extra PR Lesson 28!<br>
+      Portal geser, portal cermin sumbu-x, portal cermin sumbu-y, gabungan transformasi &amp; konteks nyata, sampai review jarak &amp; titik tengah dari Lesson 27 — semua kamu babat habis! 🔥<br>
+      Kamu sekarang makin jago membaca peta transformasi apa pun!
+    </div>
+    <div class="alldone-xp">🕹️ +400 XP — Master Transformation Explorer Badge Unlocked!</div>
+    <div class="action-btns">
+      <a href="lesson28.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="exercise28.html" class="btn btn-ghost">Exercise Zone</a>
+      <a href="quicktest28.html" class="btn btn-primary">Quick Test ⚡</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson28_extra_v1';
+function loadProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{};}catch(e){return{};}}
+function saveProgress(p){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(p));}catch(e){}}
+let progress = loadProgress();
+
+// Helper: render a data table
+function tableDisp(thead, tbody){
+  let h = '<table class="mini-table"><thead><tr>';
+  thead.forEach(t=>h+=`<th>${t}</th>`);
+  h += '</tr></thead><tbody>';
+  tbody.forEach(r=>{h+='<tr>';r.forEach(c=>h+=`<td>${c}</td>`);h+='</tr>';});
+  h += '</tbody></table>';
+  return h;
+}
+// Helper: render raw data string
+function rawDisp(text){
+  return `<div class="raw-box">${text}</div>`;
+}
+// Helper: render a situational sentence
+function sitDisp(text){
+  return `<div class="raw-box sit">${text}</div>`;
+}
+
+const exercises = [
+  // ─── BAGIAN 1: Translasi / Geser (e01–e08) ─────────────────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Translasi',
+    sys:rawDisp('Titik A(2, 3) digeser oleh translasi (4, 1).'),
+    q:'Berapa koordinat bayangan A′?', hint:'(x+a, y+b)',
+    type:'text', answers:['(6,4)'], explain:'✅ A′ = (2+4, 3+1) = (6, 4) ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Translasi',
+    sys:rawDisp('Titik B(−3, 5) digeser oleh translasi (2, −4).'),
+    q:'Berapa koordinat bayangan B′?', hint:'(x+a, y+b)',
+    type:'text', answers:['(-1,1)'], explain:'✅ B′ = (−3+2, 5+(−4)) = (−1, 1) ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Translasi',
+    sys:rawDisp('Titik C(0, −2) digeser oleh translasi (−5, 3).'),
+    q:'Berapa koordinat bayangan C′?', hint:'(x+a, y+b)',
+    type:'text', answers:['(-5,1)'], explain:'✅ C′ = (0+(−5), −2+3) = (−5, 1) ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Translasi',
+    sys:tableDisp(['Titik','Nilai'],[['Titik asal','(7, −1)'],['Translasi','(−3, −2)'],['Bayangan','?']]),
+    q:'Berapa koordinat bayangan hasil translasi?', hint:'(x+a, y+b)',
+    type:'text', answers:['(4,-3)'], explain:'✅ (7+(−3), −1+(−2)) = (4, −3) ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Translasi',
+    sys:sitDisp('Situasi: Karaktermu berada di koordinat (1, 1), lalu menyentuh portal geser dengan vektor (6, 4).'),
+    q:'Di koordinat mana posisi karaktermu sekarang?', hint:'(x+a, y+b)',
+    type:'text', answers:['(7,5)'], explain:'✅ (1+6, 1+4) = (7, 5) ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Translasi',
+    sys:rawDisp('Titik D(−4, −6) digeser oleh translasi (5, 9).'),
+    q:'Berapa koordinat bayangan D′?', hint:'(x+a, y+b)',
+    type:'mcq', opts:['(1, 3)','(9, -3)','(-9, 3)','(1, -3)'], answer:'(1, 3)',
+    explain:'✅ D′ = (−4+5, −6+9) = (1, 3) ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Translasi',
+    sys:rawDisp('Titik E(8, 2) digeser oleh translasi (−10, −6).'),
+    q:'Berapa koordinat bayangan E′?', hint:'(x+a, y+b)',
+    type:'text', answers:['(-2,-4)'], explain:'✅ E′ = (8+(−10), 2+(−6)) = (−2, −4) ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Translasi',
+    sys:tableDisp(['Titik','Nilai'],[['Titik asal','(-2, -2)'],['Translasi','(2, 2)'],['Bayangan','?']]),
+    q:'Berapa koordinat bayangan hasil translasi?', hint:'(x+a, y+b)',
+    type:'mcq', opts:['(0, 0)','(4, 4)','(-4, -4)','(4, 0)'], answer:'(0, 0)',
+    explain:'✅ (−2+2, −2+2) = (0, 0) — tepat kembali ke titik asal koordinat! ✓' },
+
+  // ─── BAGIAN 2: Refleksi Sumbu-X (e09–e16) ──────────────────────────
+  { id:'e09', section:'s2', tag:'tag-2', tagLabel:'Refleksi Sb-X',
+    sys:rawDisp('Titik F(5, 7) dicerminkan terhadap sumbu-x.'),
+    q:'Berapa koordinat bayangan F′?', hint:'(x, y) → (x, −y)',
+    type:'text', answers:['(5,-7)'], explain:'✅ F′ = (5, −7) ✓' },
+
+  { id:'e10', section:'s2', tag:'tag-2', tagLabel:'Refleksi Sb-X',
+    sys:rawDisp('Titik G(−3, 4) dicerminkan terhadap sumbu-x.'),
+    q:'Berapa koordinat bayangan G′?', hint:'(x, y) → (x, −y)',
+    type:'text', answers:['(-3,-4)'], explain:'✅ G′ = (−3, −4) ✓' },
+
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Refleksi Sb-X',
+    sys:rawDisp('Titik H(6, −2) dicerminkan terhadap sumbu-x.'),
+    q:'Berapa koordinat bayangan H′?', hint:'(x, y) → (x, −y)',
+    type:'text', answers:['(6,2)'], explain:'✅ H′ = (6, 2) ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Refleksi Sb-X',
+    sys:tableDisp(['Titik','Nilai'],[['Titik asal','(-8, -5)'],['Cermin','Sumbu-X'],['Bayangan','?']]),
+    q:'Berapa koordinat bayangan hasil refleksi?', hint:'(x, y) → (x, −y)',
+    type:'text', answers:['(-8,5)'], explain:'✅ (−8, −(−5)) = (−8, 5) ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Refleksi Sb-X',
+    sys:sitDisp('Situasi: Karaktermu berada di (4, 9), lalu melewati portal cermin sumbu-x.'),
+    q:'Di koordinat mana posisi karaktermu sekarang?', hint:'(x, y) → (x, −y)',
+    type:'text', answers:['(4,-9)'], explain:'✅ (4, −9) ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Refleksi Sb-X',
+    sys:rawDisp('Titik I(−7, −10) dicerminkan terhadap sumbu-x.'),
+    q:'Berapa koordinat bayangan I′?', hint:'(x, y) → (x, −y)',
+    type:'mcq', opts:['(-7, 10)','(7, -10)','(7, 10)','(-10, -7)'], answer:'(-7, 10)',
+    explain:'✅ I′ = (−7, −(−10)) = (−7, 10) ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Refleksi Sb-X',
+    sys:rawDisp('Titik J(0, 6) dicerminkan terhadap sumbu-x.'),
+    q:'Berapa koordinat bayangan J′?', hint:'(x, y) → (x, −y)',
+    type:'text', answers:['(0,-6)'], explain:'✅ J′ = (0, −6) ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Refleksi Sb-X',
+    sys:rawDisp('Titik K(9, 0) dicerminkan terhadap sumbu-x.'),
+    q:'Berapa koordinat bayangan K′?', hint:'Titik yang tepat berada di sumbu-x punya y = 0',
+    type:'mcq', opts:['(9, 0)','(-9, 0)','(0, 9)','(0, -9)'], answer:'(9, 0)',
+    explain:'✅ Karena y = 0, bayangannya tidak berubah: K′ = (9, 0) ✓' },
+
+  // ─── BAGIAN 3: Refleksi Sumbu-Y (e17–e24) ──────────────────────────
+  { id:'e17', section:'s3', tag:'tag-3', tagLabel:'Refleksi Sb-Y',
+    sys:rawDisp('Titik K(5, 7) dicerminkan terhadap sumbu-y.'),
+    q:'Berapa koordinat bayangan K′?', hint:'(x, y) → (−x, y)',
+    type:'text', answers:['(-5,7)'], explain:'✅ K′ = (−5, 7) ✓' },
+
+  { id:'e18', section:'s3', tag:'tag-3', tagLabel:'Refleksi Sb-Y',
+    sys:rawDisp('Titik L(−6, 3) dicerminkan terhadap sumbu-y.'),
+    q:'Berapa koordinat bayangan L′?', hint:'(x, y) → (−x, y)',
+    type:'text', answers:['(6,3)'], explain:'✅ L′ = (6, 3) ✓' },
+
+  { id:'e19', section:'s3', tag:'tag-3', tagLabel:'Refleksi Sb-Y',
+    sys:rawDisp('Titik M(8, −4) dicerminkan terhadap sumbu-y.'),
+    q:'Berapa koordinat bayangan M′?', hint:'(x, y) → (−x, y)',
+    type:'text', answers:['(-8,-4)'], explain:'✅ M′ = (−8, −4) ✓' },
+
+  { id:'e20', section:'s3', tag:'tag-3', tagLabel:'Refleksi Sb-Y',
+    sys:tableDisp(['Titik','Nilai'],[['Titik asal','(-9, 2)'],['Cermin','Sumbu-Y'],['Bayangan','?']]),
+    q:'Berapa koordinat bayangan hasil refleksi?', hint:'(x, y) → (−x, y)',
+    type:'text', answers:['(9,2)'], explain:'✅ (−(−9), 2) = (9, 2) ✓' },
+
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Refleksi Sb-Y',
+    sys:sitDisp('Situasi: Karaktermu berada di (7, −3), lalu melewati portal cermin sumbu-y.'),
+    q:'Di koordinat mana posisi karaktermu sekarang?', hint:'(x, y) → (−x, y)',
+    type:'text', answers:['(-7,-3)'], explain:'✅ (−7, −3) ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Refleksi Sb-Y',
+    sys:rawDisp('Titik N(−2, −8) dicerminkan terhadap sumbu-y.'),
+    q:'Berapa koordinat bayangan N′?', hint:'(x, y) → (−x, y)',
+    type:'mcq', opts:['(2, -8)','(-2, 8)','(2, 8)','(8, -2)'], answer:'(2, -8)',
+    explain:'✅ N′ = (−(−2), −8) = (2, −8) ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Refleksi Sb-Y',
+    sys:rawDisp('Titik O(0, −5) dicerminkan terhadap sumbu-y.'),
+    q:'Berapa koordinat bayangan O′?', hint:'Titik yang tepat berada di sumbu-y punya x = 0',
+    type:'text', answers:['(0,-5)'], explain:'✅ Karena x = 0, bayangannya tidak berubah: O′ = (0, −5) ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Refleksi Sb-Y',
+    sys:rawDisp('Konsep refleksi terhadap sumbu-y: (x, y) → (−x, y).'),
+    q:'Refleksi terhadap sumbu-y mengubah tanda pada koordinat...', hint:'Perhatikan huruf mana yang berubah tandanya',
+    type:'mcq', opts:['x saja','y saja','x dan y','tidak ada yang berubah'], answer:'x saja',
+    explain:'✅ Pada refleksi sumbu-y, hanya nilai x yang berubah tanda (menjadi −x), sedangkan y tetap ✓' },
+
+  // ─── BAGIAN 4: Gabungan Transformasi & Konteks Nyata (e25–e32) ─────
+  { id:'e25', section:'s4', tag:'tag-4', tagLabel:'Gabungan',
+    sys:rawDisp('Titik P(3, 2) digeser translasi (4, 1) menjadi P′, lalu P′ dicerminkan terhadap sumbu-x menjadi P″.'),
+    q:'Berapa koordinat P″?', hint:'Kerjakan translasi dulu, baru refleksi',
+    type:'text', answers:['(7,-3)'], explain:'✅ P′ = (3+4, 2+1) = (7, 3) → P″ = (7, −3) ✓' },
+
+  { id:'e26', section:'s4', tag:'tag-4', tagLabel:'Gabungan',
+    sys:rawDisp('Titik Q(−5, 6) dicerminkan terhadap sumbu-y menjadi Q′, lalu Q′ digeser translasi (2, −3) menjadi Q″.'),
+    q:'Berapa koordinat Q″?', hint:'Kerjakan refleksi dulu, baru translasi',
+    type:'text', answers:['(7,3)'], explain:'✅ Q′ = (5, 6) → Q″ = (5+2, 6+(−3)) = (7, 3) ✓' },
+
+  { id:'e27', section:'s4', tag:'tag-4', tagLabel:'Gabungan',
+    sys:sitDisp('Situasi: Karaktermu di (2, 5) melewati portal geser (3, −2), lalu langsung melewati portal cermin sumbu-y.'),
+    q:'Di koordinat mana posisi akhir karaktermu?', hint:'Geser dulu, baru cerminkan',
+    type:'text', answers:['(-5,3)'], explain:'✅ Setelah geser: (5, 3) → setelah cermin sumbu-y: (−5, 3) ✓' },
+
+  { id:'e28', section:'s4', tag:'tag-4', tagLabel:'Konteks Nyata',
+    sys:sitDisp('Situasi: Sebuah ikon di layar game berada di titik (10, 4). Ikon dipindah 6 satuan ke kiri dan 3 satuan ke bawah, lalu dicerminkan terhadap sumbu-x.'),
+    q:'Di koordinat mana posisi akhir ikon tersebut?', hint:'Pindah kiri/bawah = translasi (−6, −3), lalu cerminkan',
+    type:'text', answers:['(4,-1)'], explain:'✅ Setelah translasi: (10−6, 4−3) = (4, 1) → setelah cermin sumbu-x: (4, −1) ✓' },
+
+  { id:'e29', section:'s4', tag:'tag-4', tagLabel:'Gabungan',
+    sys:rawDisp('Titik R(−4, −9) dicerminkan terhadap sumbu-x, lalu hasilnya digeser translasi (5, 5).'),
+    q:'Berapa koordinat bayangan akhir R?', hint:'Cerminkan dulu, baru geser',
+    type:'mcq', opts:['(1, 14)','(1, -4)','(-1, 14)','(9, 4)'], answer:'(1, 14)',
+    explain:'✅ Setelah cermin sumbu-x: (−4, 9) → setelah geser: (−4+5, 9+5) = (1, 14) ✓' },
+
+  { id:'e30', section:'s4', tag:'tag-4', tagLabel:'Gabungan',
+    sys:tableDisp(['Tahap','Nilai'],[['Titik asal','(6, -7)'],['Translasi','(-2, 4)'],['Lalu cermin','Sumbu-Y']]),
+    q:'Berapa koordinat akhir setelah kedua transformasi tersebut?', hint:'Translasi dulu, baru refleksi',
+    type:'text', answers:['(-4,-3)'], explain:'✅ Setelah translasi: (6−2, −7+4) = (4, −3) → setelah cermin sumbu-y: (−4, −3) ✓' },
+
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Konteks Nyata',
+    sys:sitDisp('Situasi: Sebuah drone berada di koordinat (8, −6). Drone bergerak translasi (−3, 2), lalu terbang melewati "zona cermin" sumbu-x akibat gangguan sinyal.'),
+    q:'Di koordinat mana posisi akhir drone tersebut?', hint:'Translasi dulu, baru refleksi sumbu-x',
+    type:'text', answers:['(5,4)'], explain:'✅ Setelah translasi: (8−3, −6+2) = (5, −4) → setelah cermin sumbu-x: (5, 4) ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Konsep',
+    sys:rawDisp('Pernyataan: "Urutan transformasi (translasi dulu baru refleksi) dapat menghasilkan koordinat akhir yang berbeda dibanding (refleksi dulu baru translasi)."'),
+    q:'Benar atau salah pernyataan tersebut?', hint:'Coba bandingkan hasil Soal 25 dan Soal 26 di atas',
+    type:'mcq', opts:['Benar','Salah'], answer:'Benar',
+    explain:'✅ BENAR. Urutan transformasi memengaruhi hasil akhir, karena translasi dan refleksi umumnya tidak "komutatif" ✓' },
+
+  // ─── BAGIAN 5: Review PR Lesson 27 (Jarak & Titik Tengah) (e33–e40) ─
+  { id:'e33', section:'s5', tag:'tag-5', tagLabel:'Review: Jarak',
+    sys:rawDisp('Titik A(1, 2) dan titik B(4, 6).'),
+    q:'Berapa jarak AB?', hint:'Jarak = √((x2−x1)² + (y2−y1)²)',
+    type:'text', answers:['5','5satuan','5 satuan'], explain:'✅ AB = √((4−1)² + (6−2)²) = √(9+16) = √25 = 5 satuan ✓' },
+
+  { id:'e34', section:'s5', tag:'tag-5', tagLabel:'Review: Jarak',
+    sys:rawDisp('Titik C(−2, 3) dan titik D(2, 3).'),
+    q:'Berapa jarak CD?', hint:'Jarak = √((x2−x1)² + (y2−y1)²)',
+    type:'text', answers:['4','4satuan','4 satuan'], explain:'✅ CD = √((2−(−2))² + 0²) = √16 = 4 satuan ✓' },
+
+  { id:'e35', section:'s5', tag:'tag-5', tagLabel:'Review: Titik Tengah',
+    sys:rawDisp('Titik P(3, 5) dan titik Q(7, 9).'),
+    q:'Berapa koordinat titik tengah PQ?', hint:'Titik tengah = ((x1+x2)/2, (y1+y2)/2)',
+    type:'text', answers:['(5,7)'], explain:'✅ Titik tengah = ((3+7)/2, (5+9)/2) = (5, 7) ✓' },
+
+  { id:'e36', section:'s5', tag:'tag-5', tagLabel:'Review: Jarak',
+    sys:tableDisp(['Titik','Koordinat'],[['E','(-6, 2)'],['F','(0, -6)']]),
+    q:'Berapa jarak EF?', hint:'Jarak = √((x2−x1)² + (y2−y1)²)',
+    type:'text', answers:['10','10satuan','10 satuan'], explain:'✅ EF = √((0−(−6))² + (−6−2)²) = √(36+64) = √100 = 10 satuan ✓' },
+
+  { id:'e37', section:'s5', tag:'tag-5', tagLabel:'Review: Konteks',
+    sys:sitDisp('Situasi: Dua checkpoint pada peta game berada di koordinat (0, 0) dan (8, 6).'),
+    q:'Berapa jarak lurus antar kedua checkpoint tersebut?', hint:'Jarak = √((x2−x1)² + (y2−y1)²)',
+    type:'text', answers:['10','10satuan','10 satuan'], explain:'✅ Jarak = √(8² + 6²) = √(64+36) = √100 = 10 satuan ✓' },
+
+  { id:'e38', section:'s5', tag:'tag-5', tagLabel:'Review: Jarak',
+    sys:rawDisp('Titik G(−3, −4) dan titik asal O(0, 0).'),
+    q:'Berapa jarak OG?', hint:'Jarak = √((x2−x1)² + (y2−y1)²)',
+    type:'mcq', opts:['5','7','25','3.5'], answer:'5',
+    explain:'✅ OG = √((−3)² + (−4)²) = √(9+16) = √25 = 5 satuan ✓' },
+
+  { id:'e39', section:'s5', tag:'tag-5', tagLabel:'Review: Titik Tengah',
+    sys:rawDisp('Titik H(−5, −3) dan titik I(5, 7).'),
+    q:'Berapa koordinat titik tengah HI?', hint:'Titik tengah = ((x1+x2)/2, (y1+y2)/2)',
+    type:'text', answers:['(0,2)'], explain:'✅ Titik tengah = ((−5+5)/2, (−3+7)/2) = (0, 2) ✓' },
+
+  { id:'e40', section:'s5', tag:'tag-5', tagLabel:'Review: Konsep',
+    sys:rawDisp('Rumus jarak dua titik A(x1, y1) dan B(x2, y2).'),
+    q:'Manakah rumus jarak AB yang benar?', hint:'Ingat kembali rumus dari Lesson 27',
+    type:'mcq', opts:['√((x2−x1)² + (y2−y1)²)','(x2−x1) + (y2−y1)','√(x2² + y2²)','(x1+x2)/2 + (y1+y2)/2'], answer:'√((x2−x1)² + (y2−y1)²)',
+    explain:'✅ Rumus jarak dua titik: √((x2−x1)² + (y2−y1)²) ✓' },
+];
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  const total = exercises.length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done >= i*8);
+  }
+  if(done === total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){
+    inp.classList.add('correct'); inp.disabled=true; btn.disabled=true;
+  } else {
+    card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true);
+  }
+  const fb = card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok';
+  fb.textContent = q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){
+    const badge=document.createElement('div');
+    badge.className='done-badge'; badge.textContent='✓ Done';
+    card.appendChild(badge);
+  }
+  progress[q.id]=true;
+  saveProgress(progress);
+  updateProgressBar();
+}
+
+function normalizeAns(s){
+  return s.trim().toLowerCase()
+    .replace(/\s+/g,'')
+    .replace(/[−–—]/g,'-')
+    .replace(/°/g,'')
+    .replace(/×/g,'*')
+    .replace(/[()]/g,'');
+}
+
+function checkText(id, inp, btn, q){
+  const raw = normalizeAns(inp.value);
+  if(!raw) return;
+  const correct = q.answers.some(a=>raw===normalizeAns(a));
+  if(correct){
+    markDone(inp.closest('.ex-card'), q, inp, btn);
+  } else {
+    inp.classList.add('wrong-anim');
+    const attRow = inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div'); dot.className='attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(()=>{inp.classList.remove('wrong-anim'); inp.value=''; inp.focus();}, 400);
+    if(attRow.children.length >= 3){
+      const fb = inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no';
+      fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.val===q.answer) b.classList.add('opt-correct');
+  });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb = card.querySelector('.ex-feedback');
+  if(val===q.answer){
+    markDone(card, q, null, null);
+  } else {
+    fb.className='ex-feedback show no';
+    fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+  }
+}
+
+function buildExercises(){
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = '';
+  const groups = [
+    { key:'s1', label:'🟢 Bagian 1 — Translasi (Geser)',                                       cls:'sd-1' },
+    { key:'s2', label:'🔷 Bagian 2 — Refleksi Sumbu-X',                                         cls:'sd-2' },
+    { key:'s3', label:'🟣 Bagian 3 — Refleksi Sumbu-Y',                                         cls:'sd-3' },
+    { key:'s4', label:'🟡 Bagian 4 — Gabungan Transformasi &amp; Konteks Nyata',                cls:'sd-4' },
+    { key:'s5', label:'📊 Bagian 5 — Review PR Lesson 27 (Jarak Dua Titik &amp; Titik Tengah)', cls:'sd-5' },
+  ];
+  groups.forEach(g=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      card.className = 'ex-card data-card' + (isDone?' done-card':'');
+
+      const sysHTML = q.sys || '';
+
+      let inputHTML = '';
+      if(q.type==='text'){
+        inputHTML = `
+          <div class="ex-input-wrap">
+            <div class="ex-input-row">
+              <input type="text" class="ex-input ${isDone?'correct':''}"
+                placeholder="Jawaban?"
+                value="${isDone ? q.answers[0] : ''}"
+                ${isDone?'disabled':''}
+                onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+              <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+            </div>
+            <div class="attempts-row"></div>
+          </div>`;
+      } else {
+        const shuffled = [...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML = `<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="ex-num">Soal ${q.id.replace('e','')}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${sysHTML}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone ? q.explain : ''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn = card.querySelector('.ex-btn');
+        const inp = card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick = ()=>checkText(q.id, inp, btn, q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{
+          b.onclick = ()=>checkMCQ(b.dataset.val, b, q, card);
+        });
+      }
+      grid.appendChild(card);
+    });
+
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Extra PR Lesson 28? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+</script>
+</body>
+</html>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 28 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--violet:#a78bfa;--red:#ef4444;--cyan:#22d3ee;--emerald:#34d399;--amber:#fbbf24;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(52,211,153,0.06) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(167,139,250,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--cyan);}
+  .wrapper{max-width:720px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:99px;transition:width 0.4s ease;}
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title .hv{color:var(--violet);}
+  .slide-title .hc{color:var(--cyan);}
+  .slide-title .he{color:var(--emerald);}
+  .slide-title .ha{color:var(--amber);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+  .slide-sub strong{color:var(--cyan);}
+
+  .callout{background:rgba(167,139,250,0.05);border-left:3px solid var(--violet);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--violet);}
+  .callout.cyan{background:rgba(34,211,238,0.05);border-color:var(--cyan);}
+  .callout.cyan strong{color:var(--cyan);}
+  .callout.emerald{background:rgba(52,211,153,0.05);border-color:var(--emerald);}
+  .callout.emerald strong{color:var(--emerald);}
+  .callout.amber{background:rgba(251,191,36,0.06);border-color:var(--amber);}
+  .callout.amber strong{color:var(--amber);}
+
+  .diagram-box{background:#12121c;border:1.5px solid var(--border);border-radius:14px;padding:1rem;margin:1.2rem 0;display:flex;justify-content:center;flex-wrap:wrap;gap:0.8rem;}
+  .diagram-note{text-align:center;font-size:0.75rem;color:var(--muted);margin-top:-0.6rem;margin-bottom:1rem;font-style:italic;}
+
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(34,211,238,0.12);border:1px solid rgba(34,211,238,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;color:var(--cyan);flex-shrink:0;}
+  .step-num.e{background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,0.4);color:var(--emerald);}
+  .step-num.a{background:rgba(251,191,36,0.12);border-color:rgba(251,191,36,0.4);color:var(--amber);}
+  .step-num.v{background:rgba(167,139,250,0.12);border-color:rgba(167,139,250,0.4);color:var(--violet);}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .reveal-btn{background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.35);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(34,211,238,0.15);}
+  .reveal-box{background:rgba(34,211,238,0.05);border:1px solid rgba(34,211,238,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+  .reveal-box .rule-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--cyan);margin-bottom:0.4rem;}
+  .reveal-box .rule-sub{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .formula-hero{text-align:center;padding:1.4rem;background:rgba(167,139,250,0.06);border:1.5px solid rgba(167,139,250,0.3);border-radius:18px;margin:1.2rem 0;}
+  .formula-text{font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:900;color:var(--violet);}
+  .formula-sub{display:flex;gap:1rem;justify-content:center;margin-top:0.8rem;flex-wrap:wrap;}
+  .formula-sub span{font-size:0.78rem;font-weight:700;color:var(--muted);background:#12121c;border:1px solid var(--border);padding:0.3rem 0.8rem;border-radius:99px;}
+
+  .mid-table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:0.85rem;}
+  .mid-table th,.mid-table td{padding:0.6rem 0.5rem;text-align:center;border-bottom:1px solid var(--border);}
+  .mid-table th{color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:1px;text-transform:uppercase;}
+  .mid-table td{color:var(--text);}
+  .mid-table td.mval{color:var(--violet);font-weight:800;}
+
+  .pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:1.2rem 0;}
+  @media(max-width:480px){.pick-grid{grid-template-columns:1fr;}}
+  .pick-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
+  @media(max-width:560px){.pick-grid.cols3{grid-template-columns:1fr;}}
+  .pick-btn{width:100%;background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.7rem;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.88rem;transition:all 0.2s;line-height:1.4;}
+  .pick-btn:hover:not(:disabled){border-color:var(--cyan);}
+  .pick-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .pick-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .pick-fb{font-size:0.82rem;color:var(--muted);margin-top:0.6rem;line-height:1.6;text-align:center;min-height:20px;}
+
+  .summary-card{background:var(--card);border:1px solid rgba(34,211,238,0.3);border-radius:16px;padding:1.5rem 2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:2px;color:var(--cyan);margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .summary-item span{flex-shrink:0;font-size:1rem;}
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;text-decoration:none;display:inline-block;transition:all 0.2s;}
+  .da-primary{background:linear-gradient(135deg,var(--cyan),#0891b2);color:#000;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);}
+  .da-secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+
+  .big-quote{background:rgba(167,139,250,0.06);border:1.5px solid rgba(167,139,250,0.3);border-radius:18px;padding:1.6rem;text-align:center;margin:1.2rem 0;}
+  .big-quote-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--violet);line-height:1.8;}
+  .big-quote-text em{color:var(--amber);font-style:normal;}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--cyan),#0891b2);border:none;color:#000;font-weight:800;}
+  .nav-btn:hover:not(.next){border-color:var(--cyan);color:var(--cyan);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson28.html">LESSON 28</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+
+  <!-- SLIDE 1: Misteri Portal -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title">Portal yang <span class="hc">Misterius</span> 🕹️</div>
+      <div class="slide-sub">Kamu adalah pemain game. Karaktermu berada di titik A. Setelah melewati sebuah portal, karakter itu muncul di posisi baru — bentuk dan ukurannya tetap sama. Apa yang sebenarnya terjadi?</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="280" height="200" viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <line x1="10" y1="100" x2="270" y2="100" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="270,100 262,96 262,104" fill="#64748b"/>
+        <text x="256" y="94" fill="#64748b" font-family="Orbitron,monospace" font-size="9" font-weight="900">x</text>
+        <line x1="140" y1="10" x2="140" y2="190" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="140,10 136,18 144,18" fill="#64748b"/>
+        <text x="148" y="18" fill="#64748b" font-family="Orbitron,monospace" font-size="9" font-weight="900">y</text>
+        <circle cx="92" cy="132" r="6" fill="#a78bfa" stroke="#0a0a0f" stroke-width="1.5"/>
+        <text x="92" y="150" fill="#a78bfa" font-family="Orbitron,monospace" font-size="10" font-weight="900" text-anchor="middle">A</text>
+        <path d="M 92 132 Q 160 40 188 68" fill="none" stroke="#22d3ee" stroke-width="2.2" stroke-dasharray="6,4" stroke-linecap="round"/>
+        <circle cx="188" cy="68" r="8" fill="none" stroke="#22d3ee" stroke-width="2" stroke-dasharray="3,2"/>
+        <text x="188" y="52" fill="#22d3ee" font-family="Orbitron,monospace" font-size="11" font-weight="900" text-anchor="middle">A' = ?</text>
+        <text x="140" y="196" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">PORTAL TRANSFORMASI</text>
+      </svg>
+    </div>
+    <div class="callout cyan"><strong>Kasus:</strong> Ada dua jenis portal di Math Arena — portal GESER dan portal CERMIN. Keduanya memindahkan posisi karakter, tapi dengan cara yang berbeda. Kamu akan menemukan sendiri cara kerjanya!</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">🕹️</div>
+        <div class="step-body"><div class="stitle">Petunjuk 1: Mulai dari Misi Geser</div><div class="sdesc">Kita mulai dengan instruksi langkah kanan/kiri/atas/bawah.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num e">🪞</div>
+        <div class="step-body"><div class="stitle">Petunjuk 2: Lanjut ke Misi Cermin</div><div class="sdesc">Setelah itu, kita coba portal cermin terhadap sumbu-x dan sumbu-y.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num a">🧩</div>
+        <div class="step-body"><div class="stitle">Petunjuk 3: Gabungkan keduanya</div><div class="sdesc">Di akhir, kamu akan menggabungkan geser dan cermin sekaligus!</div></div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Misi 1: Move! →</button></div>
+  </div>
+
+  <!-- SLIDE 2: Misi 1 - Move! -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Misi 1: <span class="he">Move!</span> 🎮</div>
+      <div class="slide-sub">Karaktermu berada di A(2,3). Instruksi: ➡️ jalan 4 langkah ke kanan, lalu ⬆️ jalan 2 langkah ke atas.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="280" height="220" viewBox="0 0 280 220" xmlns="http://www.w3.org/2000/svg">
+        <line x1="10" y1="115" x2="270" y2="115" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="270,115 262,111 262,119" fill="#64748b"/>
+        <text x="256" y="109" fill="#64748b" font-family="Orbitron,monospace" font-size="9" font-weight="900">x</text>
+        <line x1="140" y1="15" x2="140" y2="205" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="140,15 136,23 144,23" fill="#64748b"/>
+        <text x="148" y="23" fill="#64748b" font-family="Orbitron,monospace" font-size="9" font-weight="900">y</text>
+        <circle cx="172" cy="67" r="6" fill="#a78bfa" stroke="#0a0a0f" stroke-width="1.5"/>
+        <text x="172" y="85" fill="#a78bfa" font-family="Orbitron,monospace" font-size="10" font-weight="900" text-anchor="middle">A(2,3)</text>
+        <line x1="172" y1="67" x2="236" y2="67" stroke="#34d399" stroke-width="2.2" stroke-dasharray="5,3" stroke-linecap="round"/>
+        <text x="204" y="59" fill="#34d399" font-family="Orbitron,monospace" font-size="9" font-weight="900" text-anchor="middle">4 kanan</text>
+        <line x1="236" y1="67" x2="236" y2="35" stroke="#34d399" stroke-width="2.2" stroke-dasharray="5,3" stroke-linecap="round"/>
+        <text x="256" y="50" fill="#34d399" font-family="Orbitron,monospace" font-size="9" font-weight="900" text-anchor="middle">2 atas</text>
+        <circle cx="236" cy="35" r="8" fill="none" stroke="#22d3ee" stroke-width="2" stroke-dasharray="3,2"/>
+        <text x="236" y="22" fill="#22d3ee" font-family="Orbitron,monospace" font-size="11" font-weight="900" text-anchor="middle">?</text>
+      </svg>
+    </div>
+    <div class="callout"><strong>Pertanyaan:</strong> Sekarang karakter berada di koordinat berapa? Coba jawab secara visual dulu, lihat dari peta di atas.</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS2(this,'a')">(6, 5)</button>
+      <button class="pick-btn" onclick="pickS2(this,'b')">(2, 5)</button>
+      <button class="pick-btn" onclick="pickS2(this,'c')">(6, 3)</button>
+    </div>
+    <div class="pick-fb" id="fbS2"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Menemukan Pola →</button></div>
+  </div>
+
+  <!-- SLIDE 3: Menemukan Pola Translasi -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title">Menemukan Pola <span class="hc">Translasi</span> 🔍</div>
+      <div class="slide-sub">Perhatikan beberapa contoh pergeseran berikut. Apa yang selalu berubah?</div>
+    </div>
+    <table class="mid-table">
+      <tr><th>Titik Awal</th><th>Geser</th><th>Titik Akhir</th></tr>
+      <tr><td>(2, 1)</td><td>(+3, +2)</td><td class="mval">(5, 3)</td></tr>
+      <tr><td>(4, 5)</td><td>(−2, +4)</td><td class="mval">(2, 9)</td></tr>
+      <tr><td>(6, 2)</td><td>(+5, −1)</td><td class="mval">(11, 1)</td></tr>
+    </table>
+    <div class="callout amber"><strong>Perhatikan:</strong> Nilai x dan y titik awal masing-masing cukup DITAMBAH dengan angka geseran. Bentuk dan ukuran bangun sama sekali tidak berubah — hanya posisinya yang pindah.</div>
+    <div class="callout cyan"><strong>Perkenalan istilah:</strong> Perpindahan seperti ini disebut <strong>Translasi (Pergeseran)</strong>.</div>
+    <div class="formula-hero">
+      <div class="formula-text">(x, y) → (x+a, y+b)</div>
+      <div class="formula-sub"><span>a = geser mendatar</span><span>b = geser tegak</span></div>
+    </div>
+    <div class="callout"><strong>Cek pemahaman:</strong> Titik (3,4) digeser (+2,−5). Berapa koordinat akhirnya?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS3(this,'a')">(5, −1)</button>
+      <button class="pick-btn" onclick="pickS3(this,'b')">(1, 9)</button>
+      <button class="pick-btn" onclick="pickS3(this,'c')">(5, 9)</button>
+    </div>
+    <div class="pick-fb" id="fbS3"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Detective Challenge →</button></div>
+  </div>
+
+  <!-- SLIDE 4: Detective Challenge (Translasi) -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Detective <span class="hv">Challenge</span> 🕵️</div>
+      <div class="slide-sub">Tiga titik dengan instruksi translasi berbeda. Perhatikan pola perubahan pada sumbu x dan y masing-masing.</div>
+    </div>
+    <div class="callout cyan"><strong>Titik 1:</strong> P(1,2) digeser (+4,+3)</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">→</div><div class="step-body"><div class="sdesc">x: 1+4=5. y: 2+3=5.</div></div></div>
+      <div class="step"><div class="step-num a">→</div><div class="step-body"><div class="sdesc">P' = <strong>(5, 5)</strong></div></div></div>
+    </div>
+    <div class="callout amber" style="margin-top:1.4rem;"><strong>Titik 2:</strong> Q(−3,5) digeser (+6,−2)</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">→</div><div class="step-body"><div class="sdesc">x: −3+6=3. y: 5+(−2)=3.</div></div></div>
+      <div class="step"><div class="step-num a">→</div><div class="step-body"><div class="sdesc">Q' = <strong>(3, 3)</strong></div></div></div>
+    </div>
+    <div class="callout" style="margin-top:1.4rem;"><strong>Titik 3:</strong> R(0,−4) digeser (−2,+7)</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">→</div><div class="step-body"><div class="sdesc">x: 0+(−2)=−2. y: −4+7=3.</div></div></div>
+      <div class="step"><div class="step-num a">→</div><div class="step-body"><div class="sdesc">R' = <strong>(−2, 3)</strong></div></div></div>
+    </div>
+    <div class="callout emerald"><strong>Kesimpulan detektif:</strong> Berapa pun titiknya, translasi (a,b) selalu berarti x baru = x+a dan y baru = y+b. Tanda plus/minus pada a dan b menentukan arah geser.</div>
+    <div class="callout"><strong>Tantangan terakhir:</strong> Titik S(−5,−1) digeser (+7,+4). Posisi akhirnya?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS4(this,'a')">(2, 3)</button>
+      <button class="pick-btn" onclick="pickS4(this,'b')">(−12, −5)</button>
+      <button class="pick-btn" onclick="pickS4(this,'c')">(2, −5)</button>
+    </div>
+    <div class="pick-fb" id="fbS4"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Misi 2: Portal Cermin →</button></div>
+  </div>
+
+  <!-- SLIDE 5: Misi 2 - Portal Cermin -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title">Misi 2: <span class="he">Portal Cermin</span> 🪞</div>
+      <div class="slide-sub">Kali ini garis cerminnya adalah sumbu-y. Karaktermu berada di titik (4,2).</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="280" height="200" viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <line x1="10" y1="100" x2="270" y2="100" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="270,100 262,96 262,104" fill="#64748b"/>
+        <text x="256" y="94" fill="#64748b" font-family="Orbitron,monospace" font-size="9" font-weight="900">x</text>
+        <line x1="140" y1="10" x2="140" y2="190" stroke="#a78bfa" stroke-width="2.2" stroke-dasharray="3,3"/>
+        <text x="148" y="18" fill="#a78bfa" font-family="Orbitron,monospace" font-size="9" font-weight="900">cermin (sumbu-y)</text>
+        <circle cx="204" cy="68" r="6" fill="#fbbf24" stroke="#0a0a0f" stroke-width="1.5"/>
+        <text x="204" y="86" fill="#fbbf24" font-family="Orbitron,monospace" font-size="10" font-weight="900" text-anchor="middle">(4,2)</text>
+        <line x1="204" y1="68" x2="140" y2="68" stroke="#22d3ee" stroke-width="1.6" stroke-dasharray="4,3"/>
+        <circle cx="76" cy="68" r="8" fill="none" stroke="#22d3ee" stroke-width="2" stroke-dasharray="3,2"/>
+        <text x="76" y="86" fill="#22d3ee" font-family="Orbitron,monospace" font-size="11" font-weight="900" text-anchor="middle">?</text>
+      </svg>
+    </div>
+    <div class="callout"><strong>Pertanyaan:</strong> Jika karakter bercermin terhadap sumbu-y, di mana kira-kira posisi akhirnya? Perhatikan jarak ke garis cermin di kedua sisi.</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS5(this,'a')">(−4, 2)</button>
+      <button class="pick-btn" onclick="pickS5(this,'b')">(4, −2)</button>
+      <button class="pick-btn" onclick="pickS5(this,'c')">(−2, 4)</button>
+    </div>
+    <div class="pick-fb" id="fbS5"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Menemukan Pola →</button></div>
+  </div>
+
+  <!-- SLIDE 6: Menemukan Pola Refleksi -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title">Menemukan Pola <span class="hc">Refleksi</span> 🔍</div>
+      <div class="slide-sub">Perhatikan beberapa contoh pencerminan berikut. Bisakah kamu menemukan polanya?</div>
+    </div>
+    <table class="mid-table">
+      <tr><th>Titik Awal</th><th>Cermin</th><th>Titik Akhir</th></tr>
+      <tr><td>(3, 5)</td><td>Sumbu-X</td><td class="mval">(3, −5)</td></tr>
+      <tr><td>(−2, 6)</td><td>Sumbu-X</td><td class="mval">(−2, −6)</td></tr>
+      <tr><td>(4, 7)</td><td>Sumbu-Y</td><td class="mval">(−4, 7)</td></tr>
+      <tr><td>(−6, −3)</td><td>Sumbu-Y</td><td class="mval">(6, −3)</td></tr>
+    </table>
+    <div class="callout amber"><strong>Perhatikan:</strong> Saat dicerminkan terhadap sumbu-y, nilai x berubah tanda (y tetap). Saat dicerminkan terhadap sumbu-x, nilai y berubah tanda (x tetap).</div>
+    <div class="callout cyan"><strong>Perkenalan istilah:</strong> Pencerminan seperti ini disebut <strong>Refleksi (Pencerminan)</strong>. Sama seperti translasi, bentuk dan ukuran bangun tetap sama.</div>
+    <div class="formula-hero">
+      <div class="formula-text">Sumbu-X: (x,y) → (x, −y)</div>
+      <div class="formula-text" style="margin-top:0.5rem;">Sumbu-Y: (x,y) → (−x, y)</div>
+    </div>
+    <div class="callout"><strong>Cek pemahaman:</strong> Titik (7,−2) dicerminkan terhadap sumbu-x. Hasilnya?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS6(this,'a')">(7, 2)</button>
+      <button class="pick-btn" onclick="pickS6(this,'b')">(−7, −2)</button>
+      <button class="pick-btn" onclick="pickS6(this,'c')">(−7, 2)</button>
+    </div>
+    <div class="pick-fb" id="fbS6"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">Mirror Challenge →</button></div>
+  </div>
+
+  <!-- SLIDE 7: Mirror Challenge -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">Mirror <span class="hv">Challenge</span> 🪞</div>
+      <div class="slide-sub">Titik K(5,3) dicerminkan terhadap sumbu-x DAN terhadap sumbu-y — hasilnya berbeda arah, seperti pada peta berikut.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="280" height="220" viewBox="0 0 280 220" xmlns="http://www.w3.org/2000/svg">
+        <line x1="10" y1="115" x2="270" y2="115" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="270,115 262,111 262,119" fill="#64748b"/>
+        <text x="256" y="109" fill="#64748b" font-family="Orbitron,monospace" font-size="9" font-weight="900">x</text>
+        <line x1="140" y1="15" x2="140" y2="205" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="140,15 136,23 144,23" fill="#64748b"/>
+        <text x="148" y="23" fill="#64748b" font-family="Orbitron,monospace" font-size="9" font-weight="900">y</text>
+        <circle cx="220" cy="67" r="6" fill="#fbbf24" stroke="#0a0a0f" stroke-width="1.5"/>
+        <text x="234" y="60" fill="#fbbf24" font-family="Orbitron,monospace" font-size="9" font-weight="900" text-anchor="middle">K(5,3)</text>
+        <line x1="220" y1="67" x2="220" y2="163" stroke="#22d3ee" stroke-width="1.6" stroke-dasharray="4,3"/>
+        <circle cx="220" cy="163" r="6" fill="#22d3ee" stroke="#0a0a0f" stroke-width="1.5"/>
+        <text x="234" y="172" fill="#22d3ee" font-family="Orbitron,monospace" font-size="9" font-weight="900" text-anchor="middle">sumbu-x</text>
+        <line x1="220" y1="67" x2="60" y2="67" stroke="#34d399" stroke-width="1.6" stroke-dasharray="4,3"/>
+        <circle cx="60" cy="67" r="6" fill="#34d399" stroke="#0a0a0f" stroke-width="1.5"/>
+        <text x="60" y="55" fill="#34d399" font-family="Orbitron,monospace" font-size="9" font-weight="900" text-anchor="middle">sumbu-y</text>
+      </svg>
+    </div>
+    <div class="callout cyan"><strong>Cermin sumbu-x:</strong> K(5,3) → (5,−3). <strong>Cermin sumbu-y:</strong> K(5,3) → (−5,3).</div>
+    <div class="callout"><strong>Giliranmu:</strong> Titik M(−3,−8) dicerminkan terhadap sumbu-y. Berapa hasilnya?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS7(this,'a')">(3, −8)</button>
+      <button class="pick-btn" onclick="pickS7(this,'b')">(−3, 8)</button>
+      <button class="pick-btn" onclick="pickS7(this,'c')">(3, 8)</button>
+    </div>
+    <div class="pick-fb" id="fbS7"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Geser atau Cermin? →</button></div>
+  </div>
+
+  <!-- SLIDE 8: Geser atau Cermin? -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">Geser atau <span class="ha">Cermin?</span> 🤔</div>
+      <div class="slide-sub">Perhatikan tiga pasang koordinat berikut. Tentukan apakah masing-masing termasuk translasi atau refleksi, lalu jelaskan alasannya.</div>
+    </div>
+    <div class="callout cyan"><strong>Kasus 1:</strong> (2,3) → (2,−3)</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">→</div><div class="step-body"><div class="sdesc">x tetap, hanya y yang berubah tanda → ini <strong>Refleksi terhadap sumbu-x</strong>.</div></div></div>
+    </div>
+    <div class="callout amber" style="margin-top:1.2rem;"><strong>Kasus 2:</strong> (2,3) → (6,7)</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">→</div><div class="step-body"><div class="sdesc">x dan y sama-sama bertambah 4 (bukan berubah tanda) → ini <strong>Translasi</strong> (+4,+4).</div></div></div>
+    </div>
+    <div class="callout" style="margin-top:1.2rem;"><strong>Kasus 3:</strong> (2,3) → (−2,3)</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">→</div><div class="step-body"><div class="sdesc">y tetap, hanya x yang berubah tanda → ini <strong>Refleksi terhadap sumbu-y</strong>.</div></div></div>
+    </div>
+    <div class="callout emerald"><strong>Kunci membedakan:</strong> Kalau ada nilai yang berubah TANDA (positif ↔ negatif) sementara nilai lain tetap → refleksi. Kalau kedua nilai berubah karena PENAMBAHAN/PENGURANGAN yang sama → translasi.</div>
+    <div class="callout"><strong>Tantangan:</strong> (2,5) → (2,−5). Ini termasuk transformasi apa?</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS8(this,'a')">Refleksi terhadap sumbu-x</button>
+      <button class="pick-btn" onclick="pickS8(this,'b')">Translasi</button>
+      <button class="pick-btn" onclick="pickS8(this,'c')">Refleksi terhadap sumbu-y</button>
+    </div>
+    <div class="pick-fb" id="fbS8"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Mission Combo →</button></div>
+  </div>
+
+  <!-- SLIDE 9: Mission Combo -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">Mission <span class="he">Combo</span> 🧩</div>
+      <div class="slide-sub">Segitiga T(1,1), (4,1), (1,3). Translasikan 3 satuan ke kanan dan 2 satuan ke atas, lalu cerminkan hasilnya terhadap sumbu-y.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="280" height="220" viewBox="0 0 280 220" xmlns="http://www.w3.org/2000/svg">
+        <line x1="10" y1="115" x2="270" y2="115" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="270,115 262,111 262,119" fill="#64748b"/>
+        <line x1="140" y1="15" x2="140" y2="205" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="140,15 136,23 144,23" fill="#64748b"/>
+        <text x="148" y="23" fill="#64748b" font-family="Orbitron,monospace" font-size="9" font-weight="900">y</text>
+        <!-- Segitiga awal (violet) -->
+        <polygon points="156,99 204,99 156,67" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="2"/>
+        <text x="150" y="112" fill="#a78bfa" font-family="Orbitron,monospace" font-size="8" font-weight="900" text-anchor="middle">T</text>
+        <!-- Segitiga translasi (emerald dashed) -->
+        <polygon points="204,67 252,67 204,35" fill="rgba(52,211,153,0.1)" stroke="#34d399" stroke-width="2" stroke-dasharray="4,3"/>
+        <text x="210" y="52" fill="#34d399" font-family="Orbitron,monospace" font-size="8" font-weight="900" text-anchor="middle">T'</text>
+        <!-- Segitiga refleksi akhir (cyan) -->
+        <polygon points="76,67 28,67 76,35" fill="rgba(34,211,238,0.12)" stroke="#22d3ee" stroke-width="2"/>
+        <text x="70" y="52" fill="#22d3ee" font-family="Orbitron,monospace" font-size="8" font-weight="900" text-anchor="middle">T''</text>
+      </svg>
+    </div>
+    <div class="diagram-note">Ungu = segitiga awal · Hijau putus-putus = setelah translasi · Cyan = hasil akhir setelah refleksi</div>
+    <div class="callout"><strong>Langkah berpikir:</strong> Lakukan dulu translasi pada ketiga titik sudut, baru cerminkan HASIL translasi tersebut terhadap sumbu-y.</div>
+    <button class="reveal-btn" onclick="revealS9()">Lihat Penyelesaian 🔓</button>
+    <div class="reveal-box" id="rb9">
+      <div class="rule-text">Langkah 1 — Translasi (+3,+2)</div>
+      <div class="rule-sub">(1,1)→(4,3) &nbsp;|&nbsp; (4,1)→(7,3) &nbsp;|&nbsp; (1,3)→(4,5)</div>
+      <div class="rule-text" style="margin-top:0.8rem;">Langkah 2 — Refleksi sumbu-y: (x,y)→(−x,y)</div>
+      <div class="rule-sub">(4,3)→(−4,3) &nbsp;|&nbsp; (7,3)→(−7,3) &nbsp;|&nbsp; (4,5)→(−4,5)</div>
+      <div class="rule-text" style="margin-top:0.8rem;color:var(--emerald);">Koordinat akhir segitiga</div>
+      <div class="rule-sub">(−4,3), (−7,3), (−4,5)</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Kesimpulan →</button></div>
+  </div>
+
+  <!-- SLIDE 10: Kesimpulan -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Rangkuman &amp; <span class="hc">Penutup</span> 🎓</div>
+      <div class="slide-sub">Semua portal di Transformation Quest I berhasil kamu lewati! Ini rangkuman temuanmu:</div>
+    </div>
+    <div class="summary-card">
+      <h3>📋 CATATAN PEMAIN</h3>
+      <div class="summary-item"><span>➡️</span>Translasi menggeser posisi tanpa mengubah bentuk maupun ukuran bangun.</div>
+      <div class="summary-item"><span>📝</span><strong style="color:var(--violet)">Rumus translasi: (x,y) → (x+a, y+b)</strong></div>
+      <div class="summary-item"><span>🪞</span>Refleksi mencerminkan bangun terhadap suatu garis (sumbu-x atau sumbu-y), bentuk dan ukuran tetap sama.</div>
+      <div class="summary-item"><span>📝</span><strong style="color:var(--violet)">Refleksi sumbu-x: (x,y)→(x,−y) · Refleksi sumbu-y: (x,y)→(−x,y)</strong></div>
+      <div class="summary-item"><span>🔍</span>Cara membedakan: nilai yang berubah tanda saja → refleksi. Nilai yang berubah karena penambahan/pengurangan sama → translasi.</div>
+      <div class="summary-item"><span>🧩</span>Translasi dan refleksi bisa digabung berurutan, seperti pada Mission Combo.</div>
+    </div>
+    <div class="big-quote">
+      <div class="big-quote-text">"Transformasi bukan mengubah bangunnya,<br>tetapi mengubah <em>cara kita melihat</em><br>posisinya."</div>
+    </div>
+    <div class="callout cyan"><strong>Preview selanjutnya:</strong> Bagaimana jika bangun diputar atau diperbesar? Apakah koordinatnya berubah dengan cara yang sama? Nantikan Rotasi dan Dilatasi! 🌀</div>
+    <div class="done-actions">
+      <a href="quicktest28.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise28.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson28.html" class="da-btn da-secondary">Lesson 28</a>
+    </div>
+  </div>
+
+</div>
+<script>
+let currentSlide=1;
+const TOTAL=10;
+function goSlide(n){
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide=n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width=((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function pickS2(btn,ans){
+  document.querySelectorAll('#slide2 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS2');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! 4 langkah kanan menambah x: 2+4=6. 2 langkah atas menambah y: 3+2=5. Posisi akhir (6,5).';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS2(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. Kanan menambah x (2+4=6), atas menambah y (3+2=5). Posisi akhir (6,5).';}
+}
+function pickS3(btn,ans){
+  document.querySelectorAll('#slide3 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS3');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! x: 3+2=5. y: 4+(−5)=−1. Hasil (5,−1).';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS3(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. x: 3+2=5, y: 4+(−5)=−1, jadi hasilnya (5,−1) — bukan dikurangi dari geserannya.';}
+}
+function pickS4(btn,ans){
+  document.querySelectorAll('#slide4 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS4');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! x: −5+7=2. y: −1+4=3. S\' = (2,3).';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS4(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. x: −5+7=2, y: −1+4=3, jadi S\' = (2,3).';}
+}
+function pickS5(btn,ans){
+  document.querySelectorAll('#slide5 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS5');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Bercermin terhadap sumbu-y berarti x berubah tanda: (4,2) → (−4,2).';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS5(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. Cermin sumbu-y membuat x berubah tanda, y tetap: (4,2) → (−4,2).';}
+}
+function pickS6(btn,ans){
+  document.querySelectorAll('#slide6 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS6');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Cermin sumbu-x: x tetap, y berubah tanda. (7,−2) → (7,2).';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS6(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. Cermin sumbu-x hanya membalik tanda y, x tetap: (7,−2) → (7,2).';}
+}
+function pickS7(btn,ans){
+  document.querySelectorAll('#slide7 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS7');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Cermin sumbu-y membalik tanda x, y tetap: (−3,−8) → (3,−8).';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS7(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. Cermin sumbu-y: x berubah tanda saja, y tetap: (−3,−8) → (3,−8).';}
+}
+function pickS8(btn,ans){
+  document.querySelectorAll('#slide8 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS8');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! x tetap 2, y berubah tanda dari 5 ke −5 → Refleksi terhadap sumbu-x.';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS8(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. Karena x tetap dan hanya y yang berubah tanda, ini adalah Refleksi terhadap sumbu-x, bukan translasi maupun refleksi sumbu-y.';}
+}
+function revealS9(){
+  const rb=document.getElementById('rb9');
+  rb.classList.add('show'); rb.style.display='block';
+}
+</script>
+</body>
+</html>
