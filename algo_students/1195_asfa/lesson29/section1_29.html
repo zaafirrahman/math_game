@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 29 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--violet:#a78bfa;--red:#ef4444;--cyan:#22d3ee;--emerald:#34d399;--amber:#fbbf24;--rose:#fb7185;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(167,139,250,0.06) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(251,191,36,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--violet);}
+  .wrapper{max-width:720px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--violet),var(--amber));border-radius:99px;transition:width 0.4s ease;}
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--violet);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title .hv{color:var(--violet);}
+  .slide-title .hc{color:var(--cyan);}
+  .slide-title .he{color:var(--emerald);}
+  .slide-title .ha{color:var(--amber);}
+  .slide-title .hr{color:var(--rose);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+  .slide-sub strong{color:var(--violet);}
+
+  .callout{background:rgba(167,139,250,0.05);border-left:3px solid var(--violet);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--violet);}
+  .callout.cyan{background:rgba(34,211,238,0.05);border-color:var(--cyan);}
+  .callout.cyan strong{color:var(--cyan);}
+  .callout.emerald{background:rgba(52,211,153,0.05);border-color:var(--emerald);}
+  .callout.emerald strong{color:var(--emerald);}
+  .callout.amber{background:rgba(251,191,36,0.06);border-color:var(--amber);}
+  .callout.amber strong{color:var(--amber);}
+  .callout.rose{background:rgba(251,113,133,0.06);border-color:var(--rose);}
+  .callout.rose strong{color:var(--rose);}
+
+  .diagram-box{background:#12121c;border:1.5px solid var(--border);border-radius:14px;padding:1rem;margin:1.2rem 0;display:flex;justify-content:center;flex-wrap:wrap;gap:0.8rem;}
+  .diagram-note{text-align:center;font-size:0.75rem;color:var(--muted);margin-top:-0.6rem;margin-bottom:1rem;font-style:italic;}
+
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;color:var(--violet);flex-shrink:0;}
+  .step-num.e{background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,0.4);color:var(--emerald);}
+  .step-num.a{background:rgba(251,191,36,0.12);border-color:rgba(251,191,36,0.4);color:var(--amber);}
+  .step-num.c{background:rgba(34,211,238,0.12);border-color:rgba(34,211,238,0.4);color:var(--cyan);}
+  .step-num.r{background:rgba(251,113,133,0.12);border-color:rgba(251,113,133,0.4);color:var(--rose);}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .reveal-btn{background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.35);color:var(--violet);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(167,139,250,0.15);}
+  .reveal-box{background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+  .reveal-box .rule-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--violet);margin-bottom:0.4rem;}
+  .reveal-box .rule-sub{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .formula-hero{text-align:center;padding:1.4rem;background:rgba(251,191,36,0.06);border:1.5px solid rgba(251,191,36,0.3);border-radius:18px;margin:1.2rem 0;}
+  .formula-text{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;color:var(--amber);}
+  .formula-sub{display:flex;gap:1rem;justify-content:center;margin-top:0.8rem;flex-wrap:wrap;}
+  .formula-sub span{font-size:0.78rem;font-weight:700;color:var(--muted);background:#12121c;border:1px solid var(--border);padding:0.3rem 0.8rem;border-radius:99px;}
+
+  .mid-table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:0.85rem;}
+  .mid-table th,.mid-table td{padding:0.6rem 0.5rem;text-align:center;border-bottom:1px solid var(--border);}
+  .mid-table th{color:var(--violet);font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:1px;text-transform:uppercase;}
+  .mid-table td{color:var(--text);}
+  .mid-table td.mval{color:var(--amber);font-weight:800;}
+
+  .pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:1.2rem 0;}
+  @media(max-width:480px){.pick-grid{grid-template-columns:1fr;}}
+  .pick-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
+  @media(max-width:560px){.pick-grid.cols3{grid-template-columns:1fr;}}
+  .pick-btn{width:100%;background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.7rem;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.88rem;transition:all 0.2s;line-height:1.4;}
+  .pick-btn:hover:not(:disabled){border-color:var(--violet);}
+  .pick-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .pick-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .pick-fb{font-size:0.82rem;color:var(--muted);margin-top:0.6rem;line-height:1.6;text-align:center;min-height:20px;}
+
+  .summary-card{background:var(--card);border:1px solid rgba(167,139,250,0.3);border-radius:16px;padding:1.5rem 2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:2px;color:var(--violet);margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .summary-item span{flex-shrink:0;font-size:1rem;}
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;text-decoration:none;display:inline-block;transition:all 0.2s;}
+  .da-primary{background:linear-gradient(135deg,var(--violet),#7c3aed);color:#000;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);}
+  .da-secondary:hover{border-color:var(--violet);color:var(--violet);}
+
+  .big-quote{background:rgba(167,139,250,0.06);border:1.5px solid rgba(167,139,250,0.3);border-radius:18px;padding:1.6rem;text-align:center;margin:1.2rem 0;}
+  .big-quote-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--violet);line-height:1.8;}
+  .big-quote-text em{color:var(--amber);font-style:normal;}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--violet),#7c3aed);border:none;color:#000;font-weight:800;}
+  .nav-btn:hover:not(.next){border-color:var(--violet);color:var(--violet);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson29.html">LESSON 29</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+
+  <!-- SLIDE 1: Portal Misterius -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title">Portal yang Lebih <span class="hv">Liar</span> 🕹️</div>
+      <div class="slide-sub">Kamu sudah jago melewati portal geser dan portal cermin. Sekarang muncul dua portal baru: satu <strong>memutar</strong> karaktermu, satu lagi membuatnya <strong>membesar atau mengecil</strong> — tapi bentuknya tetap sama. Apa nama kedua portal ini?</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="280" height="200" viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <line x1="10" y1="100" x2="270" y2="100" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="270,100 262,96 262,104" fill="#64748b"/>
+        <text x="256" y="94" fill="#64748b" font-family="Orbitron,monospace" font-size="9" font-weight="900">x</text>
+        <line x1="140" y1="10" x2="140" y2="190" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="140,10 136,18 144,18" fill="#64748b"/>
+        <text x="148" y="18" fill="#64748b" font-family="Orbitron,monospace" font-size="9" font-weight="900">y</text>
+        <circle cx="140" cy="100" r="2.5" fill="#64748b"/>
+        <circle cx="188" cy="132" r="6" fill="#22d3ee" stroke="#0a0a0f" stroke-width="1.5"/>
+        <text x="188" y="150" fill="#22d3ee" font-family="Orbitron,monospace" font-size="10" font-weight="900" text-anchor="middle">A</text>
+        <path d="M 188 132 A 55 55 0 0 0 108 68" fill="none" stroke="#a78bfa" stroke-width="2.2" stroke-dasharray="6,4" stroke-linecap="round"/>
+        <circle cx="108" cy="68" r="8" fill="none" stroke="#a78bfa" stroke-width="2" stroke-dasharray="3,2"/>
+        <text x="108" y="52" fill="#a78bfa" font-family="Orbitron,monospace" font-size="10" font-weight="900" text-anchor="middle">A' = ? (putar)</text>
+        <polygon points="210,150 224,150 210,138" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="200,160 234,160 200,132" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="2"/>
+        <text x="217" y="176" fill="#fbbf24" font-family="Orbitron,monospace" font-size="9" font-weight="900" text-anchor="middle">A'' = ? (zoom)</text>
+        <text x="140" y="196" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">PORTAL PUTAR &amp; PORTAL ZOOM</text>
+      </svg>
+    </div>
+    <div class="callout"><strong>Kasus:</strong> Di Math Arena level ini ada portal PUTAR dan portal ZOOM. Keduanya mengubah posisi/ukuran karakter dengan cara yang sangat berbeda dari portal geser dan cermin. Yuk temukan pola kerjanya!</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">🌀</div>
+        <div class="step-body"><div class="stitle">Petunjuk 1: Mulai dari Misi Putar</div><div class="sdesc">Kita mulai dengan arah panah yang diputar terhadap sebuah pusat.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num a">🔍</div>
+        <div class="step-body"><div class="stitle">Petunjuk 2: Lanjut ke Misi Zoom</div><div class="sdesc">Setelah itu, kita coba portal zoom yang membesarkan/mengecilkan bangun terhadap pusat.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num r">🧩</div>
+        <div class="step-body"><div class="stitle">Petunjuk 3: Bedakan &amp; Gabungkan</div><div class="sdesc">Di akhir, kamu akan membedakan keempat transformasi dan menggabungkan putar + zoom sekaligus!</div></div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Misi 1: Putar! →</button></div>
+  </div>
+
+  <!-- SLIDE 2: Misi 1 - Portal Putar -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Misi 1: Portal <span class="hv">Putar</span> 🌀</div>
+      <div class="slide-sub">Sebuah panah menghadap ke ATAS berdiri di pusat portal. Portal ini memutar panah <strong>90° searah jarum jam</strong>.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="220" height="180" viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="110" cy="90" r="55" fill="none" stroke="#2a2a40" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <line x1="110" y1="90" x2="110" y2="40" stroke="#a78bfa" stroke-width="3.5" stroke-linecap="round"/>
+        <polygon points="110,32 103,46 117,46" fill="#a78bfa"/>
+        <circle cx="110" cy="90" r="3.5" fill="#e2e8f0"/>
+        <path d="M 145 60 A 40 40 0 0 1 160 90" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="3,3" marker-end="url(#arrowh)"/>
+        <text x="180" y="65" fill="#fbbf24" font-family="Orbitron,monospace" font-size="9" font-weight="900" text-anchor="middle">90° CW</text>
+        <defs><marker id="arrowh" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#fbbf24"/></marker></defs>
+      </svg>
+    </div>
+    <div class="callout"><strong>Pertanyaan:</strong> Setelah diputar 90° searah jarum jam, panah itu menghadap ke mana?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS2(this,'a')">Kanan</button>
+      <button class="pick-btn" onclick="pickS2(this,'b')">Kiri</button>
+      <button class="pick-btn" onclick="pickS2(this,'c')">Bawah</button>
+    </div>
+    <div class="pick-fb" id="fbS2"></div>
+    <div class="reveal-box show" style="margin-top:1.5rem;">
+      <div class="rule-text">Lanjutkan contoh:</div>
+      <div class="rule-sub">Diputar <strong>180°</strong> dari atas → menghadap <strong>BAWAH</strong> (arah dibalik sepenuhnya).<br>Diputar <strong>270°</strong> searah jarum jam dari atas → menghadap <strong>KIRI</strong>.</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Menemukan Pola →</button></div>
+  </div>
+
+  <!-- SLIDE 3: Menemukan Pola Rotasi -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title">Menemukan Pola <span class="hv">Rotasi</span> 🔍</div>
+      <div class="slide-sub">Sekarang pindah ke bidang Kartesius. Titik A(2,1) diputar <strong>90° berlawanan arah jarum jam terhadap titik O(0,0)</strong>.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="260" height="220" viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg">
+        <line x1="10" y1="115" x2="250" y2="115" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="250,115 242,111 242,119" fill="#64748b"/>
+        <text x="236" y="109" fill="#64748b" font-family="Orbitron,monospace" font-size="9" font-weight="900">x</text>
+        <line x1="130" y1="15" x2="130" y2="205" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="130,15 126,23 134,23" fill="#64748b"/>
+        <text x="138" y="23" fill="#64748b" font-family="Orbitron,monospace" font-size="9" font-weight="900">y</text>
+        <circle cx="130" cy="115" r="2.5" fill="#64748b"/>
+        <text x="118" y="128" fill="#64748b" font-family="Orbitron,monospace" font-size="8">O</text>
+        <circle cx="170" cy="95" r="6" fill="#22d3ee" stroke="#0a0a0f" stroke-width="1.5"/>
+        <text x="170" y="82" fill="#22d3ee" font-family="Orbitron,monospace" font-size="10" font-weight="900" text-anchor="middle">A(2,1)</text>
+        <path d="M 170 95 A 45.6 45.6 0 0 1 110 55" fill="none" stroke="#a78bfa" stroke-width="2" stroke-dasharray="5,3"/>
+        <circle cx="110" cy="55" r="6" fill="#a78bfa" stroke="#0a0a0f" stroke-width="1.5"/>
+        <text x="90" y="48" fill="#a78bfa" font-family="Orbitron,monospace" font-size="10" font-weight="900" text-anchor="middle">A'=?</text>
+      </svg>
+    </div>
+    <div class="callout"><strong>Amati:</strong> Perhatikan bagaimana posisi titik A berpindah mengelilingi O. Bentuk (satu titik) tidak berubah, hanya arah dan posisinya.</div>
+    <button class="reveal-btn" onclick="revealS3()">Lihat Hasil Perputaran 🔓</button>
+    <div class="reveal-box" id="rb3">
+      <div class="rule-text">A(2,1) → A'(−1,2)</div>
+      <div class="rule-sub">Nilai x dan y saling bertukar tempat, dan nilai x yang baru berubah tanda. Pola ini disebut <strong>Rotasi (Perputaran)</strong>.</div>
+    </div>
+    <table class="mid-table" style="margin-top:1.2rem;">
+      <tr><th>Titik Awal</th><th>Rotasi</th><th>Titik Akhir</th></tr>
+      <tr><td>(2, 1)</td><td>90° CCW thd O</td><td class="mval">(−1, 2)</td></tr>
+      <tr><td>(4, 3)</td><td>90° CCW thd O</td><td class="mval">(−3, 4)</td></tr>
+      <tr><td>(5, −2)</td><td>90° CCW thd O</td><td class="mval">(2, 5)</td></tr>
+    </table>
+    <div class="callout amber"><strong>Perhatikan:</strong> Bentuk dan ukuran bangun tetap sama — hanya arah hadapnya (orientasi) dan posisinya yang berubah, berputar mengelilingi pusat O.</div>
+    <div class="formula-hero">
+      <div class="formula-text">Rotasi 90° CCW: (x, y) → (−y, x)</div>
+      <div class="formula-sub"><span>pusat rotasi O(0,0)</span><span>CCW = berlawanan arah jarum jam</span></div>
+    </div>
+    <div class="callout"><strong>Cek pemahaman:</strong> Titik (3,5) diputar 90° berlawanan arah jarum jam terhadap O. Berapa koordinat akhirnya?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS3(this,'a')">(−5, 3)</button>
+      <button class="pick-btn" onclick="pickS3(this,'b')">(5, −3)</button>
+      <button class="pick-btn" onclick="pickS3(this,'c')">(5, 3)</button>
+    </div>
+    <div class="pick-fb" id="fbS3"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Rotation Challenge →</button></div>
+  </div>
+
+  <!-- SLIDE 4: Rotation Challenge -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Rotation <span class="ha">Challenge</span> 🎯</div>
+      <div class="slide-sub">Rotasi tidak cuma 90°. Berikut pola untuk 90°, 180°, dan 270° berlawanan arah jarum jam terhadap O, semua bisa ditemukan polanya!</div>
+    </div>
+    <table class="mid-table">
+      <tr><th>Rotasi</th><th>Aturan</th><th>Contoh (4,6) →</th></tr>
+      <tr><td>90° CCW</td><td>(x,y)→(−y,x)</td><td class="mval">(−6, 4)</td></tr>
+      <tr><td>180°</td><td>(x,y)→(−x,−y)</td><td class="mval">(−4, −6)</td></tr>
+      <tr><td>270° CCW</td><td>(x,y)→(y,−x)</td><td class="mval">(6, −4)</td></tr>
+    </table>
+    <div class="callout cyan"><strong>Trik cepat:</strong> 270° CCW sama saja dengan diputar 90° searah jarum jam. Semakin besar sudutnya, semakin jauh titik berputar mengelilingi O.</div>
+    <div class="formula-hero">
+      <div class="formula-text" style="font-size:1.05rem;">90°: (−y,x) &nbsp;·&nbsp; 180°: (−x,−y) &nbsp;·&nbsp; 270°: (y,−x)</div>
+      <div class="formula-sub"><span>selalu terhadap pusat O(0,0)</span></div>
+    </div>
+    <div class="callout"><strong>Tantangan:</strong> Titik D(−4,1) diputar 90° berlawanan arah jarum jam terhadap O. Berapa hasilnya?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS4(this,'a')">(−1, −4)</button>
+      <button class="pick-btn" onclick="pickS4(this,'b')">(1, −4)</button>
+      <button class="pick-btn" onclick="pickS4(this,'c')">(−1, 4)</button>
+    </div>
+    <div class="pick-fb" id="fbS4"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Misi 2: Zoom! →</button></div>
+  </div>
+
+  <!-- SLIDE 5: Misi 2 - Portal Zoom -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title">Misi 2: Portal <span class="ha">Zoom</span> 🔍</div>
+      <div class="slide-sub">Sebuah segitiga kecil berada tepat di pusat portal zoom. Portal ini membuat SEMUA jarak titik-titiknya dari pusat menjadi <strong>2 kali lipat</strong>.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="240" height="180" viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="120" cy="90" r="2.5" fill="#64748b"/>
+        <text x="120" y="105" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">O</text>
+        <polygon points="132,102 148,102 132,86" fill="rgba(34,211,238,0.2)" stroke="#22d3ee" stroke-width="2"/>
+        <polygon points="144,114 176,114 144,82" fill="none" stroke="#fbbf24" stroke-width="1.8" stroke-dasharray="5,3"/>
+        <text x="160" y="128" fill="#fbbf24" font-family="Orbitron,monospace" font-size="9" font-weight="900" text-anchor="middle">2×?</text>
+      </svg>
+    </div>
+    <div class="callout"><strong>Pertanyaan:</strong> Kalau portal membuat semua jarak dari pusat menjadi dua kali lipat, bagaimana bentuk barunya? Coba tebak sebelum lanjut membaca.</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS5(this,'a')">Membesar 2×, tapi bentuknya tetap sebangun (sudut sama)</button>
+      <button class="pick-btn" onclick="pickS5(this,'b')">Berubah menjadi bentuk lain, misalnya lingkaran</button>
+      <button class="pick-btn" onclick="pickS5(this,'c')">Mengecil menjadi setengah ukuran semula</button>
+      <button class="pick-btn" onclick="pickS5(this,'d')">Ukuran dan bentuknya tetap sama persis</button>
+    </div>
+    <div class="pick-fb" id="fbS5"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Menemukan Pola →</button></div>
+  </div>
+
+  <!-- SLIDE 6: Menemukan Pola Dilatasi -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title">Menemukan Pola <span class="ha">Dilatasi</span> 🔎</div>
+      <div class="slide-sub">Perhatikan beberapa contoh titik yang dijauhkan/didekatkan dari pusat O dengan faktor skala k berikut. Apa yang berubah?</div>
+    </div>
+    <table class="mid-table">
+      <tr><th>Titik Awal</th><th>Faktor Skala k</th><th>Titik Akhir</th></tr>
+      <tr><td>(2, 3)</td><td>k = 2</td><td class="mval">(4, 6)</td></tr>
+      <tr><td>(1, 4)</td><td>k = 3</td><td class="mval">(3, 12)</td></tr>
+      <tr><td>(6, 8)</td><td>k = 1/2</td><td class="mval">(3, 4)</td></tr>
+    </table>
+    <div class="callout cyan"><strong>Tanya:</strong> Apa yang berubah dari titik-titik itu?</div>
+    <div class="callout amber"><strong>Perhatikan:</strong> Nilai x dan y masing-masing DIKALIKAN dengan faktor skala k yang sama. Ukurannya berubah (membesar jika k>1, mengecil jika 0&lt;k&lt;1), tapi bentuk dan arahnya tetap sama.</div>
+    <div class="callout"><strong>Perkenalan istilah:</strong> Perubahan ukuran seperti ini disebut <strong>Dilatasi</strong>.</div>
+    <div class="formula-hero">
+      <div class="formula-text">(x, y) → (kx, ky)</div>
+      <div class="formula-sub"><span>k = faktor skala, pusat O(0,0)</span></div>
+    </div>
+    <div class="callout"><strong>Cek pemahaman:</strong> Titik (5,−2) didilatasi dengan faktor skala 3 terhadap O. Berapa koordinat akhirnya?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS6(this,'a')">(15, −6)</button>
+      <button class="pick-btn" onclick="pickS6(this,'b')">(8, 1)</button>
+      <button class="pick-btn" onclick="pickS6(this,'c')">(15, 6)</button>
+    </div>
+    <div class="pick-fb" id="fbS6"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">Zoom Challenge →</button></div>
+  </div>
+
+  <!-- SLIDE 7: Zoom Challenge -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">Zoom <span class="ha">Challenge</span> 🎯</div>
+      <div class="slide-sub">Dilatasi berlaku untuk memperbesar (k&gt;1) maupun memperkecil (0&lt;k&lt;1). Fokus pada hubungan titik terhadap pusat O(0,0).</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="260" height="200" viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg">
+        <line x1="10" y1="100" x2="250" y2="100" stroke="#64748b" stroke-width="1.5"/>
+        <line x1="130" y1="10" x2="130" y2="190" stroke="#64748b" stroke-width="1.5"/>
+        <circle cx="130" cy="100" r="2.5" fill="#64748b"/>
+        <polygon points="150,88 170,88 150,68" fill="none" stroke="#22d3ee" stroke-width="1.8"/>
+        <text x="146" y="60" fill="#22d3ee" font-family="Orbitron,monospace" font-size="8" font-weight="900" text-anchor="middle">Bangun asal</text>
+        <polygon points="190,64 230,64 190,24" fill="none" stroke="#fbbf24" stroke-width="1.8" stroke-dasharray="4,3"/>
+        <text x="210" y="18" fill="#fbbf24" font-family="Orbitron,monospace" font-size="8" font-weight="900" text-anchor="middle">Diperbesar k=2</text>
+        <polygon points="140,94 150,94 140,84" fill="none" stroke="#fb7185" stroke-width="1.8" stroke-dasharray="4,3"/>
+        <text x="145" y="112" fill="#fb7185" font-family="Orbitron,monospace" font-size="8" font-weight="900" text-anchor="middle">Diperkecil k=1/2</text>
+      </svg>
+    </div>
+    <div class="callout"><strong>Latihan:</strong> Titik E(−4,6) didilatasi dengan faktor skala 1/2 terhadap O. Berapa koordinat hasilnya?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS7(this,'a')">(−2, 3)</button>
+      <button class="pick-btn" onclick="pickS7(this,'b')">(−8, 12)</button>
+      <button class="pick-btn" onclick="pickS7(this,'c')">(2, −3)</button>
+    </div>
+    <div class="pick-fb" id="fbS7"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Siapa Aku? →</button></div>
+  </div>
+
+  <!-- SLIDE 8: Siapa Aku? -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">Siapa <span class="hr">Aku?</span> 🤔</div>
+      <div class="slide-sub">Empat transformasi, empat pola berbeda. Perhatikan keempat kasus berikut lalu tentukan alasannya.</div>
+    </div>
+    <div class="callout cyan"><strong>Kasus 1:</strong> (3,2) → (3,−2)</div>
+    <div class="steps"><div class="step"><div class="step-num c">→</div><div class="step-body"><div class="sdesc">x tetap, hanya y berubah tanda → <strong>Refleksi terhadap sumbu-x</strong>.</div></div></div></div>
+    <div class="callout emerald" style="margin-top:1.2rem;"><strong>Kasus 2:</strong> (3,2) → (7,6)</div>
+    <div class="steps"><div class="step"><div class="step-num e">→</div><div class="step-body"><div class="sdesc">x dan y sama-sama bertambah 4 → <strong>Translasi</strong> (+4,+4).</div></div></div></div>
+    <div class="callout" style="margin-top:1.2rem;"><strong>Kasus 3:</strong> (3,2) → (−2,3)</div>
+    <div class="steps"><div class="step"><div class="step-num">→</div><div class="step-body"><div class="sdesc">x dan y saling bertukar tempat dengan satu tanda berubah, sesuai (x,y)→(−y,x) → <strong>Rotasi 90° CCW</strong>.</div></div></div></div>
+    <div class="callout amber" style="margin-top:1.2rem;"><strong>Kasus 4:</strong> (3,2) → (6,4)</div>
+    <div class="steps"><div class="step"><div class="step-num a">→</div><div class="step-body"><div class="sdesc">x dan y sama-sama dikalikan 2 → <strong>Dilatasi</strong> faktor skala k=2.</div></div></div></div>
+    <div class="callout rose"><strong>Kunci membedakan:</strong> Satu nilai berubah tanda saja → refleksi. Kedua nilai ditambah angka yang sama → translasi. x dan y saling bertukar (dengan satu tanda berubah) → rotasi. Kedua nilai dikalikan angka yang sama → dilatasi.</div>
+    <div class="callout"><strong>Tantangan:</strong> (4,−1) → (−4,1). Ini termasuk transformasi apa?</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS8(this,'a')">Rotasi 180°</button>
+      <button class="pick-btn" onclick="pickS8(this,'b')">Refleksi sumbu-y</button>
+      <button class="pick-btn" onclick="pickS8(this,'c')">Translasi</button>
+      <button class="pick-btn" onclick="pickS8(this,'d')">Dilatasi</button>
+    </div>
+    <div class="pick-fb" id="fbS8"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Ultimate Quest →</button></div>
+  </div>
+
+  <!-- SLIDE 9: Ultimate Transformation Quest -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">Ultimate <span class="hr">Transformation Quest</span> 🧩</div>
+      <div class="slide-sub">Segitiga T(1,1), (3,1), (1,4). Putar 90° berlawanan arah jarum jam terhadap O, lalu dilatasi hasilnya dengan faktor skala 2.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="280" height="220" viewBox="0 0 280 220" xmlns="http://www.w3.org/2000/svg">
+        <line x1="10" y1="115" x2="270" y2="115" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="270,115 262,111 262,119" fill="#64748b"/>
+        <line x1="140" y1="15" x2="140" y2="205" stroke="#64748b" stroke-width="1.5"/>
+        <polygon points="140,15 136,23 144,23" fill="#64748b"/>
+        <text x="148" y="23" fill="#64748b" font-family="Orbitron,monospace" font-size="9" font-weight="900">y</text>
+        <!-- Segitiga awal (cyan) -->
+        <polygon points="156,99 188,99 156,79" fill="rgba(34,211,238,0.15)" stroke="#22d3ee" stroke-width="2"/>
+        <text x="150" y="112" fill="#22d3ee" font-family="Orbitron,monospace" font-size="8" font-weight="900" text-anchor="middle">T</text>
+        <!-- Segitiga rotasi (violet dashed) -->
+        <polygon points="124,99 124,67 104,99" fill="rgba(167,139,250,0.1)" stroke="#a78bfa" stroke-width="2" stroke-dasharray="4,3"/>
+        <text x="112" y="60" fill="#a78bfa" font-family="Orbitron,monospace" font-size="8" font-weight="900" text-anchor="middle">T'</text>
+        <!-- Segitiga dilatasi akhir (amber) -->
+        <polygon points="108,99 108,35 44,99" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="2"/>
+        <text x="60" y="30" fill="#fbbf24" font-family="Orbitron,monospace" font-size="8" font-weight="900" text-anchor="middle">T''</text>
+      </svg>
+    </div>
+    <div class="diagram-note">Cyan = segitiga awal · Ungu putus-putus = setelah rotasi 90° CCW · Amber = hasil akhir setelah dilatasi ×2</div>
+    <div class="callout"><strong>Langkah berpikir:</strong> Putar dulu ketiga titik sudut terhadap O, baru dilatasi HASIL rotasi tersebut dengan faktor skala 2.</div>
+    <button class="reveal-btn" onclick="revealS9()">Lihat Penyelesaian 🔓</button>
+    <div class="reveal-box" id="rb9">
+      <div class="rule-text">Langkah 1 — Rotasi 90° CCW: (x,y)→(−y,x)</div>
+      <div class="rule-sub">(1,1)→(−1,1) &nbsp;|&nbsp; (3,1)→(−1,3) &nbsp;|&nbsp; (1,4)→(−4,1)</div>
+      <div class="rule-text" style="margin-top:0.8rem;">Langkah 2 — Dilatasi k=2: (x,y)→(2x,2y)</div>
+      <div class="rule-sub">(−1,1)→(−2,2) &nbsp;|&nbsp; (−1,3)→(−2,6) &nbsp;|&nbsp; (−4,1)→(−8,2)</div>
+      <div class="rule-text" style="margin-top:0.8rem;color:var(--emerald);">Koordinat akhir segitiga</div>
+      <div class="rule-sub">(−2,2), (−2,6), (−8,2)</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Kesimpulan →</button></div>
+  </div>
+
+  <!-- SLIDE 10: Kesimpulan -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Rangkuman &amp; <span class="hv">Penutup</span> 🎓</div>
+      <div class="slide-sub">Semua portal di Transformation Quest II berhasil kamu lewati! Ini rangkuman temuanmu:</div>
+    </div>
+    <div class="summary-card">
+      <h3>📋 CATATAN PEMAIN</h3>
+      <div class="summary-item"><span>🌀</span>Rotasi memutar bangun terhadap suatu pusat; bentuk dan ukuran tetap sama, hanya arah dan posisi yang berubah.</div>
+      <div class="summary-item"><span>📝</span><strong style="color:var(--violet)">90°: (x,y)→(−y,x) · 180°: (x,y)→(−x,−y) · 270°: (x,y)→(y,−x)</strong></div>
+      <div class="summary-item"><span>🔍</span>Dilatasi memperbesar/mengecilkan bangun terhadap suatu pusat; bentuk tetap sebangun, hanya ukurannya berubah.</div>
+      <div class="summary-item"><span>📝</span><strong style="color:var(--amber)">Rumus dilatasi: (x,y) → (kx, ky), k = faktor skala</strong></div>
+      <div class="summary-item"><span>🔎</span>Cara membedakan keempatnya: nilai ditambah sama → translasi; satu nilai berubah tanda → refleksi; x&amp;y bertukar (satu tanda berubah) → rotasi; x&amp;y dikalikan angka sama → dilatasi.</div>
+      <div class="summary-item"><span>🧩</span>Rotasi dan dilatasi bisa digabung berurutan, seperti pada Ultimate Transformation Quest.</div>
+    </div>
+    <div class="big-quote">
+      <div class="big-quote-text">"Transformasi bukan mengubah identitas bangun,<br>tetapi mengubah <em>cara bangun tersebut</em><br>berada di ruang."</div>
+    </div>
+    <div class="callout rose"><strong>Preview selanjutnya:</strong> Bisakah kamu menggunakan translasi, refleksi, rotasi, dan dilatasi sekaligus untuk memecahkan satu tantangan geometri besar? Nantikan Geometry Escape Room! 🚪</div>
+    <div class="done-actions">
+      <a href="quicktest29.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise29.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson29.html" class="da-btn da-secondary">Lesson 29</a>
+    </div>
+  </div>
+
+</div>
+<script>
+let currentSlide=1;
+const TOTAL=10;
+function goSlide(n){
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide=n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width=((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function pickS2(btn,ans){
+  document.querySelectorAll('#slide2 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS2');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Dari menghadap atas, diputar 90° searah jarum jam akan menghadap ke KANAN.';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS2(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. Searah jarum jam dari atas: 90° pertama jatuh ke KANAN, bukan kiri atau bawah.';}
+}
+function pickS3(btn,ans){
+  document.querySelectorAll('#slide3 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS3');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! (x,y)→(−y,x): (3,5)→(−5,3).';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS3(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. Rumus 90° CCW adalah (x,y)→(−y,x), jadi (3,5)→(−5,3).';}
+}
+function pickS4(btn,ans){
+  document.querySelectorAll('#slide4 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS4');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! (x,y)→(−y,x): (−4,1)→(−1,−4).';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS4(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. (x,y)→(−y,x): D(−4,1) → (−1,−4).';}
+}
+function pickS5(btn,ans){
+  document.querySelectorAll('#slide5 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS5');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Jarak dari pusat dikalikan 2 membuat bangun membesar 2× sambil tetap sebangun (sudutnya tidak berubah).';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS5(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. Semua jarak ×2 dari pusat membuat bangun membesar 2× tapi bentuknya (sudutnya) tetap sama — ini yang disebut sebangun.';}
+}
+function pickS6(btn,ans){
+  document.querySelectorAll('#slide6 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS6');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! (x,y)→(3x,3y): (5,−2)→(15,−6).';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS6(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. Kedua nilai dikalikan k=3: (5,−2)→(15,−6).';}
+}
+function pickS7(btn,ans){
+  document.querySelectorAll('#slide7 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS7');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! (x,y)→(x/2,y/2): (−4,6)→(−2,3).';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS7(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. Faktor 1/2 berarti kedua nilai dikalikan 1/2: (−4,6)→(−2,3).';}
+}
+function pickS8(btn,ans){
+  document.querySelectorAll('#slide8 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS8');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Kedua nilai berubah tanda (dikalikan −1) tanpa bertukar tempat → Rotasi 180°, sesuai (x,y)→(−x,−y).';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS8(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. (4,−1)→(−4,1) cocok dengan pola (x,y)→(−x,−y), yaitu Rotasi 180° terhadap O.';}
+}
+function revealS3(){
+  const rb=document.getElementById('rb3');
+  rb.classList.add('show'); rb.style.display='block';
+}
+function revealS9(){
+  const rb=document.getElementById('rb9');
+  rb.classList.add('show'); rb.style.display='block';
+}
+</script>
+</body>
+</html>
