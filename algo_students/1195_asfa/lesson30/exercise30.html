@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise · Lesson 30 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--red:#ef4444;--cyan:#22d3ee;--emerald:#34d399;--amber:#fbbf24;--violet:#a78bfa;--rose:#fb7185;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(34,211,238,0.06) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(251,191,36,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--emerald);}
+  .wrapper{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 6rem;position:relative;z-index:1;}
+  .page-header{text-align:center;margin-bottom:2rem;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--emerald);margin-bottom:0.5rem;}
+  .page-sub{color:var(--muted);font-size:0.9rem;}
+  .prog-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin-bottom:2rem;}
+  .prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+  .prog-val{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--emerald);}
+  .prog-bar{background:var(--border);border-radius:99px;height:6px;overflow:hidden;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--amber));border-radius:99px;transition:width 0.5s ease;}
+  .dot-row{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.8rem;}
+  .dot{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);cursor:pointer;transition:all 0.2s;font-family:'Orbitron',monospace;font-size:0.6rem;display:flex;align-items:center;justify-content:center;color:var(--muted);}
+  .dot.done-ok{background:rgba(0,245,196,0.15);border-color:var(--neon);color:var(--neon);}
+  .dot.done-ko{background:rgba(239,68,68,0.12);border-color:var(--red);color:var(--red);}
+  .dot.active{border-color:var(--cyan);color:var(--cyan);background:rgba(34,211,238,0.1);}
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem;margin-bottom:1.2rem;display:none;}
+  .q-card.active{display:block;animation:fadeIn 0.3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+  .q-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;}
+  .q-tag{font-size:0.65rem;padding:0.2rem 0.6rem;border-radius:99px;font-weight:700;}
+  .tag-sampel{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .tag-kejadian{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+  .tag-rumus{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.3);}
+  .tag-banding{background:rgba(251,113,133,0.1);color:var(--rose);border:1px solid rgba(251,113,133,0.3);}
+  .q-text{font-size:0.95rem;line-height:1.7;margin-bottom:1rem;color:var(--text);}
+  .q-text strong{color:var(--cyan);}
+  .raw-box{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.85rem;text-align:center;font-family:'Orbitron',monospace;font-size:0.88rem;color:var(--cyan);letter-spacing:1px;margin-bottom:1rem;line-height:1.8;}
+  .raw-box.sit{font-family:'Nunito',sans-serif;font-size:0.86rem;color:var(--text);letter-spacing:0;font-weight:700;}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-bottom:0.8rem;}
+  @media(max-width:400px){.opts{grid-template-columns:1fr;}}
+  .opt-btn{background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.65rem 0.8rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.76rem;letter-spacing:1px;transition:all 0.2s;text-align:center;line-height:1.4;}
+  .opt-btn:hover:not(:disabled){border-color:var(--cyan);background:rgba(34,211,238,0.07);}
+  .opt-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .opt-btn.reveal-correct{border-color:var(--neon);background:rgba(0,245,196,0.06);color:var(--neon);}
+  .q-feedback{min-height:24px;font-size:0.85rem;margin-bottom:0.8rem;line-height:1.5;}
+  .q-feedback.ok{color:var(--neon);}
+  .q-feedback.ko{color:var(--red);}
+  .q-nav{display:flex;gap:0.8rem;justify-content:flex-end;}
+  .qnav-btn{background:var(--card);border:1px solid var(--border);color:var(--text);padding:0.55rem 1.2rem;border-radius:8px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.7rem;letter-spacing:2px;transition:all 0.2s;}
+  .qnav-btn.next{background:linear-gradient(135deg,var(--cyan),#0891b2);border:none;color:#000;font-weight:800;}
+  .qnav-btn:hover:not(.next){border-color:var(--cyan);}
+  #resultPanel{display:none;background:var(--card);border:1px solid rgba(34,211,238,0.3);border-radius:18px;padding:2rem;text-align:center;margin-top:2rem;}
+  .result-score{font-family:'Orbitron',monospace;font-size:3.5rem;font-weight:900;color:var(--cyan);margin-bottom:0.3rem;}
+  .result-sub{color:var(--muted);font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1.5rem;}
+  .result-grade{display:inline-block;font-family:'Orbitron',monospace;font-size:1rem;letter-spacing:3px;padding:0.5rem 1.5rem;border-radius:12px;margin-bottom:1.5rem;}
+  .rg-s{background:rgba(0,245,196,0.1);border:2px solid var(--neon);color:var(--neon);}
+  .rg-a{background:rgba(245,158,11,0.1);border:2px solid var(--accent);color:var(--accent);}
+  .rg-b{background:rgba(34,211,238,0.1);border:2px solid var(--cyan);color:var(--cyan);}
+  .rg-c{background:rgba(239,68,68,0.1);border:2px solid var(--red);color:var(--red);}
+  .result-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .ra-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;text-decoration:none;display:inline-block;transition:all 0.2s;cursor:pointer;}
+  .ra-primary{background:linear-gradient(135deg,var(--cyan),#0891b2);color:#000;border:none;font-weight:800;}
+  .ra-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .ra-primary:hover{transform:translateY(-2px);}
+  .ra-secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+  .reset-link{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--muted);cursor:pointer;text-decoration:underline;display:block;text-align:right;margin-top:0.5rem;}
+  .reset-link:hover{color:var(--red);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson30.html">LESSON 30</a>
+  <span>›</span>
+  <span class="current">EXERCISE</span>
+</nav>
+<div class="wrapper">
+  <div class="page-header">
+    <div class="page-title">🏋️ Exercise Zone</div>
+    <div class="page-sub">20 soal ruang sampel, kejadian, rumus peluang, dan membandingkan peluang · Progress tersimpan otomatis</div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-top">
+      <div class="prog-label">Progress</div>
+      <div class="prog-val" id="progVal">0 / 20</div>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="dot-row" id="dotRow"></div>
+    <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+  </div>
+  <div id="questionsDiv"></div>
+  <div id="resultPanel">
+    <div style="font-size:3rem;margin-bottom:1rem;">🎉</div>
+    <div class="result-score" id="rScore">0</div>
+    <div class="result-sub">DARI 200 POIN</div>
+    <div class="result-grade" id="rGrade">—</div>
+    <div class="result-actions">
+      <button class="ra-btn ra-primary" onclick="resetProgress()">ULANGI</button>
+      <a href="quicktest30.html" class="ra-btn ra-secondary">Quick Test ⚡</a>
+      <a href="lesson30.html" class="ra-btn ra-secondary">Lesson 30</a>
+    </div>
+  </div>
+</div>
+<script>
+const KEY='asfa_ex30_v1';
+const QS=[
+  {tag:'sampel',dataStr:'Sebuah koin dilempar satu kali.',q:'Berapa n(S), banyak anggota ruang sampelnya?',cx:'2',wx:['1','3','4'],expl:'S = {Angka, Gambar}, jadi n(S) = 2.'},
+  {tag:'sampel',dataStr:'Sebuah dadu bermata enam dilempar satu kali.',q:'Berapa n(S)?',cx:'6',wx:['1','5','12'],expl:'S = {1,2,3,4,5,6}, jadi n(S) = 6.'},
+  {tag:'sampel',dataStr:'Dua koin dilempar bersamaan. Ruang sampelnya S = {AA, AG, GA, GG}.',q:'Berapa n(S) untuk pelemparan dua koin ini?',cx:'4',wx:['2','8','16'],expl:'S memuat 4 anggota berbeda, jadi n(S) = 4.'},
+  {tag:'sampel',dataStr:'Kartu bertuliskan huruf M, A, T, H diletakkan di meja. Diambil 1 kartu secara acak.',q:'Berapa n(S) percobaan ini?',cx:'4',wx:['3','5','1'],expl:'Ada 4 huruf berbeda (M, A, T, H), jadi n(S) = 4.'},
+  {tag:'sampel',dataStr:'Sepuluh kartu bernomor 1 sampai 10 dikocok, lalu diambil 1 kartu secara acak.',q:'Berapa n(S) percobaan ini?',cx:'10',wx:['1','9','100'],expl:'Ada 10 kartu berbeda dengan nomor 1–10, jadi n(S) = 10.'},
+
+  {tag:'kejadian',dataStr:'Dadu dilempar. Kejadian A = "muncul angka genap".',q:'Apa saja anggota kejadian A?',cx:'{2, 4, 6}',wx:['{1, 3, 5}','{2, 4}','{4, 6}'],expl:'Angka genap pada dadu (1–6) adalah 2, 4, dan 6, jadi A = {2,4,6}.'},
+  {tag:'kejadian',dataStr:'Dadu dilempar. Kejadian B = "muncul angka lebih dari 3".',q:'Apa saja anggota kejadian B?',cx:'{4, 5, 6}',wx:['{1, 2, 3}','{3, 4, 5, 6}','{5, 6}'],expl:'Angka lebih dari 3 pada dadu adalah 4, 5, dan 6, jadi B = {4,5,6}.'},
+  {tag:'kejadian',dataStr:'Dadu dilempar. Kejadian C = "muncul angka kurang dari 3".',q:'Apa saja anggota kejadian C?',cx:'{1, 2}',wx:['{1, 2, 3}','{2}','{4, 5, 6}'],expl:'Angka kurang dari 3 pada dadu adalah 1 dan 2, jadi C = {1,2}.'},
+  {tag:'kejadian',dataStr:'Dadu dilempar. Kejadian D = "muncul bilangan prima".',q:'Apa saja anggota kejadian D?',cx:'{2, 3, 5}',wx:['{1, 3, 5}','{2, 3, 5, 7}','{2, 4, 6}'],expl:'Bilangan prima pada dadu (1–6) adalah 2, 3, dan 5, jadi D = {2,3,5}.'},
+  {tag:'kejadian',dataStr:'Dadu dilempar. Kejadian E = "muncul kelipatan 2".',q:'Apa saja anggota kejadian E?',cx:'{2, 4, 6}',wx:['{2, 4}','{1, 2, 3, 4, 5, 6}','{4, 6}'],expl:'Kelipatan 2 pada dadu (1–6) adalah 2, 4, dan 6, jadi E = {2,4,6}.'},
+
+  {tag:'rumus',dataStr:'Data: n(A) = 2, n(S) = 8.',q:'Berapa P(A)?',cx:'1/4',wx:['1/2','1/8','3/8'],expl:'P(A) = n(A)/n(S) = 2/8 = 1/4.'},
+  {tag:'rumus',dataStr:'Dadu dilempar. Kejadian "muncul angka 5".',q:'Berapa peluangnya?',cx:'1/6',wx:['1/3','5/6','1/2'],expl:'n(A) = 1 (hanya angka 5), n(S) = 6. P(A) = 1/6.'},
+  {tag:'rumus',dataStr:'Dadu dilempar. Kejadian "muncul angka kurang dari 4".',q:'Berapa peluangnya?',cx:'1/2',wx:['1/3','2/3','1/6'],expl:'Angka kurang dari 4 = {1,2,3}, n(A)=3, n(S)=6. P(A) = 3/6 = 1/2.'},
+  {tag:'rumus',dataStr:'Situasi: Kotak berisi 5 kartu bernomor 1–5. Diambil 1 kartu secara acak.',q:'Berapa peluang terambil kartu bernomor ganjil?',cx:'3/5',wx:['2/5','1/5','4/5'],expl:'Kartu ganjil = {1,3,5}, n(A)=3, n(S)=5. P(A) = 3/5.'},
+  {tag:'rumus',dataStr:'Situasi: Kantong berisi 7 bola: 2 merah dan 5 putih. Diambil 1 bola secara acak.',q:'Berapa peluang terambil bola merah?',cx:'2/7',wx:['5/7','2/5','1/7'],expl:'n(merah)=2, n(S)=7 (total bola). P(merah) = 2/7.'},
+
+  {tag:'banding',dataStr:'Dadu dilempar sekali.',q:'Mana yang lebih mungkin: keluar angka 1, atau keluar bilangan genap?',cx:'Keluar bilangan genap',wx:['Keluar angka 1','Sama mungkinnya','Tidak bisa ditentukan'],expl:'Bilangan genap {2,4,6} punya 3 kemungkinan (P=3/6), sedangkan angka 1 saja cuma 1 kemungkinan (P=1/6).'},
+  {tag:'banding',dataStr:'Situasi: Loot box A memberi 80% hadiah Common. Loot box B memberi hadiah Common dengan peluang 3/4.',q:'Mana peluang dapat Common-nya lebih besar?',cx:'Loot box A',wx:['Loot box B','Sama besar','Tidak bisa dibandingkan'],expl:'80% = 0,8, sedangkan 3/4 = 0,75. Loot box A sedikit lebih besar peluangnya.'},
+  {tag:'banding',dataStr:'Situasi: Spinner 1 dibagi 5 bagian sama besar dengan 1 bagian menang. Spinner 2 dibagi 8 bagian sama besar dengan 2 bagian menang.',q:'Mana peluang menangnya lebih besar?',cx:'Spinner 2',wx:['Spinner 1','Sama besar','Tidak bisa dibandingkan'],expl:'Spinner 1: 1/5=0,2. Spinner 2: 2/8=0,25. Spinner 2 lebih besar peluangnya.'},
+  {tag:'banding',dataStr:'Situasi: Kantong X berisi 3 bola merah dari total 4 bola. Kantong Y berisi 6 bola merah dari total 10 bola.',q:'Mana peluang terambil bola merahnya lebih besar?',cx:'Kantong X',wx:['Kantong Y','Sama besar','Tidak bisa dibandingkan'],expl:'Kantong X: 3/4=0,75. Kantong Y: 6/10=0,6. Kantong X lebih besar peluangnya.'},
+  {tag:'banding',dataStr:'Dadu dilempar sekali.',q:'Mana yang lebih mungkin: keluar angka lebih dari 2, atau keluar angka kurang dari 3?',cx:'Keluar angka lebih dari 2',wx:['Keluar angka kurang dari 3','Sama mungkinnya','Tidak bisa ditentukan'],expl:'Lebih dari 2 = {3,4,5,6} (4/6), kurang dari 3 = {1,2} (2/6). "Lebih dari 2" lebih mungkin.'},
+];
+const TAG_LABEL={sampel:'Ruang Sampel',kejadian:'Kejadian',rumus:'Rumus Peluang',banding:'Bandingkan'};
+
+let state={};
+function loadState(){
+  try{const s=localStorage.getItem(KEY);if(s){state=JSON.parse(s);}}catch(e){state={};}
+  if(!state.answers) state.answers={};
+}
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
+
+function renderVisual(q){
+  const cls = q.dataStr.startsWith('Situasi') ? 'raw-box sit' : 'raw-box';
+  return `<div class="${cls}">${q.dataStr}</div>`;
+}
+
+function renderAll(){
+  const qd=document.getElementById('questionsDiv');
+  qd.innerHTML='';
+  QS.forEach((q,i)=>{
+    const ans=state.answers[i];
+    const done=ans!==undefined;
+    const opts=shuffle([q.cx,...q.wx]);
+    const tagClass='tag-'+q.tag;
+    let optsHtml='';
+    opts.forEach(v=>{
+      let cls='opt-btn';
+      if(done){
+        if(v===q.cx) cls+=' reveal-correct';
+        if(v===ans&&ans!==q.cx) cls+=' wrong';
+      }
+      optsHtml+=`<button class="${cls}" onclick="pickQ(${i},'${v.replace(/'/g,"\\'")}',this)" ${done?'disabled':''}>${v}</button>`;
+    });
+    let fbHtml='';
+    if(done){
+      const ok=ans===q.cx;
+      fbHtml=`<div class="q-feedback ${ok?'ok':'ko'}">${ok?'✅ '+q.expl:'❌ Benar: '+q.cx+'. '+q.expl}</div>`;
+    } else {
+      fbHtml=`<div class="q-feedback" id="fb${i}"></div>`;
+    }
+    const isActive=(i===currentQ())?'active':'';
+    qd.innerHTML+=`
+    <div class="q-card ${isActive}" id="qcard${i}">
+      <div class="q-meta">
+        <div class="q-num">Soal ${i+1} / 20</div>
+        <span class="q-tag ${tagClass}">${TAG_LABEL[q.tag]}</span>
+      </div>
+      ${renderVisual(q)}
+      <div class="q-text">${q.q}</div>
+      <div class="opts">${optsHtml}</div>
+      ${fbHtml}
+      <div class="q-nav">
+        ${i>0?`<button class="qnav-btn" onclick="jumpQ(${i-1})">← Prev</button>`:''}
+        ${i<19?`<button class="qnav-btn next" onclick="jumpQ(${i+1})">Next →</button>`:'<button class="qnav-btn next" onclick="showResult()">Lihat Hasil 🎉</button>'}
+      </div>
+    </div>`;
+  });
+  updateProgress();
+}
+
+function currentQ(){
+  for(let i=0;i<20;i++){if(state.answers[i]===undefined)return i;}
+  return 19;
+}
+function jumpQ(n){
+  document.querySelectorAll('.q-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('qcard'+n).classList.add('active');
+  window.scrollTo({top:document.getElementById('qcard'+n).offsetTop-80,behavior:'smooth'});
+}
+function pickQ(idx,chosen,btn){
+  if(state.answers[idx]!==undefined)return;
+  state.answers[idx]=chosen;
+  saveState();
+  const q=QS[idx];
+  const btns=btn.closest('.opts').querySelectorAll('.opt-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    const v=b.textContent;
+    if(v===q.cx) b.classList.add('reveal-correct');
+    if(v===chosen&&chosen!==q.cx) b.classList.add('wrong');
+  });
+  const fb=document.getElementById('fb'+idx);
+  if(fb){
+    const ok=chosen===q.cx;
+    fb.className='q-feedback '+(ok?'ok':'ko');
+    fb.textContent=ok?'✅ '+q.expl:'❌ Benar: '+q.cx+'. '+q.expl;
+  }
+  updateProgress();
+  if(idx<19) setTimeout(()=>jumpQ(idx+1),1600);
+  else setTimeout(()=>showResult(),1600);
+}
+function updateProgress(){
+  const done=Object.keys(state.answers).length;
+  document.getElementById('progVal').textContent=done+' / 20';
+  document.getElementById('progFill').style.width=(done/20*100)+'%';
+  const dr=document.getElementById('dotRow');
+  dr.innerHTML='';
+  for(let i=0;i<20;i++){
+    const a=state.answers[i];
+    let cls='dot';
+    if(a!==undefined) cls+=(a===QS[i].cx?' done-ok':' done-ko');
+    else if(i===currentQ()) cls+=' active';
+    dr.innerHTML+=`<div class="${cls}" onclick="jumpQ(${i})" title="Soal ${i+1}">${i+1}</div>`;
+  }
+}
+function showResult(){
+  const done=Object.keys(state.answers).length;
+  if(done<20){jumpQ(currentQ());return;}
+  let correct=0;
+  QS.forEach((q,i)=>{if(state.answers[i]===q.cx)correct++;});
+  const pts=correct*10;
+  document.getElementById('resultPanel').style.display='block';
+  document.getElementById('rScore').textContent=pts;
+  const rg=document.getElementById('rGrade');
+  if(correct>=18){rg.textContent='⭐ RANK S — MASTER DESIGNER';rg.className='result-grade rg-s';}
+  else if(correct>=14){rg.textContent='🏆 RANK A — LUCK ANALYST';rg.className='result-grade rg-a';}
+  else if(correct>=10){rg.textContent='💪 RANK B — JUNIOR DESIGNER';rg.className='result-grade rg-b';}
+  else{rg.textContent='📚 RANK C — TRAINEE';rg.className='result-grade rg-c';}
+  document.getElementById('resultPanel').scrollIntoView({behavior:'smooth'});
+}
+function resetProgress(){
+  if(!confirm('Reset semua progress Exercise 30?'))return;
+  state={answers:{}};
+  saveState();
+  renderAll();
+  document.getElementById('resultPanel').style.display='none';
+}
+loadState();
+renderAll();
+</script>
+</body>
+</html>

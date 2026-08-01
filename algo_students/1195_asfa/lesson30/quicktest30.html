@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Test · Lesson 30 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--red:#ef4444;--cyan:#22d3ee;--emerald:#34d399;--amber:#fbbf24;--violet:#a78bfa;--rose:#fb7185;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 25%,rgba(245,158,11,0.08) 0%,transparent 50%),radial-gradient(ellipse at 85% 70%,rgba(34,211,238,0.07) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--accent);}
+  .wrapper{max-width:660px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  #intro{text-align:center;}
+  .boss-icon{font-size:4.5rem;display:block;margin-bottom:1.2rem;animation:pulse 1.2s ease infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+  .boss-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,5vw,2rem);font-weight:900;color:var(--accent);margin-bottom:0.7rem;text-shadow:0 0 30px rgba(245,158,11,0.4);}
+  .boss-sub{color:var(--muted);line-height:1.7;margin-bottom:2rem;font-size:0.92rem;}
+  .boss-sub strong{color:var(--accent);}
+  .info-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
+  @media(max-width:480px){.info-cards{grid-template-columns:1fr;}}
+  .info-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;text-align:center;}
+  .info-val{font-family:'Orbitron',monospace;font-size:1.8rem;font-weight:900;color:var(--accent);margin-bottom:0.3rem;}
+  .info-lbl{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+  .start-btn{background:linear-gradient(135deg,var(--accent),#d97706);color:#000;font-weight:800;padding:1rem 3rem;border-radius:14px;border:none;font-family:'Orbitron',monospace;font-size:1rem;letter-spacing:3px;cursor:pointer;box-shadow:0 4px 20px rgba(245,158,11,0.4);transition:all 0.2s;}
+  .start-btn:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(245,158,11,0.5);}
+  #game{display:none;}
+  .hud{display:flex;gap:0.8rem;margin-bottom:1.5rem;}
+  .hud-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.7rem 1rem;text-align:center;flex:1;}
+  .hud-val{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:700;}
+  .hud-lbl{font-size:0.6rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:0.1rem;}
+  .hud-val.sv{color:var(--accent);}
+  .hud-val.qv{color:var(--cyan);}
+  .hud-val.tv{color:var(--text);transition:color 0.3s;}
+  .hud-val.tv.warn{color:var(--red);animation:blink 0.5s ease infinite;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.4;}}
+  .timer-bar{height:5px;background:var(--border);border-radius:99px;margin-bottom:1.5rem;overflow:hidden;}
+  .timer-fill{height:100%;background:linear-gradient(90deg,var(--accent),#f59e0b);border-radius:99px;transition:width 0.25s linear;}
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem;margin-bottom:1.2rem;}
+  .q-label{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:0.8rem;}
+  .q-tag{display:inline-block;font-size:0.6rem;padding:0.15rem 0.5rem;border-radius:99px;font-weight:700;margin-left:0.5rem;vertical-align:middle;}
+  .tag-sampel{background:rgba(34,211,238,0.12);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .tag-kejadian{background:rgba(167,139,250,0.12);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+  .tag-rumus{background:rgba(251,191,36,0.12);color:var(--amber);border:1px solid rgba(251,191,36,0.3);}
+  .tag-banding{background:rgba(251,113,133,0.12);color:var(--rose);border:1px solid rgba(251,113,133,0.3);}
+  .q-text{font-size:0.95rem;line-height:1.7;color:var(--text);margin-bottom:1.2rem;}
+  .raw-box{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.9rem;text-align:center;font-family:'Orbitron',monospace;font-size:0.9rem;color:var(--cyan);letter-spacing:1px;margin-bottom:1rem;line-height:1.8;}
+  .raw-box.sit{font-family:'Nunito',sans-serif;font-size:0.88rem;color:var(--text);letter-spacing:0;font-weight:700;}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;}
+  @media(max-width:360px){.opts{grid-template-columns:1fr;}}
+  .opt-btn{background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.7rem 0.8rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:1px;transition:all 0.2s;text-align:center;line-height:1.4;}
+  .opt-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(245,158,11,0.07);}
+  .opt-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .feedback{text-align:center;font-size:0.8rem;letter-spacing:1px;min-height:28px;margin-top:0.7rem;line-height:1.5;font-family:'Orbitron',monospace;}
+  .feedback.ok{color:var(--neon);}
+  .feedback.ko{color:var(--red);}
+  #result{display:none;text-align:center;}
+  .score-big{font-family:'Orbitron',monospace;font-size:clamp(3rem,12vw,5rem);font-weight:900;color:var(--accent);line-height:1;margin-bottom:0.5rem;}
+  .score-label{font-size:0.85rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:2rem;}
+  .grade-badge{display:inline-block;font-family:'Orbitron',monospace;font-size:1.1rem;letter-spacing:3px;padding:0.5rem 1.5rem;border-radius:12px;margin-bottom:2rem;}
+  .gs{background:rgba(0,245,196,0.1);border:2px solid var(--neon);color:var(--neon);}
+  .ga{background:rgba(245,158,11,0.1);border:2px solid var(--accent);color:var(--accent);}
+  .gb{background:rgba(34,211,238,0.1);border:2px solid var(--cyan);color:var(--cyan);}
+  .gc{background:rgba(239,68,68,0.1);border:2px solid var(--red);color:var(--red);}
+  .result-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .act-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;}
+  .act-primary{background:linear-gradient(135deg,var(--accent),#d97706);color:#000;border:none;font-weight:800;}
+  .act-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .act-primary:hover{transform:translateY(-2px);}
+  .act-secondary:hover{border-color:var(--accent);color:var(--accent);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson30.html">LESSON 30</a>
+  <span>›</span>
+  <span class="current">QUICK TEST</span>
+</nav>
+<div class="wrapper">
+  <div id="intro">
+    <span class="boss-icon">🕹️</span>
+    <div class="boss-title">Quick Test · Peluang Dasar</div>
+    <div class="boss-sub">Saatnya tes kemampuan game designer-mu! <strong>10 soal ruang sampel, kejadian, rumus peluang, dan membandingkan peluang</strong> dengan timer 30 detik per soal.</div>
+    <div class="info-cards">
+      <div class="info-card"><div class="info-val">10</div><div class="info-lbl">Soal</div></div>
+      <div class="info-card"><div class="info-val" style="color:var(--accent)">30s</div><div class="info-lbl">Timer</div></div>
+      <div class="info-card"><div class="info-val">+10</div><div class="info-lbl">Per Soal</div></div>
+    </div>
+    <button class="start-btn" onclick="startGame()">MULAI TES 🕹️</button>
+  </div>
+  <div id="game">
+    <div class="hud">
+      <div class="hud-item"><div class="hud-val sv" id="scoreV">0</div><div class="hud-lbl">Skor</div></div>
+      <div class="hud-item"><div class="hud-val qv" id="qV">1/10</div><div class="hud-lbl">Soal</div></div>
+      <div class="hud-item"><div class="hud-val tv" id="timerV">30</div><div class="hud-lbl">Detik</div></div>
+    </div>
+    <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+    <div class="q-card">
+      <div class="q-label" id="qLabel">🎲 Peluang Dasar <span class="q-tag" id="qTagBadge"></span></div>
+      <div id="visualDiv"></div>
+      <div class="q-text" id="questionText"></div>
+      <div class="opts" id="optsDiv"></div>
+      <div class="feedback" id="feedbackDiv"></div>
+    </div>
+  </div>
+  <div id="result">
+    <div style="font-size:4rem;margin-bottom:1rem;">🏆</div>
+    <div class="score-big" id="finalScore">0</div>
+    <div class="score-label">poin dari 100</div>
+    <div class="grade-badge" id="gradeBadge">—</div>
+    <div class="result-actions">
+      <button class="act-btn act-primary" onclick="resetGame()">ULANG</button>
+      <a href="exercise30.html" class="act-btn act-secondary">Exercise 🏋️</a>
+      <a href="lesson30.html" class="act-btn act-secondary">Lesson 30</a>
+    </div>
+  </div>
+</div>
+<script>
+const QS = [
+  {
+    tag:'sampel', type:'raw', dataStr:'Sebuah dadu bermata enam dilempar satu kali.',
+    q:'Berapa n(S), banyak anggota ruang sampelnya?',
+    cx:'6', wx:['1','2','12'],
+    expl:'S = {1,2,3,4,5,6}, jadi n(S) = 6.'
+  },
+  {
+    tag:'sampel', type:'raw', dataStr:'Dua koin dilempar bersama-sama satu kali. Ruang sampelnya S = {AA, AG, GA, GG}.',
+    q:'Berapa n(S) pelemparan dua koin ini?',
+    cx:'4', wx:['2','8','16'],
+    expl:'S memuat 4 anggota: {AA, AG, GA, GG}, jadi n(S) = 4.'
+  },
+  {
+    tag:'kejadian', type:'raw', dataStr:'Sebuah dadu dilempar. Kejadian A = "muncul angka lebih dari 4".',
+    q:'Apa saja anggota kejadian A?',
+    cx:'{5, 6}', wx:['{4, 5, 6}','{1, 2, 3, 4}','{6}'],
+    expl:'Angka lebih dari 4 pada dadu adalah 5 dan 6, jadi A = {5,6}.'
+  },
+  {
+    tag:'kejadian', type:'raw', dataStr:'Sebuah dadu dilempar. Kejadian B = "muncul kelipatan 3".',
+    q:'Apa saja anggota kejadian B?',
+    cx:'{3, 6}', wx:['{3}','{1, 3, 6}','{6}'],
+    expl:'Kelipatan 3 pada dadu (1–6) adalah 3 dan 6, jadi B = {3,6}.'
+  },
+  {
+    tag:'rumus', type:'raw', dataStr:'Titik data: n(A) = 3, n(S) = 6.',
+    q:'Berapa P(A)?',
+    cx:'1/2', wx:['1/3','2/3','1/6'],
+    expl:'P(A) = n(A)/n(S) = 3/6 = 1/2.'
+  },
+  {
+    tag:'rumus', type:'raw', dataStr:'Sebuah dadu dilempar. Kejadian A = "muncul angka ganjil".',
+    q:'Berapa peluang kejadian A?',
+    cx:'1/2', wx:['1/3','2/3','1/6'],
+    expl:'Angka ganjil = {1,3,5}, n(A)=3, n(S)=6. P(A) = 3/6 = 1/2.'
+  },
+  {
+    tag:'rumus', type:'situation', dataStr:'Situasi: Sebuah kantong berisi 4 kelereng merah dan 6 kelereng biru. Diambil 1 kelereng secara acak.',
+    q:'Berapa peluang terambil kelereng merah?',
+    cx:'4/10 (= 2/5)', wx:['6/10 (= 3/5)','4/6','1/10'],
+    expl:'Total kelereng = 4+6 = 10. n(merah)=4, n(S)=10. P(merah) = 4/10 = 2/5.'
+  },
+  {
+    tag:'banding', type:'raw', dataStr:'Sebuah dadu dilempar sekali.',
+    q:'Mana yang lebih mungkin: keluar angka 4, atau keluar bilangan ganjil?',
+    cx:'Keluar bilangan ganjil',
+    wx:['Keluar angka 4','Sama mungkinnya','Tidak bisa ditentukan'],
+    expl:'Bilangan ganjil {1,3,5} punya 3 kemungkinan (P=3/6), sedangkan angka 4 saja cuma 1 kemungkinan (P=1/6). Ganjil lebih mungkin.'
+  },
+  {
+    tag:'banding', type:'situation', dataStr:'Situasi: Sebuah loot box berisi 70% Common dan 30% Rare. Sebuah spinner game punya peluang menang 1/4.',
+    q:'Mana yang peluangnya lebih besar: mendapat Common dari loot box, atau menang di spinner?',
+    cx:'Mendapat Common dari loot box',
+    wx:['Menang di spinner','Sama besar','Tidak bisa dibandingkan'],
+    expl:'70% = 0,7 jauh lebih besar dibanding P(menang spinner) = 1/4 = 0,25.'
+  },
+  {
+    tag:'banding', type:'situation', dataStr:'Konsep: Sebuah kantong berisi 5 bola, semuanya berwarna merah.',
+    q:'Berapa peluang terambil bola BIRU dari kantong itu?',
+    cx:'0 (tidak mungkin terjadi)',
+    wx:['1 (pasti terjadi)','1/5','5/5'],
+    expl:'Tidak ada bola biru sama sekali, jadi n(biru)=0. P(biru) = 0/5 = 0 — kejadian yang mustahil terjadi.'
+  },
+];
+const TAG_LABEL={sampel:'Ruang Sampel',kejadian:'Kejadian',rumus:'Rumus Peluang',banding:'Bandingkan'};
+
+let cur=0, score=0, timerI=null, answered=false;
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
+function renderVisual(q){
+  const d=document.getElementById('visualDiv');
+  if(q.type==='situation'){
+    d.innerHTML=`<div class="raw-box sit">${q.dataStr}</div>`;
+  } else {
+    d.innerHTML=`<div class="raw-box">${q.dataStr}</div>`;
+  }
+  document.getElementById('qTagBadge').textContent=TAG_LABEL[q.tag];
+  document.getElementById('qTagBadge').className='q-tag tag-'+q.tag;
+}
+function showQ(){
+  if(cur>=QS.length){endGame();return;}
+  answered=false;
+  const q=QS[cur];
+  document.getElementById('qV').textContent=(cur+1)+'/10';
+  renderVisual(q);
+  document.getElementById('questionText').innerHTML=q.q;
+  const opts=shuffle([q.cx,...q.wx]);
+  const od=document.getElementById('optsDiv');
+  od.innerHTML='';
+  opts.forEach(v=>{
+    const b=document.createElement('button');
+    b.className='opt-btn'; b.textContent=v; b.dataset.v=v;
+    b.onclick=()=>pick(v,q.cx);
+    od.appendChild(b);
+  });
+  document.getElementById('feedbackDiv').textContent='';
+  document.getElementById('feedbackDiv').className='feedback';
+  startTimer();
+}
+function startTimer(){
+  clearInterval(timerI);
+  let t=30;
+  const tv=document.getElementById('timerV');
+  const tf=document.getElementById('timerFill');
+  tv.textContent=t; tv.classList.remove('warn');
+  tf.style.width='100%';
+  timerI=setInterval(()=>{
+    t--;
+    tv.textContent=t;
+    tf.style.width=(t/30*100)+'%';
+    if(t<=8) tv.classList.add('warn');
+    if(t<=0){clearInterval(timerI);if(!answered)pick('__timeout__',QS[cur].cx);}
+  },1000);
+}
+function pick(chosen,correct){
+  if(answered)return;
+  answered=true; clearInterval(timerI);
+  document.querySelectorAll('.opt-btn').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.v===chosen&&chosen===correct) b.classList.add('correct');
+    else if(b.dataset.v===chosen) b.classList.add('wrong');
+    else if(b.dataset.v===correct) b.classList.add('correct');
+  });
+  const fb=document.getElementById('feedbackDiv');
+  if(chosen===correct){
+    score+=10; document.getElementById('scoreV').textContent=score;
+    fb.className='feedback ok'; fb.textContent='✅ BENAR! '+QS[cur].expl;
+  } else {
+    fb.className='feedback ko';
+    fb.textContent=chosen==='__timeout__'?'⏱ WAKTU! '+QS[cur].expl:'❌ '+QS[cur].expl;
+  }
+  setTimeout(()=>{cur++;showQ();},2000);
+}
+function endGame(){
+  document.getElementById('game').style.display='none';
+  document.getElementById('result').style.display='block';
+  document.getElementById('finalScore').textContent=score;
+  const gb=document.getElementById('gradeBadge');
+  if(score>=90){gb.textContent='⭐ RANK S — MASTER DESIGNER';gb.className='grade-badge gs';}
+  else if(score>=70){gb.textContent='🏆 RANK A — LUCK ANALYST';gb.className='grade-badge ga';}
+  else if(score>=50){gb.textContent='💪 RANK B — JUNIOR DESIGNER';gb.className='grade-badge gb';}
+  else{gb.textContent='📚 RANK C — TRAINEE';gb.className='grade-badge gc';}
+}
+function startGame(){
+  cur=0;score=0;
+  document.getElementById('intro').style.display='none';
+  document.getElementById('game').style.display='block';
+  showQ();
+}
+function resetGame(){
+  cur=0;score=0;
+  document.getElementById('scoreV').textContent='0';
+  document.getElementById('result').style.display='none';
+  document.getElementById('game').style.display='block';
+  showQ();
+}
+</script>
+</body>
+</html>
