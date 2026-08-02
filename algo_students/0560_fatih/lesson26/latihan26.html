@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan · Review Perbandingan, Skala & Konversi Satuan · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);
+    --red:#e85040;
+    --violet:#7c3aed;--violet-bg:rgba(124,58,237,0.1);--violet-light:#a78bfa;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(74,144,184,0.05) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--steel-light);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--green);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+
+  #intro{text-align:center;margin-bottom:1rem;}
+  .home-icon{font-size:4rem;display:block;margin-bottom:1rem;}
+  .home-title{font-family:'Rajdhani',sans-serif;font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;color:var(--green);letter-spacing:3px;margin-bottom:0.5rem;}
+  .home-sub{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1.5rem;}
+  .info-row{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;}
+  .info-chip{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.5rem 1rem;font-family:'Rajdhani',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:1px;color:var(--text-mid);}
+  .info-chip span{color:var(--steel-light);}
+  .start-btn{background:linear-gradient(135deg,var(--green),#30a860);color:#000;border:none;padding:1rem 3rem;border-radius:6px;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:800;letter-spacing:3px;cursor:pointer;box-shadow:0 5px 18px rgba(72,200,112,0.3);transition:all 0.2s;}
+  .start-btn:hover{transform:translateY(-3px);}
+
+  #quiz{display:none;}
+  .progress-wrap{margin-bottom:1.5rem;}
+  .progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;}
+  .progress-label{font-family:'Rajdhani',sans-serif;font-size:0.72rem;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;}
+  .progress-val{font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:700;color:var(--steel-light);}
+  .progress-bg{background:var(--border);border-radius:4px;height:6px;overflow:hidden;}
+  .progress-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--steel),var(--steel-light));transition:width 0.4s ease;}
+
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent);}
+  .q-tag{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:0.9rem;}
+  .q-text{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.1rem;line-height:1.55;margin-bottom:1.1rem;letter-spacing:0.3px;text-align:center;}
+  .q-context{color:var(--text-muted);font-size:0.86rem;line-height:1.6;margin-bottom:1rem;font-style:italic;}
+
+  /* mini ratio dots visual */
+  .dots-mini{display:flex;justify-content:center;gap:1.4rem;margin:0.3rem 0 1.1rem;flex-wrap:wrap;}
+  .dots-mini .grp{text-align:center;}
+  .dots-mini .row{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;max-width:130px;margin-bottom:0.35rem;}
+  .dots-mini .dot{width:11px;height:11px;border-radius:3px;}
+  .dots-mini .dot.a{background:var(--steel-light);}
+  .dots-mini .dot.b{background:var(--amber);}
+  .dots-mini .lbl{font-family:'Rajdhani',sans-serif;font-size:0.78rem;font-weight:700;color:var(--text-mid);}
+
+  /* compare row for choice questions */
+  .compare-row{display:flex;align-items:center;justify-content:center;gap:1rem;margin:0.4rem 0 1.1rem;flex-wrap:wrap;}
+  .compare-box{background:var(--track);border:1.5px solid var(--border2);border-radius:10px;padding:0.7rem 1.2rem;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1.05rem;color:var(--text);min-width:110px;text-align:center;}
+  .compare-vs{color:var(--text-muted);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.9rem;}
+
+  /* Fill-in (isian) text input */
+  .fillin-row{display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:0.5rem;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.1rem;flex-wrap:wrap;}
+  .fillin-row input{width:150px;text-align:center;background:var(--track);border:2px solid var(--border2);border-radius:8px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:700;padding:0.5rem 0.5rem;}
+  .fillin-row input:focus{outline:none;border-color:var(--steel-light);}
+  .fillin-row input.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .fillin-row input.wrong{border-color:var(--red);background:rgba(232,80,64,0.08);color:var(--red);}
+  .fillin-hint{text-align:center;font-size:0.76rem;color:var(--text-muted);margin-bottom:1rem;}
+  .fillin-submit{display:flex;justify-content:center;margin-bottom:0.6rem;}
+
+  /* Choice (compare) buttons */
+  .opt-row{display:flex;gap:0.7rem;justify-content:center;margin-bottom:0.6rem;flex-wrap:wrap;}
+  .opt-btn{background:var(--track);border:2px solid var(--border2);color:var(--text);padding:0.8rem 1.6rem;border-radius:10px;cursor:pointer;font-size:1.3rem;font-family:'Rajdhani',sans-serif;font-weight:800;text-align:center;transition:all 0.15s;min-width:70px;}
+  .opt-btn:hover:not(:disabled){border-color:var(--steel-light);background:rgba(74,144,184,0.08);}
+  .opt-btn.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(232,80,64,0.1);color:var(--red);}
+  .opt-btn:disabled{cursor:default;}
+
+  .feedback{padding:0.8rem 1rem;border-radius:8px;font-size:0.88rem;font-weight:600;display:none;line-height:1.55;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);color:var(--green);border:1px solid rgba(72,200,112,0.3);}
+  .feedback.no{background:rgba(232,80,64,0.07);color:var(--red);border:1px solid rgba(232,80,64,0.25);}
+
+  .btn{padding:0.7rem 1.4rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--steel-light);color:var(--steel-light);}
+  .btn-next{background:linear-gradient(135deg,var(--violet),#5b21b6);color:#fff;font-weight:800;}
+  .btn-next:hover{transform:translateY(-2px);}
+  .btn-check{background:linear-gradient(135deg,var(--green),#30a860);color:#000;font-weight:800;}
+  .btn-check:hover{transform:translateY(-2px);}
+  .btn:disabled{opacity:0.35;cursor:default;pointer-events:none;}
+  .nav-btns{display:flex;gap:0.8rem;margin-top:0.5rem;}
+
+  #results{display:none;text-align:center;padding:1.5rem 0;}
+  .res-icon{font-size:4.5rem;margin-bottom:1rem;display:block;animation:pop 0.5s ease;}
+  @keyframes pop{from{transform:scale(0.5);}to{transform:scale(1);}}
+  .res-score{font-family:'Rajdhani',sans-serif;font-size:2.8rem;font-weight:700;color:var(--steel-light);letter-spacing:3px;}
+  .res-lbl{font-family:'Rajdhani',sans-serif;font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.2rem;}
+  .res-msg{color:var(--text-mid);font-size:0.9rem;line-height:1.7;margin-bottom:1.5rem;max-width:380px;margin-left:auto;margin-right:auto;}
+  .score-grid{display:flex;gap:0.4rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem;}
+  .sc-pip{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;}
+  .pip-ok{background:var(--green-bg);border:1px solid rgba(72,200,112,0.4);}
+  .pip-retry{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.4);}
+  .res-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson26.html">LESSON 26</a><span>/</span>
+  <span class="cur">LATIHAN</span>
+</nav>
+
+<div class="wrap">
+  <!-- INTRO -->
+  <div id="intro">
+    <span class="home-icon">🏠</span>
+    <div class="home-title">LATIHAN MANDIRI</div>
+    <p class="home-sub">20 soal gampang gabungan review perbandingan, skala, dan konversi satuan tanpa timer. Santai, teliti, ingat lagi konsepnya sebelum menjawab!</p>
+    <div class="info-row">
+      <div class="info-chip"><span>18</span> Isian</div>
+      <div class="info-chip"><span>2</span> Soal Cerita</div>
+      <div class="info-chip">Tanpa <span>Timer</span></div>
+    </div>
+    <button class="start-btn" onclick="startQuiz()">MULAI LATIHAN 🏠</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz">
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label">Progress</span>
+        <span class="progress-val" id="progVal">1/20</span>
+      </div>
+      <div class="progress-bg"><div class="progress-bar" id="progBar" style="width:0%"></div></div>
+    </div>
+    <div id="qarea"></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results"></div>
+</div>
+
+<script>
+/* ===================== VALUE PARSER ===================== */
+// Menerima: bilangan bulat, desimal (koma / titik), pecahan (a/b atau a b/c).
+function parseValue(str){
+  str = String(str).trim();
+  if(str==='') return null;
+  str = str.replace(',', '.');
+  if(/^\d{1,3}(\.\d{3})+$/.test(str)){ str = str.replace(/\./g,''); }
+
+  let val;
+  let m = str.match(/^(-?\d+)\s+(\d+)\/(\d+)$/); // mixed a b/c
+  if(m){
+    const whole=parseInt(m[1],10), num=parseInt(m[2],10), den=parseInt(m[3],10);
+    if(den===0) return null;
+    const sign = whole<0?-1:1;
+    val = whole + sign*(num/den);
+  } else {
+    m = str.match(/^(-?\d+)\/(\d+)$/); // a/b
+    if(m){
+      const den=parseInt(m[2],10);
+      if(den===0) return null;
+      val = parseInt(m[1],10)/den;
+    } else {
+      m = str.match(/^-?\d+(\.\d+)?$/); // whole or decimal
+      if(m){ val = parseFloat(str); }
+      else return null;
+    }
+  }
+  return val;
+}
+function valEqual(a,b,tol){
+  if(a===null||b===null||isNaN(a)||isNaN(b)) return false;
+  tol = tol || 0.01;
+  return Math.abs(a-b) <= tol;
+}
+
+/* ===================== MINI RATIO DOTS ===================== */
+function renderRatioDots(a,b,labelA,labelB){
+  const dotsA = Array.from({length:a},()=>'<span class="dot a"></span>').join('');
+  const dotsB = Array.from({length:b},()=>'<span class="dot b"></span>').join('');
+  return `<div class="dots-mini">
+    <div class="grp"><div class="row">${dotsA}</div><div class="lbl">${labelA}</div></div>
+    <div class="grp"><div class="row">${dotsB}</div><div class="lbl">${labelB}</div></div>
+  </div>`;
+}
+
+/* ===================== DATA ===================== */
+// type "fillin": isian jawaban (angka / desimal / pecahan)
+// type "choice": pilih tanda <, >, =
+// type "story" : soal cerita, jawaban angka
+const QS = [
+  { type:'fillin', tag:'🔗 Perbandingan · Soal 1', text:'Sederhanakan perbandingan 6 : 8 menjadi bentuk paling sederhana (tulis sebagai pecahan, cth: 3/4)', hint:'cth: 3/4', answer:'3/4', note:'6:8 dibagi 2 = 3:4, ditulis 3/4', dots:{a:6,b:8,la:'6',lb:'8'} },
+  { type:'fillin', tag:'🔗 Perbandingan · Soal 2', text:'Sederhanakan perbandingan 10 : 15 menjadi bentuk paling sederhana (tulis sebagai pecahan, cth: 3/4)', hint:'cth: 3/4', answer:'2/3', note:'10:15 dibagi 5 = 2:3, ditulis 2/3', dots:{a:10,b:15,la:'10',lb:'15'} },
+  { type:'fillin', tag:'🔗 Perbandingan · Soal 3', text:'Perbandingan kucing dan anjing di rumah adalah 2 : 3. Jika kucing ada 4 ekor, berapa ekor anjing?', hint:'cth: 5', answer:'6', note:'2:3 = 4:x → x = (3×4)/2 = 6' },
+  { type:'fillin', tag:'🔗 Perbandingan · Soal 4', text:'Perbandingan umur Andi dan umur Budi adalah 3 : 4. Jika umur Andi 9 tahun, berapa umur Budi?', hint:'cth: 5', answer:'12', note:'3:4 = 9:x → x = (4×9)/3 = 12' },
+  { type:'fillin', tag:'🗺️ Skala · Soal 5', text:'Skala sebuah peta adalah 1 : 100. Jarak pada peta 5 cm. Berapa cm jarak sebenarnya?', hint:'cth: 500', answer:'500', note:'Jarak sebenarnya = 5 × 100 = 500 cm' },
+  { type:'fillin', tag:'🗺️ Skala · Soal 6', text:'Skala sebuah peta adalah 1 : 500. Jarak pada peta 4 cm. Berapa cm jarak sebenarnya?', hint:'cth: 500', answer:'2000', note:'Jarak sebenarnya = 4 × 500 = 2.000 cm' },
+  { type:'fillin', tag:'🗺️ Skala · Soal 7', text:'Jarak sebenarnya dua tempat adalah 300 cm, dan pada peta digambar 3 cm. Skala peta = 1 : ...', hint:'cth: 100', answer:'100', note:'Skala = 3 : 300 = 1 : 100' },
+  { type:'fillin', tag:'🗺️ Skala · Soal 8', text:'Jarak sebenarnya dua tempat adalah 4.000 cm, dan pada peta digambar 2 cm. Skala peta = 1 : ...', hint:'cth: 100', answer:'2000', note:'Skala = 2 : 4.000 = 1 : 2.000' },
+  { type:'fillin', tag:'📏 Konversi Panjang · Soal 9', text:'3 km = ... m', hint:'cth: 100', answer:'3000', note:'3 km = 3 × 1.000 m = 3.000 m' },
+  { type:'fillin', tag:'📏 Konversi Panjang · Soal 10', text:'250 cm = ... m', hint:'cth: 2,5', answer:'2.5', note:'250 cm = 250 ÷ 100 = 2,5 m' },
+  { type:'fillin', tag:'📏 Konversi Panjang · Soal 11', text:'5 m = ... cm', hint:'cth: 100', answer:'500', note:'5 m = 5 × 100 = 500 cm' },
+  { type:'fillin', tag:'📏 Konversi Panjang · Soal 12', text:'1.500 mm = ... m', hint:'cth: 1,5', answer:'1.5', note:'1.500 mm = 1.500 ÷ 1.000 = 1,5 m' },
+  { type:'fillin', tag:'⚖️ Konversi Berat · Soal 13', text:'2 kg = ... g', hint:'cth: 1000', answer:'2000', note:'2 kg = 2 × 1.000 g = 2.000 g' },
+  { type:'fillin', tag:'⚖️ Konversi Berat · Soal 14', text:'3.000 g = ... kg', hint:'cth: 1', answer:'3', note:'3.000 g = 3.000 ÷ 1.000 = 3 kg' },
+  { type:'fillin', tag:'⏱️ Konversi Waktu · Soal 15', text:'2 jam = ... menit', hint:'cth: 60', answer:'120', note:'2 jam = 2 × 60 menit = 120 menit' },
+  { type:'fillin', tag:'⏱️ Konversi Waktu · Soal 16', text:'180 detik = ... menit', hint:'cth: 1', answer:'3', note:'180 detik = 180 ÷ 60 = 3 menit' },
+  { type:'choice', tag:'🔍 Membandingkan · Soal 17', text:'Bandingkan dua perbandingan berikut:', left:'3 : 6', right:'1 : 2', answer:'=', note:'3:6 disederhanakan menjadi 1:2, jadi keduanya sama' },
+  { type:'choice', tag:'🔍 Membandingkan · Soal 18', text:'Bandingkan dua panjang berikut:', left:'2 km', right:'1.500 m', answer:'>', note:'2 km = 2.000 m, dan 2.000 m > 1.500 m' },
+  { type:'story', tag:'📝 Soal Cerita · Soal 19', ctx:'Jarak dua kota pada peta adalah 6 cm dengan skala 1 : 1.000.000. Berapa km jarak sebenarnya?', hint:'cth: 60', answer:'60', note:'Jarak sebenarnya = 6 × 1.000.000 = 6.000.000 cm = 60 km (1 km = 100.000 cm)' },
+  { type:'story', tag:'📝 Soal Cerita · Soal 20', ctx:'Sebuah resep kue membutuhkan tepung dan gula dengan perbandingan 3 : 2. Jika gula yang dipakai 4 kg, berapa kg tepung yang dibutuhkan?', hint:'cth: 5', answer:'6', note:'3:2 = x:4 → x = (3×4)/2 = 6 kg' }
+];
+
+let cur=0, score=0, results=[], solved=false, hadMiss=false;
+
+function startQuiz(){
+  document.getElementById('intro').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  renderQ();
+}
+
+/* ===================== RENDER QUESTION ===================== */
+function renderQ(){
+  solved=false;
+  hadMiss=false;
+  updateProgress();
+  const q = QS[cur];
+
+  if(q.type==='fillin'){
+    const dotsHtml = q.dots ? renderRatioDots(q.dots.a,q.dots.b,q.dots.la,q.dots.lb) : '';
+    document.getElementById('qarea').innerHTML = `
+      <div class="q-card">
+        <div class="q-tag">${q.tag}</div>
+        <div class="q-text">${q.text}</div>
+        ${dotsHtml}
+        <div class="fillin-row">
+          Jawaban: <input type="text" id="inAns" placeholder="${q.hint}">
+        </div>
+        <div class="fillin-hint">Boleh isi desimal (2,5), pecahan (3/4), atau angka biasa · jawaban harus benar dulu baru bisa lanjut</div>
+        <div class="fillin-submit"><button class="btn btn-check" id="checkBtn" onclick="checkFillin()">Periksa Jawaban ✓</button></div>
+        <div class="feedback" id="fb"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevQ()" ${cur===0?'disabled':''}>← Soal Sebelumnya</button>
+        <button class="btn btn-next" id="nextBtn" onclick="nextQ()" disabled>${cur===QS.length-1?'Lihat Hasil ✓':'Soal Berikutnya →'}</button>
+      </div>
+    `;
+    const inp = document.getElementById('inAns');
+    inp.addEventListener('keydown', e=>{ if(e.key==='Enter') checkFillin(); });
+    inp.addEventListener('input', ()=>{ if(!solved){ inp.classList.remove('wrong'); document.getElementById('fb').className='feedback'; } });
+  }
+
+  if(q.type==='story'){
+    document.getElementById('qarea').innerHTML = `
+      <div class="q-card">
+        <div class="q-tag">${q.tag}</div>
+        <p class="q-context">${q.ctx}</p>
+        <div class="fillin-row">
+          Jawaban: <input type="text" id="inAns" placeholder="${q.hint}">
+        </div>
+        <div class="fillin-hint">Isi jawaban berupa angka saja tanpa satuan (cth: 60) · jawaban harus benar dulu baru bisa lanjut</div>
+        <div class="fillin-submit"><button class="btn btn-check" id="checkBtn" onclick="checkFillin()">Periksa Jawaban ✓</button></div>
+        <div class="feedback" id="fb"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevQ()" ${cur===0?'disabled':''}>← Soal Sebelumnya</button>
+        <button class="btn btn-next" id="nextBtn" onclick="nextQ()" disabled>${cur===QS.length-1?'Lihat Hasil ✓':'Soal Berikutnya →'}</button>
+      </div>
+    `;
+    const inp = document.getElementById('inAns');
+    inp.addEventListener('keydown', e=>{ if(e.key==='Enter') checkFillin(); });
+    inp.addEventListener('input', ()=>{ if(!solved){ inp.classList.remove('wrong'); document.getElementById('fb').className='feedback'; } });
+  }
+
+  if(q.type==='choice'){
+    document.getElementById('qarea').innerHTML = `
+      <div class="q-card">
+        <div class="q-tag">${q.tag}</div>
+        <div class="q-text">${q.text}</div>
+        <div class="compare-row">
+          <div class="compare-box">${q.left}</div>
+          <div class="compare-vs">vs</div>
+          <div class="compare-box">${q.right}</div>
+        </div>
+        <div class="fillin-hint">Pilih tanda yang tepat: &lt; (lebih kecil), &gt; (lebih besar), atau = (sama)</div>
+        <div class="opt-row" id="optRow">
+          <button class="opt-btn" data-v="<" onclick="checkChoice(this)">&lt;</button>
+          <button class="opt-btn" data-v="=" onclick="checkChoice(this)">=</button>
+          <button class="opt-btn" data-v=">" onclick="checkChoice(this)">&gt;</button>
+        </div>
+        <div class="feedback" id="fb"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevQ()" ${cur===0?'disabled':''}>← Soal Sebelumnya</button>
+        <button class="btn btn-next" id="nextBtn" onclick="nextQ()" disabled>${cur===QS.length-1?'Lihat Hasil ✓':'Soal Berikutnya →'}</button>
+      </div>
+    `;
+  }
+}
+
+/* ===================== FILLIN / STORY LOGIC ===================== */
+function checkFillin(){
+  if(solved) return;
+  const q = QS[cur];
+  const raw = document.getElementById('inAns').value;
+  const fb = document.getElementById('fb');
+  if(raw===''){
+    fb.className = 'feedback show no';
+    fb.textContent = '✗ Isi jawabannya terlebih dahulu.';
+    return;
+  }
+  const userVal = parseValue(raw);
+  if(userVal===null){
+    fb.className = 'feedback show no';
+    fb.textContent = '✗ Format belum dikenali. Coba isi angka biasa, desimal (2,5), atau pecahan (3/4).';
+    return;
+  }
+  const ansVal = parseValue(q.answer);
+  const correct = valEqual(userVal, ansVal, 0.01);
+  const inp = document.getElementById('inAns');
+
+  if(correct){
+    solved = true;
+    score += hadMiss ? 5 : 10;
+    results[cur] = hadMiss ? 'retry' : 'ok';
+    inp.classList.remove('wrong');
+    inp.classList.add('correct');
+    inp.disabled = true;
+    document.getElementById('checkBtn').disabled = true;
+    fb.className = 'feedback show ok';
+    fb.textContent = `✓ Benar! ${q.note||''}`;
+    document.getElementById('nextBtn').disabled = false;
+  } else {
+    hadMiss = true;
+    inp.classList.add('wrong');
+    fb.className = 'feedback show no';
+    fb.textContent = '✗ Belum tepat, coba periksa lagi hitunganmu ya!';
+  }
+}
+
+/* ===================== CHOICE (COMPARE) LOGIC ===================== */
+function checkChoice(btn){
+  if(solved) return;
+  const q = QS[cur];
+  const val = btn.getAttribute('data-v');
+  const correct = (val === q.answer);
+  const fb = document.getElementById('fb');
+
+  if(correct){
+    solved = true;
+    score += hadMiss ? 5 : 10;
+    results[cur] = hadMiss ? 'retry' : 'ok';
+    document.querySelectorAll('#optRow .opt-btn').forEach(b=>b.disabled=true);
+    btn.classList.add('correct');
+    fb.className = 'feedback show ok';
+    fb.textContent = `✓ Benar! ${q.note||''}`;
+    document.getElementById('nextBtn').disabled = false;
+  } else {
+    hadMiss = true;
+    btn.classList.add('wrong');
+    fb.className = 'feedback show no';
+    fb.textContent = '✗ Belum tepat, coba pilih tanda yang lain.';
+    setTimeout(()=>{ btn.classList.remove('wrong'); }, 700);
+  }
+}
+
+/* ===================== NAV & PROGRESS ===================== */
+function updateProgress(){
+  document.getElementById('progVal').textContent = `${cur+1}/20`;
+  document.getElementById('progBar').style.width = (cur/20*100)+'%';
+}
+
+function nextQ(){
+  if(cur<QS.length-1){ cur++; renderQ(); }
+  else showResults();
+}
+function prevQ(){
+  if(cur>0){ cur--; renderQ(); }
+}
+
+function showResults(){
+  document.getElementById('quiz').style.display='none';
+  const div=document.getElementById('results');
+  div.style.display='block';
+  const perfect = results.filter(r=>r==='ok').length;
+  const pct = perfect/20;
+  const icon = pct>=0.9?'🏆':pct>=0.7?'🎯':pct>=0.5?'📘':'📉';
+  const msg = pct>=0.9?'Luar biasa! Hampir semua soal kamu jawab benar di percobaan pertama!':pct>=0.7?'Bagus sekali! Sebagian besar soal langsung benar tanpa perlu coba lagi.':pct>=0.5?'Sudah lumayan! Beberapa soal masih butuh dicoba beberapa kali.':'Kamu berhasil menyelesaikan semua soal! Tapi banyak yang butuh dicoba ulang — yuk review lagi materinya.';
+  const pips = Array.from({length:20},(_,i)=>{
+    const r = results[i];
+    const cls = r==='ok' ? 'pip-ok' : 'pip-retry';
+    const ic = r==='ok' ? '✓' : '↻';
+    return `<div class="sc-pip ${cls}">${ic}</div>`;
+  }).join('');
+  div.innerHTML=`
+    <span class="res-icon">${icon}</span>
+    <div class="res-score">${score}/200</div>
+    <div class="res-lbl">Skor Latihan · ${perfect}/20 Langsung Benar</div>
+    <div class="score-grid">${pips}</div>
+    <p class="res-msg">${msg}</p>
+    <div class="res-btns">
+      <button class="btn btn-next" onclick="location.reload()">🔄 Ulangi Latihan</button>
+      <a href="lesson26.html" class="btn btn-ghost">← Lesson</a>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>
