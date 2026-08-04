@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 31 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--cyan:#22d3ee;--red:#ef4444;--emerald:#34d399;--amber:#fbbf24;--rose:#fb7185;--violet:#a78bfa;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(34,211,238,0.06) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(251,191,36,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--cyan);}
+  .wrapper{max-width:760px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--amber));border-radius:99px;transition:width 0.4s ease;}
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title .hv{color:var(--cyan);}
+  .slide-title .hc{color:var(--cyan);}
+  .slide-title .he{color:var(--emerald);}
+  .slide-title .ha{color:var(--amber);}
+  .slide-title .hr{color:var(--rose);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+  .slide-sub strong{color:var(--cyan);}
+
+  .callout{background:rgba(34,211,238,0.05);border-left:3px solid var(--cyan);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--cyan);}
+  .callout.violet{background:rgba(167,139,250,0.05);border-color:var(--violet);}
+  .callout.violet strong{color:var(--violet);}
+  .callout.emerald{background:rgba(52,211,153,0.05);border-color:var(--emerald);}
+  .callout.emerald strong{color:var(--emerald);}
+  .callout.amber{background:rgba(251,191,36,0.06);border-color:var(--amber);}
+  .callout.amber strong{color:var(--amber);}
+  .callout.rose{background:rgba(251,113,133,0.06);border-color:var(--rose);}
+  .callout.rose strong{color:var(--rose);}
+
+  .diagram-box{background:#12121c;border:1.5px solid var(--border);border-radius:14px;padding:1rem;margin:1.2rem 0;display:flex;justify-content:center;flex-wrap:wrap;gap:0.8rem;}
+  .diagram-note{text-align:center;font-size:0.75rem;color:var(--muted);margin-top:-0.6rem;margin-bottom:1rem;font-style:italic;}
+
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(34,211,238,0.12);border:1px solid rgba(34,211,238,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;color:var(--cyan);flex-shrink:0;}
+  .step-num.e{background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,0.4);color:var(--emerald);}
+  .step-num.a{background:rgba(251,191,36,0.12);border-color:rgba(251,191,36,0.4);color:var(--amber);}
+  .step-num.c{background:rgba(34,211,238,0.12);border-color:rgba(34,211,238,0.4);color:var(--cyan);}
+  .step-num.r{background:rgba(251,113,133,0.12);border-color:rgba(251,113,133,0.4);color:var(--rose);}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .reveal-btn{background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.35);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(34,211,238,0.15);}
+  .reveal-btn:disabled{opacity:0.35;cursor:default;}
+  .reveal-box{background:rgba(34,211,238,0.05);border:1px solid rgba(34,211,238,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+  .reveal-box .rule-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--cyan);margin-bottom:0.4rem;}
+  .reveal-box .rule-sub{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .formula-hero{text-align:center;padding:1.4rem;background:rgba(251,191,36,0.06);border:1.5px solid rgba(251,191,36,0.3);border-radius:18px;margin:1.2rem 0;}
+  .formula-text{font-family:'Orbitron',monospace;font-size:1.15rem;font-weight:900;color:var(--amber);}
+  .formula-sub{display:flex;gap:1rem;justify-content:center;margin-top:0.8rem;flex-wrap:wrap;}
+  .formula-sub span{font-size:0.78rem;font-weight:700;color:var(--muted);background:#12121c;border:1px solid var(--border);padding:0.3rem 0.8rem;border-radius:99px;}
+
+  .pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:1.2rem 0;}
+  @media(max-width:480px){.pick-grid{grid-template-columns:1fr;}}
+  .pick-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
+  @media(max-width:560px){.pick-grid.cols3{grid-template-columns:1fr;}}
+  .pick-btn{width:100%;background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.7rem;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.88rem;transition:all 0.2s;line-height:1.4;}
+  .pick-btn:hover:not(:disabled){border-color:var(--cyan);}
+  .pick-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .pick-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .pick-btn.neutral{border-color:var(--cyan);background:rgba(34,211,238,0.08);color:var(--cyan);}
+  .pick-fb{font-size:0.82rem;color:var(--muted);margin-top:0.6rem;line-height:1.6;text-align:center;min-height:20px;}
+
+  .summary-card{background:var(--card);border:1px solid rgba(34,211,238,0.3);border-radius:16px;padding:1.5rem 2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:2px;color:var(--cyan);margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .summary-item span{flex-shrink:0;font-size:1rem;}
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;text-decoration:none;display:inline-block;transition:all 0.2s;}
+  .da-primary{background:linear-gradient(135deg,var(--cyan),#0891b2);color:#000;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);}
+  .da-secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+
+  .big-quote{background:rgba(34,211,238,0.06);border:1.5px solid rgba(34,211,238,0.3);border-radius:18px;padding:1.6rem;text-align:center;margin:1.2rem 0;}
+  .big-quote-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--cyan);line-height:1.8;}
+  .big-quote-text em{color:var(--amber);font-style:normal;}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--cyan),#0891b2);border:none;color:#000;font-weight:800;}
+  .nav-btn:hover:not(.next){border-color:var(--cyan);color:var(--cyan);}
+
+  /* --- lesson31-specific: sample space builder & dice table --- */
+  .coin-seq{display:flex;flex-wrap:wrap;gap:0.6rem;justify-content:center;margin:1.2rem 0;}
+  .coin-slot{background:#12121c;border:1.5px dashed var(--border);border-radius:12px;padding:0.9rem 1.2rem;font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:var(--muted);min-width:70px;text-align:center;transition:all 0.3s;}
+  .coin-slot.filled{border-style:solid;border-color:var(--cyan);color:var(--cyan);background:rgba(34,211,238,0.08);}
+  .dt-wrap{overflow-x:auto;margin:1.2rem 0;padding-bottom:0.3rem;}
+  .dt-grid{display:grid;grid-template-columns:34px repeat(6,1fr);gap:3px;min-width:360px;}
+  .dt-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:#12121c;border:1px solid var(--border);border-radius:6px;font-family:'Orbitron',monospace;font-size:0.64rem;color:var(--muted);transition:all 0.25s;}
+  .dt-cell.hdr{background:transparent;border:none;color:var(--cyan);font-weight:700;font-size:0.7rem;}
+  .dt-cell.hl-c{background:rgba(34,211,238,0.2);border-color:var(--cyan);color:var(--cyan);font-weight:800;}
+  .dt-cell.hl-a{background:rgba(251,191,36,0.2);border-color:var(--amber);color:var(--amber);font-weight:800;}
+  .dt-cell.hl-r{background:rgba(251,113,133,0.2);border-color:var(--rose);color:var(--rose);font-weight:800;}
+  .dt-cell.hl-v{background:rgba(167,139,250,0.22);border-color:var(--violet);color:var(--violet);font-weight:800;}
+  .dt-caption{text-align:center;font-size:0.75rem;color:var(--muted);margin-top:0.6rem;font-style:italic;}
+  .sum-btn-row{display:flex;gap:0.6rem;justify-content:center;flex-wrap:wrap;margin:1rem 0;}
+  .sum-btn{background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.55rem 1.1rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.78rem;transition:all 0.2s;}
+  .sum-btn:hover{border-color:var(--cyan);}
+  .sum-btn.active{border-color:var(--amber);background:rgba(251,191,36,0.12);color:var(--amber);}
+  .stat-row{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;margin-top:0.8rem;}
+  .stat-chip{background:#12121c;border:1px solid var(--border);border-radius:10px;padding:0.5rem 1rem;font-family:'Orbitron',monospace;font-size:0.78rem;color:var(--cyan);}
+  .stat-chip b{color:var(--amber);}
+  .die-num-row{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin:1rem 0;}
+  .die-num-btn{width:44px;height:44px;background:#12121c;border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'Orbitron',monospace;font-weight:800;font-size:1rem;cursor:pointer;transition:all 0.2s;}
+  .die-num-btn:hover{border-color:var(--cyan);}
+  .die-num-btn.picked{border-color:var(--amber);background:rgba(251,191,36,0.12);color:var(--amber);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson31.html">LESSON 31</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+
+  <!-- SLIDE 1: Cover -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title"><span class="hv">Luck</span> or Logic II 🎲🎲</div>
+      <div class="slide-sub">"Ketika satu percobaan tidak lagi cukup." Kamu naik jadi <strong>analis game</strong> — tugasmu menghitung SEMUA kemungkinan hasil sebelum menentukan peluang, mulai dari dua koin sampai dua dadu.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="280" height="150" viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="45" cy="45" r="28" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="2.5"/>
+        <text x="45" y="52" fill="#fbbf24" font-family="Orbitron,monospace" font-size="14" font-weight="900" text-anchor="middle">?</text>
+        <circle cx="90" cy="45" r="28" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="2.5"/>
+        <text x="90" y="52" fill="#fbbf24" font-family="Orbitron,monospace" font-size="14" font-weight="900" text-anchor="middle">?</text>
+        <text x="67" y="92" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">DUA KOIN</text>
+        <rect x="160" y="20" width="45" height="45" rx="8" fill="rgba(34,211,238,0.1)" stroke="#22d3ee" stroke-width="2"/>
+        <circle cx="172" cy="32" r="3" fill="#22d3ee"/><circle cx="193" cy="32" r="3" fill="#22d3ee"/><circle cx="182" cy="42" r="3" fill="#22d3ee"/><circle cx="172" cy="53" r="3" fill="#22d3ee"/><circle cx="193" cy="53" r="3" fill="#22d3ee"/>
+        <rect x="212" y="35" width="45" height="45" rx="8" fill="rgba(34,211,238,0.1)" stroke="#22d3ee" stroke-width="2"/>
+        <circle cx="234" cy="57" r="3.5" fill="#22d3ee"/>
+        <text x="211" y="112" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">DUA DADU</text>
+        <line x1="20" y1="130" x2="260" y2="130" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+        <text x="140" y="144" fill="#a78bfa" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">SEMAKIN BANYAK PERCOBAAN, SEMAKIN BANYAK KEMUNGKINAN</text>
+      </svg>
+    </div>
+    <div class="callout"><strong>Misi hari ini:</strong> Menyusun ruang sampel untuk dua koin dan dua dadu, memetakan semua kemungkinan, lalu memakainya untuk menghitung dan membandingkan peluang — sampai menilai aturan mini-game seperti seorang analis sungguhan.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">🪙</div>
+        <div class="step-body"><div class="stitle">Misi 1: Dua Koin</div><div class="sdesc">Menemukan ruang sampel gabungan dari dua percobaan sederhana.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num c">🎲</div>
+        <div class="step-body"><div class="stitle">Misi 2: Dua Dadu</div><div class="sdesc">Menemukan pola sampai peta 36 kemungkinan, lalu mencari peluang darinya.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num a">🕵️</div>
+        <div class="step-body"><div class="stitle">Detective Challenge &amp; Game Designer Mission</div><div class="sdesc">Membandingkan peluang dan menilai aturan mini-game berdasarkan data.</div></div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Misi 1: Dua Koin →</button></div>
+  </div>
+
+  <!-- SLIDE 2: Misi 1 - Dua Koin -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Misi 1: <span class="hc">Dua Koin</span> 🪙🪙</div>
+      <div class="slide-sub">Kamu sudah tahu satu koin punya 2 kemungkinan hasil: Angka (A) atau Gambar (G).</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="220" height="130" viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="65" cy="55" r="34" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="2.5"/>
+        <text x="65" y="63" fill="#fbbf24" font-family="Orbitron,monospace" font-size="15" font-weight="900" text-anchor="middle">?</text>
+        <text x="65" y="105" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">KOIN 1</text>
+        <circle cx="155" cy="55" r="34" fill="rgba(34,211,238,0.12)" stroke="#22d3ee" stroke-width="2.5"/>
+        <text x="155" y="63" fill="#22d3ee" font-family="Orbitron,monospace" font-size="15" font-weight="900" text-anchor="middle">?</text>
+        <text x="155" y="105" fill="#64748b" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">KOIN 2</text>
+      </svg>
+    </div>
+    <div class="callout amber"><strong>Pertanyaan:</strong> Kalau SATU koin punya 2 kemungkinan, bagaimana dengan DUA koin yang dilempar bersamaan? Coba tebak dulu sebelum lanjut!</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS2(this)">2 kemungkinan</button>
+      <button class="pick-btn" onclick="pickS2(this)">4 kemungkinan</button>
+      <button class="pick-btn" onclick="pickS2(this)">6 kemungkinan</button>
+    </div>
+    <div class="pick-fb" id="fbS2"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Buktikan Jawabannya →</button></div>
+  </div>
+
+  <!-- SLIDE 3: Menemukan Ruang Sampel Dua Koin -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title">Menemukan <span class="hv">Ruang Sampel</span> 📋</div>
+      <div class="slide-sub">Yuk susun satu per satu. Koin 1 bisa Angka (A) atau Gambar (G). Untuk SETIAP hasil koin 1, koin 2 juga bisa A atau G. Tekan tombol untuk membangun daftarnya.</div>
+    </div>
+    <div class="coin-seq" id="coinSeq">
+      <div class="coin-slot" id="cs0">?</div>
+      <div class="coin-slot" id="cs1">?</div>
+      <div class="coin-slot" id="cs2">?</div>
+      <div class="coin-slot" id="cs3">?</div>
+    </div>
+    <button class="reveal-btn" id="btnBuildCoin" onclick="buildCoinSpace()">Bangun Ruang Sampel →</button>
+    <div class="reveal-box" id="coinReveal">
+      <div class="rule-text">S = {AA, AG, GA, GG}</div>
+      <div class="rule-sub">Koin 1 = Angka → koin 2 bisa Angka (AA) atau Gambar (AG). Koin 1 = Gambar → koin 2 bisa Angka (GA) atau Gambar (GG). Total 2 × 2 = <strong>4 anggota</strong>.</div>
+    </div>
+    <div class="callout" id="coinQBox" style="display:none;">
+      <strong>Cek pemahaman:</strong> Dari S = {AA, AG, GA, GG} — manakah yang menunjukkan <strong>dua-duanya Gambar</strong>?
+    </div>
+    <div class="pick-grid cols3" id="coinPickGrid" style="display:none;">
+      <button class="pick-btn" onclick="pickS3(this,'a')">GG</button>
+      <button class="pick-btn" onclick="pickS3(this,'b')">AG</button>
+      <button class="pick-btn" onclick="pickS3(this,'c')">AA</button>
+    </div>
+    <div class="pick-fb" id="fbS3"></div>
+    <div class="formula-hero" id="coinFormula" style="display:none;">
+      <div class="formula-text">n(S) = 2 × 2 = 4</div>
+      <div class="formula-sub"><span>2 hasil koin 1 × 2 hasil koin 2 = 4 kombinasi</span></div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Misi 2: Dua Dadu →</button></div>
+  </div>
+
+  <!-- SLIDE 4: Misi 2 - Dua Dadu -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Misi 2: <span class="hc">Dua Dadu</span> 🎲🎲</div>
+      <div class="slide-sub">Sekarang dengan dua dadu bermata enam. Jangan langsung mikir tabel 6×6 — kita cari polanya dulu, pelan-pelan.</div>
+    </div>
+    <div class="callout amber"><strong>Kalau dadu pertama = 1,</strong> dadu kedua bisa menunjukkan angka berapa saja? Klik salah satu angka dadu pertama untuk mulai menyelidiki.</div>
+    <div class="die-num-row" id="d1Row"></div>
+    <div class="reveal-box" id="diceRevealStep">
+      <div class="rule-text" id="diceStepText">—</div>
+      <div class="rule-sub" id="diceStepSub">—</div>
+    </div>
+    <div class="callout emerald" id="dicePatternBox" style="display:none;"><strong>Pola yang ditemukan:</strong> Berapapun angka dadu pertama (1–6), dadu kedua SELALU punya 6 kemungkinan (1–6). Jadi setiap 1 hasil dadu pertama menghasilkan 6 pasangan baru.</div>
+    <div class="formula-hero" id="diceFormula" style="display:none;">
+      <div class="formula-text">n(S) = 6 × 6 = 36</div>
+      <div class="formula-sub"><span>6 hasil dadu 1 × 6 hasil dadu 2 = 36 kombinasi</span></div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Peta Semua Kemungkinan →</button></div>
+  </div>
+
+  <!-- SLIDE 5: Peta Semua Kemungkinan -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title">Peta Semua <span class="hv">Kemungkinan</span> 🗺️</div>
+      <div class="slide-sub">Ini dia seluruh ruang sampel dua dadu — setiap sel adalah pasangan (dadu 1, dadu 2).</div>
+    </div>
+    <div class="dt-wrap"><div class="dt-grid" id="dtSlide5"></div></div>
+    <div class="dt-caption">Baris = hasil dadu 1 · Kolom = hasil dadu 2</div>
+    <div class="callout amber"><strong>Pertanyaan:</strong> Mengapa totalnya ada 36 kemungkinan? Coba jelaskan dengan bahasamu sendiri sebelum menekan tombol di bawah.</div>
+    <button class="reveal-btn" onclick="toggleReveal('r5')">Lihat Penjelasan</button>
+    <div class="reveal-box" id="r5">
+      <div class="rule-text">36 = 6 × 6</div>
+      <div class="rule-sub">Karena setiap SATU hasil dadu pertama (ada 6 pilihan) bisa dipasangkan dengan SEMUA hasil dadu kedua (juga 6 pilihan). Ini adalah aturan perkalian yang sudah kamu kenal di Warmup!</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Mencari Peluang →</button></div>
+  </div>
+
+  <!-- SLIDE 6: Mencari Peluang -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title">Mencari <span class="hc">Peluang</span> ➗</div>
+      <div class="slide-sub">Pakai peta 36 kemungkinan untuk mencari peluang jumlah dua dadu tertentu. Klik salah satu tombol jumlah.</div>
+    </div>
+    <div class="sum-btn-row">
+      <button class="sum-btn" id="sumbtn-2" onclick="showSum(2)">Jumlah = 2</button>
+      <button class="sum-btn" id="sumbtn-7" onclick="showSum(7)">Jumlah = 7</button>
+      <button class="sum-btn" id="sumbtn-12" onclick="showSum(12)">Jumlah = 12</button>
+    </div>
+    <div class="dt-wrap"><div class="dt-grid" id="dtSlide6"></div></div>
+    <div class="stat-row" id="sumStat"><div class="stat-chip">Pilih salah satu tombol jumlah di atas 👆</div></div>
+    <div class="callout violet" id="sumInsight" style="display:none;"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">Detective Challenge →</button></div>
+  </div>
+
+  <!-- SLIDE 7: Detective Challenge -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">Detective <span class="hr">Challenge</span> 🕵️</div>
+      <div class="slide-sub">Masih pakai ruang sampel dua dadu. Fokus mencari POLA, bukan sekadar menghitung satu-satu. Klik tiap kartu untuk menyelidiki.</div>
+    </div>
+    <div class="sum-btn-row">
+      <button class="sum-btn" id="detbtn-same" onclick="showDetective('same')">Kedua dadu sama</button>
+      <button class="sum-btn" id="detbtn-six" onclick="showDetective('six')">Minimal satu angka 6</button>
+      <button class="sum-btn" id="detbtn-gt9" onclick="showDetective('gt9')">Jumlah lebih dari 9</button>
+    </div>
+    <div class="dt-wrap"><div class="dt-grid" id="dtSlide7"></div></div>
+    <div class="stat-row" id="detStat"><div class="stat-chip">Pilih salah satu kartu detektif di atas 👆</div></div>
+    <div class="callout rose" id="detInsight" style="display:none;"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Mana Lebih Mungkin? →</button></div>
+  </div>
+
+  <!-- SLIDE 8: Mana yang Lebih Mungkin -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">Mana yang <span class="ha">Lebih Mungkin</span>? ⚖️</div>
+      <div class="slide-sub">Sebelum menghitung, coba beri alasanmu dulu untuk tiap perbandingan berikut.</div>
+    </div>
+
+    <div class="callout amber"><strong>1) Jumlah = 6</strong> vs <strong>Jumlah = 8</strong> — mana yang lebih mungkin muncul?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS8(this,'a','1')">Jumlah = 6</button>
+      <button class="pick-btn" onclick="pickS8(this,'b','1')">Jumlah = 8</button>
+      <button class="pick-btn" onclick="pickS8(this,'c','1')">Sama mungkinnya</button>
+    </div>
+    <div class="pick-fb" id="fbS8_1"></div>
+
+    <div class="callout amber" style="margin-top:1.6rem;"><strong>2) Tepat satu angka 6</strong> vs <strong>Dua-duanya angka 6</strong> — mana yang lebih mungkin?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS8(this,'a','2')">Tepat satu angka 6</button>
+      <button class="pick-btn" onclick="pickS8(this,'b','2')">Dua-duanya angka 6</button>
+      <button class="pick-btn" onclick="pickS8(this,'c','2')">Sama mungkinnya</button>
+    </div>
+    <div class="pick-fb" id="fbS8_2"></div>
+
+    <div class="callout amber" style="margin-top:1.6rem;"><strong>3) Kedua dadu ganjil</strong> vs <strong>Kedua dadu genap</strong> — mana yang lebih mungkin?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS8(this,'a','3')">Kedua ganjil</button>
+      <button class="pick-btn" onclick="pickS8(this,'b','3')">Kedua genap</button>
+      <button class="pick-btn" onclick="pickS8(this,'c','3')">Sama mungkinnya</button>
+    </div>
+    <div class="pick-fb" id="fbS8_3"></div>
+
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Game Designer Mission →</button></div>
+  </div>
+
+  <!-- SLIDE 9: Game Designer Mission -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">Game Designer <span class="hv">Mission</span> 🕹️</div>
+      <div class="slide-sub">Kamu merancang mini-game dua dadu dengan aturan berikut:</div>
+    </div>
+    <div class="big-quote"><div class="big-quote-text">"Pemain mendapatkan hadiah jika <em>jumlah dua dadu minimal 10</em>."</div></div>
+    <button class="reveal-btn" onclick="toggleReveal('r9')">Hitung Peluang Menangnya</button>
+    <div class="reveal-box" id="r9">
+      <div class="rule-text">P(menang) = 6/36 = 1/6 ≈ 16,7%</div>
+      <div class="rule-sub">Jumlah ≥ 10 tercapai lewat: (4,6),(6,4),(5,5) untuk jumlah 10 · (5,6),(6,5) untuk jumlah 11 · (6,6) untuk jumlah 12 — total 6 dari 36 kemungkinan.</div>
+    </div>
+    <div class="callout amber"><strong>Pertanyaan:</strong> Menurutmu, aturan ini tergolong terlalu mudah, terlalu sulit, atau seimbang untuk sebuah game?</div>
+    <div class="pick-grid cols3">
+      <button class="pick-btn" onclick="pickS9(this,'a')">Terlalu mudah</button>
+      <button class="pick-btn" onclick="pickS9(this,'b')">Cukup sulit / jarang menang</button>
+      <button class="pick-btn" onclick="pickS9(this,'c')">Mustahil menang</button>
+    </div>
+    <div class="pick-fb" id="fbS9"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Kesimpulan →</button></div>
+  </div>
+
+  <!-- SLIDE 10: Refleksi & Penutup -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Rangkuman &amp; <span class="hv">Penutup</span> 🎓</div>
+      <div class="slide-sub">Kamu baru saja menyelesaikan misi keduamu sebagai analis game. Ini rangkuman temuanmu:</div>
+    </div>
+    <div class="summary-card">
+      <h3>📋 CATATAN ANALIS GAME</h3>
+      <div class="summary-item"><span>➕</span>Ketika dua percobaan dilakukan sekaligus, jumlah kemungkinan hasilnya bertambah banyak — bukan sekadar dijumlahkan.</div>
+      <div class="summary-item"><span>📋</span>Ruang sampel dua koin: S = {AA, AG, GA, GG} → n(S) = 2 × 2 = 4.</div>
+      <div class="summary-item"><span>🎲</span>Ruang sampel dua dadu punya n(S) = 6 × 6 = 36 pasangan hasil.</div>
+      <div class="summary-item"><span>➗</span><strong style="color:var(--amber)">Aturan Perkalian: total kombinasi = (banyak hasil percobaan 1) × (banyak hasil percobaan 2)</strong></div>
+      <div class="summary-item"><span>🔁</span>Satu hasil (seperti jumlah = 7) bisa diperoleh lewat BANYAK kombinasi berbeda, sehingga peluangnya jadi lebih besar dari hasil lain seperti jumlah = 2 atau 12.</div>
+      <div class="summary-item"><span>⚖️</span>Kadang dua kejadian yang terlihat beda (jumlah=6 vs jumlah=8, atau ganjil-ganjil vs genap-genap) ternyata punya peluang yang SAMA besar!</div>
+    </div>
+    <div class="big-quote">
+      <div class="big-quote-text">"Dalam peluang, hasil yang sama<br>belum tentu memiliki <em>kemungkinan</em> yang sama."</div>
+    </div>
+    <div class="callout rose"><strong>Preview selanjutnya:</strong> Bagaimana jika kita ingin menghitung peluang dua kejadian sekaligus, seperti "A dan B" atau "A atau B"? Nantikan Peluang Kejadian Majemuk! 🎲🎲</div>
+    <div class="done-actions">
+      <a href="quicktest31.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise31.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson31.html" class="da-btn da-secondary">Lesson 31</a>
+    </div>
+  </div>
+
+</div>
+<script>
+let currentSlide=1;
+const TOTAL=10;
+function goSlide(n){
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide=n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width=((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleReveal(id){
+  document.getElementById(id).classList.toggle('show');
+}
+
+/* ---------- Slide 2: guess (neutral, no right/wrong) ---------- */
+function pickS2(btn){
+  document.querySelectorAll('#slide2 .pick-btn').forEach(b=>b.disabled=true);
+  btn.classList.add('neutral');
+  document.getElementById('fbS2').innerHTML='🤔 Menarik! Yuk kita buktikan bersama-sama di slide berikutnya dengan menyusun ruang sampelnya satu per satu.';
+}
+
+/* ---------- Slide 3: build coin sample space ---------- */
+const coinSteps=['AA','AG','GA','GG'];
+let coinStep=0;
+function buildCoinSpace(){
+  if(coinStep>=coinSteps.length){
+    document.getElementById('coinReveal').classList.add('show');
+    document.getElementById('coinQBox').style.display='block';
+    document.getElementById('coinPickGrid').style.display='grid';
+    document.getElementById('coinFormula').style.display='block';
+    document.getElementById('btnBuildCoin').disabled=true;
+    return;
+  }
+  document.getElementById('cs'+coinStep).textContent=coinSteps[coinStep];
+  document.getElementById('cs'+coinStep).classList.add('filled');
+  coinStep++;
+  if(coinStep>=coinSteps.length){
+    document.getElementById('btnBuildCoin').textContent='Selesai! Lihat Kesimpulan ✓';
+    setTimeout(()=>{
+      document.getElementById('coinReveal').classList.add('show');
+      document.getElementById('coinQBox').style.display='block';
+      document.getElementById('coinPickGrid').style.display='grid';
+      document.getElementById('coinFormula').style.display='block';
+      document.getElementById('btnBuildCoin').disabled=true;
+    },400);
+  }
+}
+function pickS3(btn,ans){
+  document.querySelectorAll('#slide3 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS3');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! GG artinya koin 1 = Gambar dan koin 2 = Gambar, dua-duanya Gambar.';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS3(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. GG artinya koin 1 = Gambar, koin 2 = Gambar — itulah yang menunjukkan dua-duanya Gambar.';}
+}
+
+/* ---------- Slide 4: build dice pattern ---------- */
+(function initDiceRow(){
+  const row=document.getElementById('d1Row');
+  for(let i=1;i<=6;i++){
+    const b=document.createElement('button');
+    b.className='die-num-btn'; b.textContent=i;
+    b.onclick=()=>pickDie1(i,b);
+    row.appendChild(b);
+  }
+})();
+let diceExplored=new Set();
+function pickDie1(n,btn){
+  document.querySelectorAll('#d1Row .die-num-btn').forEach(b=>b.classList.remove('picked'));
+  btn.classList.add('picked');
+  document.getElementById('diceRevealStep').classList.add('show');
+  document.getElementById('diceStepText').textContent='Dadu pertama = '+n+' → dadu kedua bisa 1, 2, 3, 4, 5, atau 6';
+  document.getElementById('diceStepSub').textContent='Ada 6 kemungkinan pasangan baru: ('+n+',1) ('+n+',2) ('+n+',3) ('+n+',4) ('+n+',5) ('+n+',6).';
+  diceExplored.add(n);
+  if(diceExplored.size>=3){
+    document.getElementById('dicePatternBox').style.display='block';
+    document.getElementById('diceFormula').style.display='block';
+  }
+}
+
+/* ---------- Dice table builder (used in slide 5, 6, 7) ---------- */
+function buildDiceTable(containerId, classFn, labelFn){
+  const el=document.getElementById(containerId);
+  el.innerHTML='';
+  const corner=document.createElement('div');
+  corner.className='dt-cell hdr'; corner.textContent='';
+  el.appendChild(corner);
+  for(let c=1;c<=6;c++){
+    const h=document.createElement('div');
+    h.className='dt-cell hdr'; h.textContent=c;
+    el.appendChild(h);
+  }
+  for(let r=1;r<=6;r++){
+    const rh=document.createElement('div');
+    rh.className='dt-cell hdr'; rh.textContent=r;
+    el.appendChild(rh);
+    for(let c=1;c<=6;c++){
+      const cell=document.createElement('div');
+      const extra=classFn?classFn(r,c):'';
+      cell.className='dt-cell'+(extra?(' '+extra):'');
+      cell.textContent=labelFn?labelFn(r,c):(r+','+c);
+      el.appendChild(cell);
+    }
+  }
+}
+buildDiceTable('dtSlide5', (r,c)=>r===c?'hl-v':'', (r,c)=>r+','+c);
+
+/* ---------- Slide 6: peluang jumlah ---------- */
+function sumPairs(target){
+  let list=[];
+  for(let r=1;r<=6;r++)for(let c=1;c<=6;c++)if(r+c===target)list.push([r,c]);
+  return list;
+}
+buildDiceTable('dtSlide6', ()=>'', (r,c)=>r+c);
+function showSum(target){
+  document.querySelectorAll('.sum-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sumbtn-'+target).classList.add('active');
+  const pairs=sumPairs(target);
+  const pairSet=new Set(pairs.map(p=>p[0]+'-'+p[1]));
+  buildDiceTable('dtSlide6', (r,c)=>pairSet.has(r+'-'+c)?'hl-a':'', (r,c)=>r+c);
+  const n=pairs.length;
+  document.getElementById('sumStat').innerHTML=
+    `<div class="stat-chip">n(A) = <b>${n}</b></div><div class="stat-chip">n(S) = <b>36</b></div><div class="stat-chip">P(jumlah=${target}) = <b>${n}/36</b></div>`;
+  const box=document.getElementById('sumInsight');
+  box.style.display='block';
+  if(target===7){
+    box.innerHTML='<strong>Menarik:</strong> Jumlah 7 punya PALING BANYAK cara (6 kombinasi) dibanding jumlah lain — makanya jumlah 7 paling sering muncul saat dua dadu dilempar!';
+  } else {
+    box.innerHTML=`<strong>Perhatikan:</strong> Jumlah ${target} hanya bisa dicapai lewat ${n} kombinasi saja, jadi peluangnya jauh lebih kecil dibanding jumlah 7.`;
+  }
+}
+
+/* ---------- Slide 7: detective challenge ---------- */
+function detPairs(kind){
+  let list=[];
+  for(let r=1;r<=6;r++)for(let c=1;c<=6;c++){
+    if(kind==='same'&&r===c)list.push([r,c]);
+    if(kind==='six'&&(r===6||c===6))list.push([r,c]);
+    if(kind==='gt9'&&(r+c)>9)list.push([r,c]);
+  }
+  return list;
+}
+buildDiceTable('dtSlide7', ()=>'', (r,c)=>r+','+c);
+const detLabel={same:'Kedua dadu sama',six:'Minimal satu angka 6',gt9:'Jumlah lebih dari 9'};
+function showDetective(kind){
+  document.querySelectorAll('#slide7 .sum-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('detbtn-'+kind).classList.add('active');
+  const pairs=detPairs(kind);
+  const pairSet=new Set(pairs.map(p=>p[0]+'-'+p[1]));
+  buildDiceTable('dtSlide7', (r,c)=>pairSet.has(r+'-'+c)?'hl-r':'', (r,c)=>r+','+c);
+  const n=pairs.length;
+  document.getElementById('detStat').innerHTML=
+    `<div class="stat-chip">n(A) = <b>${n}</b></div><div class="stat-chip">n(S) = <b>36</b></div><div class="stat-chip">P(${detLabel[kind]}) = <b>${n}/36</b></div>`;
+  const box=document.getElementById('detInsight');
+  box.style.display='block';
+  if(kind==='same') box.innerHTML='<strong>Pola:</strong> "Kedua dadu sama" cuma tercapai lewat pasangan kembar (1,1) sampai (6,6) — 6 kombinasi dari 36, jadi P = 6/36 = 1/6.';
+  else if(kind==='six') box.innerHTML='<strong>Hati-hati:</strong> Jangan dihitung 6+6=12! Pasangan (6,6) ikut dihitung dua kali kalau begitu. Jawaban benarnya 11/36.';
+  else box.innerHTML='<strong>Pola:</strong> Jumlah lebih dari 9 (yaitu 10, 11, 12) hanya tercapai lewat 6 pasangan dari sudut kanan-bawah tabel — P = 6/36 = 1/6.';
+}
+
+/* ---------- Slide 8: mana lebih mungkin (with equal-probability twists) ---------- */
+function pickS8(btn,ans,q){
+  document.querySelectorAll(`#slide8 .pick-grid`)[q-1].querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS8_'+q);
+  if(q==='1'){
+    if(ans==='c'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Jumlah 6 punya 5 kombinasi {(1,5)(2,4)(3,3)(4,2)(5,1)} dan jumlah 8 juga punya 5 kombinasi {(2,6)(3,5)(4,4)(5,3)(6,2)} — sama-sama P = 5/36.';}
+    else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS8(this,'c','1')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. Coba hitung: jumlah 6 = 5 kombinasi, jumlah 8 = 5 kombinasi juga. Keduanya SAMA besar (5/36)!';}
+  } else if(q==='2'){
+    if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! "Tepat satu angka 6" ada 10 kombinasi (P=10/36), sedangkan "dua-duanya 6" cuma (6,6) saja (P=1/36). Tepat satu jauh lebih mungkin.';}
+    else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS8(this,'a','2')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. "Dua-duanya 6" cuma bisa (6,6) — 1 kombinasi saja (P=1/36). "Tepat satu 6" ada 10 kombinasi (P=10/36), jauh lebih besar.';}
+  } else {
+    if(ans==='c'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Ganjil = {1,3,5} dan genap = {2,4,6} sama-sama punya 3 pilihan per dadu, jadi 3×3=9 kombinasi masing-masing — P = 9/36 sama-sama.';}
+    else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS8(this,'c','3')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. Ganjil {1,3,5} dan genap {2,4,6} sama-sama punya 3 anggota, jadi kombinasinya juga sama: 3×3=9 (P=9/36) untuk keduanya.';}
+  }
+}
+
+/* ---------- Slide 9: game designer verdict ---------- */
+function pickS9(btn,ans){
+  document.querySelectorAll('#slide9 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS9');
+  if(ans==='b'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! P(menang) = 1/6 ≈ 16,7% tergolong kecil — pemain akan cukup sering kalah. Aturan seperti ini cocok dipakai kalau hadiahnya besar/istimewa, supaya game tetap menantang.';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS9(this,'b')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. P(menang) = 1/6 ≈ 16,7% — bukan mustahil (masih mungkin menang), tapi juga tidak mudah. Ini tergolong cukup sulit / jarang menang.';}
+}
+</script>
+</body>
+</html>
