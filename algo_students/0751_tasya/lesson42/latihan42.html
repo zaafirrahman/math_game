@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan · Mandiri · L42 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --peach:#f0956a;--peach-light:#f7c4a8;--peach-bg:rgba(240,149,106,0.1);
+    --acc:#e8a020;--acc-light:#f5d080;--acc-bg:rgba(232,160,32,0.1);
+    --vio:#7c5cbf;--vio-light:#b89ee0;--vio-bg:rgba(124,92,191,0.1);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 90%,rgba(232,160,32,0.07) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--mint);}
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--mint);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--gold);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .formula-bar{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:0.9rem 1.2rem;margin-bottom:1.5rem;display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center;box-shadow:0 2px 8px var(--shadow);}
+  .formula-bar-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);flex-basis:100%;}
+  .frm{font-family:'Nunito',sans-serif;font-size:0.76rem;font-weight:800;padding:0.3rem 0.7rem;border-radius:99px;}
+  .frm-cari{background:var(--gold-bg);color:var(--gold);border:1.5px solid var(--gold-light);}
+  .frm-id{background:var(--vio-bg);color:var(--vio);border:1.5px solid var(--vio-light);}
+  .frm-alj{background:var(--peach-bg);color:var(--peach);border:1.5px solid var(--peach-light);}
+  .frm-nalar{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .prog-bar-wrap{background:var(--border);border-radius:99px;height:8px;margin-bottom:0.4rem;overflow:hidden;}
+  .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:99px;transition:width 0.4s ease;}
+  .prog-label{display:flex;justify-content:space-between;font-size:0.72rem;font-weight:700;color:var(--text-muted);margin-bottom:1.5rem;}
+
+  .q-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);display:none;animation:fadeUp 0.35s ease;}
+  .q-card.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .tag{display:inline-block;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.2rem 0.7rem;border-radius:99px;margin-bottom:0.9rem;}
+  .tag-cari{background:var(--gold-bg);color:var(--gold);border:1.5px solid var(--gold-light);}
+  .tag-id{background:var(--vio-bg);color:var(--vio);border:1.5px solid var(--vio-light);}
+  .tag-alj{background:var(--peach-bg);color:var(--peach);border:1.5px solid var(--peach-light);}
+  .tag-nalar{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+  .tag-ctx{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+
+  .coord-display{display:flex;gap:0.6rem;flex-wrap:wrap;margin:0.8rem 0;}
+  .coord-pt{font-family:'Nunito',sans-serif;font-weight:900;font-size:0.95rem;padding:0.4rem 0.85rem;border-radius:10px;}
+  .pt-ori{background:var(--gold-bg);border:2px solid var(--gold-light);color:var(--gold);}
+  .pt-info{background:var(--vio-bg);border:2px solid var(--vio-light);color:var(--vio);}
+
+  .q-text{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;margin-bottom:1rem;line-height:1.5;}
+
+  .hint-toggle{background:var(--gold-bg);border:1.5px solid var(--gold-light);color:var(--gold);padding:0.4rem 1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;margin-bottom:1rem;display:inline-block;transition:all 0.2s;}
+  .hint-toggle:hover{background:var(--gold);color:#fff;}
+  .hint-box{background:var(--gold-bg);border:1.5px solid var(--gold-light);border-radius:12px;padding:0.7rem 1rem;margin-bottom:0.9rem;font-size:0.85rem;color:var(--text-mid);display:none;line-height:1.6;}
+  .hint-box.show{display:block;}
+
+  .opts{display:flex;flex-direction:column;gap:0.65rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.88rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--gold-light);background:var(--gold-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;line-height:1.5;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--gold-light);color:var(--gold);}
+  .btn-primary{background:linear-gradient(135deg,var(--gold),#c07818);color:#fff;box-shadow:0 4px 14px rgba(232,160,32,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn:disabled{opacity:0.3;cursor:not-allowed;transform:none!important;}
+
+  .finish-screen{display:none;text-align:center;padding:2rem 0;}
+  .finish-screen.show{display:block;}
+  .finish-icon{font-size:4rem;margin-bottom:1rem;display:block;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.8rem;font-weight:900;color:var(--gold);margin-bottom:0.5rem;}
+  .finish-score{font-family:'Nunito',sans-serif;font-size:3.2rem;font-weight:900;color:var(--rose);margin-bottom:0.3rem;}
+  .finish-sub{color:var(--text-muted);margin-bottom:1.8rem;line-height:1.7;font-size:0.9rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson42.html">L42</a><span>›</span>
+  <span class="cur">LATIHAN</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🌙 Latihan Mandiri · Lesson 42</div>
+  <h1>Jumlah Sudut Segiempat — Latihan <span>Mandiri</span></h1>
+  <p class="intro">10 soal bertahap: dari dasar sampai gabungan dan penalaran. Ada petunjuk dan penjelasan di tiap soal!</p>
+
+  <div class="formula-bar">
+    <div class="formula-bar-label">📐 Ingat Aturannya</div>
+    <span class="frm frm-cari">∠A+∠B+∠C+∠D = 360°</span>
+    <span class="frm frm-id">Persegi/P.Panjang → semua sudut 90°</span>
+    <span class="frm frm-alj">Aljabar → jumlahkan = 360°</span>
+    <span class="frm frm-nalar">Mungkinkah? → cek jumlahnya</span>
+  </div>
+
+  <div class="prog-bar-wrap"><div class="prog-bar-fill" id="progFill" style="width:10%"></div></div>
+  <div class="prog-label"><span id="progText">Soal 1 dari 10</span><span id="scoreText">Skor: 0</span></div>
+
+  <!--
+    ANSWER KEY:
+    Q1: 360-(75+85+95)=105                                                correct=idx0
+    Q2: 360-(90+90+120)=60                                                correct=idx0
+    Q3: Persegi -> 360/4=90                                               correct=idx0
+    Q4: A=C=65 -> B=D=(360-130)/2=115                                     correct=idx0
+    Q5: Semua sudut 90 -> persegi panjang                                 correct=idx0
+    Q6: 70,110,110,70 -> trapesium sama kaki                              correct=idx0
+    Q7: x+(x+10)+(x+20)+(x+30)=360 -> 4x+60=360 -> x=75                   correct=idx0
+    Q8: 3x+2x+90+90=360 -> 5x=180 -> x=36                                 correct=idx0
+    Q9: 95x4=380 != 360 -> tidak mungkin                                  correct=idx1
+    Q10: 360-(90+90+130)=50                                               correct=idx0
+  -->
+
+  <!-- Q1 -->
+  <div class="q-card active" id="q-1">
+    <span class="tag tag-cari">Cari Sudut</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">Sudut 75°, 85°, 95°</span></div>
+    <div class="q-text">Tiga sudut sebuah segiempat adalah 75°, 85°, dan 95°. Besar sudut keempatnya adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(1)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-1">Ingat: jumlah keempat sudut segiempat selalu 360°. Sudut keempat = 360° − (75°+85°+95°).</div>
+    <div class="opts" id="opts-1">
+      <button class="opt-btn" onclick="answer(1,0,0)">105°</button>
+      <button class="opt-btn" onclick="answer(1,1,0)">95°</button>
+      <button class="opt-btn" onclick="answer(1,2,0)">115°</button>
+      <button class="opt-btn" onclick="answer(1,3,0)">85°</button>
+    </div>
+    <div class="feedback" id="fb-1"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" disabled>← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-1" onclick="goTo(2)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="q-2">
+    <span class="tag tag-cari">Cari Sudut</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">90°, 90°, dan 120°</span></div>
+    <div class="q-text">Sebuah segiempat memiliki dua sudut siku-siku (90° dan 90°) serta satu sudut 120°. Sudut keempatnya adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(2)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-2">Jumlahkan ketiga sudut yang diketahui, lalu kurangkan dari 360°: 360° − (90°+90°+120°).</div>
+    <div class="opts" id="opts-2">
+      <button class="opt-btn" onclick="answer(2,0,0)">60°</button>
+      <button class="opt-btn" onclick="answer(2,1,0)">50°</button>
+      <button class="opt-btn" onclick="answer(2,2,0)">70°</button>
+      <button class="opt-btn" onclick="answer(2,3,0)">80°</button>
+    </div>
+    <div class="feedback" id="fb-2"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(1)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-2" onclick="goTo(3)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="q-3">
+    <span class="tag tag-id">Persegi</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">Semua sisi & sudut sama</span></div>
+    <div class="q-text">Pada persegi, keempat sudutnya sama besar. Besar setiap sudutnya adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(3)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-3">Karena keempat sudut sama besar dan jumlahnya 360°, tiap sudut = 360° ÷ 4.</div>
+    <div class="opts" id="opts-3">
+      <button class="opt-btn" onclick="answer(3,0,0)">90°</button>
+      <button class="opt-btn" onclick="answer(3,1,0)">60°</button>
+      <button class="opt-btn" onclick="answer(3,2,0)">120°</button>
+      <button class="opt-btn" onclick="answer(3,3,0)">45°</button>
+    </div>
+    <div class="feedback" id="fb-3"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(2)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-3" onclick="goTo(4)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="q-4">
+    <span class="tag tag-cari">Jajar Genjang</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">∠A = ∠C = 65°</span></div>
+    <div class="q-text">Pada sebuah jajar genjang, sudut berhadapan sama besar. Jika ∠A = ∠C = 65°, besar ∠B (= ∠D) adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(4)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-4">Sisa sudut setelah ∠A+∠C = 360° − (65°+65°). Karena ∠B = ∠D, bagi dua hasilnya.</div>
+    <div class="opts" id="opts-4">
+      <button class="opt-btn" onclick="answer(4,0,0)">115°</button>
+      <button class="opt-btn" onclick="answer(4,1,0)">110°</button>
+      <button class="opt-btn" onclick="answer(4,2,0)">120°</button>
+      <button class="opt-btn" onclick="answer(4,3,0)">125°</button>
+    </div>
+    <div class="feedback" id="fb-4"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(3)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-4" onclick="goTo(5)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="q-5">
+    <span class="tag tag-id">Identifikasi Konsep</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">90°, 90°, 90°, 90°</span></div>
+    <div class="q-text">Sebuah segiempat memiliki keempat sudut 90°, 90°, 90°, dan 90°. Bangun ini biasa disebut...</div>
+    <button class="hint-toggle" onclick="toggleHint(5)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-5">Semua sudut siku-siku adalah ciri khas bangun yang keempat sisinya bertemu tegak lurus.</div>
+    <div class="opts" id="opts-5">
+      <button class="opt-btn" onclick="answer(5,0,0)">Persegi panjang (semua sudut siku-siku)</button>
+      <button class="opt-btn" onclick="answer(5,1,0)">Trapesium</button>
+      <button class="opt-btn" onclick="answer(5,2,0)">Jajar genjang miring</button>
+      <button class="opt-btn" onclick="answer(5,3,0)">Layang-layang</button>
+    </div>
+    <div class="feedback" id="fb-5"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(4)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-5" onclick="goTo(6)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card" id="q-6">
+    <span class="tag tag-id">Identifikasi Konsep</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">70°, 110°, 110°, 70°</span></div>
+    <div class="q-text">Sebuah segiempat punya sudut 70°, 110°, 110°, 70° yang berurutan, dengan sepasang sisi sejajar. Bangun ini adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(6)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-6">Sepasang sudut yang sama besar di setiap ujung sisi sejajar adalah ciri trapesium sama kaki.</div>
+    <div class="opts" id="opts-6">
+      <button class="opt-btn" onclick="answer(6,0,0)">Trapesium sama kaki</button>
+      <button class="opt-btn" onclick="answer(6,1,0)">Jajar genjang</button>
+      <button class="opt-btn" onclick="answer(6,2,0)">Layang-layang</button>
+      <button class="opt-btn" onclick="answer(6,3,0)">Persegi panjang</button>
+    </div>
+    <div class="feedback" id="fb-6"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(5)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-6" onclick="goTo(7)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card" id="q-7">
+    <span class="tag tag-alj">Aljabar</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">x, (x+10), (x+20), (x+30)</span></div>
+    <div class="q-text">Sebuah segiempat memiliki sudut (x)°, (x+10)°, (x+20)°, dan (x+30)°. Nilai x adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(7)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-7">Jumlahkan semua suku, samakan dengan 360°: x+(x+10)+(x+20)+(x+30) = 4x+60 = 360°.</div>
+    <div class="opts" id="opts-7">
+      <button class="opt-btn" onclick="answer(7,0,0)">75</button>
+      <button class="opt-btn" onclick="answer(7,1,0)">70</button>
+      <button class="opt-btn" onclick="answer(7,2,0)">65</button>
+      <button class="opt-btn" onclick="answer(7,3,0)">80</button>
+    </div>
+    <div class="feedback" id="fb-7"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(6)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-7" onclick="goTo(8)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card" id="q-8">
+    <span class="tag tag-alj">Aljabar</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">(3x), (2x), 90°, 90°</span></div>
+    <div class="q-text">Sebuah segiempat memiliki sudut (3x)°, (2x)°, 90°, dan 90°. Nilai x adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(8)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-8">3x+2x+90+90 = 360°. Sederhanakan dulu suku-sukunya sebelum mencari x.</div>
+    <div class="opts" id="opts-8">
+      <button class="opt-btn" onclick="answer(8,0,0)">36</button>
+      <button class="opt-btn" onclick="answer(8,1,0)">30</button>
+      <button class="opt-btn" onclick="answer(8,2,0)">40</button>
+      <button class="opt-btn" onclick="answer(8,3,0)">45</button>
+    </div>
+    <div class="feedback" id="fb-8"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(7)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-8" onclick="goTo(9)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card" id="q-9">
+    <span class="tag tag-nalar">Penalaran</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">95°, 95°, 95°, 95°</span></div>
+    <div class="q-text">Mungkinkah ada segiempat dengan keempat sudut 95°, 95°, 95°, dan 95°?</div>
+    <button class="hint-toggle" onclick="toggleHint(9)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-9">Jumlahkan dulu keempat sudutnya: 95° × 4 = ?. Bandingkan dengan 360°.</div>
+    <div class="opts" id="opts-9">
+      <button class="opt-btn" onclick="answer(9,0,1)">Mungkin, karena semua sudut sama besar</button>
+      <button class="opt-btn" onclick="answer(9,1,1)">Tidak mungkin, karena jumlahnya 380° ≠ 360°</button>
+      <button class="opt-btn" onclick="answer(9,2,1)">Mungkin, karena semuanya sudut tumpul</button>
+      <button class="opt-btn" onclick="answer(9,3,1)">Tidak mungkin, karena tidak ada sudut siku-siku</button>
+    </div>
+    <div class="feedback" id="fb-9"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(8)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-9" onclick="goTo(10)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card" id="q-10">
+    <span class="tag tag-ctx">Soal Cerita</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">90°, 90°, dan 130°</span></div>
+    <div class="q-text">Layar sebuah layang-layang berbentuk segiempat memiliki tiga sudut 90°, 90°, dan 130°. Sudut keempat (ujung bawah layang-layang) adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(10)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-10">Sama seperti soal cari sudut biasa: 360° − (90°+90°+130°).</div>
+    <div class="opts" id="opts-10">
+      <button class="opt-btn" onclick="answer(10,0,0)">50°</button>
+      <button class="opt-btn" onclick="answer(10,1,0)">60°</button>
+      <button class="opt-btn" onclick="answer(10,2,0)">40°</button>
+      <button class="opt-btn" onclick="answer(10,3,0)">70°</button>
+    </div>
+    <div class="feedback" id="fb-10"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(9)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-10" onclick="showFinish()" disabled>Lihat Hasil 🏆</button>
+    </div>
+  </div>
+
+  <!-- Finish -->
+  <div class="finish-screen" id="finishScreen">
+    <span class="finish-icon" id="finishIcon">🏆</span>
+    <div class="finish-title">Latihan Selesai!</div>
+    <div class="finish-score" id="finalScore">0/10</div>
+    <p class="finish-sub" id="finalMsg">Hebat!</p>
+    <div class="finish-btns">
+      <button class="btn btn-primary" onclick="restart()" style="background:linear-gradient(135deg,var(--gold),#c07818);color:#fff;box-shadow:0 4px 14px rgba(232,160,32,0.3);">🔄 Ulangi Latihan</button>
+      <a href="soal42.html" class="btn" style="background:linear-gradient(135deg,var(--rose),#c04060);color:#fff;box-shadow:0 4px 14px rgba(232,98,138,0.35);">⚡ Coba Boss Challenge</a>
+      <a href="lesson42.html" class="btn btn-ghost">← Lesson 42</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const TOTAL=10;
+let cur=1, score=0;
+
+/*
+  FEEDBACK VERIFICATION:
+  Q1: 360-(75+85+95)=105 ✓
+  Q2: 360-90-90-120=60 ✓
+  Q3: 360/4=90 ✓
+  Q4: 360-65-65=230, /2=115 ✓
+  Q5: semua 90 -> persegi panjang ✓
+  Q6: 70,110,110,70 -> trapesium sama kaki ✓
+  Q7: 4x+60=360 -> x=75 ✓
+  Q8: 5x+180=360 -> x=36 ✓
+  Q9: 95x4=380 -> tidak mungkin ✓
+  Q10: 360-90-90-130=50 ✓
+*/
+const feedbacks = {
+  1: {ok:'✅ Benar! 360° − (75°+85°+95°) = 360° − 255° = 105° ✓',
+      no:'❌ Sudut keempat = 360° − (75°+85°+95°) = 105°. Ingat, jumlah semua sudut segiempat = 360°'},
+  2: {ok:'✅ Benar! 360° − (90°+90°+120°) = 360° − 300° = 60° ✓',
+      no:'❌ Jumlahkan tiga sudut yang diketahui, lalu kurangkan dari 360°: 360° − (90°+90°+120°) = 60°'},
+  3: {ok:'✅ Benar! 360° ÷ 4 = 90° ✓',
+      no:'❌ Karena keempat sudut sama besar dan totalnya 360°, tiap sudut = 360° ÷ 4 = 90°'},
+  4: {ok:'✅ Benar! 360° − (65°+65°) = 230°, dibagi dua (karena ∠B=∠D) = 115° ✓',
+      no:'❌ Sisa sudut = 360° − (65°+65°) = 230°. Karena ∠B=∠D, bagi dua: 230° ÷ 2 = 115°'},
+  5: {ok:'✅ Benar! Keempat sudut 90° adalah ciri khas persegi panjang (persegi termasuk kasus khususnya) ✓',
+      no:'❌ Semua sudut siku-siku (90°) menandakan bangun tersebut adalah persegi panjang'},
+  6: {ok:'✅ Benar! Sepasang sudut yang sama besar berdekatan pada sisi sejajar adalah ciri trapesium sama kaki ✓',
+      no:'❌ Karena hanya sepasang sisi yang sejajar (bukan dua pasang seperti jajar genjang) dengan sudut berdekatan yang sama besar, ini disebut trapesium sama kaki'},
+  7: {ok:'✅ Benar! x+(x+10)+(x+20)+(x+30)=4x+60=360° → 4x=300° → x=75 ✓',
+      no:'❌ Jumlahkan semua suku: 4x+60=360° → 4x=300° → x=75'},
+  8: {ok:'✅ Benar! 3x+2x+90+90=5x+180=360° → 5x=180° → x=36 ✓',
+      no:'❌ Sederhanakan dulu: 3x+2x+90+90=5x+180. Maka 5x+180=360° → 5x=180° → x=36'},
+  9: {ok:'✅ Benar! 95°×4=380°, melebihi 360°, jadi tidak mungkin ada segiempat seperti itu ✓',
+      no:'❌ Jumlahkan keempat sudut: 95°×4=380°. Karena melebihi 360°, aturan jumlah sudut segiempat dilanggar — tidak mungkin ada'},
+  10:{ok:'✅ Benar! 360° − (90°+90°+130°) = 360° − 310° = 50° ✓',
+      no:'❌ Sudut keempat = 360° − (90°+90°+130°) = 50°'}
+};
+
+function toggleHint(n){
+  const h=document.getElementById('hint-'+n);
+  h.classList.toggle('show');
+}
+
+function answer(qNum, chosen, correct){
+  const opts=document.querySelectorAll(`#opts-${qNum} .opt-btn`);
+  opts.forEach(o=>o.disabled=true);
+  const fb=document.getElementById('fb-'+qNum);
+  if(chosen===correct){
+    opts[chosen].classList.add('correct');
+    score++;
+    fb.textContent=feedbacks[qNum].ok;
+    fb.className='feedback ok show';
+  } else {
+    opts[chosen].classList.add('wrong');
+    opts[correct].classList.add('correct');
+    fb.textContent=feedbacks[qNum].no;
+    fb.className='feedback no show';
+  }
+  document.getElementById('next-'+qNum).disabled=false;
+  document.getElementById('scoreText').textContent='Skor: '+score;
+}
+
+function goTo(n){
+  document.getElementById('q-'+cur).classList.remove('active');
+  cur=n;
+  document.getElementById('q-'+cur).classList.add('active');
+  const pct=((cur-1)/TOTAL*100)+10;
+  document.getElementById('progFill').style.width=Math.min(pct,100)+'%';
+  document.getElementById('progText').textContent='Soal '+cur+' dari '+TOTAL;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showFinish(){
+  document.getElementById('q-10').classList.remove('active');
+  document.getElementById('progFill').style.width='100%';
+  const fs=document.getElementById('finishScreen');
+  fs.classList.add('show');
+  document.getElementById('finalScore').textContent=score+'/10';
+  const msgs=['Tetap semangat! Baca kembali materi jumlah sudut segiempat ya 💪','Sudah mulai paham! Latihan lagi untuk lebih mantap 🙌','Bagus! Kamu sudah memahami dasar-dasar jumlah sudut segiempat 🔥','Keren banget! Hampir sempurna ✨','Sempurna! Kamu ahli jumlah sudut segiempat sekarang! 🏆'];
+  const idx=Math.min(Math.floor(score/2),4);
+  document.getElementById('finalMsg').textContent=msgs[idx];
+  document.getElementById('finishIcon').textContent=['😊','🙂','😄','🌟','🏆'][idx];
+}
+
+function restart(){
+  score=0;cur=1;
+  document.getElementById('finishScreen').classList.remove('show');
+  document.getElementById('progFill').style.width='10%';
+  document.getElementById('progText').textContent='Soal 1 dari 10';
+  document.getElementById('scoreText').textContent='Skor: 0';
+  for(let i=1;i<=TOTAL;i++){
+    document.getElementById('q-'+i).classList.remove('active');
+    const opts=document.querySelectorAll(`#opts-${i} .opt-btn`);
+    opts.forEach(o=>{o.disabled=false;o.classList.remove('correct','wrong');});
+    const fb=document.getElementById('fb-'+i);
+    fb.className='feedback';fb.textContent='';
+    document.getElementById('next-'+i).disabled=true;
+    const hint=document.getElementById('hint-'+i);
+    if(hint)hint.classList.remove('show');
+  }
+  document.getElementById('q-1').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
