@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan · Mandiri · L43 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --peach:#f0956a;--peach-light:#f7c4a8;--peach-bg:rgba(240,149,106,0.1);
+    --acc:#e8a020;--acc-light:#f5d080;--acc-bg:rgba(232,160,32,0.1);
+    --vio:#7c5cbf;--vio-light:#b89ee0;--vio-bg:rgba(124,92,191,0.1);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 90%,rgba(232,160,32,0.07) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--mint);}
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--mint);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--gold);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .formula-bar{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:0.9rem 1.2rem;margin-bottom:1.5rem;display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center;box-shadow:0 2px 8px var(--shadow);}
+  .formula-bar-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);flex-basis:100%;}
+  .frm{font-family:'Nunito',sans-serif;font-size:0.76rem;font-weight:800;padding:0.3rem 0.7rem;border-radius:99px;}
+  .frm-cari{background:var(--gold-bg);color:var(--gold);border:1.5px solid var(--gold-light);}
+  .frm-id{background:var(--vio-bg);color:var(--vio);border:1.5px solid var(--vio-light);}
+  .frm-alj{background:var(--peach-bg);color:var(--peach);border:1.5px solid var(--peach-light);}
+  .frm-nalar{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .prog-bar-wrap{background:var(--border);border-radius:99px;height:8px;margin-bottom:0.4rem;overflow:hidden;}
+  .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:99px;transition:width 0.4s ease;}
+  .prog-label{display:flex;justify-content:space-between;font-size:0.72rem;font-weight:700;color:var(--text-muted);margin-bottom:1.5rem;}
+
+  .q-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);display:none;animation:fadeUp 0.35s ease;}
+  .q-card.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .tag{display:inline-block;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.2rem 0.7rem;border-radius:99px;margin-bottom:0.9rem;}
+  .tag-cari{background:var(--gold-bg);color:var(--gold);border:1.5px solid var(--gold-light);}
+  .tag-id{background:var(--vio-bg);color:var(--vio);border:1.5px solid var(--vio-light);}
+  .tag-alj{background:var(--peach-bg);color:var(--peach);border:1.5px solid var(--peach-light);}
+  .tag-nalar{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+  .tag-ctx{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+
+  .coord-display{display:flex;gap:0.6rem;flex-wrap:wrap;margin:0.8rem 0;}
+  .coord-pt{font-family:'Nunito',sans-serif;font-weight:900;font-size:0.95rem;padding:0.4rem 0.85rem;border-radius:10px;}
+  .pt-ori{background:var(--gold-bg);border:2px solid var(--gold-light);color:var(--gold);}
+  .pt-info{background:var(--vio-bg);border:2px solid var(--vio-light);color:var(--vio);}
+
+  .q-text{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;margin-bottom:1rem;line-height:1.5;}
+
+  .hint-toggle{background:var(--gold-bg);border:1.5px solid var(--gold-light);color:var(--gold);padding:0.4rem 1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;margin-bottom:1rem;display:inline-block;transition:all 0.2s;}
+  .hint-toggle:hover{background:var(--gold);color:#fff;}
+  .hint-box{background:var(--gold-bg);border:1.5px solid var(--gold-light);border-radius:12px;padding:0.7rem 1rem;margin-bottom:0.9rem;font-size:0.85rem;color:var(--text-mid);display:none;line-height:1.6;}
+  .hint-box.show{display:block;}
+
+  .opts{display:flex;flex-direction:column;gap:0.65rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.88rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--gold-light);background:var(--gold-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;line-height:1.5;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--gold-light);color:var(--gold);}
+  .btn-primary{background:linear-gradient(135deg,var(--gold),#c07818);color:#fff;box-shadow:0 4px 14px rgba(232,160,32,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn:disabled{opacity:0.3;cursor:not-allowed;transform:none!important;}
+
+  .finish-screen{display:none;text-align:center;padding:2rem 0;}
+  .finish-screen.show{display:block;}
+  .finish-icon{font-size:4rem;margin-bottom:1rem;display:block;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.8rem;font-weight:900;color:var(--gold);margin-bottom:0.5rem;}
+  .finish-score{font-family:'Nunito',sans-serif;font-size:3.2rem;font-weight:900;color:var(--rose);margin-bottom:0.3rem;}
+  .finish-sub{color:var(--text-muted);margin-bottom:1.8rem;line-height:1.7;font-size:0.9rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson43.html">L43</a><span>›</span>
+  <span class="cur">LATIHAN</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🌙 Latihan Mandiri · Lesson 43</div>
+  <h1>Mengenal Lingkaran — Latihan <span>Mandiri</span></h1>
+  <p class="intro">10 soal bertahap: dari identifikasi bagian lingkaran sampai hitungan dan penalaran benar-salah. Ada petunjuk dan penjelasan di tiap soal!</p>
+
+  <div class="formula-bar">
+    <div class="formula-bar-label">📐 Ingat Istilahnya</div>
+    <span class="frm frm-cari">Diameter = 2 × Jari-jari</span>
+    <span class="frm frm-id">Busur = lengkung, Tali Busur = lurus</span>
+    <span class="frm frm-alj">Juring = sentuh pusat, Tembereng = tidak</span>
+    <span class="frm frm-nalar">Semua diameter = tali busur, tapi tidak sebaliknya</span>
+  </div>
+
+  <div class="prog-bar-wrap"><div class="prog-bar-fill" id="progFill" style="width:10%"></div></div>
+  <div class="prog-label"><span id="progText">Soal 1 dari 10</span><span id="scoreText">Skor: 0</span></div>
+
+  <!--
+    ANSWER KEY:
+    Q1: D=20 -> r=10                                    correct=idx0
+    Q2: r=6 -> D=12                                     correct=idx0
+    Q3: pusat->tepi = jari-jari                         correct=idx0
+    Q4: lurus lewat pusat, sisi ke sisi = diameter      correct=idx0
+    Q5: lengkung bagian tepi lingkaran = busur          correct=idx0
+    Q6: lurus dua titik tepi, TIDAK lewat pusat = tali busur   correct=idx0
+    Q7: setiap diameter = tali busur -> Ya (benar)      correct=idx0
+    Q8: setiap tali busur = diameter -> Tidak (salah)   correct=idx1
+    Q9: 2 jari-jari + busur (potongan pizza) = juring   correct=idx0
+    Q10: tali busur + busur (potongan tepi) = tembereng correct=idx1
+  -->
+
+  <!-- Q1 -->
+  <div class="q-card active" id="q-1">
+    <span class="tag tag-cari">Menghitung</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">Diameter = 20 cm</span></div>
+    <div class="q-text">Sebuah lingkaran memiliki diameter 20 cm. Panjang jari-jarinya adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(1)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-1">Ingat: Jari-jari = Diameter ÷ 2.</div>
+    <div class="opts" id="opts-1">
+      <button class="opt-btn" onclick="answer(1,0,0)">10 cm</button>
+      <button class="opt-btn" onclick="answer(1,1,0)">20 cm</button>
+      <button class="opt-btn" onclick="answer(1,2,0)">40 cm</button>
+      <button class="opt-btn" onclick="answer(1,3,0)">5 cm</button>
+    </div>
+    <div class="feedback" id="fb-1"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" disabled>← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-1" onclick="goTo(2)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="q-2">
+    <span class="tag tag-cari">Menghitung</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">Jari-jari = 6 cm</span></div>
+    <div class="q-text">Sebuah lingkaran memiliki jari-jari 6 cm. Panjang diameternya adalah...</div>
+    <button class="hint-toggle" onclick="toggleHint(2)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-2">Ingat: Diameter = 2 × Jari-jari.</div>
+    <div class="opts" id="opts-2">
+      <button class="opt-btn" onclick="answer(2,0,0)">12 cm</button>
+      <button class="opt-btn" onclick="answer(2,1,0)">3 cm</button>
+      <button class="opt-btn" onclick="answer(2,2,0)">18 cm</button>
+      <button class="opt-btn" onclick="answer(2,3,0)">6 cm</button>
+    </div>
+    <div class="feedback" id="fb-2"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(1)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-2" onclick="goTo(3)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="q-3">
+    <span class="tag tag-id">Identifikasi</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">Pusat → tepi lingkaran</span></div>
+    <div class="q-text">Ruas garis yang menghubungkan titik pusat ke sebuah titik pada tepi lingkaran disebut...</div>
+    <button class="hint-toggle" onclick="toggleHint(3)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-3">Garis ini hanya "setengah jalan" dibanding diameter.</div>
+    <div class="opts" id="opts-3">
+      <button class="opt-btn" onclick="answer(3,0,0)">Jari-jari</button>
+      <button class="opt-btn" onclick="answer(3,1,0)">Diameter</button>
+      <button class="opt-btn" onclick="answer(3,2,0)">Tali Busur</button>
+      <button class="opt-btn" onclick="answer(3,3,0)">Busur</button>
+    </div>
+    <div class="feedback" id="fb-3"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(2)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-3" onclick="goTo(4)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="q-4">
+    <span class="tag tag-id">Identifikasi</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">Sisi ke sisi, lewat pusat</span></div>
+    <div class="q-text">Garis lurus yang menghubungkan dua titik di tepi lingkaran dan melewati titik pusat disebut...</div>
+    <button class="hint-toggle" onclick="toggleHint(4)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-4">Panjangnya sama dengan dua kali jari-jari.</div>
+    <div class="opts" id="opts-4">
+      <button class="opt-btn" onclick="answer(4,0,0)">Diameter</button>
+      <button class="opt-btn" onclick="answer(4,1,0)">Jari-jari</button>
+      <button class="opt-btn" onclick="answer(4,2,0)">Busur</button>
+      <button class="opt-btn" onclick="answer(4,3,0)">Juring</button>
+    </div>
+    <div class="feedback" id="fb-4"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(3)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-4" onclick="goTo(5)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="q-5">
+    <span class="tag tag-id">Identifikasi</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">Bagian lengkung tepi</span></div>
+    <div class="q-text">Bagian garis lengkung dari tepi (keliling) lingkaran, di antara dua titik, disebut...</div>
+    <button class="hint-toggle" onclick="toggleHint(5)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-5">Ini garisnya lengkung, bukan lurus.</div>
+    <div class="opts" id="opts-5">
+      <button class="opt-btn" onclick="answer(5,0,0)">Busur</button>
+      <button class="opt-btn" onclick="answer(5,1,0)">Tali Busur</button>
+      <button class="opt-btn" onclick="answer(5,2,0)">Diameter</button>
+      <button class="opt-btn" onclick="answer(5,3,0)">Jari-jari</button>
+    </div>
+    <div class="feedback" id="fb-5"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(4)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-5" onclick="goTo(6)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card" id="q-6">
+    <span class="tag tag-id">Identifikasi</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">Lurus, TIDAK lewat pusat</span></div>
+    <div class="q-text">Garis lurus yang menghubungkan dua titik di tepi lingkaran, tapi TIDAK melewati titik pusat, disebut...</div>
+    <button class="hint-toggle" onclick="toggleHint(6)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-6">Kalau garis ini melewati pusat, baru namanya diameter.</div>
+    <div class="opts" id="opts-6">
+      <button class="opt-btn" onclick="answer(6,0,0)">Tali Busur</button>
+      <button class="opt-btn" onclick="answer(6,1,0)">Diameter</button>
+      <button class="opt-btn" onclick="answer(6,2,0)">Jari-jari</button>
+      <button class="opt-btn" onclick="answer(6,3,0)">Juring</button>
+    </div>
+    <div class="feedback" id="fb-6"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(5)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-6" onclick="goTo(7)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card" id="q-7">
+    <span class="tag tag-nalar">Penalaran</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">Diameter vs Tali Busur</span></div>
+    <div class="q-text">Pernyataan: "Setiap diameter adalah tali busur." Apakah pernyataan ini benar?</div>
+    <button class="hint-toggle" onclick="toggleHint(7)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-7">Diameter tetap menghubungkan dua titik di tepi lingkaran — sama seperti tali busur, hanya lebih istimewa.</div>
+    <div class="opts" id="opts-7">
+      <button class="opt-btn" onclick="answer(7,0,0)">Benar, karena diameter menghubungkan dua titik tepi lingkaran</button>
+      <button class="opt-btn" onclick="answer(7,1,0)">Salah, keduanya konsep yang sama sekali berbeda</button>
+      <button class="opt-btn" onclick="answer(7,2,0)">Benar, tapi hanya untuk lingkaran besar</button>
+      <button class="opt-btn" onclick="answer(7,3,0)">Salah, karena diameter tidak lurus</button>
+    </div>
+    <div class="feedback" id="fb-7"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(6)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-7" onclick="goTo(8)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card" id="q-8">
+    <span class="tag tag-nalar">Penalaran</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">Tali Busur vs Diameter</span></div>
+    <div class="q-text">Pernyataan: "Setiap tali busur adalah diameter." Apakah pernyataan ini benar?</div>
+    <button class="hint-toggle" onclick="toggleHint(8)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-8">Coba bayangkan tali busur yang letaknya jauh dari titik pusat — apakah itu tetap diameter?</div>
+    <div class="opts" id="opts-8">
+      <button class="opt-btn" onclick="answer(8,0,1)">Benar, semua tali busur pasti diameter</button>
+      <button class="opt-btn" onclick="answer(8,1,1)">Salah, hanya tali busur yang melewati pusat yang disebut diameter</button>
+      <button class="opt-btn" onclick="answer(8,2,1)">Benar, karena keduanya garis lurus</button>
+      <button class="opt-btn" onclick="answer(8,3,1)">Salah, karena tali busur selalu lebih pendek dari diameter</button>
+    </div>
+    <div class="feedback" id="fb-8"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(7)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-8" onclick="goTo(9)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card" id="q-9">
+    <span class="tag tag-ctx">Bagian Lingkaran</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">Seperti sepotong pizza</span></div>
+    <div class="q-text">Daerah yang dibatasi oleh dua jari-jari dan sebuah busur di antaranya (menyentuh titik pusat) disebut...</div>
+    <button class="hint-toggle" onclick="toggleHint(9)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-9">Bayangkan sepotong pizza — ujung lancipnya ada di titik pusat.</div>
+    <div class="opts" id="opts-9">
+      <button class="opt-btn" onclick="answer(9,0,0)">Juring</button>
+      <button class="opt-btn" onclick="answer(9,1,0)">Tembereng</button>
+      <button class="opt-btn" onclick="answer(9,2,0)">Tali Busur</button>
+      <button class="opt-btn" onclick="answer(9,3,0)">Diameter</button>
+    </div>
+    <div class="feedback" id="fb-9"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(8)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-9" onclick="goTo(10)" disabled>Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card" id="q-10">
+    <span class="tag tag-ctx">Bagian Lingkaran</span>
+    <div class="coord-display"><span class="coord-pt pt-ori">Seperti potongan tepi kue</span></div>
+    <div class="q-text">Daerah yang dibatasi oleh sebuah tali busur dan busur di antaranya (TIDAK menyentuh titik pusat) disebut...</div>
+    <button class="hint-toggle" onclick="toggleHint(10)">💡 Lihat Petunjuk</button>
+    <div class="hint-box" id="hint-10">Ini yang "terpotong" oleh tali busur, seperti ujung kue yang dipotong lurus.</div>
+    <div class="opts" id="opts-10">
+      <button class="opt-btn" onclick="answer(10,0,1)">Juring</button>
+      <button class="opt-btn" onclick="answer(10,1,1)">Tembereng</button>
+      <button class="opt-btn" onclick="answer(10,2,1)">Diameter</button>
+      <button class="opt-btn" onclick="answer(10,3,1)">Jari-jari</button>
+    </div>
+    <div class="feedback" id="fb-10"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(9)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-10" onclick="showFinish()" disabled>Lihat Hasil 🏆</button>
+    </div>
+  </div>
+
+  <!-- Finish -->
+  <div class="finish-screen" id="finishScreen">
+    <span class="finish-icon" id="finishIcon">🏆</span>
+    <div class="finish-title">Latihan Selesai!</div>
+    <div class="finish-score" id="finalScore">0/10</div>
+    <p class="finish-sub" id="finalMsg">Hebat!</p>
+    <div class="finish-btns">
+      <button class="btn btn-primary" onclick="restart()" style="background:linear-gradient(135deg,var(--gold),#c07818);color:#fff;box-shadow:0 4px 14px rgba(232,160,32,0.3);">🔄 Ulangi Latihan</button>
+      <a href="soal43.html" class="btn" style="background:linear-gradient(135deg,var(--rose),#c04060);color:#fff;box-shadow:0 4px 14px rgba(232,98,138,0.35);">⚡ Coba Boss Challenge</a>
+      <a href="lesson43.html" class="btn btn-ghost">← Lesson 43</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const TOTAL=10;
+let cur=1, score=0;
+
+/*
+  FEEDBACK VERIFICATION:
+  Q1: 20/2=10 ✓
+  Q2: 6*2=12 ✓
+  Q3: pusat->tepi = jari-jari ✓
+  Q4: lurus lewat pusat = diameter ✓
+  Q5: lengkung tepi = busur ✓
+  Q6: lurus tidak lewat pusat = tali busur ✓
+  Q7: diameter selalu tali busur -> Benar (idx0) ✓
+  Q8: tali busur belum tentu diameter -> Salah (idx1) ✓
+  Q9: 2 jari-jari + busur = juring ✓
+  Q10: tali busur + busur = tembereng (idx1) ✓
+*/
+const feedbacks = {
+  1: {ok:'✅ Benar! Jari-jari = Diameter ÷ 2 = 20 ÷ 2 = 10 cm ✓',
+      no:'❌ Jari-jari = Diameter ÷ 2 = 20 ÷ 2 = 10 cm'},
+  2: {ok:'✅ Benar! Diameter = 2 × Jari-jari = 2 × 6 = 12 cm ✓',
+      no:'❌ Diameter = 2 × Jari-jari = 2 × 6 = 12 cm'},
+  3: {ok:'✅ Benar! Garis dari pusat ke tepi lingkaran disebut jari-jari ✓',
+      no:'❌ Garis dari pusat ke tepi lingkaran disebut jari-jari, bukan diameter (diameter melewati pusat sampai ke sisi seberang)'},
+  4: {ok:'✅ Benar! Garis lurus sisi ke sisi yang melewati pusat disebut diameter ✓',
+      no:'❌ Garis lurus sisi ke sisi yang melewati titik pusat disebut diameter, panjangnya 2 × jari-jari'},
+  5: {ok:'✅ Benar! Bagian lengkung dari tepi lingkaran disebut busur ✓',
+      no:'❌ Bagian lengkung (bukan lurus) dari tepi lingkaran disebut busur'},
+  6: {ok:'✅ Benar! Garis lurus dua titik tepi yang TIDAK melewati pusat disebut tali busur ✓',
+      no:'❌ Kalau garisnya lurus, menghubungkan dua titik tepi, tapi tidak lewat pusat, itu disebut tali busur'},
+  7: {ok:'✅ Benar! Diameter tetap menghubungkan dua titik di tepi lingkaran, jadi diameter adalah tali busur yang melewati pusat ✓',
+      no:'❌ Pernyataan ini BENAR — diameter tetap tali busur, hanya istimewa karena melewati titik pusat'},
+  8: {ok:'✅ Benar! Hanya tali busur yang melewati pusat yang disebut diameter — bukan semua tali busur ✓',
+      no:'❌ Pernyataan ini SALAH — banyak tali busur yang tidak melewati pusat, jadi bukan diameter'},
+  9: {ok:'✅ Benar! Daerah dibatasi dua jari-jari dan busur, menyentuh pusat, disebut juring ✓',
+      no:'❌ Karena daerahnya menyentuh titik pusat lewat dua jari-jari, ini disebut juring'},
+  10:{ok:'✅ Benar! Daerah dibatasi tali busur dan busur, tidak menyentuh pusat, disebut tembereng ✓',
+      no:'❌ Karena daerahnya dibatasi tali busur (bukan jari-jari) dan tidak menyentuh pusat, ini disebut tembereng'}
+};
+
+function toggleHint(n){
+  const h=document.getElementById('hint-'+n);
+  h.classList.toggle('show');
+}
+
+function answer(qNum, chosen, correct){
+  const opts=document.querySelectorAll(`#opts-${qNum} .opt-btn`);
+  opts.forEach(o=>o.disabled=true);
+  const fb=document.getElementById('fb-'+qNum);
+  if(chosen===correct){
+    opts[chosen].classList.add('correct');
+    score++;
+    fb.textContent=feedbacks[qNum].ok;
+    fb.className='feedback ok show';
+  } else {
+    opts[chosen].classList.add('wrong');
+    opts[correct].classList.add('correct');
+    fb.textContent=feedbacks[qNum].no;
+    fb.className='feedback no show';
+  }
+  document.getElementById('next-'+qNum).disabled=false;
+  document.getElementById('scoreText').textContent='Skor: '+score;
+}
+
+function goTo(n){
+  document.getElementById('q-'+cur).classList.remove('active');
+  cur=n;
+  document.getElementById('q-'+cur).classList.add('active');
+  const pct=((cur-1)/TOTAL*100)+10;
+  document.getElementById('progFill').style.width=Math.min(pct,100)+'%';
+  document.getElementById('progText').textContent='Soal '+cur+' dari '+TOTAL;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showFinish(){
+  document.getElementById('q-10').classList.remove('active');
+  document.getElementById('progFill').style.width='100%';
+  const fs=document.getElementById('finishScreen');
+  fs.classList.add('show');
+  document.getElementById('finalScore').textContent=score+'/10';
+  const msgs=['Tetap semangat! Baca kembali materi bagian-bagian lingkaran ya 💪','Sudah mulai paham! Latihan lagi untuk lebih mantap 🙌','Bagus! Kamu sudah memahami dasar-dasar bagian lingkaran 🔥','Keren banget! Hampir sempurna ✨','Sempurna! Kamu ahli bagian-bagian lingkaran sekarang! 🏆'];
+  const idx=Math.min(Math.floor(score/2),4);
+  document.getElementById('finalMsg').textContent=msgs[idx];
+  document.getElementById('finishIcon').textContent=['😊','🙂','😄','🌟','🏆'][idx];
+}
+
+function restart(){
+  score=0;cur=1;
+  document.getElementById('finishScreen').classList.remove('show');
+  document.getElementById('progFill').style.width='10%';
+  document.getElementById('progText').textContent='Soal 1 dari 10';
+  document.getElementById('scoreText').textContent='Skor: 0';
+  for(let i=1;i<=TOTAL;i++){
+    document.getElementById('q-'+i).classList.remove('active');
+    const opts=document.querySelectorAll(`#opts-${i} .opt-btn`);
+    opts.forEach(o=>{o.disabled=false;o.classList.remove('correct','wrong');});
+    const fb=document.getElementById('fb-'+i);
+    fb.className='feedback';fb.textContent='';
+    document.getElementById('next-'+i).disabled=true;
+    const hint=document.getElementById('hint-'+i);
+    if(hint)hint.classList.remove('show');
+  }
+  document.getElementById('q-1').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
