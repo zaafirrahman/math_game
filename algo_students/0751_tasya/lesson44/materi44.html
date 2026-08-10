@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Keliling & Luas Lingkaran · L44 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --peach:#f0956a;--peach-light:#f7c4a8;--peach-bg:rgba(240,149,106,0.1);
+    --acc:#e8a020;--acc-light:#f5d080;--acc-bg:rgba(232,160,32,0.1);
+    --vio:#7c5cbf;--vio-light:#b89ee0;--vio-bg:rgba(124,92,191,0.1);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 75% 10%,rgba(232,160,32,0.08) 0%,transparent 50%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--gold);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--acc-bg);border:1.5px solid var(--acc-light);color:var(--gold);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--gold);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:all 0.3s;cursor:pointer;}
+  .dot.active{background:var(--gold);box-shadow:0 0 0 3px rgba(232,160,32,0.25);transform:scale(1.1);}
+  .dot.done{background:var(--acc-light);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);}
+  .card-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.gold{color:var(--gold);}
+  .card-label.ocean{color:var(--ocean);}
+  .card-label.mint{color:var(--mint);}
+  .card-label.rose{color:var(--rose);}
+  .card-label.vio{color:var(--vio);}
+  .card-label.peach{color:var(--peach);}
+  .card h2{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.7rem;line-height:1.4;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  .svg-wrap{margin:1rem 0;border-radius:14px;overflow:hidden;background:#fafafa;border:2px solid var(--border);padding:0.5rem;}
+  .svg-wrap svg{width:100%;display:block;}
+
+  .eq-box{border-radius:14px;padding:1.1rem 1.4rem;margin:0.7rem 0;}
+  .eq-box.gold{background:var(--gold-bg);border:1.5px solid var(--gold-light);}
+  .eq-box.ocean{background:var(--ocean-bg);border:1.5px solid var(--ocean-light);}
+  .eq-box.vio{background:var(--vio-bg);border:1.5px solid var(--vio-light);}
+  .eq-box.mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .eq-box.rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .eq-box.peach{background:var(--peach-bg);border:1.5px solid var(--peach-light);}
+  .eq-text{font-family:'Nunito',sans-serif;font-size:1.02rem;font-weight:900;color:var(--text);line-height:1.6;}
+
+  .diskusi-box{border-radius:14px;padding:1rem 1.3rem;background:rgba(232,98,138,0.06);border:1.5px solid var(--rose-light);margin:0.8rem 0;}
+  .diskusi-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:0.5rem;}
+  .diskusi-box p{color:var(--text-mid);font-size:0.88rem;line-height:1.65;}
+
+  .reveal-btn{background:var(--acc-bg);border:1.5px solid var(--acc-light);color:var(--gold);padding:0.5rem 1.2rem;border-radius:99px;font-family:'Nunito',sans-serif;font-size:0.8rem;font-weight:800;cursor:pointer;transition:all 0.2s;margin:0.8rem 0;display:inline-block;}
+  .reveal-btn:hover{background:var(--gold);color:#fff;}
+  .reveal-content{display:none;animation:fadeUp 0.3s ease;}
+  .reveal-content.show{display:block;}
+
+  .table-box{overflow-x:auto;margin:0.9rem 0;}
+  table{width:100%;border-collapse:collapse;font-size:0.88rem;}
+  th{background:var(--acc-bg);color:var(--gold);font-family:'Nunito',sans-serif;font-weight:800;padding:0.6rem 1rem;text-align:center;border:1.5px solid var(--acc-light);}
+  td{padding:0.6rem 1rem;text-align:center;border:1.5px solid var(--border);color:var(--text-mid);font-weight:600;}
+  tr:nth-child(even) td{background:#fdfaf0;}
+  td.fill{background:var(--acc-bg);color:var(--gold);font-weight:800;}
+
+  .formula-hero{text-align:center;padding:1.5rem;background:linear-gradient(135deg,var(--acc-bg),rgba(95,191,160,0.08));border:2px solid var(--acc-light);border-radius:20px;margin:1rem 0;}
+  .formula-hero .f-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;}
+  .formula-hero .f-text{font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;color:var(--text);line-height:1.6;}
+  .formula-hero .f-sub{font-size:0.82rem;color:var(--text-muted);margin-top:0.6rem;line-height:1.6;}
+
+  .callout{border-radius:14px;padding:1rem 1.3rem;margin:0.9rem 0;display:flex;gap:0.8rem;align-items:flex-start;}
+  .callout.insight{background:rgba(232,160,32,0.06);border:1.5px solid var(--gold-light);}
+  .callout.tip{background:rgba(95,191,160,0.06);border:1.5px solid var(--mint-light);}
+  .callout.warn{background:rgba(124,92,191,0.06);border:1.5px solid var(--vio-light);}
+  .callout-icon{font-size:1.2rem;flex-shrink:0;margin-top:0.05rem;}
+  .callout-text{font-size:0.88rem;color:var(--text-mid);line-height:1.65;}
+  .callout-text strong{color:var(--text);font-weight:700;}
+
+  .three-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin:0.9rem 0;}
+  .two-cols{display:grid;grid-template-columns:repeat(2,1fr);gap:0.8rem;margin:0.9rem 0;}
+  .mini-card{border:2px solid var(--border);border-radius:14px;padding:0.5rem;background:#fafafa;text-align:center;}
+  .mini-card svg{width:100%;display:block;}
+  .mini-cap{font-size:0.68rem;font-weight:700;color:var(--text-muted);margin-top:0.4rem;}
+  .mini-card .big-emoji{font-size:2.4rem;line-height:1;padding:0.6rem 0;}
+
+  .four-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:0.5rem;margin:0.9rem 0;}
+  .four-cols .mini-card svg{max-height:80px;}
+
+  .think-box{border-radius:14px;padding:1rem 1.3rem;background:var(--vio-bg);border:1.5px solid var(--vio-light);margin:0.9rem 0;}
+  .think-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--vio);margin-bottom:0.6rem;}
+  .think-box textarea{width:100%;border:1.5px solid var(--vio-light);border-radius:10px;padding:0.6rem 0.8rem;font-family:'Quicksand',sans-serif;font-size:0.85rem;color:var(--text);background:#fff;resize:vertical;min-height:60px;outline:none;}
+  .think-box textarea:focus{border-color:var(--vio);}
+
+  .diag-wrap{margin:1rem 0;border-radius:14px;overflow:hidden;background:#fafafa;border:2px solid var(--border);padding:0.5rem;}
+  .diag-wrap svg{width:100%;display:block;}
+  .diag-toggle-row{display:flex;justify-content:center;margin-bottom:0.8rem;flex-wrap:wrap;gap:0.6rem;}
+
+  .mmap-chain{display:flex;flex-direction:column;align-items:center;gap:0.5rem;margin:1.2rem 0;}
+  .mmap-node{width:100%;max-width:420px;border-radius:14px;padding:0.8rem 1.2rem;text-align:center;border:2px solid;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;}
+  .mmap-arrow{color:var(--text-muted);font-size:1.1rem;}
+
+  .step-tag{display:inline-block;font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.2rem 0.7rem;border-radius:99px;margin-bottom:0.6rem;}
+  .step-tag.a{background:var(--gold-bg);color:var(--gold);border:1.5px solid var(--gold-light);}
+  .step-tag.b{background:var(--ocean-bg);color:var(--ocean);border:1.5px solid var(--ocean-light);}
+  .step-tag.c{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+  .step-card{border:2px solid var(--border);border-radius:14px;padding:1rem 1.2rem;margin-bottom:0.8rem;background:#fafafa;}
+
+  .nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:1rem;}
+  .nav-btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .nav-btn.ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .nav-btn.ghost:hover{border-color:var(--acc-light);color:var(--gold);}
+  .nav-btn.primary{background:linear-gradient(135deg,var(--gold),#c07818);color:#fff;box-shadow:0 4px 14px rgba(232,160,32,0.35);}
+  .nav-btn.primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(232,160,32,0.4);}
+  .nav-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important;}
+  .slide-counter{font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:700;color:var(--text-muted);}
+
+  @media(max-width:480px){ .three-cols{grid-template-columns:1fr;} .two-cols{grid-template-columns:1fr;} .four-cols{grid-template-columns:repeat(2,1fr);} }
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson44.html">L44</a><span>›</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🥧 Materi · Lesson 44</div>
+  <h1>Keliling & Luas <span>Lingkaran</span></h1>
+  <p class="intro">Kamu sudah kenal pusat, jari-jari, dan diameter lingkaran. Sekarang kita cari tahu dua hal penting: seberapa panjang kalau tepi lingkaran "dibuka" jadi garis lurus (keliling), dan seberapa luas daerah di dalamnya. Yuk temukan sendiri rumusnya — bukan menghafal!</p>
+
+  <div class="dots" id="dotsContainer"></div>
+
+  <!-- SLIDE 1: Judul -->
+  <div class="slide active" id="slide-1">
+    <div class="card">
+      <div class="card-label gold">🖼️ Slide 1 — Dari π sampai Menemukan Rumus Luas</div>
+      <h2>Dua ukuran penting sebuah lingkaran</h2>
+      <p>Setiap lingkaran punya jari-jari (r) dan diameter (d). Dari dua angka kecil ini, ternyata kita bisa menemukan seberapa panjang tepinya dan seberapa luas daerah di dalamnya. Perhatikan dulu lingkaran berikut.</p>
+    </div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="140" cy="100" r="80" fill="rgba(232,160,32,0.05)" stroke="#7c5cbf" stroke-width="2.2"/>
+        <line x1="140" y1="100" x2="140" y2="20" stroke="#e8628a" stroke-width="2.4"/>
+        <line x1="60" y1="100" x2="220" y2="100" stroke="#4a9fd4" stroke-width="2.2" stroke-dasharray="4,3"/>
+        <circle cx="140" cy="100" r="3.5" fill="#3d2b3d"/>
+        <circle cx="140" cy="20" r="3" fill="#e8628a"/>
+        <circle cx="60" cy="100" r="3" fill="#4a9fd4"/>
+        <circle cx="220" cy="100" r="3" fill="#4a9fd4"/>
+        <text x="148" y="62" font-family="Nunito" font-size="12" font-weight="900" fill="#e8628a">r</text>
+        <text x="136" y="92" font-family="Nunito" font-size="12" font-weight="900" fill="#4a9fd4">d</text>
+      </svg>
+    </div>
+
+    <div class="diskusi-box">
+      <div class="diskusi-label">💬 Diskusi</div>
+      <p>Kalau kamu tahu panjang r saja, menurutmu informasi apa lagi yang bisa kamu temukan dari sebuah lingkaran? Simpan dulu rasa penasaranmu — kita akan jawab satu per satu di sesi ini.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Recall -->
+  <div class="slide" id="slide-2">
+    <div class="card">
+      <div class="card-label ocean">🔁 Slide 2 — Recall: Dari Keliling ke π</div>
+      <h2>Ingat kembali hubungan keliling dan diameter</h2>
+      <p>Di sesi sebelumnya kamu sudah tahu: kalau keliling (K) dibagi diameter (d), hasilnya selalu sama untuk lingkaran berapa pun ukurannya — itulah π.</p>
+    </div>
+
+    <div class="eq-box gold">
+      <div class="eq-text">π = K ÷ d</div>
+    </div>
+
+    <div class="card" style="padding:1.2rem 1.5rem;">
+      <p>Karena π = K ÷ d, maka kita bisa membalik hubungannya untuk mencari keliling langsung dari diameter atau jari-jari:</p>
+    </div>
+
+    <div class="eq-box ocean">
+      <div class="eq-text">K = π × d &nbsp;=&nbsp; 2 × π × r</div>
+    </div>
+
+    <div class="diskusi-box">
+      <div class="diskusi-label">💬 Pertanyaan</div>
+      <p>Kita sudah tahu cara mencari panjang bagian <strong>luar</strong> lingkaran (kelilingnya). Tapi bagaimana cara mencari <strong>luas daerah di dalamnya</strong>?</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Masalah -->
+  <div class="slide" id="slide-3">
+    <div class="card">
+      <div class="card-label vio">🔍 Slide 3 — Masalah</div>
+      <h2>Bagaimana cara menghitung luas lingkaran?</h2>
+      <p>Lingkaran di bawah ini hanya diketahui jari-jarinya, r. Tidak ada garis bantu, tidak ada potongan.</p>
+    </div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 280 190" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="140" cy="95" r="75" fill="rgba(124,92,191,0.1)" stroke="#7c5cbf" stroke-width="2.2"/>
+        <line x1="140" y1="95" x2="215" y2="95" stroke="#e8628a" stroke-width="2.2"/>
+        <circle cx="140" cy="95" r="3.5" fill="#3d2b3d"/>
+        <text x="170" y="88" font-family="Nunito" font-size="12" font-weight="900" fill="#e8628a">r</text>
+        <text x="140" y="100" font-family="Nunito" font-size="30" font-weight="900" fill="#7c5cbf" text-anchor="middle" opacity="0.35">?</text>
+      </svg>
+    </div>
+
+    <div class="diskusi-box">
+      <div class="diskusi-label">💬 Pertanyaan</div>
+      <p>Kalau kita hanya tahu <strong>radiusnya</strong>, bagaimana caranya menghitung luas daerah di dalam lingkaran ini? Segitiga punya rumus ½ × alas × tinggi, persegi punya sisi × sisi — lingkaran tidak punya sisi lurus sama sekali!</p>
+    </div>
+
+    <div class="think-box">
+      <div class="think-label">✍️ Usulkan caramu sendiri</div>
+      <textarea placeholder="Menurutku, cara mencari luas lingkaran adalah..."></textarea>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div class="callout-text">Tidak ada jawaban salah di sini — tulis saja ide apapun yang terpikir. Di slide berikutnya kita coba satu cara yang biasa dipakai matematikawan: <strong>memotong dan menyusun ulang</strong>.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Potong Lingkaran -->
+  <div class="slide" id="slide-4">
+    <div class="card">
+      <div class="card-label peach">✂️ Slide 4 — Potong Lingkaran</div>
+      <h2>Bayangkan lingkaran dipotong seperti pizza</h2>
+      <p>Potong lingkaran menjadi beberapa juring (potongan pizza) yang sama besar. Semakin banyak potongan, semakin tipis tiap juringnya.</p>
+    </div>
+
+    <div class="two-cols">
+      <div class="mini-card">
+        <svg viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 150 120 L 150.0 30.0 A 90 90 0 0 1 213.6 56.4 Z" fill="rgba(124,92,191,0.22)" stroke="#7c5cbf" stroke-width="1.2"/>
+          <path d="M 150 120 L 213.6 56.4 A 90 90 0 0 1 240.0 120.0 Z" fill="rgba(232,160,32,0.15)" stroke="#7c5cbf" stroke-width="1.2"/>
+          <path d="M 150 120 L 240.0 120.0 A 90 90 0 0 1 213.6 183.6 Z" fill="rgba(124,92,191,0.22)" stroke="#7c5cbf" stroke-width="1.2"/>
+          <path d="M 150 120 L 213.6 183.6 A 90 90 0 0 1 150.0 210.0 Z" fill="rgba(232,160,32,0.15)" stroke="#7c5cbf" stroke-width="1.2"/>
+          <path d="M 150 120 L 150.0 210.0 A 90 90 0 0 1 86.4 183.6 Z" fill="rgba(124,92,191,0.22)" stroke="#7c5cbf" stroke-width="1.2"/>
+          <path d="M 150 120 L 86.4 183.6 A 90 90 0 0 1 60.0 120.0 Z" fill="rgba(232,160,32,0.15)" stroke="#7c5cbf" stroke-width="1.2"/>
+          <path d="M 150 120 L 60.0 120.0 A 90 90 0 0 1 86.4 56.4 Z" fill="rgba(124,92,191,0.22)" stroke="#7c5cbf" stroke-width="1.2"/>
+          <path d="M 150 120 L 86.4 56.4 A 90 90 0 0 1 150.0 30.0 Z" fill="rgba(232,160,32,0.15)" stroke="#7c5cbf" stroke-width="1.2"/>
+        </svg>
+        <div class="mini-cap">Sedikit potongan (8 juring)</div>
+      </div>
+      <div class="mini-card">
+        <svg viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 150 120 L 150.0 30.0 A 90 90 0 0 1 184.4 36.9 Z" fill="rgba(124,92,191,0.22)" stroke="#7c5cbf" stroke-width="1"/>
+          <path d="M 150 120 L 184.4 36.9 A 90 90 0 0 1 213.6 56.4 Z" fill="rgba(232,160,32,0.15)" stroke="#7c5cbf" stroke-width="1"/>
+          <path d="M 150 120 L 213.6 56.4 A 90 90 0 0 1 233.1 85.6 Z" fill="rgba(124,92,191,0.22)" stroke="#7c5cbf" stroke-width="1"/>
+          <path d="M 150 120 L 233.1 85.6 A 90 90 0 0 1 240.0 120.0 Z" fill="rgba(232,160,32,0.15)" stroke="#7c5cbf" stroke-width="1"/>
+          <path d="M 150 120 L 240.0 120.0 A 90 90 0 0 1 233.1 154.4 Z" fill="rgba(124,92,191,0.22)" stroke="#7c5cbf" stroke-width="1"/>
+          <path d="M 150 120 L 233.1 154.4 A 90 90 0 0 1 213.6 183.6 Z" fill="rgba(232,160,32,0.15)" stroke="#7c5cbf" stroke-width="1"/>
+          <path d="M 150 120 L 213.6 183.6 A 90 90 0 0 1 184.4 203.1 Z" fill="rgba(124,92,191,0.22)" stroke="#7c5cbf" stroke-width="1"/>
+          <path d="M 150 120 L 184.4 203.1 A 90 90 0 0 1 150.0 210.0 Z" fill="rgba(232,160,32,0.15)" stroke="#7c5cbf" stroke-width="1"/>
+          <path d="M 150 120 L 150.0 210.0 A 90 90 0 0 1 115.6 203.1 Z" fill="rgba(124,92,191,0.22)" stroke="#7c5cbf" stroke-width="1"/>
+          <path d="M 150 120 L 115.6 203.1 A 90 90 0 0 1 86.4 183.6 Z" fill="rgba(232,160,32,0.15)" stroke="#7c5cbf" stroke-width="1"/>
+          <path d="M 150 120 L 86.4 183.6 A 90 90 0 0 1 66.9 154.4 Z" fill="rgba(124,92,191,0.22)" stroke="#7c5cbf" stroke-width="1"/>
+          <path d="M 150 120 L 66.9 154.4 A 90 90 0 0 1 60.0 120.0 Z" fill="rgba(232,160,32,0.15)" stroke="#7c5cbf" stroke-width="1"/>
+          <path d="M 150 120 L 60.0 120.0 A 90 90 0 0 1 66.9 85.6 Z" fill="rgba(124,92,191,0.22)" stroke="#7c5cbf" stroke-width="1"/>
+          <path d="M 150 120 L 66.9 85.6 A 90 90 0 0 1 86.4 56.4 Z" fill="rgba(232,160,32,0.15)" stroke="#7c5cbf" stroke-width="1"/>
+          <path d="M 150 120 L 86.4 56.4 A 90 90 0 0 1 115.6 36.9 Z" fill="rgba(124,92,191,0.22)" stroke="#7c5cbf" stroke-width="1"/>
+          <path d="M 150 120 L 115.6 36.9 A 90 90 0 0 1 150.0 30.0 Z" fill="rgba(232,160,32,0.15)" stroke="#7c5cbf" stroke-width="1"/>
+        </svg>
+        <div class="mini-cap">Makin banyak potongan (16 juring)</div>
+      </div>
+    </div>
+
+    <div class="diskusi-box">
+      <div class="diskusi-label">💬 Pertanyaan</div>
+      <p>Sekarang bayangkan semua juring ini dilepas dari lingkarannya, lalu disusun ulang berselang-seling — satu menghadap ke atas, satu ke bawah. <strong>Apa yang terjadi kalau juring-juring ini kita susun ulang?</strong></p>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Susun Ulang -->
+  <div class="slide" id="slide-5">
+    <div class="card">
+      <div class="card-label rose">🧩 Slide 5 — Susun Ulang</div>
+      <h2>Juring-juring disusun berselang-seling</h2>
+      <p>Setiap juring dibalik bergantian — ini mirip potongan pizza yang disusun ulang jadi satu baris zig-zag.</p>
+    </div>
+
+    <div class="diag-wrap">
+      <svg viewBox="0 0 280 120" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 30.0 100.0 L 41.0 20.0 L 52.0 100.0 Z" fill="rgba(124,92,191,0.28)" stroke="#7c5cbf" stroke-width="1.3"/>
+        <path d="M 52.0 20.0 L 63.0 100.0 L 74.0 20.0 Z" fill="rgba(232,160,32,0.22)" stroke="#e8a020" stroke-width="1.3"/>
+        <path d="M 74.0 100.0 L 85.0 20.0 L 96.0 100.0 Z" fill="rgba(124,92,191,0.28)" stroke="#7c5cbf" stroke-width="1.3"/>
+        <path d="M 96.0 20.0 L 107.0 100.0 L 118.0 20.0 Z" fill="rgba(232,160,32,0.22)" stroke="#e8a020" stroke-width="1.3"/>
+        <path d="M 118.0 100.0 L 129.0 20.0 L 140.0 100.0 Z" fill="rgba(124,92,191,0.28)" stroke="#7c5cbf" stroke-width="1.3"/>
+        <path d="M 140.0 20.0 L 151.0 100.0 L 162.0 20.0 Z" fill="rgba(232,160,32,0.22)" stroke="#e8a020" stroke-width="1.3"/>
+        <path d="M 162.0 100.0 L 173.0 20.0 L 184.0 100.0 Z" fill="rgba(124,92,191,0.28)" stroke="#7c5cbf" stroke-width="1.3"/>
+        <path d="M 184.0 20.0 L 195.0 100.0 L 206.0 20.0 Z" fill="rgba(232,160,32,0.22)" stroke="#e8a020" stroke-width="1.3"/>
+        <path d="M 206.0 100.0 L 217.0 20.0 L 228.0 100.0 Z" fill="rgba(124,92,191,0.28)" stroke="#7c5cbf" stroke-width="1.3"/>
+        <path d="M 228.0 20.0 L 239.0 100.0 L 250.0 20.0 Z" fill="rgba(232,160,32,0.22)" stroke="#e8a020" stroke-width="1.3"/>
+        <rect x="30" y="20" width="220" height="80" fill="none" stroke="#3d2b3d" stroke-width="1.4" stroke-dasharray="5,4" opacity="0.4"/>
+      </svg>
+    </div>
+
+    <div class="diskusi-box">
+      <div class="diskusi-label">💬 Pertanyaan</div>
+      <p>Kalau jumlah potongan terus diperbanyak (jadi 50, 100, bahkan 1000 juring yang sangat tipis), bentuk zig-zag ini akan semakin rapat. <strong>Bentuk ini semakin mirip apa?</strong></p>
+    </div>
+
+    <button class="reveal-btn" onclick="document.getElementById('rev5').classList.add('show')">✅ Lihat Jawaban</button>
+    <div class="reveal-content" id="rev5">
+      <div class="callout insight">
+        <span class="callout-icon">🌟</span>
+        <div class="callout-text">Semakin banyak potongan, sisi zig-zagnya semakin rata — bentuknya semakin mirip <strong>persegi panjang</strong> (atau tepatnya, jajar genjang yang hampir jadi persegi panjang). Garis putus-putus di atas menunjukkan bentuk yang didekati.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Menemukan Luas -->
+  <div class="slide" id="slide-6">
+    <div class="card">
+      <div class="card-label gold">🧮 Slide 6 — Menemukan Luas</div>
+      <h2>Ukur sisi-sisi "persegi panjang" ini</h2>
+      <p>Sekarang mari ukur tinggi dan panjang bentuk hasil susunan tadi, menggunakan apa yang sudah kita ketahui tentang lingkaran aslinya.</p>
+    </div>
+
+    <div class="diag-wrap">
+      <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+        <rect x="30" y="25" width="220" height="80" fill="rgba(232,160,32,0.08)" stroke="#e8a020" stroke-width="2"/>
+        <line x1="15" y1="25" x2="15" y2="105" stroke="#e8628a" stroke-width="2"/>
+        <text x="5" y="68" font-family="Nunito" font-size="12" font-weight="900" fill="#e8628a">r</text>
+        <line x1="30" y1="120" x2="250" y2="120" stroke="#4a9fd4" stroke-width="2"/>
+        <text x="140" y="138" font-family="Nunito" font-size="12" font-weight="900" fill="#4a9fd4" text-anchor="middle">≈ setengah keliling = πr</text>
+      </svg>
+    </div>
+
+    <div class="card" style="padding:1.2rem 1.5rem;">
+      <p><strong>Tinggi</strong> bentuk ini ≈ jari-jari lingkaran asli, jadi tinggi ≈ r.</p>
+      <p style="margin-top:0.5rem;"><strong>Panjang</strong> bagian bawahnya ≈ setengah dari keliling lingkaran (karena juring atas dan bawah berselang-seling, masing-masing menyumbang separuh keliling). Karena Keliling = 2πr, maka setengah keliling = πr.</p>
+    </div>
+
+    <div class="eq-box vio">
+      <div class="eq-text">Luas ≈ panjang × tinggi<br>≈ πr × r<br>= πr²</div>
+    </div>
+
+    <div class="formula-hero">
+      <div class="f-label">🏆 Rumus Ditemukan</div>
+      <div class="f-text">L = π × r²</div>
+      <div class="f-sub">Rumus ini muncul dari mengamati bentuk hasil potong-susun, bukan sekadar dihafal!</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Hubungan Dua Rumus -->
+  <div class="slide" id="slide-7">
+    <div class="card">
+      <div class="card-label ocean">🔗 Slide 7 — Hubungan Dua Rumus</div>
+      <h2>Bandingkan keliling dan luas</h2>
+      <p>Sekarang kita punya dua rumus penting. Perhatikan baik-baik bagaimana keduanya disusun.</p>
+    </div>
+
+    <div class="two-cols">
+      <div>
+        <div class="eq-box ocean" style="text-align:center;">
+          <div style="font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ocean);margin-bottom:0.5rem;">Keliling</div>
+          <div class="eq-text">K = 2πr</div>
+        </div>
+      </div>
+      <div>
+        <div class="eq-box rose" style="text-align:center;">
+          <div style="font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:0.5rem;">Luas</div>
+          <div class="eq-text">L = πr²</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="diskusi-box">
+      <div class="diskusi-label">💬 Pertanyaan Pemantik</div>
+      <p>Apa yang <strong>sama</strong> dari kedua rumus ini? Lalu — kenapa keliling menggunakan r <strong>satu kali</strong>, sedangkan luas menggunakan r <strong>dua kali (r²)</strong>?</p>
+    </div>
+
+    <div class="think-box">
+      <div class="think-label">✍️ Dugaanmu</div>
+      <textarea placeholder="Menurutku bedanya karena..."></textarea>
+    </div>
+
+    <button class="reveal-btn" onclick="document.getElementById('rev7').classList.add('show')">✅ Lihat Penjelasan</button>
+    <div class="reveal-content" id="rev7">
+      <div class="callout insight">
+        <span class="callout-icon">🌟</span>
+        <div class="callout-text">Keduanya sama-sama memakai π, karena π adalah sifat dasar semua lingkaran. Bedanya: <strong>keliling mengukur panjang</strong> (satu dimensi, jadi r muncul sekali), sedangkan <strong>luas mengukur daerah</strong> (dua dimensi — seperti panjang × lebar — jadi r muncul dua kali sebagai r²).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Challenge -->
+  <div class="slide" id="slide-8">
+    <div class="card">
+      <div class="card-label peach">⚡ Slide 8 — Challenge Bertingkat</div>
+      <h2>Coba terapkan rumusnya</h2>
+      <p>Gunakan π = 22/7 kalau angkanya kelipatan 7, atau π = 3,14 untuk angka lainnya.</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-tag a">Level A</span>
+      <p style="font-size:0.9rem;color:var(--text-mid);">Sebuah lingkaran punya <strong>r = 7 cm</strong>. Cari keliling dan luasnya.</p>
+      <button class="reveal-btn" onclick="document.getElementById('revA').classList.add('show')" style="margin-top:0.6rem;">✅ Cek Jawaban</button>
+      <div class="reveal-content" id="revA">
+        <div class="eq-box gold" style="margin-top:0.6rem;">
+          <div class="eq-text" style="font-size:0.92rem;">K = 2 × 22/7 × 7 = 44 cm<br>L = 22/7 × 7 × 7 = 154 cm²</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-tag b">Level B</span>
+      <p style="font-size:0.9rem;color:var(--text-mid);">Sebuah lingkaran punya <strong>d = 14 cm</strong>. Cari keliling dan luasnya.</p>
+      <button class="reveal-btn" onclick="document.getElementById('revB').classList.add('show')" style="margin-top:0.6rem;">✅ Cek Jawaban</button>
+      <div class="reveal-content" id="revB">
+        <div class="eq-box ocean" style="margin-top:0.6rem;">
+          <div class="eq-text" style="font-size:0.92rem;">r = 14 ÷ 2 = 7 cm<br>K = 2 × 22/7 × 7 = 44 cm<br>L = 22/7 × 7 × 7 = 154 cm²</div>
+        </div>
+        <div class="callout tip" style="margin-top:0.6rem;">
+          <span class="callout-icon">💡</span>
+          <div class="callout-text">Hasilnya sama persis dengan Level A! Wajar — d = 14 cm berarti r = 7 cm, lingkaran yang sama persis.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-tag c">Level C</span>
+      <p style="font-size:0.9rem;color:var(--text-mid);">Sebuah lingkaran memiliki <strong>luas 314 cm²</strong> (π = 3,14). Tentukan radiusnya.</p>
+      <button class="reveal-btn" onclick="document.getElementById('revC').classList.add('show')" style="margin-top:0.6rem;">✅ Cek Jawaban</button>
+      <div class="reveal-content" id="revC">
+        <div class="eq-box rose" style="margin-top:0.6rem;">
+          <div class="eq-text" style="font-size:0.92rem;">L = πr² → 314 = 3,14 × r²<br>r² = 314 ÷ 3,14 = 100<br>r = √100 = 10 cm</div>
+        </div>
+        <div class="callout insight" style="margin-top:0.6rem;">
+          <span class="callout-icon">🌟</span>
+          <div class="callout-text">Kalau luasnya diketahui, kita bisa membalik rumus untuk mencari radius — bukan cuma satu arah!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: Soal Cerita -->
+  <div class="slide" id="slide-9">
+    <div class="card">
+      <div class="card-label mint">🌳 Slide 9 — Soal Cerita: Taman Bundar</div>
+      <h2>Terapkan pada situasi nyata</h2>
+      <p>Sebuah taman berbentuk lingkaran memiliki radius <strong>7 m</strong>. Tentukan panjang pagar yang dibutuhkan, dan luas taman yang bisa ditanami.</p>
+    </div>
+
+    <div class="diskusi-box">
+      <div class="diskusi-label">💬 Sebelum menghitung</div>
+      <p>Coba pikirkan dulu: <strong>pagar</strong> mengelilingi bagian mana dari taman? Dan <strong>tanaman</strong> menutupi bagian mana?</p>
+    </div>
+
+    <button class="reveal-btn" onclick="document.getElementById('rev9').classList.add('show')">✅ Lihat Penyelesaian</button>
+    <div class="reveal-content" id="rev9">
+      <div class="eq-box mint">
+        <div class="eq-text" style="font-size:0.92rem;">🚧 Pagar → mengelilingi tepi taman → <strong>keliling</strong><br>K = 2 × 22/7 × 7 = 44 m<br><br>🌱 Tanaman → menutupi seluruh daerah taman → <strong>luas</strong><br>L = 22/7 × 7 × 7 = 154 m²</div>
+      </div>
+      <div class="callout insight">
+        <span class="callout-icon">🌟</span>
+        <div class="callout-text">Kuncinya: kalau soal bicara soal <strong>tepi/batas/mengelilingi</strong>, itu keliling. Kalau bicara soal <strong>daerah/permukaan/menutupi</strong>, itu luas.</div>
+      </div>
+    </div>
+
+    <div class="two-cols" style="margin-top:1.2rem;">
+      <div class="mini-card" style="text-align:left;padding:0.9rem 1rem;">
+        <div class="big-emoji" style="font-size:1.8rem;padding:0 0 0.3rem;">🛞</div>
+        <div style="font-size:0.82rem;color:var(--text-mid);"><strong style="color:var(--text)">Roda sepeda</strong> berputar — jarak yang ditempuh tiap satu putaran penuh sama dengan <strong>kelilingnya</strong>.</div>
+      </div>
+      <div class="mini-card" style="text-align:left;padding:0.9rem 1rem;">
+        <div class="big-emoji" style="font-size:1.8rem;padding:0 0 0.3rem;">🪑</div>
+        <div style="font-size:0.82rem;color:var(--text-mid);"><strong style="color:var(--text)">Meja bundar</strong> ditutupi taplak — taplak menutupi seluruh <strong>luas</strong> permukaan meja.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: Boss Challenge & Ringkasan -->
+  <div class="slide" id="slide-10">
+    <div class="card">
+      <div class="card-label rose">🏁 Slide 10 — Boss Challenge & Kesimpulan</div>
+      <h2>Soal campuran — kamu yang tentukan rumusnya</h2>
+      <p>Kali ini soal tidak memberitahu apakah harus pakai keliling atau luas. Baca baik-baik dan tentukan sendiri!</p>
+    </div>
+
+    <div class="step-card">
+      <p style="font-size:0.9rem;color:var(--text-mid);">🏊 Kolam berbentuk lingkaran, <strong>diameter 20 m</strong>. Berapa panjang pagar untuk mengelilinginya?</p>
+      <button class="reveal-btn" onclick="document.getElementById('revB1').classList.add('show')" style="margin-top:0.6rem;">✅ Cek</button>
+      <div class="reveal-content" id="revB1">
+        <div class="eq-box gold" style="margin-top:0.6rem;"><div class="eq-text" style="font-size:0.88rem;">Ini soal <strong>keliling</strong> (mengelilingi). r = 10 m → K = 2 × 3,14 × 10 = 62,8 m</div></div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <p style="font-size:0.9rem;color:var(--text-mid);">🧶 Karpet berbentuk lingkaran, <strong>radius 2 m</strong>. Berapa luas karpet tersebut?</p>
+      <button class="reveal-btn" onclick="document.getElementById('revB2').classList.add('show')" style="margin-top:0.6rem;">✅ Cek</button>
+      <div class="reveal-content" id="revB2">
+        <div class="eq-box gold" style="margin-top:0.6rem;"><div class="eq-text" style="font-size:0.88rem;">Ini soal <strong>luas</strong> (menutupi lantai). L = 3,14 × 2 × 2 = 12,56 m²</div></div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <p style="font-size:0.9rem;color:var(--text-mid);">🛞 Roda memiliki <strong>radius 35 cm</strong>. Berapa jarak yang ditempuh dalam 10 putaran? (π = 22/7)</p>
+      <button class="reveal-btn" onclick="document.getElementById('revB3').classList.add('show')" style="margin-top:0.6rem;">✅ Cek</button>
+      <div class="reveal-content" id="revB3">
+        <div class="eq-box gold" style="margin-top:0.6rem;"><div class="eq-text" style="font-size:0.88rem;">1 putaran = keliling = 2 × 22/7 × 35 = 220 cm<br>10 putaran = 220 × 10 = 2.200 cm = 22 m</div></div>
+      </div>
+    </div>
+
+    <div class="think-box">
+      <div class="think-label">🧠 Reasoning Challenge</div>
+      <p style="font-size:0.88rem;color:var(--text-mid);margin-bottom:0.6rem;">Jika radius lingkaran menjadi <strong>2× lebih besar</strong>, apakah luasnya juga menjadi <strong>2× lebih besar</strong>? Jelaskan alasanmu.</p>
+      <textarea placeholder="Menurutku... karena luas menggunakan r²..."></textarea>
+    </div>
+
+    <button class="reveal-btn" onclick="document.getElementById('revR').classList.add('show')">✅ Lihat Penjelasan</button>
+    <div class="reveal-content" id="revR">
+      <div class="callout insight">
+        <span class="callout-icon">🌟</span>
+        <div class="callout-text"><strong>Tidak</strong> — luasnya menjadi <strong>4× lebih besar</strong>, bukan 2×. Karena L = πr², kalau r menjadi 2r maka L baru = π(2r)² = π × 4r² = 4 × (πr²). Ini beda dengan keliling: K = 2πr, kalau r jadi 2r maka K baru = 2×(2πr) — keliling memang tepat 2× lebih besar, tapi luas naik jauh lebih cepat karena pangkat dua.</div>
+      </div>
+    </div>
+
+    <div class="mmap-chain">
+      <div class="mmap-node" style="background:var(--gold-bg);border-color:var(--gold-light);color:var(--gold);">π = K ÷ d</div>
+      <div class="mmap-arrow">↓</div>
+      <div class="mmap-node" style="background:var(--ocean-bg);border-color:var(--ocean-light);color:var(--ocean);">K = πd = 2πr</div>
+      <div class="mmap-arrow">↓</div>
+      <div class="mmap-node" style="background:var(--vio-bg);border-color:var(--vio-light);color:var(--vio);">Potong juring → susun ulang → ≈ persegi panjang</div>
+      <div class="mmap-arrow">↓</div>
+      <div class="mmap-node" style="background:var(--rose-bg);border-color:var(--rose-light);color:var(--rose);">L = πr²</div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,rgba(232,160,32,0.12),rgba(74,159,212,0.1));border:2px solid var(--gold-light);border-radius:20px;padding:1.5rem 1.8rem;margin:1rem 0;text-align:center;">
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;">💬 Pesan Utama</div>
+      <div style="font-family:'Nunito',sans-serif;font-size:1.02rem;font-weight:900;color:var(--text);line-height:1.6;">"Rumus <span style="color:var(--gold)">L = πr²</span> bukan sesuatu yang dihafal — ia muncul dari memotong lingkaran dan menyusunnya ulang menjadi bentuk yang sudah kita kenal."</div>
+    </div>
+
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;">
+      <a href="soal44.html" style="padding:0.8rem 1.8rem;background:linear-gradient(135deg,var(--rose),#c04060);color:#fff;border-radius:99px;font-family:Nunito;font-weight:800;font-size:0.9rem;text-decoration:none;box-shadow:0 4px 14px rgba(232,98,138,0.35);">⚡ Boss Challenge</a>
+      <a href="latihan44.html" style="padding:0.8rem 1.8rem;background:linear-gradient(135deg,var(--mint),#3a9070);color:#fff;border-radius:99px;font-family:Nunito;font-weight:800;font-size:0.9rem;text-decoration:none;box-shadow:0 4px 14px rgba(95,191,160,0.35);">🌙 Latihan Mandiri</a>
+    </div>
+  </div>
+
+  <!-- NAV ROW -->
+  <div class="nav-row">
+    <button class="nav-btn ghost" id="prevBtn" onclick="changeSlide(-1)" disabled>← Sebelumnya</button>
+    <span class="slide-counter" id="slideCounter">1 / 10</span>
+    <button class="nav-btn primary" id="nextBtn" onclick="changeSlide(1)">Selanjutnya →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL = 10;
+  let cur = 1;
+  function buildDots(){
+    const c = document.getElementById('dotsContainer');
+    for(let i=1;i<=TOTAL;i++){
+      const d = document.createElement('div');
+      d.className='dot'+(i===1?' active':'');
+      d.onclick=()=>goTo(i);
+      d.id='dot-'+i;
+      c.appendChild(d);
+    }
+  }
+  function goTo(n){
+    document.getElementById('slide-'+cur).classList.remove('active');
+    document.getElementById('dot-'+cur).classList.remove('active');
+    document.getElementById('dot-'+cur).classList.add('done');
+    cur=n;
+    document.getElementById('slide-'+cur).classList.add('active');
+    document.getElementById('dot-'+cur).classList.remove('done');
+    document.getElementById('dot-'+cur).classList.add('active');
+    document.getElementById('slideCounter').textContent=cur+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===1;
+    document.getElementById('nextBtn').disabled=cur===TOTAL;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function changeSlide(dir){ goTo(Math.min(TOTAL,Math.max(1,cur+dir))); }
+  buildDots();
+</script>
+</body>
+</html>
