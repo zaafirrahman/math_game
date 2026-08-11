@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 32 & 33 · Asfa · Math Arena</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--surface:#12121c;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--violet:#a78bfa;--red:#ef4444;--meet:#f472b6;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 20%,rgba(0,245,196,0.06) 0%,transparent 50%),
+               radial-gradient(ellipse at 85% 75%,rgba(245,158,11,0.06) 0%,transparent 50%);
+    pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--neon);}
+  .hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative;z-index:1;}
+  .session-badge{display:inline-block;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.35);color:var(--accent);font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1.2rem;font-family:'Orbitron',monospace;}
+  .lesson-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,4vw,2.4rem);font-weight:900;margin-bottom:0.8rem;line-height:1.3;}
+  .lesson-title .t1{color:var(--neon);}
+  .lesson-title .t2{color:var(--accent);}
+  .lesson-desc{color:var(--muted);max-width:600px;margin:0 auto 2.5rem;line-height:1.7;font-size:0.95rem;}
+  .lesson-desc strong{color:var(--meet);}
+  .hero-viz{display:flex;justify-content:center;margin:0 auto 2.5rem;}
+  .radar-sweep{animation:sweep 3s linear infinite;transform-origin:110px 110px;}
+  @keyframes sweep{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+  .radar-blip{animation:blipPulse 1.8s ease infinite;}
+  @keyframes blipPulse{0%,100%{opacity:0.4;}50%{opacity:1;}}
+  .objectives{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem 2rem;max-width:600px;margin:0 auto 3rem;text-align:left;}
+  .obj-title{font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--neon);letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;}
+  .obj-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.7rem;font-size:0.9rem;}
+  .obj-item span{font-size:1rem;flex-shrink:0;}
+  .section-label{text-align:center;font-size:0.8rem;color:var(--neon);letter-spacing:4px;text-transform:uppercase;margin-bottom:2rem;opacity:0.7;position:relative;z-index:1;}
+  .sections-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem;max-width:960px;margin:0 auto;padding:0 2rem 4rem;position:relative;z-index:1;}
+  .sec-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.6rem;text-decoration:none;color:inherit;display:block;transition:all 0.3s ease;position:relative;overflow:hidden;}
+  .sec-card.unlocked:hover{transform:translateY(-3px);border-color:var(--neon);box-shadow:0 0 25px rgba(0,245,196,0.1);}
+  .sec-card .num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--neon);text-transform:uppercase;margin-bottom:0.7rem;}
+  .sec-card .icon{font-size:2rem;margin-bottom:0.7rem;display:block;}
+  .sec-card .title{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;margin-bottom:0.5rem;line-height:1.4;}
+  .sec-card .desc{font-size:0.82rem;color:var(--muted);line-height:1.6;}
+  .type-badge{display:inline-block;font-size:0.65rem;padding:0.2rem 0.55rem;border-radius:20px;margin-top:1rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .type-boss{background:rgba(245,158,11,0.1);color:var(--accent);border:1px solid rgba(245,158,11,0.3);}
+  .type-exercise{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+  .type-extrapr{background:rgba(244,114,182,0.1);color:var(--meet);border:1px solid rgba(244,114,182,0.3);}
+  .sec-card.locked{opacity:0.45;filter:grayscale(0.4);cursor:not-allowed;}
+  .lock-badge{display:inline-block;font-size:0.65rem;padding:0.2rem 0.55rem;border-radius:20px;margin-top:1rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;background:rgba(100,116,139,0.12);color:var(--muted);border:1px solid rgba(100,116,139,0.3);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <span class="current">LESSON 32 & 33</span>
+</nav>
+
+<div class="hero">
+  <div class="session-badge">Sesi 32 & 33 · Checkpoint</div>
+  <div class="lesson-title"><span class="t1">Algebra</span> <span class="t2">Checkpoint</span></div>
+  <div class="lesson-desc">
+    Sesi ini beda dari biasanya. Bukan belajar hal baru — ini waktunya kita cek ulang <strong>seberapa kuat fondasi aljabar</strong> kamu selama ini. Kerjakan sejujur-jujurnya tanpa bantuan, hasilnya nanti dipakai buat nentuin bagian mana yang perlu diperkuat.
+  </div>
+
+  <div class="hero-viz">
+    <svg width="240" height="220" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="110" cy="110" r="95" fill="none" stroke="#1e2030" stroke-width="1"/>
+      <circle cx="110" cy="110" r="65" fill="none" stroke="#1e2030" stroke-width="1"/>
+      <circle cx="110" cy="110" r="35" fill="none" stroke="#1e2030" stroke-width="1"/>
+      <line x1="15" y1="110" x2="205" y2="110" stroke="#1e2030" stroke-width="1"/>
+      <line x1="110" y1="15" x2="110" y2="205" stroke="#1e2030" stroke-width="1"/>
+      <g class="radar-sweep">
+        <path d="M110 110 L110 15 A95 95 0 0 1 177 43 Z" fill="rgba(0,245,196,0.12)"/>
+        <line x1="110" y1="110" x2="110" y2="15" stroke="#00f5c4" stroke-width="2"/>
+      </g>
+      <circle class="radar-blip" cx="150" cy="70" r="4" fill="#f472b6"/>
+      <circle class="radar-blip" cx="75" cy="150" r="4" fill="#f59e0b" style="animation-delay:0.5s"/>
+      <circle class="radar-blip" cx="140" cy="150" r="4" fill="#38bdf8" style="animation-delay:1s"/>
+    </svg>
+  </div>
+
+  <div class="objectives">
+    <div class="obj-title">🎯 Tujuan Checkpoint</div>
+    <div class="obj-item"><span>🧭</span> Memetakan konsep aljabar yang sudah benar-benar kuat</div>
+    <div class="obj-item"><span>🔍</span> Menemukan konsep yang mulai kabur atau sering salah</div>
+    <div class="obj-item"><span>🧩</span> Jadi dasar buat sesi penguatan yang pas sama kebutuhanmu, bukan asal ulang materi</div>
+  </div>
+</div>
+
+<div class="section-label">— Pilih Section —</div>
+<div class="sections-grid">
+  <a href="checkpoint.html" class="sec-card unlocked">
+    <div class="num">Checkpoint</div>
+    <span class="icon">🧭</span>
+    <div class="title">Algebra Checkpoint</div>
+    <div class="desc">40 soal campur dari semua topik aljabar. Kerjakan tanpa bantuan — ini bukan ujian nilai, tapi alat buat lihat posisi kamu sekarang.</div>
+    <span class="type-badge type-boss">Checkpoint</span>
+  </a>
+  <div class="sec-card locked">
+    <div class="num">Penguatan</div>
+    <span class="icon">🔧</span>
+    <div class="title">Sesi Penguatan</div>
+    <div class="desc">Latihan yang disusun khusus berdasarkan hasil checkpoint kamu. Terkunci sampai checkpoint selesai.</div>
+    <span class="lock-badge">🔒 Terkunci</span>
+  </div>
+  <div class="sec-card locked">
+    <div class="num">PR</div>
+    <span class="icon">📝</span>
+    <div class="title">Extra PR</div>
+    <div class="desc">Latihan tambahan buat penguatan di rumah. Terkunci sampai sesi penguatan selesai.</div>
+    <span class="lock-badge">🔒 Terkunci</span>
+  </div>
+</div>
+</body>
+</html>
