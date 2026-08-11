@@ -1,0 +1,179 @@
+{
+  "student": "asfa",
+  "checkpointId": "algebra-ckpt1",
+  "completedAt": "2026-08-11T12:47:40.309Z",
+  "categoryScores": {
+    "A_bentuk": {
+      "correct": 3,
+      "total": 6
+    },
+    "B_operasi": {
+      "correct": 3,
+      "total": 7
+    },
+    "C_substitusi": {
+      "correct": 5,
+      "total": 7
+    },
+    "D_fungsi": {
+      "correct": 5,
+      "total": 10
+    },
+    "E_bahasa": {
+      "correct": 7,
+      "total": 10
+    }
+  },
+  "wrongAnswers": [
+    {
+      "qid": "C6",
+      "category": "C_substitusi",
+      "difficulty": "sedang",
+      "chosenTag": "salah_tanda_nilai_negatif",
+      "chosenValue": "-6",
+      "correctValue": "18"
+    },
+    {
+      "qid": "E1",
+      "category": "E_bahasa",
+      "difficulty": "mudah",
+      "chosenTag": "salah_representasi_variabel",
+      "chosenValue": "x = 7",
+      "correctValue": "x + 7"
+    },
+    {
+      "qid": "B7",
+      "category": "B_operasi",
+      "difficulty": "sulit",
+      "chosenTag": "kesalahan_hitung_dasar",
+      "chosenValue": "-9x + 2",
+      "correctValue": "-9x + 22"
+    },
+    {
+      "qid": "B4",
+      "category": "B_operasi",
+      "difficulty": "sedang",
+      "chosenTag": "salah_tanda_negatif",
+      "chosenValue": "x - 16",
+      "correctValue": "5x + 4"
+    },
+    {
+      "qid": "D8",
+      "category": "D_fungsi",
+      "difficulty": "sedang",
+      "chosenTag": "kesalahan_hitung_dasar",
+      "chosenValue": "15",
+      "correctValue": "17"
+    },
+    {
+      "qid": "B6",
+      "category": "B_operasi",
+      "difficulty": "sedang",
+      "chosenTag": "salah_tanda_negatif",
+      "chosenValue": "6x + 4y",
+      "correctValue": "2x + 4y"
+    },
+    {
+      "qid": "E9",
+      "category": "E_bahasa",
+      "difficulty": "sulit",
+      "chosenTag": "salah_interpretasi_konteks",
+      "chosenValue": "r - 3r = 24",
+      "correctValue": "3r - r = 24"
+    },
+    {
+      "qid": "D5",
+      "category": "D_fungsi",
+      "difficulty": "sedang",
+      "chosenTag": "error_translasi_notasi",
+      "chosenValue": "f(x) = 3(x-2)",
+      "correctValue": "f(x) = 3x - 2"
+    },
+    {
+      "qid": "A4",
+      "category": "A_bentuk",
+      "difficulty": "mudah",
+      "chosenTag": "salah_hitung_suku_sejenis",
+      "chosenValue": "2",
+      "correctValue": "3"
+    },
+    {
+      "qid": "D3",
+      "category": "D_fungsi",
+      "difficulty": "mudah",
+      "chosenTag": "salah_arah_substitusi",
+      "chosenValue": "45",
+      "correctValue": "5"
+    },
+    {
+      "qid": "B1",
+      "category": "B_operasi",
+      "difficulty": "mudah",
+      "chosenTag": "salah_tanda_negatif",
+      "chosenValue": "5x - 3",
+      "correctValue": "5x + 3"
+    },
+    {
+      "qid": "A3",
+      "category": "A_bentuk",
+      "difficulty": "mudah",
+      "chosenTag": "tertukar_koefisien_konstanta",
+      "chosenValue": "4",
+      "correctValue": "-7"
+    },
+    {
+      "qid": "D4",
+      "category": "D_fungsi",
+      "difficulty": "sedang",
+      "chosenTag": "salah_arah_substitusi",
+      "chosenValue": "75",
+      "correctValue": "5"
+    },
+    {
+      "qid": "E6",
+      "category": "E_bahasa",
+      "difficulty": "sedang",
+      "chosenTag": "salah_representasi_variabel",
+      "chosenValue": "2p + 5",
+      "correctValue": "2l + 5"
+    },
+    {
+      "qid": "A2",
+      "category": "A_bentuk",
+      "difficulty": "mudah",
+      "chosenTag": "salah_identifikasi_variabel",
+      "chosenValue": "-8x",
+      "correctValue": "-8"
+    },
+    {
+      "qid": "D9",
+      "category": "D_fungsi",
+      "difficulty": "sulit",
+      "chosenTag": "salah_selesaikan_saat_cari_input",
+      "chosenValue": "8,67",
+      "correctValue": "8"
+    },
+    {
+      "qid": "C7",
+      "category": "C_substitusi",
+      "difficulty": "sulit",
+      "chosenTag": "error_pangkat_negatif",
+      "chosenValue": "11",
+      "correctValue": "19"
+    }
+  ],
+  "tagFrequency": {
+    "salah_tanda_nilai_negatif": 1,
+    "salah_representasi_variabel": 2,
+    "kesalahan_hitung_dasar": 2,
+    "salah_tanda_negatif": 3,
+    "salah_interpretasi_konteks": 1,
+    "error_translasi_notasi": 1,
+    "salah_hitung_suku_sejenis": 1,
+    "salah_arah_substitusi": 2,
+    "tertukar_koefisien_konstanta": 1,
+    "salah_identifikasi_variabel": 1,
+    "salah_selesaikan_saat_cari_input": 1,
+    "error_pangkat_negatif": 1
+  }
+}
