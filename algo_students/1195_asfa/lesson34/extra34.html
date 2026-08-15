@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extra PR · Lesson 34 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#059669;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --emerald:#34d399;--text:#e2e8f0;--muted:#64748b;
+    --amber:#fbbf24;--blue:#60a5fa;--pink:#fb7185;
+    --violet:#a78bfa;--blue2:#38bdf8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 80%,rgba(251,113,133,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 85% 15%,rgba(34,211,238,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 50%,rgba(251,191,36,0.03) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  nav{
+    padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:100;
+    font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;
+  }
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--cyan);}
+
+  .wrapper{max-width:800px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  .pr-banner{background:linear-gradient(135deg,rgba(251,113,133,0.08),rgba(34,211,238,0.08));border:1px solid rgba(34,211,238,0.25);border-radius:20px;padding:2rem 2rem 1.5rem;margin-bottom:2rem;position:relative;overflow:hidden;}
+  .pr-banner::before{content:'🧩';position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);font-size:5rem;opacity:0.08;pointer-events:none;line-height:1;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);color:var(--cyan);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;margin-bottom:0.5rem;line-height:1.3;}
+  .page-title span{color:var(--cyan);}
+  .page-desc{color:var(--muted);font-size:0.9rem;line-height:1.7;max-width:560px;}
+  .pr-pills{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;}
+  .pr-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.72rem;padding:0.2rem 0.7rem;border-radius:20px;font-weight:700;}
+  .pill-cyan{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .pill-pink{background:rgba(251,113,133,0.1);color:var(--pink);border:1px solid rgba(251,113,133,0.3);}
+  .pill-amber{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.3);}
+  .pill-violet{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+  .pill-emerald{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.3);}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--cyan);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--amber));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+  .prog-stars{display:flex;gap:0.3rem;margin-top:0.5rem;align-items:center;font-size:0.78rem;color:var(--muted);}
+  .star{font-size:0.9rem;opacity:0.25;transition:opacity 0.4s;}
+  .star.lit{opacity:1;}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--cyan);}
+  .sd-2{color:var(--pink);}
+  .sd-3{color:var(--amber);}
+  .sd-4{color:var(--violet);}
+  .sd-5{color:var(--emerald);}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;max-width:100%;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;padding:0 0.25rem;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(34,211,238,0.35);background:rgba(34,211,238,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.25);}
+  .ex-tag.tag-2{background:rgba(251,113,133,0.1);color:var(--pink);border:1px solid rgba(251,113,133,0.25);}
+  .ex-tag.tag-3{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.25);}
+  .ex-tag.tag-4{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.25);}
+  .ex-tag.tag-5{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.25);}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.78rem,3vw,0.92rem);font-weight:900;color:var(--text);margin-bottom:0.5rem;line-height:1.5;word-break:break-word;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--cyan);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:1rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--cyan);}
+  .ex-input.correct{border-color:var(--cyan);color:var(--cyan);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);color:var(--cyan);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(34,211,238,0.22);border-color:var(--cyan);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--neon);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.4);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+  .attempts-row{margin-top:0.4rem;display:flex;gap:2px;align-items:center;}
+  .attempts-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:2px;}
+
+  .ex-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;}
+  .ex-opt{background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.55rem 0.4rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;transition:all 0.15s;text-align:center;line-height:1.4;}
+  .ex-opt:hover:not(:disabled){border-color:var(--cyan);background:rgba(34,211,238,0.06);}
+  .ex-opt.opt-correct{border-color:var(--neon);background:rgba(0,245,196,0.12);color:var(--neon);}
+  .ex-opt.opt-wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .ex-opt:disabled{cursor:default;}
+
+  .ex-card.data-card{border-left:3px solid var(--cyan);}
+  .ex-card.data-card.done-card{border-left-color:var(--amber);}
+
+  .mini-table{width:100%;border-collapse:separate;border-spacing:0;background:#12121c;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:0.8rem;font-size:0.82rem;}
+  .mini-table th{font-family:'Orbitron',monospace;font-size:0.56rem;letter-spacing:1.5px;color:var(--cyan);background:rgba(34,211,238,0.07);padding:0.5rem;text-align:center;}
+  .mini-table td{padding:0.45rem;text-align:center;border-top:1px solid var(--border);}
+  .raw-box{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.7rem;text-align:center;font-family:'Orbitron',monospace;font-size:0.92rem;color:var(--cyan);letter-spacing:1.5px;margin-bottom:0.8rem;line-height:1.7;}
+  .raw-box.sit{font-family:'Nunito',sans-serif;font-size:0.82rem;color:var(--text);letter-spacing:0;font-weight:700;}
+
+  #allDone{display:none;text-align:center;padding:3rem 2rem;}
+  .alldone-icon{font-size:5rem;display:block;margin-bottom:1.5rem;animation:bounce 1s ease infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .alldone-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2rem);color:var(--cyan);margin-bottom:0.8rem;}
+  .alldone-desc{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .alldone-xp{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.5rem 1.5rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:2rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);}
+  .btn-primary{background:linear-gradient(135deg,#0891b2,var(--cyan));color:#000;box-shadow:0 4px 15px rgba(34,211,238,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson34.html">LESSON 34</a>
+  <span>›</span>
+  <span class="current">EXTRA PR</span>
+</nav>
+
+<div class="wrapper">
+  <div class="pr-banner">
+    <div class="page-badge">🧩 Portal Master Mode</div>
+    <div class="page-title">Extra <span>PR Mode</span></div>
+    <div class="page-desc">
+      40 soal ekstra fondasi aljabar: mulai dari membedah bagian bentuk aljabar, menundukkan tanda minus,
+      menggabungkan suku sejenis, mendistribusikan minus di depan kurung (termasuk dua kurung sekaligus),
+      sampai membiasakan diri cek balik lewat substitusi. Progress tersimpan otomatis di perangkat ini. Servis fondasimu sampai tuntas! 🔧
+    </div>
+    <div class="pr-pills">
+      <span class="pr-pill pill-cyan">🧩 Bedah Bentuk Aljabar</span>
+      <span class="pr-pill pill-pink">➖ Tanda Minus Itu Nilai</span>
+      <span class="pr-pill pill-amber">🔗 Suku Sejenis</span>
+      <span class="pr-pill pill-violet">✖️ Minus di Depan Kurung</span>
+      <span class="pr-pill pill-emerald">🔍 Cek Balik &amp; Review Campuran</span>
+    </div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress PR</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      Kumpulkan ⭐ untuk setiap bagian yang diselesaikan!
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+      <span style="margin-left:0.3rem;font-size:0.72rem;">Selesaikan 8 soal per bagian</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🧩</span>
+    <div class="alldone-title">PR PORTAL SELESAI!</div>
+    <div class="alldone-desc">
+      GG! Kamu udah menaklukkan 40 soal Extra PR Lesson 34!<br>
+      Bedah bentuk aljabar, tanda minus, suku sejenis, minus di depan kurung, sampai cek balik &amp; review campuran — semua kamu babat habis! 🔥<br>
+      Fondasi aljabarmu sekarang jauh lebih kokoh dan teliti!
+    </div>
+    <div class="alldone-xp">🧩 +400 XP — Algebra Foundation Repaired Badge Unlocked!</div>
+    <div class="action-btns">
+      <a href="lesson34.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="exercise34.html" class="btn btn-ghost">Exercise Zone</a>
+      <a href="quicktest34.html" class="btn btn-primary">Quick Test ⚡</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson34_extra_v1';
+function loadProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{};}catch(e){return{};}}
+function saveProgress(p){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(p));}catch(e){}}
+let progress = loadProgress();
+
+// Helper: render a data table
+function tableDisp(thead, tbody){
+  let h = '<table class="mini-table"><thead><tr>';
+  thead.forEach(t=>h+=`<th>${t}</th>`);
+  h += '</tr></thead><tbody>';
+  tbody.forEach(r=>{h+='<tr>';r.forEach(c=>h+=`<td>${c}</td>`);h+='</tr>';});
+  h += '</tbody></table>';
+  return h;
+}
+// Helper: render raw data string
+function rawDisp(text){
+  return `<div class="raw-box">${text}</div>`;
+}
+// Helper: render a situational sentence
+function sitDisp(text){
+  return `<div class="raw-box sit">${text}</div>`;
+}
+
+const exercises = [
+  // ─── BAGIAN 1: Bedah Bentuk Aljabar (e01–e08) ───────────────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Bedah Bentuk',
+    sys:rawDisp('5x + 8'),
+    q:'Manakah variabelnya?', hint:'Huruf yang mewakili bilangan belum diketahui.',
+    type:'text', answers:['x'], explain:'✅ Variabelnya x ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Bedah Bentuk',
+    sys:rawDisp('5x + 8'),
+    q:'Berapa koefisiennya?', hint:'Angka yang menempel di depan variabel.',
+    type:'text', answers:['5'], explain:'✅ Koefisiennya 5 ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Bedah Bentuk',
+    sys:rawDisp('5x + 8'),
+    q:'Berapa konstantanya?', hint:'Suku tanpa variabel.',
+    type:'text', answers:['8'], explain:'✅ Konstantanya 8 ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Bedah Bentuk',
+    sys:rawDisp('3a - 2b + 7'),
+    q:'Ada berapa suku pada bentuk ini?', hint:'Hitung bagian yang dipisah tanda + atau -.',
+    type:'text', answers:['3'], explain:'✅ Ada 3 suku: 3a, -2b, dan 7 ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Bedah Bentuk',
+    sys:sitDisp('Situasi: Bentuk 6p - 4 ditulis ulang menjadi -4 + 6p.'),
+    q:'Apakah koefisien p berubah karena urutannya dibalik?', hint:'Posisi boleh berubah, tapi identitasnya tetap.',
+    type:'mcq', opts:['Tidak, tetap 6','Ya, berubah jadi -6','Ya, berubah jadi 4','Tidak bisa ditentukan'], answer:'Tidak, tetap 6',
+    explain:'✅ Posisi penulisan berubah, tapi koefisien p tetap 6 ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Bedah Bentuk',
+    sys:rawDisp('9y² - 2y + 3'),
+    q:'Berapa koefisien y² ?', hint:'Angka di depan y².',
+    type:'text', answers:['9'], explain:'✅ Koefisien y² adalah 9 ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Bedah Bentuk',
+    sys:rawDisp('9y² - 2y + 3'),
+    q:'Berapa koefisien y (bukan y²)?', hint:'Perhatikan tandanya juga.',
+    type:'text', answers:['-2'], explain:'✅ Koefisien y adalah -2 ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Bedah Bentuk',
+    sys:rawDisp('x'),
+    q:'Berapa koefisien x, jika tidak ada angka di depannya?', hint:'x sama dengan 1 dikali x.',
+    type:'mcq', opts:['1','0','x','Tidak ada'], answer:'1',
+    explain:'✅ x = 1x, jadi koefisiennya 1 ✓' },
+
+  // ─── BAGIAN 2: Tanda Minus Itu Bagian dari Nilai (e09–e16) ──────────
+  { id:'e09', section:'s2', tag:'tag-2', tagLabel:'Tanda Minus',
+    sys:rawDisp('4x - 9'),
+    q:'Berapa konstantanya?', hint:'Baca tanda di depan angka 9 juga.',
+    type:'text', answers:['-9'], explain:'✅ Konstantanya -9, bukan 9 ✓' },
+
+  { id:'e10', section:'s2', tag:'tag-2', tagLabel:'Tanda Minus',
+    sys:rawDisp('-6x + 2'),
+    q:'Berapa koefisiennya?', hint:'Tanda minus menempel pada 6x.',
+    type:'text', answers:['-6'], explain:'✅ Koefisiennya -6 ✓' },
+
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Tanda Minus',
+    sys:rawDisp('-10 + 3x'),
+    q:'Berapa konstantanya?', hint:'Konstanta ditulis di depan pada bentuk ini.',
+    type:'text', answers:['-10'], explain:'✅ Konstantanya -10 ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Tanda Minus',
+    sys:rawDisp('7 - x'),
+    q:'Berapa koefisien x?', hint:'"- x" = "-1x".',
+    type:'mcq', opts:['-1','1','7','-7'], answer:'-1',
+    explain:'✅ "- x" berarti koefisiennya -1 ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Tanda Minus',
+    sys:sitDisp('Situasi: Seorang siswa menulis konstanta dari bentuk 5x - 12 sebagai "12" (tanpa tanda minus).'),
+    q:'Apakah jawaban siswa itu benar?', hint:'Cek lagi tanda di depan angka 12.',
+    type:'mcq', opts:['Salah, seharusnya -12','Benar, konstanta selalu positif','Benar, karena posisinya di belakang','Tidak bisa ditentukan'], answer:'Salah, seharusnya -12',
+    explain:'✅ Konstanta yang benar adalah -12, tandanya tidak boleh dihilangkan ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Tanda Minus',
+    sys:rawDisp('-y - 8'),
+    q:'Berapa koefisien y?', hint:'"-y" = "-1y".',
+    type:'text', answers:['-1'], explain:'✅ Koefisien y adalah -1 ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Tanda Minus',
+    sys:rawDisp('12 - 4x'),
+    q:'Berapa koefisien x?', hint:'Baca tanda di depan angka 4.',
+    type:'text', answers:['-4'], explain:'✅ Koefisien x adalah -4 ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Tanda Minus',
+    sys:rawDisp('-3 + 2x'),
+    q:'Berapa konstantanya?', hint:'Perhatikan tanda di depan angka 3.',
+    type:'text', answers:['-3'], explain:'✅ Konstantanya -3 ✓' },
+
+  // ─── BAGIAN 3: Suku Sejenis (e17–e24) ────────────────────────────────
+  { id:'e17', section:'s3', tag:'tag-3', tagLabel:'Suku Sejenis',
+    sys:rawDisp('4x dan 4x'),
+    q:'Apakah kedua suku ini sejenis?', hint:'Variabel dan pangkatnya sama persis.',
+    type:'mcq', opts:['Ya','Tidak'], answer:'Ya',
+    explain:'✅ Sama-sama x pangkat 1, jadi sejenis ✓' },
+
+  { id:'e18', section:'s3', tag:'tag-3', tagLabel:'Suku Sejenis',
+    sys:rawDisp('4x dan 4y'),
+    q:'Apakah kedua suku ini sejenis?', hint:'Bandingkan variabelnya.',
+    type:'mcq', opts:['Tidak','Ya'], answer:'Tidak',
+    explain:'✅ Variabelnya berbeda (x dan y), jadi bukan suku sejenis ✓' },
+
+  { id:'e19', section:'s3', tag:'tag-3', tagLabel:'Suku Sejenis',
+    sys:rawDisp('5x² dan 5x'),
+    q:'Apakah kedua suku ini sejenis?', hint:'Bandingkan pangkatnya.',
+    type:'mcq', opts:['Tidak, pangkat beda','Ya, variabel sama'], answer:'Tidak, pangkat beda',
+    explain:'✅ Variabelnya sama (x) tapi pangkatnya beda (2 dan 1), jadi bukan sejenis ✓' },
+
+  { id:'e20', section:'s3', tag:'tag-3', tagLabel:'Suku Sejenis',
+    sys:rawDisp('3x + 6x'),
+    q:'Berapa hasil penyederhanaannya?', hint:'Suku sejenis, tinggal dijumlahkan.',
+    type:'text', answers:['9x'], explain:'✅ 3x + 6x = 9x ✓' },
+
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Suku Sejenis',
+    sys:rawDisp('8y - 3y'),
+    q:'Berapa hasil penyederhanaannya?', hint:'Kurangi koefisiennya saja.',
+    type:'text', answers:['5y'], explain:'✅ 8y - 3y = 5y ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Suku Sejenis',
+    sys:rawDisp('4x + 3 + 2x - 1'),
+    q:'Berapa bentuk paling sederhananya?', hint:'Kelompokkan suku x, lalu suku angka.',
+    type:'text', answers:['6x + 2','6x+2'], explain:'✅ 4x+2x=6x, dan 3-1=2. Hasil: 6x + 2 ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Suku Sejenis',
+    sys:rawDisp('7a - 2b + a'),
+    q:'Berapa bentuk paling sederhananya?', hint:'7a dan a sejenis, gabungkan.',
+    type:'text', answers:['8a - 2b','8a-2b'], explain:'✅ 7a + a = 8a, -2b tetap. Hasil: 8a - 2b ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Suku Sejenis',
+    sys:rawDisp('5x + 2y - 5x'),
+    q:'Berapa bentuk paling sederhananya?', hint:'5x dan -5x akan saling meniadakan.',
+    type:'text', answers:['2y'], explain:'✅ 5x - 5x = 0, sisa 2y. Hasil: 2y ✓' },
+
+  // ─── BAGIAN 4: Minus di Depan Kurung (e25–e32) ───────────────────────
+  { id:'e25', section:'s4', tag:'tag-4', tagLabel:'Minus di Kurung',
+    sys:rawDisp('-(x + 5)'),
+    q:'Bentuk ini sama dengan?', hint:'-(a+b) = -a-b.',
+    type:'text', answers:['-x - 5','-x-5'], explain:'✅ -(x+5) = -x - 5 ✓' },
+
+  { id:'e26', section:'s4', tag:'tag-4', tagLabel:'Minus di Kurung',
+    sys:rawDisp('-(y - 6)'),
+    q:'Bentuk ini sama dengan?', hint:'-(a-b) = -a+b.',
+    type:'text', answers:['-y + 6','-y+6'], explain:'✅ -(y-6) = -y + 6 ✓' },
+
+  { id:'e27', section:'s4', tag:'tag-4', tagLabel:'Minus di Kurung',
+    sys:rawDisp('-4(x + 1)'),
+    q:'Berapa hasil distribusinya?', hint:'Kalikan -4 ke setiap suku.',
+    type:'text', answers:['-4x - 4','-4x-4'], explain:'✅ -4(x)=-4x, -4(1)=-4. Hasil: -4x - 4 ✓' },
+
+  { id:'e28', section:'s4', tag:'tag-4', tagLabel:'Minus di Kurung',
+    sys:rawDisp('-3(x - 2)'),
+    q:'Berapa hasil distribusinya?', hint:'-3 × (-2) hasilnya positif.',
+    type:'text', answers:['-3x + 6','-3x+6'], explain:'✅ -3(x)=-3x, -3(-2)=+6. Hasil: -3x + 6 ✓' },
+
+  { id:'e29', section:'s4', tag:'tag-4', tagLabel:'Minus di Kurung',
+    sys:rawDisp('8x - (3x - 5)'),
+    q:'Berapa bentuk paling sederhananya?', hint:'Bagikan minus dulu, baru gabungkan suku sejenis.',
+    type:'text', answers:['5x + 5','5x+5'], explain:'✅ 8x-3x+5 = 5x + 5 ✓' },
+
+  { id:'e30', section:'s4', tag:'tag-4', tagLabel:'Minus di Kurung',
+    sys:rawDisp('6a - (4a + 2)'),
+    q:'Berapa bentuk paling sederhananya?', hint:'6a-(4a+2) = 6a-4a-2.',
+    type:'text', answers:['2a - 2','2a-2'], explain:'✅ 6a-4a-2 = 2a - 2 ✓' },
+
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Minus di Kurung',
+    sys:rawDisp('-2(x + 4) - (x - 1)'),
+    q:'Berapa bentuk paling sederhananya?', hint:'Distribusikan kedua bagian dulu, baru gabungkan.',
+    type:'text', answers:['-3x - 7','-3x-7'], explain:'✅ -2x-8-x+1 = -3x - 7 ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Minus di Kurung',
+    sys:rawDisp('-(2x - 3) - 2(x + 1)'),
+    q:'Berapa bentuk paling sederhananya?', hint:'-(2x-3) = -2x+3, dan -2(x+1) = -2x-2.',
+    type:'text', answers:['-4x + 1','-4x+1'], explain:'✅ -2x+3-2x-2 = -4x + 1 ✓' },
+
+  // ─── BAGIAN 5: Cek Balik & Review Campuran (e33–e40) ────────────────
+  { id:'e33', section:'s5', tag:'tag-5', tagLabel:'Cek Balik',
+    sys:sitDisp('Situasi: Bentuk -3(x-2) disederhanakan menjadi -3x+6. Untuk cek, gunakan x = 4.'),
+    q:'Berapa hasil substitusi ke bentuk ASLI -3(x-2) saat x=4?', hint:'-3(4-2) = -3 × 2.',
+    type:'text', answers:['-6'], explain:'✅ -3(4-2) = -3(2) = -6 ✓' },
+
+  { id:'e34', section:'s5', tag:'tag-5', tagLabel:'Cek Balik',
+    sys:sitDisp('Situasi: Masih soal yang sama (x=4), sekarang substitusi ke bentuk SEDERHANA -3x+6.'),
+    q:'Berapa hasilnya?', hint:'-3(4)+6.',
+    type:'text', answers:['-6'], explain:'✅ -3(4)+6 = -12+6 = -6, cocok dengan bentuk asli ✓' },
+
+  { id:'e35', section:'s5', tag:'tag-5', tagLabel:'Cek Balik',
+    sys:sitDisp('Situasi: Seorang siswa mengklaim -5(x-1) = -5x-1 (klaim ini SALAH). Gunakan x=3 untuk membuktikan.'),
+    q:'Berapa hasil substitusi ke bentuk ASLI -5(x-1) saat x=3?', hint:'-5(3-1) = -5 × 2.',
+    type:'text', answers:['-10'], explain:'✅ -5(3-1) = -5(2) = -10 ✓' },
+
+  { id:'e36', section:'s5', tag:'tag-5', tagLabel:'Cek Balik',
+    sys:sitDisp('Situasi: Masih soal sebelumnya, substitusi x=3 ke klaim siswa: -5x - 1.'),
+    q:'Berapa hasilnya, dan apakah cocok dengan -10?', hint:'-5(3)-1.',
+    type:'mcq', opts:['-16, tidak cocok','-10, cocok','-16, cocok','-6, tidak cocok'], answer:'-16, tidak cocok',
+    explain:'✅ -5(3)-1 = -16, tidak sama dengan -10. Ini membuktikan klaim siswa SALAH ✓' },
+
+  { id:'e37', section:'s5', tag:'tag-5', tagLabel:'Review Campuran',
+    sys:rawDisp('2x - 3 - (x - 5)'),
+    q:'Berapa bentuk paling sederhananya?', hint:'Bagikan minus dulu ke (x-5).',
+    type:'text', answers:['x + 2','x+2'], explain:'✅ 2x-3-x+5 = x + 2 ✓' },
+
+  { id:'e38', section:'s5', tag:'tag-5', tagLabel:'Review Campuran',
+    sys:rawDisp('-2x + 3(x - 4)'),
+    q:'Berapa bentuk paling sederhananya?', hint:'Distribusikan 3 ke (x-4) dulu.',
+    type:'text', answers:['x - 12','x-12'], explain:'✅ -2x+3x-12 = x - 12 ✓' },
+
+  { id:'e39', section:'s5', tag:'tag-5', tagLabel:'Review Campuran',
+    sys:rawDisp('4 - (2x + 1) + 3x'),
+    q:'Berapa bentuk paling sederhananya?', hint:'Bagikan minus ke (2x+1) dulu.',
+    type:'text', answers:['x + 3','x+3'], explain:'✅ 4-2x-1+3x = x + 3 ✓' },
+
+  { id:'e40', section:'s5', tag:'tag-5', tagLabel:'Review Campuran',
+    sys:rawDisp('-6(x - 1) - 2(x + 3)'),
+    q:'Berapa bentuk paling sederhananya?', hint:'Distribusikan kedua kurung, lalu gabungkan.',
+    type:'text', answers:['-8x'], explain:'✅ -6x+6-2x-6 = -8x + 0 = -8x ✓' },
+];
+
+function markDone(card, q, inp, btn){
+  card.classList.add('done-card');
+  const fb = card.querySelector('.ex-feedback');
+  fb.className = 'ex-feedback show ok';
+  fb.textContent = q.explain;
+  const badge = document.createElement('div');
+  badge.className = 'done-badge'; badge.textContent = '✓ Done';
+  card.appendChild(badge);
+  if(inp){ inp.classList.add('correct'); inp.disabled = true; }
+  if(btn){ btn.disabled = true; }
+  if(inp){
+    const row = inp.closest('.ex-input-row');
+    if(row){ const b = row.querySelector('.ex-btn'); if(b) b.disabled = true; }
+  }
+  progress[q.id]=true;
+  saveProgress(progress);
+  updateProgressBar();
+}
+
+function normalizeAns(s){
+  return s.trim().toLowerCase()
+    .replace(/\s+/g,'')
+    .replace(/[−–—]/g,'-')
+    .replace(/°/g,'')
+    .replace(/×/g,'*')
+    .replace(/[()]/g,'');
+}
+
+function checkText(id, inp, btn, q){
+  const raw = normalizeAns(inp.value);
+  if(!raw) return;
+  const correct = q.answers.some(a=>raw===normalizeAns(a));
+  if(correct){
+    markDone(inp.closest('.ex-card'), q, inp, btn);
+  } else {
+    inp.classList.add('wrong-anim');
+    const attRow = inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div'); dot.className='attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(()=>{inp.classList.remove('wrong-anim'); inp.value=''; inp.focus();}, 400);
+    if(attRow.children.length >= 3){
+      const fb = inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no';
+      fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.val===q.answer) b.classList.add('opt-correct');
+  });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb = card.querySelector('.ex-feedback');
+  if(val===q.answer){
+    markDone(card, q, null, null);
+  } else {
+    fb.className='ex-feedback show no';
+    fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+  }
+}
+
+function buildExercises(){
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = '';
+  const groups = [
+    { key:'s1', label:'🧩 Bagian 1 — Bedah Bentuk Aljabar',                cls:'sd-1' },
+    { key:'s2', label:'➖ Bagian 2 — Tanda Minus Itu Bagian dari Nilai',    cls:'sd-2' },
+    { key:'s3', label:'🔗 Bagian 3 — Suku Sejenis',                        cls:'sd-3' },
+    { key:'s4', label:'✖️ Bagian 4 — Minus di Depan Kurung',               cls:'sd-4' },
+    { key:'s5', label:'🔍 Bagian 5 — Cek Balik &amp; Review Campuran',     cls:'sd-5' },
+  ];
+  groups.forEach(g=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      card.className = 'ex-card data-card' + (isDone?' done-card':'');
+
+      const sysHTML = q.sys || '';
+
+      let inputHTML = '';
+      if(q.type==='text'){
+        inputHTML = `
+          <div class="ex-input-wrap">
+            <div class="ex-input-row">
+              <input type="text" class="ex-input ${isDone?'correct':''}"
+                placeholder="Jawaban?"
+                value="${isDone ? q.answers[0] : ''}"
+                ${isDone?'disabled':''}
+                onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+              <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+            </div>
+            <div class="attempts-row"></div>
+          </div>`;
+      } else {
+        const shuffled = [...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML = `<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="ex-num">Soal ${q.id.replace('e','')}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${sysHTML}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone ? q.explain : ''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn = card.querySelector('.ex-btn');
+        const inp = card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick = ()=>checkText(q.id, inp, btn, q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{
+          b.onclick = ()=>checkMCQ(b.dataset.val, b, q, card);
+        });
+      }
+      grid.appendChild(card);
+    });
+
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function updateProgressBar(){
+  const total = exercises.length;
+  const done = exercises.filter(q=>progress[q.id]).length;
+  document.getElementById('progCount').textContent = done+' / '+total;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+
+  const sections = ['s1','s2','s3','s4','s5'];
+  sections.forEach((s,i)=>{
+    const secQs = exercises.filter(q=>q.section===s);
+    const secDone = secQs.filter(q=>progress[q.id]).length;
+    const star = document.getElementById('star'+(i+1));
+    if(star){
+      if(secDone>=8) star.classList.add('lit');
+      else star.classList.remove('lit');
+    }
+  });
+
+  if(done>=total){
+    document.getElementById('allDone').style.display='block';
+  } else {
+    document.getElementById('allDone').style.display='none';
+  }
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Extra PR Lesson 34? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+</script>
+</body>
+</html>
