@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Review Bangun Ruang · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;
+    --violet:#7c3aed;--violet-bg:rgba(124,58,237,0.1);--violet-light:#a78bfa;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 70% 20%,rgba(74,144,184,0.06) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--steel-light);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--steel-light);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--steel-bg);border:1px solid rgba(74,144,184,0.4);color:var(--steel-light);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.3rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:0.6rem;line-height:1.3;letter-spacing:1px;}
+  h1 span{color:var(--steel-light);}
+  .intro{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:8px;height:8px;border-radius:2px;background:var(--border2);transition:all 0.3s;cursor:pointer;}
+  .dot.active{background:var(--steel-light);box-shadow:0 0 8px rgba(74,144,184,0.5);transform:scaleX(1.5);}
+  .dot.done{background:#2d6a8c;}
+
+  .slide{display:none;animation:fadeUp 0.35s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--steel-light),transparent);}
+  .card-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.violet{color:var(--violet-light);}
+  .card-label.steel{color:var(--steel-light);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.7rem;line-height:1.4;letter-spacing:0.5px;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  .hl{border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-violet{background:var(--violet-bg);border:1px solid rgba(124,58,237,0.35);}
+  .hl-steel{background:var(--steel-bg);border:1px solid rgba(74,144,184,0.35);}
+  .hl-amber{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);}
+  .hl-green{background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);}
+  .hl-violet strong{color:var(--violet-light);}
+  .hl-steel strong{color:var(--steel-light);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+
+  .callout{display:flex;gap:0.8rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 1rem;margin:1rem 0;font-size:0.87rem;color:var(--text-mid);}
+  .callout-icon{font-size:1.2rem;flex-shrink:0;}
+
+  .tip-list{list-style:none;margin:0.8rem 0;}
+  .tip-list li{display:flex;gap:0.6rem;align-items:flex-start;font-size:0.88rem;color:var(--text-mid);margin-bottom:0.5rem;line-height:1.55;}
+  .tip-list li::before{content:'→';color:var(--steel-light);font-weight:700;flex-shrink:0;}
+
+  .check-list{list-style:none;margin:0.9rem 0;}
+  .check-list li{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.9rem;color:var(--text-mid);margin-bottom:0.65rem;line-height:1.55;}
+  .check-list li span.ic{flex-shrink:0;}
+
+  .nav-btns{display:flex;gap:0.8rem;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--steel-light);color:var(--steel-light);}
+  .btn-primary{background:linear-gradient(135deg,var(--steel-light),#2d6a8c);color:#08131c;font-weight:800;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(74,144,184,0.35);}
+  .btn:disabled{opacity:0.4;cursor:default;}
+
+  .finish{text-align:center;padding:2.5rem 1.8rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;animation:bounce 1s ease-in-out infinite alternate;}
+  @keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+  .finish-title{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--steel-light);letter-spacing:3px;margin-bottom:0.6rem;}
+  .finish-desc{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;}
+  .xp{display:inline-block;background:var(--steel-bg);border:1px solid rgba(74,144,184,0.35);color:var(--steel-light);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  .step-box{display:flex;gap:0.9rem;margin:0.6rem 0;}
+  .step-num{background:var(--steel-bg);border:1px solid rgba(74,144,184,0.4);color:var(--steel-light);font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:700;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .step-text{font-size:0.88rem;color:var(--text-mid);line-height:1.55;padding-top:0.2rem;}
+
+  /* shape visual */
+  .shape-wrap{display:flex;justify-content:center;margin:1rem 0;}
+  .shape-row{display:flex;justify-content:center;gap:1.4rem;margin:1rem 0;flex-wrap:wrap;}
+  .shape-caption{text-align:center;font-family:'Rajdhani',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:1px;margin-top:0.3rem;}
+
+  /* worked example box */
+  .work-box{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:1rem 1.1rem;margin:0.8rem 0;}
+  .work-eq{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1rem;color:var(--text);margin-bottom:0.4rem;}
+  .work-eq .res{color:var(--green);}
+  .work-note{font-size:0.82rem;color:var(--text-muted);}
+
+  /* formula box */
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1rem 0;}
+  @media (max-width:480px){.formula-grid{grid-template-columns:1fr;}}
+  .formula-box{background:var(--track);border:1.5px solid var(--border2);border-radius:10px;padding:0.9rem 1rem;}
+  .formula-box.keliling{border-color:var(--steel-light);}
+  .formula-box.luas{border-color:var(--violet);}
+  .formula-tag{font-family:'Rajdhani',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .formula-tag.keliling{color:var(--steel-light);}
+  .formula-tag.luas{color:var(--violet-light);}
+  .formula-eq{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1.05rem;color:var(--text);}
+
+  /* concept map */
+  .map-box{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:1.1rem 1.2rem;margin:1rem 0;font-family:'Rajdhani',sans-serif;font-size:0.92rem;line-height:2;}
+  .map-root{font-weight:800;color:var(--text);letter-spacing:0.5px;}
+  .map-branch{padding-left:1.3rem;font-weight:700;}
+  .map-branch.k{color:var(--steel-light);}
+  .map-branch.b{color:var(--violet-light);}
+  .map-branch.j{color:var(--amber);}
+  .map-leaf{padding-left:2.6rem;font-weight:600;font-size:0.82rem;color:var(--text-mid);}
+
+  /* star-row */
+  .star-row{display:flex;gap:0.3rem;justify-content:center;margin-bottom:0.3rem;}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson28.html">LESSON 28</a><span>/</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📍 Materi · Lesson 28</div>
+  <h1>Review <span>Bangun Ruang</span></h1>
+  <p class="intro">Kamu sudah pernah belajar semua bagian ini. Slide ini bukan materi baru — cuma pengingat singkat sebelum kita latihan soal!</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- SLIDE 1: Judul -->
+    <div class="slide">
+      <div class="card" style="text-align:center;">
+        <div class="card-label violet">📍 Slide 1 · Pembuka</div>
+        <div class="shape-wrap">
+          <svg width="220" height="150" viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+            <g>
+              <polygon points="55,18 90,36 55,54 20,36" fill="rgba(74,144,184,0.18)" stroke="#4a90b8" stroke-width="2" stroke-linejoin="round"/>
+              <polygon points="20,36 55,54 55,94 20,76" fill="rgba(74,144,184,0.1)" stroke="#4a90b8" stroke-width="2" stroke-linejoin="round"/>
+              <polygon points="55,54 90,36 90,76 55,94" fill="rgba(74,144,184,0.14)" stroke="#4a90b8" stroke-width="2" stroke-linejoin="round"/>
+            </g>
+            <g>
+              <polygon points="168,14 210,34 168,54 126,34" fill="rgba(124,58,237,0.16)" stroke="#7c3aed" stroke-width="2" stroke-linejoin="round"/>
+              <polygon points="126,34 168,54 168,110 126,90" fill="rgba(124,58,237,0.09)" stroke="#7c3aed" stroke-width="2" stroke-linejoin="round"/>
+              <polygon points="168,54 210,34 210,90 168,110" fill="rgba(124,58,237,0.13)" stroke="#7c3aed" stroke-width="2" stroke-linejoin="round"/>
+            </g>
+            <text x="120" y="150" fill="#586878" font-family="Rajdhani" font-size="9" font-weight="600" text-anchor="middle" letter-spacing="1.5">KUBUS · BALOK · VOLUME · JARING-JARING</text>
+          </svg>
+        </div>
+        <h2 style="font-size:1.5rem;margin-top:0.4rem;">Review Bangun Ruang</h2>
+        <p style="margin-top:0.6rem;">Kubus <span style="color:var(--steel-light);font-weight:700;">•</span> Balok <span style="color:var(--steel-light);font-weight:700;">•</span> Volume <span style="color:var(--steel-light);font-weight:700;">•</span> Jaring-jaring — mengingat kembali ciri, rumus, dan cara mengenali jaring-jaring bangun ruang.</p>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" disabled>← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Peta Konsep -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">🗺️ Slide 2 · Peta Konsep</div>
+        <h2>Mengaktifkan Kembali Ingatan</h2>
+        <p>Semua ini sudah pernah kamu pelajari. Coba lihat lagi petanya sebelum masuk ke detail tiap bangun.</p>
+        <div class="map-box">
+          <div class="map-root">📦 Bangun Ruang</div>
+          <div class="map-branch k">├── Kubus</div>
+          <div class="map-leaf">└── Volume = sisi × sisi × sisi</div>
+          <div class="map-branch b">├── Balok</div>
+          <div class="map-leaf">└── Volume = panjang × lebar × tinggi</div>
+          <div class="map-branch j">└── Jaring-jaring</div>
+          <div class="map-leaf">└── Susunan sisi yang bisa dilipat jadi bangun ruang</div>
+        </div>
+        <div class="callout">
+          <span class="callout-icon">💭</span>
+          <span>Coba ingat-ingat dulu: apa bedanya kubus dan balok? Kita bahas satu-satu di slide berikutnya.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Kubus -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">🧊 Slide 3 · Kubus</div>
+        <h2>Mengingat Kembali Kubus</h2>
+        <div class="shape-wrap">
+          <svg width="180" height="170" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="90,20 140,46 90,72 40,46" fill="rgba(74,144,184,0.16)" stroke="#7ab8d8" stroke-width="2.5" stroke-linejoin="round"/>
+            <polygon points="40,46 90,72 90,142 40,116" fill="rgba(74,144,184,0.08)" stroke="#7ab8d8" stroke-width="2.5" stroke-linejoin="round"/>
+            <polygon points="90,72 140,46 140,116 90,142" fill="rgba(74,144,184,0.12)" stroke="#7ab8d8" stroke-width="2.5" stroke-linejoin="round"/>
+            <line x1="65" y1="59" x2="65" y2="129" stroke="#f0a830" stroke-width="1.4" stroke-dasharray="3 3"/>
+            <text x="46" y="98" fill="#f8c870" font-family="Rajdhani" font-size="11" font-weight="700">sisi</text>
+            <text x="90" y="164" fill="#7ab8d8" font-family="Rajdhani" font-size="10" font-weight="700" text-anchor="middle">semua rusuk sama panjang</text>
+          </svg>
+        </div>
+        <ul class="tip-list">
+          <li>Semua <strong style="color:var(--steel-light)">rusuk kubus sama panjang</strong>.</li>
+          <li>Kubus punya 6 sisi berbentuk persegi yang kongruen.</li>
+        </ul>
+        <div class="formula-grid" style="grid-template-columns:1fr;">
+          <div class="formula-box keliling">
+            <div class="formula-tag keliling">Volume Kubus</div>
+            <div class="formula-eq">V = sisi × sisi × sisi</div>
+          </div>
+        </div>
+        <div class="work-box">
+          <div class="work-eq">Sisi = 4 cm</div>
+          <div class="work-note">Volume = 4 × 4 × 4 = <span style="color:var(--green);font-weight:700;">64 cm³</span></div>
+        </div>
+        <div class="hl hl-amber">
+          <strong>Ingat:</strong> satuan volume selalu pakai pangkat tiga, misalnya <strong>cm³</strong> atau <strong>m³</strong>.
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Balok -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">📦 Slide 4 · Balok</div>
+        <h2>Mengingat Kembali Balok</h2>
+        <div class="shape-wrap">
+          <svg width="220" height="170" viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="90,20 170,48 110,76 30,48" fill="rgba(124,58,237,0.16)" stroke="#a78bfa" stroke-width="2.5" stroke-linejoin="round"/>
+            <polygon points="30,48 110,76 110,130 30,102" fill="rgba(124,58,237,0.08)" stroke="#a78bfa" stroke-width="2.5" stroke-linejoin="round"/>
+            <polygon points="110,76 170,48 170,102 110,130" fill="rgba(124,58,237,0.12)" stroke="#a78bfa" stroke-width="2.5" stroke-linejoin="round"/>
+            <text x="128" y="30" fill="#a78bfa" font-family="Rajdhani" font-size="11" font-weight="700">p</text>
+            <text x="60" y="62" fill="#a78bfa" font-family="Rajdhani" font-size="11" font-weight="700">l</text>
+            <text x="16" y="80" fill="#f8c870" font-family="Rajdhani" font-size="11" font-weight="700">t</text>
+            <text x="110" y="160" fill="#a78bfa" font-family="Rajdhani" font-size="10" font-weight="700" text-anchor="middle">panjang · lebar · tinggi berbeda</text>
+          </svg>
+        </div>
+        <ul class="tip-list">
+          <li>Balok punya <strong style="color:var(--violet-light)">panjang (p), lebar (l), dan tinggi (t)</strong> yang bisa berbeda-beda.</li>
+          <li>Sisi-sisi yang berhadapan pada balok berbentuk persegi panjang yang sama.</li>
+        </ul>
+        <div class="formula-grid" style="grid-template-columns:1fr;">
+          <div class="formula-box luas">
+            <div class="formula-tag luas">Volume Balok</div>
+            <div class="formula-eq">V = panjang × lebar × tinggi</div>
+          </div>
+        </div>
+        <div class="work-box">
+          <div class="work-eq">p = 6 cm, l = 3 cm, t = 2 cm</div>
+          <div class="work-note">Volume = 6 × 3 × 2 = <span style="color:var(--green);font-weight:700;">36 cm³</span></div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Jaring-jaring -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🧩 Slide 5 · Jaring-jaring</div>
+        <h2>Mengenali Jaring-jaring</h2>
+        <p><strong style="color:var(--amber)">Jaring-jaring</strong> adalah susunan sisi-sisi bangun ruang yang jika dilipat dapat membentuk bangun ruang tersebut.</p>
+
+        <div class="shape-row">
+          <div>
+            <svg width="90" height="110" viewBox="0 0 90 110" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#48c870" stroke-width="2" fill="rgba(72,200,112,0.14)">
+                <rect x="27" y="0" width="26" height="26"/>
+                <rect x="0" y="26" width="26" height="26"/>
+                <rect x="27" y="26" width="26" height="26"/>
+                <rect x="54" y="26" width="26" height="26"/>
+                <rect x="27" y="52" width="26" height="26"/>
+                <rect x="27" y="78" width="26" height="26"/>
+              </g>
+            </svg>
+            <div class="shape-caption" style="color:var(--green);">✓ Bisa jadi kubus</div>
+          </div>
+          <div>
+            <svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#e85040" stroke-width="2" fill="rgba(232,80,64,0.12)">
+                <rect x="0" y="0" width="26" height="26"/>
+                <rect x="27" y="0" width="26" height="26"/>
+                <rect x="54" y="0" width="26" height="26"/>
+                <rect x="81" y="0" width="26" height="26"/>
+                <rect x="108" y="0" width="26" height="26"/>
+                <rect x="135" y="0" width="26" height="26"/>
+              </g>
+            </svg>
+            <div class="shape-caption" style="color:var(--red);">✗ Tidak bisa jadi kubus</div>
+          </div>
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">❓</span>
+          <span>Coba perhatikan: kalau susunan sebelah kiri dilipat pada garis-garisnya, apakah bisa menutup rapat membentuk kubus? Bagaimana dengan susunan sebelah kanan yang memanjang lurus?</span>
+        </div>
+        <div class="hl hl-steel">
+          Tidak semua susunan 6 persegi bisa dilipat jadi kubus. Bentuk yang benar harus bisa menutup semua sisi tanpa tumpang tindih atau ada celah.
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Strategi -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📝 Slide 6 · Strategi Menyelesaikan Soal</div>
+        <h2>Checklist Sebelum Menghitung</h2>
+        <ul class="check-list">
+          <li><span class="ic">✅</span> Bangun <strong style="color:var(--steel-light)">apa</strong> yang diberikan?</li>
+          <li><span class="ic">✅</span> Informasi <strong style="color:var(--violet-light)">apa</strong> yang diketahui?</li>
+          <li><span class="ic">✅</span> Apa yang <strong style="color:var(--amber)">ditanyakan</strong>?</li>
+          <li><span class="ic">✅</span> Rumus apa yang <strong style="color:var(--green)">sesuai</strong>?</li>
+          <li><span class="ic">✅</span> Pastikan semua ukuran pakai <strong style="color:var(--steel-light)">satuan yang sama</strong>.</li>
+          <li><span class="ic">✅</span> Periksa <strong style="color:var(--green)">satuan akhir</strong> jawabanmu.</li>
+        </ul>
+        <div class="hl hl-amber">
+          <strong>Ingat:</strong> volume selalu memakai satuan kubik, misalnya <strong>cm³</strong> atau <strong>m³</strong>.
+        </div>
+        <div class="hl hl-steel">
+          <strong>Contoh:</strong> Sebuah kotak kado berbentuk balok berukuran panjang 8 cm, lebar 5 cm, dan tinggi 4 cm. Berapa cm³ volume kotak kado tersebut?
+          <br><span style="font-size:0.82rem;color:var(--text-muted)">(Coba pikirkan dulu pakai checklist di atas — pembahasannya ada di latihan!)</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: 3D Challenge -->
+    <div class="slide">
+      <div class="card" style="text-align:center;">
+        <div class="card-label green">🎯 Slide 7 · 3D Challenge</div>
+        <h2>🎯 3D Challenge</h2>
+        <p>Coba pikirkan tiga tantangan ini sebelum masuk ke latihan penuh. Tidak perlu ditulis di sini — cukup pikirkan strateginya!</p>
+
+        <div class="work-box" style="text-align:left;">
+          <div class="star-row" style="justify-content:flex-start;">⭐</div>
+          <div class="work-eq">Sebuah kubus memiliki sisi 5 cm. Berapa volumenya?</div>
+        </div>
+        <div class="work-box" style="text-align:left;">
+          <div class="star-row" style="justify-content:flex-start;">⭐⭐</div>
+          <div class="work-eq">Sebuah balok berukuran 7 cm × 4 cm × 3 cm. Berapa volumenya?</div>
+        </div>
+        <div class="work-box" style="text-align:left;">
+          <div class="star-row" style="justify-content:flex-start;">⭐⭐⭐</div>
+          <div class="work-eq">Bak mandi berbentuk balok panjang 60 cm, lebar 40 cm, tinggi 50 cm akan diisi air. Berapa volume air maksimal yang bisa ditampung?</div>
+        </div>
+
+        <div class="hl hl-steel">
+          <strong>Jangan langsung menghitung.</strong><br>
+          <span style="font-size:0.88rem;">Kenali dulu bangunnya dan tentukan apa yang ditanyakan.</span>
+        </div>
+      </div>
+
+      <div class="finish">
+        <span class="finish-icon">🎮</span>
+        <div class="finish-title">SIAP MEREVIEW!</div>
+        <div class="finish-desc">Kamu sudah mengingat kembali kubus, balok, volume, dan jaring-jaring. Sekarang waktunya latihan soal!</div>
+        <div class="xp">+120 XP</div>
+        <div class="finish-btns">
+          <a href="latihan28.html" class="btn btn-primary">🏠 Mulai Latihan</a>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-ghost" disabled>Selesai ✓</button>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+</div>
+
+<script>
+  /* ===== Slide navigation ===== */
+  const TOTAL = 7;
+  let cur = 0;
+
+  const dotsEl = document.getElementById('dots');
+  for(let i=0;i<TOTAL;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots(){
+    document.querySelectorAll('.dot').forEach((d,i)=>{
+      d.className = 'dot' + (i===cur?' active':i<cur?' done':'');
+    });
+  }
+
+  function goTo(n){
+    document.querySelectorAll('.slide')[cur].classList.remove('active');
+    cur = n;
+    document.querySelectorAll('.slide')[cur].classList.add('active');
+    updateDots();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function nextSlide(){ if(cur<TOTAL-1) goTo(cur+1); }
+  function prevSlide(){ if(cur>0) goTo(cur-1); }
+
+  document.querySelectorAll('.slide')[0].classList.add('active');
+</script>
+</body>
+</html>
