@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extra PR · Lesson 35 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#059669;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --emerald:#34d399;--text:#e2e8f0;--muted:#64748b;
+    --amber:#fbbf24;--blue:#60a5fa;--pink:#fb7185;
+    --violet:#a78bfa;--blue2:#38bdf8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 80%,rgba(167,139,250,0.06) 0%,transparent 50%),
+               radial-gradient(ellipse at 85% 15%,rgba(34,211,238,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 50%,rgba(251,191,36,0.03) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  nav{
+    padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:100;
+    font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;
+  }
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--cyan);}
+
+  .wrapper{max-width:800px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  .pr-banner{background:linear-gradient(135deg,rgba(167,139,250,0.08),rgba(34,211,238,0.08));border:1px solid rgba(34,211,238,0.25);border-radius:20px;padding:2rem 2rem 1.5rem;margin-bottom:2rem;position:relative;overflow:hidden;}
+  .pr-banner::before{content:'🔄';position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);font-size:5rem;opacity:0.08;pointer-events:none;line-height:1;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);color:var(--cyan);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;margin-bottom:0.5rem;line-height:1.3;}
+  .page-title span{color:var(--cyan);}
+  .page-desc{color:var(--muted);font-size:0.9rem;line-height:1.7;max-width:560px;}
+  .pr-pills{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;}
+  .pr-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.72rem;padding:0.2rem 0.7rem;border-radius:20px;font-weight:700;}
+  .pill-cyan{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .pill-pink{background:rgba(251,113,133,0.1);color:var(--pink);border:1px solid rgba(251,113,133,0.3);}
+  .pill-amber{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.3);}
+  .pill-violet{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+  .pill-emerald{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.3);}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--cyan);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+  .prog-stars{display:flex;gap:0.3rem;margin-top:0.5rem;align-items:center;font-size:0.78rem;color:var(--muted);}
+  .star{font-size:0.9rem;opacity:0.25;transition:opacity 0.4s;}
+  .star.lit{opacity:1;}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--amber);}
+  .sd-2{color:var(--violet);}
+  .sd-3{color:var(--pink);}
+  .sd-4{color:var(--cyan);}
+  .sd-5{color:var(--emerald);}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;max-width:100%;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;padding:0 0.25rem;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(34,211,238,0.35);background:rgba(34,211,238,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.25);}
+  .ex-tag.tag-2{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.25);}
+  .ex-tag.tag-3{background:rgba(251,113,133,0.1);color:var(--pink);border:1px solid rgba(251,113,133,0.25);}
+  .ex-tag.tag-4{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.25);}
+  .ex-tag.tag-5{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.25);}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.78rem,3vw,0.92rem);font-weight:900;color:var(--text);margin-bottom:0.5rem;line-height:1.5;word-break:break-word;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--cyan);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:1rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--cyan);}
+  .ex-input.correct{border-color:var(--cyan);color:var(--cyan);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);color:var(--cyan);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(34,211,238,0.22);border-color:var(--cyan);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--neon);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.4);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+  .attempts-row{margin-top:0.4rem;display:flex;gap:2px;align-items:center;}
+  .attempts-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:2px;}
+
+  .ex-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;}
+  .ex-opt{background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.55rem 0.4rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;transition:all 0.15s;text-align:center;line-height:1.4;}
+  .ex-opt:hover:not(:disabled){border-color:var(--cyan);background:rgba(34,211,238,0.06);}
+  .ex-opt.opt-correct{border-color:var(--neon);background:rgba(0,245,196,0.12);color:var(--neon);}
+  .ex-opt.opt-wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .ex-opt:disabled{cursor:default;}
+
+  .ex-card.data-card{border-left:3px solid var(--cyan);}
+  .ex-card.data-card.done-card{border-left-color:var(--amber);}
+
+  .mini-table{width:100%;border-collapse:separate;border-spacing:0;background:#12121c;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:0.8rem;font-size:0.82rem;}
+  .mini-table th{font-family:'Orbitron',monospace;font-size:0.56rem;letter-spacing:1.5px;color:var(--cyan);background:rgba(34,211,238,0.07);padding:0.5rem;text-align:center;}
+  .mini-table td{padding:0.45rem;text-align:center;border-top:1px solid var(--border);}
+  .raw-box{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.7rem;text-align:center;font-family:'Orbitron',monospace;font-size:0.92rem;color:var(--cyan);letter-spacing:1.5px;margin-bottom:0.8rem;line-height:1.7;}
+  .raw-box.sit{font-family:'Nunito',sans-serif;font-size:0.82rem;color:var(--text);letter-spacing:0;font-weight:700;}
+
+  #allDone{display:none;text-align:center;padding:3rem 2rem;}
+  .alldone-icon{font-size:5rem;display:block;margin-bottom:1.5rem;animation:bounce 1s ease infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .alldone-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2rem);color:var(--cyan);margin-bottom:0.8rem;}
+  .alldone-desc{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .alldone-xp{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.5rem 1.5rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:2rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);}
+  .btn-primary{background:linear-gradient(135deg,#0891b2,var(--cyan));color:#000;box-shadow:0 4px 15px rgba(34,211,238,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson35.html">LESSON 35</a>
+  <span>›</span>
+  <span class="current">EXTRA PR</span>
+</nav>
+
+<div class="wrapper">
+  <div class="pr-banner">
+    <div class="page-badge">🔄 Portal Master Mode</div>
+    <div class="page-title">Extra <span>PR Mode</span></div>
+    <div class="page-desc">
+      40 soal ekstra dua arah fungsi: mulai dari menguatkan mode maju, membongkar mesin di mode mundur,
+      menaklukkan fungsi bertanda negatif di kedua arah, membaca tabel dari dua sisi,
+      sampai mixed challenge &amp; cek arah untuk menguji semuanya sekaligus. Progress tersimpan otomatis di perangkat ini. 🔧
+    </div>
+    <div class="pr-pills">
+      <span class="pr-pill pill-amber">➡️ Mode Maju</span>
+      <span class="pr-pill pill-violet">⬅️ Mode Mundur</span>
+      <span class="pr-pill pill-pink">➖ Tanda Negatif</span>
+      <span class="pr-pill pill-cyan">📊 Tabel Fungsi</span>
+      <span class="pr-pill pill-emerald">🧭 Mixed &amp; Cek Arah</span>
+    </div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress PR</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      Kumpulkan ⭐ untuk setiap bagian yang diselesaikan!
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+      <span style="margin-left:0.3rem;font-size:0.72rem;">Selesaikan 8 soal per bagian</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🔄</span>
+    <div class="alldone-title">PR PORTAL SELESAI!</div>
+    <div class="alldone-desc">
+      GG! Kamu udah menaklukkan 40 soal Extra PR Lesson 35!<br>
+      Mode maju, mode mundur, fungsi bertanda negatif, tabel dua arah, sampai mixed challenge — semua kamu babat habis! 🔥<br>
+      Sekarang kamu bisa membongkar mesin fungsi dari arah manapun!
+    </div>
+    <div class="alldone-xp">🔄 +400 XP — Function Direction Master Badge Unlocked!</div>
+    <div class="action-btns">
+      <a href="lesson35.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="exercise35.html" class="btn btn-ghost">Exercise Zone</a>
+      <a href="quicktest35.html" class="btn btn-primary">Quick Test ⚡</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson35_extra_v1';
+function loadProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{};}catch(e){return{};}}
+function saveProgress(p){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(p));}catch(e){}}
+let progress = loadProgress();
+
+// Helper: render a data table
+function tableDisp(thead, tbody){
+  let h = '<table class="mini-table"><thead><tr>';
+  thead.forEach(t=>h+=`<th>${t}</th>`);
+  h += '</tr></thead><tbody>';
+  tbody.forEach(r=>{h+='<tr>';r.forEach(c=>h+=`<td>${c}</td>`);h+='</tr>';});
+  h += '</tbody></table>';
+  return h;
+}
+// Helper: render raw data string
+function rawDisp(text){
+  return `<div class="raw-box">${text}</div>`;
+}
+// Helper: render a situational sentence
+function sitDisp(text){
+  return `<div class="raw-box sit">${text}</div>`;
+}
+
+const exercises = [
+  // ─── BAGIAN 1: Mode Maju (e01–e08) ───────────────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Mode Maju',
+    sys:rawDisp('f(x) = 2x + 1'),
+    q:'Berapa f(3)?', hint:'Substitusi x=3 ke dalam fungsi.',
+    type:'text', answers:['7'], explain:'✅ f(3) = 2(3)+1 = 7 ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Mode Maju',
+    sys:rawDisp('g(x) = 3x - 2'),
+    q:'Berapa g(4)?', hint:'Substitusi x=4 ke dalam fungsi.',
+    type:'text', answers:['10'], explain:'✅ g(4) = 3(4)-2 = 10 ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Mode Maju',
+    sys:rawDisp('h(x) = 5x'),
+    q:'Berapa h(6)?', hint:'Kalikan x dengan 5.',
+    type:'text', answers:['30'], explain:'✅ h(6) = 5(6) = 30 ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Mode Maju',
+    sys:rawDisp('p(x) = 4x + 7'),
+    q:'Berapa p(2)?', hint:'Substitusi x=2.',
+    type:'text', answers:['15'], explain:'✅ p(2) = 4(2)+7 = 15 ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Mode Maju',
+    sys:rawDisp('q(x) = x + 8'),
+    q:'Berapa q(9)?', hint:'Tambahkan 8 ke x.',
+    type:'text', answers:['17'], explain:'✅ q(9) = 9+8 = 17 ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Mode Maju',
+    sys:sitDisp('Soal: "Tentukan nilai r(8)"'),
+    q:'Soal ini termasuk mode apa?', hint:'Yang diketahui input atau output?',
+    type:'mcq', opts:['Mode Maju','Mode Mundur'], answer:'Mode Maju',
+    explain:'✅ Input (x=8) diketahui, dicari outputnya — Mode Maju ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Mode Maju',
+    sys:rawDisp('f(x) = 2x + 1, x = 5'),
+    q:'Berapa f(5)?', hint:'Substitusi x=5.',
+    type:'text', answers:['11'], explain:'✅ f(5) = 2(5)+1 = 11 ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Mode Maju',
+    sys:rawDisp('g(x) = 6x - 5, x = 3'),
+    q:'Berapa g(3)?', hint:'Substitusi x=3.',
+    type:'text', answers:['13'], explain:'✅ g(3) = 6(3)-5 = 13 ✓' },
+
+  // ─── BAGIAN 2: Mode Mundur (e09–e16) ───────────────────────
+  { id:'e09', section:'s2', tag:'tag-2', tagLabel:'Mode Mundur',
+    sys:rawDisp('f(x) = 2x + 1, f(x) = 11'),
+    q:'Berapa nilai x?', hint:'Bentuk persamaan 2x+1=11 lalu selesaikan.',
+    type:'text', answers:['5'], explain:'✅ 2x+1=11 → 2x=10 → x=5 ✓' },
+
+  { id:'e10', section:'s2', tag:'tag-2', tagLabel:'Mode Mundur',
+    sys:rawDisp('g(x) = 3x - 2, g(x) = 16'),
+    q:'Berapa nilai x?', hint:'3x-2=16',
+    type:'text', answers:['6'], explain:'✅ 3x-2=16 → 3x=18 → x=6 ✓' },
+
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Mode Mundur',
+    sys:rawDisp('h(x) = 5x, h(x) = 35'),
+    q:'Berapa nilai x?', hint:'5x=35',
+    type:'text', answers:['7'], explain:'✅ 5x=35 → x=7 ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Mode Mundur',
+    sys:rawDisp('p(x) = 4x + 7, p(x) = 23'),
+    q:'Berapa nilai x?', hint:'4x+7=23',
+    type:'text', answers:['4'], explain:'✅ 4x+7=23 → 4x=16 → x=4 ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Mode Mundur',
+    sys:rawDisp('q(x) = x + 8, q(x) = 20'),
+    q:'Berapa nilai x?', hint:'x+8=20',
+    type:'text', answers:['12'], explain:'✅ x+8=20 → x=12 ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Mode Mundur',
+    sys:sitDisp('Soal: "Jika r(x) = 30, tentukan x"'),
+    q:'Soal ini termasuk mode apa?', hint:'Yang diketahui input atau output?',
+    type:'mcq', opts:['Mode Maju','Mode Mundur'], answer:'Mode Mundur',
+    explain:'✅ Output (r(x)=30) diketahui, dicari inputnya — Mode Mundur ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Mode Mundur',
+    sys:rawDisp('f(x) = 6x - 5, f(x) = 19'),
+    q:'Berapa nilai x?', hint:'6x-5=19',
+    type:'text', answers:['4'], explain:'✅ 6x-5=19 → 6x=24 → x=4 ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Mode Mundur',
+    sys:sitDisp('Situasi: f(x) = 3x + 4. Diketahui f(x) = 25. Langkah pertama membentuk persamaan.'),
+    q:'Berapa hasil akhir nilai x?', hint:'3x+4=25',
+    type:'text', answers:['7'], explain:'✅ 3x+4=25 → 3x=21 → x=7 ✓' },
+
+  // ─── BAGIAN 3: Fungsi Tanda Negatif (e17–e24) ───────────────────────
+  { id:'e17', section:'s3', tag:'tag-3', tagLabel:'Tanda Negatif',
+    sys:rawDisp('f(x) = -2x + 9, x = 3'),
+    q:'Berapa f(3)?', hint:'Substitusi x=3, hati-hati tandanya.',
+    type:'text', answers:['3'], explain:'✅ f(3) = -2(3)+9 = -6+9 = 3 ✓' },
+
+  { id:'e18', section:'s3', tag:'tag-3', tagLabel:'Tanda Negatif',
+    sys:rawDisp('g(x) = -3x - 1, x = 4'),
+    q:'Berapa g(4)?', hint:'Substitusi x=4.',
+    type:'text', answers:['-13'], explain:'✅ g(4) = -3(4)-1 = -12-1 = -13 ✓' },
+
+  { id:'e19', section:'s3', tag:'tag-3', tagLabel:'Tanda Negatif',
+    sys:rawDisp('h(x) = -4x + 6, h(x) = -2'),
+    q:'Berapa nilai x?', hint:'-4x+6=-2',
+    type:'text', answers:['2'], explain:'✅ -4x+6=-2 → -4x=-8 → x=2 ✓' },
+
+  { id:'e20', section:'s3', tag:'tag-3', tagLabel:'Tanda Negatif',
+    sys:rawDisp('p(x) = -5x + 2, p(x) = -13'),
+    q:'Berapa nilai x?', hint:'-5x+2=-13',
+    type:'text', answers:['3'], explain:'✅ -5x+2=-13 → -5x=-15 → x=3 ✓' },
+
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Tanda Negatif',
+    sys:rawDisp('q(x) = -x + 10, x = 6'),
+    q:'Berapa q(6)?', hint:'-x sama dengan -1 kali x.',
+    type:'text', answers:['4'], explain:'✅ q(6) = -6+10 = 4 ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Tanda Negatif',
+    sys:rawDisp('r(x) = -2x - 3, r(x) = -11'),
+    q:'Berapa nilai x?', hint:'-2x-3=-11',
+    type:'text', answers:['4'], explain:'✅ -2x-3=-11 → -2x=-8 → x=4 ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Tanda Negatif',
+    sys:rawDisp('s(x) = -6x + 1, x = -2'),
+    q:'Berapa s(-2)?', hint:'Substitusi x=-2, hati-hati minus kali minus.',
+    type:'text', answers:['13'], explain:'✅ s(-2) = -6(-2)+1 = 12+1 = 13 ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Tanda Negatif',
+    sys:sitDisp('Situasi: t(x) = -3x + 5. Diketahui t(x) = 5.'),
+    q:'Berapa nilai x?', hint:'-3x+5=5',
+    type:'text', answers:['0'], explain:'✅ -3x+5=5 → -3x=0 → x=0 ✓' },
+
+  // ─── BAGIAN 4: Tabel Fungsi (e25–e32) ───────────────────────
+  { id:'e25', section:'s4', tag:'tag-4', tagLabel:'Tabel Fungsi',
+    sys:tableDisp(['x','f(x)'],[['1','6'],['2','9'],['3','12'],['4','15']]),
+    q:'Jika x = 3, berapa f(x)?', hint:'Lihat baris x=3.',
+    type:'text', answers:['12'], explain:'✅ Dari tabel, f(3) = 12 ✓' },
+
+  { id:'e26', section:'s4', tag:'tag-4', tagLabel:'Tabel Fungsi',
+    sys:tableDisp(['x','f(x)'],[['1','6'],['2','9'],['3','12'],['4','15']]),
+    q:'Jika f(x) = 15, berapa x?', hint:'Cari baris di mana f(x)=15.',
+    type:'text', answers:['4'], explain:'✅ Dari tabel, f(x)=15 saat x=4 ✓' },
+
+  { id:'e27', section:'s4', tag:'tag-4', tagLabel:'Tabel Fungsi',
+    sys:tableDisp(['x','g(x)'],[['0','2'],['1','5'],['2','8'],['3','11']]),
+    q:'Jika x = 2, berapa g(x)?', hint:'Lihat baris x=2.',
+    type:'text', answers:['8'], explain:'✅ Dari tabel, g(2) = 8 ✓' },
+
+  { id:'e28', section:'s4', tag:'tag-4', tagLabel:'Tabel Fungsi',
+    sys:tableDisp(['x','g(x)'],[['0','2'],['1','5'],['2','8'],['3','11']]),
+    q:'Jika g(x) = 5, berapa x?', hint:'Cari baris di mana g(x)=5.',
+    type:'text', answers:['1'], explain:'✅ Dari tabel, g(x)=5 saat x=1 ✓' },
+
+  { id:'e29', section:'s4', tag:'tag-4', tagLabel:'Tabel Fungsi',
+    sys:tableDisp(['x','h(x)'],[['2','10'],['4','20'],['6','30'],['8','40']]),
+    q:'Jika h(x) = 30, berapa x?', hint:'Cari baris di mana h(x)=30.',
+    type:'text', answers:['6'], explain:'✅ Dari tabel, h(x)=30 saat x=6 ✓' },
+
+  { id:'e30', section:'s4', tag:'tag-4', tagLabel:'Tabel Fungsi',
+    sys:sitDisp('Situasi: Sebuah tabel fungsi memiliki kolom x dan p(x). Soal berkata: "Tentukan p(7)."'),
+    q:'Soal ini dibaca dari kolom mana ke kolom mana?', hint:'x diketahui atau p(x) diketahui?',
+    type:'mcq', opts:['Dari kolom x ke kolom p(x)','Dari kolom p(x) ke kolom x'], answer:'Dari kolom x ke kolom p(x)',
+    explain:'✅ Input x=7 diketahui, dicari p(x) — dibaca dari kolom x ke p(x), ini Mode Maju ✓' },
+
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Tabel Fungsi',
+    sys:sitDisp('Situasi: Sebuah tabel fungsi memiliki kolom x dan q(x). Soal berkata: "Jika q(x) = 18, tentukan x."'),
+    q:'Soal ini termasuk mode apa?', hint:'Yang diketahui adalah output.',
+    type:'mcq', opts:['Mode Maju','Mode Mundur'], answer:'Mode Mundur',
+    explain:'✅ Output q(x)=18 diketahui, dicari x — Mode Mundur ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Tabel Fungsi',
+    sys:tableDisp(['x','f(x)'],[['1','-1'],['2','1'],['3','3'],['4','5']]),
+    q:'Jika f(x) = 1, berapa x?', hint:'Cari baris di mana f(x)=1.',
+    type:'text', answers:['2'], explain:'✅ Dari tabel, f(x)=1 saat x=2 ✓' },
+
+  // ─── BAGIAN 5: Mixed Challenge & Cek Arah (e33–e40) ───────────────────────
+  { id:'e33', section:'s5', tag:'tag-5', tagLabel:'Mixed & Cek Arah',
+    sys:rawDisp('f(x) = 3x + 2'),
+    q:'Berapa f(6)?', hint:'Mode Maju: substitusi x=6.',
+    type:'text', answers:['20'], explain:'✅ f(6) = 3(6)+2 = 20 ✓' },
+
+  { id:'e34', section:'s5', tag:'tag-5', tagLabel:'Mixed & Cek Arah',
+    sys:rawDisp('g(x) = 4x - 3, g(x) = 21'),
+    q:'Berapa nilai x?', hint:'Mode Mundur: 4x-3=21.',
+    type:'text', answers:['6'], explain:'✅ 4x-3=21 → 4x=24 → x=6 ✓' },
+
+  { id:'e35', section:'s5', tag:'tag-5', tagLabel:'Mixed & Cek Arah',
+    sys:rawDisp('h(x) = -2x + 5, h(x) = -3'),
+    q:'Berapa nilai x?', hint:'Mode Mundur bertanda negatif.',
+    type:'text', answers:['4'], explain:'✅ -2x+5=-3 → -2x=-8 → x=4 ✓' },
+
+  { id:'e36', section:'s5', tag:'tag-5', tagLabel:'Mixed & Cek Arah',
+    sys:sitDisp('Soal: "Diketahui p(x) = 4x - 1. Tentukan p(5)."'),
+    q:'Soal ini termasuk mode apa?', hint:'Perhatikan apa yang diketahui.',
+    type:'mcq', opts:['Mode Maju','Mode Mundur'], answer:'Mode Maju',
+    explain:'✅ Input x=5 diketahui, dicari output p(5) — Mode Maju ✓' },
+
+  { id:'e37', section:'s5', tag:'tag-5', tagLabel:'Mixed & Cek Arah',
+    sys:sitDisp('Soal: "Diketahui q(x) = 5x + 3. Jika q(x) = 28, tentukan x."'),
+    q:'Soal ini termasuk mode apa?', hint:'Perhatikan apa yang diketahui.',
+    type:'mcq', opts:['Mode Maju','Mode Mundur'], answer:'Mode Mundur',
+    explain:'✅ Output q(x)=28 diketahui, dicari x — Mode Mundur ✓' },
+
+  { id:'e38', section:'s5', tag:'tag-5', tagLabel:'Mixed & Cek Arah',
+    sys:rawDisp('r(x) = 6x - 4, r(x) = 20'),
+    q:'Berapa nilai x?', hint:'6x-4=20',
+    type:'text', answers:['4'], explain:'✅ 6x-4=20 → 6x=24 → x=4 ✓' },
+
+  { id:'e39', section:'s5', tag:'tag-5', tagLabel:'Mixed & Cek Arah',
+    sys:sitDisp('Jebakan: s(x) = 3x - 2, dan s(x) = 16. Seorang siswa langsung menulis x = 16.'),
+    q:'Apakah langkah siswa itu benar?', hint:'16 itu output atau input?',
+    type:'mcq', opts:['Salah, 16 itu output bukan input','Benar, boleh langsung disubstitusi'], answer:'Salah, 16 itu output bukan input',
+    explain:'✅ 16 adalah output (nilai s(x)), bukan input. Harus dibentuk persamaan dulu: 3x-2=16, sehingga x=6 ✓' },
+
+  { id:'e40', section:'s5', tag:'tag-5', tagLabel:'Mixed & Cek Arah',
+    sys:rawDisp('t(x) = -4x + 9, x = -1'),
+    q:'Berapa t(-1)?', hint:'Mode Maju bertanda negatif — hati-hati minus kali minus.',
+    type:'text', answers:['13'], explain:'✅ t(-1) = -4(-1)+9 = 4+9 = 13 ✓' },
+];
+
+function markDone(card, q, inp, btn){
+  card.classList.add('done-card');
+  const badge = document.createElement('div');
+  badge.className = 'done-badge';
+  badge.textContent = '✓ Done';
+  card.appendChild(badge);
+  if(inp){ inp.classList.add('correct'); inp.disabled = true; }
+  if(btn){ btn.disabled = true; }
+  if(inp){
+    const row = inp.closest('.ex-input-row');
+    if(row){ const b = row.querySelector('.ex-btn'); if(b) b.disabled = true; }
+  }
+  progress[q.id]=true;
+  saveProgress(progress);
+  updateProgressBar();
+}
+
+function normalizeAns(s){
+  return s.trim().toLowerCase()
+    .replace(/\s+/g,'')
+    .replace(/[−–—]/g,'-')
+    .replace(/°/g,'')
+    .replace(/×/g,'*')
+    .replace(/[()]/g,'');
+}
+
+function checkText(id, inp, btn, q){
+  const raw = normalizeAns(inp.value);
+  if(!raw) return;
+  const correct = q.answers.some(a=>raw===normalizeAns(a));
+  if(correct){
+    markDone(inp.closest('.ex-card'), q, inp, btn);
+  } else {
+    inp.classList.add('wrong-anim');
+    const attRow = inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div'); dot.className='attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(()=>{inp.classList.remove('wrong-anim'); inp.value=''; inp.focus();}, 400);
+    if(attRow.children.length >= 3){
+      const fb = inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no';
+      fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.val===q.answer) b.classList.add('opt-correct');
+  });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb = card.querySelector('.ex-feedback');
+  if(val===q.answer){
+    markDone(card, q, null, null);
+  } else {
+    fb.className='ex-feedback show no';
+    fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+  }
+}
+
+function buildExercises(){
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = '';
+  const groups = [
+    { key:'s1', label:'➡️ Bagian 1 — Mode Maju',                          cls:'sd-1' },
+    { key:'s2', label:'⬅️ Bagian 2 — Mode Mundur: Bongkar Mesin',          cls:'sd-2' },
+    { key:'s3', label:'➖ Bagian 3 — Fungsi dengan Tanda Negatif',         cls:'sd-3' },
+    { key:'s4', label:'📊 Bagian 4 — Fungsi dari Tabel: Maju vs Mundur',   cls:'sd-4' },
+    { key:'s5', label:'🧭 Bagian 5 — Mixed Challenge &amp; Cek Arah',      cls:'sd-5' },
+  ];
+  groups.forEach(g=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      card.className = 'ex-card data-card' + (isDone?' done-card':'');
+
+      const sysHTML = q.sys || '';
+
+      let inputHTML = '';
+      if(q.type==='text'){
+        inputHTML = `
+          <div class="ex-input-wrap">
+            <div class="ex-input-row">
+              <input type="text" class="ex-input ${isDone?'correct':''}"
+                placeholder="Jawaban?"
+                value="${isDone ? q.answers[0] : ''}"
+                ${isDone?'disabled':''}
+                onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+              <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+            </div>
+            <div class="attempts-row"></div>
+          </div>`;
+      } else {
+        const shuffled = [...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML = `<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="ex-num">Soal ${q.id.replace('e','')}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${sysHTML}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone ? q.explain : ''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn = card.querySelector('.ex-btn');
+        const inp = card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick = ()=>checkText(q.id, inp, btn, q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{
+          b.onclick = ()=>checkMCQ(b.dataset.val, b, q, card);
+        });
+      }
+      grid.appendChild(card);
+    });
+
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function updateProgressBar(){
+  const total = exercises.length;
+  const done = exercises.filter(q=>progress[q.id]).length;
+  document.getElementById('progCount').textContent = done+' / '+total;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+
+  const sections = ['s1','s2','s3','s4','s5'];
+  sections.forEach((s,i)=>{
+    const secQs = exercises.filter(q=>q.section===s);
+    const secDone = secQs.filter(q=>progress[q.id]).length;
+    const star = document.getElementById('star'+(i+1));
+    if(star){
+      if(secDone>=8) star.classList.add('lit');
+      else star.classList.remove('lit');
+    }
+  });
+
+  if(done>=total){
+    document.getElementById('allDone').style.display='block';
+  } else {
+    document.getElementById('allDone').style.display='none';
+  }
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Extra PR Lesson 35? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+</script>
+</body>
+</html>
