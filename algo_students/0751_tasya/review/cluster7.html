@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cluster 7 · Geometry Mega Review · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdfaf2;
+    --surface: #faf0d9;
+    --card: #ffffff;
+    --border: #f0e2b6;
+    --border2: #e8d08a;
+    --gold: #c9962c;
+    --gold-light: #e8c468;
+    --bronze: #a8631f;
+    --teal: #2f8f7c;
+    --teal-light: #8fd0c1;
+    --text: #3a3020;
+    --text-mid: #7a6a45;
+    --text-muted: #b8a878;
+    --shadow: rgba(180, 140, 50, 0.12);
+    --red: #c0392b;
+    --green: #4db88a;
+    --s1: #3f9c6d; --s1-light: #8fd0ab;
+    --s2: #d9a441; --s2-light: #f0cf8a;
+    --s3: #e2793e; --s3-light: #f3b284;
+    --s4: #d1495b; --s4-light: #ec9aa6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Quicksand', sans-serif; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 20%, rgba(201,150,44,0.08) 0%, transparent 45%),
+      radial-gradient(ellipse at 90% 10%, rgba(47,143,124,0.07) 0%, transparent 45%),
+      radial-gradient(ellipse at 80% 90%, rgba(209,73,91,0.05) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  .petal { position: fixed; pointer-events: none; z-index: 0; animation: petalFloat var(--d) ease-in-out infinite var(--dl); opacity: 0.12; font-size: var(--sz); }
+  @keyframes petalFloat { 0%,100%{ transform: translateY(0) rotate(var(--r0)); opacity:0.12; } 50%{ transform: translateY(-14px) rotate(var(--r1)); opacity:0.2; } }
+
+  nav {
+    padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    background: rgba(253,250,242,0.92); backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;
+  }
+  nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--gold); }
+  nav span { color: var(--border2); }
+  nav .current { color: var(--gold); }
+
+  .wrapper { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.2rem 6rem; position: relative; z-index: 1; }
+  @media(max-width:480px){ .wrapper { padding: 1.8rem 0.8rem 6rem; } }
+
+  /* Banner */
+  .banner {
+    background: linear-gradient(135deg, rgba(201,150,44,0.1), rgba(47,143,124,0.07));
+    border: 2px solid var(--gold-light);
+    border-radius: 22px; padding: 2rem 2rem 1.6rem;
+    margin-bottom: 2rem; position: relative; overflow: hidden;
+  }
+  .banner::before {
+    content: '🏆'; position: absolute; right: 1.5rem; top: 50%;
+    transform: translateY(-50%); font-size: 6rem; opacity: 0.08; pointer-events: none;
+  }
+  .page-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(201,150,44,0.12); border: 1.5px solid rgba(201,150,44,0.4);
+    color: var(--bronze); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.3rem 1rem; border-radius: 20px; margin-bottom: 0.9rem; font-weight: 800;
+  }
+  .page-title { font-family: 'Nunito', sans-serif; font-size: clamp(1.4rem,4vw,2rem); font-weight: 900; color: var(--text); margin-bottom: 0.45rem; line-height: 1.25; }
+  .page-title span { color: var(--gold); }
+  .page-desc { color: var(--text-mid); font-size: 0.88rem; line-height: 1.7; max-width: 580px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .pill { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; padding: 0.22rem 0.75rem; border-radius: 20px; font-weight: 700; }
+  .pill-gold { background: rgba(201,150,44,0.12); color: var(--bronze); border: 1.5px solid rgba(201,150,44,0.35); }
+  .pill-teal { background: rgba(47,143,124,0.1);  color: var(--teal);   border: 1.5px solid rgba(47,143,124,0.3); }
+  .pill-red  { background: rgba(209,73,91,0.1);   color: var(--s4);    border: 1.5px solid rgba(209,73,91,0.3); }
+  .pill-orn  { background: rgba(226,121,62,0.1);  color: var(--s3);    border: 1.5px solid rgba(226,121,62,0.3); }
+  .pill-grn  { background: rgba(63,156,109,0.1);  color: var(--s1);    border: 1.5px solid rgba(63,156,109,0.3); }
+
+  /* Progress */
+  .prog-panel { background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 1.2rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 3px 14px var(--shadow); }
+  .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+  .prog-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+  .prog-count { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 900; color: var(--gold); }
+  .prog-track { height: 7px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 0.5rem; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--s1), var(--s2), var(--s3), var(--s4)); border-radius: 99px; transition: width 0.7s ease; }
+  .prog-sub { font-size: 0.76rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
+  .reset-link { font-size: 0.7rem; color: var(--text-muted); cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+  .reset-link:hover { color: var(--red); }
+  .prog-stars { display: flex; gap: 0.3rem; margin-top: 0.6rem; align-items: center; font-size: 0.76rem; color: var(--text-muted); }
+  .star { font-size: 0.9rem; opacity: 0.2; transition: opacity 0.4s; }
+  .star.lit { opacity: 1; }
+
+  /* Equation display */
+  .eq-display {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.3rem;
+    margin: 0.6rem 0 0.8rem; padding: 0.7rem 0.6rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+    font-family: 'Nunito', sans-serif; font-weight: 900;
+  }
+  .ed-var  { font-size: 1.15rem; color: var(--gold); background: rgba(201,150,44,0.12); border: 1.5px solid rgba(201,150,44,0.35); padding: 0.15rem 0.55rem; border-radius: 8px; font-style: italic; }
+  .ed-var2 { font-size: 1.15rem; color: var(--teal); background: rgba(47,143,124,0.1);  border: 1.5px solid rgba(47,143,124,0.3);  padding: 0.15rem 0.55rem; border-radius: 8px; font-style: italic; }
+  .ed-num  { font-size: 1.15rem; color: var(--text-mid); background: var(--surface); border: 1.5px solid var(--border2); padding: 0.15rem 0.5rem; border-radius: 8px; }
+  .ed-op   { font-size: 1.1rem; color: var(--text-muted); }
+  .ed-eq   { font-size: 1.1rem; color: var(--text-muted); }
+  .ed-q    { font-size: 1.2rem; color: var(--s4); background: rgba(209,73,91,0.1); border: 1.5px solid rgba(209,73,91,0.25); padding: 0.15rem 0.55rem; border-radius: 8px; }
+
+  /* Coordinate / points display */
+  .coord-display {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.6rem;
+    margin: 0.6rem 0 0.8rem; padding: 0.7rem 0.9rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.95rem;
+  }
+  .coord-point {
+    color: var(--gold); background: rgba(201,150,44,0.12); border: 1.5px solid rgba(201,150,44,0.35);
+    padding: 0.3rem 0.8rem; border-radius: 10px;
+  }
+  .coord-point.alt { color: var(--teal); background: rgba(47,143,124,0.1); border-color: rgba(47,143,124,0.3); }
+  .coord-arrow { color: var(--text-muted); font-size: 1.1rem; }
+
+  /* Triangle / labeled-value display (also reused for circle r/d, rectangle sides, etc) */
+  .tri-display {
+    display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;
+    margin: 0.6rem 0 0.8rem; padding: 0.8rem 1rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+  }
+  .tri-side {
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.9rem;
+    color: var(--text-mid); display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
+  }
+  .tri-side .side-label { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .tri-side .side-val { color: var(--gold); background: rgba(201,150,44,0.12); border: 1.5px solid rgba(201,150,44,0.35); padding: 0.2rem 0.6rem; border-radius: 8px; }
+
+  /* Word story */
+  .word-story { background: rgba(201,150,44,0.06); border: 1.5px solid rgba(201,150,44,0.22); border-radius: 10px; padding: 0.65rem 0.9rem; margin-bottom: 0.7rem; font-size: 0.83rem; color: var(--text-mid); line-height: 1.65; }
+  .word-story strong { color: var(--bronze); }
+
+  /* Section dividers */
+  .sec-divider {
+    font-family: 'Nunito', sans-serif; font-size: 0.72rem; font-weight: 800;
+    letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.5rem 0; margin: 2rem 0 1rem;
+    border-bottom: 2px solid; display: flex; align-items: center; gap: 0.7rem;
+  }
+  .sd-1 { color: var(--s1); border-color: rgba(63,156,109,0.3); }
+  .sd-2 { color: var(--s2); border-color: rgba(217,164,65,0.3); }
+  .sd-3 { color: var(--s3); border-color: rgba(226,121,62,0.3); }
+  .sd-4 { color: var(--s4); border-color: rgba(209,73,91,0.3); }
+  .sd-sesi { font-size: 0.62rem; font-weight: 700; opacity: 0.65; margin-left: auto; letter-spacing: 1px; }
+
+  /* Grid & Cards */
+  .exercise-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(290px,1fr)); gap: 1rem; }
+  @media(max-width:480px){ .exercise-grid { grid-template-columns: 1fr; } }
+
+  .ex-card { background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 1.3rem; position: relative; overflow: hidden; transition: border-color 0.2s; box-shadow: 0 2px 10px var(--shadow); }
+  .ex-card.done-card { border-color: rgba(201,150,44,0.45); background: rgba(201,150,44,0.02); }
+  .ex-card.word-card { border-left: 3px solid var(--teal); }
+  .ex-card.word-card.done-card { border-left-color: var(--gold); }
+
+  .ex-num { font-size: 0.62rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem; }
+  .ex-tag { display: inline-block; font-size: 0.58rem; padding: 0.15rem 0.5rem; border-radius: 8px; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
+  .tag-1 { background: rgba(63,156,109,0.1);  color: var(--s1); border: 1.5px solid rgba(63,156,109,0.28); }
+  .tag-2 { background: rgba(217,164,65,0.12); color: var(--bronze); border: 1.5px solid rgba(217,164,65,0.3); }
+  .tag-3 { background: rgba(226,121,62,0.1);  color: var(--s3); border: 1.5px solid rgba(226,121,62,0.28); }
+  .tag-4 { background: rgba(209,73,91,0.1);   color: var(--s4); border: 1.5px solid rgba(209,73,91,0.28); }
+
+  .ex-q { font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 800; color: var(--text); margin-bottom: 0.4rem; line-height: 1.5; }
+  .ex-card.done-card .ex-q { color: var(--bronze); }
+  .ex-hint { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.85rem; font-style: italic; line-height: 1.45; }
+
+  /* Inputs */
+  .ex-input-wrap { display: flex; flex-direction: column; gap: 0.45rem; }
+  .ex-input-row { display: flex; gap: 0.5rem; align-items: center; }
+  .ex-input { flex: 1; background: var(--surface); border: 2px solid var(--border2); color: var(--text); padding: 0.55rem 0.8rem; border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; text-align: center; transition: border-color 0.2s; outline: none; min-width: 0; }
+  .ex-input:focus { border-color: var(--gold); }
+  .ex-input.correct { border-color: var(--gold); color: var(--bronze); }
+  .ex-input.wrong-anim { border-color: var(--red); color: var(--red); animation: shake 0.4s ease; }
+  @keyframes shake { 0%,100%{ transform:translateX(0); } 20%,60%{ transform:translateX(-6px); } 40%,80%{ transform:translateX(6px); } }
+  .ex-btn { background: rgba(201,150,44,0.12); border: 1.5px solid rgba(201,150,44,0.35); color: var(--bronze); padding: 0.55rem 0.9rem; border-radius: 10px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.75rem; font-weight: 800; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+  .ex-btn:hover { background: rgba(201,150,44,0.22); border-color: var(--gold); }
+  .ex-btn:disabled { opacity: 0.3; cursor: default; }
+  .attempts-row { display: flex; gap: 3px; align-items: center; min-height: 10px; }
+  .attempts-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
+
+  .ex-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .ex-opt { background: var(--surface); border: 2px solid var(--border2); color: var(--text-mid); padding: 0.55rem 0.4rem; border-radius: 10px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.15s; text-align: center; line-height: 1.4; }
+  .ex-opt:hover:not(:disabled) { border-color: var(--gold); background: rgba(201,150,44,0.08); color: var(--bronze); }
+  .ex-opt.opt-correct { border-color: var(--green); background: rgba(77,184,138,0.1); color: var(--green); }
+  .ex-opt.opt-wrong   { border-color: var(--red);  background: rgba(192,57,43,0.08); color: var(--red); }
+  .ex-opt:disabled { cursor: default; }
+
+  .ex-feedback { margin-top: 0.6rem; font-size: 0.81rem; font-weight: 700; display: none; line-height: 1.55; }
+  .ex-feedback.show { display: block; }
+  .ex-feedback.ok { color: var(--green); }
+  .ex-feedback.no { color: var(--red); }
+  .done-badge { position: absolute; top: 0.9rem; right: 0.9rem; background: rgba(201,150,44,0.12); border: 1.5px solid rgba(201,150,44,0.4); color: var(--bronze); font-size: 0.6rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 8px; }
+
+  /* All-done */
+  #allDone { display: none; text-align: center; padding: 3.5rem 2rem; }
+  .alldone-icon { font-size: 5rem; display: block; margin-bottom: 1.5rem; animation: bounce 1.2s ease infinite; }
+  @keyframes bounce { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-10px); } }
+  .alldone-title { font-family: 'Nunito', sans-serif; font-size: clamp(1.4rem,5vw,2.1rem); font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.7rem; }
+  .alldone-desc { color: var(--text-mid); line-height: 1.8; margin-bottom: 1.8rem; font-size: 0.92rem; }
+  .alldone-xp { display: inline-block; background: rgba(201,150,44,0.12); border: 1.5px solid rgba(201,150,44,0.45); color: var(--bronze); padding: 0.5rem 1.5rem; border-radius: 20px; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800; margin-bottom: 2rem; }
+  .action-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn { padding: 0.75rem 1.6rem; border-radius: 12px; border: 2px solid var(--border2); font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-muted); background: transparent; }
+  .btn:hover { border-color: var(--gold); color: var(--bronze); }
+  .btn-primary { background: linear-gradient(135deg, var(--gold), var(--teal)); border-color: transparent; color: white; box-shadow: 0 4px 16px rgba(201,150,44,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); color: white; }
+
+  .deco-bloom  { position: fixed; top: -40px; right: -40px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(201,150,44,0.12), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+  .deco-bloom2 { position: fixed; bottom: -60px; left: -60px; width: 240px; height: 240px; background: radial-gradient(circle, rgba(47,143,124,0.1), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+</style>
+</head>
+<body>
+<div class="deco-bloom"></div>
+<div class="deco-bloom2"></div>
+<div id="petals"></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../tasya_0751.html">TASYA</a>
+  <span>›</span>
+  <a href="review.html">MEGA REVIEW</a>
+  <span>›</span>
+  <span class="current">CLUSTER 7</span>
+</nav>
+
+<div class="wrapper">
+  <div class="banner">
+    <div class="page-badge">🏆 Cluster 7 · Geometry Mega Review</div>
+    <div class="page-title">Geometry <span>Boss Checkpoint</span></div>
+    <div class="page-desc">
+      40 soal gabungan seluruh materi geometri: koordinat, jarak & titik tengah, Pythagoras, hubungan sudut, transformasi, hingga lingkaran.
+      Empat level — dari recall dasar sampai boss battle akhir. Progress tersimpan otomatis! 🏆
+    </div>
+    <div class="pills">
+      <span class="pill pill-grn">🟢 Fundamental Recall</span>
+      <span class="pill pill-gold">🟡 Choose Your Weapon</span>
+      <span class="pill pill-orn">🟠 Concept Connection</span>
+      <span class="pill pill-red">🔴 Boss Battle</span>
+    </div>
+  </div>
+
+  <div class="prog-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress Cluster 7</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-sub">
+      <span>Kumpulkan ⭐ tiap menyelesaikan 8 soal!</span>
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🏆</span>
+    <div class="alldone-title">Geometry Boss Battle Selesai!</div>
+    <div class="alldone-desc">
+      Kamu berhasil menaklukkan seluruh checkpoint: koordinat, Pythagoras, sudut & segitiga,<br>
+      transformasi, hingga lingkaran — dan menang di Boss Battle terakhir!
+    </div>
+    <div class="alldone-xp">+500 XP · Geometry Champion 🏆</div>
+    <div class="action-btns">
+      <a href="cluster6.html" class="btn">← Cluster 6</a>
+      <a href="review.html" class="btn btn-primary">Kembali ke Review →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'tasya_review_cluster7_v1';
+function loadProgress(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||{}; }catch(e){ return{}; } }
+function saveProgress(p){ try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(p)); }catch(e){} }
+let progress = loadProgress();
+
+// Renders a single equation/expression display line
+function eqHTML(parts){
+  return `<div class="eq-display">${parts.map(p=>{
+    if(p.t==='var')   return `<span class="ed-var">${p.v}</span>`;
+    if(p.t==='var2')  return `<span class="ed-var2">${p.v}</span>`;
+    if(p.t==='num')   return `<span class="ed-num">${p.v}</span>`;
+    if(p.t==='op')    return `<span class="ed-op">${p.v}</span>`;
+    if(p.t==='eq')    return `<span class="ed-eq">=</span>`;
+    if(p.t==='q')     return `<span class="ed-q">?</span>`;
+    return '';
+  }).join('')}</div>`;
+}
+
+// Renders two coordinate points with an arrow between them
+function coordHTML(p1, p2, label1, label2){
+  label1 = label1 || ''; label2 = label2 || '';
+  return `<div class="coord-display">
+    <span class="coord-point">${label1?label1+' ':''}${p1}</span>
+    <span class="coord-arrow">→</span>
+    <span class="coord-point alt">${label2?label2+' ':''}${p2}</span>
+  </div>`;
+}
+
+// Renders 3+ standalone points (no arrow), separated by dots
+function pointsHTML(pts){
+  return `<div class="coord-display">${pts.map((p,i)=>`<span class="coord-point${i%2?' alt':''}">${p}</span>`).join('<span class="coord-arrow">·</span>')}</div>`;
+}
+
+// Renders a labeled-value row (triangle sides, circle r/d, rectangle sides, etc)
+function triHTML(sides){
+  return `<div class="tri-display">${sides.map(s=>`<div class="tri-side"><span class="side-label">${s.label}</span><span class="side-val">${s.val}</span></div>`).join('<span class="coord-arrow">·</span>')}</div>`;
+}
+
+const exercises = [
+
+  // ══════════════ STAGE 1 — FUNDAMENTAL RECALL (10 soal) ══════════════
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Koordinat',
+    coordPts:['P(3,5)'],
+    q:'Sebuah titik P digambar pada bidang koordinat di posisi berikut. Berapa satuan jarak titik P dari sumbu-X?',
+    hint:'Jarak dari sumbu-X ditentukan oleh nilai koordinat kedua (y).',
+    type:'text', answers:['5'],
+    explain:'✅ Jarak dari sumbu-X = nilai y = 5 satuan ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Jarak Titik',
+    coordPts:['A(2,3)','B(9,3)'],
+    q:'Kedua titik berikut segaris horizontal. Berapa jarak antara A dan B?',
+    hint:'Jika y sama, cukup lihat selisih nilai x.',
+    type:'text', answers:['7'],
+    explain:'✅ |9−2| = 7 ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Titik Tengah',
+    coordPts:['A(2,2)','B(8,6)'],
+    q:'Tentukan koordinat titik yang tepat berada di tengah-tengah antara A dan B.',
+    hint:'Rata-ratakan nilai x, lalu rata-ratakan nilai y.',
+    type:'text', answers:['(5,4)'],
+    explain:'✅ x=(2+8)/2=5, y=(2+6)/2=4 → (5,4) ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Pythagoras Dasar',
+    triSides:[{label:'a',val:'6'},{label:'b',val:'8'},{label:'c',val:'?'}],
+    q:'Sebuah segitiga siku-siku memiliki dua sisi tegak seperti berikut. Berapa panjang sisi miringnya?',
+    hint:'Kuadratkan kedua sisi, jumlahkan, lalu akarkan.',
+    type:'text', answers:['10'],
+    explain:'✅ c²=6²+8²=36+64=100 → c=10 ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Sudut Berpenyiku',
+    eq:[{t:'var',v:'α'},{t:'op',v:'+'},{t:'num',v:'35°'},{t:'eq'},{t:'num',v:'90°'}],
+    q:'Dua sudut saling berpenyiku (jumlahnya 90°). Jika salah satu sudut besarnya 35°, berapa besar sudut yang lain?',
+    hint:'Kurangi 90° dengan sudut yang diketahui.',
+    type:'text', answers:['55'],
+    explain:'✅ 90°−35°=55° ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Garis Sejajar',
+    q:'Dua garis sejajar dipotong oleh sebuah garis transversal. Salah satu sudut yang terbentuk besarnya 70°. Sudut lain yang sehadap (posisi bersesuaian) dengannya besarnya berapa?',
+    hint:'Sudut yang sehadap pada garis sejajar selalu memiliki besar yang sama.',
+    type:'text', answers:['70'],
+    explain:'✅ Sudut sehadap pada garis sejajar selalu SAMA besar = 70° ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Sudut Segitiga',
+    eq:[{t:'num',v:'50°'},{t:'op',v:'+'},{t:'num',v:'60°'},{t:'op',v:'+'},{t:'var',v:'x'},{t:'eq'},{t:'num',v:'180°'}],
+    q:'Sebuah segitiga memiliki dua sudut 50° dan 60°. Berapa besar sudut ketiganya?',
+    hint:'Jumlah seluruh sudut dalam segitiga selalu 180°.',
+    type:'text', answers:['70'],
+    explain:'✅ 180°−50°−60°=70° ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Sudut Luar',
+    eq:[{t:'num',v:'110°'},{t:'op',v:'+'},{t:'var',v:'x'},{t:'eq'},{t:'num',v:'180°'}],
+    q:'Sudut luar sebuah segitiga besarnya 110°. Berapa besar sudut dalam yang bersebelahan langsung (berpelurus) dengan sudut luar tersebut?',
+    hint:'Sudut luar dan sudut dalam yang berpelurus selalu berjumlah 180°.',
+    type:'text', answers:['70'],
+    explain:'✅ 180°−110°=70° ✓' },
+
+  { id:'e09', section:'s1', tag:'tag-1', tagLabel:'Transformasi',
+    coordPts:['A(3,2)','A\'(?,?)'],
+    q:'Titik A berikut dicerminkan (refleksi) terhadap sumbu-X. Tentukan koordinat bayangannya.',
+    hint:'Refleksi terhadap sumbu-X: nilai x tetap, nilai y berubah tanda.',
+    type:'text', answers:['(3,-2)'],
+    explain:'✅ (x,y)→(x,−y), jadi A(3,2)→A\'(3,−2) ✓' },
+
+  { id:'e10', section:'s1', tag:'tag-1', tagLabel:'Lingkaran Dasar',
+    triSides:[{label:'r',val:'7 cm'},{label:'K',val:'?'}],
+    q:'Sebuah lingkaran memiliki jari-jari seperti berikut (π≈22/7). Berapa kelilingnya?',
+    hint:'Keliling lingkaran = 2 × π × r.',
+    type:'mcq', opts:['44','38','49','22'], answer:'44',
+    explain:'✅ K = 2×22/7×7 = 44 cm ✓' },
+
+  // ══════════════ STAGE 2 — CHOOSE YOUR WEAPON (10 soal) ══════════════
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Koordinat',
+    coordPts:['A(1,1)','B(4,5)'],
+    wordProblem:true,
+    story:'Dua pos jaga di sebuah taman berada pada posisi berikut (satuan meter).',
+    q:'Berapa jarak lurus antara pos A dan pos B?',
+    hint:'Perhatikan pergeseran mendatar dan tegak antara kedua titik.',
+    type:'mcq', opts:['5','6','7','9'], answer:'5',
+    explain:'✅ Δx=3, Δy=4 → d=√(3²+4²)=√25=5 meter ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Koordinat',
+    coordPts:['A(-2,4)','B(6,-2)'],
+    wordProblem:true,
+    story:'Sebuah lampu taman akan dipasang tepat di posisi seimbang antara gerbang A dan gerbang B berikut.',
+    q:'Di koordinat manakah lampu tersebut harus dipasang?',
+    hint:'Cari posisi yang berjarak sama dari kedua gerbang.',
+    type:'text', answers:['(2,1)'],
+    explain:'✅ x=(−2+6)/2=2, y=(4−2)/2=1 → (2,1) ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Segitiga',
+    triSides:[{label:'alas',val:'9 m'},{label:'tegak',val:'?'},{label:'panjang seluncuran',val:'15 m'}],
+    wordProblem:true,
+    story:'Sebuah papan seluncur (perosotan) membentuk bidang segitiga seperti berikut.',
+    q:'Tentukan tinggi tegak seluncuran yang belum diketahui.',
+    hint:'Cari hubungan antara ketiga sisi bidang siku-siku ini.',
+    type:'text', answers:['12'],
+    explain:'✅ tegak² = 15²−9² = 225−81=144 → tegak=12 m ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Garis Sejajar',
+    wordProblem:true,
+    story:'Dua rel kereta yang sejajar dipotong oleh sebuah balok penyangga. Salah satu sudut yang terbentuk adalah 128°.',
+    q:'Sudut dalam sepihak (di sisi yang sama, satu garis) dengan sudut tersebut besarnya berapa?',
+    hint:'Perhatikan hubungan kedua sudut terhadap kedua garis sejajar dan garis transversal.',
+    type:'text', answers:['52'],
+    explain:'✅ Sudut dalam sepihak selalu berjumlah 180°: 180°−128°=52° ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Segiempat',
+    wordProblem:true,
+    story:'Sebuah bidang berbentuk segiempat memiliki tiga sudut: 80°, 95°, dan 105°.',
+    q:'Berapa besar sudut keempat bidang tersebut?',
+    hint:'Ingat total seluruh sudut dalam bangun segiempat.',
+    type:'text', answers:['80'],
+    explain:'✅ 360°−80°−95°−105°=80° ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Transformasi',
+    coordPts:['(4,-3)','(?,?)'],
+    wordProblem:true,
+    story:'Sebuah objek dalam game berada di posisi berikut. Objek itu digeser 5 satuan ke kanan dan 2 satuan ke atas.',
+    q:'Di koordinat mana posisi objek tersebut sekarang?',
+    hint:'Perhatikan arah pergeseran dan bagaimana itu memengaruhi tiap koordinat.',
+    type:'mcq', opts:['(9,-1)','(9,-5)','(-1,9)','(-1,-1)'], answer:'(9,-1)',
+    explain:'✅ (4+5, −3+2)=(9,−1) ✓' },
+
+  { id:'e17', section:'s2', tag:'tag-2', tagLabel:'Dilatasi',
+    wordProblem:true,
+    story:'Sebuah bangun berukuran 4 cm diperbesar menjadi bangun sebangun berukuran 12 cm.',
+    q:'Berapa faktor skala pembesaran tersebut?',
+    hint:'Bandingkan ukuran hasil dengan ukuran asal.',
+    type:'text', answers:['3'],
+    explain:'✅ Faktor skala = 12÷4 = 3 ✓' },
+
+  { id:'e18', section:'s2', tag:'tag-2', tagLabel:'Lingkaran',
+    wordProblem:true,
+    story:'Sebuah roda berdiameter 28 cm (π≈22/7) berputar sebanyak 10 kali.',
+    q:'Berapa jarak yang ditempuh roda tersebut (dalam cm)?',
+    hint:'Pikirkan dulu berapa jarak yang ditempuh dalam SATU putaran penuh.',
+    type:'mcq', opts:['220','280','880','440'], answer:'880',
+    explain:'✅ Satu putaran = π×d = 22/7×28=88 cm. 10 putaran = 880 cm ✓' },
+
+  { id:'e19', section:'s2', tag:'tag-2', tagLabel:'Lingkaran',
+    triSides:[{label:'r',val:'14 m'}],
+    wordProblem:true,
+    story:'Sebuah taman berbentuk lingkaran akan dipagari di sekeliling batas luarnya (π≈22/7).',
+    q:'Berapa panjang pagar yang dibutuhkan?',
+    hint:'Pikirkan bagian lingkaran mana yang berkaitan dengan batas luar, bukan permukaannya.',
+    type:'text', answers:['88'],
+    explain:'✅ Pagar mengikuti keliling: 2×22/7×14=88 m ✓' },
+
+  { id:'e20', section:'s2', tag:'tag-2', tagLabel:'Lingkaran',
+    wordProblem:true,
+    story:'Taman bundar yang sama akan ditanami rumput di SELURUH permukaannya (bukan dipagari).',
+    q:'Untuk menghitung berapa banyak rumput yang dibutuhkan, ukuran apa dari lingkaran yang harus dihitung?',
+    hint:'Bedakan antara "batas luar" dan "seluruh permukaan" bangun.',
+    type:'mcq', opts:['Keliling lingkaran','Luas lingkaran','Diameter lingkaran','Jari-jari saja'], answer:'Luas lingkaran',
+    explain:'✅ Menutupi permukaan berarti berkaitan dengan LUAS, bukan keliling (yang hanya untuk batas/pagar) ✓' },
+
+  // ══════════════ STAGE 3 — CONCEPT CONNECTION (12 soal) ══════════════
+  // Kelompok A — Koordinat + Geometri
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Koordinat + Pythagoras',
+    coordPts:['A(1,2)','B(7,10)'],
+    wordProblem:true,
+    story:'Dua drone berada pada posisi berikut (satuan meter).',
+    q:'Tentukan jarak lurus antara kedua drone menggunakan struktur bidang siku-siku bantu (Δx dan Δy).',
+    hint:'Δx=7−1=6, Δy=10−2=8, lalu gabungkan keduanya.',
+    type:'text', answers:['10'],
+    explain:'✅ d=√(6²+8²)=√(36+64)=√100=10 meter ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Titik Tengah + Interpretasi',
+    coordPts:['P(-3,5)','Q(9,-1)'],
+    wordProblem:true,
+    story:'Kedua ujung sebuah jembatan gantung berada di titik berikut.',
+    q:'Tentukan posisi tepat di tengah jembatan (titik tumpu utama).',
+    hint:'Rata-ratakan koordinat x, lalu rata-ratakan koordinat y.',
+    type:'text', answers:['(3,2)'],
+    explain:'✅ x=(−3+9)/2=3, y=(5−1)/2=2 → (3,2) ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Bangun di Koordinat',
+    coordDisp:['A(0,0)','B(6,0)','C(6,8)'],
+    q:'Segitiga siku-siku digambar pada bidang koordinat dengan titik sudut A(0,0), B(6,0), dan C(6,8). Tentukan panjang sisi AC.',
+    hint:'AC menghubungkan dua titik yang tidak segaris horizontal maupun vertikal.',
+    type:'text', answers:['10'],
+    explain:'✅ Δx=6, Δy=8 → AC=√(36+64)=√100=10 ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Transformasi + Sifat',
+    coordPts:['(3,4)','(?,?)'],
+    q:'Titik sudut sebuah bangun di (3,4) didilatasikan dari pusat O(0,0) dengan faktor skala 2. Tentukan koordinat bayangan dan sifat yang TETAP setelah dilatasi.',
+    hint:'Kalikan setiap koordinat dengan faktor skala, lalu pikirkan apa yang tidak berubah pada bentuk bangun.',
+    type:'mcq', opts:['(6,8); bentuk bangun tetap sebangun, hanya ukurannya berubah','(6,8); bentuk dan ukuran bangun sama persis (kongruen)','(1.5,2); bangun berubah menjadi bentuk lain','(6,8); sudut-sudut bangun ikut berubah'], answer:'(6,8); bentuk bangun tetap sebangun, hanya ukurannya berubah',
+    explain:'✅ (3×2,4×2)=(6,8). Dilatasi mengubah UKURAN tapi bentuk & sudut tetap sebangun (mirip) ✓' },
+
+  // Kelompok B — Geometri Klasik
+  { id:'e25', section:'s3', tag:'tag-3', tagLabel:'Garis Sejajar + Segitiga',
+    wordProblem:true,
+    story:'Alas sebuah segitiga sejajar dengan sebuah garis referensi horizontal. Sudut antara garis referensi dan salah satu sisi miring segitiga adalah 55° (sehadap dengan salah satu sudut dalam segitiga). Sudut dalam lainnya adalah 65°.',
+    q:'Berapa besar sudut ketiga segitiga tersebut?',
+    hint:'Ubah dulu sudut sehadap menjadi sudut dalam segitiga, lalu gunakan sifat jumlah sudut segitiga.',
+    type:'text', answers:['60'],
+    explain:'✅ Sudut sehadap = sudut dalam pertama = 55°. Sudut ketiga = 180°−55°−65°=60° ✓' },
+
+  { id:'e26', section:'s3', tag:'tag-3', tagLabel:'Sudut Luar',
+    wordProblem:true,
+    story:'Sudut luar sebuah segitiga di titik C besarnya 130°. Salah satu sudut dalam yang tidak berdekatan dengan sudut luar tersebut adalah 45°.',
+    q:'Berapa besar sudut dalam LAINNYA yang juga tidak berdekatan dengan sudut luar tersebut?',
+    hint:'Sudut luar sama dengan jumlah kedua sudut dalam yang tidak berdekatan dengannya.',
+    type:'text', answers:['85'],
+    explain:'✅ 130°=45°+x → x=85° ✓' },
+
+  { id:'e27', section:'s3', tag:'tag-3', tagLabel:'Segiempat + Diagonal',
+    wordProblem:true,
+    story:'Segiempat ABCD dibagi oleh diagonal AC menjadi dua segitiga: segitiga ABC dan segitiga ACD.',
+    q:'Berapa jumlah seluruh sudut dalam segiempat ABCD tersebut?',
+    hint:'Setiap segitiga memiliki jumlah sudut 180°, dan segiempat ini terdiri dari dua segitiga.',
+    type:'mcq', opts:['360°','270°','180°','450°'], answer:'360°',
+    explain:'✅ Dua segitiga × 180° = 360°. Inilah alasan jumlah sudut segiempat selalu 360° ✓' },
+
+  { id:'e28', section:'s3', tag:'tag-3', tagLabel:'Pythagoras dalam Bangun',
+    triSides:[{label:'panjang',val:'12 m'},{label:'lebar',val:'5 m'},{label:'diagonal',val:'?'}],
+    wordProblem:true,
+    story:'Sebuah lapangan berbentuk persegi panjang berukuran berikut. Andi berjalan lurus dari satu sudut lapangan ke sudut yang berseberangan.',
+    q:'Berapa jarak yang ditempuh Andi (lintasan diagonal)?',
+    hint:'Diagonal persegi panjang membentuk sisi miring dari bidang siku-siku yang dibentuk panjang dan lebar.',
+    type:'text', answers:['13'],
+    explain:'✅ diagonal²=12²+5²=144+25=169 → diagonal=13 m ✓' },
+
+  // Kelompok C — Lingkaran + Konsep Lain
+  { id:'e29', section:'s3', tag:'tag-3', tagLabel:'Lingkaran: Keliling',
+    triSides:[{label:'d',val:'14 m'},{label:'r',val:'7 m'}],
+    wordProblem:true,
+    story:'Sebuah kolam ikan berbentuk lingkaran memiliki diameter seperti berikut (π≈22/7).',
+    q:'Berapa keliling kolam tersebut?',
+    hint:'Cari radius dulu dari diameter, baru hitung kelilingnya.',
+    type:'text', answers:['44'],
+    explain:'✅ K=2×22/7×7=44 m ✓' },
+
+  { id:'e30', section:'s3', tag:'tag-3', tagLabel:'Lingkaran: Luas',
+    triSides:[{label:'d',val:'14 m'},{label:'r',val:'7 m'}],
+    wordProblem:true,
+    story:'Kolam ikan yang sama (diameter 14 m).',
+    q:'Berapa luas permukaan air kolam tersebut?',
+    hint:'Luas lingkaran melibatkan radius yang dikuadratkan.',
+    type:'text', answers:['154'],
+    explain:'✅ L=22/7×7²=22/7×49=154 m² ✓' },
+
+  { id:'e31', section:'s3', tag:'tag-3', tagLabel:'Lingkaran dalam Persegi',
+    triSides:[{label:'sisi persegi',val:'14 m'},{label:'diameter lingkaran',val:'14 m'}],
+    wordProblem:true,
+    story:'Sebuah lingkaran digambar tepat di dalam persegi berikut (π≈22/7).',
+    q:'Berapa luas daerah di dalam persegi namun di LUAR lingkaran?',
+    hint:'Cari luas persegi, cari luas lingkaran, lalu kurangi.',
+    type:'text', answers:['42'],
+    explain:'✅ Luas persegi=14×14=196. Luas lingkaran=154. Sisa=196−154=42 m² ✓' },
+
+  { id:'e32', section:'s3', tag:'tag-3', tagLabel:'Lingkaran + Rotasi',
+    triSides:[{label:'d',val:'70 cm'}],
+    wordProblem:true,
+    story:'Sebuah roda sepeda berdiameter berikut (π≈22/7) berputar sebanyak 50 kali.',
+    q:'Berapa jarak yang ditempuh sepeda tersebut (dalam meter)?',
+    hint:'Cari keliling roda dulu, kalikan jumlah putaran, lalu ubah satuannya ke meter.',
+    type:'mcq', opts:['100','110','120','150'], answer:'110',
+    explain:'✅ Keliling=22/7×70=220 cm. 50 putaran=11000 cm=110 m ✓' },
+
+  // ══════════════ STAGE 4 — GEOMETRY BOSS BATTLE (8 soal) ══════════════
+  { id:'e33', section:'s4', tag:'tag-4', tagLabel:'🔍 Coordinate Mystery',
+    coordDisp:['A(0,0)','B(6,0)','C(6,8)'],
+    wordProblem:true,
+    story:'Tiga titik berikut diduga membentuk sebuah segitiga: A(0,0), B(6,0), C(6,8).',
+    q:'Berdasarkan panjang ketiga sisinya (AB, BC, AC), jenis segitiga apakah ABC ini?',
+    hint:'Hitung dulu panjang AB, BC, dan AC menggunakan jarak antar titik, lalu amati polanya.',
+    type:'mcq', opts:['Segitiga siku-siku, karena AB²+BC²=AC² (6²+8²=10²)','Segitiga sama sisi','Segitiga sama kaki saja, bukan siku-siku','Bukan segitiga karena titik segaris'], answer:'Segitiga siku-siku, karena AB²+BC²=AC² (6²+8²=10²)',
+    explain:'✅ AB=6, BC=8, AC=10. Karena 6²+8²=36+64=100=10², maka ABC adalah segitiga siku-siku (tripel 6-8-10) ✓' },
+
+  { id:'e34', section:'s4', tag:'tag-4', tagLabel:'🔍 Transformation Detective',
+    coordPts:['P(3,2)','P\'(-3,2)'],
+    q:'Titik awal P dan hasil akhirnya P\' seperti berikut. Transformasi apa yang paling mungkin terjadi, dan mengapa?',
+    hint:'Perhatikan bagian koordinat mana yang berubah tanda, dan bagian mana yang tetap sama.',
+    type:'mcq', opts:['Refleksi terhadap sumbu-Y, karena x berubah tanda sedangkan y tetap','Refleksi terhadap sumbu-X, karena y berubah tanda','Translasi ke kiri, karena posisi x mengecil','Dilatasi dengan faktor skala negatif'], answer:'Refleksi terhadap sumbu-Y, karena x berubah tanda sedangkan y tetap',
+    explain:'✅ x: 3→−3 (berubah tanda), y: 2→2 (tetap). Pola ini khas refleksi terhadap sumbu-Y: (x,y)→(−x,y) ✓' },
+
+  { id:'e35', section:'s4', tag:'tag-4', tagLabel:'🔍 Hidden Pythagoras',
+    triSides:[{label:'jarak kaki',val:'5 m'},{label:'tinggi dinding',val:'12 m'},{label:'panjang tangga',val:'?'}],
+    wordProblem:true,
+    story:'Sebuah tangga bersandar pada dinding vertikal. Kaki tangga berada 5 m dari dinding, dan ujung atas tangga menyentuh dinding pada ketinggian 12 m.',
+    q:'Berapa panjang tangga tersebut?',
+    hint:'Perhatikan bentuk bidang tersembunyi yang dibuat oleh dinding, tanah, dan tangga.',
+    type:'text', answers:['13'],
+    explain:'✅ tangga²=5²+12²=25+144=169 → tangga=13 m. Dinding, tanah, dan tangga membentuk segitiga siku-siku tersembunyi ✓' },
+
+  { id:'e36', section:'s4', tag:'tag-4', tagLabel:'🔍 Angle Chain',
+    wordProblem:true,
+    story:'Dua garis sejajar k dan l dipotong oleh garis transversal m, membentuk salah satu sisi sebuah segitiga. Sudut antara garis m dan garis k adalah 70° (sehadap dengan salah satu sudut dalam segitiga). Sudut dalam segitiga lainnya adalah 55°.',
+    q:'Melalui beberapa hubungan sudut secara bertahap, berapa besar sudut LUAR segitiga pada titik sudut ketiga?',
+    hint:'Langkah 1: ubah sudut sehadap jadi sudut dalam pertama. Langkah 2: cari sudut dalam ketiga (jumlah segitiga=180°). Langkah 3: sudut luar berpelurus dengan sudut dalam ketiga.',
+    type:'text', answers:['125'],
+    explain:'✅ Sudut dalam-1=70° (sehadap). Sudut dalam-3=180°−70°−55°=55°. Sudut luar=180°−55°=125° ✓' },
+
+  { id:'e37', section:'s4', tag:'tag-4', tagLabel:'🔍 Quadrilateral Puzzle',
+    wordProblem:true,
+    story:'Segiempat KLMN memiliki sudut K=2x, sudut L=(x+10°), sudut M=90°, dan sudut N=(x+20°).',
+    q:'Tentukan nilai x, lalu hitung besar sudut K.',
+    hint:'Susun persamaan dari total seluruh sudut segiempat (360°), selesaikan x, baru substitusikan ke sudut K.',
+    type:'text', answers:['120'],
+    explain:'✅ 2x+(x+10)+90+(x+20)=360 → 4x+120=360 → x=60. Sudut K=2x=120° ✓' },
+
+  { id:'e38', section:'s4', tag:'tag-4', tagLabel:'🔍 Circle in a Shape',
+    triSides:[{label:'lapangan',val:'20×14 m'},{label:'diameter kolam',val:'14 m'}],
+    wordProblem:true,
+    story:'Sebuah lapangan berbentuk persegi panjang berukuran berikut. Di tengah lapangan terdapat kolam berbentuk lingkaran dengan diameter 14 m (π≈22/7).',
+    q:'Berapa luas area lapangan yang BUKAN kolam (rumput di sekitar kolam)?',
+    hint:'Cari luas lapangan, cari luas kolam, lalu kurangi keduanya.',
+    type:'text', answers:['126'],
+    explain:'✅ Luas lapangan=20×14=280. Luas kolam=22/7×7²=154. Sisa=280−154=126 m² ✓' },
+
+  { id:'e39', section:'s4', tag:'tag-4', tagLabel:'🔍 Real-World Geometry',
+    triSides:[{label:'panjang',val:'15 m'},{label:'lebar',val:'8 m'}],
+    wordProblem:true,
+    story:'Sebuah taman berbentuk persegi panjang berukuran berikut. Di sekeliling taman akan dipasang pagar, dan seluruh permukaan taman akan ditanami rumput. Harga pagar Rp50.000/meter, harga rumput Rp20.000/m².',
+    q:'Berapa TOTAL biaya yang dibutuhkan untuk pagar dan rumput?',
+    hint:'Pagar berkaitan dengan keliling, rumput berkaitan dengan luas — hitung terpisah, baru jumlahkan biayanya.',
+    type:'mcq', opts:['Rp4.700.000','Rp4.600.000','Rp4.500.000','Rp5.000.000'], answer:'Rp4.700.000',
+    explain:'✅ Keliling=2×(15+8)=46m → biaya pagar=46×50.000=Rp2.300.000. Luas=15×8=120m² → biaya rumput=120×20.000=Rp2.400.000. Total=Rp4.700.000 ✓' },
+
+  { id:'e40', section:'s4', tag:'tag-4', tagLabel:'🏆 Final Mixed Boss',
+    coordDisp:['A(0,0)','B(8,0)','C(8,8)','D(0,8)'],
+    wordProblem:true,
+    story:'Sebuah taman berbentuk persegi digambar pada peta dengan titik sudut A(0,0), B(8,0), C(8,8), D(0,8) (satuan meter). Taman ini akan diperbesar (didilatasikan) dengan faktor skala 1,5 dari pusat A.',
+    q:'Berapa luas taman yang BARU setelah dilatasi?',
+    hint:'Cari dulu panjang sisi taman awal, kalikan dengan faktor skala untuk dapat sisi baru, baru hitung luasnya. Ingat: luas berubah dengan faktor skala KUADRAT, bukan faktor skala biasa!',
+    type:'mcq', opts:['144','96','108','192'], answer:'144',
+    explain:'✅ Sisi awal (A ke B)=8m. Sisi baru=8×1,5=12m. Luas baru=12×12=144 m². (Bukan 8²×1,5=96 — luas mengikuti faktor skala², yaitu 1,5²=2,25 kali luas awal: 64×2,25=144) ✓' },
+
+];
+
+const total = exercises.length;
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = `${(done/total)*100}%`;
+  for(let i=1;i<=5;i++){
+    const el=document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done>=i*8);
+  }
+  if(done===total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){ inp.classList.add('correct'); inp.disabled=true; btn.disabled=true; }
+  else { card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true); }
+  const fb=card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok'; fb.textContent=q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){ const b=document.createElement('div'); b.className='done-badge'; b.textContent='✓ Done'; card.appendChild(b); }
+  progress[q.id]=true; saveProgress(progress); updateProgressBar();
+}
+
+function checkText(id, inp, btn, q){
+  const raw=inp.value.trim().toLowerCase().replace(/\s+/g,'');
+  if(!raw) return;
+  const correct=q.answers.some(a=>raw===a.toLowerCase().replace(/\s+/g,''));
+  if(correct){ markDone(inp.closest('.ex-card'),q,inp,btn); }
+  else {
+    inp.classList.add('wrong-anim');
+    const attRow=inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot=document.createElement('div'); dot.className='attempts-dot'; attRow.appendChild(dot);
+    setTimeout(()=>{ inp.classList.remove('wrong-anim'); inp.value=''; inp.focus(); },400);
+    if(attRow.children.length>=3){
+      const fb=inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no'; fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{ b.disabled=true; if(b.dataset.val===q.answer) b.classList.add('opt-correct'); });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb=card.querySelector('.ex-feedback');
+  if(val===q.answer){ markDone(card,q,null,null); }
+  else {
+    fb.className='ex-feedback show no'; fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+    if(!card.querySelector('.done-badge')){ const b=document.createElement('div'); b.className='done-badge'; b.textContent='Done'; card.appendChild(b); }
+  }
+}
+
+function buildExercises(){
+  const area=document.getElementById('exerciseArea');
+  area.innerHTML='';
+  const groups=[
+    { key:'s1', label:'🟢 Stage 1 — Fundamental Recall',   cls:'sd-1', badge:'10 Soal' },
+    { key:'s2', label:'🟡 Stage 2 — Choose Your Weapon',    cls:'sd-2', badge:'10 Soal' },
+    { key:'s3', label:'🟠 Stage 3 — Concept Connection',    cls:'sd-3', badge:'12 Soal' },
+    { key:'s4', label:'🔴 Stage 4 — Geometry Boss Battle',  cls:'sd-4', badge:'8 Soal'  },
+  ];
+
+  groups.forEach(g=>{
+    const wrap=document.createElement('div');
+    wrap.innerHTML=`<div class="sec-divider ${g.cls}">${g.label}<span class="sd-sesi">${g.badge}</span></div>`;
+    const grid=document.createElement('div'); grid.className='exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone=!!progress[q.id];
+      const card=document.createElement('div');
+      card.className='ex-card'+(q.wordProblem?' word-card':'')+(isDone?' done-card':'');
+
+      const eqDisp    = q.eq ? eqHTML(q.eq) : '';
+      const coordDisp = q.coordPts ? (q.coordPts.length>1 ? coordHTML(q.coordPts[0], q.coordPts[1]) : pointsHTML(q.coordPts)) : (q.coordDisp ? pointsHTML(q.coordDisp) : '');
+      const triDisp   = q.triSides ? triHTML(q.triSides) : '';
+      const storyDisp = q.story ? `<div class="word-story">${q.story}</div>` : '';
+
+      let inputHTML='';
+      if(q.type==='text'){
+        inputHTML=`<div class="ex-input-wrap"><div class="ex-input-row">
+          <input type="text" class="ex-input ${isDone?'correct':''}" placeholder="Jawaban?"
+            value="${isDone?q.answers[0]:''}" ${isDone?'disabled':''}
+            onkeydown="if(event.key==='Enter')this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+          <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+        </div><div class="attempts-row"></div></div>`;
+      } else {
+        const shuffled=[...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML=`<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML=`
+        <div class="ex-num">Soal ${parseInt(q.id.replace('e',''))}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${storyDisp}${eqDisp}${coordDisp}${triDisp}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone?q.explain:''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn=card.querySelector('.ex-btn'), inp=card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick=()=>checkText(q.id,inp,btn,q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{ b.onclick=()=>checkMCQ(b.dataset.val,b,q,card); });
+      }
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Cluster 7? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+
+// Floating symbols
+const emojis=['📐','📍','🔺','⭕','🔄','🏆','📏'];
+const wrap=document.getElementById('petals');
+for(let i=0;i<16;i++){
+  const p=document.createElement('div'); p.className='petal';
+  const sz=0.9+Math.random()*1.3;
+  p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--sz:${sz}rem;font-size:${sz}rem;--d:${4+Math.random()*6}s;--dl:${-Math.random()*6}s;--r0:${-15+Math.random()*30}deg;--r1:${-15+Math.random()*30}deg;`;
+  p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  wrap.appendChild(p);
+}
+</script>
+<script src="../../../assets/chat-widget.js"></script>
+<script>
+  initChat({ studentId: 'tasya_0751', studentName: 'Tasya' });
+</script>
+</body>
+</html>
