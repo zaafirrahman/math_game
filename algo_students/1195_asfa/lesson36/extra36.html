@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extra PR · Lesson 36 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;
+    --neon:#00f5c4;--neon2:#059669;--accent:#f59e0b;
+    --cyan:#22d3ee;--red:#ef4444;--green:#4ade80;
+    --emerald:#34d399;--text:#e2e8f0;--muted:#64748b;
+    --amber:#fbbf24;--blue:#60a5fa;--pink:#fb7185;
+    --violet:#a78bfa;--blue2:#38bdf8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 80%,rgba(167,139,250,0.06) 0%,transparent 50%),
+               radial-gradient(ellipse at 85% 15%,rgba(34,211,238,0.05) 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 50%,rgba(251,191,36,0.03) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  nav{
+    padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:100;
+    font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;
+  }
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--cyan);}
+
+  .wrapper{max-width:800px;margin:0 auto;padding:2.5rem 1rem 6rem;position:relative;z-index:1;}
+  @media(max-width:480px){.wrapper{padding:2rem 0.75rem 6rem;}}
+
+  .pr-banner{background:linear-gradient(135deg,rgba(167,139,250,0.08),rgba(34,211,238,0.08));border:1px solid rgba(34,211,238,0.25);border-radius:20px;padding:2rem 2rem 1.5rem;margin-bottom:2rem;position:relative;overflow:hidden;}
+  .pr-banner::before{content:'🔐';position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);font-size:5rem;opacity:0.08;pointer-events:none;line-height:1;}
+  .page-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);color:var(--cyan);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.3rem 1rem;border-radius:20px;margin-bottom:1rem;font-family:'Orbitron',monospace;}
+  .page-title{font-family:'Orbitron',monospace;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;margin-bottom:0.5rem;line-height:1.3;}
+  .page-title span{color:var(--cyan);}
+  .page-desc{color:var(--muted);font-size:0.9rem;line-height:1.7;max-width:560px;}
+  .pr-pills{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;}
+  .pr-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.72rem;padding:0.2rem 0.7rem;border-radius:20px;font-weight:700;}
+  .pill-cyan{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.3);}
+  .pill-pink{background:rgba(251,113,133,0.1);color:var(--pink);border:1px solid rgba(251,113,133,0.3);}
+  .pill-amber{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.3);}
+  .pill-violet{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.3);}
+  .pill-emerald{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.3);}
+
+  .progress-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:2rem;}
+  .prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;}
+  .prog-label{font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+  .prog-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--cyan);}
+  .prog-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:0.6rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:99px;transition:width 0.6s ease;}
+  .prog-sub{font-size:0.78rem;color:var(--muted);}
+  .reset-link{float:right;font-size:0.72rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+  .reset-link:hover{color:var(--red);}
+  .prog-stars{display:flex;gap:0.3rem;margin-top:0.5rem;align-items:center;font-size:0.78rem;color:var(--muted);}
+  .star{font-size:0.9rem;opacity:0.25;transition:opacity 0.4s;}
+  .star.lit{opacity:1;}
+
+  .sec-divider{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;padding:0.6rem 0;margin:1.5rem 0 1rem;border-bottom:1px solid var(--border);}
+  .sd-1{color:var(--amber);}
+  .sd-2{color:var(--violet);}
+  .sd-3{color:var(--pink);}
+  .sd-4{color:var(--cyan);}
+  .sd-5{color:var(--emerald);}
+
+  .exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;max-width:100%;}
+  @media(max-width:480px){.exercise-grid{grid-template-columns:1fr;padding:0 0.25rem;}}
+
+  .ex-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .ex-card.done-card{border-color:rgba(34,211,238,0.35);background:rgba(34,211,238,0.02);}
+  .ex-num{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;}
+  .ex-tag{display:inline-block;font-size:0.58rem;padding:0.15rem 0.45rem;border-radius:6px;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .ex-tag.tag-1{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.25);}
+  .ex-tag.tag-2{background:rgba(167,139,250,0.1);color:var(--violet);border:1px solid rgba(167,139,250,0.25);}
+  .ex-tag.tag-3{background:rgba(251,113,133,0.1);color:var(--pink);border:1px solid rgba(251,113,133,0.25);}
+  .ex-tag.tag-4{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.25);}
+  .ex-tag.tag-5{background:rgba(52,211,153,0.1);color:var(--emerald);border:1px solid rgba(52,211,153,0.25);}
+
+  .ex-q{font-family:'Orbitron',monospace;font-size:clamp(0.78rem,3vw,0.92rem);font-weight:900;color:var(--text);margin-bottom:0.5rem;line-height:1.5;word-break:break-word;}
+  .ex-hint{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;font-style:italic;line-height:1.4;}
+  .ex-card.done-card .ex-q{color:var(--cyan);}
+
+  .ex-input-wrap{display:flex;flex-direction:column;gap:0.5rem;}
+  .ex-input-row{display:flex;gap:0.5rem;align-items:center;}
+  .ex-input{flex:1;background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;border-radius:10px;font-family:'Orbitron',monospace;font-size:1rem;text-align:center;transition:border-color 0.2s;outline:none;min-width:0;width:100%;}
+  .ex-input:focus{border-color:var(--cyan);}
+  .ex-input.correct{border-color:var(--cyan);color:var(--cyan);}
+  .ex-input.wrong-anim{border-color:var(--red);color:var(--red);animation:shake 0.4s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-6px);}40%,80%{transform:translateX(6px);}}
+  .ex-btn{background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);color:var(--cyan);padding:0.6rem 0.9rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.65rem;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+  .ex-btn:hover{background:rgba(34,211,238,0.22);border-color:var(--cyan);}
+  .ex-btn:disabled{opacity:0.3;cursor:default;}
+
+  .ex-feedback{margin-top:0.6rem;font-size:0.82rem;font-weight:700;display:none;line-height:1.5;}
+  .ex-feedback.show{display:block;}
+  .ex-feedback.ok{color:var(--neon);}
+  .ex-feedback.no{color:var(--red);}
+  .done-badge{position:absolute;top:1rem;right:1rem;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.4);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:8px;}
+  .attempts-row{margin-top:0.4rem;display:flex;gap:2px;align-items:center;}
+  .attempts-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:2px;}
+
+  .ex-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;}
+  .ex-opt{background:#12121c;border:2px solid var(--border);color:var(--text);padding:0.55rem 0.4rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;transition:all 0.15s;text-align:center;line-height:1.4;}
+  .ex-opt:hover:not(:disabled){border-color:var(--cyan);background:rgba(34,211,238,0.06);}
+  .ex-opt.opt-correct{border-color:var(--neon);background:rgba(0,245,196,0.12);color:var(--neon);}
+  .ex-opt.opt-wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .ex-opt:disabled{cursor:default;}
+
+  .ex-card.data-card{border-left:3px solid var(--cyan);}
+  .ex-card.data-card.done-card{border-left-color:var(--amber);}
+
+  .mini-table{width:100%;border-collapse:separate;border-spacing:0;background:#12121c;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:0.8rem;font-size:0.82rem;}
+  .mini-table th{font-family:'Orbitron',monospace;font-size:0.56rem;letter-spacing:1.5px;color:var(--cyan);background:rgba(34,211,238,0.07);padding:0.5rem;text-align:center;}
+  .mini-table td{padding:0.45rem;text-align:center;border-top:1px solid var(--border);}
+  .raw-box{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.7rem;text-align:center;font-family:'Orbitron',monospace;font-size:0.92rem;color:var(--cyan);letter-spacing:1.5px;margin-bottom:0.8rem;line-height:1.7;}
+  .raw-box.sit{font-family:'Nunito',sans-serif;font-size:0.82rem;color:var(--text);letter-spacing:0;font-weight:700;}
+
+  #allDone{display:none;text-align:center;padding:3rem 2rem;}
+  .alldone-icon{font-size:5rem;display:block;margin-bottom:1.5rem;animation:bounce 1s ease infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .alldone-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2rem);color:var(--cyan);margin-bottom:0.8rem;}
+  .alldone-desc{color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+  .alldone-xp{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);color:var(--accent);padding:0.5rem 1.5rem;border-radius:20px;font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:2rem;}
+  .action-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn{padding:0.8rem 1.8rem;border-radius:10px;border:none;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);}
+  .btn-primary{background:linear-gradient(135deg,#0891b2,var(--cyan));color:#000;box-shadow:0 4px 15px rgba(34,211,238,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson36.html">LESSON 36</a>
+  <span>›</span>
+  <span class="current">EXTRA PR</span>
+</nav>
+
+<div class="wrapper">
+  <div class="pr-banner">
+    <div class="page-badge">🔐 Portal Master Mode</div>
+    <div class="page-title">Extra <span>PR Mode</span></div>
+    <div class="page-desc">
+      40 soal ekstra disiplin notasi: mulai dari kunci variabel dasar, mengenali jebakan simbol baru,
+      menjaga struktur kalimat dua langkah, membedakan konsep vs notasi,
+      sampai mixed review &amp; hubungan dua variabel untuk menguji semuanya sekaligus. Progress tersimpan otomatis di perangkat ini. 🔑
+    </div>
+    <div class="pr-pills">
+      <span class="pr-pill pill-amber">🔎 Kunci Variabel</span>
+      <span class="pr-pill pill-violet">🚫 Jebakan Simbol</span>
+      <span class="pr-pill pill-pink">🧱 Struktur Kalimat</span>
+      <span class="pr-pill pill-cyan">🟡 Konsep vs Notasi</span>
+      <span class="pr-pill pill-emerald">🧭 Mixed &amp; Dua Variabel</span>
+    </div>
+  </div>
+
+  <div class="progress-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress PR</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="prog-sub">
+      Kumpulkan ⭐ untuk setiap bagian yang diselesaikan!
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+      <span style="margin-left:0.3rem;font-size:0.72rem;">Selesaikan 8 soal per bagian</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🔐</span>
+    <div class="alldone-title">PR PORTAL SELESAI!</div>
+    <div class="alldone-desc">
+      GG! Kamu udah menaklukkan 40 soal Extra PR Lesson 36!<br>
+      Kunci variabel, jebakan simbol, struktur kalimat, konsep vs notasi, sampai mixed review — semua kamu babat habis! 🔥<br>
+      Sekarang kamu tidak akan pernah lagi diam-diam mengganti kode yang sudah diberikan soal!
+    </div>
+    <div class="alldone-xp">🔐 +400 XP — Notation Discipline Master Badge Unlocked!</div>
+    <div class="action-btns">
+      <a href="lesson36.html" class="btn btn-ghost">← Lesson Hub</a>
+      <a href="exercise36.html" class="btn btn-ghost">Exercise Zone</a>
+      <a href="quicktest36.html" class="btn btn-primary">Quick Test ⚡</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'asfa_lesson36_extra_v1';
+function loadProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{};}catch(e){return{};}}
+function saveProgress(p){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(p));}catch(e){}}
+let progress = loadProgress();
+
+// Helper: render a data table
+function tableDisp(thead, tbody){
+  let h = '<table class="mini-table"><thead><tr>';
+  thead.forEach(t=>h+=`<th>${t}</th>`);
+  h += '</tr></thead><tbody>';
+  tbody.forEach(r=>{h+='<tr>';r.forEach(c=>h+=`<td>${c}</td>`);h+='</tr>';});
+  h += '</tbody></table>';
+  return h;
+}
+// Helper: render raw data string
+function rawDisp(text){
+  return `<div class="raw-box">${text}</div>`;
+}
+// Helper: render a situational sentence
+function sitDisp(text){
+  return `<div class="raw-box sit">${text}</div>`;
+}
+
+const exercises = [
+  // ─── BAGIAN 1: Kunci Variabel Dasar (e01–e08) ───────────────────────
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Kunci Variabel',
+    sys:rawDisp('Lebar = l'),
+    q:'Panjang = tiga kali lebar. Bentuk yang tepat?', hint:'Pakai huruf l yang sudah dikunci soal.',
+    type:'text', answers:['3l'], explain:'✅ Lebar dikunci sebagai l, jadi bentuknya 3l ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Kunci Variabel',
+    sys:rawDisp('Umur Sari = s'),
+    q:'Umur Budi 4 tahun lebih tua dari Sari. Bentuk umur Budi?', hint:'Tambahkan 4 pada s.',
+    type:'text', answers:['s + 4'], explain:'✅ s + 4, karena umur Sari sudah dikunci sebagai s ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Kunci Variabel',
+    sys:rawDisp('Harga pensil = p'),
+    q:'Dito membeli 5 pensil. Bentuk total harga?', hint:'Kalikan p dengan 5.',
+    type:'text', answers:['5p'], explain:'✅ 5p, karena harga satuan p dikali 5 pensil ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Kunci Variabel',
+    sys:rawDisp('Bilangan = n'),
+    q:'Bilangan itu ditambah 6. Bentuknya?', hint:'Tambahkan 6 pada n.',
+    type:'text', answers:['n + 6'], explain:'✅ n + 6 ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Kunci Variabel',
+    sys:rawDisp('Sisi persegi = s'),
+    q:'Keliling persegi = 4 kali sisi. Bentuk kelilingnya?', hint:'Kalikan s dengan 4.',
+    type:'text', answers:['4s'], explain:'✅ 4s, karena keliling persegi adalah 4 dikali sisi ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'Kunci Variabel',
+    sys:sitDisp('Soal: "Lebar = w. Nyatakan panjang yang dua kali lebar."'),
+    q:'Bentuk panjang yang tepat?', hint:'Huruf w sudah dikunci soal — jangan diganti.',
+    type:'mcq', opts:['2w','2p'], answer:'2w',
+    explain:'✅ 2w, karena soal sudah mengunci lebar sebagai w ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Kunci Variabel',
+    sys:rawDisp('Harga buku = b'),
+    q:'Beli 9 buku. Bentuk total harga?', hint:'Kalikan b dengan 9.',
+    type:'text', answers:['9b'], explain:'✅ 9b ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'Kunci Variabel',
+    sys:rawDisp('Umur adik = a'),
+    q:'Umur kakak 7 tahun lebih tua dari adik. Bentuk umur kakak?', hint:'Tambahkan 7 pada a.',
+    type:'text', answers:['a + 7'], explain:'✅ a + 7 ✓' },
+
+  // ─── BAGIAN 2: Jebakan Simbol (e09–e16) ───────────────────────
+  { id:'e09', section:'s2', tag:'tag-2', tagLabel:'Jebakan Simbol',
+    sys:sitDisp('Soal: "Lebar = l". Jawaban siswa: 2p + 5'),
+    q:'Apa kesalahan utama jawaban siswa ini?', hint:'Bandingkan huruf pada soal dan jawaban.',
+    type:'mcq', opts:['Variabel diganti dari l ke p','Operasinya salah'], answer:'Variabel diganti dari l ke p',
+    explain:'✅ Siswa mengganti kode l dengan simbol p yang tidak pernah didefinisikan soal ✓' },
+
+  { id:'e10', section:'s2', tag:'tag-2', tagLabel:'Jebakan Simbol',
+    sys:sitDisp('Soal: "Umur Rudi = r". Jawaban siswa: x + 3'),
+    q:'Apa kesalahan utama jawaban siswa ini?', hint:'Umur Rudi sudah dikunci sebagai apa?',
+    type:'mcq', opts:['Variabel diganti dari r ke x','Angkanya salah'], answer:'Variabel diganti dari r ke x',
+    explain:'✅ Umur Rudi sudah dikunci sebagai r, seharusnya jawaban tetap memakai r ✓' },
+
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Jebakan Simbol',
+    sys:sitDisp('Panjang sebuah persegi panjang 6 cm lebih dari lebarnya. Jika lebar = w, nyatakan panjang.'),
+    q:'Jawaban mana yang tepat?', hint:'Gunakan huruf w yang sudah diberikan.',
+    type:'mcq', opts:['w + 6','p + 6'], answer:'w + 6',
+    explain:'✅ w + 6, karena soal minta bentuk berdasarkan w ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Jebakan Simbol',
+    sys:sitDisp('Soal: "Harga = h". Jawaban siswa: 4y - 1000'),
+    q:'Apa kesalahan utama jawaban siswa ini?', hint:'Harga sudah dikunci sebagai apa?',
+    type:'mcq', opts:['Variabel diganti dari h ke y','Urutan operasinya salah'], answer:'Variabel diganti dari h ke y',
+    explain:'✅ Harga sudah dikunci sebagai h, seharusnya jawaban tetap memakai h ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Jebakan Simbol',
+    sys:rawDisp('Bilangan = k'),
+    q:'Bilangan itu dikurangi 5. Bentuk yang tepat?', hint:'Pakai huruf k.',
+    type:'text', answers:['k - 5'], explain:'✅ k - 5, tetap memakai k yang sudah dikunci soal ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Jebakan Simbol',
+    sys:sitDisp('Soal sudah memberi variabel m untuk sebuah bilangan.'),
+    q:'Manakah jawaban yang benar untuk "bilangan dikurangi 8"?', hint:'Jangan ganti huruf m.',
+    type:'mcq', opts:['m - 8','x - 8'], answer:'m - 8',
+    explain:'✅ m - 8, tetap memakai variabel m yang sudah dikunci soal ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Jebakan Simbol',
+    sys:sitDisp('Soal: "Lebar = v". Panjang 9 cm lebih dari lebar.'),
+    q:'Bentuk panjang yang tepat?', hint:'Pakai huruf v.',
+    type:'text', answers:['v + 9'], explain:'✅ v + 9 ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Jebakan Simbol',
+    sys:sitDisp('Soal: "Bilangan = n, dikali 3 lalu ditambah 4." Jawaban siswa: 3n (lupa +4).'),
+    q:'Apakah jawaban siswa ini sudah benar?', hint:'Cek apakah semua bagian kalimat sudah terwakili.',
+    type:'mcq', opts:['Salah, kurang bagian +4','Benar, sudah lengkap'], answer:'Salah, kurang bagian +4',
+    explain:'✅ Jawaban seharusnya 3n + 4 — siswa lupa menuliskan bagian "ditambah 4" ✓' },
+
+  // ─── BAGIAN 3: Struktur Kalimat Dua Langkah (e17–e24) ───────────────────────
+  { id:'e17', section:'s3', tag:'tag-3', tagLabel:'Struktur Kalimat',
+    sys:sitDisp('Kalimat: "Bilangan dikurangi 2, lalu hasilnya dikali 5." Bilangan = x.'),
+    q:'Bentuk matematika yang tepat?', hint:'Kurangi dulu, baru kalikan.',
+    type:'mcq', opts:['5(x - 2)','5x - 2'], answer:'5(x - 2)',
+    explain:'✅ 5(x - 2) — kurangi dulu (x-2), baru kalikan 5 ✓' },
+
+  { id:'e18', section:'s3', tag:'tag-3', tagLabel:'Struktur Kalimat',
+    sys:sitDisp('Kalimat: "Bilangan ditambah 4, lalu hasilnya dikali 3." Bilangan = y.'),
+    q:'Bentuk matematika yang tepat?', hint:'Tambah dulu, baru kalikan.',
+    type:'mcq', opts:['3(y + 4)','3y + 4'], answer:'3(y + 4)',
+    explain:'✅ 3(y + 4) — tambah dulu (y+4), baru kalikan 3 ✓' },
+
+  { id:'e19', section:'s3', tag:'tag-3', tagLabel:'Struktur Kalimat',
+    sys:sitDisp('Kalimat: "Bilangan dikali 2, lalu hasilnya dikurangi 7." Bilangan = n.'),
+    q:'Bentuk matematika yang tepat?', hint:'Kalikan dulu, baru kurangi.',
+    type:'mcq', opts:['2n - 7','2(n - 7)'], answer:'2n - 7',
+    explain:'✅ 2n - 7 — kalikan dulu (2n), baru kurangi 7 ✓' },
+
+  { id:'e20', section:'s3', tag:'tag-3', tagLabel:'Struktur Kalimat',
+    sys:sitDisp('Kalimat: "Bilangan dikali 4, lalu hasilnya ditambah 9." Bilangan = k.'),
+    q:'Bentuk matematika yang tepat?', hint:'Kalikan dulu, baru tambahkan.',
+    type:'mcq', opts:['4k + 9','4(k + 9)'], answer:'4k + 9',
+    explain:'✅ 4k + 9 — kalikan dulu (4k), baru tambahkan 9 ✓' },
+
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Struktur Kalimat',
+    sys:sitDisp('Kalimat: "Bilangan ditambah 6, lalu hasilnya dibagi 3." Bilangan = m.'),
+    q:'Bentuk matematika yang tepat?', hint:'Tambah dulu, baru bagi.',
+    type:'mcq', opts:['(m + 6) ÷ 3','m ÷ 3 + 6'], answer:'(m + 6) ÷ 3',
+    explain:'✅ (m + 6) ÷ 3 — tambah dulu (m+6), baru dibagi 3 ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Struktur Kalimat',
+    sys:sitDisp('Kalimat: "Bilangan dikurangi 5, dikali 2, lalu ditambah 1." Bilangan = p.'),
+    q:'Bentuk matematika yang tepat?', hint:'Ikuti urutan cerita tahap demi tahap.',
+    type:'mcq', opts:['2(p - 5) + 1','2p - 5 + 1'], answer:'2(p - 5) + 1',
+    explain:'✅ 2(p - 5) + 1 — kurangi dulu, kalikan, baru tambahkan 1 ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Struktur Kalimat',
+    sys:sitDisp('Kalimat: "Bilangan dikurangi 4, lalu hasilnya dikali 3."'),
+    q:'Mana bentuk yang TIDAK sesuai urutan kalimat ini?', hint:'Cek urutan operasinya, bukan hasil akhirnya.',
+    type:'mcq', opts:['3x - 4','3(x - 4)'], answer:'3x - 4',
+    explain:'✅ 3x - 4 berarti "tiga kali bilangan, baru dikurangi 4" — urutannya terbalik dari kalimat aslinya ✓' },
+
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Struktur Kalimat',
+    sys:sitDisp('Kalimat: "Bilangan dikurangi 6, lalu dikali 2." Jawaban siswa: 2q - 6.'),
+    q:'Apakah jawaban siswa ini benar?', hint:'Bandingkan urutan operasi jawaban dengan kalimat aslinya.',
+    type:'mcq', opts:['Tidak, seharusnya dikurangi dulu baru dikali','Ya, urutannya sudah benar'], answer:'Tidak, seharusnya dikurangi dulu baru dikali',
+    explain:'✅ Bentuk yang benar adalah 2(q - 6) — kurangi dulu baru kalikan, bukan 2q - 6 ✓' },
+
+  // ─── BAGIAN 4: Konsep vs Notasi (e25–e32) ───────────────────────
+  { id:'e25', section:'s4', tag:'tag-4', tagLabel:'Konsep vs Notasi',
+    sys:sitDisp('Harga = h. Beli 4 barang, diskon Rp2.000. Jawaban A: 4h - 2000. Jawaban B: 4x - 2000.'),
+    q:'Apa yang benar tentang Jawaban B?', hint:'Bandingkan cara hitung, lalu bandingkan hurufnya.',
+    type:'mcq', opts:['Idenya benar, variabelnya salah','Idenya salah total'], answer:'Idenya benar, variabelnya salah',
+    explain:'✅ Perhitungannya sama seperti Jawaban A, hanya variabel x tidak sesuai dengan h yang dikunci soal ✓' },
+
+  { id:'e26', section:'s4', tag:'tag-4', tagLabel:'Konsep vs Notasi',
+    sys:sitDisp('Lebar = l. Panjang = 2×lebar + 3. Jawaban siswa: 2p + 3.'),
+    q:'Bagaimana penilaian yang tepat?', hint:'Cek konsepnya dulu, baru cek variabelnya.',
+    type:'mcq', opts:['Konsep benar, variabel salah','Konsep salah, variabel benar'], answer:'Konsep benar, variabel salah',
+    explain:'✅ Idenya (2×lebar+3) sudah benar, tapi variabel p tidak sesuai dengan l yang dikunci soal ✓' },
+
+  { id:'e27', section:'s4', tag:'tag-4', tagLabel:'Konsep vs Notasi',
+    sys:sitDisp('Bilangan = n. Dikali 4 lalu dikurang 6. Jawaban siswa: 4n - 6.'),
+    q:'Bagaimana penilaian yang tepat?', hint:'Cek variabel dan urutan operasinya.',
+    type:'mcq', opts:['Konsep, variabel, dan struktur semuanya benar','Variabelnya salah'], answer:'Konsep, variabel, dan struktur semuanya benar',
+    explain:'✅ Variabel n dipakai dengan benar dan urutan operasinya sesuai kalimat — semuanya tepat ✓' },
+
+  { id:'e28', section:'s4', tag:'tag-4', tagLabel:'Konsep vs Notasi',
+    sys:sitDisp('Harga tiket = t. Beli 6 tiket, diskon Rp5.000. Jawaban siswa: 6t + 5000.'),
+    q:'Apa kesalahan pada jawaban siswa?', hint:'Diskon itu menambah atau mengurangi harga?',
+    type:'mcq', opts:['Operasi salah, seharusnya dikurang','Variabelnya salah'], answer:'Operasi salah, seharusnya dikurang',
+    explain:'✅ Diskon seharusnya dikurangi, bukan ditambah. Bentuk yang tepat adalah 6t - 5000 ✓' },
+
+  { id:'e29', section:'s4', tag:'tag-4', tagLabel:'Konsep vs Notasi',
+    sys:sitDisp('Umur kakak = k. Umur adik 4 tahun lebih muda. Jawaban siswa: k - 4.'),
+    q:'Bagaimana penilaian jawaban ini?', hint:'Cek konsep, variabel, dan struktur sekaligus.',
+    type:'mcq', opts:['Konsep, variabel, dan struktur semuanya benar','Variabelnya salah'], answer:'Konsep, variabel, dan struktur semuanya benar',
+    explain:'✅ k - 4 memakai variabel yang benar dengan operasi yang sesuai — semuanya tepat ✓' },
+
+  { id:'e30', section:'s4', tag:'tag-4', tagLabel:'Konsep vs Notasi',
+    sys:sitDisp('Bilangan = x. Dikurangi 3 lalu dikali 2. Jawaban siswa: 2x - 3.'),
+    q:'Apa masalah pada jawaban siswa ini?', hint:'Bandingkan urutan operasi jawaban dengan kalimat.',
+    type:'mcq', opts:['Strukturnya salah, urutan operasi terbalik','Variabelnya salah'], answer:'Strukturnya salah, urutan operasi terbalik',
+    explain:'✅ Seharusnya 2(x - 3) — kurangi dulu baru kalikan, bukan 2x - 3 ✓' },
+
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:'Konsep vs Notasi',
+    sys:sitDisp('Sisi persegi = s. Jawaban siswa untuk luas (sisi × sisi): s × s.'),
+    q:'Bagaimana penilaian jawaban ini?', hint:'Cek konsep, variabel, dan strukturnya.',
+    type:'mcq', opts:['Konsep, variabel, dan struktur semuanya benar','Variabelnya salah'], answer:'Konsep, variabel, dan struktur semuanya benar',
+    explain:'✅ s × s (atau s²) memakai variabel dan konsep luas yang tepat ✓' },
+
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:'Konsep vs Notasi',
+    sys:sitDisp('Harga = h. Beli 3 barang. Jawaban siswa: h + h + h.'),
+    q:'Apakah jawaban ini bisa diterima meski tidak ditulis 3h?', hint:'Bandingkan nilai h+h+h dengan 3h.',
+    type:'mcq', opts:['Ya, secara konsep sama dengan 3h','Tidak, salah total'], answer:'Ya, secara konsep sama dengan 3h',
+    explain:'✅ h + h + h secara nilai sama dengan 3h — konsepnya benar, walau notasi 3h lebih ringkas ✓' },
+
+  // ─── BAGIAN 5: Mixed Review & Dua Variabel (e33–e40) ───────────────────────
+  { id:'e33', section:'s5', tag:'tag-5', tagLabel:'Mixed & Dua Variabel',
+    sys:rawDisp('Panjang = p, lebar = l'),
+    q:'Bentuk keliling persegi panjang?', hint:'Keliling = 2×panjang + 2×lebar.',
+    type:'text', answers:['2p + 2l'], explain:'✅ 2p + 2l ✓' },
+
+  { id:'e34', section:'s5', tag:'tag-5', tagLabel:'Mixed & Dua Variabel',
+    sys:sitDisp('Panjang = p, lebar = l. Panjang 6 cm lebih dari lebar, sehingga p = l + 6.'),
+    q:'Nyatakan keliling (2p + 2l) hanya menggunakan l.', hint:'Ganti p dengan (l + 6).',
+    type:'mcq', opts:['2(l + 6) + 2l','2p + 2l'], answer:'2(l + 6) + 2l',
+    explain:'✅ Ganti p dengan (l + 6), sehingga keliling menjadi 2(l + 6) + 2l ✓' },
+
+  { id:'e35', section:'s5', tag:'tag-5', tagLabel:'Mixed & Dua Variabel',
+    sys:sitDisp('Lebar = w. Panjang 8 cm lebih dari lebar.'),
+    q:'Bentuk panjang yang tepat?', hint:'Pakai huruf w.',
+    type:'text', answers:['w + 8'], explain:'✅ w + 8 ✓' },
+
+  { id:'e36', section:'s5', tag:'tag-5', tagLabel:'Mixed & Dua Variabel',
+    sys:sitDisp('Jebakan: Soal menuliskan bilangan = n, tapi siswa langsung menulis x sebagai jawaban akhir tanpa alasan.'),
+    q:'Apakah ini termasuk kesalahan notasi?', hint:'Apakah huruf x pernah didefinisikan soal?',
+    type:'mcq', opts:['Ya, variabel diganti tanpa alasan','Tidak, x boleh dipakai bebas'], answer:'Ya, variabel diganti tanpa alasan',
+    explain:'✅ x tidak pernah didefinisikan soal, jadi mengganti n dengan x adalah kesalahan notasi ✓' },
+
+  { id:'e37', section:'s5', tag:'tag-5', tagLabel:'Mixed & Dua Variabel',
+    sys:rawDisp('Bilangan = q'),
+    q:'Bilangan itu dikali 5. Bentuknya?', hint:'Kalikan q dengan 5.',
+    type:'text', answers:['5q'], explain:'✅ 5q ✓' },
+
+  { id:'e38', section:'s5', tag:'tag-5', tagLabel:'Mixed & Dua Variabel',
+    sys:sitDisp('Harga baju = b. Beli 2 baju dapat diskon Rp10.000. Jawaban siswa: 2b - 10000.'),
+    q:'Bagaimana penilaian jawaban ini?', hint:'Cek konsep, variabel, dan strukturnya sekaligus.',
+    type:'mcq', opts:['Konsep, variabel, dan struktur semuanya benar','Variabelnya salah'], answer:'Konsep, variabel, dan struktur semuanya benar',
+    explain:'✅ 2b - 10000 memakai variabel b yang benar dengan operasi diskon yang tepat ✓' },
+
+  { id:'e39', section:'s5', tag:'tag-5', tagLabel:'Mixed & Dua Variabel',
+    sys:sitDisp('Jebakan: Umur ayah = y, dan umur anak = y - 25. Seorang siswa menulis umur anak sebagai a - 25.'),
+    q:'Apa kesalahan siswa ini?', hint:'Bandingkan huruf pada soal dan jawaban siswa.',
+    type:'mcq', opts:['Mengganti variabel y menjadi a','Operasinya salah'], answer:'Mengganti variabel y menjadi a',
+    explain:'✅ Umur ayah sudah dikunci sebagai y, seharusnya umur anak tetap dibentuk dari y, yaitu y - 25 ✓' },
+
+  { id:'e40', section:'s5', tag:'tag-5', tagLabel:'Mixed & Dua Variabel',
+    sys:rawDisp('Harga roti = r'),
+    q:'Seseorang membeli 5 roti, kemudian mendapat potongan Rp3.000. Nyatakan total pembayaran menggunakan r.', hint:'Kalikan dulu, baru kurangi potongannya.',
+    type:'text', answers:['5r - 3000'], explain:'✅ 5r - 3000 — kalikan harga dengan 5 roti, lalu kurangi potongan 3000 ✓' },
+];
+
+function markDone(card, q, inp, btn){
+  card.classList.add('done-card');
+  const badge = document.createElement('div');
+  badge.className = 'done-badge';
+  badge.textContent = '✓ Done';
+  card.appendChild(badge);
+  if(inp){ inp.classList.add('correct'); inp.disabled = true; }
+  if(btn){ btn.disabled = true; }
+  if(inp){
+    const row = inp.closest('.ex-input-row');
+    if(row){ const b = row.querySelector('.ex-btn'); if(b) b.disabled = true; }
+  }
+  progress[q.id]=true;
+  saveProgress(progress);
+  updateProgressBar();
+}
+
+function normalizeAns(s){
+  return s.trim().toLowerCase()
+    .replace(/\s+/g,'')
+    .replace(/[−–—]/g,'-')
+    .replace(/°/g,'')
+    .replace(/×/g,'*')
+    .replace(/[()]/g,'');
+}
+
+function checkText(id, inp, btn, q){
+  const raw = normalizeAns(inp.value);
+  if(!raw) return;
+  const correct = q.answers.some(a=>raw===normalizeAns(a));
+  if(correct){
+    markDone(inp.closest('.ex-card'), q, inp, btn);
+  } else {
+    inp.classList.add('wrong-anim');
+    const attRow = inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot = document.createElement('div'); dot.className='attempts-dot';
+    attRow.appendChild(dot);
+    setTimeout(()=>{inp.classList.remove('wrong-anim'); inp.value=''; inp.focus();}, 400);
+    if(attRow.children.length >= 3){
+      const fb = inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no';
+      fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.val===q.answer) b.classList.add('opt-correct');
+  });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb = card.querySelector('.ex-feedback');
+  if(val===q.answer){
+    markDone(card, q, null, null);
+  } else {
+    fb.className='ex-feedback show no';
+    fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+  }
+}
+
+function buildExercises(){
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = '';
+  const groups = [
+    { key:'s1', label:'🔎 Bagian 1 — Kunci Variabel Dasar',                cls:'sd-1' },
+    { key:'s2', label:'🚫 Bagian 2 — Jebakan Simbol Baru',                 cls:'sd-2' },
+    { key:'s3', label:'🧱 Bagian 3 — Struktur Kalimat Dua Langkah',        cls:'sd-3' },
+    { key:'s4', label:'🟡 Bagian 4 — Konsep vs Notasi',                    cls:'sd-4' },
+    { key:'s5', label:'🧭 Bagian 5 — Mixed Review &amp; Dua Variabel',     cls:'sd-5' },
+  ];
+  groups.forEach(g=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="sec-divider ${g.cls}">${g.label}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone = !!progress[q.id];
+      const card = document.createElement('div');
+      card.className = 'ex-card data-card' + (isDone?' done-card':'');
+
+      const sysHTML = q.sys || '';
+
+      let inputHTML = '';
+      if(q.type==='text'){
+        inputHTML = `
+          <div class="ex-input-wrap">
+            <div class="ex-input-row">
+              <input type="text" class="ex-input ${isDone?'correct':''}"
+                placeholder="Jawaban?"
+                value="${isDone ? q.answers[0] : ''}"
+                ${isDone?'disabled':''}
+                onkeydown="if(event.key==='Enter') this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+              <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+            </div>
+            <div class="attempts-row"></div>
+          </div>`;
+      } else {
+        const shuffled = [...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML = `<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="ex-num">Soal ${q.id.replace('e','')}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${sysHTML}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone ? q.explain : ''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn = card.querySelector('.ex-btn');
+        const inp = card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick = ()=>checkText(q.id, inp, btn, q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{
+          b.onclick = ()=>checkMCQ(b.dataset.val, b, q, card);
+        });
+      }
+      grid.appendChild(card);
+    });
+
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function updateProgressBar(){
+  const total = exercises.length;
+  const done = exercises.filter(q=>progress[q.id]).length;
+  document.getElementById('progCount').textContent = done+' / '+total;
+  document.getElementById('progFill').style.width = (done/total*100)+'%';
+
+  const sections = ['s1','s2','s3','s4','s5'];
+  sections.forEach((s,i)=>{
+    const secQs = exercises.filter(q=>q.section===s);
+    const secDone = secQs.filter(q=>progress[q.id]).length;
+    const star = document.getElementById('star'+(i+1));
+    if(star){
+      if(secDone>=8) star.classList.add('lit');
+      else star.classList.remove('lit');
+    }
+  });
+
+  if(done>=total){
+    document.getElementById('allDone').style.display='block';
+  } else {
+    document.getElementById('allDone').style.display='none';
+  }
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Extra PR Lesson 36? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+</script>
+</body>
+</html>

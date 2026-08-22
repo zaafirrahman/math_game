@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 36 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--cyan:#22d3ee;--red:#ef4444;--emerald:#34d399;--amber:#fbbf24;--rose:#fb7185;--violet:#a78bfa;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(167,139,250,0.05) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(34,211,238,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--cyan);}
+  .wrapper{max-width:760px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:99px;transition:width 0.4s ease;}
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title .hv{color:var(--cyan);}
+  .slide-title .hc{color:var(--cyan);}
+  .slide-title .he{color:var(--emerald);}
+  .slide-title .ha{color:var(--amber);}
+  .slide-title .hr{color:var(--rose);}
+  .slide-title .hb{color:var(--rose);}
+  .slide-title .hp{color:var(--violet);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+  .slide-sub strong{color:var(--cyan);}
+
+  .callout{background:rgba(34,211,238,0.05);border-left:3px solid var(--cyan);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--cyan);}
+  .callout.violet{background:rgba(167,139,250,0.05);border-color:var(--violet);}
+  .callout.violet strong{color:var(--violet);}
+  .callout.emerald{background:rgba(52,211,153,0.05);border-color:var(--emerald);}
+  .callout.emerald strong{color:var(--emerald);}
+  .callout.amber{background:rgba(251,191,36,0.06);border-color:var(--amber);}
+  .callout.amber strong{color:var(--amber);}
+  .callout.rose{background:rgba(251,113,133,0.06);border-color:var(--rose);}
+  .callout.rose strong{color:var(--rose);}
+
+  .diagram-box{background:#12121c;border:1.5px solid var(--border);border-radius:14px;padding:1rem;margin:1.2rem 0;display:flex;justify-content:center;flex-wrap:wrap;gap:0.8rem;}
+
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(34,211,238,0.12);border:1px solid rgba(34,211,238,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;color:var(--cyan);flex-shrink:0;}
+  .step-num.e{background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,0.4);color:var(--emerald);}
+  .step-num.a{background:rgba(251,191,36,0.12);border-color:rgba(251,191,36,0.4);color:var(--amber);}
+  .step-num.c{background:rgba(34,211,238,0.12);border-color:rgba(34,211,238,0.4);color:var(--cyan);}
+  .step-num.r{background:rgba(251,113,133,0.12);border-color:rgba(251,113,133,0.4);color:var(--rose);}
+  .step-num.p{background:rgba(167,139,250,0.12);border-color:rgba(167,139,250,0.4);color:var(--violet);}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .reveal-btn{background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.35);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(34,211,238,0.15);}
+  .reveal-btn:disabled{opacity:0.35;cursor:default;}
+  .reveal-box{background:rgba(34,211,238,0.05);border:1px solid rgba(34,211,238,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+  .reveal-box .rule-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--cyan);margin-bottom:0.4rem;}
+  .reveal-box .rule-sub{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .formula-hero{text-align:center;padding:1.4rem;background:rgba(251,191,36,0.06);border:1.5px solid rgba(251,191,36,0.3);border-radius:18px;margin:1.2rem 0;}
+  .formula-hero.rose{background:rgba(251,113,133,0.06);border-color:rgba(251,113,133,0.3);}
+  .formula-hero.violet{background:rgba(167,139,250,0.06);border-color:rgba(167,139,250,0.3);}
+  .formula-hero.emerald{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.3);}
+  .formula-text{font-family:'Orbitron',monospace;font-size:1.15rem;font-weight:900;color:var(--amber);}
+  .formula-hero.rose .formula-text{color:var(--rose);}
+  .formula-hero.violet .formula-text{color:var(--violet);}
+  .formula-hero.emerald .formula-text{color:var(--emerald);}
+  .formula-sub{display:flex;gap:1rem;justify-content:center;margin-top:0.8rem;flex-wrap:wrap;}
+  .formula-sub span{font-size:0.78rem;font-weight:700;color:var(--muted);background:#12121c;border:1px solid var(--border);padding:0.3rem 0.8rem;border-radius:99px;}
+
+  .pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:1.2rem 0;}
+  @media(max-width:480px){.pick-grid{grid-template-columns:1fr;}}
+  .pick-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
+  @media(max-width:560px){.pick-grid.cols3{grid-template-columns:1fr;}}
+  .pick-btn{width:100%;background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.7rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.85rem;transition:all 0.2s;line-height:1.4;}
+  .pick-btn:hover:not(:disabled){border-color:var(--cyan);}
+  .pick-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .pick-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .pick-btn.neutral{border-color:var(--cyan);background:rgba(34,211,238,0.08);color:var(--cyan);}
+  .pick-fb{font-size:0.82rem;color:var(--muted);margin-top:0.6rem;line-height:1.6;text-align:center;min-height:20px;}
+
+  .summary-card{background:var(--card);border:1px solid rgba(34,211,238,0.3);border-radius:16px;padding:1.5rem 2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:2px;color:var(--cyan);margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .summary-item span{flex-shrink:0;font-size:1rem;}
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;text-decoration:none;display:inline-block;transition:all 0.2s;}
+  .da-primary{background:linear-gradient(135deg,var(--cyan),#0891b2);color:#000;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);}
+  .da-secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+
+  .big-quote{background:rgba(34,211,238,0.06);border:1.5px solid rgba(34,211,238,0.3);border-radius:18px;padding:1.6rem;text-align:center;margin:1.2rem 0;}
+  .big-quote-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--cyan);line-height:1.8;}
+  .big-quote-text em{color:var(--amber);font-style:normal;}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--cyan),#0891b2);border:none;color:#000;font-weight:800;}
+  .nav-btn:hover:not(.next){border-color:var(--cyan);color:var(--cyan);}
+
+  /* --- lesson36-specific: locked-code & structure visuals --- */
+  .code-lock-row{display:flex;align-items:center;justify-content:center;gap:0.8rem;margin:1.4rem 0;flex-wrap:wrap;}
+  .code-box{background:#12121c;border:1.5px solid var(--border);border-radius:12px;padding:0.8rem 1.2rem;text-align:center;font-family:'Orbitron',monospace;font-weight:800;font-size:1rem;min-width:70px;}
+  .code-box.given{color:var(--amber);border-color:rgba(251,191,36,0.4);background:rgba(251,191,36,0.06);}
+  .code-box.ok{color:var(--emerald);border-color:rgba(52,211,153,0.4);background:rgba(52,211,153,0.06);}
+  .code-box.bad{color:var(--rose);border-color:rgba(251,113,133,0.4);background:rgba(251,113,133,0.06);}
+  .code-arrow{font-family:'Orbitron',monospace;font-size:1.3rem;color:var(--muted);}
+
+  .flow-vert{display:flex;flex-direction:column;align-items:center;gap:0.4rem;margin:1.2rem 0;}
+  .flow-node{background:#12121c;border:1.5px solid var(--border);border-radius:10px;padding:0.6rem 1.6rem;font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:800;color:var(--cyan);text-align:center;min-width:200px;}
+  .flow-node.a{color:var(--amber);border-color:rgba(251,191,36,0.4);}
+  .flow-node.p{color:var(--violet);border-color:rgba(167,139,250,0.4);}
+  .flow-down{color:var(--muted);font-size:1rem;}
+
+  .mode-tag{display:inline-block;font-family:'Orbitron',monospace;font-size:0.7rem;letter-spacing:2px;padding:0.35rem 1rem;border-radius:99px;font-weight:800;margin:0.6rem auto;}
+  .mode-tag.konsep{background:rgba(251,191,36,0.12);color:var(--amber);border:1px solid rgba(251,191,36,0.4);}
+  .mode-tag.notasi{background:rgba(167,139,250,0.12);color:var(--violet);border:1px solid rgba(167,139,250,0.4);}
+  .mode-tag-wrap{text-align:center;}
+
+  .vs-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin:1.2rem 0;align-items:stretch;}
+  .vs-col{flex:1;min-width:220px;background:#12121c;border-radius:14px;padding:1.1rem;}
+  .vs-col.maju{border:1.5px solid rgba(251,191,36,0.4);}
+  .vs-col.mundur{border:1.5px solid rgba(167,139,250,0.4);}
+  .vs-col .vs-h{font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:2px;text-align:center;margin-bottom:0.8rem;font-weight:800;}
+  .vs-col.maju .vs-h{color:var(--amber);}
+  .vs-col.mundur .vs-h{color:var(--violet);}
+  .vs-col .vs-line{font-family:'Orbitron',monospace;font-size:0.85rem;text-align:center;padding:0.4rem 0;color:var(--text);}
+  .vs-col .vs-line.dim{color:var(--muted);font-size:0.75rem;}
+
+  .compare-table{width:100%;border-collapse:separate;border-spacing:0;background:#12121c;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.2rem 0;font-family:'Orbitron',monospace;font-size:0.8rem;}
+  .compare-table th{background:rgba(34,211,238,0.08);color:var(--cyan);padding:0.6rem;text-align:center;letter-spacing:1px;font-size:0.68rem;}
+  .compare-table td{padding:0.6rem;text-align:center;border-top:1px solid var(--border);}
+  .compare-table td.hi-ok{color:var(--emerald);font-weight:700;}
+  .compare-table td.hi-bad{color:var(--rose);font-weight:700;}
+
+  .rule-say{background:#12121c;border:1.5px dashed var(--border);border-radius:12px;padding:0.9rem 1.1rem;margin:0.8rem 0;font-size:0.88rem;font-style:italic;color:var(--text);text-align:center;}
+  .expr-static{font-family:'Orbitron',monospace;text-align:center;color:var(--text);margin:1rem 0;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson36.html">LESSON 36</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+
+  <!-- SLIDE 1: Cover -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title">Kunci <span class="hp">Variabelnya!</span> 🔐</div>
+      <div class="slide-sub">Jangan Ganti Simbol yang Sudah Diberikan. Soal itu seperti kasih kode — dan kodenya tidak boleh diganti di tengah jalan.</div>
+    </div>
+    <div class="code-lock-row">
+      <div class="code-box given">lebar = l</div>
+      <div class="code-arrow">→</div>
+      <div class="code-box ok">2l + 5</div>
+    </div>
+    <div class="callout rose" style="text-align:center;"><strong>Contoh salah:</strong> lebar = l, tapi ditulis <strong>2p + 5</strong> ❌ — huruf p tidak pernah didefinisikan soal.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num a">🔎</div>
+        <div class="step-body"><div class="stitle">Misi 1: Kenali Kode</div><div class="sdesc">Belajar mengenali huruf yang sudah "dikunci" oleh soal di awal.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num p">🔐</div>
+        <div class="step-body"><div class="stitle">Misi 2: Pakai Kode yang Sama</div><div class="sdesc">Menjaga huruf itu tetap konsisten dari awal sampai jawaban akhir.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num c">🟡</div>
+        <div class="step-body"><div class="stitle">Misi 3: Konsep vs Notasi</div><div class="sdesc">Membedakan ide yang benar dari representasi simbol yang tepat.</div></div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Misi 1: Kenali Kode →</button></div>
+  </div>
+
+  <!-- SLIDE 2: Variabel Itu Sudah Dipilihkan -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Variabel Itu Sudah <span class="hc">Dipilihkan</span> 🔎</div>
+      <div class="slide-sub">Soal sering sudah memberi tahu huruf mana yang harus kamu pakai. Tugas kita: temukan huruf itu duluan.</div>
+    </div>
+    <div class="vs-row">
+      <div class="vs-col maju">
+        <div class="vs-h">CONTOH 1</div>
+        <div class="vs-line">Umur Budi = b</div>
+        <div class="vs-line dim">Umur Andi 3 tahun lebih tua</div>
+        <div class="vs-line" style="color:var(--amber);">Umur Andi = b + 3</div>
+      </div>
+      <div class="vs-col mundur">
+        <div class="vs-h">CONTOH 2</div>
+        <div class="vs-line">Lebar = l</div>
+        <div class="vs-line dim">Panjang = dua kali lebar + 5</div>
+        <div class="vs-line" style="color:var(--violet);">2l + 5</div>
+      </div>
+    </div>
+    <div class="callout rose"><strong>Bukan a + 3</strong> — karena huruf a belum pernah didefinisikan soal. Soal sudah mengunci umur Budi sebagai b.</div>
+    <div class="callout amber" style="text-align:center;"><strong>LANGKAH PERTAMA:</strong> Cari huruf yang sudah diberikan soal.</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Konsep vs Notasi →</button></div>
+  </div>
+
+  <!-- SLIDE 3: Ide Benar, Notasi Belum Tentu Benar -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title">Ide Benar, <span class="hb">Notasi</span> Belum Tentu Benar 🟡</div>
+      <div class="slide-sub">Harga satu buku adalah h. Rani membeli 4 buku dan mendapat diskon Rp5.000.</div>
+    </div>
+    <div class="vs-row">
+      <div class="vs-col maju">
+        <div class="vs-h">JAWABAN A</div>
+        <div class="vs-line" style="font-size:1.05rem;color:var(--amber);">4h − 5000</div>
+      </div>
+      <div class="vs-col mundur">
+        <div class="vs-h">JAWABAN B</div>
+        <div class="vs-line" style="font-size:1.05rem;color:var(--violet);">4x − 5000</div>
+      </div>
+    </div>
+    <div class="callout violet"><strong>Pertanyaan:</strong> Apakah Jawaban B secara ide (cara menghitungnya) salah?</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS3(this,'a')">Tidak, idenya benar — tapi variabelnya salah</button>
+      <button class="pick-btn" onclick="pickS3(this,'b')">Ya, cara menghitungnya salah</button>
+    </div>
+    <div class="pick-fb" id="fbS3"></div>
+    <div class="mode-tag-wrap" style="margin-top:1.2rem;"><span class="mode-tag konsep">🟡 KONSEP BENAR</span> ≠ <span class="mode-tag notasi">🟢 JAWABAN LENGKAP &amp; TEPAT</span></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Jangan Bikin Huruf Baru →</button></div>
+  </div>
+
+  <!-- SLIDE 4: Jangan Asal Membuat Huruf Baru -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Jangan Asal Membuat <span class="hr">Huruf Baru</span> 🚫</div>
+      <div class="slide-sub">Panjang sebuah persegi panjang 4 cm lebih dari lebarnya. Jika lebar = w, nyatakan panjang.</div>
+    </div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS4(this,'a')">A. w + 4</button>
+      <button class="pick-btn" onclick="pickS4(this,'b')">B. p = w + 4</button>
+      <button class="pick-btn" onclick="pickS4(this,'c')">C. p + 4</button>
+      <button class="pick-btn" onclick="pickS4(this,'d')">D. 4w</button>
+    </div>
+    <div class="pick-fb" id="fbS4"></div>
+    <div class="callout" style="margin-top:1rem;">Huruf w sudah menjadi informasi dasar. Kita boleh menyatakan hubungan baru kalau memang diperlukan — tapi kalau soal minta bentuk berdasarkan w, jawabannya harus pakai w.</div>
+    <div class="mode-tag-wrap"><span class="mode-tag notasi">🔑 KALAU SOAL SUDAH MEMBERI VARIABEL, MULAI DARI VARIABEL ITU</span></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Struktur Kalimat →</button></div>
+  </div>
+
+  <!-- SLIDE 5: Tangkap Struktur Kalimatnya -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title">Tangkap <span class="hc">Struktur</span> Kalimatnya 🧱</div>
+      <div class="slide-sub">Sebuah bilangan dikurangi 3, lalu hasilnya dikali 2. Jika bilangan = x.</div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num a">1</div>
+        <div class="step-body"><div class="stitle">Langkah 1</div><div class="sdesc">x − 3</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num c">2</div>
+        <div class="step-body"><div class="stitle">Langkah 2</div><div class="sdesc">2(x − 3)</div></div>
+      </div>
+    </div>
+    <div class="callout violet"><strong>Mana bentuk yang benar mewakili kalimat di atas?</strong></div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS5(this,'a')">2(x − 3)</button>
+      <button class="pick-btn" onclick="pickS5(this,'b')">2x − 3</button>
+    </div>
+    <div class="pick-fb" id="fbS5"></div>
+    <div class="callout" style="margin-top:1rem;"><strong>Urutan cerita harus tetap terbawa ke bentuk matematika.</strong> Lesson ini menggabungkan 🔐 variabel yang benar dan 🧱 struktur ekspresi yang benar.</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Baca Soal Seperti Kode →</button></div>
+  </div>
+
+  <!-- SLIDE 6: Baca Soal Seperti Membaca Kode -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title">Baca Soal Seperti <span class="hp">Membaca Kode</span> 🕵️</div>
+      <div class="slide-sub">Strategi 3 langkah untuk soal apa pun.</div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num a">1</div>
+        <div class="step-body"><div class="stitle">STEP 1 — Cari kode yang diberikan</div><div class="sdesc">Contoh: Umur Rani = r</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num c">2</div>
+        <div class="step-body"><div class="stitle">STEP 2 — Tandai hubungan</div><div class="sdesc">Ayah = 3 kali umur Rani</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num p">3</div>
+        <div class="step-body"><div class="stitle">STEP 3 — Bangun menggunakan kode yang sama</div><div class="sdesc">3r</div></div>
+      </div>
+    </div>
+    <div class="flow-vert">
+      <div class="flow-node">INFORMASI</div>
+      <div class="flow-down">↓</div>
+      <div class="flow-node a">VARIABEL</div>
+      <div class="flow-down">↓</div>
+      <div class="flow-node a">HUBUNGAN</div>
+      <div class="flow-down">↓</div>
+      <div class="flow-node p">BENTUK MATEMATIKA</div>
+    </div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">Jebakan Variabel →</button></div>
+  </div>
+
+  <!-- SLIDE 7: Jebakan Variabel -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">Jebakan <span class="hb">Variabel</span> ⚡</div>
+      <div class="slide-sub">Sebelum menjawab, tanyakan dulu: "Huruf mana yang diberikan soal?" — bukan langsung "Operasinya apa?"</div>
+    </div>
+
+    <div class="callout amber"><strong>1)</strong> Harga sebuah pensil = p. Dito membeli 6 pensil. Jawaban?</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS7(this,'a','1')">6p</button>
+      <button class="pick-btn" onclick="pickS7(this,'b','1')">p + 6</button>
+    </div>
+    <div class="pick-fb" id="fbS7-1"></div>
+
+    <div class="callout violet" style="margin-top:1.4rem;"><strong>2)</strong> Umur Dina = d. Umur Rina 4 tahun lebih muda. Jawaban umur Rina?</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS7(this,'a','2')">d − 4</button>
+      <button class="pick-btn" onclick="pickS7(this,'b','2')">4 − d</button>
+    </div>
+    <div class="pick-fb" id="fbS7-2"></div>
+
+    <div class="callout amber" style="margin-top:1.4rem;"><strong>3)</strong> Sebuah bilangan = n. Bilangan tersebut dikali 3 lalu ditambah 7. Jawaban?</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS7(this,'a','3')">3n + 7</button>
+      <button class="pick-btn" onclick="pickS7(this,'b','3')">3(n + 7)</button>
+    </div>
+    <div class="pick-fb" id="fbS7-3"></div>
+
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Level Up: Dua Variabel →</button></div>
+  </div>
+
+  <!-- SLIDE 8: Level Up: Hubungan Dua Variabel -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">Level Up: <span class="hc">Hubungan Dua Variabel</span> 📐</div>
+      <div class="slide-sub">Panjang = p dan lebar = l. Keliling persegi panjang adalah 2p + 2l.</div>
+    </div>
+    <div class="expr-static" style="font-size:1.1rem;">Keliling = 2p + 2l</div>
+    <div class="callout violet"><strong>Sekarang:</strong> Jika panjang 3 cm lebih dari lebar, dan lebar = l, maka p = l + 3.</div>
+    <button class="reveal-btn" onclick="toggleReveal('r8')">Nyatakan Keliling Hanya Pakai l →</button>
+    <div class="reveal-box" id="r8">
+      <div class="steps" style="margin:0;">
+        <div class="step">
+          <div class="step-num p">1</div>
+          <div class="step-body"><div class="stitle">Ganti p dengan (l + 3)</div><div class="sdesc">2(l + 3) + 2l</div></div>
+        </div>
+      </div>
+      <div class="formula-hero violet" style="margin-top:0.8rem;"><div class="formula-text">2(l + 3) + 2l</div></div>
+    </div>
+    <div class="callout rose" style="margin-top:1rem;">Sekarang kita tidak boleh asal mencampur simbol. Setiap huruf punya arti sendiri.</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Mixed Challenge →</button></div>
+  </div>
+
+  <!-- SLIDE 9: Mixed Challenge -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">Mixed <span class="hv">Challenge</span>: Benar atau Salah? 🎯</div>
+      <div class="slide-sub">Untuk tiap situasi, tentukan: konsepnya benar/salah, variabelnya benar/salah, dan jawaban akhirnya tepat atau belum.</div>
+    </div>
+
+    <div class="callout amber"><strong>1)</strong> Lebar = l. Panjang dua kali lebar ditambah 4. Jawaban siswa: 2p + 4.</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickM(this,'a','1')">Konsep ✅, Variabel ❌, Final ❌</button>
+      <button class="pick-btn" onclick="pickM(this,'b','1')">Konsep ✅, Variabel ✅, Final ✅</button>
+    </div>
+    <div class="pick-fb" id="fbM1"></div>
+
+    <div class="callout violet" style="margin-top:1.4rem;"><strong>2)</strong> Umur Budi = b. Umur Andi 5 tahun lebih tua. Jawaban siswa: b + 5.</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickM(this,'a','2')">Konsep ✅, Variabel ✅, Final ✅</button>
+      <button class="pick-btn" onclick="pickM(this,'b','2')">Konsep ❌, Variabel ✅, Final ❌</button>
+    </div>
+    <div class="pick-fb" id="fbM2"></div>
+
+    <div class="callout amber" style="margin-top:1.4rem;"><strong>3)</strong> Harga = h. Beli 3 buku, dapat diskon Rp2.000. Jawaban siswa: 3h + 2000.</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickM(this,'a','3')">Operasi salah (seharusnya dikurang), Final ❌</button>
+      <button class="pick-btn" onclick="pickM(this,'b','3')">Semuanya sudah benar</button>
+    </div>
+    <div class="pick-fb" id="fbM3"></div>
+
+    <div class="callout violet" style="margin-top:1.4rem;"><strong>4)</strong> Bilangan = n. Dikali 4 lalu dikurang 5. Jawaban siswa: 4n − 5.</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickM(this,'a','4')">Konsep ✅, Variabel ✅, Final ✅</button>
+      <button class="pick-btn" onclick="pickM(this,'b','4')">Konsep ✅, Variabel ❌, Final ❌</button>
+    </div>
+    <div class="pick-fb" id="fbM4"></div>
+
+    <div class="callout amber" style="margin-top:1.4rem;"><strong>5)</strong> Lebar = w. Panjang = dua kali lebar ditambah 3. Jawaban siswa: 3 + 2x.</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickM(this,'a','5')">Konsep ✅, Variabel ❌, Final ❌</button>
+      <button class="pick-btn" onclick="pickM(this,'b','5')">Konsep ❌, Variabel ❌, Final ❌</button>
+    </div>
+    <div class="pick-fb" id="fbM5"></div>
+
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Kesimpulan →</button></div>
+  </div>
+
+  <!-- SLIDE 10: Closing -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Before You Write... 🔐</div>
+      <div class="slide-sub">Sebelum menulis bentuk matematika, cek dulu 4 hal ini.</div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num a">1️⃣</div>
+        <div class="step-body"><div class="stitle">Apa yang sudah diketahui?</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num c">2️⃣</div>
+        <div class="step-body"><div class="stitle">Huruf apa yang diberikan?</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num p">3️⃣</div>
+        <div class="step-body"><div class="stitle">Hubungannya apa?</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num r">4️⃣</div>
+        <div class="step-body"><div class="stitle">Apakah semua simbol di jawabanku punya arti?</div></div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <h3>📋 3 ATURAN UTAMA</h3>
+      <div class="summary-item"><span>🔎</span><strong style="color:var(--amber)">Cari huruf yang dikunci soal</strong> — sebelum mulai membentuk apa pun.</div>
+      <div class="summary-item"><span>🔐</span><strong style="color:var(--violet)">Pakai huruf itu terus</strong> — dari awal sampai jawaban akhir.</div>
+      <div class="summary-item"><span>🟡</span><strong style="color:var(--cyan)">Konsep benar saja belum cukup</strong> — notasinya juga harus tepat.</div>
+    </div>
+
+    <div class="big-quote">
+      <div class="big-quote-text">Tantangan Penutup 🔥</div>
+      <div class="expr-static" style="font-size:1.05rem;">Harga sebuah roti = r. Seseorang membeli 5 roti, kemudian mendapat potongan Rp3.000. Nyatakan total pembayaran menggunakan r.</div>
+    </div>
+    <div class="callout">Coba pikirkan dulu sebelum lanjut ke platform latihan — jangan langsung mengganti r dengan huruf lain!</div>
+
+    <div class="done-actions">
+      <a href="quicktest36.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise36.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson36.html" class="da-btn da-secondary">Lesson 36</a>
+    </div>
+  </div>
+
+</div>
+<script>
+let currentSlide=1;
+const TOTAL=10;
+function goSlide(n){
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide=n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width=((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleReveal(id){
+  document.getElementById(id).classList.toggle('show');
+}
+
+/* ---------- Slide 3: konsep vs notasi ---------- */
+function pickS3(btn,ans){
+  document.querySelectorAll('#slide3 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS3');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Cara menghitung Jawaban B sudah benar, tapi variabelnya (x) tidak sesuai dengan yang diberikan soal (h).';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS3(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Belum tepat. Operasi hitungnya sama persis dengan Jawaban A — yang salah cuma variabelnya.';}
+}
+
+/* ---------- Slide 4: jebakan huruf baru ---------- */
+function pickS4(btn,ans){
+  document.querySelectorAll('#slide4 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS4');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! w + 4 tetap memakai kode w yang sudah diberikan soal.';}
+  else{
+    btn.classList.add('wrong');
+    document.querySelector(`[onclick="pickS4(this,'a')"]`).classList.add('correct');
+    fb.innerHTML='❌ Belum tepat. Soal minta bentuk panjang berdasarkan w — jawaban yang memakai huruf p (belum pernah didefinisikan) tidak sesuai.';
+  }
+}
+
+/* ---------- Slide 5: struktur dua langkah ---------- */
+function pickS5(btn,ans){
+  document.querySelectorAll('#slide5 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS5');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! 2(x − 3) menjaga urutan cerita: kurangi dulu, baru kalikan.';}
+  else{btn.classList.add('wrong');document.querySelector(`[onclick="pickS5(this,'a')"]`).classList.add('correct');fb.innerHTML='❌ Jebakan klasik! 2x − 3 berarti "dua kali bilangan, baru dikurangi 3" — urutannya terbalik dari kalimat aslinya.';}
+}
+
+/* ---------- Slide 7: tiga jebakan variabel ---------- */
+const s7Ans={'1':{c:'a',txt:'6p tepat — harga p dikalikan 6 pensil.'},'2':{c:'a',txt:'d − 4 tepat — umur Dina dikurangi 4 tahun karena Rina lebih muda.'},'3':{c:'a',txt:'3n + 7 tepat — kalikan dulu baru tambahkan, sesuai urutan kalimat.'}};
+function pickS7(btn,ans,q){
+  const grid=document.getElementById('slide7').querySelectorAll('.pick-grid')[q-1];
+  grid.querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS7-'+q);
+  const correct=s7Ans[q].c;
+  if(ans===correct){btn.classList.add('correct');fb.innerHTML='✅ '+s7Ans[q].txt;}
+  else{
+    btn.classList.add('wrong');
+    grid.querySelectorAll('.pick-btn').forEach(b=>{if(b.getAttribute('onclick').includes(`,'${correct}','${q}'`))b.classList.add('correct');});
+    fb.innerHTML='❌ '+s7Ans[q].txt;
+  }
+}
+
+/* ---------- Slide 9: mixed challenge (5 mini quizzes) ---------- */
+const mixAns={
+  '1':{c:'a',txt:'Idenya (2 × lebar + 4) sudah benar, tapi siswa mengganti l dengan p yang tidak pernah didefinisikan — konsep benar, variabel salah, jadi jawaban akhir belum tepat.'},
+  '2':{c:'a',txt:'b + 5 memakai variabel yang benar dan operasinya juga sudah pas — konsep, variabel, dan jawaban akhir semuanya benar.'},
+  '3':{c:'a',txt:'Diskon seharusnya DIKURANGI, bukan ditambah. Bentuk yang tepat adalah 3h − 2000, jadi 3h + 2000 salah pada operasinya.'},
+  '4':{c:'a',txt:'4n − 5 memakai variabel n yang benar dan urutan operasinya juga sesuai kalimat — semuanya sudah tepat.'},
+  '5':{c:'a',txt:'Ide "dua kali lebar ditambah 3" sudah benar, tapi siswa memakai x, bukan w yang dikunci soal — konsep benar, variabel salah.'},
+};
+function pickM(btn,ans,q){
+  const grids=document.querySelectorAll('#slide9 .pick-grid');
+  grids[q-1].querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbM'+q);
+  const correct=mixAns[q].c;
+  if(ans===correct){btn.classList.add('correct');fb.innerHTML='✅ '+mixAns[q].txt;}
+  else{
+    btn.classList.add('wrong');
+    grids[q-1].querySelectorAll('.pick-btn').forEach(b=>{
+      if(b.getAttribute('onclick').includes(`,'${correct}','${q}'`)) b.classList.add('correct');
+    });
+    fb.innerHTML='❌ '+mixAns[q].txt;
+  }
+}
+</script>
+</body>
+</html>
