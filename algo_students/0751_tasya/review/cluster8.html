@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cluster 8 · Algebra & Function Mega Review · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdfaf2;
+    --surface: #faf0d9;
+    --card: #ffffff;
+    --border: #f0e2b6;
+    --border2: #e8d08a;
+    --gold: #4a5fc9;
+    --gold-light: #a3b4f0;
+    --bronze: #33409c;
+    --teal: #8355c9;
+    --teal-light: #c7aee8;
+    --text: #3a3020;
+    --text-mid: #7a6a45;
+    --text-muted: #b8a878;
+    --shadow: rgba(180, 140, 50, 0.12);
+    --red: #c0392b;
+    --green: #4db88a;
+    --s1: #3f9c6d; --s1-light: #8fd0ab;
+    --s2: #d9a441; --s2-light: #f0cf8a;
+    --s3: #e2793e; --s3-light: #f3b284;
+    --s4: #d1495b; --s4-light: #ec9aa6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Quicksand', sans-serif; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 20%, rgba(74,95,201,0.08) 0%, transparent 45%),
+      radial-gradient(ellipse at 90% 10%, rgba(131,85,201,0.07) 0%, transparent 45%),
+      radial-gradient(ellipse at 80% 90%, rgba(209,73,91,0.05) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  .petal { position: fixed; pointer-events: none; z-index: 0; animation: petalFloat var(--d) ease-in-out infinite var(--dl); opacity: 0.12; font-size: var(--sz); }
+  @keyframes petalFloat { 0%,100%{ transform: translateY(0) rotate(var(--r0)); opacity:0.12; } 50%{ transform: translateY(-14px) rotate(var(--r1)); opacity:0.2; } }
+
+  nav {
+    padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    background: rgba(253,250,242,0.92); backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;
+  }
+  nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--gold); }
+  nav span { color: var(--border2); }
+  nav .current { color: var(--gold); }
+
+  .wrapper { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.2rem 6rem; position: relative; z-index: 1; }
+  @media(max-width:480px){ .wrapper { padding: 1.8rem 0.8rem 6rem; } }
+
+  /* Banner */
+  .banner {
+    background: linear-gradient(135deg, rgba(74,95,201,0.1), rgba(131,85,201,0.07));
+    border: 2px solid var(--gold-light);
+    border-radius: 22px; padding: 2rem 2rem 1.6rem;
+    margin-bottom: 2rem; position: relative; overflow: hidden;
+  }
+  .banner::before {
+    content: '🧮'; position: absolute; right: 1.5rem; top: 50%;
+    transform: translateY(-50%); font-size: 6rem; opacity: 0.08; pointer-events: none;
+  }
+  .page-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(74,95,201,0.12); border: 1.5px solid rgba(74,95,201,0.4);
+    color: var(--bronze); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.3rem 1rem; border-radius: 20px; margin-bottom: 0.9rem; font-weight: 800;
+  }
+  .page-title { font-family: 'Nunito', sans-serif; font-size: clamp(1.4rem,4vw,2rem); font-weight: 900; color: var(--text); margin-bottom: 0.45rem; line-height: 1.25; }
+  .page-title span { color: var(--gold); }
+  .page-desc { color: var(--text-mid); font-size: 0.88rem; line-height: 1.7; max-width: 580px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .pill { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; padding: 0.22rem 0.75rem; border-radius: 20px; font-weight: 700; }
+  .pill-gold { background: rgba(74,95,201,0.12); color: var(--bronze); border: 1.5px solid rgba(74,95,201,0.35); }
+  .pill-teal { background: rgba(131,85,201,0.1);  color: var(--teal);   border: 1.5px solid rgba(131,85,201,0.3); }
+  .pill-red  { background: rgba(209,73,91,0.1);   color: var(--s4);    border: 1.5px solid rgba(209,73,91,0.3); }
+  .pill-orn  { background: rgba(226,121,62,0.1);  color: var(--s3);    border: 1.5px solid rgba(226,121,62,0.3); }
+  .pill-grn  { background: rgba(63,156,109,0.1);  color: var(--s1);    border: 1.5px solid rgba(63,156,109,0.3); }
+
+  /* Progress */
+  .prog-panel { background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 1.2rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 3px 14px var(--shadow); }
+  .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+  .prog-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+  .prog-count { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 900; color: var(--gold); }
+  .prog-track { height: 7px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 0.5rem; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--s1), var(--s2), var(--s3), var(--s4)); border-radius: 99px; transition: width 0.7s ease; }
+  .prog-sub { font-size: 0.76rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
+  .reset-link { font-size: 0.7rem; color: var(--text-muted); cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+  .reset-link:hover { color: var(--red); }
+  .prog-stars { display: flex; gap: 0.3rem; margin-top: 0.6rem; align-items: center; font-size: 0.76rem; color: var(--text-muted); }
+  .star { font-size: 0.9rem; opacity: 0.2; transition: opacity 0.4s; }
+  .star.lit { opacity: 1; }
+
+  /* Equation display */
+  .eq-display {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.3rem;
+    margin: 0.6rem 0 0.8rem; padding: 0.7rem 0.6rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+    font-family: 'Nunito', sans-serif; font-weight: 900;
+  }
+  .ed-var  { font-size: 1.15rem; color: var(--gold); background: rgba(74,95,201,0.12); border: 1.5px solid rgba(74,95,201,0.35); padding: 0.15rem 0.55rem; border-radius: 8px; font-style: italic; }
+  .ed-var2 { font-size: 1.15rem; color: var(--teal); background: rgba(131,85,201,0.1);  border: 1.5px solid rgba(131,85,201,0.3);  padding: 0.15rem 0.55rem; border-radius: 8px; font-style: italic; }
+  .ed-num  { font-size: 1.15rem; color: var(--text-mid); background: var(--surface); border: 1.5px solid var(--border2); padding: 0.15rem 0.5rem; border-radius: 8px; }
+  .ed-op   { font-size: 1.1rem; color: var(--text-muted); }
+  .ed-eq   { font-size: 1.1rem; color: var(--text-muted); }
+  .ed-q    { font-size: 1.2rem; color: var(--s4); background: rgba(209,73,91,0.1); border: 1.5px solid rgba(209,73,91,0.25); padding: 0.15rem 0.55rem; border-radius: 8px; }
+
+  /* Coordinate / points display */
+  .coord-display {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.6rem;
+    margin: 0.6rem 0 0.8rem; padding: 0.7rem 0.9rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.95rem;
+  }
+  .coord-point {
+    color: var(--gold); background: rgba(74,95,201,0.12); border: 1.5px solid rgba(74,95,201,0.35);
+    padding: 0.3rem 0.8rem; border-radius: 10px;
+  }
+  .coord-point.alt { color: var(--teal); background: rgba(131,85,201,0.1); border-color: rgba(131,85,201,0.3); }
+  .coord-arrow { color: var(--text-muted); font-size: 1.1rem; }
+
+  /* Triangle / labeled-value display (also reused for circle r/d, rectangle sides, etc) */
+  .tri-display {
+    display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;
+    margin: 0.6rem 0 0.8rem; padding: 0.8rem 1rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+  }
+  .tri-side {
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.9rem;
+    color: var(--text-mid); display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
+  }
+  .tri-side .side-label { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .tri-side .side-val { color: var(--gold); background: rgba(74,95,201,0.12); border: 1.5px solid rgba(74,95,201,0.35); padding: 0.2rem 0.6rem; border-radius: 8px; }
+
+  /* Word story */
+  .word-story { background: rgba(74,95,201,0.06); border: 1.5px solid rgba(74,95,201,0.22); border-radius: 10px; padding: 0.65rem 0.9rem; margin-bottom: 0.7rem; font-size: 0.83rem; color: var(--text-mid); line-height: 1.65; }
+  .word-story strong { color: var(--bronze); }
+
+  /* Section dividers */
+  .sec-divider {
+    font-family: 'Nunito', sans-serif; font-size: 0.72rem; font-weight: 800;
+    letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.5rem 0; margin: 2rem 0 1rem;
+    border-bottom: 2px solid; display: flex; align-items: center; gap: 0.7rem;
+  }
+  .sd-1 { color: var(--s1); border-color: rgba(63,156,109,0.3); }
+  .sd-2 { color: var(--s2); border-color: rgba(217,164,65,0.3); }
+  .sd-3 { color: var(--s3); border-color: rgba(226,121,62,0.3); }
+  .sd-4 { color: var(--s4); border-color: rgba(209,73,91,0.3); }
+  .sd-sesi { font-size: 0.62rem; font-weight: 700; opacity: 0.65; margin-left: auto; letter-spacing: 1px; }
+
+  /* Grid & Cards */
+  .exercise-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(290px,1fr)); gap: 1rem; }
+  @media(max-width:480px){ .exercise-grid { grid-template-columns: 1fr; } }
+
+  .ex-card { background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 1.3rem; position: relative; overflow: hidden; transition: border-color 0.2s; box-shadow: 0 2px 10px var(--shadow); }
+  .ex-card.done-card { border-color: rgba(74,95,201,0.45); background: rgba(74,95,201,0.02); }
+  .ex-card.word-card { border-left: 3px solid var(--teal); }
+  .ex-card.word-card.done-card { border-left-color: var(--gold); }
+
+  .ex-num { font-size: 0.62rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem; }
+  .ex-tag { display: inline-block; font-size: 0.58rem; padding: 0.15rem 0.5rem; border-radius: 8px; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
+  .tag-1 { background: rgba(63,156,109,0.1);  color: var(--s1); border: 1.5px solid rgba(63,156,109,0.28); }
+  .tag-2 { background: rgba(217,164,65,0.12); color: var(--bronze); border: 1.5px solid rgba(217,164,65,0.3); }
+  .tag-3 { background: rgba(226,121,62,0.1);  color: var(--s3); border: 1.5px solid rgba(226,121,62,0.28); }
+  .tag-4 { background: rgba(209,73,91,0.1);   color: var(--s4); border: 1.5px solid rgba(209,73,91,0.28); }
+
+  .ex-q { font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 800; color: var(--text); margin-bottom: 0.4rem; line-height: 1.5; }
+  .ex-card.done-card .ex-q { color: var(--bronze); }
+  .ex-hint { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.85rem; font-style: italic; line-height: 1.45; }
+
+  /* Inputs */
+  .ex-input-wrap { display: flex; flex-direction: column; gap: 0.45rem; }
+  .ex-input-row { display: flex; gap: 0.5rem; align-items: center; }
+  .ex-input { flex: 1; background: var(--surface); border: 2px solid var(--border2); color: var(--text); padding: 0.55rem 0.8rem; border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; text-align: center; transition: border-color 0.2s; outline: none; min-width: 0; }
+  .ex-input:focus { border-color: var(--gold); }
+  .ex-input.correct { border-color: var(--gold); color: var(--bronze); }
+  .ex-input.wrong-anim { border-color: var(--red); color: var(--red); animation: shake 0.4s ease; }
+  @keyframes shake { 0%,100%{ transform:translateX(0); } 20%,60%{ transform:translateX(-6px); } 40%,80%{ transform:translateX(6px); } }
+  .ex-btn { background: rgba(74,95,201,0.12); border: 1.5px solid rgba(74,95,201,0.35); color: var(--bronze); padding: 0.55rem 0.9rem; border-radius: 10px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.75rem; font-weight: 800; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+  .ex-btn:hover { background: rgba(74,95,201,0.22); border-color: var(--gold); }
+  .ex-btn:disabled { opacity: 0.3; cursor: default; }
+  .attempts-row { display: flex; gap: 3px; align-items: center; min-height: 10px; }
+  .attempts-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
+
+  .ex-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .ex-opt { background: var(--surface); border: 2px solid var(--border2); color: var(--text-mid); padding: 0.55rem 0.4rem; border-radius: 10px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.15s; text-align: center; line-height: 1.4; }
+  .ex-opt:hover:not(:disabled) { border-color: var(--gold); background: rgba(74,95,201,0.08); color: var(--bronze); }
+  .ex-opt.opt-correct { border-color: var(--green); background: rgba(77,184,138,0.1); color: var(--green); }
+  .ex-opt.opt-wrong   { border-color: var(--red);  background: rgba(192,57,43,0.08); color: var(--red); }
+  .ex-opt:disabled { cursor: default; }
+
+  .ex-feedback { margin-top: 0.6rem; font-size: 0.81rem; font-weight: 700; display: none; line-height: 1.55; }
+  .ex-feedback.show { display: block; }
+  .ex-feedback.ok { color: var(--green); }
+  .ex-feedback.no { color: var(--red); }
+  .done-badge { position: absolute; top: 0.9rem; right: 0.9rem; background: rgba(74,95,201,0.12); border: 1.5px solid rgba(74,95,201,0.4); color: var(--bronze); font-size: 0.6rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 8px; }
+
+  /* All-done */
+  #allDone { display: none; text-align: center; padding: 3.5rem 2rem; }
+  .alldone-icon { font-size: 5rem; display: block; margin-bottom: 1.5rem; animation: bounce 1.2s ease infinite; }
+  @keyframes bounce { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-10px); } }
+  .alldone-title { font-family: 'Nunito', sans-serif; font-size: clamp(1.4rem,5vw,2.1rem); font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.7rem; }
+  .alldone-desc { color: var(--text-mid); line-height: 1.8; margin-bottom: 1.8rem; font-size: 0.92rem; }
+  .alldone-xp { display: inline-block; background: rgba(74,95,201,0.12); border: 1.5px solid rgba(74,95,201,0.45); color: var(--bronze); padding: 0.5rem 1.5rem; border-radius: 20px; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800; margin-bottom: 2rem; }
+  .action-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn { padding: 0.75rem 1.6rem; border-radius: 12px; border: 2px solid var(--border2); font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-muted); background: transparent; }
+  .btn:hover { border-color: var(--gold); color: var(--bronze); }
+  .btn-primary { background: linear-gradient(135deg, var(--gold), var(--teal)); border-color: transparent; color: white; box-shadow: 0 4px 16px rgba(74,95,201,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); color: white; }
+
+  .deco-bloom  { position: fixed; top: -40px; right: -40px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(74,95,201,0.12), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+  .deco-bloom2 { position: fixed; bottom: -60px; left: -60px; width: 240px; height: 240px; background: radial-gradient(circle, rgba(131,85,201,0.1), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+</style>
+</head>
+<body>
+<div class="deco-bloom"></div>
+<div class="deco-bloom2"></div>
+<div id="petals"></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../tasya_0751.html">TASYA</a>
+  <span>›</span>
+  <a href="review.html">MEGA REVIEW</a>
+  <span>›</span>
+  <span class="current">CLUSTER 8</span>
+</nav>
+
+<div class="wrapper">
+  <div class="banner">
+    <div class="page-badge">🏆 Cluster 8 · Algebra & Function Mega Review</div>
+    <div class="page-title">Algebra & Function <span>Boss Checkpoint</span></div>
+    <div class="page-desc">
+      40 soal gabungan seluruh materi aljabar & fungsi: bentuk aljabar, persamaan & pertidaksamaan linear, SPLDV, hingga fungsi & pemodelan matematika.
+      Empat level — dari recall dasar sampai boss battle akhir. Progress tersimpan otomatis! 🧮
+    </div>
+    <div class="pills">
+      <span class="pill pill-grn">🟢 Fundamental Recall</span>
+      <span class="pill pill-gold">🟡 Choose Your Weapon</span>
+      <span class="pill pill-orn">🟠 Concept Connection</span>
+      <span class="pill pill-red">🔴 Boss Battle</span>
+    </div>
+  </div>
+
+  <div class="prog-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress Cluster 8</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-sub">
+      <span>Kumpulkan ⭐ tiap menyelesaikan 8 soal!</span>
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🏆</span>
+    <div class="alldone-title">Algebra Boss Battle Selesai!</div>
+    <div class="alldone-desc">
+      Kamu berhasil menaklukkan seluruh checkpoint: bentuk aljabar, persamaan & pertidaksamaan,<br>
+      SPLDV, hingga fungsi & pemodelan — dan menang di Boss Battle terakhir!
+    </div>
+    <div class="alldone-xp">+500 XP · Algebra Champion 🧮</div>
+    <div class="action-btns">
+      <a href="cluster7.html" class="btn">← Cluster 7</a>
+      <a href="review.html" class="btn btn-primary">Kembali ke Review →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'tasya_review_cluster8_v1';
+function loadProgress(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||{}; }catch(e){ return{}; } }
+function saveProgress(p){ try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(p)); }catch(e){} }
+let progress = loadProgress();
+
+// Renders a single equation/expression display line
+function eqHTML(parts){
+  return `<div class="eq-display">${parts.map(p=>{
+    if(p.t==='var')   return `<span class="ed-var">${p.v}</span>`;
+    if(p.t==='var2')  return `<span class="ed-var2">${p.v}</span>`;
+    if(p.t==='num')   return `<span class="ed-num">${p.v}</span>`;
+    if(p.t==='op')    return `<span class="ed-op">${p.v}</span>`;
+    if(p.t==='eq')    return `<span class="ed-eq">=</span>`;
+    if(p.t==='q')     return `<span class="ed-q">?</span>`;
+    return '';
+  }).join('')}</div>`;
+}
+
+// Renders two coordinate points with an arrow between them
+function coordHTML(p1, p2, label1, label2){
+  label1 = label1 || ''; label2 = label2 || '';
+  return `<div class="coord-display">
+    <span class="coord-point">${label1?label1+' ':''}${p1}</span>
+    <span class="coord-arrow">→</span>
+    <span class="coord-point alt">${label2?label2+' ':''}${p2}</span>
+  </div>`;
+}
+
+// Renders 3+ standalone points (no arrow), separated by dots
+function pointsHTML(pts){
+  return `<div class="coord-display">${pts.map((p,i)=>`<span class="coord-point${i%2?' alt':''}">${p}</span>`).join('<span class="coord-arrow">·</span>')}</div>`;
+}
+
+// Renders a labeled-value row (triangle sides, circle r/d, rectangle sides, etc)
+function triHTML(sides){
+  return `<div class="tri-display">${sides.map(s=>`<div class="tri-side"><span class="side-label">${s.label}</span><span class="side-val">${s.val}</span></div>`).join('<span class="coord-arrow">·</span>')}</div>`;
+}
+
+const exercises = [
+
+  // ══════════════ STAGE 1 — FUNDAMENTAL RECALL (10 soal) ══════════════
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:'Bentuk Aljabar',
+    eq:[{t:'num',v:'7'},{t:'var',v:'x'},{t:'op',v:'+'},{t:'num',v:'4'}],
+    q:'Perhatikan bentuk aljabar di atas. Berapa koefisien dari variabel x?',
+    hint:'Koefisien adalah angka yang berada tepat di depan variabel.',
+    type:'text', answers:['7'],
+    explain:'✅ Koefisien x pada 7x+4 adalah 7 ✓' },
+
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:'Penyederhanaan',
+    eq:[{t:'num',v:'4'},{t:'var',v:'x'},{t:'op',v:'+'},{t:'num',v:'3'},{t:'var',v:'x'}],
+    q:'Sederhanakan bentuk aljabar di atas (gabungkan suku sejenis).',
+    hint:'Suku sejenis (sama-sama mengandung x) bisa dijumlahkan koefisiennya.',
+    type:'text', answers:['7x'],
+    explain:'✅ 4x+3x = (4+3)x = 7x ✓' },
+
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:'Operasi Aljabar',
+    eq:[{t:'op',v:'('},{t:'num',v:'5'},{t:'var',v:'x'},{t:'op',v:'+'},{t:'num',v:'2'},{t:'op',v:')'},{t:'op',v:'−'},{t:'op',v:'('},{t:'num',v:'2'},{t:'var',v:'x'},{t:'op',v:'−'},{t:'num',v:'3'},{t:'op',v:')'}],
+    q:'Sederhanakan hasil pengurangan dua bentuk aljabar di atas.',
+    hint:'Hati-hati tanda minus di depan kurung kedua: ubah semua tanda di dalamnya.',
+    type:'text', answers:['3x+5'],
+    explain:'✅ (5x+2)−(2x−3) = 5x+2−2x+3 = 3x+5 ✓' },
+
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:'Distributif',
+    eq:[{t:'num',v:'4'},{t:'op',v:'('},{t:'num',v:'2'},{t:'var',v:'x'},{t:'op',v:'+'},{t:'num',v:'3'},{t:'op',v:')'}],
+    q:'Gunakan sifat distributif untuk menyederhanakan bentuk di atas.',
+    hint:'Kalikan 4 ke setiap suku di dalam kurung.',
+    type:'text', answers:['8x+12'],
+    explain:'✅ 4(2x+3) = 4×2x + 4×3 = 8x+12 ✓' },
+
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:'Substitusi',
+    eq:[{t:'num',v:'5'},{t:'var',v:'x'},{t:'op',v:'−'},{t:'num',v:'2'}],
+    q:'Jika x=3, berapa nilai dari bentuk aljabar di atas?',
+    hint:'Ganti setiap x dengan angka 3, lalu hitung.',
+    type:'text', answers:['13'],
+    explain:'✅ 5(3)−2 = 15−2 = 13 ✓' },
+
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:'PLSV',
+    eq:[{t:'num',v:'3'},{t:'var',v:'x'},{t:'op',v:'−'},{t:'num',v:'4'},{t:'eq'},{t:'num',v:'11'}],
+    q:'Selesaikan persamaan linear satu variabel di atas. Berapa nilai x?',
+    hint:'Pindahkan −4 ke ruas kanan dulu, baru bagi koefisien x.',
+    type:'text', answers:['5'],
+    explain:'✅ 3x−4=11 → 3x=15 → x=5 ✓' },
+
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:'Pertidaksamaan',
+    eq:[{t:'num',v:'2'},{t:'var',v:'x'},{t:'op',v:'+'},{t:'num',v:'1'},{t:'op',v:'≤'},{t:'num',v:'9'}],
+    q:'Manakah nilai x berikut yang memenuhi pertidaksamaan di atas?',
+    hint:'Selesaikan dulu seperti persamaan biasa untuk menemukan batas x.',
+    type:'mcq', opts:['3','4','5','6'], answer:'4',
+    explain:'✅ 2x+1≤9 → 2x≤8 → x≤4, jadi x=4 memenuhi (nilai lain melebihi batas) ✓' },
+
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:'SPLDV Dasar',
+    eq:[{t:'var',v:'x'},{t:'op',v:'+'},{t:'var2',v:'y'},{t:'eq'},{t:'num',v:'7'}],
+    q:'Diketahui juga x−y=1 (selain persamaan di atas). Berapa nilai x?',
+    hint:'Jumlahkan kedua persamaan agar y hilang.',
+    type:'text', answers:['4'],
+    explain:'✅ (x+y)+(x−y)=7+1 → 2x=8 → x=4 ✓' },
+
+  { id:'e09', section:'s1', tag:'tag-1', tagLabel:'Fungsi',
+    eq:[{t:'var',v:'f(x)'},{t:'eq'},{t:'num',v:'3'},{t:'var',v:'x'},{t:'op',v:'−'},{t:'num',v:'1'}],
+    q:'Diketahui fungsi f(x) di atas. Tentukan nilai f(2).',
+    hint:'Ganti x dengan 2 pada rumus fungsi.',
+    type:'text', answers:['5'],
+    explain:'✅ f(2)=3(2)−1=6−1=5 ✓' },
+
+  { id:'e10', section:'s1', tag:'tag-1', tagLabel:'Nilai Fungsi',
+    eq:[{t:'var',v:'f(x)'},{t:'eq'},{t:'num',v:'2'},{t:'var',v:'x'},{t:'op',v:'+'},{t:'num',v:'3'}],
+    q:'Diketahui fungsi f(x) di atas. Tentukan nilai f(4).',
+    hint:'Ganti x dengan 4 pada rumus fungsi.',
+    type:'text', answers:['11'],
+    explain:'✅ f(4)=2(4)+3=8+3=11 ✓' },
+
+  // ══════════════ STAGE 2 — CHOOSE YOUR WEAPON (10 soal) ══════════════
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:'Unknown Number',
+    wordProblem:true,
+    story:'Sebuah bilangan jika dikalikan 3 kemudian ditambah 5 hasilnya 26.',
+    q:'Berapakah bilangan tersebut?',
+    hint:'Misalkan bilangan itu x, lalu ubah kalimat menjadi persamaan.',
+    type:'text', answers:['7'],
+    explain:'✅ 3x+5=26 → 3x=21 → x=7 ✓' },
+
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:'Batas Nilai',
+    wordProblem:true,
+    story:'Sebuah lift memiliki kapasitas maksimum 8 orang. Saat ini sudah ada 3 orang di dalamnya.',
+    q:'Paling banyak berapa orang tambahan yang masih boleh masuk ke lift?',
+    hint:'Cari kata kunci "maksimum" — ini menunjukkan sebuah pertidaksamaan.',
+    type:'text', answers:['5'],
+    explain:'✅ 3+x≤8 → x≤5, jadi maksimum 5 orang tambahan ✓' },
+
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:'Dua Jenis Barang',
+    wordProblem:true,
+    story:'Sebuah toko menjual pensil seharga Rp1.000/buah dan penghapus seharga Rp2.000/buah. Kemarin terjual 8 barang dengan total pendapatan Rp13.000.',
+    q:'Berapa banyak pensil yang terjual?',
+    hint:'Misalkan pensil=p dan penghapus=e, lalu bentuk dua persamaan dari informasi di atas.',
+    type:'text', answers:['3'],
+    explain:'✅ p+e=8 dan 1000p+2000e=13000 → p+2e=13. Kurangi: e=5, p=3 ✓' },
+
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:'Pilih Representasi',
+    coordPts:['(1,3)','(2,6)','(3,9)','(4,12)'],
+    wordProblem:true,
+    story:'Tabel pasangan (x,y) berikut menunjukkan sebuah pola.',
+    q:'Manakah hubungan yang tepat menggambarkan pola tabel tersebut?',
+    hint:'Bandingkan nilai y dengan x — apakah y selalu kelipatan x?',
+    type:'mcq', opts:['y=3x','y=x+3','y=x²','y=3x+1'], answer:'y=3x',
+    explain:'✅ Setiap y adalah 3 kali x (3,6,9,12), jadi hubungannya y=3x ✓' },
+
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:'Machine Problem',
+    coordPts:['2 → 7','5 → 16'],
+    wordProblem:true,
+    story:'Sebuah "mesin angka" mengubah setiap input menjadi output seperti berikut.',
+    q:'Jika aturan mesin tetap sama, berapa output untuk input 4?',
+    hint:'Coba tebak aturan: output = (angka kali input) + (angka tetap).',
+    type:'text', answers:['13'],
+    explain:'✅ Aturan mesin: output=3×input+1. Untuk input=4: 3(4)+1=13 ✓' },
+
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:'Substitution in Context',
+    eq:[{t:'var',v:'L'},{t:'eq'},{t:'num',v:'½'},{t:'op',v:'×'},{t:'var',v:'a'},{t:'op',v:'×'},{t:'var2',v:'t'}],
+    wordProblem:true,
+    story:'Rumus luas segitiga di atas berlaku dengan alas (a)=8 cm dan tinggi (t)=5 cm.',
+    q:'Berapa luas segitiga tersebut?',
+    hint:'Substitusikan a=8 dan t=5 ke dalam rumus.',
+    type:'text', answers:['20'],
+    explain:'✅ L=½×8×5=20 cm² ✓' },
+
+  { id:'e17', section:'s2', tag:'tag-2', tagLabel:'Growing Pattern',
+    wordProblem:true,
+    story:'Pola batang korek api disusun bertahap: tahap 1 = 4 batang, tahap 2 = 7 batang, tahap 3 = 10 batang, dan seterusnya (selalu bertambah 3 batang tiap tahap).',
+    q:'Berapa banyak batang korek api pada tahap ke-5?',
+    hint:'Cari aturan umum dulu: banyak batang = 3×(nomor tahap) + berapa?',
+    type:'text', answers:['16'],
+    explain:'✅ Aturan: 3n+1. Untuk n=5: 3(5)+1=16 batang ✓' },
+
+  { id:'e18', section:'s2', tag:'tag-2', tagLabel:'Compare Two Relationships',
+    wordProblem:true,
+    story:'Tukang parkir A mengenakan tarif awal Rp5.000 + Rp2.000/jam. Tukang parkir B mengenakan tarif awal Rp3.000 + Rp3.000/jam.',
+    q:'Pada jam ke berapa biaya parkir A dan B menjadi sama?',
+    hint:'Buat dua persamaan biaya, lalu cari titik saat keduanya bernilai sama.',
+    type:'text', answers:['2'],
+    explain:'✅ 5000+2000j = 3000+3000j → 2000=1000j → j=2 jam ✓' },
+
+  { id:'e19', section:'s2', tag:'tag-2', tagLabel:'Story Translation',
+    wordProblem:true,
+    story:'Umur Ali adalah 3 tahun lebih tua dari dua kali umur adiknya. Jika umur adiknya dimisalkan x tahun...',
+    q:'Tuliskan ekspresi aljabar untuk umur Ali dalam bentuk x.',
+    hint:'"Dua kali umur adik" → 2x, lalu "lebih tua 3 tahun" → tambah 3.',
+    type:'text', answers:['2x+3'],
+    explain:'✅ Umur Ali = 2x+3 ✓' },
+
+  { id:'e20', section:'s2', tag:'tag-2', tagLabel:'Mystery Table',
+    coordPts:['(-1,-3)','(0,-1)','(1,1)','(2,3)'],
+    wordProblem:true,
+    story:'Tabel pasangan (x,y) berikut menunjukkan sebuah hubungan linear.',
+    q:'Berdasarkan pola tabel, berapa nilai y saat x=5?',
+    hint:'Cari dulu aturan y=mx+c dari tabel, baru substitusikan x=5.',
+    type:'text', answers:['9'],
+    explain:'✅ Polanya y=2x−1. Untuk x=5: y=2(5)−1=9 ✓' },
+
+  // ══════════════ STAGE 3 — CONCEPT CONNECTION (12 soal) ══════════════
+  // Kelompok A — Bentuk Aljabar → Persamaan
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:'Sederhana → Substitusi',
+    eq:[{t:'num',v:'3'},{t:'var',v:'x'},{t:'op',v:'+'},{t:'num',v:'2'},{t:'var',v:'x'},{t:'op',v:'−'},{t:'num',v:'5'}],
+    q:'Sederhanakan bentuk aljabar di atas, lalu hitung nilainya jika x=4.',
+    hint:'Sederhanakan dulu jadi satu suku x, baru substitusikan.',
+    type:'text', answers:['15'],
+    explain:'✅ 3x+2x−5=5x−5. Untuk x=4: 5(4)−5=15 ✓' },
+
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:'Distributif → PLSV',
+    eq:[{t:'num',v:'2'},{t:'op',v:'('},{t:'var',v:'x'},{t:'op',v:'+'},{t:'num',v:'3'},{t:'op',v:')'},{t:'eq'},{t:'num',v:'16'}],
+    q:'Gunakan sifat distributif, sederhanakan, lalu selesaikan persamaan di atas.',
+    hint:'Kalikan dulu 2 ke dalam kurung, baru selesaikan seperti PLSV biasa.',
+    type:'text', answers:['5'],
+    explain:'✅ 2(x+3)=16 → 2x+6=16 → 2x=10 → x=5 ✓' },
+
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:'Nilai Sama',
+    eq:[{t:'num',v:'3'},{t:'var',v:'x'},{t:'op',v:'+'},{t:'num',v:'2'},{t:'eq'},{t:'var',v:'x'},{t:'op',v:'+'},{t:'num',v:'10'}],
+    q:'Dua bentuk aljabar di atas bernilai sama untuk suatu x tertentu. Tentukan nilai x itu.',
+    hint:'Kumpulkan semua suku x di satu ruas, angka di ruas lain.',
+    type:'text', answers:['4'],
+    explain:'✅ 3x+2=x+10 → 2x=8 → x=4 ✓' },
+
+  // Kelompok B — Persamaan & Pertidaksamaan
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:'Cerita → Persamaan',
+    wordProblem:true,
+    story:'Sebuah bilangan dikurangi 7, kemudian hasilnya dikalikan 2, hasil akhirnya adalah 18.',
+    q:'Tentukan bilangan tersebut.',
+    hint:'Terjemahkan kalimat menjadi (x−7)×2=18, baru selesaikan.',
+    type:'text', answers:['16'],
+    explain:'✅ (x−7)×2=18 → x−7=9 → x=16 ✓' },
+
+  { id:'e25', section:'s3', tag:'tag-3', tagLabel:'Cerita → Pertidaksamaan',
+    wordProblem:true,
+    story:'Sebuah truk boleh membawa muatan maksimum 2.000 kg. Truk itu sudah memuat 350 kg barang.',
+    q:'Paling banyak berapa kilogram lagi barang yang boleh ditambahkan?',
+    hint:'Bentuk pertidaksamaan dari kata "maksimum", lalu interpretasikan hasilnya.',
+    type:'text', answers:['1650'],
+    explain:'✅ 350+x≤2000 → x≤1650, jadi maksimum 1650 kg lagi ✓' },
+
+  { id:'e26', section:'s3', tag:'tag-3', tagLabel:'Uji Nilai',
+    eq:[{t:'num',v:'2'},{t:'var',v:'x'},{t:'op',v:'−'},{t:'num',v:'3'},{t:'op',v:'>'},{t:'num',v:'5'}],
+    q:'Dari nilai x = 2, 3, 4, atau 5 — manakah yang memenuhi pertidaksamaan di atas?',
+    hint:'Coba substitusikan tiap nilai satu per satu ke pertidaksamaan.',
+    type:'mcq', opts:['2','3','4','5'], answer:'5',
+    explain:'✅ Hanya x=5 yang memenuhi: 2(5)−3=7>5 (nilai lain menghasilkan ≤5) ✓' },
+
+  // Kelompok C — SPLDV Connection
+  { id:'e27', section:'s3', tag:'tag-3', tagLabel:'Cerita → SPLDV',
+    wordProblem:true,
+    story:'Total umur Bu Rini dan anaknya sekarang adalah 50 tahun. Selisih umur mereka adalah 24 tahun.',
+    q:'Berapa umur Bu Rini sekarang?',
+    hint:'Misalkan umur Bu Rini=R dan anaknya=A, bentuk dua persamaan: R+A=50 dan R−A=24.',
+    type:'text', answers:['37'],
+    explain:'✅ (R+A)+(R−A)=50+24 → 2R=74 → R=37 tahun ✓' },
+
+  { id:'e28', section:'s3', tag:'tag-3', tagLabel:'Tabel → SPLDV',
+    wordProblem:true,
+    story:'2 apel + 1 jeruk seharga Rp8.000. 1 apel + 3 jeruk seharga Rp9.000.',
+    q:'Berapa harga satu buah apel?',
+    hint:'Misalkan harga apel=a dan jeruk=j, bentuk dua persamaan dari tabel harga di atas.',
+    type:'text', answers:['3000'],
+    explain:'✅ 2a+j=8000 dan a+3j=9000. Substitusi/eliminasi → a=3000, j=2000 ✓' },
+
+  { id:'e29', section:'s3', tag:'tag-3', tagLabel:'Titik Potong',
+    eq:[{t:'var',v:'y'},{t:'eq'},{t:'num',v:'2'},{t:'var',v:'x'},{t:'op',v:'+'},{t:'num',v:'1'}],
+    wordProblem:true,
+    story:'Diketahui juga hubungan kedua: y=x+4 (selain persamaan di atas).',
+    q:'Pada nilai x berapa kedua hubungan tersebut memiliki nilai y yang sama?',
+    hint:'Samakan kedua ruas kanan (karena y sama), lalu selesaikan untuk x.',
+    type:'text', answers:['3'],
+    explain:'✅ 2x+1=x+4 → x=3 ✓' },
+
+  // Kelompok D — Function Connection
+  { id:'e30', section:'s3', tag:'tag-3', tagLabel:'Pola → Fungsi',
+    coordPts:['(1,5)','(2,7)','(3,9)'],
+    wordProblem:true,
+    story:'Tabel pasangan (x,y) berikut mengikuti sebuah pola fungsi linear.',
+    q:'Berdasarkan pola tersebut, berapa nilai y saat x=10?',
+    hint:'Cari dulu aturan fungsinya (y=mx+c), baru substitusikan x=10.',
+    type:'text', answers:['23'],
+    explain:'✅ Polanya y=2x+3. Untuk x=10: y=2(10)+3=23 ✓' },
+
+  { id:'e31', section:'s3', tag:'tag-3', tagLabel:'Bandingkan Fungsi',
+    eq:[{t:'var',v:'f(x)'},{t:'eq'},{t:'num',v:'2'},{t:'var',v:'x'},{t:'op',v:'−'},{t:'num',v:'1'}],
+    q:'Untuk input manakah, 2 atau 5, hasil f(x) pada fungsi di atas lebih besar?',
+    hint:'Hitung f(2) dan f(5), lalu bandingkan.',
+    type:'mcq', opts:['2','5','Sama besar','Tidak bisa ditentukan'], answer:'5',
+    explain:'✅ f(2)=3 dan f(5)=9, jadi f(5) lebih besar ✓' },
+
+  { id:'e32', section:'s3', tag:'tag-3', tagLabel:'Fungsi Konteks',
+    wordProblem:true,
+    story:'Biaya sewa sepeda terdiri dari biaya awal Rp5.000 ditambah Rp2.000 untuk setiap jam pemakaian.',
+    q:'Jika ditulis sebagai fungsi biaya B(t) terhadap waktu t (jam), berapa biaya untuk menyewa selama 4 jam?',
+    hint:'Bentuk fungsinya dulu: B(t) = biaya awal + (tarif per jam × t).',
+    type:'text', answers:['13000'],
+    explain:'✅ B(t)=5000+2000t. Untuk t=4: B(4)=5000+8000=13000 ✓' },
+
+  // ══════════════ STAGE 4 — ALGEBRA BOSS BATTLE (8 soal) ══════════════
+  { id:'e33', section:'s4', tag:'tag-4', tagLabel:'🏆 Translation Puzzle',
+    wordProblem:true,
+    story:'Sebuah toko mainan menjual mobil-mobilan tipe kecil (Rp20.000/buah) dan tipe besar (Rp30.000/buah). Kemarin terjual total 15 buah dengan total pendapatan Rp380.000.',
+    q:'Berapa buah mobil-mobilan tipe besar yang terjual?',
+    hint:'Tentukan dulu apa yang belum diketahui, misalkan dengan dua variabel, lalu bangun SPLDV dari cerita.',
+    type:'text', answers:['8'],
+    explain:'✅ k+b=15 dan 20000k+30000b=380000 → 2k+3b=38. Substitusi k=15−b → b=8, k=7 ✓' },
+
+  { id:'e34', section:'s4', tag:'tag-4', tagLabel:'🏆 Hidden Equation',
+    wordProblem:true,
+    story:'Tiga kotak pensil identik dan sebuah buku memiliki berat total 800 gram. Berat buku itu sendiri adalah 200 gram.',
+    q:'Berapa berat satu kotak pensil?',
+    hint:'Tidak ada persamaan yang tertulis langsung — bangun sendiri persamaannya dari cerita.',
+    type:'text', answers:['200'],
+    explain:'✅ 3p+200=800 → 3p=600 → p=200 gram ✓' },
+
+  { id:'e35', section:'s4', tag:'tag-4', tagLabel:'🏆 Limit Challenge',
+    wordProblem:true,
+    story:'Andi punya uang Rp150.000 untuk membeli buku seharga Rp35.000 per buku. Ia ingin menyisihkan minimal Rp10.000 untuk ongkos transportasi pulang.',
+    q:'Paling banyak berapa buku yang bisa Andi beli?',
+    hint:'Pahami kata kunci "minimal disisihkan", lalu buat pertidaksamaan dari sisa uang.',
+    type:'text', answers:['4'],
+    explain:'✅ 35000n+10000≤150000 → 35000n≤140000 → n≤4, jadi maksimum 4 buku ✓' },
+
+  { id:'e36', section:'s4', tag:'tag-4', tagLabel:'🏆 Two Unknowns Mystery',
+    wordProblem:true,
+    story:'Jumlah dua bilangan adalah 27. Bilangan pertama sama dengan dua kali bilangan kedua dikurangi 3.',
+    q:'Berapa bilangan pertama?',
+    hint:'Tentukan sendiri mana yang jadi x dan mana yang jadi y, lalu bentuk dua hubungannya.',
+    type:'text', answers:['17'],
+    explain:'✅ x+y=27 dan x=2y−3. Substitusi: 2y−3+y=27 → 3y=30 → y=10, x=17 ✓' },
+
+  { id:'e37', section:'s4', tag:'tag-4', tagLabel:'🏆 Function Detective',
+    coordPts:['(1,4)','(2,7)','(3,10)'],
+    wordProblem:true,
+    story:'Perhatikan pasangan (input, output) di atas dari sebuah fungsi rahasia.',
+    q:'Jika suatu input menghasilkan output=25, berapakah input tersebut? (kerjakan mundur)',
+    hint:'Temukan dulu aturan fungsinya (y=mx+c), lalu balik hitung dari output ke input.',
+    type:'text', answers:['8'],
+    explain:'✅ Aturan: y=3x+1. Jika y=25 → 3x+1=25 → 3x=24 → x=8 ✓' },
+
+  { id:'e38', section:'s4', tag:'tag-4', tagLabel:'🏆 Graph vs Equation',
+    wordProblem:true,
+    story:'Garis A: y=x+2. Garis B: y=−x+8. Kedua garis ini digambarkan pada bidang koordinat yang sama.',
+    q:'Berapa nilai y pada titik saat kedua garis tersebut berpotongan?',
+    hint:'Cari dulu nilai x saat kedua garis bertemu (nilai y-nya sama), lalu hitung y.',
+    type:'text', answers:['5'],
+    explain:'✅ x+2=−x+8 → 2x=6 → x=3. Maka y=3+2=5 ✓' },
+
+  { id:'e39', section:'s4', tag:'tag-4', tagLabel:'🏆 Error Detective',
+    eq:[{t:'num',v:'3'},{t:'op',v:'('},{t:'var',v:'x'},{t:'op',v:'+'},{t:'num',v:'2'},{t:'op',v:')'},{t:'eq'},{t:'num',v:'3'},{t:'var',v:'x'},{t:'op',v:'+'},{t:'num',v:'2'}],
+    wordProblem:true,
+    story:'Seorang siswa menuliskan jawaban seperti pada bentuk di atas saat mengerjakan distribusi.',
+    q:'Siswa itu salah menerapkan sifat distributif. Apa hasil yang seharusnya benar dari 3(x+2)?',
+    hint:'Perhatikan: siswa hanya mengalikan 3 ke suku pertama saja, lupa suku kedua.',
+    type:'text', answers:['3x+6'],
+    explain:'✅ 3(x+2) = 3x+6 (bukan 3x+2 — siswa lupa mengalikan 3 ke angka 2) ✓' },
+
+  { id:'e40', section:'s4', tag:'tag-4', tagLabel:'👑 FINAL BOSS',
+    wordProblem:true,
+    story:'Sebuah kolam renang menetapkan biaya sewa awal Rp50.000 ditambah Rp15.000 per jam pemakaian. Ari membawa uang Rp140.000 dan harus menyisakan minimal Rp5.000 untuk ongkos pulang.',
+    q:'Berapa jam maksimum Ari bisa berenang di kolam tersebut?',
+    hint:'Bentuk dulu fungsi biaya C(t), lalu gunakan pertidaksamaan dengan sisa uang minimal, dan interpretasikan hasilnya sebagai bilangan jam bulat.',
+    type:'text', answers:['5'],
+    explain:'✅ C(t)=50000+15000t ≤ 140000−5000=135000 → 15000t≤85000 → t≤5,67 → maksimum 5 jam (bulat ke bawah) ✓' },
+
+];
+
+const total = exercises.length;
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = `${(done/total)*100}%`;
+  for(let i=1;i<=5;i++){
+    const el=document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done>=i*8);
+  }
+  if(done===total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){ inp.classList.add('correct'); inp.disabled=true; btn.disabled=true; }
+  else { card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true); }
+  const fb=card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok'; fb.textContent=q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){ const b=document.createElement('div'); b.className='done-badge'; b.textContent='✓ Done'; card.appendChild(b); }
+  progress[q.id]=true; saveProgress(progress); updateProgressBar();
+}
+
+function checkText(id, inp, btn, q){
+  const raw=inp.value.trim().toLowerCase().replace(/\s+/g,'');
+  if(!raw) return;
+  const correct=q.answers.some(a=>raw===a.toLowerCase().replace(/\s+/g,''));
+  if(correct){ markDone(inp.closest('.ex-card'),q,inp,btn); }
+  else {
+    inp.classList.add('wrong-anim');
+    const attRow=inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot=document.createElement('div'); dot.className='attempts-dot'; attRow.appendChild(dot);
+    setTimeout(()=>{ inp.classList.remove('wrong-anim'); inp.value=''; inp.focus(); },400);
+    if(attRow.children.length>=3){
+      const fb=inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no'; fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{ b.disabled=true; if(b.dataset.val===q.answer) b.classList.add('opt-correct'); });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb=card.querySelector('.ex-feedback');
+  if(val===q.answer){ markDone(card,q,null,null); }
+  else {
+    fb.className='ex-feedback show no'; fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+    if(!card.querySelector('.done-badge')){ const b=document.createElement('div'); b.className='done-badge'; b.textContent='Done'; card.appendChild(b); }
+  }
+}
+
+function buildExercises(){
+  const area=document.getElementById('exerciseArea');
+  area.innerHTML='';
+  const groups=[
+    { key:'s1', label:'🟢 Stage 1 — Fundamental Recall',   cls:'sd-1', badge:'10 Soal' },
+    { key:'s2', label:'🟡 Stage 2 — Choose Your Weapon',    cls:'sd-2', badge:'10 Soal' },
+    { key:'s3', label:'🟠 Stage 3 — Concept Connection',    cls:'sd-3', badge:'12 Soal' },
+    { key:'s4', label:'🔴 Stage 4 — Algebra Boss Battle',   cls:'sd-4', badge:'8 Soal'  },
+  ];
+
+  groups.forEach(g=>{
+    const wrap=document.createElement('div');
+    wrap.innerHTML=`<div class="sec-divider ${g.cls}">${g.label}<span class="sd-sesi">${g.badge}</span></div>`;
+    const grid=document.createElement('div'); grid.className='exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone=!!progress[q.id];
+      const card=document.createElement('div');
+      card.className='ex-card'+(q.wordProblem?' word-card':'')+(isDone?' done-card':'');
+
+      const eqDisp    = q.eq ? eqHTML(q.eq) : '';
+      const coordDisp = q.coordPts ? (q.coordPts.length>1 ? coordHTML(q.coordPts[0], q.coordPts[1]) : pointsHTML(q.coordPts)) : (q.coordDisp ? pointsHTML(q.coordDisp) : '');
+      const triDisp   = q.triSides ? triHTML(q.triSides) : '';
+      const storyDisp = q.story ? `<div class="word-story">${q.story}</div>` : '';
+
+      let inputHTML='';
+      if(q.type==='text'){
+        inputHTML=`<div class="ex-input-wrap"><div class="ex-input-row">
+          <input type="text" class="ex-input ${isDone?'correct':''}" placeholder="Jawaban?"
+            value="${isDone?q.answers[0]:''}" ${isDone?'disabled':''}
+            onkeydown="if(event.key==='Enter')this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+          <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+        </div><div class="attempts-row"></div></div>`;
+      } else {
+        const shuffled=[...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML=`<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML=`
+        <div class="ex-num">Soal ${parseInt(q.id.replace('e',''))}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${storyDisp}${eqDisp}${coordDisp}${triDisp}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone?q.explain:''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn=card.querySelector('.ex-btn'), inp=card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick=()=>checkText(q.id,inp,btn,q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{ b.onclick=()=>checkMCQ(b.dataset.val,b,q,card); });
+      }
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Cluster 8? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+
+// Floating symbols
+const emojis=['🧮','🔢','➗','✖️','🟰','📈','🏆'];
+const wrap=document.getElementById('petals');
+for(let i=0;i<16;i++){
+  const p=document.createElement('div'); p.className='petal';
+  const sz=0.9+Math.random()*1.3;
+  p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--sz:${sz}rem;font-size:${sz}rem;--d:${4+Math.random()*6}s;--dl:${-Math.random()*6}s;--r0:${-15+Math.random()*30}deg;--r1:${-15+Math.random()*30}deg;`;
+  p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  wrap.appendChild(p);
+}
+</script>
+<script src="../../../assets/chat-widget.js"></script>
+<script>
+  initChat({ studentId: 'tasya_0751', studentName: 'Tasya' });
+</script>
+</body>
+</html>
