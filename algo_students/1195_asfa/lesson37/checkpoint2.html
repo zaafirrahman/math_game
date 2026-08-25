@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkpoint II · Lesson 37 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--violet:#a78bfa;--red:#ef4444;--meet:#f472b6;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(0,245,196,0.05) 0%,transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(245,158,11,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--accent);}
+  .wrapper{max-width:640px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  #intro{text-align:center;}
+  .cp-icon{font-size:5rem;display:block;margin-bottom:1.5rem;}
+  .cp-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2rem);font-weight:900;color:var(--accent);margin-bottom:0.8rem;text-shadow:0 0 30px rgba(245,158,11,0.35);}
+  .cp-sub{color:var(--muted);line-height:1.7;margin-bottom:1.5rem;font-size:0.95rem;}
+  .rules-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem 1.5rem;margin-bottom:2rem;text-align:left;}
+  .rules-box .r-item{font-size:0.88rem;color:var(--text);margin-bottom:0.6rem;display:flex;gap:0.6rem;}
+  .rules-box .r-item:last-child{margin-bottom:0;}
+  .info-cards{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
+  .info-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;text-align:center;}
+  .info-val{font-family:'Orbitron',monospace;font-size:1.8rem;font-weight:900;color:var(--neon);margin-bottom:0.3rem;}
+  .info-lbl{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+  .start-btn{background:linear-gradient(135deg,var(--accent),#c2650a);color:#000;font-weight:800;padding:1rem 3rem;border-radius:14px;border:none;font-family:'Orbitron',monospace;font-size:1rem;letter-spacing:3px;cursor:pointer;box-shadow:0 4px 20px rgba(245,158,11,0.3);transition:all 0.2s;}
+  .start-btn:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(245,158,11,0.4);}
+  #game{display:none;}
+  .hud{display:flex;justify-content:center;margin-bottom:1.5rem;}
+  .hud-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.7rem 1.6rem;text-align:center;}
+  .hud-val{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:700;color:var(--accent);}
+  .hud-lbl{font-size:0.62rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:0.1rem;}
+  .progress-track{height:6px;background:var(--border);border-radius:4px;margin-bottom:1.5rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--neon),var(--accent));border-radius:4px;transition:width 0.3s ease;}
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem;margin-bottom:1.2rem;}
+  .q-text{font-size:1.02rem;line-height:1.6;margin-bottom:1.4rem;font-weight:600;}
+  .opts{display:flex;flex-direction:column;gap:0.7rem;}
+  .opt-btn{background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.85rem 1.1rem;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.92rem;font-weight:600;transition:all 0.2s;text-align:left;}
+  .opt-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(245,158,11,0.06);}
+  .opt-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.12);color:var(--neon);}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.12);color:#f87171;}
+  #result{display:none;text-align:center;}
+  .result-icon{font-size:4rem;margin-bottom:1rem;}
+  .result-title{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;color:var(--neon);margin-bottom:0.6rem;}
+  .result-sub{color:var(--muted);font-size:0.9rem;margin-bottom:2.2rem;line-height:1.6;}
+  .cat-bars{text-align:left;margin-bottom:2.2rem;}
+  .cat-row{margin-bottom:1.1rem;}
+  .cat-row-top{display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:0.4rem;}
+  .cat-row-top .cname{font-weight:700;color:var(--text);}
+  .cat-row-top .cval{font-family:'Orbitron',monospace;color:var(--muted);}
+  .cat-bar-track{height:14px;background:#12121c;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .cat-bar-fill{height:100%;border-radius:8px;transition:width 0.6s ease;}
+  .result-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .act-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;border:none;}
+  .act-primary{background:linear-gradient(135deg,var(--neon),#059669);color:#000;font-weight:800;}
+  .act-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .act-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,245,196,0.3);}
+  .act-secondary:hover{border-color:var(--neon);color:var(--neon);}
+  .downloaded-note{font-size:0.78rem;color:var(--neon);margin-top:0.8rem;min-height:18px;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson37.html">LESSON 37</a>
+  <span>›</span>
+  <span class="current">CHECKPOINT II</span>
+</nav>
+<div class="wrapper">
+  <div id="intro">
+    <span class="cp-icon">🧭</span>
+    <div class="cp-title">Algebra Checkpoint II</div>
+    <div class="cp-sub">16 soal retest buat mastiin apa yang udah dipelajari di Lesson 33-36 beneran nempel. Ini bukan sesi belajar — ini pembuktian dari apa yang udah kamu latih.</div>
+    <div class="rules-box">
+      <div class="r-item">🚫 <span>Tidak ada bantuan atau pembahasan selama checkpoint berlangsung</span></div>
+      <div class="r-item">⏱️ <span>Tidak ada timer — kerjakan santai, fokus ke jawaban yang paling kamu yakini</span></div>
+      <div class="r-item">🔀 <span>Urutan soal acak, tidak dikelompokkan per topik</span></div>
+      <div class="r-item">✅ <span>Setelah pilih jawaban, langsung lanjut ke soal berikutnya</span></div>
+    </div>
+    <div class="info-cards">
+      <div class="info-card"><div class="info-val">16</div><div class="info-lbl">Soal</div></div>
+      <div class="info-card"><div class="info-val">1x</div><div class="info-lbl">Kerjakan</div></div>
+    </div>
+    <button class="start-btn" onclick="startGame()">MULAI 🚀</button>
+  </div>
+  <div id="game">
+    <div class="hud">
+      <div class="hud-item"><div class="hud-val" id="qV">1/16</div><div class="hud-lbl">Soal</div></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progFill" style="width:6.25%"></div></div>
+    <div class="q-card">
+      <div class="q-text" id="qText"></div>
+      <div class="opts" id="optsDiv"></div>
+    </div>
+  </div>
+  <div id="result">
+    <div class="result-icon">🧭</div>
+    <div class="result-title">Checkpoint II Selesai!</div>
+    <div class="result-sub">Ini profil penguasaan konsep aljabar kamu pasca Lesson 33-36. Hasilnya udah otomatis kesimpan — tinggal download dan kirim ke tutor kamu ya.</div>
+    <div class="cat-bars" id="catBars"></div>
+    <div class="result-actions">
+      <button class="act-btn act-primary" onclick="downloadResult()">DOWNLOAD HASIL</button>
+      <a href="lesson37.html" class="act-btn act-secondary">Kembali ke Lesson 37</a>
+    </div>
+    <div class="downloaded-note" id="downloadedNote"></div>
+  </div>
+</div>
+<script>
+// ===== QUESTION BANK (Checkpoint II — retest pasca Lesson 33-36) =====
+const QUESTIONS = [
+// --- 1. Tanda Negatif & Operasi ---
+{id:'R1',category:'tanda_negatif',difficulty:'sedang',text:'Sederhanakan 9x - (4x - 6).',
+ options:[{value:'5x + 6',tag:'correct'},{value:'5x - 6',tag:'lupa_distribusi'},{value:'13x - 6',tag:'salah_tanda_negatif'},{value:'5x + 2',tag:'kesalahan_hitung_dasar'}]},
+{id:'R2',category:'tanda_negatif',difficulty:'sedang',text:'Sederhanakan -6(2x - 3).',
+ options:[{value:'-12x + 18',tag:'correct'},{value:'-12x - 3',tag:'lupa_distribusi'},{value:'-12x - 18',tag:'salah_tanda_negatif'},{value:'-12x + 12',tag:'kesalahan_hitung_dasar'}]},
+{id:'R3',category:'tanda_negatif',difficulty:'sulit',text:'Sederhanakan -3(2x - 5) - (x - 4).',
+ options:[{value:'-7x + 19',tag:'correct'},{value:'-7x + 11',tag:'lupa_distribusi'},{value:'-7x - 11',tag:'salah_tanda_negatif'},{value:'-7x + 9',tag:'kesalahan_hitung_dasar'}]},
+{id:'R4',category:'tanda_negatif',difficulty:'sulit',text:'Sederhanakan 8x - 2(3x - 5) - 7.',
+ options:[{value:'2x + 3',tag:'correct'},{value:'2x - 12',tag:'lupa_distribusi'},{value:'2x - 17',tag:'salah_tanda_negatif'},{value:'2x + 13',tag:'kesalahan_hitung_dasar'}]},
+{id:'R5',category:'tanda_negatif',difficulty:'sedang',text:'Sederhanakan -4x + 3(5 - x).',
+ options:[{value:'-7x + 15',tag:'correct'},{value:'-7x + 5',tag:'lupa_distribusi'},{value:'-x + 15',tag:'salah_tanda_negatif'},{value:'-7x + 9',tag:'kesalahan_hitung_dasar'}]},
+// --- 2. Identifikasi Bentuk Aljabar ---
+{id:'R6',category:'identifikasi_bentuk',difficulty:'mudah',text:'Pada 8 - 3x + 2x², mana koefisien dari x?',
+ options:[{value:'-3',tag:'correct'},{value:'8',tag:'tertukar_koefisien_konstanta'},{value:'3',tag:'abai_tanda_saat_identifikasi'},{value:'2',tag:'salah_identifikasi_variabel'}]},
+{id:'R7',category:'identifikasi_bentuk',difficulty:'sedang',text:'Bentuk aljabar -5 + 7x - x². Konstanta dari bentuk tersebut adalah...',
+ options:[{value:'-5',tag:'correct'},{value:'7',tag:'tertukar_koefisien_konstanta'},{value:'5',tag:'abai_tanda_saat_identifikasi'},{value:'-1',tag:'salah_identifikasi_variabel'}]},
+{id:'R8',category:'identifikasi_bentuk',difficulty:'sedang',text:'Berapa banyak suku pada bentuk 4 - 9x + x²?',
+ options:[{value:'3',tag:'correct'},{value:'2',tag:'salah_hitung_suku_sejenis'},{value:'13',tag:'tertukar_koefisien_konstanta'},{value:'1',tag:'salah_identifikasi_variabel'}]},
+{id:'R9',category:'identifikasi_bentuk',difficulty:'sulit',text:'Bentuk aljabar -x² + 6 - 4x. Manakah pasangan koefisien x dan konstanta yang tepat?',
+ options:[{value:'koefisien x = -4, konstanta = 6',tag:'correct'},{value:'koefisien x = 6, konstanta = -4',tag:'tertukar_koefisien_konstanta'},{value:'koefisien x = 4, konstanta = 6',tag:'abai_tanda_saat_identifikasi'},{value:'koefisien x = -1, konstanta = 6',tag:'salah_identifikasi_variabel'}]},
+// --- 3. Fungsi Dua Arah + Komposisi ---
+{id:'R10',category:'fungsi_dua_arah',difficulty:'mudah',text:'Diketahui f(x) = 5x - 3. Tentukan f(6).',
+ options:[{value:'27',tag:'correct'},{value:'30',tag:'salah_baca_notasi_fungsi'},{value:'33',tag:'kesalahan_hitung_dasar'},{value:'1,8',tag:'salah_arah_substitusi'}]},
+{id:'R11',category:'fungsi_dua_arah',difficulty:'sedang',text:'Diketahui f(x) = 3x + 8. Jika f(x) = 26, tentukan nilai x.',
+ options:[{value:'6',tag:'correct'},{value:'26',tag:'salah_arah_substitusi'},{value:'8,67',tag:'salah_selesaikan_saat_cari_input'},{value:'5',tag:'kesalahan_hitung_dasar'}]},
+{id:'R12',category:'fungsi_dua_arah',difficulty:'sulit',text:'Diketahui g(x) = 2x - 5. Jika g(x) = -1, tentukan nilai x.',
+ options:[{value:'2',tag:'correct'},{value:'-1',tag:'salah_arah_substitusi'},{value:'-0,5',tag:'salah_selesaikan_saat_cari_input'},{value:'-3',tag:'kesalahan_hitung_dasar'}]},
+{id:'R13',category:'fungsi_dua_arah',difficulty:'sulit',text:'Diketahui f(x) = 2x + 1 dan g(x) = x - 3. Tentukan nilai dari f(g(4)).',
+ options:[{value:'3',tag:'correct'},{value:'6',tag:'salah_arah_substitusi'},{value:'10',tag:'salah_baca_notasi_fungsi'},{value:'5',tag:'kesalahan_hitung_dasar'}]},
+// --- 4. Disiplin Variabel ---
+{id:'R14',category:'disiplin_variabel',difficulty:'sedang',text:'"Kecepatan mobil 15 km/jam lebih cepat dari kecepatan motor." Jika kecepatan motor = m, kecepatan mobil dinyatakan sebagai...',
+ options:[{value:'m + 15',tag:'correct'},{value:'k + 15',tag:'salah_representasi_variabel'},{value:'15 - m',tag:'tertukar_urutan_pengurangan'},{value:'15m',tag:'salah_operasi_kata_kunci'}]},
+{id:'R15',category:'disiplin_variabel',difficulty:'sulit',text:'"Luas sebuah taman 20 m² lebih besar dari tiga kali luas kolam di dalamnya." Jika luas kolam = k, luas taman dinyatakan sebagai...',
+ options:[{value:'3k + 20',tag:'correct'},{value:'3t + 20',tag:'salah_representasi_variabel'},{value:'3(k + 20)',tag:'salah_struktur_dua_langkah'},{value:'20 - 3k',tag:'tertukar_urutan_pengurangan'}]},
+{id:'R16',category:'disiplin_variabel',difficulty:'sulit',text:'"Selisih nilai ujian Fahri dan nilai ujian temannya adalah 12 poin. Nilai Fahri setengah dari nilai temannya." Jika nilai teman = t, pernyataan yang tepat...',
+ options:[{value:'t - 0,5t = 12',tag:'correct'},{value:'0,5t - t = 12',tag:'salah_interpretasi_konteks'},{value:'t - 0,5f = 12',tag:'salah_representasi_variabel'},{value:'0,5(t - 12) = t',tag:'salah_struktur_dua_langkah'}]},
+];
+
+const CATEGORY_META = {
+  tanda_negatif: {label:'Tanda Negatif & Operasi', color:'#38bdf8'},
+  identifikasi_bentuk: {label:'Identifikasi Bentuk', color:'#00f5c4'},
+  fungsi_dua_arah: {label:'Fungsi Dua Arah', color:'#f59e0b'},
+  disiplin_variabel: {label:'Disiplin Variabel', color:'#f472b6'},
+};
+
+let sessionOrder = [];
+let cur = 0;
+let answered = false;
+let curOptions = [];
+let categoryScores = {};
+let wrongAnswers = [];
+let tagFrequency = {};
+
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
+
+function startGame(){
+  sessionOrder = shuffle(QUESTIONS);
+  cur = 0;
+  categoryScores = {};
+  Object.keys(CATEGORY_META).forEach(c=>{
+    const total = QUESTIONS.filter(q=>q.category===c).length;
+    categoryScores[c] = {correct:0, total};
+  });
+  wrongAnswers = [];
+  tagFrequency = {};
+  document.getElementById('intro').style.display='none';
+  document.getElementById('game').style.display='block';
+  showQ();
+}
+
+function showQ(){
+  if(cur>=sessionOrder.length){endGame();return;}
+  answered=false;
+  const q = sessionOrder[cur];
+  document.getElementById('qV').textContent=(cur+1)+'/'+sessionOrder.length;
+  document.getElementById('progFill').style.width=(((cur+1)/sessionOrder.length)*100)+'%';
+  document.getElementById('qText').textContent=q.text;
+  curOptions = shuffle(q.options);
+  const od = document.getElementById('optsDiv');
+  od.innerHTML='';
+  curOptions.forEach((opt,i)=>{
+    const b=document.createElement('button');
+    b.className='opt-btn';
+    b.textContent=opt.value;
+    b.onclick=()=>pick(i);
+    od.appendChild(b);
+  });
+}
+
+function pick(i){
+  if(answered) return;
+  answered=true;
+  const q = sessionOrder[cur];
+  const opt = curOptions[i];
+  const isCorrect = opt.tag === 'correct';
+  const btns = document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>b.disabled=true);
+  btns[i].classList.add(isCorrect?'correct':'wrong');
+
+  if(isCorrect){
+    categoryScores[q.category].correct++;
+  } else {
+    const correctOpt = q.options.find(o=>o.tag==='correct');
+    wrongAnswers.push({
+      qid:q.id,
+      category:q.category,
+      difficulty:q.difficulty,
+      chosenTag:opt.tag,
+      chosenValue:opt.value,
+      correctValue:correctOpt.value
+    });
+    tagFrequency[opt.tag] = (tagFrequency[opt.tag]||0)+1;
+  }
+
+  setTimeout(()=>{cur++; showQ();}, 650);
+}
+
+function endGame(){
+  document.getElementById('game').style.display='none';
+  document.getElementById('result').style.display='block';
+  const cb = document.getElementById('catBars');
+  cb.innerHTML='';
+  Object.keys(CATEGORY_META).forEach(c=>{
+    const meta = CATEGORY_META[c];
+    const sc = categoryScores[c];
+    const pct = (sc.correct/sc.total)*100;
+    const row = document.createElement('div');
+    row.className='cat-row';
+    row.innerHTML = `
+      <div class="cat-row-top"><span class="cname">${meta.label}</span><span class="cval">${sc.correct}/${sc.total}</span></div>
+      <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${pct}%;background:${meta.color}"></div></div>
+    `;
+    cb.appendChild(row);
+  });
+  saveResult();
+}
+
+function buildResultObject(){
+  return {
+    student: 'asfa',
+    checkpointId: 'algebra-ckpt2',
+    completedAt: new Date().toISOString(),
+    categoryScores,
+    wrongAnswers,
+    tagFrequency
+  };
+}
+
+function saveResult(){
+  try{
+    localStorage.setItem('asfa_algebra_checkpoint2', JSON.stringify(buildResultObject()));
+  }catch(e){}
+}
+
+function downloadResult(){
+  const data = buildResultObject();
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'asfa_algebra_checkpoint2_'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  document.getElementById('downloadedNote').textContent = '✅ File tersimpan ke folder Download. Kirim ke tutor kamu ya!';
+}
+</script>
+</body>
+</html>
