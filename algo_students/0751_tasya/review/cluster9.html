@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cluster 9 · Data & Probability Mega Review · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4fbf8;
+    --surface: #e8f7f1;
+    --card: #ffffff;
+    --border: #cdeee1;
+    --border2: #a8dfc9;
+    --gold: #2f8f7c;
+    --gold-light: #8fd0ab;
+    --bronze: #1f6f5c;
+    --teal: #d9a441;
+    --teal-light: #f0cf8a;
+    --text: #223a34;
+    --text-mid: #55766b;
+    --text-muted: #92b3a6;
+    --shadow: rgba(47, 143, 124, 0.12);
+    --red: #c0392b;
+    --green: #4db88a;
+    --s1: #3f9c6d; --s1-light: #8fd0ab;
+    --s2: #d9a441; --s2-light: #f0cf8a;
+    --s3: #e2793e; --s3-light: #f3b284;
+    --s4: #d1495b; --s4-light: #ec9aa6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Quicksand', sans-serif; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 20%, rgba(47,143,124,0.08) 0%, transparent 45%),
+      radial-gradient(ellipse at 90% 10%, rgba(217,164,65,0.07) 0%, transparent 45%),
+      radial-gradient(ellipse at 80% 90%, rgba(209,73,91,0.05) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  .petal { position: fixed; pointer-events: none; z-index: 0; animation: petalFloat var(--d) ease-in-out infinite var(--dl); opacity: 0.12; font-size: var(--sz); }
+  @keyframes petalFloat { 0%,100%{ transform: translateY(0) rotate(var(--r0)); opacity:0.12; } 50%{ transform: translateY(-14px) rotate(var(--r1)); opacity:0.2; } }
+
+  nav {
+    padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    background: rgba(244,251,248,0.92); backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;
+  }
+  nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--gold); }
+  nav span { color: var(--border2); }
+  nav .current { color: var(--gold); }
+
+  .wrapper { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.2rem 6rem; position: relative; z-index: 1; }
+  @media(max-width:480px){ .wrapper { padding: 1.8rem 0.8rem 6rem; } }
+
+  /* Banner */
+  .banner {
+    background: linear-gradient(135deg, rgba(47,143,124,0.1), rgba(217,164,65,0.07));
+    border: 2px solid var(--gold-light);
+    border-radius: 22px; padding: 2rem 2rem 1.6rem;
+    margin-bottom: 2rem; position: relative; overflow: hidden;
+  }
+  .banner::before {
+    content: '🎲'; position: absolute; right: 1.5rem; top: 50%;
+    transform: translateY(-50%); font-size: 6rem; opacity: 0.08; pointer-events: none;
+  }
+  .page-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(47,143,124,0.12); border: 1.5px solid rgba(47,143,124,0.4);
+    color: var(--bronze); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.3rem 1rem; border-radius: 20px; margin-bottom: 0.9rem; font-weight: 800;
+  }
+  .page-title { font-family: 'Nunito', sans-serif; font-size: clamp(1.4rem,4vw,2rem); font-weight: 900; color: var(--text); margin-bottom: 0.45rem; line-height: 1.25; }
+  .page-title span { color: var(--gold); }
+  .page-desc { color: var(--text-mid); font-size: 0.88rem; line-height: 1.7; max-width: 580px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .pill { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; padding: 0.22rem 0.75rem; border-radius: 20px; font-weight: 700; }
+  .pill-gold { background: rgba(47,143,124,0.12); color: var(--bronze); border: 1.5px solid rgba(47,143,124,0.35); }
+  .pill-teal { background: rgba(217,164,65,0.12);  color: #8a6a1f;   border: 1.5px solid rgba(217,164,65,0.35); }
+  .pill-red  { background: rgba(209,73,91,0.1);   color: var(--s4);    border: 1.5px solid rgba(209,73,91,0.3); }
+  .pill-orn  { background: rgba(226,121,62,0.1);  color: var(--s3);    border: 1.5px solid rgba(226,121,62,0.3); }
+  .pill-grn  { background: rgba(63,156,109,0.1);  color: var(--s1);    border: 1.5px solid rgba(63,156,109,0.3); }
+
+  /* Progress */
+  .prog-panel { background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 1.2rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 3px 14px var(--shadow); }
+  .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+  .prog-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+  .prog-count { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 900; color: var(--gold); }
+  .prog-track { height: 7px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 0.5rem; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--s1), var(--s2), var(--s3), var(--s4)); border-radius: 99px; transition: width 0.7s ease; }
+  .prog-sub { font-size: 0.76rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
+  .reset-link { font-size: 0.7rem; color: var(--text-muted); cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+  .reset-link:hover { color: var(--red); }
+  .prog-stars { display: flex; gap: 0.3rem; margin-top: 0.6rem; align-items: center; font-size: 0.76rem; color: var(--text-muted); }
+  .star { font-size: 0.9rem; opacity: 0.2; transition: opacity 0.4s; }
+  .star.lit { opacity: 1; }
+
+  /* Equation display (reused for probability fractions/expressions) */
+  .eq-display {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.3rem;
+    margin: 0.6rem 0 0.8rem; padding: 0.7rem 0.6rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+    font-family: 'Nunito', sans-serif; font-weight: 900;
+  }
+  .ed-var  { font-size: 1.15rem; color: var(--gold); background: rgba(47,143,124,0.12); border: 1.5px solid rgba(47,143,124,0.35); padding: 0.15rem 0.55rem; border-radius: 8px; font-style: italic; }
+  .ed-num  { font-size: 1.15rem; color: var(--text-mid); background: var(--surface); border: 1.5px solid var(--border2); padding: 0.15rem 0.5rem; border-radius: 8px; }
+  .ed-op   { font-size: 1.1rem; color: var(--text-muted); }
+
+  /* Dataset chips (reused for data lists) */
+  .coord-display {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.6rem;
+    margin: 0.6rem 0 0.8rem; padding: 0.7rem 0.9rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.95rem;
+  }
+  .coord-point {
+    color: var(--gold); background: rgba(47,143,124,0.12); border: 1.5px solid rgba(47,143,124,0.35);
+    padding: 0.3rem 0.8rem; border-radius: 10px;
+  }
+  .coord-point.alt { color: #8a6a1f; background: rgba(217,164,65,0.12); border-color: rgba(217,164,65,0.3); }
+  .coord-arrow { color: var(--text-muted); font-size: 1.1rem; }
+  .dataset-note { text-align: center; font-size: 0.74rem; color: var(--text-muted); margin: -0.3rem 0 0.7rem; font-style: italic; }
+
+  /* Data table */
+  .data-table-wrap { overflow-x: auto; margin: 0.6rem 0 0.8rem; border-radius: 12px; border: 1.5px solid var(--border); }
+  .data-table { width: 100%; border-collapse: collapse; background: var(--surface); }
+  .data-table th { background: rgba(47,143,124,0.12); color: var(--bronze); font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.76rem; padding: 0.5rem 0.7rem; text-align: center; letter-spacing: 0.5px; }
+  .data-table td { padding: 0.5rem 0.7rem; text-align: center; font-weight: 700; color: var(--text-mid); font-size: 0.85rem; border-top: 1px solid var(--border); }
+  .data-table tr:nth-child(even) td { background: rgba(47,143,124,0.03); }
+
+  /* Bar chart */
+  .bars-wrap { display: flex; flex-direction: column; gap: 0.45rem; margin: 0.6rem 0 0.8rem; padding: 0.9rem 1rem; background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border); }
+  .bar-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.78rem; }
+  .bar-label { width: 60px; flex-shrink: 0; color: var(--text-mid); font-weight: 700; }
+  .bar-track { flex: 1; height: 14px; background: var(--border); border-radius: 8px; overflow: hidden; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--teal)); border-radius: 8px; }
+  .bar-val { width: 26px; text-align: right; font-family: 'Nunito', sans-serif; font-weight: 800; color: var(--gold); flex-shrink: 0; }
+
+  /* Word story */
+  .word-story { background: rgba(47,143,124,0.06); border: 1.5px solid rgba(47,143,124,0.22); border-radius: 10px; padding: 0.65rem 0.9rem; margin-bottom: 0.7rem; font-size: 0.83rem; color: var(--text-mid); line-height: 1.65; }
+  .word-story strong { color: var(--bronze); }
+
+  /* Section dividers */
+  .sec-divider {
+    font-family: 'Nunito', sans-serif; font-size: 0.72rem; font-weight: 800;
+    letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.5rem 0; margin: 2rem 0 1rem;
+    border-bottom: 2px solid; display: flex; align-items: center; gap: 0.7rem;
+  }
+  .sd-1 { color: var(--s1); border-color: rgba(63,156,109,0.3); }
+  .sd-2 { color: var(--s2); border-color: rgba(217,164,65,0.3); }
+  .sd-3 { color: var(--s3); border-color: rgba(226,121,62,0.3); }
+  .sd-4 { color: var(--s4); border-color: rgba(209,73,91,0.3); }
+  .sd-sesi { font-size: 0.62rem; font-weight: 700; opacity: 0.65; margin-left: auto; letter-spacing: 1px; }
+
+  /* Grid & Cards */
+  .exercise-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(290px,1fr)); gap: 1rem; }
+  @media(max-width:480px){ .exercise-grid { grid-template-columns: 1fr; } }
+
+  .ex-card { background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 1.3rem; position: relative; overflow: hidden; transition: border-color 0.2s; box-shadow: 0 2px 10px var(--shadow); }
+  .ex-card.done-card { border-color: rgba(47,143,124,0.45); background: rgba(47,143,124,0.02); }
+  .ex-card.word-card { border-left: 3px solid var(--teal); }
+  .ex-card.word-card.done-card { border-left-color: var(--gold); }
+
+  .ex-num { font-size: 0.62rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem; }
+  .ex-tag { display: inline-block; font-size: 0.58rem; padding: 0.15rem 0.5rem; border-radius: 8px; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
+  .tag-1 { background: rgba(63,156,109,0.1);  color: var(--s1); border: 1.5px solid rgba(63,156,109,0.28); }
+  .tag-2 { background: rgba(217,164,65,0.12); color: #8a6a1f; border: 1.5px solid rgba(217,164,65,0.3); }
+  .tag-3 { background: rgba(226,121,62,0.1);  color: var(--s3); border: 1.5px solid rgba(226,121,62,0.28); }
+  .tag-4 { background: rgba(209,73,91,0.1);   color: var(--s4); border: 1.5px solid rgba(209,73,91,0.28); }
+
+  .ex-q { font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 800; color: var(--text); margin-bottom: 0.4rem; line-height: 1.5; }
+  .ex-card.done-card .ex-q { color: var(--bronze); }
+  .ex-hint { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.85rem; font-style: italic; line-height: 1.45; }
+
+  /* Inputs */
+  .ex-input-wrap { display: flex; flex-direction: column; gap: 0.45rem; }
+  .ex-input-row { display: flex; gap: 0.5rem; align-items: center; }
+  .ex-input { flex: 1; background: var(--surface); border: 2px solid var(--border2); color: var(--text); padding: 0.55rem 0.8rem; border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; text-align: center; transition: border-color 0.2s; outline: none; min-width: 0; }
+  .ex-input:focus { border-color: var(--gold); }
+  .ex-input.correct { border-color: var(--gold); color: var(--bronze); }
+  .ex-input.wrong-anim { border-color: var(--red); color: var(--red); animation: shake 0.4s ease; }
+  @keyframes shake { 0%,100%{ transform:translateX(0); } 20%,60%{ transform:translateX(-6px); } 40%,80%{ transform:translateX(6px); } }
+  .ex-btn { background: rgba(47,143,124,0.12); border: 1.5px solid rgba(47,143,124,0.35); color: var(--bronze); padding: 0.55rem 0.9rem; border-radius: 10px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.75rem; font-weight: 800; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+  .ex-btn:hover { background: rgba(47,143,124,0.22); border-color: var(--gold); }
+  .ex-btn:disabled { opacity: 0.3; cursor: default; }
+  .attempts-row { display: flex; gap: 3px; align-items: center; min-height: 10px; }
+  .attempts-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
+
+  .ex-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .ex-opt { background: var(--surface); border: 2px solid var(--border2); color: var(--text-mid); padding: 0.55rem 0.4rem; border-radius: 10px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 700; transition: all 0.15s; text-align: center; line-height: 1.4; }
+  .ex-opt:hover:not(:disabled) { border-color: var(--gold); background: rgba(47,143,124,0.08); color: var(--bronze); }
+  .ex-opt.opt-correct { border-color: var(--green); background: rgba(77,184,138,0.1); color: var(--green); }
+  .ex-opt.opt-wrong   { border-color: var(--red);  background: rgba(192,57,43,0.08); color: var(--red); }
+  .ex-opt:disabled { cursor: default; }
+
+  .ex-feedback { margin-top: 0.6rem; font-size: 0.81rem; font-weight: 700; display: none; line-height: 1.55; }
+  .ex-feedback.show { display: block; }
+  .ex-feedback.ok { color: var(--green); }
+  .ex-feedback.no { color: var(--red); }
+  .done-badge { position: absolute; top: 0.9rem; right: 0.9rem; background: rgba(47,143,124,0.12); border: 1.5px solid rgba(47,143,124,0.4); color: var(--bronze); font-size: 0.6rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 8px; }
+
+  /* All-done */
+  #allDone { display: none; text-align: center; padding: 3.5rem 2rem; }
+  .alldone-icon { font-size: 5rem; display: block; margin-bottom: 1.5rem; animation: bounce 1.2s ease infinite; }
+  @keyframes bounce { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-10px); } }
+  .alldone-title { font-family: 'Nunito', sans-serif; font-size: clamp(1.4rem,5vw,2.1rem); font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.7rem; }
+  .alldone-desc { color: var(--text-mid); line-height: 1.8; margin-bottom: 1.8rem; font-size: 0.92rem; }
+  .alldone-xp { display: inline-block; background: rgba(47,143,124,0.12); border: 1.5px solid rgba(47,143,124,0.45); color: var(--bronze); padding: 0.5rem 1.5rem; border-radius: 20px; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800; margin-bottom: 2rem; }
+  .action-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn { padding: 0.75rem 1.6rem; border-radius: 12px; border: 2px solid var(--border2); font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-muted); background: transparent; }
+  .btn:hover { border-color: var(--gold); color: var(--bronze); }
+  .btn-primary { background: linear-gradient(135deg, var(--gold), var(--teal)); border-color: transparent; color: white; box-shadow: 0 4px 16px rgba(47,143,124,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); color: white; }
+
+  .deco-bloom  { position: fixed; top: -40px; right: -40px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(47,143,124,0.12), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+  .deco-bloom2 { position: fixed; bottom: -60px; left: -60px; width: 240px; height: 240px; background: radial-gradient(circle, rgba(217,164,65,0.1), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+</style>
+</head>
+<body>
+<div class="deco-bloom"></div>
+<div class="deco-bloom2"></div>
+<div id="petals"></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../tasya_0751.html">TASYA</a>
+  <span>›</span>
+  <a href="review.html">MEGA REVIEW</a>
+  <span>›</span>
+  <span class="current">CLUSTER 9</span>
+</nav>
+
+<div class="wrapper">
+  <div class="banner">
+    <div class="page-badge">🎲 Cluster 9 · Data & Probability Mega Review</div>
+    <div class="page-title">Data & Probability <span>Boss Checkpoint</span></div>
+    <div class="page-desc">
+      40 soal gabungan seluruh materi statistika dan peluang: membaca data & grafik, mean/median/modus/range, ruang sampel & peluang dasar,
+      hingga counting, permutasi, dan kombinasi. Empat level — dari recall dasar sampai boss battle akhir. Progress tersimpan otomatis! 🎲
+    </div>
+    <div class="pills">
+      <span class="pill pill-grn">🟢 Fundamental Recall</span>
+      <span class="pill pill-gold">🟡 Choose Your Weapon</span>
+      <span class="pill pill-orn">🟠 Concept Connection</span>
+      <span class="pill pill-red">🔴 Boss Battle</span>
+    </div>
+  </div>
+
+  <div class="prog-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress Cluster 9</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-sub">
+      <span>Kumpulkan ⭐ tiap menyelesaikan 8 soal!</span>
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🏆</span>
+    <div class="alldone-title">Data & Probability Boss Battle Selesai!</div>
+    <div class="alldone-desc">
+      Kamu berhasil menaklukkan seluruh checkpoint: membaca data & grafik, mean/median/modus/range,<br>
+      ruang sampel & peluang, counting, permutasi, kombinasi — dan menang di Boss Battle terakhir!
+    </div>
+    <div class="alldone-xp">+500 XP · Data & Probability Champion 🎲</div>
+    <div class="action-btns">
+      <a href="cluster8.html" class="btn">← Cluster 8</a>
+      <a href="review.html" class="btn btn-primary">Kembali ke Review →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'tasya_review_cluster9_v1';
+function loadProgress(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||{}; }catch(e){ return{}; } }
+function saveProgress(p){ try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(p)); }catch(e){} }
+let progress = loadProgress();
+
+// Renders 3+ standalone data points as chips, separated by dots
+function pointsHTML(pts){
+  return `<div class="coord-display">${pts.map((p,i)=>`<span class="coord-point${i%2?' alt':''}">${p}</span>`).join('<span class="coord-arrow">·</span>')}</div>`;
+}
+
+// Renders a simple data table
+function tableHTML(headers, rows){
+  return `<div class="data-table-wrap"><table class="data-table"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+
+// Renders a simple horizontal bar chart
+function barsHTML(items){
+  const max = Math.max(...items.map(i=>i.val));
+  return `<div class="bars-wrap">${items.map(i=>`<div class="bar-row"><span class="bar-label">${i.label}</span><div class="bar-track"><div class="bar-fill" style="width:${(i.val/max*100)}%"></div></div><span class="bar-val">${i.val}</span></div>`).join('')}</div>`;
+}
+
+const exercises = [
+
+// ══════════════ STAGE 1 — FUNDAMENTAL RECALL (10 soal) ══════════════
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:"Membaca Tabel", table:{headers:["Hari", "Jumlah Buku Terjual"], rows:[["Senin", "12"], ["Selasa", "18"], ["Rabu", "9"], ["Kamis", "15"], ["Jumat", "20"]]}, q:"Berdasarkan tabel di atas, berapa buku yang terjual pada hari Rabu?", hint:"Cari baris \"Rabu\" pada tabel, lalu lihat angka pada kolom jumlah.", type:"text", answers:["9"], explain:"✅ Pada tabel, baris Rabu menunjukkan angka 9 ✓" },
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:"Membaca Grafik", bars:[{"label": "Senin", "val": 10}, {"label": "Selasa", "val": 6}, {"label": "Rabu", "val": 14}, {"label": "Kamis", "val": 8}], q:"Berdasarkan grafik kunjungan di atas, hari apa jumlah kunjungan paling banyak?", hint:"Bandingkan panjang setiap batang — batang terpanjang adalah nilai terbesar.", type:"mcq", opts:["Senin", "Selasa", "Rabu", "Kamis"], answer:"Rabu", explain:"✅ Batang Rabu paling panjang dengan nilai 14 kunjungan ✓" },
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:"Mean", dataset:["7", "9", "5", "11", "8"], q:"Hitung rata-rata (mean) dari data di atas.", hint:"Jumlahkan semua data, lalu bagi dengan banyak data.", type:"text", answers:["8"], explain:"✅ (7+9+5+11+8) ÷ 5 = 40 ÷ 5 = 8 ✓" },
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:"Median", dataset:["12", "7", "15", "9", "20"], q:"Tentukan median (nilai tengah) dari data di atas.", hint:"Urutkan data dari kecil ke besar terlebih dahulu, lalu ambil nilai tengahnya.", type:"text", answers:["12"], explain:"✅ Diurutkan: 7,9,12,15,20 → nilai tengah adalah 12 ✓" },
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:"Modus", dataset:["4", "7", "4", "9", "4", "2", "7"], q:"Tentukan modus (nilai yang paling sering muncul) dari data di atas.", hint:"Hitung berapa kali setiap angka muncul, lalu cari yang paling banyak.", type:"text", answers:["4"], explain:"✅ Angka 4 muncul 3 kali, paling banyak dibanding angka lain ✓" },
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:"Range", dataset:["15", "3", "9", "22", "7"], q:"Tentukan range (jangkauan) dari data di atas.", hint:"Range = nilai terbesar dikurangi nilai terkecil.", type:"text", answers:["19"], explain:"✅ Range = 22 − 3 = 19 ✓" },
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:"Ruang Sampel", wordProblem:true, q:"Sebuah dadu bermata enam dilempar satu kali. Berapa banyak anggota ruang sampelnya?", hint:"Ruang sampel adalah semua kemungkinan hasil yang bisa muncul.", type:"text", answers:["6"], explain:"✅ Ruang sampel dadu = {1,2,3,4,5,6}, jadi ada 6 anggota ✓" },
+  { id:'e08', section:'s1', tag:'tag-1', tagLabel:"Peluang Dasar", wordProblem:true, q:"Sebuah dadu dilempar sekali. Berapa peluang muncul mata dadu bernilai genap?", hint:"Ada 3 kemungkinan genap (2,4,6) dari 6 kemungkinan total.", type:"text", answers:["1/2", "3/6"], explain:"✅ P(genap) = 3/6 = 1/2 ✓" },
+  { id:'e09', section:'s1', tag:'tag-1', tagLabel:"Pencacahan Dasar", wordProblem:true, q:"Ada 3 kartu berbeda: A, B, C. Berapa banyak cara menyusun ketiga kartu tersebut secara berurutan menjadi sebuah kode?", hint:"Karena urutan penting, gunakan prinsip perkalian: 3 × 2 × 1.", type:"text", answers:["6"], explain:"✅ 3 × 2 × 1 = 6 cara penyusunan ✓" },
+  { id:'e10', section:'s1', tag:'tag-1', tagLabel:"Kombinasi Dasar", wordProblem:true, q:"Dari 4 orang (A, B, C, D), akan dipilih 2 orang untuk mewakili kelas tanpa ada perbedaan peran. Ada berapa cara pemilihan?", hint:"Urutan tidak penting di sini — gunakan kombinasi, bukan permutasi.", type:"text", answers:["6"], explain:"✅ Pasangan yang mungkin: AB, AC, AD, BC, BD, CD = 6 cara ✓" },
+
+// ══════════════ STAGE 2 — CHOOSE YOUR WEAPON (10 soal) ══════════════
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:"Data Representatif", dataset:["70", "74", "72", "76", "68"], q:"Tentukan satu nilai yang paling tepat mewakili keseluruhan data di atas.", hint:"Karena semua nilai cukup berdekatan (tidak ada yang jauh berbeda), pikirkan ukuran pusat yang melibatkan seluruh data.", type:"text", answers:["72"], explain:"✅ Karena data merata, rata-rata (70+74+72+76+68)÷5 = 360÷5 = 72 mewakili data dengan baik ✓" },
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:"Kasus Outlier", dataset:["5", "5", "6", "5", "40"], datasetNote:"Data gaji karyawan (dalam juta rupiah)", q:"Manakah yang lebih tepat mewakili data gaji di atas: rata-rata atau nilai tengah (setelah data diurutkan)?", hint:"Perhatikan apakah ada satu nilai yang jauh berbeda dari nilai-nilai lainnya.", type:"mcq", opts:["Rata-rata (mean)", "Nilai tengah (median)"], answer:"Nilai tengah (median)", explain:"✅ Nilai 40 adalah pencilan (outlier) yang menarik rata-rata jadi terlalu tinggi, sehingga nilai tengah lebih representatif ✓" },
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:"Paling Sering", wordProblem:true, story:"Guru mencatat warna baju favorit 7 siswa di kelas: Merah, Biru, Biru, Hijau, Biru, Merah, Kuning.", q:"Warna apa yang paling banyak dipilih oleh siswa di kelas tersebut?", hint:"Hitung banyak kemunculan setiap warna dari cerita di atas.", type:"mcq", opts:["Merah", "Biru", "Hijau", "Kuning"], answer:"Biru", explain:"✅ Biru dipilih 3 kali (Biru, Biru, Biru), lebih banyak dari warna lain ✓" },
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:"Sebaran Data", wordProblem:true, story:"Kelompok A: 10, 12, 11, 13, 9. Kelompok B: 5, 20, 8, 15, 2.", q:"Kelompok mana yang datanya lebih tersebar (memiliki selisih nilai terbesar–terkecil yang lebih besar)?", hint:"Bandingkan selisih antara nilai terbesar dan terkecil pada masing-masing kelompok.", type:"mcq", opts:["Kelompok A", "Kelompok B"], answer:"Kelompok B", explain:"✅ Kelompok A: 13−9=4. Kelompok B: 20−2=18. Kelompok B jauh lebih tersebar ✓" },
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:"Skenario Acak", wordProblem:true, q:"Sekeping uang logam dilempar sekali. Berapa peluang muncul sisi \"Angka\"?", hint:"Ada 2 sisi mata uang, dan hanya 1 yang bertuliskan \"Angka\".", type:"text", answers:["1/2"], explain:"✅ P(Angka) = 1/2, karena hanya ada 2 kemungkinan sisi dan 1 di antaranya \"Angka\" ✓" },
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:"Pemilihan Tim", wordProblem:true, story:"Dari 5 siswa, akan dipilih 3 siswa untuk mewakili sekolah dalam lomba, tanpa ada perbedaan jabatan di antara mereka.", q:"Ada berapa cara pemilihan 3 siswa tersebut?", hint:"Perhatikan apakah ketiga siswa yang dipilih memiliki peran/jabatan yang berbeda atau tidak.", type:"text", answers:["10"], explain:"✅ Karena tidak ada perbedaan peran, ini kombinasi: C(5,3) = 10 cara ✓" },
+  { id:'e17', section:'s2', tag:'tag-2', tagLabel:"Penyusunan Objek", wordProblem:true, story:"Tiga piala (Juara 1, Juara 2, Juara 3) akan diberikan kepada 3 orang finalis yang berbeda.", q:"Ada berapa cara penyusunan pemberian piala tersebut kepada ketiga finalis?", hint:"Perhatikan bahwa Juara 1, Juara 2, dan Juara 3 adalah posisi yang berbeda-beda.", type:"text", answers:["6"], explain:"✅ Karena posisi berbeda (urutan penting): 3 × 2 × 1 = 6 cara ✓" },
+  { id:'e18', section:'s2', tag:'tag-2', tagLabel:"Bandingkan Peluang", wordProblem:true, story:"Kejadian A: muncul sisi \"Angka\" saat koin dilempar. Kejadian B: muncul mata dadu bernilai 6 saat dadu dilempar.", q:"Kejadian mana yang lebih mungkin terjadi?", hint:"Bandingkan besar peluang dari masing-masing kejadian.", type:"mcq", opts:["Kejadian A", "Kejadian B"], answer:"Kejadian A", explain:"✅ P(A) = 1/2 = 0,5 lebih besar dari P(B) = 1/6 ≈ 0,17, jadi Kejadian A lebih mungkin terjadi ✓" },
+  { id:'e19', section:'s2', tag:'tag-2', tagLabel:"Hitung Dulu", wordProblem:true, story:"Dalam sebuah kotak terdapat 4 bola merah dan 6 bola biru. Diambil 1 bola secara acak.", q:"Berapa peluang terambil bola merah?", hint:"Hitung dulu total bola secara keseluruhan, baru bandingkan dengan banyak bola merah.", type:"text", answers:["4/10", "2/5"], explain:"✅ Total bola = 4+6 = 10. P(merah) = 4/10 = 2/5 ✓" },
+  { id:'e20', section:'s2', tag:'tag-2', tagLabel:"Interpretasi Campuran", wordProblem:true, story:"Seorang guru mencatat nilai ujian 30 siswa dan ingin mengetahui nilai berapa yang paling sering diperoleh siswa.", q:"Informasi matematika apa yang sebenarnya sedang dicari guru tersebut?", hint:"Perhatikan kata kunci \"paling sering diperoleh\" pada cerita.", type:"mcq", opts:["Mean", "Median", "Modus", "Range"], answer:"Modus", explain:"✅ \"Nilai yang paling sering diperoleh\" adalah pengertian dari modus ✓" },
+
+// ══════════════ STAGE 3 — CONCEPT CONNECTION (12 soal) ══════════════
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:"Mean + Data Hilang", wordProblem:true, story:"Rata-rata dari 5 data adalah 10. Empat di antaranya adalah 8, 12, 9, dan 11.", q:"Berapa nilai data kelima tersebut?", hint:"Kalikan rata-rata dengan banyak data untuk mendapatkan jumlah total, lalu kurangi dengan jumlah data yang diketahui.", type:"text", answers:["10"], explain:"✅ Total = 10×5 = 50. Jumlah 4 data = 8+12+9+11 = 40. Data kelima = 50−40 = 10 ✓" },
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:"Mean + Outlier", dataset:["4", "6", "5", "5"], datasetNote:"Data awal (sebelum ditambah nilai ekstrem 25)", q:"Berapa rata-rata data tersebut setelah nilai 25 ditambahkan?", hint:"Hitung ulang rata-rata dengan memasukkan nilai baru dan menambah banyak data menjadi 5.", type:"text", answers:["9"], explain:"✅ Rata-rata awal = (4+6+5+5)÷4 = 5. Setelah ditambah 25: (4+6+5+5+25)÷5 = 45÷5 = 9. Nilai ekstrem menarik rata-rata naik cukup jauh ✓" },
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:"Mean vs Median", dataset:["2", "3", "3", "4", "50"], q:"Ukuran manakah yang lebih representatif untuk mewakili data di atas?", hint:"Data memiliki satu nilai yang jauh berbeda (50) dari nilai-nilai lainnya.", type:"mcq", opts:["Rata-rata (mean)", "Nilai tengah (median)"], answer:"Nilai tengah (median)", explain:"✅ Mean = 62/5 = 12,4 (tertarik naik karena nilai 50), sedangkan median = 3 lebih mewakili sebagian besar data ✓" },
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:"Perbandingan Data", wordProblem:true, story:"Kelas A: rata-rata nilai 75, jangkauan (range) 10. Kelas B: rata-rata nilai 75, jangkauan (range) 30.", q:"Meskipun rata-rata kedua kelas sama, kelas mana yang nilainya lebih bervariasi (tidak konsisten)?", hint:"Rata-rata yang sama belum tentu berarti sebarannya sama — bandingkan jangkauan (range) nilainya.", type:"mcq", opts:["Kelas A", "Kelas B"], answer:"Kelas B", explain:"✅ Kelas A: mean 75, range 10 (nilai konsisten). Kelas B: mean 75, range 30 (nilai jauh lebih bervariasi) ✓" },
+  { id:'e25', section:'s3', tag:'tag-3', tagLabel:"Ruang Sampel → Peluang", wordProblem:true, story:"Dua koin dilempar bersamaan.", q:"Tentukan ruang sampelnya, lalu hitung peluang munculnya tepat satu sisi Angka.", hint:"Ruang sampel dua koin: {AA, AG, GA, GG}. Cari berapa banyak hasil yang punya tepat satu Angka.", type:"text", answers:["1/2", "2/4"], explain:"✅ Ruang sampel = {AA,AG,GA,GG} (4 anggota). Tepat satu Angka: AG dan GA = 2 hasil. P = 2/4 = 1/2 ✓" },
+  { id:'e26', section:'s3', tag:'tag-3', tagLabel:"Eksperimen 2 Tahap", wordProblem:true, story:"Satu koin dan satu dadu dilempar bersamaan.", q:"Berapa banyak total kemungkinan hasil yang bisa terjadi dari kedua pelemparan tersebut?", hint:"Gunakan prinsip perkalian: banyak kemungkinan koin dikali banyak kemungkinan dadu.", type:"text", answers:["12"], explain:"✅ Koin punya 2 kemungkinan, dadu punya 6 kemungkinan. Total = 2 × 6 = 12 ✓" },
+  { id:'e27', section:'s3', tag:'tag-3', tagLabel:"Bandingkan Peluang", wordProblem:true, story:"Permainan X: menang jika dadu menunjukkan angka lebih dari 4 (peluang 2/6). Permainan Y: menang jika koin menunjukkan sisi Angka (peluang 1/2).", q:"Permainan mana yang memberikan peluang menang lebih besar?", hint:"Hitung dan bandingkan peluang menang dari kedua permainan.", type:"mcq", opts:["Permainan X", "Permainan Y"], answer:"Permainan Y", explain:"✅ P(X) = 2/6 ≈ 0,33, P(Y) = 1/2 = 0,5. Permainan Y punya peluang menang lebih besar ✓" },
+  { id:'e28', section:'s3', tag:'tag-3', tagLabel:"Counting → Permutasi", wordProblem:true, story:"Ada 5 buku berbeda akan disusun berjajar pada sebuah rak.", q:"Berapa banyak cara penyusunan kelima buku tersebut?", hint:"Karena posisi di rak berbeda-beda (urutan penting), gunakan prinsip perkalian berurutan.", type:"text", answers:["120"], explain:"✅ 5 × 4 × 3 × 2 × 1 = 120 cara ✓" },
+  { id:'e29', section:'s3', tag:'tag-3', tagLabel:"Counting → Kombinasi", wordProblem:true, story:"Dari 6 siswa, akan dipilih 4 siswa untuk membentuk sebuah tim tanpa peran khusus.", q:"Ada berapa cara pembentukan tim tersebut?", hint:"Karena tidak ada peran khusus dalam tim (urutan tidak penting), gunakan kombinasi.", type:"text", answers:["15"], explain:"✅ C(6,4) = 15 cara ✓" },
+  { id:'e30', section:'s3', tag:'tag-3', tagLabel:"Permutasi vs Kombinasi", wordProblem:true, story:"Sebuah organisasi akan memilih Ketua dan Wakil Ketua dari 5 orang calon.", q:"Metode apa yang tepat digunakan untuk menghitung banyak cara pemilihan ini?", hint:"Perhatikan apakah posisi Ketua dan Wakil Ketua bisa saling dipertukarkan atau tidak.", type:"mcq", opts:["Permutasi (urutan penting)", "Kombinasi (urutan tidak penting)"], answer:"Permutasi (urutan penting)", explain:"✅ Ketua dan Wakil Ketua adalah posisi yang berbeda, jadi urutan penting → gunakan permutasi ✓" },
+  { id:'e31', section:'s3', tag:'tag-3', tagLabel:"Hasil Diinginkan", wordProblem:true, story:"Dalam sebuah kotak ada 5 bola bernomor 1 sampai 5. Diambil 2 bola sekaligus secara acak. Bola bernomor genap hanya bernomor 2 dan 4.", q:"Berapa peluang kedua bola yang terambil bernomor genap?", hint:"Cari dulu total cara mengambil 2 bola dari 5, lalu cari berapa cara mendapatkan 2 bola genap saja.", type:"text", answers:["1/10"], explain:"✅ Total cara = C(5,2) = 10. Bola genap hanya 2 dan 4, jadi hanya 1 cara mengambil keduanya. P = 1/10 ✓" },
+  { id:'e32', section:'s3', tag:'tag-3', tagLabel:"Peluang Pemilihan", wordProblem:true, story:"Dari 4 siswa laki-laki dan 3 siswa perempuan, akan dipilih 2 siswa secara acak untuk menjadi panitia.", q:"Berapa peluang kedua siswa yang terpilih adalah perempuan semua?", hint:"Hitung total cara memilih 2 dari 7 siswa, lalu cara memilih 2 perempuan dari 3 perempuan yang ada.", type:"text", answers:["1/7", "3/21"], explain:"✅ Total cara = C(7,2) = 21. Cara memilih 2 perempuan = C(3,2) = 3. P = 3/21 = 1/7 ✓" },
+
+// ══════════════ STAGE 4 — DATA & PROBABILITY BOSS BATTLE (8 soal) ══════════════
+  { id:'e33', section:'s4', tag:'tag-4', tagLabel:"Boss 1 · Data Detective", table:{headers:["Siswa", "Nilai Ujian"], rows:[["1", "60"], ["2", "70"], ["3", "70"], ["4", "80"], ["5", "90"], ["6", "70"], ["7", "100"]]}, q:"Nilai berapa yang paling sering diperoleh siswa berdasarkan tabel di atas?", hint:"Hitung berapa kali tiap nilai muncul pada tabel, lalu tentukan yang paling sering.", type:"text", answers:["70"], explain:"✅ Nilai 70 muncul 3 kali (siswa 2, 3, dan 6), lebih sering dari nilai lain, jadi modusnya adalah 70 ✓" },
+  { id:'e34', section:'s4', tag:'tag-4', tagLabel:"Boss 2 · The Missing Value", wordProblem:true, story:"Rata-rata dari 6 data adalah 15. Lima di antaranya adalah 10, 14, 18, 12, dan 16.", q:"Berapa nilai data keenam? Periksa juga apakah hasilnya masuk akal dibanding data lain.", hint:"Kalikan rata-rata dengan banyak data untuk mendapatkan total, lalu kurangi dengan jumlah 5 data yang diketahui.", type:"text", answers:["20"], explain:"✅ Total = 15×6 = 90. Jumlah 5 data = 10+14+18+12+16 = 70. Data ke-6 = 90−70 = 20 — masuk akal karena masih sejenis dengan data lain (10–20) ✓" },
+  { id:'e35', section:'s4', tag:'tag-4', tagLabel:"Boss 3 · Outlier Investigation", wordProblem:true, story:"Dataset A: 50, 52, 49, 51, 53. Dataset B: 50, 52, 49, 51, 98. Dataset B memiliki satu nilai ekstrem, yaitu 98.", q:"Ukuran manakah yang lebih representatif untuk mewakili Dataset B?", hint:"Bandingkan mean dan median Dataset B, lalu perhatikan pengaruh nilai 98 terhadap masing-masing.", type:"mcq", opts:["Rata-rata (mean)", "Nilai tengah (median)"], answer:"Nilai tengah (median)", explain:"✅ Mean Dataset B = 300/5 = 60 (tertarik naik karena 98), sedangkan median = 51 lebih dekat dengan sebagian besar data ✓" },
+  { id:'e36', section:'s4', tag:'tag-4', tagLabel:"Boss 4 · Probability Game", wordProblem:true, story:"Roda 1: dibagi 4 bagian sama besar (Merah, Biru, Hijau, Kuning), menang jika berhenti di Merah. Roda 2: dibagi 10 bagian sama besar, menang jika berhenti di salah satu dari 3 bagian berwarna Merah.", q:"Permainan mana yang memberikan peluang menang lebih besar?", hint:"Hitung peluang menang masing-masing permainan, lalu bandingkan.", type:"mcq", opts:["Roda 1", "Roda 2"], answer:"Roda 2", explain:"✅ P(Roda 1) = 1/4 = 0,25. P(Roda 2) = 3/10 = 0,3. Roda 2 memberi peluang menang lebih besar ✓" },
+  { id:'e37', section:'s4', tag:'tag-4', tagLabel:"Boss 5 · Counting Detective", wordProblem:true, story:"Sebuah PIN ATM terdiri dari 4 digit angka (0–9), dan setiap digit boleh berulang.", q:"Berapa banyak PIN berbeda yang mungkin dibuat?", hint:"Urutan digit penting, dan setiap dari 4 posisi punya 10 pilihan angka (0–9), boleh berulang.", type:"text", answers:["10000"], explain:"✅ 10 × 10 × 10 × 10 = 10.000 kemungkinan PIN ✓" },
+  { id:'e38', section:'s4', tag:'tag-4', tagLabel:"Boss 6 · Counting → Probability", wordProblem:true, story:"Dalam sebuah kelas terdapat 8 siswa: 5 laki-laki dan 3 perempuan. Akan dipilih 3 siswa secara acak untuk bertugas piket.", q:"Berapa peluang ketiga siswa yang terpilih adalah laki-laki semua?", hint:"Hitung total cara memilih 3 dari 8 siswa, lalu cara memilih 3 laki-laki dari 5 laki-laki yang ada.", type:"text", answers:["5/28", "10/56"], explain:"✅ Total cara = C(8,3) = 56. Cara memilih 3 laki-laki = C(5,3) = 10. P = 10/56 = 5/28 ✓" },
+  { id:'e39', section:'s4', tag:'tag-4', tagLabel:"Boss 7 · Misconception Detective", wordProblem:true, story:"Seorang siswa diminta memilih 2 anggota dari kelompok {Ani, Budi, Citra} untuk menjadi perwakilan (tanpa jabatan khusus). Siswa itu menjawab: \"Ada 6 cara, karena Ani-Budi berbeda dari Budi-Ani, dan seterusnya.\"", q:"Apa kesalahan siswa tersebut?", hint:"Perhatikan apakah memilih 2 perwakilan tanpa jabatan khusus membutuhkan urutan atau tidak.", type:"mcq", opts:["Siswa menganggap ini kombinasi padahal seharusnya permutasi", "Siswa menganggap ini permutasi (urutan penting) padahal ini kombinasi (urutan tidak penting)", "Siswa salah menghitung jumlah anggota kelompok", "Siswa lupa memasukkan opsi memilih ketiga orang sekaligus"], answer:"Siswa menganggap ini permutasi (urutan penting) padahal ini kombinasi (urutan tidak penting)", explain:"✅ Karena tidak ada perbedaan peran/jabatan, urutan tidak penting — ini seharusnya kombinasi (hanya 3 cara: AB, AC, BC), bukan permutasi ✓" },
+  { id:'e40', section:'s4', tag:'tag-4', tagLabel:"Final Boss · Mixed Challenge", wordProblem:true, story:"Nilai ujian 6 siswa kelas A: 70, 75, 78, 82, 85, 90. Sekolah akan memilih 2 siswa dengan nilai di atas rata-rata kelas untuk mewakili sekolah dalam lomba.", q:"Berapa peluang siswa bernilai 90 termasuk di antara 2 siswa yang terpilih untuk lomba?", hint:"Tahap 1: hitung rata-rata. Tahap 2: tentukan siapa saja yang nilainya di atas rata-rata. Tahap 3: hitung total cara memilih 2 dari mereka, lalu cara yang menyertakan nilai 90.", type:"text", answers:["2/3"], explain:"✅ Rata-rata = 480/6 = 80. Siswa di atas rata-rata: nilai 82, 85, 90 (3 siswa). Total cara pilih 2 dari 3 = C(3,2) = 3. Cara yang menyertakan nilai 90 = 2 (90&82 atau 90&85). P = 2/3 ✓" },
+];
+
+const total = exercises.length;
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = `${(done/total)*100}%`;
+  for(let i=1;i<=5;i++){
+    const el=document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done>=i*8);
+  }
+  if(done===total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){ inp.classList.add('correct'); inp.disabled=true; btn.disabled=true; }
+  else { card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true); }
+  const fb=card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok'; fb.textContent=q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){ const b=document.createElement('div'); b.className='done-badge'; b.textContent='✓ Done'; card.appendChild(b); }
+  progress[q.id]=true; saveProgress(progress); updateProgressBar();
+}
+
+function checkText(id, inp, btn, q){
+  const raw=inp.value.trim().toLowerCase().replace(/\s+/g,'');
+  if(!raw) return;
+  const correct=q.answers.some(a=>raw===a.toLowerCase().replace(/\s+/g,''));
+  if(correct){ markDone(inp.closest('.ex-card'),q,inp,btn); }
+  else {
+    inp.classList.add('wrong-anim');
+    const attRow=inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot=document.createElement('div'); dot.className='attempts-dot'; attRow.appendChild(dot);
+    setTimeout(()=>{ inp.classList.remove('wrong-anim'); inp.value=''; inp.focus(); },400);
+    if(attRow.children.length>=3){
+      const fb=inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no'; fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{ b.disabled=true; if(b.dataset.val===q.answer) b.classList.add('opt-correct'); });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb=card.querySelector('.ex-feedback');
+  if(val===q.answer){ markDone(card,q,null,null); }
+  else {
+    fb.className='ex-feedback show no'; fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+    if(!card.querySelector('.done-badge')){ const b=document.createElement('div'); b.className='done-badge'; b.textContent='Done'; card.appendChild(b); }
+  }
+}
+
+function buildExercises(){
+  const area=document.getElementById('exerciseArea');
+  area.innerHTML='';
+  const groups=[
+    { key:'s1', label:'🟢 Stage 1 — Fundamental Recall',   cls:'sd-1', badge:'10 Soal' },
+    { key:'s2', label:'🟡 Stage 2 — Choose Your Weapon',    cls:'sd-2', badge:'10 Soal' },
+    { key:'s3', label:'🟠 Stage 3 — Concept Connection',    cls:'sd-3', badge:'12 Soal' },
+    { key:'s4', label:'🔴 Stage 4 — Data & Probability Boss Battle', cls:'sd-4', badge:'8 Soal'  },
+  ];
+
+  groups.forEach(g=>{
+    const wrap=document.createElement('div');
+    wrap.innerHTML=`<div class="sec-divider ${g.cls}">${g.label}<span class="sd-sesi">${g.badge}</span></div>`;
+    const grid=document.createElement('div'); grid.className='exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone=!!progress[q.id];
+      const card=document.createElement('div');
+      card.className='ex-card'+(q.wordProblem?' word-card':'')+(isDone?' done-card':'');
+
+      const tableDisp = q.table ? tableHTML(q.table.headers, q.table.rows) : '';
+      const barsDisp  = q.bars ? barsHTML(q.bars) : '';
+      const datasetDisp = q.dataset ? pointsHTML(q.dataset) : '';
+      const noteDisp = q.datasetNote ? `<div class="dataset-note">${q.datasetNote}</div>` : '';
+      const storyDisp = q.story ? `<div class="word-story">${q.story}</div>` : '';
+
+      let inputHTML='';
+      if(q.type==='text'){
+        inputHTML=`<div class="ex-input-wrap"><div class="ex-input-row">
+          <input type="text" class="ex-input ${isDone?'correct':''}" placeholder="Jawaban?"
+            value="${isDone?q.answers[0]:''}" ${isDone?'disabled':''}
+            onkeydown="if(event.key==='Enter')this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+          <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+        </div><div class="attempts-row"></div></div>`;
+      } else {
+        const shuffled=[...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML=`<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML=`
+        <div class="ex-num">Soal ${parseInt(q.id.replace('e',''))}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${storyDisp}${tableDisp}${barsDisp}${datasetDisp}${noteDisp}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone?q.explain:''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn=card.querySelector('.ex-btn'), inp=card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick=()=>checkText(q.id,inp,btn,q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{ b.onclick=()=>checkMCQ(b.dataset.val,b,q,card); });
+      }
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Cluster 9? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+
+// Floating symbols
+const emojis=['🎲','📊','🔢','📈','🎯','🃏','📐'];
+const wrap=document.getElementById('petals');
+for(let i=0;i<16;i++){
+  const p=document.createElement('div'); p.className='petal';
+  const sz=0.9+Math.random()*1.3;
+  p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--sz:${sz}rem;font-size:${sz}rem;--d:${4+Math.random()*6}s;--dl:${-Math.random()*6}s;--r0:${-15+Math.random()*30}deg;--r1:${-15+Math.random()*30}deg;`;
+  p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  wrap.appendChild(p);
+}
+</script>
+<script src="../../../assets/chat-widget.js"></script>
+<script>
+  initChat({ studentId: 'tasya_0751', studentName: 'Tasya' });
+</script>
+</body>
+</html>
