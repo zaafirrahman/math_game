@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Review Data & Koordinat · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;
+    --violet:#7c3aed;--violet-bg:rgba(124,58,237,0.1);--violet-light:#a78bfa;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 70% 20%,rgba(74,144,184,0.06) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--steel-light);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--steel-light);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--steel-bg);border:1px solid rgba(74,144,184,0.4);color:var(--steel-light);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.3rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:0.6rem;line-height:1.3;letter-spacing:1px;}
+  h1 span{color:var(--steel-light);}
+  .intro{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:8px;height:8px;border-radius:2px;background:var(--border2);transition:all 0.3s;cursor:pointer;}
+  .dot.active{background:var(--steel-light);box-shadow:0 0 8px rgba(74,144,184,0.5);transform:scaleX(1.5);}
+  .dot.done{background:#2d6a8c;}
+
+  .slide{display:none;animation:fadeUp 0.35s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--steel-light),transparent);}
+  .card-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.violet{color:var(--violet-light);}
+  .card-label.steel{color:var(--steel-light);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.7rem;line-height:1.4;letter-spacing:0.5px;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  .hl{border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-violet{background:var(--violet-bg);border:1px solid rgba(124,58,237,0.35);}
+  .hl-steel{background:var(--steel-bg);border:1px solid rgba(74,144,184,0.35);}
+  .hl-amber{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);}
+  .hl-green{background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);}
+  .hl-violet strong{color:var(--violet-light);}
+  .hl-steel strong{color:var(--steel-light);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+
+  .callout{display:flex;gap:0.8rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 1rem;margin:1rem 0;font-size:0.87rem;color:var(--text-mid);}
+  .callout-icon{font-size:1.2rem;flex-shrink:0;}
+
+  .tip-list{list-style:none;margin:0.8rem 0;}
+  .tip-list li{display:flex;gap:0.6rem;align-items:flex-start;font-size:0.88rem;color:var(--text-mid);margin-bottom:0.5rem;line-height:1.55;}
+  .tip-list li::before{content:'→';color:var(--steel-light);font-weight:700;flex-shrink:0;}
+
+  .check-list{list-style:none;margin:0.9rem 0;}
+  .check-list li{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.9rem;color:var(--text-mid);margin-bottom:0.65rem;line-height:1.55;}
+  .check-list li span.ic{flex-shrink:0;}
+
+  .nav-btns{display:flex;gap:0.8rem;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--steel-light);color:var(--steel-light);}
+  .btn-primary{background:linear-gradient(135deg,var(--steel-light),#2d6a8c);color:#08131c;font-weight:800;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(74,144,184,0.35);}
+  .btn:disabled{opacity:0.4;cursor:default;}
+
+  .finish{text-align:center;padding:2.5rem 1.8rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;animation:bounce 1s ease-in-out infinite alternate;}
+  @keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+  .finish-title{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--steel-light);letter-spacing:3px;margin-bottom:0.6rem;}
+  .finish-desc{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;}
+  .xp{display:inline-block;background:var(--steel-bg);border:1px solid rgba(74,144,184,0.35);color:var(--steel-light);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  .step-box{display:flex;gap:0.9rem;margin:0.6rem 0;}
+  .step-num{background:var(--steel-bg);border:1px solid rgba(74,144,184,0.4);color:var(--steel-light);font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:700;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .step-text{font-size:0.88rem;color:var(--text-mid);line-height:1.55;padding-top:0.2rem;}
+
+  /* shape visual */
+  .shape-wrap{display:flex;justify-content:center;margin:1rem 0;}
+  .shape-caption{text-align:center;font-family:'Rajdhani',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:1px;margin-top:0.3rem;}
+
+  /* worked example box */
+  .work-box{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:1rem 1.1rem;margin:0.8rem 0;}
+  .work-eq{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1rem;color:var(--text);margin-bottom:0.4rem;}
+  .work-eq .res{color:var(--green);}
+  .work-note{font-size:0.82rem;color:var(--text-muted);}
+
+  /* concept map */
+  .map-box{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:1.1rem 1.2rem;margin:1rem 0;font-family:'Rajdhani',sans-serif;font-size:0.92rem;line-height:2;}
+  .map-root{font-weight:800;color:var(--text);letter-spacing:0.5px;}
+  .map-branch{padding-left:1.3rem;font-weight:700;}
+  .map-branch.d{color:var(--steel-light);}
+  .map-branch.k{color:var(--violet-light);}
+  .map-leaf{padding-left:2.6rem;font-weight:600;font-size:0.82rem;color:var(--text-mid);}
+
+  /* star-row */
+  .star-row{display:flex;gap:0.3rem;justify-content:center;margin-bottom:0.3rem;}
+
+  /* data table */
+  .viz-wrap{display:flex;justify-content:center;margin:1rem 0;}
+  .data-table{border-collapse:collapse;font-family:'Rajdhani',sans-serif;width:100%;max-width:340px;}
+  .data-table th,.data-table td{border:1px solid var(--border2);padding:0.5rem 0.8rem;font-size:0.88rem;text-align:center;}
+  .data-table th{background:var(--steel-bg);color:var(--steel-light);font-weight:700;letter-spacing:0.5px;}
+  .data-table td{color:var(--text-mid);}
+  .data-table tr:nth-child(even) td{background:var(--track);}
+  .data-table td.hl-cell{color:var(--green);font-weight:800;background:var(--green-bg);}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson29.html">LESSON 29</a><span>/</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📍 Materi · Lesson 29</div>
+  <h1>Review <span>Data &amp; Koordinat</span></h1>
+  <p class="intro">Kamu sudah pernah belajar semua bagian ini. Slide ini bukan materi baru — cuma pengingat singkat sebelum kita latihan soal!</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- SLIDE 1: Judul -->
+    <div class="slide">
+      <div class="card" style="text-align:center;">
+        <div class="card-label violet">📍 Slide 1 · Pembuka</div>
+        <div class="shape-wrap">
+          <svg width="220" height="150" viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+            <g>
+              <text x="45" y="16" fill="#7ab8d8" font-family="Rajdhani" font-size="11" font-weight="700" text-anchor="middle">DATA</text>
+              <rect x="10" y="22" width="70" height="18" fill="rgba(74,144,184,0.18)" stroke="#4a90b8" stroke-width="1.5"/>
+              <rect x="10" y="40" width="70" height="16" fill="rgba(74,144,184,0.08)" stroke="#4a90b8" stroke-width="1.2"/>
+              <rect x="10" y="56" width="70" height="16" fill="rgba(74,144,184,0.12)" stroke="#4a90b8" stroke-width="1.2"/>
+              <line x1="45" y1="22" x2="45" y2="72" stroke="#4a90b8" stroke-width="1"/>
+              <rect x="49" y="44" width="18" height="8" fill="#7ab8d8" opacity="0.6"/>
+              <rect x="49" y="60" width="14" height="8" fill="#7ab8d8" opacity="0.6"/>
+            </g>
+            <g>
+              <text x="175" y="16" fill="#a78bfa" font-family="Rajdhani" font-size="11" font-weight="700" text-anchor="middle">KOORDINAT</text>
+              <line x1="130" y1="72" x2="220" y2="72" stroke="#7c3aed" stroke-width="1.6"/>
+              <line x1="130" y1="22" x2="130" y2="72" stroke="#7c3aed" stroke-width="1.6"/>
+              <line x1="150" y1="22" x2="150" y2="72" stroke="#3a2a5a" stroke-width="1" stroke-dasharray="2 2"/>
+              <line x1="170" y1="22" x2="170" y2="72" stroke="#3a2a5a" stroke-width="1" stroke-dasharray="2 2"/>
+              <line x1="190" y1="22" x2="190" y2="72" stroke="#3a2a5a" stroke-width="1" stroke-dasharray="2 2"/>
+              <line x1="130" y1="52" x2="220" y2="52" stroke="#3a2a5a" stroke-width="1" stroke-dasharray="2 2"/>
+              <circle cx="180" cy="37" r="4" fill="#a78bfa"/>
+              <text x="185" y="35" fill="#a78bfa" font-family="Rajdhani" font-size="9" font-weight="700">(x,y)</text>
+            </g>
+            <text x="120" y="150" fill="#586878" font-family="Rajdhani" font-size="9" font-weight="600" text-anchor="middle" letter-spacing="1.5">DATA · TABEL · DIAGRAM · KOORDINAT</text>
+          </svg>
+        </div>
+        <h2 style="font-size:1.5rem;margin-top:0.4rem;">Review Data &amp; Koordinat</h2>
+        <p style="margin-top:0.6rem;">Membaca Informasi <span style="color:var(--steel-light);font-weight:700;">•</span> Menentukan Posisi</p>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" disabled>← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Peta Konsep -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">🗺️ Slide 2 · Peta Konsep</div>
+        <h2>Mengaktifkan Kembali Ingatan</h2>
+        <p>Semua ini sudah pernah kamu pelajari. Coba lihat lagi petanya sebelum masuk ke detail tiap bagian.</p>
+        <div class="map-box">
+          <div class="map-root">🗂️ Review Data &amp; Koordinat</div>
+          <div class="map-branch d">├── Data</div>
+          <div class="map-leaf">├── Tabel</div>
+          <div class="map-leaf">└── Diagram</div>
+          <div class="map-branch k">└── Koordinat</div>
+          <div class="map-leaf">├── Sumbu X</div>
+          <div class="map-leaf">├── Sumbu Y</div>
+          <div class="map-leaf">└── Posisi Titik</div>
+        </div>
+        <div class="hl hl-steel">
+          <strong>Ingat:</strong> membaca posisi dan informasi dengan teliti.
+        </div>
+        <div class="callout">
+          <span class="callout-icon">💭</span>
+          <span>Coba ingat-ingat dulu: bagaimana cara membaca tabel? Bagaimana cara membaca posisi titik? Kita bahas satu-satu di slide berikutnya.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Membaca Data -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">📊 Slide 3 · Membaca Data</div>
+        <h2>Mengingat Kembali Cara Membaca Tabel</h2>
+        <p>Perhatikan tabel <strong style="color:var(--steel-light)">Buah Favorit Siswa</strong> berikut ini.</p>
+        <div class="viz-wrap">
+          <table class="data-table">
+            <thead><tr><th>Buah</th><th>Jumlah Siswa</th></tr></thead>
+            <tbody>
+              <tr><td>Apel</td><td>8</td></tr>
+              <tr><td>Jeruk</td><td>5</td></tr>
+              <tr><td>Mangga</td><td class="hl-cell">10</td></tr>
+              <tr><td>Anggur</td><td>6</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="work-box">
+          <div class="work-eq">Pertanyaan: Kategori mana yang memiliki jumlah paling banyak?</div>
+          <div class="work-note">Jawab: <span style="color:var(--green);font-weight:700;">Mangga</span>, karena angkanya paling besar yaitu 10.</div>
+        </div>
+        <ul class="tip-list">
+          <li>Baca <strong style="color:var(--steel-light)">judul tabel</strong> dulu supaya tahu tabel ini tentang apa.</li>
+          <li>Lihat <strong style="color:var(--steel-light)">kategori</strong> pada setiap baris.</li>
+          <li>Lihat <strong style="color:var(--steel-light)">nilainya</strong>, lalu bandingkan satu sama lain.</li>
+        </ul>
+        <div class="hl hl-amber">
+          <strong>Pengingat:</strong> Baca judul → lihat kategori → lihat nilainya.
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Membaca Diagram -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">📈 Slide 4 · Membaca Diagram</div>
+        <h2>Mengingat Kembali Cara Membaca Diagram Batang</h2>
+        <p>Perhatikan diagram batang <strong style="color:var(--violet-light)">Nilai Ulangan</strong> berikut ini.</p>
+        <div class="viz-wrap">
+          <svg width="260" height="180" viewBox="0 0 280 190" xmlns="http://www.w3.org/2000/svg">
+            <line x1="40" y1="30" x2="40" y2="150" stroke="#2a3a4a" stroke-width="1" stroke-dasharray="2 3"/>
+            <line x1="40" y1="126" x2="260" y2="126" stroke="#2a3a4a" stroke-width="1" stroke-dasharray="2 3"/>
+            <line x1="40" y1="102" x2="260" y2="102" stroke="#2a3a4a" stroke-width="1" stroke-dasharray="2 3"/>
+            <line x1="40" y1="78" x2="260" y2="78" stroke="#2a3a4a" stroke-width="1" stroke-dasharray="2 3"/>
+            <line x1="40" y1="54" x2="260" y2="54" stroke="#2a3a4a" stroke-width="1" stroke-dasharray="2 3"/>
+            <text x="34" y="153" fill="#586878" font-family="Rajdhani" font-size="8" text-anchor="end">0</text>
+            <text x="34" y="129" fill="#586878" font-family="Rajdhani" font-size="8" text-anchor="end">2</text>
+            <text x="34" y="105" fill="#586878" font-family="Rajdhani" font-size="8" text-anchor="end">4</text>
+            <text x="34" y="81" fill="#586878" font-family="Rajdhani" font-size="8" text-anchor="end">6</text>
+            <text x="34" y="57" fill="#586878" font-family="Rajdhani" font-size="8" text-anchor="end">8</text>
+            <line x1="40" y1="150" x2="260" y2="150" stroke="#4a90b8" stroke-width="2"/>
+            <line x1="40" y1="20" x2="40" y2="150" stroke="#4a90b8" stroke-width="2"/>
+            <rect x="50" y="78" width="36" height="72" fill="#7ab8d8" opacity="0.8" rx="3"/>
+            <rect x="106" y="42" width="36" height="108" fill="#a78bfa" opacity="0.8" rx="3"/>
+            <rect x="162" y="66" width="36" height="84" fill="#f8c870" opacity="0.8" rx="3"/>
+            <rect x="218" y="54" width="36" height="96" fill="#48c870" opacity="0.8" rx="3"/>
+            <text x="68" y="166" fill="#9ab0c0" font-family="Rajdhani" font-size="11" font-weight="700" text-anchor="middle">A</text>
+            <text x="124" y="166" fill="#9ab0c0" font-family="Rajdhani" font-size="11" font-weight="700" text-anchor="middle">B</text>
+            <text x="180" y="166" fill="#9ab0c0" font-family="Rajdhani" font-size="11" font-weight="700" text-anchor="middle">C</text>
+            <text x="236" y="166" fill="#9ab0c0" font-family="Rajdhani" font-size="11" font-weight="700" text-anchor="middle">D</text>
+          </svg>
+        </div>
+        <div class="work-box">
+          <div class="work-eq">Pertanyaan: Berapa jumlah pada kategori A?</div>
+          <div class="work-note">Jawab: cocokkan batang A dengan sumbu tegak → tingginya di angka <span style="color:var(--green);font-weight:700;">6</span>.</div>
+        </div>
+        <ul class="tip-list">
+          <li>Perhatikan <strong style="color:var(--violet-light)">sumbu mendatar</strong> untuk melihat kategorinya.</li>
+          <li>Perhatikan <strong style="color:var(--violet-light)">sumbu tegak</strong> untuk melihat nilainya.</li>
+          <li>Cocokkan <strong style="color:var(--violet-light)">kategori dengan nilainya</strong> lewat tinggi batang.</li>
+        </ul>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Koordinat Kartesius -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📍 Slide 5 · Koordinat Kartesius</div>
+        <h2>Mengingat Kembali Bidang Koordinat</h2>
+        <ul class="tip-list">
+          <li>Sumbu <strong style="color:var(--amber)">X</strong> = garis mendatar.</li>
+          <li>Sumbu <strong style="color:var(--amber)">Y</strong> = garis tegak.</li>
+          <li>Koordinat ditulis dalam bentuk <strong style="color:var(--amber)">(x, y)</strong>.</li>
+          <li>Baca nilai <strong style="color:var(--amber)">X terlebih dahulu</strong>, baru kemudian <strong style="color:var(--amber)">Y</strong>.</li>
+        </ul>
+        <div class="viz-wrap" id="grid5"></div>
+        <div class="work-box">
+          <div class="work-eq">Contoh: Titik A berada di (3, 2)</div>
+          <div class="work-note">Prosesnya: mulai dari titik pusat (0,0) → <span style="color:var(--amber);font-weight:700;">3 ke kanan</span> → <span style="color:var(--violet-light);font-weight:700;">2 ke atas</span>.</div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Membaca & Menentukan Titik -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">🧭 Slide 6 · Membaca &amp; Menentukan Titik</div>
+        <h2>Melatih Ketelitian Membaca Posisi</h2>
+        <div class="viz-wrap" id="grid6"></div>
+        <div class="step-box">
+          <div class="step-num">1</div>
+          <div class="step-text">Tentukan koordinat titik <strong style="color:var(--steel-light)">A</strong>. <span style="color:var(--text-muted)">(Hitung berapa langkah ke kanan, lalu berapa langkah ke atas.)</span></div>
+        </div>
+        <div class="step-box">
+          <div class="step-num">2</div>
+          <div class="step-text">Letakkan titik <strong style="color:var(--violet-light)">B</strong> pada koordinat (4, 3). <span style="color:var(--text-muted)">(Titik putus-putus di atas menunjukkan posisinya.)</span></div>
+        </div>
+        <div class="hl hl-green">
+          <strong>Pengingat:</strong> Jangan tertukar — X dulu, Y kemudian. Fokus pada ketelitian membaca posisi, bukan perhitungan.
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Data & Coordinate Challenge -->
+    <div class="slide">
+      <div class="card" style="text-align:center;">
+        <div class="card-label green">🎯 Slide 7 · Data &amp; Coordinate Challenge</div>
+        <h2>🎯 Data &amp; Coordinate Challenge</h2>
+        <p>Coba pikirkan tiga tantangan ini sebelum masuk ke latihan penuh. Tidak perlu ditulis di sini — cukup pikirkan strateginya!</p>
+
+        <div class="work-box" style="text-align:left;">
+          <div class="star-row" style="justify-content:flex-start;">⭐</div>
+          <div class="work-eq">Mudah: membaca satu informasi dari tabel atau diagram.</div>
+        </div>
+        <div class="work-box" style="text-align:left;">
+          <div class="star-row" style="justify-content:flex-start;">⭐⭐</div>
+          <div class="work-eq">Sedang: menentukan koordinat sebuah titik pada bidang.</div>
+        </div>
+        <div class="work-box" style="text-align:left;">
+          <div class="star-row" style="justify-content:flex-start;">⭐⭐⭐</div>
+          <div class="work-eq">Tantangan: membaca beberapa informasi sekaligus dan menentukan posisi titik dengan tepat.</div>
+        </div>
+
+        <div class="hl hl-steel">
+          <strong>Baca dengan teliti sebelum menjawab.</strong><br>
+          <span style="font-size:0.88rem;">Kesalahan kecil pada posisi bisa membuat jawaban berbeda.</span>
+        </div>
+      </div>
+
+      <div class="finish">
+        <span class="finish-icon">🎮</span>
+        <div class="finish-title">SIAP MEREVIEW!</div>
+        <div class="finish-desc">Kamu sudah mengingat kembali cara membaca data dan koordinat. Sekarang waktunya latihan soal!</div>
+        <div class="xp">+120 XP</div>
+        <div class="finish-btns">
+          <a href="latihan29.html" class="btn btn-primary">🏠 Mulai Latihan</a>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-ghost" disabled>Selesai ✓</button>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+</div>
+
+<script>
+  /* ===== Coordinate grid generator (1 kuadran, nilai positif 0-8) ===== */
+  function renderGridSVG(points, guide){
+    const unit=20, ox=30, oy=190, max=8;
+    let lines='', ticks='';
+    for(let i=0;i<=max;i++){
+      const gx = ox+i*unit, gy = oy-i*unit;
+      lines += `<line x1="${gx}" y1="20" x2="${gx}" y2="${oy}" stroke="#2a3a4a" stroke-width="1" stroke-dasharray="2 3"/>`;
+      lines += `<line x1="${ox}" y1="${gy}" x2="200" y2="${gy}" stroke="#2a3a4a" stroke-width="1" stroke-dasharray="2 3"/>`;
+      ticks += `<text x="${gx}" y="${oy+14}" fill="#586878" font-family="Rajdhani" font-size="9" text-anchor="middle">${i}</text>`;
+      ticks += `<text x="${ox-8}" y="${gy+3}" fill="#586878" font-family="Rajdhani" font-size="9" text-anchor="end">${i}</text>`;
+    }
+    let guideHtml = '';
+    if(guide){
+      const gx = ox+guide.x*unit, gy = oy-guide.y*unit;
+      guideHtml += `<line x1="${ox}" y1="${oy}" x2="${gx}" y2="${oy}" stroke="#f0a830" stroke-width="2.5"/>`;
+      guideHtml += `<line x1="${gx}" y1="${oy}" x2="${gx}" y2="${gy}" stroke="#a78bfa" stroke-width="2.5"/>`;
+    }
+    let pts = '';
+    points.forEach(p=>{
+      const px = ox+p.x*unit, py = oy-p.y*unit;
+      if(p.dashed){
+        pts += `<circle cx="${px}" cy="${py}" r="5" fill="none" stroke="${p.color}" stroke-width="2" stroke-dasharray="3 3"/>`;
+      } else {
+        pts += `<circle cx="${px}" cy="${py}" r="4.5" fill="${p.color}" stroke="#0f1419" stroke-width="1.5"/>`;
+      }
+      pts += `<text x="${px+8}" y="${py-6}" fill="${p.color}" font-family="Rajdhani" font-size="12" font-weight="800">${p.label}</text>`;
+    });
+    return `<svg width="200" height="200" viewBox="0 0 210 210" xmlns="http://www.w3.org/2000/svg">
+      ${lines}
+      <line x1="${ox}" y1="${oy}" x2="200" y2="${oy}" stroke="#4a90b8" stroke-width="2"/>
+      <line x1="${ox}" y1="20" x2="${ox}" y2="${oy}" stroke="#4a90b8" stroke-width="2"/>
+      <text x="204" y="${oy+4}" fill="#7ab8d8" font-family="Rajdhani" font-size="11" font-weight="700">X</text>
+      <text x="${ox-2}" y="14" fill="#7ab8d8" font-family="Rajdhani" font-size="11" font-weight="700">Y</text>
+      ${ticks}
+      ${guideHtml}
+      ${pts}
+    </svg>`;
+  }
+
+  document.getElementById('grid5').innerHTML = renderGridSVG(
+    [{x:3,y:2,label:'A (3,2)',color:'#7ab8d8'}],
+    {x:3,y:2}
+  );
+  document.getElementById('grid6').innerHTML = renderGridSVG(
+    [
+      {x:2,y:5,label:'A',color:'#7ab8d8'},
+      {x:4,y:3,label:'B',color:'#a78bfa',dashed:true}
+    ]
+  );
+
+  /* ===== Slide navigation ===== */
+  const TOTAL = 7;
+  let cur = 0;
+
+  const dotsEl = document.getElementById('dots');
+  for(let i=0;i<TOTAL;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots(){
+    document.querySelectorAll('.dot').forEach((d,i)=>{
+      d.className = 'dot' + (i===cur?' active':i<cur?' done':'');
+    });
+  }
+
+  function goTo(n){
+    document.querySelectorAll('.slide')[cur].classList.remove('active');
+    cur = n;
+    document.querySelectorAll('.slide')[cur].classList.add('active');
+    updateDots();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function nextSlide(){ if(cur<TOTAL-1) goTo(cur+1); }
+  function prevSlide(){ if(cur>0) goTo(cur-1); }
+
+  document.querySelectorAll('.slide')[0].classList.add('active');
+</script>
+</body>
+</html>
