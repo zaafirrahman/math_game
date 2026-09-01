@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cluster 10 · Grand Final Review · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf8ef;
+    --surface: #faf0da;
+    --card: #ffffff;
+    --border: #f0dcae;
+    --border2: #e6c67e;
+    --gold: #b8860b;
+    --gold-light: #e8c468;
+    --bronze: #8a6420;
+    --teal: #6b4fa0;
+    --teal-light: #b8a0d8;
+    --text: #3d2f1f;
+    --text-mid: #8a7455;
+    --text-muted: #b8a488;
+    --shadow: rgba(184, 134, 11, 0.14);
+    --red: #c0392b;
+    --green: #4db88a;
+    --s1: #3f9c6d; --s1-light: #8fd0ab;
+    --s2: #d9a441; --s2-light: #f0cf8a;
+    --s3: #e2793e; --s3-light: #f3b284;
+    --s4: #d1495b; --s4-light: #ec9aa6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Quicksand', sans-serif; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 20%, rgba(184,134,11,0.08) 0%, transparent 45%),
+      radial-gradient(ellipse at 90% 10%, rgba(107,79,160,0.07) 0%, transparent 45%),
+      radial-gradient(ellipse at 80% 90%, rgba(209,73,91,0.05) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  .petal { position: fixed; pointer-events: none; z-index: 0; animation: petalFloat var(--d) ease-in-out infinite var(--dl); opacity: 0.12; font-size: var(--sz); }
+  @keyframes petalFloat { 0%,100%{ transform: translateY(0) rotate(var(--r0)); opacity:0.12; } 50%{ transform: translateY(-14px) rotate(var(--r1)); opacity:0.2; } }
+
+  nav {
+    padding: 1rem 2rem; display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    background: rgba(244,251,248,0.92); backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;
+  }
+  nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--gold); }
+  nav span { color: var(--border2); }
+  nav .current { color: var(--gold); }
+
+  .wrapper { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.2rem 6rem; position: relative; z-index: 1; }
+  @media(max-width:480px){ .wrapper { padding: 1.8rem 0.8rem 6rem; } }
+
+  /* Banner */
+  .banner {
+    background: linear-gradient(135deg, rgba(47,143,124,0.1), rgba(217,164,65,0.07));
+    border: 2px solid var(--gold-light);
+    border-radius: 22px; padding: 2rem 2rem 1.6rem;
+    margin-bottom: 2rem; position: relative; overflow: hidden;
+  }
+  .banner::before {
+    content: '🏆'; position: absolute; right: 1.5rem; top: 50%;
+    transform: translateY(-50%); font-size: 6rem; opacity: 0.08; pointer-events: none;
+  }
+  .page-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(47,143,124,0.12); border: 1.5px solid rgba(47,143,124,0.4);
+    color: var(--bronze); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.3rem 1rem; border-radius: 20px; margin-bottom: 0.9rem; font-weight: 800;
+  }
+  .page-title { font-family: 'Nunito', sans-serif; font-size: clamp(1.4rem,4vw,2rem); font-weight: 900; color: var(--text); margin-bottom: 0.45rem; line-height: 1.25; }
+  .page-title span { color: var(--gold); }
+  .page-desc { color: var(--text-mid); font-size: 0.88rem; line-height: 1.7; max-width: 580px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .pill { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; padding: 0.22rem 0.75rem; border-radius: 20px; font-weight: 700; }
+  .pill-gold { background: rgba(47,143,124,0.12); color: var(--bronze); border: 1.5px solid rgba(47,143,124,0.35); }
+  .pill-teal { background: rgba(217,164,65,0.12);  color: #8a6a1f;   border: 1.5px solid rgba(217,164,65,0.35); }
+  .pill-red  { background: rgba(209,73,91,0.1);   color: var(--s4);    border: 1.5px solid rgba(209,73,91,0.3); }
+  .pill-orn  { background: rgba(226,121,62,0.1);  color: var(--s3);    border: 1.5px solid rgba(226,121,62,0.3); }
+  .pill-grn  { background: rgba(63,156,109,0.1);  color: var(--s1);    border: 1.5px solid rgba(63,156,109,0.3); }
+
+  /* Progress */
+  .prog-panel { background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 1.2rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 3px 14px var(--shadow); }
+  .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+  .prog-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+  .prog-count { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 900; color: var(--gold); }
+  .prog-track { height: 7px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 0.5rem; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--s1), var(--s2), var(--s3), var(--s4)); border-radius: 99px; transition: width 0.7s ease; }
+  .prog-sub { font-size: 0.76rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
+  .reset-link { font-size: 0.7rem; color: var(--text-muted); cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+  .reset-link:hover { color: var(--red); }
+  .prog-stars { display: flex; gap: 0.3rem; margin-top: 0.6rem; align-items: center; font-size: 0.76rem; color: var(--text-muted); }
+  .star { font-size: 0.9rem; opacity: 0.2; transition: opacity 0.4s; }
+  .star.lit { opacity: 1; }
+
+  /* Equation display (reused for probability fractions/expressions) */
+  .eq-display {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.3rem;
+    margin: 0.6rem 0 0.8rem; padding: 0.7rem 0.6rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+    font-family: 'Nunito', sans-serif; font-weight: 900;
+  }
+  .ed-var  { font-size: 1.15rem; color: var(--gold); background: rgba(47,143,124,0.12); border: 1.5px solid rgba(47,143,124,0.35); padding: 0.15rem 0.55rem; border-radius: 8px; font-style: italic; }
+  .ed-num  { font-size: 1.15rem; color: var(--text-mid); background: var(--surface); border: 1.5px solid var(--border2); padding: 0.15rem 0.5rem; border-radius: 8px; }
+  .ed-op   { font-size: 1.1rem; color: var(--text-muted); }
+
+  /* Dataset chips (reused for data lists) */
+  .coord-display {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.6rem;
+    margin: 0.6rem 0 0.8rem; padding: 0.7rem 0.9rem;
+    background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border);
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.95rem;
+  }
+  .coord-point {
+    color: var(--gold); background: rgba(47,143,124,0.12); border: 1.5px solid rgba(47,143,124,0.35);
+    padding: 0.3rem 0.8rem; border-radius: 10px;
+  }
+  .coord-point.alt { color: #8a6a1f; background: rgba(217,164,65,0.12); border-color: rgba(217,164,65,0.3); }
+  .coord-arrow { color: var(--text-muted); font-size: 1.1rem; }
+  .dataset-note { text-align: center; font-size: 0.74rem; color: var(--text-muted); margin: -0.3rem 0 0.7rem; font-style: italic; }
+
+  /* Data table */
+  .data-table-wrap { overflow-x: auto; margin: 0.6rem 0 0.8rem; border-radius: 12px; border: 1.5px solid var(--border); }
+  .data-table { width: 100%; border-collapse: collapse; background: var(--surface); }
+  .data-table th { background: rgba(47,143,124,0.12); color: var(--bronze); font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.76rem; padding: 0.5rem 0.7rem; text-align: center; letter-spacing: 0.5px; }
+  .data-table td { padding: 0.5rem 0.7rem; text-align: center; font-weight: 700; color: var(--text-mid); font-size: 0.85rem; border-top: 1px solid var(--border); }
+  .data-table tr:nth-child(even) td { background: rgba(47,143,124,0.03); }
+
+  /* Bar chart */
+  .bars-wrap { display: flex; flex-direction: column; gap: 0.45rem; margin: 0.6rem 0 0.8rem; padding: 0.9rem 1rem; background: var(--surface); border-radius: 12px; border: 1.5px solid var(--border); }
+  .bar-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.78rem; }
+  .bar-label { width: 60px; flex-shrink: 0; color: var(--text-mid); font-weight: 700; }
+  .bar-track { flex: 1; height: 14px; background: var(--border); border-radius: 8px; overflow: hidden; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--teal)); border-radius: 8px; }
+  .bar-val { width: 26px; text-align: right; font-family: 'Nunito', sans-serif; font-weight: 800; color: var(--gold); flex-shrink: 0; }
+
+  /* Word story */
+  .word-story { background: rgba(47,143,124,0.06); border: 1.5px solid rgba(47,143,124,0.22); border-radius: 10px; padding: 0.65rem 0.9rem; margin-bottom: 0.7rem; font-size: 0.83rem; color: var(--text-mid); line-height: 1.65; }
+  .word-story strong { color: var(--bronze); }
+
+  /* Section dividers */
+  .sec-divider {
+    font-family: 'Nunito', sans-serif; font-size: 0.72rem; font-weight: 800;
+    letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.5rem 0; margin: 2rem 0 1rem;
+    border-bottom: 2px solid; display: flex; align-items: center; gap: 0.7rem;
+  }
+  .sd-1 { color: var(--s1); border-color: rgba(63,156,109,0.3); }
+  .sd-2 { color: var(--s2); border-color: rgba(217,164,65,0.3); }
+  .sd-3 { color: var(--s3); border-color: rgba(226,121,62,0.3); }
+  .sd-4 { color: var(--s4); border-color: rgba(209,73,91,0.3); }
+  .sd-sesi { font-size: 0.62rem; font-weight: 700; opacity: 0.65; margin-left: auto; letter-spacing: 1px; }
+
+  /* Grid & Cards */
+  .exercise-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(290px,1fr)); gap: 1rem; }
+  @media(max-width:480px){ .exercise-grid { grid-template-columns: 1fr; } }
+
+  .ex-card { background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 1.3rem; position: relative; overflow: hidden; transition: border-color 0.2s; box-shadow: 0 2px 10px var(--shadow); }
+  .ex-card.done-card { border-color: rgba(47,143,124,0.45); background: rgba(47,143,124,0.02); }
+  .ex-card.word-card { border-left: 3px solid var(--teal); }
+  .ex-card.word-card.done-card { border-left-color: var(--gold); }
+
+  .ex-num { font-size: 0.62rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem; }
+  .ex-tag { display: inline-block; font-size: 0.58rem; padding: 0.15rem 0.5rem; border-radius: 8px; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
+  .tag-1 { background: rgba(63,156,109,0.1);  color: var(--s1); border: 1.5px solid rgba(63,156,109,0.28); }
+  .tag-2 { background: rgba(217,164,65,0.12); color: #8a6a1f; border: 1.5px solid rgba(217,164,65,0.3); }
+  .tag-3 { background: rgba(226,121,62,0.1);  color: var(--s3); border: 1.5px solid rgba(226,121,62,0.28); }
+  .tag-4 { background: rgba(209,73,91,0.1);   color: var(--s4); border: 1.5px solid rgba(209,73,91,0.28); }
+
+  .ex-q { font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 800; color: var(--text); margin-bottom: 0.4rem; line-height: 1.5; }
+  .ex-card.done-card .ex-q { color: var(--bronze); }
+  .ex-hint { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.85rem; font-style: italic; line-height: 1.45; }
+
+  /* Inputs */
+  .ex-input-wrap { display: flex; flex-direction: column; gap: 0.45rem; }
+  .ex-input-row { display: flex; gap: 0.5rem; align-items: center; }
+  .ex-input { flex: 1; background: var(--surface); border: 2px solid var(--border2); color: var(--text); padding: 0.55rem 0.8rem; border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; text-align: center; transition: border-color 0.2s; outline: none; min-width: 0; }
+  .ex-input:focus { border-color: var(--gold); }
+  .ex-input.correct { border-color: var(--gold); color: var(--bronze); }
+  .ex-input.wrong-anim { border-color: var(--red); color: var(--red); animation: shake 0.4s ease; }
+  @keyframes shake { 0%,100%{ transform:translateX(0); } 20%,60%{ transform:translateX(-6px); } 40%,80%{ transform:translateX(6px); } }
+  .ex-btn { background: rgba(47,143,124,0.12); border: 1.5px solid rgba(47,143,124,0.35); color: var(--bronze); padding: 0.55rem 0.9rem; border-radius: 10px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.75rem; font-weight: 800; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+  .ex-btn:hover { background: rgba(47,143,124,0.22); border-color: var(--gold); }
+  .ex-btn:disabled { opacity: 0.3; cursor: default; }
+  .attempts-row { display: flex; gap: 3px; align-items: center; min-height: 10px; }
+  .attempts-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
+
+  .ex-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .ex-opt { background: var(--surface); border: 2px solid var(--border2); color: var(--text-mid); padding: 0.55rem 0.4rem; border-radius: 10px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 700; transition: all 0.15s; text-align: center; line-height: 1.4; }
+  .ex-opt:hover:not(:disabled) { border-color: var(--gold); background: rgba(47,143,124,0.08); color: var(--bronze); }
+  .ex-opt.opt-correct { border-color: var(--green); background: rgba(77,184,138,0.1); color: var(--green); }
+  .ex-opt.opt-wrong   { border-color: var(--red);  background: rgba(192,57,43,0.08); color: var(--red); }
+  .ex-opt:disabled { cursor: default; }
+
+  .ex-feedback { margin-top: 0.6rem; font-size: 0.81rem; font-weight: 700; display: none; line-height: 1.55; }
+  .ex-feedback.show { display: block; }
+  .ex-feedback.ok { color: var(--green); }
+  .ex-feedback.no { color: var(--red); }
+  .done-badge { position: absolute; top: 0.9rem; right: 0.9rem; background: rgba(47,143,124,0.12); border: 1.5px solid rgba(47,143,124,0.4); color: var(--bronze); font-size: 0.6rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 8px; }
+
+  /* All-done */
+  #allDone { display: none; text-align: center; padding: 3.5rem 2rem; }
+  .alldone-icon { font-size: 5rem; display: block; margin-bottom: 1.5rem; animation: bounce 1.2s ease infinite; }
+  @keyframes bounce { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-10px); } }
+  .alldone-title { font-family: 'Nunito', sans-serif; font-size: clamp(1.4rem,5vw,2.1rem); font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.7rem; }
+  .alldone-desc { color: var(--text-mid); line-height: 1.8; margin-bottom: 1.8rem; font-size: 0.92rem; }
+  .alldone-xp { display: inline-block; background: rgba(47,143,124,0.12); border: 1.5px solid rgba(47,143,124,0.45); color: var(--bronze); padding: 0.5rem 1.5rem; border-radius: 20px; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800; margin-bottom: 2rem; }
+  .action-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn { padding: 0.75rem 1.6rem; border-radius: 12px; border: 2px solid var(--border2); font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-muted); background: transparent; }
+  .btn:hover { border-color: var(--gold); color: var(--bronze); }
+  .btn-primary { background: linear-gradient(135deg, var(--gold), var(--teal)); border-color: transparent; color: white; box-shadow: 0 4px 16px rgba(47,143,124,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); color: white; }
+
+  .deco-bloom  { position: fixed; top: -40px; right: -40px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(184,134,11,0.12), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+  .deco-bloom2 { position: fixed; bottom: -60px; left: -60px; width: 240px; height: 240px; background: radial-gradient(circle, rgba(107,79,160,0.1), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+</style>
+</head>
+<body>
+<div class="deco-bloom"></div>
+<div class="deco-bloom2"></div>
+<div id="petals"></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../tasya_0751.html">TASYA</a>
+  <span>›</span>
+  <a href="review.html">MEGA REVIEW</a>
+  <span>›</span>
+  <span class="current">CLUSTER 10</span>
+</nav>
+
+<div class="wrapper">
+  <div class="banner">
+    <div class="page-badge">🏆 Cluster 10 · Grand Final Review</div>
+    <div class="page-title">Grand Final <span>Review</span></div>
+    <div class="page-desc">
+      40 soal gabungan dari SELURUH cluster (1–9): pecahan & persen, aljabar & fungsi, SPLDV, sudut & geometri, Pythagoras & koordinat,
+      lingkaran, statistika, hingga peluang & kombinatorika. Materinya tidak diberi tahu — kamu yang harus mengenali konsepnya sendiri.
+      Empat level menuju Final Boss terakhir. Progress tersimpan otomatis! 🏆
+    </div>
+    <div class="pills">
+      <span class="pill pill-grn">🟢 Warm-up Integration</span>
+      <span class="pill pill-gold">🟡 Hidden Concept</span>
+      <span class="pill pill-orn">🟠 Cross-Topic</span>
+      <span class="pill pill-red">🔴 Final Boss</span>
+    </div>
+  </div>
+
+  <div class="prog-panel">
+    <div class="prog-header">
+      <span class="prog-label">Progress Cluster 10</span>
+      <span class="prog-count" id="progCount">0 / 40</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-sub">
+      <span>Kumpulkan ⭐ tiap menyelesaikan 8 soal!</span>
+      <span class="reset-link" onclick="resetProgress()">Reset Progress</span>
+    </div>
+    <div class="prog-stars" id="progStars">
+      <span>⭐</span>
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+      <span class="star" id="star4">★</span>
+      <span class="star" id="star5">★</span>
+    </div>
+  </div>
+
+  <div id="exerciseArea"></div>
+
+  <div id="allDone">
+    <span class="alldone-icon">🏆</span>
+    <div class="alldone-title">Grand Final Review Selesai!</div>
+    <div class="alldone-desc">
+      Kamu berhasil menaklukkan seluruh materi dari Cluster 1 sampai Cluster 9 dalam satu tantangan besar —<br>
+      dari warm-up, konsep tersembunyi, cross-topic, sampai menang di Final Boss terakhir. Kamu resmi Grand Champion! 🏆
+    </div>
+    <div class="alldone-xp">+800 XP · Grand Final Champion 🏆</div>
+    <div class="action-btns">
+      <a href="cluster9.html" class="btn">← Cluster 9</a>
+      <a href="review.html" class="btn btn-primary">Kembali ke Review →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'tasya_review_cluster10_v1';
+function loadProgress(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||{}; }catch(e){ return{}; } }
+function saveProgress(p){ try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(p)); }catch(e){} }
+let progress = loadProgress();
+
+// Renders 3+ standalone data points as chips, separated by dots
+function pointsHTML(pts){
+  return `<div class="coord-display">${pts.map((p,i)=>`<span class="coord-point${i%2?' alt':''}">${p}</span>`).join('<span class="coord-arrow">·</span>')}</div>`;
+}
+
+// Renders a simple data table
+function tableHTML(headers, rows){
+  return `<div class="data-table-wrap"><table class="data-table"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+
+// Renders a simple horizontal bar chart
+function barsHTML(items){
+  const max = Math.max(...items.map(i=>i.val));
+  return `<div class="bars-wrap">${items.map(i=>`<div class="bar-row"><span class="bar-label">${i.label}</span><div class="bar-track"><div class="bar-fill" style="width:${(i.val/max*100)}%"></div></div><span class="bar-val">${i.val}</span></div>`).join('')}</div>`;
+}
+
+const exercises = [
+
+// ══════════════ STAGE 1 — WARM-UP INTEGRATION (7 soal) ══════════════
+  { id:'e01', section:'s1', tag:'tag-1', tagLabel:"Pecahan → Persen", q:"Ubah pecahan 3/4 menjadi bentuk persen.", hint:"Kalikan pecahan dengan 100%.", type:"text", answers:["75%","75"], explain:"✅ 3/4 × 100% = 75% ✓" },
+  { id:'e02', section:'s1', tag:'tag-1', tagLabel:"Pola → Aljabar", q:"Perhatikan pola bilangan: 3, 7, 11, 15, ... Tentukan suku ke-6 dari pola tersebut.", hint:"Cari selisih antar suku, lalu lanjutkan polanya.", type:"text", answers:["23"], explain:"✅ Pola bertambah 4 tiap suku: 3,7,11,15,19,23 → suku ke-6 adalah 23 ✓" },
+  { id:'e03', section:'s1', tag:'tag-1', tagLabel:"Sudut → Geometri", q:"Dua sudut saling berpelurus (bersuplemen). Jika salah satu sudut besarnya 65°, berapa besar sudut lainnya?", hint:"Dua sudut berpelurus jumlahnya 180°.", type:"text", answers:["115"], explain:"✅ 180° − 65° = 115° ✓" },
+  { id:'e04', section:'s1', tag:'tag-1', tagLabel:"Data → Median", dataset:["8", "3", "10", "5", "7"], q:"Tentukan median (nilai tengah) dari data di atas.", hint:"Urutkan data dari kecil ke besar dulu, baru ambil nilai tengahnya.", type:"text", answers:["7"], explain:"✅ Diurutkan: 3,5,7,8,10 → nilai tengah adalah 7 ✓" },
+  { id:'e05', section:'s1', tag:'tag-1', tagLabel:"Peluang Sederhana", wordProblem:true, story:"Sebuah kantong berisi 3 kelereng merah dan 2 kelereng biru. Diambil 1 kelereng secara acak.", q:"Berapa peluang terambil kelereng biru?", hint:"Bandingkan banyak kelereng biru dengan total seluruh kelereng.", type:"text", answers:["2/5"], explain:"✅ Total kelereng = 3+2 = 5. P(biru) = 2/5 ✓" },
+  { id:'e06', section:'s1', tag:'tag-1', tagLabel:"Pythagoras Dasar", wordProblem:true, story:"Sebuah segitiga siku-siku memiliki dua sisi tegak lurus sepanjang 6 cm dan 8 cm.", q:"Berapa panjang sisi miring (hipotenusa) segitiga tersebut?", hint:"Gunakan Teorema Pythagoras: c² = a² + b².", type:"text", answers:["10"], explain:"✅ c = √(6²+8²) = √(36+64) = √100 = 10 cm ✓" },
+  { id:'e07', section:'s1', tag:'tag-1', tagLabel:"Fungsi Dasar", q:"Diketahui fungsi f(x) = 2x + 3. Berapa nilai f(5)?", hint:"Substitusikan x = 5 ke dalam fungsi.", type:"text", answers:["13"], explain:"✅ f(5) = 2(5) + 3 = 10 + 3 = 13 ✓" },
+
+// ══════════════ STAGE 2 — HIDDEN CONCEPT (10 soal) ══════════════
+  { id:'e08', section:'s2', tag:'tag-2', tagLabel:"???", wordProblem:true, story:"Sebuah roda sepeda berdiameter 70 cm berputar sebanyak 15 kali putaran penuh di atas jalan lurus (π = 22/7).", q:"Berapa total jarak yang ditempuh roda tersebut (dalam meter)?", hint:"Pikirkan berapa jarak yang ditempuh roda dalam satu kali putaran penuh, baru kalikan dengan banyak putarannya.", type:"text", answers:["33"], explain:"✅ Keliling roda = π×d = 22/7×70 = 220 cm. Jarak total = 220×15 = 3.300 cm = 33 m. (Konsep tersembunyi: keliling lingkaran) ✓" },
+  { id:'e09', section:'s2', tag:'tag-2', tagLabel:"???", wordProblem:true, story:"Dari 8 siswa dalam sebuah klub, akan dipilih 2 siswa untuk menjadi perwakilan mengikuti lomba, tanpa ada perbedaan peran di antara keduanya.", q:"Ada berapa cara pemilihan 2 siswa tersebut?", hint:"Perhatikan apakah kedua siswa yang dipilih punya peran/jabatan yang berbeda atau tidak.", type:"text", answers:["28"], explain:"✅ Karena tidak ada perbedaan peran, urutan tidak penting → kombinasi: C(8,2) = 28 cara. (Konsep tersembunyi: kombinasi) ✓" },
+  { id:'e10', section:'s2', tag:'tag-2', tagLabel:"???", table:{headers:["x", "y"], rows:[["1", "5"], ["2", "8"], ["3", "11"], ["4", "14"]]}, q:"Berdasarkan tabel di atas, berapa nilai y ketika x = 6?", hint:"Amati bagaimana nilai y berubah setiap kali x bertambah 1.", type:"text", answers:["20"], explain:"✅ Setiap x bertambah 1, y bertambah 3, sehingga pola: y = 3x + 2. Untuk x=6: y = 3(6)+2 = 20. (Konsep tersembunyi: fungsi linear dari tabel) ✓" },
+  { id:'e11', section:'s2', tag:'tag-2', tagLabel:"???", wordProblem:true, story:"Seorang siswa mencatat pengeluaran hariannya selama 4 hari: Rp12.000, Rp15.000, Rp9.000, dan Rp14.000. Pengeluaran hari kelima belum dicatat, namun diketahui rata-rata pengeluaran selama 5 hari tersebut adalah Rp13.000.", q:"Berapa pengeluaran siswa tersebut pada hari kelima?", hint:"Cari dulu jumlah total pengeluaran 5 hari dari rata-ratanya, lalu bandingkan dengan jumlah 4 hari yang sudah diketahui.", type:"text", answers:["15000","Rp15.000","15.000"], explain:"✅ Total 5 hari = 13.000×5 = 65.000. Jumlah 4 hari = 12.000+15.000+9.000+14.000 = 50.000. Hari ke-5 = 65.000−50.000 = 15.000. (Konsep tersembunyi: mean & data hilang) ✓" },
+  { id:'e12', section:'s2', tag:'tag-2', tagLabel:"???", wordProblem:true, story:"Sebuah roda putar dibagi menjadi 5 bagian sama besar, diberi angka 1 sampai 5. Roda tersebut diputar satu kali.", q:"Berapa peluang roda berhenti pada angka yang merupakan bilangan prima?", hint:"Daftar dulu angka 1 sampai 5 mana saja yang termasuk bilangan prima.", type:"text", answers:["3/5"], explain:"✅ Bilangan prima antara 1–5: 2, 3, 5 (ada 3). P = 3/5. (Konsep tersembunyi: peluang + bilangan prima) ✓" },
+  { id:'e13', section:'s2', tag:'tag-2', tagLabel:"???", wordProblem:true, story:"Sebuah tangga disandarkan pada dinding. Kaki tangga berjarak 9 m dari dinding, dan ujung atas tangga menyentuh dinding pada ketinggian 12 m dari tanah.", q:"Berapa panjang tangga tersebut?", hint:"Bayangkan tangga, dinding, dan tanah membentuk sebuah segitiga siku-siku.", type:"text", answers:["15"], explain:"✅ Panjang tangga = √(9²+12²) = √(81+144) = √225 = 15 m. (Konsep tersembunyi: Teorema Pythagoras) ✓" },
+  { id:'e14', section:'s2', tag:'tag-2', tagLabel:"???", wordProblem:true, story:"Harga sebuah baju awalnya Rp80.000. Setelah masa promo berakhir, harga baju tersebut naik menjadi Rp92.000.", q:"Berapa persen kenaikan harga baju tersebut?", hint:"Bandingkan besar kenaikan harga dengan harga awalnya.", type:"text", answers:["15%","15"], explain:"✅ Kenaikan = 92.000−80.000 = 12.000. Persentase = 12.000/80.000 × 100% = 15%. (Konsep tersembunyi: persentase kenaikan) ✓" },
+  { id:'e15', section:'s2', tag:'tag-2', tagLabel:"???", wordProblem:true, story:"Pada denah sebuah taman, rumah Andi berada di titik (2,3) dan sekolahnya berada di titik (7,15), dengan satuan kilometer.", q:"Berapa jarak lurus dari rumah Andi ke sekolah?", hint:"Bayangkan kedua titik itu dihubungkan oleh sebuah garis lurus di atas bidang koordinat.", type:"text", answers:["13"], explain:"✅ Jarak = √((7−2)²+(15−3)²) = √(25+144) = √169 = 13 km. (Konsep tersembunyi: jarak dua titik / Pythagoras koordinat) ✓" },
+  { id:'e16', section:'s2', tag:'tag-2', tagLabel:"???", wordProblem:true, story:"Umur Rani sekarang 3 kali umur adiknya. Lima tahun lagi, umur Rani menjadi 2 kali umur adiknya saat itu.", q:"Berapa umur adik Rani sekarang?", hint:"Misalkan umur adik sekarang = x, lalu tuliskan hubungan umur Rani dalam x. Buat persamaannya.", type:"text", answers:["5"], explain:"✅ Adik = x, Rani = 3x. Lima tahun lagi: 3x+5 = 2(x+5) → 3x+5 = 2x+10 → x = 5 tahun. (Konsep tersembunyi: persamaan linear satu variabel) ✓" },
+  { id:'e17', section:'s2', tag:'tag-2', tagLabel:"???", wordProblem:true, story:"Dalam sebuah lomba, panitia akan menentukan Juara 1, Juara 2, dan Juara 3 dari 6 orang finalis.", q:"Ada berapa cara penentuan susunan juara tersebut?", hint:"Perhatikan apakah posisi Juara 1, 2, dan 3 bisa saling ditukar begitu saja atau tidak.", type:"text", answers:["120"], explain:"✅ Karena posisi berbeda (urutan penting): 6×5×4 = 120 cara. (Konsep tersembunyi: permutasi) ✓" },
+
+// ══════════════ STAGE 3 — CROSS-TOPIC (13 soal) ══════════════
+  { id:'e18', section:'s3', tag:'tag-3', tagLabel:"Koordinat → Jarak → Pythagoras", wordProblem:true, story:"Titik A(−3, 2) dan titik B(5, −4) menandai posisi dua pos dalam sebuah perlombaan lari lintas alam.", q:"Berapa jarak lurus antara pos A dan pos B?", hint:"Gunakan rumus jarak dua titik, yang sebenarnya berasal dari Teorema Pythagoras.", type:"text", answers:["10"], explain:"✅ Jarak = √((5−(−3))²+(−4−2)²) = √(64+36) = √100 = 10 satuan ✓" },
+  { id:'e19', section:'s3', tag:'tag-3', tagLabel:"Fungsi → Tabel → Persamaan", table:{headers:["x", "y"], rows:[["0", "4"], ["1", "7"], ["2", "10"], ["3", "13"]]}, q:"Tentukan persamaan fungsi yang sesuai dengan tabel di atas, dalam bentuk y = ...", hint:"Cari dulu besar kenaikan y setiap x bertambah 1 (gradien), lalu cari nilai y saat x = 0.", type:"text", answers:["y=3x+4","3x+4","y = 3x + 4"], explain:"✅ Gradien = 3 (naik 3 setiap x+1), dan saat x=0, y=4. Persamaan: y = 3x + 4 ✓" },
+  { id:'e20', section:'s3', tag:'tag-3', tagLabel:"Data → Mean → Missing Value", wordProblem:true, story:"Nilai ulangan 5 siswa: 78, 82, 75, 90, dan satu nilai belum diketahui. Rata-rata kelima nilai tersebut adalah 80.", q:"Berapa nilai siswa kelima yang belum diketahui itu?", hint:"Cari total nilai dari rata-ratanya, lalu kurangi dengan jumlah 4 nilai yang sudah diketahui.", type:"text", answers:["75"], explain:"✅ Total = 80×5 = 400. Jumlah 4 nilai = 78+82+75+90 = 325. Nilai kelima = 400−325 = 75 ✓" },
+  { id:'e21', section:'s3', tag:'tag-3', tagLabel:"Counting → Kombinasi → Peluang", wordProblem:true, story:"Dalam sebuah kotak terdapat 6 bola: 4 bola merah dan 2 bola putih. Diambil 2 bola sekaligus secara acak.", q:"Berapa peluang kedua bola yang terambil berwarna merah?", hint:"Hitung dulu total cara mengambil 2 dari 6 bola, lalu cara mengambil 2 bola merah dari 4 bola merah.", type:"text", answers:["2/5","6/15"], explain:"✅ Total cara = C(6,2) = 15. Cara ambil 2 merah = C(4,2) = 6. P = 6/15 = 2/5 ✓" },
+  { id:'e22', section:'s3', tag:'tag-3', tagLabel:"Dilatasi → Perubahan Ukuran → Luas", wordProblem:true, story:"Sebuah persegi panjang berukuran 4 cm × 6 cm didilatasi (diperbesar) dengan faktor skala 3.", q:"Berapa luas persegi panjang tersebut setelah didilatasi?", hint:"Cari dulu ukuran sisi-sisi baru setelah dilatasi, baru hitung luasnya — jangan langsung mengalikan luas awal dengan 3.", type:"text", answers:["216"], explain:"✅ Sisi baru = 4×3=12 cm dan 6×3=18 cm. Luas baru = 12×18 = 216 cm². (Luas naik sebesar faktor skala² = 9 kali luas awal 24 cm²) ✓" },
+  { id:'e23', section:'s3', tag:'tag-3', tagLabel:"Lingkaran → Luas → Daerah Gabungan", wordProblem:true, story:"Sebuah taman berbentuk persegi berukuran 14 m × 14 m. Di tengah taman terdapat kolam berbentuk lingkaran berdiameter 14 m (π = 22/7).", q:"Berapa luas taman yang tidak tertutup kolam (di luar lingkaran)?", hint:"Hitung luas persegi dan luas lingkaran secara terpisah, lalu cari selisihnya.", type:"text", answers:["42"], explain:"✅ Luas persegi = 14×14 = 196 m². Luas lingkaran = 22/7×7² = 154 m². Luas di luar kolam = 196−154 = 42 m² ✓" },
+  { id:'e24', section:'s3', tag:'tag-3', tagLabel:"SPLDV → Pemodelan Harga", wordProblem:true, story:"Harga 2 pensil dan 3 buku adalah Rp16.000. Harga 4 pensil dan 1 buku adalah Rp12.000.", q:"Berapa harga satu pensil?", hint:"Buat dua persamaan dari kedua kalimat, lalu selesaikan dengan substitusi atau eliminasi.", type:"text", answers:["2000","Rp2.000","2.000"], explain:"✅ 2p+3b=16000 dan 4p+b=12000 → b=12000−4p. Substitusi: 2p+3(12000−4p)=16000 → −10p=−20000 → p=2.000 ✓" },
+  { id:'e25', section:'s3', tag:'tag-3', tagLabel:"Persen Berlapis → Diskon & Pajak", wordProblem:true, story:"Sebuah tas berharga Rp250.000 mendapat diskon 20%. Harga setelah diskon tersebut kemudian dikenakan pajak 10%.", q:"Berapa harga akhir tas tersebut setelah diskon dan pajak?", hint:"Hitung dulu harga setelah diskon, baru kenakan pajak dari harga yang sudah didiskon (bukan harga awal).", type:"text", answers:["220000","Rp220.000","220.000"], explain:"✅ Setelah diskon: 250.000×0,8 = 200.000. Setelah pajak: 200.000×1,1 = 220.000 ✓" },
+  { id:'e26', section:'s3', tag:'tag-3', tagLabel:"Sudut + Segiempat → Aljabar", wordProblem:true, story:"Sebuah segiempat memiliki empat sudut yang besarnya berturut-turut (2x)°, (3x)°, (4x)°, dan (3x)°.", q:"Berapa besar sudut terbesar pada segiempat tersebut?", hint:"Jumlah seluruh sudut dalam segiempat adalah 360°. Buat persamaan dari total sudutnya.", type:"text", answers:["120"], explain:"✅ 2x+3x+4x+3x=360 → 12x=360 → x=30. Sudut terbesar = 4x = 4(30) = 120° ✓" },
+  { id:'e27', section:'s3', tag:'tag-3', tagLabel:"Tabel Data → Peluang", table:{headers:["Warna", "Jumlah"], rows:[["Merah", "5"], ["Biru", "3"], ["Kuning", "2"]]}, q:"Dari tabel di atas, diambil 1 bola secara acak. Berapa peluang bola yang terambil BUKAN berwarna kuning?", hint:"Cari total seluruh bola dulu, lalu hitung peluang komplemen dari kuning.", type:"text", answers:["4/5","8/10"], explain:"✅ Total bola = 5+3+2 = 10. Bola bukan kuning = 5+3 = 8. P = 8/10 = 4/5 ✓" },
+  { id:'e28', section:'s3', tag:'tag-3', tagLabel:"Pola → Fungsi → Prediksi Jauh", wordProblem:true, story:"Sebuah pola bilangan mengikuti aturan Uₙ = 5n − 2.", q:"Berapa nilai suku ke-20 (U₂₀) dari pola tersebut?", hint:"Substitusikan langsung n = 20 ke dalam rumus — tidak perlu menulis semua suku sebelumnya.", type:"text", answers:["98"], explain:"✅ U₂₀ = 5(20)−2 = 100−2 = 98 ✓" },
+  { id:'e29', section:'s3', tag:'tag-3', tagLabel:"Skala Denah → Luas Sebenarnya", wordProblem:true, story:"Sebuah denah rumah dibuat dengan skala 1:200. Pada denah, sebuah ruangan digambar berukuran 3 cm × 4 cm.", q:"Berapa luas sebenarnya ruangan tersebut, dalam meter persegi?", hint:"Ubah dulu ukuran pada denah menjadi ukuran sebenarnya (kalikan dengan skala), baru hitung luasnya.", type:"text", answers:["48"], explain:"✅ Ukuran asli = 3×200=600 cm=6 m, dan 4×200=800 cm=8 m. Luas = 6×8 = 48 m² ✓" },
+  { id:'e30', section:'s3', tag:'tag-3', tagLabel:"Lingkaran + Pythagoras → Tali Busur", wordProblem:true, story:"Sebuah lingkaran berjari-jari 13 cm memiliki tali busur AB yang berjarak 5 cm dari pusat lingkaran.", q:"Berapa panjang tali busur AB tersebut?", hint:"Jari-jari, jarak ke pusat, dan setengah tali busur membentuk segitiga siku-siku — gunakan Pythagoras untuk mencari setengah panjangnya dulu.", type:"text", answers:["24"], explain:"✅ Setengah tali busur = √(13²−5²) = √(169−25) = √144 = 12 cm. Panjang tali busur AB = 2×12 = 24 cm ✓" },
+
+// ══════════════ STAGE 4 — FINAL BOSS (10 soal) ══════════════
+  { id:'e31', section:'s4', tag:'tag-4', tagLabel:"Boss 1 · Desain Taman", wordProblem:true, story:"Sebuah taman berbentuk persegi panjang berukuran 20 m × 14 m. Pada kedua sisi pendeknya (sisi 14 m), ditambahkan setengah lingkaran, sehingga bentuk taman menyerupai stadion (π = 22/7).", q:"Berapa luas total daerah taman tersebut (dalam m²)?", hint:"Model → Strategi: pisahkan bentuk menjadi persegi panjang + dua setengah lingkaran. Dua setengah lingkaran dengan diameter sama bila digabung menjadi satu lingkaran penuh.", type:"text", answers:["434"], explain:"✅ Luas persegi panjang = 20×14 = 280 m². Diameter setengah lingkaran = 14 m (r=7). Dua setengah lingkaran = satu lingkaran penuh: 22/7×7² = 154 m². Total luas = 280+154 = 434 m² ✓" },
+  { id:'e32', section:'s4', tag:'tag-4', tagLabel:"Boss 2 · Undian Kupon", wordProblem:true, story:"Dalam sebuah undian terdapat 10 kupon bernomor 1–10. Panitia akan mengambil 3 kupon sekaligus secara acak. Kupon bernomor kelipatan 3 (yaitu 3, 6, 9) dianggap kupon spesial.", q:"Berapa peluang tepat 2 dari 3 kupon yang terambil adalah kupon spesial?", hint:"Model → Strategi: hitung total cara mengambil 3 dari 10 kupon, lalu hitung cara memilih 2 kupon spesial (dari 3) dan 1 kupon biasa (dari 7).", type:"text", answers:["7/40","21/120"], explain:"✅ Total cara = C(10,3) = 120. Cara ambil 2 spesial dan 1 biasa = C(3,2)×C(7,1) = 3×7 = 21. P = 21/120 = 7/40 ✓" },
+  { id:'e33', section:'s4', tag:'tag-4', tagLabel:"Boss 3 · Laporan Gaji", wordProblem:true, story:"Gaji bulanan 6 karyawan sebuah toko kecil (dalam ratus ribu rupiah): 8, 9, 7, 8, 9, dan sang pemilik toko sendiri dengan gaji 60. Pemilik ingin melaporkan \"gaji rata-rata karyawan\" kepada calon investor.", q:"Ukuran pemusatan manakah yang paling jujur menggambarkan gaji karyawan pada umumnya, bukan gaji pemilik yang jauh lebih tinggi?", hint:"Interpretasi: satu nilai yang jauh berbeda dari yang lain akan sangat memengaruhi rata-rata, tapi tidak terlalu memengaruhi nilai tengah.", type:"mcq", opts:["Rata-rata (mean)", "Nilai tengah (median)"], answer:"Nilai tengah (median)", explain:"✅ Gaji pemilik (60) adalah outlier ekstrem yang menarik rata-rata jauh lebih tinggi dari gaji karyawan sesungguhnya, sehingga median lebih representatif dan jujur ✓" },
+  { id:'e34', section:'s4', tag:'tag-4', tagLabel:"Boss 4 · Dilatasi Segitiga", wordProblem:true, story:"Segitiga ABC memiliki titik sudut A(0,0), B(6,0), dan C(0,8). Segitiga ini akan didilatasi dengan faktor skala 2 terhadap titik pusat (0,0).", q:"Berapa luas segitiga A'B'C' setelah didilatasi?", hint:"Cari dulu luas segitiga ABC mula-mula, lalu ingat bahwa luas berubah sebesar (faktor skala)² setelah dilatasi.", type:"text", answers:["96"], explain:"✅ Luas ABC = ½×6×8 = 24. Setelah dilatasi faktor 2, luas menjadi 24×2² = 24×4 = 96 satuan luas ✓" },
+  { id:'e35', section:'s4', tag:'tag-4', tagLabel:"Boss 5 · Juring Lingkaran", wordProblem:true, story:"Sebuah juring lingkaran memiliki sudut pusat 90° dengan jari-jari 14 cm (π = 22/7).", q:"Berapa luas juring lingkaran tersebut?", hint:"Luas juring adalah sebagian dari luas lingkaran penuh, sesuai perbandingan sudut pusatnya terhadap 360°.", type:"text", answers:["154"], explain:"✅ Luas juring = (90/360) × 22/7 × 14² = ¼ × 22/7 × 196 = ¼ × 616 = 154 cm² ✓" },
+  { id:'e36', section:'s4', tag:'tag-4', tagLabel:"Boss 6 · Segitiga Koordinat", wordProblem:true, story:"Titik P(0,0), Q(6,0), dan R(0,8) membentuk sebuah segitiga di atas bidang koordinat.", q:"Berapa keliling segitiga PQR tersebut?", hint:"Dua sisi bisa dihitung langsung dari koordinat, tapi sisi PR ke QR (sisi miring) memerlukan Teorema Pythagoras.", type:"text", answers:["24"], explain:"✅ PQ=6, PR=8, dan QR=√(6²+8²)=√100=10 (Pythagoras). Keliling = 6+8+10 = 24 satuan ✓" },
+  { id:'e37', section:'s4', tag:'tag-4', tagLabel:"Boss 7 · Anggaran Sewa Mobil", wordProblem:true, story:"Biaya sewa mobil mengikuti fungsi C(t) = 150.000 + 30.000t, dengan t = lama pemakaian dalam jam. Seseorang memiliki anggaran maksimal Rp450.000.", q:"Berapa jam maksimal orang tersebut bisa menyewa mobil dengan anggarannya?", hint:"Substitusikan anggaran maksimal sebagai C(t), lalu selesaikan persamaan untuk mencari t.", type:"text", answers:["10"], explain:"✅ 450.000 = 150.000 + 30.000t → 300.000 = 30.000t → t = 10 jam ✓" },
+  { id:'e38', section:'s4', tag:'tag-4', tagLabel:"Boss 8 · Perwakilan Pameran", wordProblem:true, story:"Dalam sebuah kelas terdapat 30 siswa. Setelah ulangan, 18 siswa dinyatakan lulus (nilai ≥ 70). Dari seluruh siswa yang lulus, akan dipilih 2 siswa secara acak untuk mewakili kelas dalam pameran matematika.", q:"Ada berapa cara pemilihan 2 siswa perwakilan tersebut?", hint:"Fokus hanya pada 18 siswa yang lulus (bukan 30), lalu gunakan kombinasi karena tidak ada perbedaan peran di antara kedua perwakilan.", type:"text", answers:["153"], explain:"✅ C(18,2) = (18×17)/2 = 153 cara ✓" },
+  { id:'e39', section:'s4', tag:'tag-4', tagLabel:"Boss 9 · Kolam & Jalan Setapak", wordProblem:true, story:"Sebuah kolam ikan berbentuk persegi panjang berukuran 10 m × 6 m dikelilingi jalan setapak selebar 2 m di semua sisinya, sehingga membentuk persegi panjang luar berukuran 14 m × 10 m.", q:"Berapa luas jalan setapak tersebut saja (tidak termasuk kolam)?", hint:"Hitung luas persegi panjang luar (termasuk kolam), lalu kurangi dengan luas kolam di dalamnya.", type:"text", answers:["80"], explain:"✅ Luas luar = 14×10 = 140 m². Luas kolam = 10×6 = 60 m². Luas jalan setapak = 140−60 = 80 m² ✓" },
+  { id:'e40', section:'s4', tag:'tag-4', tagLabel:"Final Boss · Grand Challenge", wordProblem:true, story:"Sekolah menggelar lomba matematika. Dari 20 peserta, akan dipilih 3 peserta untuk babak final tanpa perbedaan peran. Diketahui juga bahwa di antara 20 peserta itu, 12 orang adalah peserta putri.", q:"Berapa peluang ketiga peserta yang terpilih untuk babak final semuanya putri?", hint:"Model: ini soal kombinasi + peluang. Strategi: hitung total cara memilih 3 dari 20, lalu cara memilih 3 dari 12 peserta putri. Interpretasi: bandingkan keduanya sebagai peluang.", type:"text", answers:["11/57","220/1140"], explain:"✅ Total cara = C(20,3) = 1.140. Cara pilih 3 putri = C(12,3) = 220. P = 220/1.140 = 11/57 ✓" },
+];
+
+const total = exercises.length;
+
+function updateProgressBar(){
+  const done = Object.values(progress).filter(Boolean).length;
+  document.getElementById('progCount').textContent = `${done} / ${total}`;
+  document.getElementById('progFill').style.width = `${(done/total)*100}%`;
+  for(let i=1;i<=5;i++){
+    const el=document.getElementById('star'+i);
+    if(el) el.classList.toggle('lit', done>=i*8);
+  }
+  if(done===total){
+    setTimeout(()=>{
+      document.getElementById('allDone').style.display='block';
+      document.getElementById('allDone').scrollIntoView({behavior:'smooth'});
+    },600);
+  }
+}
+
+function markDone(card, q, inp, btn){
+  if(q.type==='text'){ inp.classList.add('correct'); inp.disabled=true; btn.disabled=true; }
+  else { card.querySelectorAll('.ex-opt').forEach(b=>b.disabled=true); }
+  const fb=card.querySelector('.ex-feedback');
+  fb.className='ex-feedback show ok'; fb.textContent=q.explain;
+  card.classList.add('done-card');
+  if(!card.querySelector('.done-badge')){ const b=document.createElement('div'); b.className='done-badge'; b.textContent='✓ Done'; card.appendChild(b); }
+  progress[q.id]=true; saveProgress(progress); updateProgressBar();
+}
+
+function checkText(id, inp, btn, q){
+  const raw=inp.value.trim().toLowerCase().replace(/\s+/g,'');
+  if(!raw) return;
+  const correct=q.answers.some(a=>raw===a.toLowerCase().replace(/\s+/g,''));
+  if(correct){ markDone(inp.closest('.ex-card'),q,inp,btn); }
+  else {
+    inp.classList.add('wrong-anim');
+    const attRow=inp.closest('.ex-input-wrap').querySelector('.attempts-row');
+    const dot=document.createElement('div'); dot.className='attempts-dot'; attRow.appendChild(dot);
+    setTimeout(()=>{ inp.classList.remove('wrong-anim'); inp.value=''; inp.focus(); },400);
+    if(attRow.children.length>=3){
+      const fb=inp.closest('.ex-card').querySelector('.ex-feedback');
+      fb.className='ex-feedback show no'; fb.textContent='💡 Coba lagi! '+q.explain;
+    }
+  }
+}
+
+function checkMCQ(val, btn, q, card){
+  card.querySelectorAll('.ex-opt').forEach(b=>{ b.disabled=true; if(b.dataset.val===q.answer) b.classList.add('opt-correct'); });
+  if(val!==q.answer) btn.classList.add('opt-wrong');
+  const fb=card.querySelector('.ex-feedback');
+  if(val===q.answer){ markDone(card,q,null,null); }
+  else {
+    fb.className='ex-feedback show no'; fb.textContent='❌ Bukan itu! '+q.explain;
+    progress[q.id]=true; saveProgress(progress); updateProgressBar();
+    card.classList.add('done-card');
+    if(!card.querySelector('.done-badge')){ const b=document.createElement('div'); b.className='done-badge'; b.textContent='Done'; card.appendChild(b); }
+  }
+}
+
+function buildExercises(){
+  const area=document.getElementById('exerciseArea');
+  area.innerHTML='';
+  const groups=[
+    { key:'s1', label:'🟢 Stage 1 — Warm-up Integration', cls:'sd-1', badge:'7 Soal' },
+    { key:'s2', label:'🟡 Stage 2 — Hidden Concept',      cls:'sd-2', badge:'10 Soal' },
+    { key:'s3', label:'🟠 Stage 3 — Cross-Topic',         cls:'sd-3', badge:'13 Soal' },
+    { key:'s4', label:'🔴 Stage 4 — FINAL BOSS',          cls:'sd-4', badge:'10 Soal' },
+  ];
+
+  groups.forEach(g=>{
+    const wrap=document.createElement('div');
+    wrap.innerHTML=`<div class="sec-divider ${g.cls}">${g.label}<span class="sd-sesi">${g.badge}</span></div>`;
+    const grid=document.createElement('div'); grid.className='exercise-grid';
+
+    exercises.filter(e=>e.section===g.key).forEach(q=>{
+      const isDone=!!progress[q.id];
+      const card=document.createElement('div');
+      card.className='ex-card'+(q.wordProblem?' word-card':'')+(isDone?' done-card':'');
+
+      const tableDisp = q.table ? tableHTML(q.table.headers, q.table.rows) : '';
+      const barsDisp  = q.bars ? barsHTML(q.bars) : '';
+      const datasetDisp = q.dataset ? pointsHTML(q.dataset) : '';
+      const noteDisp = q.datasetNote ? `<div class="dataset-note">${q.datasetNote}</div>` : '';
+      const storyDisp = q.story ? `<div class="word-story">${q.story}</div>` : '';
+
+      let inputHTML='';
+      if(q.type==='text'){
+        inputHTML=`<div class="ex-input-wrap"><div class="ex-input-row">
+          <input type="text" class="ex-input ${isDone?'correct':''}" placeholder="Jawaban?"
+            value="${isDone?q.answers[0]:''}" ${isDone?'disabled':''}
+            onkeydown="if(event.key==='Enter')this.closest('.ex-input-row').querySelector('.ex-btn').click()">
+          <button class="ex-btn" ${isDone?'disabled':''}>CEK</button>
+        </div><div class="attempts-row"></div></div>`;
+      } else {
+        const shuffled=[...q.opts].sort(()=>Math.random()-0.5);
+        inputHTML=`<div class="ex-opts">${shuffled.map(o=>`<button class="ex-opt ${isDone&&o===q.answer?'opt-correct':''}" data-val="${o}" ${isDone?'disabled':''}>${o}</button>`).join('')}</div>`;
+      }
+
+      card.innerHTML=`
+        <div class="ex-num">Soal ${parseInt(q.id.replace('e',''))}</div>
+        <span class="ex-tag ${q.tag}">${q.tagLabel}</span>
+        ${storyDisp}${tableDisp}${barsDisp}${datasetDisp}${noteDisp}
+        <div class="ex-q">${q.q}</div>
+        <div class="ex-hint">${q.hint}</div>
+        ${inputHTML}
+        <div class="ex-feedback ${isDone?'show ok':''}">${isDone?q.explain:''}</div>
+        ${isDone?'<div class="done-badge">✓ Done</div>':''}
+      `;
+
+      if(q.type==='text'){
+        const btn=card.querySelector('.ex-btn'), inp=card.querySelector('.ex-input');
+        if(btn&&inp) btn.onclick=()=>checkText(q.id,inp,btn,q);
+      } else {
+        card.querySelectorAll('.ex-opt').forEach(b=>{ b.onclick=()=>checkMCQ(b.dataset.val,b,q,card); });
+      }
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+    area.appendChild(wrap);
+  });
+  updateProgressBar();
+}
+
+function resetProgress(){
+  if(confirm('Reset semua progress Cluster 10? Jawaban akan dihapus.')){
+    progress={}; saveProgress(progress);
+    document.getElementById('allDone').style.display='none';
+    buildExercises();
+  }
+}
+
+buildExercises();
+
+// Floating symbols
+const emojis=['🏆','🎓','⭐','🥇','📚','✨','🎯'];
+const wrap=document.getElementById('petals');
+for(let i=0;i<16;i++){
+  const p=document.createElement('div'); p.className='petal';
+  const sz=0.9+Math.random()*1.3;
+  p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--sz:${sz}rem;font-size:${sz}rem;--d:${4+Math.random()*6}s;--dl:${-Math.random()*6}s;--r0:${-15+Math.random()*30}deg;--r1:${-15+Math.random()*30}deg;`;
+  p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  wrap.appendChild(p);
+}
+</script>
+<script src="../../../assets/chat-widget.js"></script>
+<script>
+  initChat({ studentId: 'tasya_0751', studentName: 'Tasya' });
+</script>
+</body>
+</html>
