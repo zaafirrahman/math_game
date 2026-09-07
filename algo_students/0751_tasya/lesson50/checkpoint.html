@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkpoint · Aljabar · L50 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --peach:#f0956a;--peach-light:#f7c4a8;--peach-bg:rgba(240,149,106,0.1);
+    --vio:#7c5cbf;--vio-light:#b89ee0;--vio-bg:rgba(124,92,191,0.1);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 90%,rgba(232,160,32,0.07) 0%,transparent 50%),radial-gradient(ellipse at 80% 10%,rgba(232,98,138,0.06) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .current{color:var(--mint);}
+  .wrapper{max-width:640px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  #intro{text-align:center;}
+  .cp-icon{font-size:5rem;display:block;margin-bottom:1.3rem;}
+  .cp-title{font-family:'Nunito',sans-serif;font-size:clamp(1.4rem,5vw,2rem);font-weight:900;color:var(--text);margin-bottom:0.8rem;}
+  .cp-title span{color:var(--gold);}
+  .cp-sub{color:var(--text-muted);line-height:1.7;margin-bottom:1.6rem;font-size:0.92rem;}
+  .rules-box{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:1.3rem 1.5rem;margin-bottom:1.6rem;text-align:left;box-shadow:0 3px 12px var(--shadow);}
+  .rules-box .r-item{font-size:0.87rem;color:var(--text);margin-bottom:0.7rem;display:flex;gap:0.6rem;line-height:1.5;}
+  .rules-box .r-item:last-child{margin-bottom:0;}
+  .info-cards{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:2rem;}
+  .info-card{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:1.2rem;text-align:center;box-shadow:0 3px 12px var(--shadow);}
+  .info-val{font-family:'Nunito',sans-serif;font-size:1.8rem;font-weight:900;color:var(--gold);margin-bottom:0.2rem;}
+  .info-lbl{font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .btn{padding:0.85rem 2.4rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:800;letter-spacing:1px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-primary{background:linear-gradient(135deg,var(--gold),#c07818);color:#fff;box-shadow:0 4px 14px rgba(232,160,32,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(232,160,32,0.35);}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--gold-light);color:var(--gold);}
+  #game{display:none;}
+  .hud{display:flex;justify-content:center;margin-bottom:1.3rem;}
+  .hud-item{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:0.7rem 1.6rem;text-align:center;box-shadow:0 3px 12px var(--shadow);}
+  .hud-val{font-family:'Nunito',sans-serif;font-size:1.25rem;font-weight:800;color:var(--gold);}
+  .hud-lbl{font-size:0.6rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-top:0.1rem;font-weight:700;}
+  .progress-track{height:8px;background:var(--border);border-radius:99px;margin-bottom:1.6rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:99px;transition:width 0.3s ease;}
+  .q-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.2rem;box-shadow:0 3px 12px var(--shadow);}
+  .q-text{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.98rem;line-height:1.55;margin-bottom:1.3rem;}
+  .opts{display:flex;flex-direction:column;gap:0.65rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-family:'Quicksand',sans-serif;font-size:0.9rem;font-weight:600;transition:all 0.18s;text-align:left;}
+  .opt-btn:hover:not(:disabled){border-color:var(--gold-light);background:var(--gold-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  #result{display:none;text-align:center;}
+  .result-icon{font-size:4rem;margin-bottom:1rem;display:block;}
+  .result-title{font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900;color:var(--rose);margin-bottom:0.6rem;}
+  .result-sub{color:var(--text-muted);font-size:0.9rem;margin-bottom:2.2rem;line-height:1.7;}
+  .cat-bars{text-align:left;margin-bottom:2.2rem;}
+  .cat-row{margin-bottom:1.1rem;}
+  .cat-row-top{display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:0.4rem;}
+  .cat-row-top .cname{font-weight:700;color:var(--text);}
+  .cat-row-top .cval{font-family:'Nunito',sans-serif;font-weight:800;color:var(--text-muted);}
+  .cat-bar-track{height:14px;background:var(--border);border-radius:99px;overflow:hidden;}
+  .cat-bar-fill{height:100%;border-radius:99px;transition:width 0.6s ease;}
+  .result-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .downloaded-note{font-size:0.8rem;color:var(--mint);margin-top:0.9rem;min-height:18px;font-weight:700;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson50.html">L50</a><span>›</span>
+  <span class="current">CHECKPOINT</span>
+</nav>
+<div class="wrapper">
+  <div id="intro">
+    <span class="cp-icon">🧭</span>
+    <div class="cp-title">Algebra <span>Checkpoint</span></div>
+    <div class="cp-sub">40 soal campuran dari semua topik aljabar yang pernah kamu pelajari. Ini bukan buat cari nilai tinggi — ini buat lihat bagian mana yang masih perlu diperkuat.</div>
+    <div class="rules-box">
+      <div class="r-item">🚫 <span>Tidak ada bantuan atau pembahasan selama checkpoint berlangsung</span></div>
+      <div class="r-item">⏱️ <span>Tidak ada timer — kerjakan santai, fokus ke jawaban yang paling kamu yakini</span></div>
+      <div class="r-item">🔀 <span>Urutan soal acak, tidak dikelompokkan per topik</span></div>
+      <div class="r-item">✅ <span>Setelah pilih jawaban, langsung lanjut ke soal berikutnya</span></div>
+    </div>
+    <div class="info-cards">
+      <div class="info-card"><div class="info-val">40</div><div class="info-lbl">Soal</div></div>
+      <div class="info-card"><div class="info-val">1x</div><div class="info-lbl">Kerjakan</div></div>
+    </div>
+    <button class="btn btn-primary" onclick="startGame()">MULAI 🚀</button>
+  </div>
+  <div id="game">
+    <div class="hud">
+      <div class="hud-item"><div class="hud-val" id="qV">1/40</div><div class="hud-lbl">Soal</div></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progFill" style="width:2.5%"></div></div>
+    <div class="q-card">
+      <div class="q-text" id="qText"></div>
+      <div class="opts" id="optsDiv"></div>
+    </div>
+  </div>
+  <div id="result">
+    <span class="result-icon">🧭</span>
+    <div class="result-title">Checkpoint Selesai!</div>
+    <div class="result-sub">Ini profil penguasaan konsep aljabar kamu sejauh ini. Hasilnya udah otomatis kesimpan — tinggal download dan kirim ke tutor kamu ya.</div>
+    <div class="cat-bars" id="catBars"></div>
+    <div class="result-actions">
+      <button class="btn btn-primary" onclick="downloadResult()">DOWNLOAD HASIL</button>
+      <a href="lesson50.html" class="btn btn-ghost">Kembali ke Lesson 50</a>
+    </div>
+    <div class="downloaded-note" id="downloadedNote"></div>
+  </div>
+</div>
+<script>
+// ===== QUESTION BANK =====
+const QUESTIONS = [
+// --- A. Bentuk Aljabar ---
+{id:'A1',category:'A_bentuk',difficulty:'mudah',text:'Bentuk aljabar 6x + 9. Koefisien dari x adalah...',
+ options:[{value:'6',tag:'correct'},{value:'9',tag:'tertukar_koefisien_konstanta'},{value:'15',tag:'salah_hitung_suku_sejenis'},{value:'6x',tag:'salah_identifikasi_variabel'}]},
+{id:'A2',category:'A_bentuk',difficulty:'mudah',text:'Bentuk aljabar -8x + 5. Koefisien dari x adalah...',
+ options:[{value:'-8',tag:'correct'},{value:'8',tag:'abai_tanda_saat_identifikasi'},{value:'5',tag:'tertukar_koefisien_konstanta'},{value:'-8x',tag:'salah_identifikasi_variabel'}]},
+{id:'A3',category:'A_bentuk',difficulty:'mudah',text:'Bentuk aljabar 4x - 7. Konstanta dari bentuk tersebut adalah...',
+ options:[{value:'-7',tag:'correct'},{value:'7',tag:'abai_tanda_saat_identifikasi'},{value:'4',tag:'tertukar_koefisien_konstanta'},{value:'-3',tag:'salah_hitung_suku_sejenis'}]},
+{id:'A4',category:'A_bentuk',difficulty:'mudah',text:'Diketahui bentuk aljabar 3x² + 5x - 2. Berapa banyak suku pada bentuk tersebut?',
+ options:[{value:'3',tag:'correct'},{value:'2',tag:'salah_hitung_suku_sejenis'},{value:'5',tag:'tertukar_koefisien_konstanta'},{value:'1',tag:'salah_identifikasi_variabel'}]},
+{id:'A5',category:'A_bentuk',difficulty:'sedang',text:'Manakah bentuk aljabar berikut yang variabel dan koefisiennya adalah y dan -3?',
+ options:[{value:'-3y + 4',tag:'correct'},{value:'4y - 3',tag:'tertukar_koefisien_konstanta'},{value:'3y + 4',tag:'abai_tanda_saat_identifikasi'},{value:'-3x + 4',tag:'salah_identifikasi_variabel'}]},
+{id:'A6',category:'A_bentuk',difficulty:'sedang',text:'Bentuk 2x + 3y - x + 5 setelah disederhanakan sejauh mungkin, ada berapa suku?',
+ options:[{value:'3',tag:'correct'},{value:'4',tag:'salah_hitung_suku_sejenis'},{value:'2',tag:'tertukar_koefisien_konstanta'},{value:'5',tag:'salah_identifikasi_variabel'}]},
+// --- B. Operasi ---
+{id:'B1',category:'B_operasi',difficulty:'mudah',text:'(3x + 4) + (2x - 1) = ...',
+ options:[{value:'5x + 3',tag:'correct'},{value:'8x',tag:'gabung_suku_tak_sejenis'},{value:'5x - 3',tag:'salah_tanda_negatif'},{value:'5x + 5',tag:'kesalahan_hitung_dasar'}]},
+{id:'B2',category:'B_operasi',difficulty:'mudah',text:'4(2x - 3) = ...',
+ options:[{value:'8x - 12',tag:'correct'},{value:'8x - 3',tag:'lupa_distribusi'},{value:'8x + 12',tag:'salah_tanda_negatif'},{value:'6x - 12',tag:'kesalahan_hitung_dasar'}]},
+{id:'B3',category:'B_operasi',difficulty:'sedang',text:'5x - 2(x + 3) = ...',
+ options:[{value:'3x - 6',tag:'correct'},{value:'3x + 3',tag:'lupa_distribusi'},{value:'3x + 6',tag:'salah_tanda_negatif'},{value:'3x - 1',tag:'kesalahan_hitung_dasar'}]},
+{id:'B4',category:'B_operasi',difficulty:'sedang',text:'Sederhanakan 3(x - 2) + 2(x + 5).',
+ options:[{value:'5x + 4',tag:'correct'},{value:'5x - 1',tag:'lupa_distribusi'},{value:'x - 16',tag:'salah_tanda_negatif'},{value:'5x + 16',tag:'kesalahan_hitung_dasar'}]},
+{id:'B5',category:'B_operasi',difficulty:'sedang',text:'-3(2x - 4) + 5 = ...',
+ options:[{value:'-6x + 17',tag:'correct'},{value:'-6x + 1',tag:'lupa_distribusi'},{value:'-6x - 7',tag:'salah_tanda_negatif'},{value:'-6x + 7',tag:'kesalahan_hitung_dasar'}]},
+{id:'B6',category:'B_operasi',difficulty:'sedang',text:'Sederhanakan 4x + 3y - 2x + y.',
+ options:[{value:'2x + 4y',tag:'correct'},{value:'6xy',tag:'gabung_suku_tak_sejenis'},{value:'6x + 4y',tag:'salah_tanda_negatif'},{value:'2x + 2y',tag:'kesalahan_hitung_dasar'}]},
+{id:'B7',category:'B_operasi',difficulty:'sulit',text:'Sederhanakan -2(3x - 5) - 3(x - 4).',
+ options:[{value:'-9x + 22',tag:'correct'},{value:'-9x - 9',tag:'lupa_distribusi'},{value:'-9x - 22',tag:'salah_tanda_negatif'},{value:'-9x + 2',tag:'kesalahan_hitung_dasar'}]},
+// --- C. Substitusi ---
+{id:'C1',category:'C_substitusi',difficulty:'mudah',text:'Jika x = -3, tentukan nilai dari 2x + 5.',
+ options:[{value:'-1',tag:'correct'},{value:'11',tag:'salah_tanda_nilai_negatif'},{value:'-16',tag:'salah_urutan_operasi_substitusi'},{value:'-6',tag:'kesalahan_hitung_dasar'}]},
+{id:'C2',category:'C_substitusi',difficulty:'mudah',text:'Jika a = 4, tentukan nilai dari 3a - 6.',
+ options:[{value:'6',tag:'correct'},{value:'-6',tag:'salah_urutan_operasi_substitusi'},{value:'18',tag:'kesalahan_hitung_dasar'},{value:'2',tag:'kesalahan_hitung_dasar'}]},
+{id:'C3',category:'C_substitusi',difficulty:'sedang',text:'Jika x = 2 dan y = -3, tentukan nilai dari x + 2y.',
+ options:[{value:'-4',tag:'correct'},{value:'1',tag:'tertukar_variabel'},{value:'8',tag:'salah_tanda_nilai_negatif'},{value:'-12',tag:'salah_urutan_operasi_substitusi'}]},
+{id:'C4',category:'C_substitusi',difficulty:'sedang',text:'Jika p = -2 dan q = 5, tentukan nilai dari 3p - q.',
+ options:[{value:'-11',tag:'correct'},{value:'1',tag:'salah_tanda_nilai_negatif'},{value:'17',tag:'tertukar_variabel'},{value:'-13',tag:'kesalahan_hitung_dasar'}]},
+{id:'C5',category:'C_substitusi',difficulty:'sedang',text:'Jika m = -2, tentukan nilai dari m² + 3.',
+ options:[{value:'7',tag:'correct'},{value:'-1',tag:'error_pangkat_negatif'},{value:'1',tag:'salah_urutan_operasi_substitusi'},{value:'9',tag:'kesalahan_hitung_dasar'}]},
+{id:'C6',category:'C_substitusi',difficulty:'sedang',text:'Jika a = 3 dan b = -4, tentukan nilai dari 2a - 3b.',
+ options:[{value:'18',tag:'correct'},{value:'-6',tag:'salah_tanda_nilai_negatif'},{value:'-17',tag:'tertukar_variabel'},{value:'15',tag:'kesalahan_hitung_dasar'}]},
+{id:'C7',category:'C_substitusi',difficulty:'sulit',text:'Jika x = -2 dan y = 3, tentukan nilai dari x² - 2xy + y.',
+ options:[{value:'19',tag:'correct'},{value:'11',tag:'error_pangkat_negatif'},{value:'-5',tag:'salah_tanda_nilai_negatif'},{value:'22',tag:'kesalahan_hitung_dasar'}]},
+// --- D. Fungsi ---
+{id:'D1',category:'D_fungsi',difficulty:'mudah',text:'Diketahui f(x) = 2x + 3. Tentukan nilai f(4).',
+ options:[{value:'11',tag:'correct'},{value:'8',tag:'salah_baca_notasi_fungsi'},{value:'14',tag:'kesalahan_hitung_dasar'},{value:'10',tag:'kesalahan_hitung_dasar'}]},
+{id:'D2',category:'D_fungsi',difficulty:'mudah',text:'Diketahui g(x) = x - 5. Tentukan nilai g(9).',
+ options:[{value:'4',tag:'correct'},{value:'0',tag:'salah_arah_substitusi'},{value:'-4',tag:'kesalahan_hitung_dasar'},{value:'14',tag:'kesalahan_hitung_dasar'}]},
+{id:'D3',category:'D_fungsi',difficulty:'mudah',text:'Fungsi h(x) = 3x. Jika h(x) = 15, berapakah nilai x?',
+ options:[{value:'5',tag:'correct'},{value:'45',tag:'salah_arah_substitusi'},{value:'12',tag:'salah_selesaikan_saat_cari_input'},{value:'3',tag:'kesalahan_hitung_dasar'}]},
+{id:'D4',category:'D_fungsi',difficulty:'sedang',text:'Diketahui f(x) = 4x - 1. Tentukan nilai x jika f(x) = 19.',
+ options:[{value:'5',tag:'correct'},{value:'4,75',tag:'salah_selesaikan_saat_cari_input'},{value:'75',tag:'salah_arah_substitusi'},{value:'6',tag:'kesalahan_hitung_dasar'}]},
+{id:'D5',category:'D_fungsi',difficulty:'sedang',text:'"Keluaran adalah tiga kali masukan dikurangi dua." Notasi fungsi yang tepat adalah...',
+ options:[{value:'f(x) = 3x - 2',tag:'correct'},{value:'f(x) = 3(x-2)',tag:'error_translasi_notasi'},{value:'f(x) = 2 - 3x',tag:'error_translasi_notasi'},{value:'f(3) = x - 2',tag:'salah_baca_notasi_fungsi'}]},
+{id:'D6',category:'D_fungsi',difficulty:'sedang',text:'Tabel: x = 1,2,3,4 → y = 4,7,10,13. Aturan fungsi yang sesuai adalah...',
+ options:[{value:'y = 3x + 1',tag:'correct'},{value:'y = 4x',tag:'salah_pola_tabel'},{value:'y = 3x',tag:'salah_pola_tabel'},{value:'y = x + 3',tag:'error_translasi_notasi'}]},
+{id:'D7',category:'D_fungsi',difficulty:'sedang',text:'Diketahui f(x) = x² - 1. Tentukan nilai f(-3).',
+ options:[{value:'8',tag:'correct'},{value:'-10',tag:'error_pangkat_negatif'},{value:'-7',tag:'salah_baca_notasi_fungsi'},{value:'10',tag:'kesalahan_hitung_dasar'}]},
+{id:'D8',category:'D_fungsi',difficulty:'sedang',text:'Diketahui f(x) = 2x + k. Jika f(3) = 13, tentukan nilai f(5).',
+ options:[{value:'17',tag:'correct'},{value:'13',tag:'salah_arah_substitusi'},{value:'20',tag:'salah_selesaikan_saat_cari_input'},{value:'15',tag:'kesalahan_hitung_dasar'}]},
+{id:'D9',category:'D_fungsi',difficulty:'sulit',text:'Tabel: x=0,1,2,3 → f(x)=2,5,8,11. Jika pola berlanjut, untuk x berapa f(x) = 26?',
+ options:[{value:'8',tag:'correct'},{value:'6',tag:'salah_pola_tabel'},{value:'8,67',tag:'salah_selesaikan_saat_cari_input'},{value:'7',tag:'kesalahan_hitung_dasar'}]},
+{id:'D10',category:'D_fungsi',difficulty:'sulit',text:'Diketahui f(x) = 2x - 3 dan g(x) = x + 4. Tentukan nilai dari f(g(2)).',
+ options:[{value:'9',tag:'correct'},{value:'5',tag:'salah_arah_substitusi'},{value:'7',tag:'salah_baca_notasi_fungsi'},{value:'11',tag:'kesalahan_hitung_dasar'}]},
+// --- E. Bahasa Matematika ---
+{id:'E1',category:'E_bahasa',difficulty:'mudah',text:'"Jumlah suatu bilangan x dengan 7" dinyatakan sebagai...',
+ options:[{value:'x + 7',tag:'correct'},{value:'x - 7',tag:'salah_operasi_kata_kunci'},{value:'7x',tag:'salah_operasi_kata_kunci'},{value:'x = 7',tag:'salah_representasi_variabel'}]},
+{id:'E2',category:'E_bahasa',difficulty:'mudah',text:'"Selisih antara x dan 4" (x lebih besar dari 4) dinyatakan sebagai...',
+ options:[{value:'x - 4',tag:'correct'},{value:'4 - x',tag:'tertukar_urutan_pengurangan'},{value:'x + 4',tag:'salah_operasi_kata_kunci'},{value:'4x',tag:'salah_operasi_kata_kunci'}]},
+{id:'E3',category:'E_bahasa',difficulty:'sedang',text:'"5 kurang dari suatu bilangan n" dinyatakan sebagai...',
+ options:[{value:'n - 5',tag:'correct'},{value:'5 - n',tag:'tertukar_urutan_pengurangan'},{value:'n + 5',tag:'salah_operasi_kata_kunci'},{value:'n/5',tag:'salah_operasi_kata_kunci'}]},
+{id:'E4',category:'E_bahasa',difficulty:'sedang',text:'"Umur Andi 3 tahun lebih tua dari umur Budi." Jika umur Budi = b, umur Andi = ...',
+ options:[{value:'b + 3',tag:'correct'},{value:'3 - b',tag:'tertukar_urutan_pengurangan'},{value:'a - 3',tag:'salah_representasi_variabel'},{value:'3b',tag:'salah_operasi_kata_kunci'}]},
+{id:'E5',category:'E_bahasa',difficulty:'sedang',text:'"Hasil kali suatu bilangan dengan 6, kemudian dikurangi 4" dinyatakan sebagai...',
+ options:[{value:'6x - 4',tag:'correct'},{value:'6(x-4)',tag:'salah_struktur_dua_langkah'},{value:'6x + 4',tag:'salah_operasi_kata_kunci'},{value:'x/6 - 4',tag:'salah_operasi_kata_kunci'}]},
+{id:'E6',category:'E_bahasa',difficulty:'sedang',text:'"Panjang persegi panjang 5 cm lebih dari dua kali lebarnya." Jika lebar = l, panjang = ...',
+ options:[{value:'2l + 5',tag:'correct'},{value:'2(l+5)',tag:'salah_struktur_dua_langkah'},{value:'5 - 2l',tag:'tertukar_urutan_pengurangan'},{value:'2p + 5',tag:'salah_representasi_variabel'}]},
+{id:'E7',category:'E_bahasa',difficulty:'sedang',text:'"Sebuah bilangan dikurangi 3 lalu hasilnya dikali 2, hasilnya sama dengan 10 lebih dari bilangan itu sendiri." Persamaan yang tepat untuk bilangan x adalah...',
+ options:[{value:'2(x - 3) = x + 10',tag:'correct'},{value:'2x - 3 = x + 10',tag:'salah_struktur_dua_langkah'},{value:'2(3-x) = x + 10',tag:'tertukar_urutan_pengurangan'},{value:'2(x-3) = 10 - x',tag:'salah_interpretasi_konteks'}]},
+{id:'E8',category:'E_bahasa',difficulty:'sulit',text:'"Ibu membeli n buku dengan harga Rp8.000 per buku, lalu dapat potongan Rp5.000 dari total belanjaan." Total yang dibayar = ...',
+ options:[{value:'8000n - 5000',tag:'correct'},{value:'8000(n - 5000)',tag:'salah_struktur_dua_langkah'},{value:'8000n + 5000',tag:'salah_interpretasi_konteks'},{value:'8000 - 5000n',tag:'salah_representasi_variabel'}]},
+{id:'E9',category:'E_bahasa',difficulty:'sulit',text:'"Selisih umur Ayah dan Rani 24 tahun. Umur Ayah = 3 kali umur Rani." Jika umur Rani = r, pernyataan yang tepat...',
+ options:[{value:'3r - r = 24',tag:'correct'},{value:'r - 3r = 24',tag:'salah_interpretasi_konteks'},{value:'3r - r = r',tag:'salah_representasi_variabel'},{value:'3(r - 24) = r',tag:'salah_struktur_dua_langkah'}]},
+{id:'E10',category:'E_bahasa',difficulty:'sulit',text:'"Suatu bilangan dikali 4, lalu ditambah setengah dari bilangan itu sendiri, hasilnya 27." Persamaan yang tepat untuk x...',
+ options:[{value:'4x + 0,5x = 27',tag:'correct'},{value:'4x - 0,5x = 27',tag:'salah_operasi_kata_kunci'},{value:'(4x+x)/2 = 27',tag:'salah_struktur_dua_langkah'},{value:'4x + 1/(2x) = 27',tag:'salah_representasi_variabel'}]},
+];
+
+const CATEGORY_META = {
+  A_bentuk:{label:'Bentuk Aljabar', color:'#5fbfa0'},
+  B_operasi:{label:'Operasi Bentuk Aljabar', color:'#4a9fd4'},
+  C_substitusi:{label:'Substitusi', color:'#7c5cbf'},
+  D_fungsi:{label:'Fungsi', color:'#e8a020'},
+  E_bahasa:{label:'Bahasa Matematika', color:'#e8628a'},
+};
+
+let sessionOrder = [];
+let cur = 0;
+let answered = false;
+let curOptions = [];
+let categoryScores = {};
+let wrongAnswers = [];
+let tagFrequency = {};
+
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
+
+function startGame(){
+  sessionOrder = shuffle(QUESTIONS);
+  cur = 0;
+  categoryScores = {};
+  Object.keys(CATEGORY_META).forEach(c=>{
+    const total = QUESTIONS.filter(q=>q.category===c).length;
+    categoryScores[c] = {correct:0, total};
+  });
+  wrongAnswers = [];
+  tagFrequency = {};
+  document.getElementById('intro').style.display='none';
+  document.getElementById('game').style.display='block';
+  showQ();
+}
+
+function showQ(){
+  if(cur>=sessionOrder.length){endGame();return;}
+  answered=false;
+  const q = sessionOrder[cur];
+  document.getElementById('qV').textContent=(cur+1)+'/'+sessionOrder.length;
+  document.getElementById('progFill').style.width=(((cur+1)/sessionOrder.length)*100)+'%';
+  document.getElementById('qText').textContent=q.text;
+  curOptions = shuffle(q.options);
+  const od = document.getElementById('optsDiv');
+  od.innerHTML='';
+  curOptions.forEach((opt,i)=>{
+    const b=document.createElement('button');
+    b.className='opt-btn';
+    b.textContent=opt.value;
+    b.onclick=()=>pick(i);
+    od.appendChild(b);
+  });
+}
+
+function pick(i){
+  if(answered) return;
+  answered=true;
+  const q = sessionOrder[cur];
+  const opt = curOptions[i];
+  const isCorrect = opt.tag === 'correct';
+  const btns = document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>b.disabled=true);
+  btns[i].classList.add(isCorrect?'correct':'wrong');
+
+  if(isCorrect){
+    categoryScores[q.category].correct++;
+  } else {
+    const correctOpt = q.options.find(o=>o.tag==='correct');
+    wrongAnswers.push({
+      qid:q.id,
+      category:q.category,
+      difficulty:q.difficulty,
+      chosenTag:opt.tag,
+      chosenValue:opt.value,
+      correctValue:correctOpt.value
+    });
+    tagFrequency[opt.tag] = (tagFrequency[opt.tag]||0)+1;
+  }
+
+  setTimeout(()=>{cur++; showQ();}, 650);
+}
+
+function endGame(){
+  document.getElementById('game').style.display='none';
+  document.getElementById('result').style.display='block';
+  const cb = document.getElementById('catBars');
+  cb.innerHTML='';
+  Object.keys(CATEGORY_META).forEach(c=>{
+    const meta = CATEGORY_META[c];
+    const sc = categoryScores[c];
+    const pct = (sc.correct/sc.total)*100;
+    const row = document.createElement('div');
+    row.className='cat-row';
+    row.innerHTML = `
+      <div class="cat-row-top"><span class="cname">${meta.label}</span><span class="cval">${sc.correct}/${sc.total}</span></div>
+      <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${pct}%;background:${meta.color}"></div></div>
+    `;
+    cb.appendChild(row);
+  });
+  saveResult();
+}
+
+function buildResultObject(){
+  return {
+    student: 'tasya',
+    checkpointId: 'algebra-ckpt1',
+    completedAt: new Date().toISOString(),
+    categoryScores,
+    wrongAnswers,
+    tagFrequency
+  };
+}
+
+function saveResult(){
+  try{
+    localStorage.setItem('tasya_algebra_checkpoint1', JSON.stringify(buildResultObject()));
+  }catch(e){}
+}
+
+function downloadResult(){
+  const data = buildResultObject();
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'tasya_algebra_checkpoint1_'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  document.getElementById('downloadedNote').textContent = '✅ File tersimpan ke folder Download. Kirim ke tutor kamu ya!';
+}
+</script>
+</body>
+</html>
