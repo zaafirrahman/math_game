@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Kunci Variabelnya! · L52 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --peach:#f0956a;--peach-light:#f7c4a8;--peach-bg:rgba(240,149,106,0.1);
+    --acc:#7c5cbf;--acc-light:#b89ee0;--acc-bg:rgba(124,92,191,0.1);
+    --vio:#7c5cbf;--vio-light:#b89ee0;--vio-bg:rgba(124,92,191,0.1);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 75% 10%,rgba(124,92,191,0.08) 0%,transparent 50%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--vio);}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--acc-bg);border:1.5px solid var(--acc-light);color:var(--vio);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--vio);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:all 0.3s;cursor:pointer;}
+  .dot.active{background:var(--vio);box-shadow:0 0 0 3px rgba(124,92,191,0.25);transform:scale(1.1);}
+  .dot.done{background:var(--acc-light);}
+
+  .slide{display:none;animation:fadeUp 0.38s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);}
+  .card-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.gold{color:var(--gold);}
+  .card-label.ocean{color:var(--ocean);}
+  .card-label.mint{color:var(--mint);}
+  .card-label.rose{color:var(--rose);}
+  .card-label.vio{color:var(--vio);}
+  .card-label.peach{color:var(--peach);}
+  .card h2{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.7rem;line-height:1.4;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  .svg-wrap{margin:1rem 0;border-radius:14px;overflow:hidden;background:#fafafa;border:2px solid var(--border);padding:0.5rem;}
+  .svg-wrap svg{width:100%;display:block;}
+
+  .eq-box{border-radius:14px;padding:1.1rem 1.4rem;margin:0.7rem 0;}
+  .eq-box.gold{background:var(--gold-bg);border:1.5px solid var(--gold-light);}
+  .eq-box.ocean{background:var(--ocean-bg);border:1.5px solid var(--ocean-light);}
+  .eq-box.vio{background:var(--vio-bg);border:1.5px solid var(--vio-light);}
+  .eq-box.mint{background:var(--mint-bg);border:1.5px solid var(--mint-light);}
+  .eq-box.rose{background:var(--rose-bg);border:1.5px solid var(--rose-light);}
+  .eq-box.peach{background:var(--peach-bg);border:1.5px solid var(--peach-light);}
+  .eq-text{font-family:'Nunito',sans-serif;font-size:1.02rem;font-weight:900;color:var(--text);line-height:1.6;}
+
+  .diskusi-box{border-radius:14px;padding:1rem 1.3rem;background:rgba(232,98,138,0.06);border:1.5px solid var(--rose-light);margin:0.8rem 0;}
+  .diskusi-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:0.5rem;}
+  .diskusi-box p{color:var(--text-mid);font-size:0.88rem;line-height:1.65;}
+
+  .reveal-btn{background:var(--acc-bg);border:1.5px solid var(--acc-light);color:var(--vio);padding:0.5rem 1.2rem;border-radius:99px;font-family:'Nunito',sans-serif;font-size:0.8rem;font-weight:800;cursor:pointer;transition:all 0.2s;margin:0.8rem 0;display:inline-block;}
+  .reveal-btn:hover{background:var(--vio);color:#fff;}
+  .reveal-content{display:none;animation:fadeUp 0.3s ease;}
+  .reveal-content.show{display:block;}
+
+  .table-box{overflow-x:auto;margin:0.9rem 0;}
+  table{width:100%;border-collapse:collapse;font-size:0.86rem;}
+  th{background:var(--acc-bg);color:var(--vio);font-family:'Nunito',sans-serif;font-weight:800;padding:0.55rem 0.7rem;text-align:center;border:1.5px solid var(--acc-light);}
+  td{padding:0.55rem 0.7rem;text-align:center;border:1.5px solid var(--border);color:var(--text-mid);font-weight:600;}
+  tr:nth-child(even) td{background:#faf8fd;}
+  td.fill{background:var(--acc-bg);color:var(--vio);font-weight:800;}
+
+  .formula-hero{text-align:center;padding:1.5rem;background:linear-gradient(135deg,var(--acc-bg),rgba(232,98,138,0.08));border:2px solid var(--acc-light);border-radius:20px;margin:1rem 0;}
+  .formula-hero .f-label{font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--vio);margin-bottom:0.8rem;}
+  .formula-hero .f-text{font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;color:var(--text);line-height:1.6;}
+  .formula-hero .f-sub{font-size:0.82rem;color:var(--text-muted);margin-top:0.6rem;line-height:1.6;}
+
+  .callout{border-radius:14px;padding:1rem 1.3rem;margin:0.9rem 0;display:flex;gap:0.8rem;align-items:flex-start;}
+  .callout.insight{background:rgba(124,92,191,0.06);border:1.5px solid var(--vio-light);}
+  .callout.tip{background:rgba(95,191,160,0.06);border:1.5px solid var(--mint-light);}
+  .callout.warn{background:rgba(232,98,138,0.07);border:1.5px solid var(--rose-light);}
+  .callout-icon{font-size:1.2rem;flex-shrink:0;margin-top:0.05rem;}
+  .callout-text{font-size:0.88rem;color:var(--text-mid);line-height:1.65;}
+  .callout-text strong{color:var(--text);font-weight:700;}
+
+  .think-box{border-radius:14px;padding:1rem 1.3rem;background:var(--vio-bg);border:1.5px solid var(--vio-light);margin:0.9rem 0;}
+  .think-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--vio);margin-bottom:0.6rem;}
+  .think-box textarea{width:100%;border:1.5px solid var(--vio-light);border-radius:10px;padding:0.6rem 0.8rem;font-family:'Quicksand',sans-serif;font-size:0.85rem;color:var(--text);background:#fff;resize:vertical;min-height:50px;outline:none;}
+  .think-box textarea:focus{border-color:var(--vio);}
+
+  .mmap-chain{display:flex;flex-direction:column;align-items:center;gap:0.5rem;margin:1.2rem 0;}
+  .mmap-node{width:100%;max-width:420px;border-radius:14px;padding:0.8rem 1.2rem;text-align:center;border:2px solid;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;}
+  .mmap-arrow{color:var(--text-muted);font-size:1.1rem;}
+
+  .step-tag{display:inline-block;font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.2rem 0.7rem;border-radius:99px;margin-bottom:0.6rem;}
+  .step-tag.a{background:var(--gold-bg);color:var(--gold);border:1.5px solid var(--gold-light);}
+  .step-tag.b{background:var(--ocean-bg);color:var(--ocean);border:1.5px solid var(--ocean-light);}
+  .step-tag.c{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+  .step-tag.d{background:var(--vio-bg);color:var(--vio);border:1.5px solid var(--vio-light);}
+  .step-card{border:2px solid var(--border);border-radius:14px;padding:1rem 1.2rem;margin-bottom:0.8rem;background:#fafafa;}
+
+  .qa-row{display:flex;gap:0.6rem;align-items:flex-start;margin-bottom:0.7rem;font-size:0.86rem;color:var(--text-mid);}
+  .qa-row:last-child{margin-bottom:0;}
+  .qa-row b{color:var(--text);flex-shrink:0;min-width:118px;}
+
+  .compare-row{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:0.8rem 0;}
+  .compare-box{border-radius:14px;padding:0.9rem 1.1rem;text-align:center;}
+  .compare-box.no{background:rgba(232,98,138,0.07);border:1.5px solid var(--rose-light);}
+  .compare-box.yes{background:rgba(95,191,160,0.07);border:1.5px solid var(--mint-light);}
+  .compare-tag{font-size:0.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .compare-box.no .compare-tag{color:var(--rose);}
+  .compare-box.yes .compare-tag{color:var(--mint);}
+  .compare-eq{font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;color:var(--text);}
+
+  .nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:1rem;}
+  .nav-btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+  .nav-btn.ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .nav-btn.ghost:hover{border-color:var(--acc-light);color:var(--vio);}
+  .nav-btn.primary{background:linear-gradient(135deg,var(--vio),#5c3f9f);color:#fff;box-shadow:0 4px 14px rgba(124,92,191,0.35);}
+  .nav-btn.primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(124,92,191,0.4);}
+  .nav-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important;}
+  .slide-counter{font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:700;color:var(--text-muted);}
+
+  @media(max-width:480px){ .four-cols{grid-template-columns:repeat(2,1fr);} .qa-row{flex-direction:column;gap:0.15rem;} .qa-row b{min-width:0;} .compare-row{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson52.html">L52</a><span>›</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🔐 Materi · Lesson 52</div>
+  <h1>Kunci <span>Variabelnya!</span></h1>
+  <p class="intro">Kamu sudah cukup jago menerjemahkan kalimat sehari-hari ke bentuk matematika. Sesi ini bukan pengulangan itu — fokusnya satu hal spesifik: begitu soal memberikan sebuah huruf, huruf itu adalah kode kunci. Jangan diganti di tengah jalan.</p>
+
+  <div class="dots" id="dotsContainer"></div>
+
+  <!-- SLIDE 1: Judul -->
+  <div class="slide active" id="slide-1">
+    <div class="card">
+      <div class="card-label vio">🔐 Slide 1 — Kunci Variabelnya!</div>
+      <h2>Jangan Ganti Simbol yang Sudah Diberikan</h2>
+      <p>Soal cerita sering sudah menentukan huruf yang mewakili nilai yang dicari. Anggap huruf itu seperti kode kunci sebuah permainan — begitu kode diberikan, kita pakai kode yang sama sampai akhir.</p>
+    </div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 320 190" xmlns="http://www.w3.org/2000/svg">
+        <rect x="90" y="10" width="140" height="38" rx="10" fill="rgba(124,92,191,0.14)" stroke="#7c5cbf" stroke-width="2.2"/>
+        <text x="160" y="34" font-family="Nunito" font-size="13.5" font-weight="900" fill="#5c3f9f" text-anchor="middle">🔐 lebar = l</text>
+        <text x="105" y="66" font-family="Nunito" font-size="8.5" font-weight="800" fill="#b898b4" text-anchor="middle">SOAL MEMBERI KODE</text>
+        <line x1="160" y1="52" x2="160" y2="72" stroke="#b898b4" stroke-width="2"/>
+        <path d="M154,68 L160,76 L166,68" fill="none" stroke="#b898b4" stroke-width="2"/>
+        <text x="240" y="66" font-family="Nunito" font-size="8.5" font-weight="800" fill="#b898b4" text-anchor="middle">GUNAKAN KODE SAMA</text>
+        <rect x="55" y="82" width="105" height="42" rx="10" fill="rgba(95,191,160,0.14)" stroke="#5fbfa0" stroke-width="2.2"/>
+        <text x="107" y="108" font-family="Nunito" font-size="16.5" font-weight="900" fill="#3a9070" text-anchor="middle">2l + 5 ✅</text>
+        <rect x="175" y="82" width="105" height="42" rx="10" fill="rgba(232,98,138,0.12)" stroke="#e8628a" stroke-width="2.2" stroke-dasharray="5,4"/>
+        <text x="227" y="108" font-family="Nunito" font-size="16.5" font-weight="900" fill="#c04060" text-anchor="middle">2p + 5 ❌</text>
+        <text x="107" y="140" font-family="Nunito" font-size="8" font-weight="800" fill="#3a9070" text-anchor="middle">pakai huruf yang sama (l)</text>
+        <text x="227" y="140" font-family="Nunito" font-size="8" font-weight="800" fill="#c04060" text-anchor="middle">ganti kode di tengah jalan</text>
+        <text x="160" y="172" font-family="Nunito" font-size="9" font-weight="700" fill="#7a5c78" text-anchor="middle">"lebar = l" itu kode. Jangan diam-diam ganti jadi "p".</text>
+      </svg>
+    </div>
+
+    <div class="diskusi-box">
+      <div class="diskusi-label">💬 Diskusi</div>
+      <p>Kalau soal bilang <strong>lebar = l</strong>, lalu memintamu menyatakan panjang, huruf apa yang seharusnya muncul di jawabanmu?</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Variabel Itu Sudah Dipilihkan -->
+  <div class="slide" id="slide-2">
+    <div class="card">
+      <div class="card-label ocean">🔁 Slide 2 — Variabel Itu Sudah Dipilihkan</div>
+      <h2>Cari huruf yang sudah diberikan, sebelum menulis apa pun</h2>
+      <p>Sebelum menerjemahkan kalimat menjadi bentuk matematika, langkah pertama adalah mengenali huruf yang sudah "dikunci" oleh soal.</p>
+    </div>
+
+    <div class="card" style="margin-top:0;">
+      <div class="card-label ocean">Contoh 1</div>
+      <div class="step-card">
+        <div class="qa-row"><b>Diketahui</b><span>Umur Budi = b</span></div>
+        <div class="qa-row"><b>Info</b><span>Umur Andi 3 tahun lebih tua dari Budi</span></div>
+        <div class="qa-row"><b>Maka</b><span>Umur Andi = b + 3</span></div>
+      </div>
+      <div class="callout warn">
+        <span class="callout-icon">❌</span>
+        <div class="callout-text">Bukan <strong>a + 3</strong> — karena huruf <strong>a</strong> belum pernah didefinisikan di soal ini. Kode yang diberikan soal adalah <strong>b</strong>.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label ocean">Contoh 2</div>
+      <div class="step-card">
+        <div class="qa-row"><b>Diketahui</b><span>Lebar persegi panjang = l</span></div>
+        <div class="qa-row"><b>Info</b><span>Panjang = dua kali lebar + 5</span></div>
+        <div class="qa-row"><b>Maka</b><span>2l + 5</span></div>
+      </div>
+    </div>
+
+    <div class="formula-hero">
+      <div class="f-label">Langkah Pertama</div>
+      <div class="f-text">Cari huruf yang sudah diberikan soal</div>
+      <div class="f-sub">— baru setelah itu bangun bentuk matematikanya.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Ide Benar, Notasi Belum Tentu Benar -->
+  <div class="slide" id="slide-3">
+    <div class="card">
+      <div class="card-label rose">🟡 Slide 3 — Ide Benar, Notasi Belum Tentu Benar</div>
+      <h2>Konsep benar tidak otomatis berarti jawaban tepat</h2>
+      <p>Perhatikan soal: <strong>Harga satu buku adalah h. Rani membeli 4 buku dan mendapat diskon Rp5.000.</strong> Nyatakan total pembayaran Rani.</p>
+    </div>
+
+    <div class="compare-row">
+      <div class="compare-box no"><div class="compare-tag">Jawaban A</div><div class="compare-eq">4h - 5000</div></div>
+      <div class="compare-box no"><div class="compare-tag">Jawaban B</div><div class="compare-eq">4x - 5000</div></div>
+    </div>
+
+    <div class="diskusi-box">
+      <div class="diskusi-label">💬 Coba pikirkan dulu</div>
+      <p>Apakah Jawaban B secara ide (cara menghitungnya) salah?</p>
+    </div>
+
+    <button class="reveal-btn" onclick="document.getElementById('rev3').classList.add('show')">✅ Cek jawabanku</button>
+    <div class="reveal-content" id="rev3">
+      <div class="step-card">
+        <div class="qa-row"><b>Idenya</b><span>Benar — 4 dikali harga buku, lalu dikurangi diskon 5000. Caranya sudah tepat.</span></div>
+        <div class="qa-row"><b>Masalahnya</b><span>Variabelnya tidak mengikuti yang diberikan soal. Soal sudah memberi kode <strong>h</strong>, tapi Jawaban B memakai <strong>x</strong>.</span></div>
+      </div>
+      <div class="formula-hero">
+        <div class="f-label">Ingat Selalu</div>
+        <div class="f-text">🟡 Konsep benar ≠ 🟢 Jawaban lengkap &amp; tepat</div>
+        <div class="f-sub">Jawaban matematika harus benar idenya <em>dan</em> memakai simbol yang sesuai informasi soal.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Jangan Asal Membuat Huruf Baru -->
+  <div class="slide" id="slide-4">
+    <div class="card">
+      <div class="card-label vio">🪤 Slide 4 — Jangan Asal Membuat Huruf Baru</div>
+      <h2>Contoh jebakan klasik</h2>
+      <p>Soal: <strong>Panjang sebuah persegi panjang 4 cm lebih dari lebarnya. Jika lebar = w, nyatakan panjang.</strong></p>
+    </div>
+
+    <div class="step-card"><div class="qa-row"><b>A.</b><span>w + 4</span></div></div>
+    <div class="step-card"><div class="qa-row"><b>B.</b><span>p = w + 4</span></div></div>
+    <div class="step-card"><div class="qa-row"><b>C.</b><span>p + 4</span></div></div>
+    <div class="step-card"><div class="qa-row"><b>D.</b><span>4w</span></div></div>
+
+    <button class="reveal-btn" onclick="document.getElementById('rev4').classList.add('show')">✅ Lihat pembahasan</button>
+    <div class="reveal-content" id="rev4">
+      <div class="eq-box mint"><div class="eq-text">Jawaban benar: A. w + 4</div></div>
+      <div class="callout insight">
+        <span class="callout-icon">🌟</span>
+        <div class="callout-text">Huruf <strong>w</strong> sudah menjadi informasi dasar dari soal. Kita boleh saja menyatakan hubungan baru (seperti B: p = w + 4) kalau memang diperlukan, tapi kalau soal minta bentuk berdasarkan w, jawabannya langsung pakai w — bukan bikin huruf baru seperti C dan D.</div>
+      </div>
+      <div class="formula-hero">
+        <div class="f-label">Aturan</div>
+        <div class="f-text">🔑 Kalau soal sudah memberi variabel, mulai dari variabel itu</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Tangkap Struktur Kalimatnya -->
+  <div class="slide" id="slide-5">
+    <div class="card">
+      <div class="card-label mint">🧱 Slide 5 — Tangkap Struktur Kalimatnya</div>
+      <h2>Urutan cerita harus terbawa ke bentuk matematika</h2>
+      <p>Soal: <strong>Sebuah bilangan dikurangi 3, lalu hasilnya dikali 2.</strong> Jika bilangan = x:</p>
+    </div>
+
+    <div class="step-card">
+      <div class="qa-row"><b>Langkah 1</b><span>x - 3</span></div>
+      <div class="qa-row"><b>Langkah 2</b><span>2(x - 3)</span></div>
+    </div>
+
+    <div class="compare-row">
+      <div class="compare-box yes"><div class="compare-tag">Benar</div><div class="compare-eq">2(x - 3) ✅</div></div>
+      <div class="compare-box no"><div class="compare-tag">Jebakan</div><div class="compare-eq">2x - 3 ❌</div></div>
+    </div>
+
+    <div class="callout warn">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-text">"Lalu dikali 2" berarti <strong>seluruh hasil (x - 3)</strong> yang dikalikan 2 — bukan cuma x-nya saja. Urutan cerita harus tetap terbawa ke bentuk matematika.</div>
+    </div>
+
+    <div class="callout insight">
+      <span class="callout-icon">🌟</span>
+      <div class="callout-text">Lesson ini menggabungkan dua hal sekaligus: 🔐 <strong>variabel yang benar</strong> + 🧱 <strong>struktur ekspresi yang benar</strong>.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Baca Soal Seperti Membaca Kode -->
+  <div class="slide" id="slide-6">
+    <div class="card">
+      <div class="card-label ocean">🗝️ Slide 6 — Baca Soal Seperti Membaca Kode</div>
+      <h2>Strategi 3 langkah</h2>
+      <p>Setiap soal cerita bisa dibongkar dengan cara yang sama:</p>
+    </div>
+
+    <div class="step-card"><span class="step-tag b">STEP 1 — Cari kode yang diberikan</span><div class="qa-row" style="margin-top:0.4rem;"><b>Contoh</b><span>Umur Rani = r</span></div></div>
+    <div class="step-card"><span class="step-tag a">STEP 2 — Tandai hubungan</span><div class="qa-row" style="margin-top:0.4rem;"><b>Contoh</b><span>Ayah = 3 kali umur Rani</span></div></div>
+    <div class="step-card"><span class="step-tag d">STEP 3 — Bangun pakai kode yang sama</span><div class="qa-row" style="margin-top:0.4rem;"><b>Hasil</b><span>3r</span></div></div>
+
+    <div class="mmap-chain">
+      <div class="mmap-node" style="background:var(--ocean-bg);border-color:var(--ocean-light);color:var(--ocean);">INFORMASI</div>
+      <div class="mmap-arrow">↓</div>
+      <div class="mmap-node" style="background:var(--vio-bg);border-color:var(--vio-light);color:var(--vio);">VARIABEL</div>
+      <div class="mmap-arrow">↓</div>
+      <div class="mmap-node" style="background:var(--gold-bg);border-color:var(--gold-light);color:var(--gold);">HUBUNGAN</div>
+      <div class="mmap-arrow">↓</div>
+      <div class="mmap-node" style="background:var(--mint-bg);border-color:var(--mint-light);color:var(--mint);">BENTUK MATEMATIKA</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Jebakan Variabel -->
+  <div class="slide" id="slide-7">
+    <div class="card">
+      <div class="card-label rose">⚡ Slide 7 — Jebakan Variabel</div>
+      <h2>Latihan cepat — jangan langsung pikir "operasinya apa"</h2>
+      <p>Untuk tiap soal, tanyakan dulu: <strong>huruf mana yang diberikan soal?</strong> Baru cari operasinya.</p>
+    </div>
+
+    <div class="step-card"><span class="step-tag b">1️⃣</span><p style="font-size:0.88rem;color:var(--text-mid);margin-top:0.4rem;">Harga sebuah pensil = p. Dito membeli 6 pensil. Jawaban?</p></div>
+    <div class="step-card"><span class="step-tag a">2️⃣</span><p style="font-size:0.88rem;color:var(--text-mid);margin-top:0.4rem;">Umur Dina = d. Umur Rina 4 tahun lebih muda. Jawaban umur Rina?</p></div>
+    <div class="step-card"><span class="step-tag c">3️⃣</span><p style="font-size:0.88rem;color:var(--text-mid);margin-top:0.4rem;">Sebuah bilangan = n. Bilangan tersebut dikali 3 lalu ditambah 7. Jawaban?</p></div>
+
+    <div class="think-box">
+      <div class="think-label">✍️ Tuliskan jawabanmu</div>
+      <textarea placeholder="1) ...&#10;2) ...&#10;3) ..."></textarea>
+    </div>
+
+    <button class="reveal-btn" onclick="document.getElementById('rev7').classList.add('show')">✅ Cek jawabanku</button>
+    <div class="reveal-content" id="rev7">
+      <div class="step-card"><div class="qa-row"><b>1) Kode: p</b><span>6p</span></div></div>
+      <div class="step-card"><div class="qa-row"><b>2) Kode: d</b><span>d - 4</span></div></div>
+      <div class="step-card"><div class="qa-row"><b>3) Kode: n</b><span>3n + 7</span></div></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Level Up: Hubungan Dua Variabel -->
+  <div class="slide" id="slide-8">
+    <div class="card">
+      <div class="card-label peach">🧠 Slide 8 — Level Up: Hubungan Dua Variabel</div>
+      <h2>Sekarang kita tidak boleh asal mencampur simbol</h2>
+      <p>Panjang = p dan lebar = l. Keliling persegi panjang:</p>
+    </div>
+
+    <div class="eq-box peach"><div class="eq-text">Keliling = 2p + 2l</div></div>
+
+    <div class="step-card">
+      <div class="qa-row"><b>Info baru</b><span>Panjang 3 cm lebih dari lebar, dan lebar = l</span></div>
+      <div class="qa-row"><b>Maka</b><span>p = l + 3</span></div>
+      <div class="qa-row"><b>Diminta</b><span>Nyatakan keliling hanya menggunakan l</span></div>
+      <div class="qa-row"><b>Substitusi p</b><span>2(l + 3) + 2l</span></div>
+    </div>
+
+    <div class="eq-box peach"><div class="eq-text">Hasil: 2(l + 3) + 2l</div></div>
+
+    <div class="callout insight">
+      <span class="callout-icon">🌟</span>
+      <div class="callout-text">Setiap huruf punya arti. Begitu diminta "hanya pakai l", <strong>p</strong> harus diganti dengan bentuk yang setara dalam l — bukan dibiarkan campur.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: Mixed Challenge -->
+  <div class="slide" id="slide-9">
+    <div class="card">
+      <div class="card-label vio">🎯 Slide 9 — Mixed Challenge: Benar atau Salah?</div>
+      <h2>Konsep, notasi, dan hasil akhir — cek satu per satu</h2>
+      <p>Untuk tiap situasi, tentukan: konsepnya benar atau salah? Variabelnya benar atau salah? Struktur ekspresinya benar atau salah?</p>
+    </div>
+
+    <div class="table-box">
+      <table>
+        <tr><th>Situasi</th><th>Jawaban Siswa</th><th>Konsep</th><th>Notasi</th><th>Final</th></tr>
+        <tr><td>Lebar = l. Panjang = 2×lebar + 4</td><td class="fill">2p + 4</td><td>✅</td><td>❌</td><td>❌</td></tr>
+        <tr><td>Umur Budi = b. Andi 3 th lebih tua</td><td class="fill">b + 3</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        <tr><td>Bilangan = x. Dikurangi 3, lalu ×2</td><td class="fill">2x - 3</td><td>❌</td><td>✅</td><td>❌</td></tr>
+        <tr><td>Harga buku = h. 4 buku, diskon 5000</td><td class="fill">4x - 5000</td><td>✅</td><td>❌</td><td>❌</td></tr>
+        <tr><td>Lebar = w. Panjang 4 cm lebih</td><td class="fill">w + 4</td><td>✅</td><td>✅</td><td>✅</td></tr>
+      </table>
+    </div>
+
+    <button class="reveal-btn" onclick="document.getElementById('rev9').classList.add('show')">✅ Lihat analisisnya</button>
+    <div class="reveal-content" id="rev9">
+      <div class="step-card"><div class="qa-row"><b>Baris 1</b><span>Operasi benar (2× lebar + 4), tapi variabelnya diganti jadi p, padahal soal memberi l. Jawaban akhir belum tepat.</span></div></div>
+      <div class="step-card"><div class="qa-row"><b>Baris 3</b><span>Variabel x-nya benar, tapi strukturnya salah — "lalu dikali 2" berarti seluruh (x-3) yang dikali 2, bukan cuma x.</span></div></div>
+      <div class="step-card"><div class="qa-row"><b>Baris 4</b><span>Cara menghitung benar, tapi variabel h diganti jadi x. Konsep boleh benar, tapi jawaban belum lengkap.</span></div></div>
+      <div class="callout insight">
+        <span class="callout-icon">🎯</span>
+        <div class="callout-text">Ini inti reasoning lesson ini: <strong>konsep benar tidak otomatis membuat notasi benar</strong>, dan notasi yang salah membuat jawaban akhir belum tepat — walau ide di baliknya sudah masuk akal.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: Final Mission -->
+  <div class="slide" id="slide-10">
+    <div class="card">
+      <div class="card-label vio">🏁 Slide 10 — Final Mission</div>
+      <h2>Before You Write... 🔐</h2>
+      <p>Sebelum menulis bentuk matematika, lakukan urutan ini:</p>
+    </div>
+
+    <div class="step-card">
+      <div class="qa-row"><b>1️⃣</b><span>Apa yang sudah diketahui?</span></div>
+      <div class="qa-row"><b>2️⃣</b><span>Huruf apa yang diberikan soal?</span></div>
+      <div class="qa-row"><b>3️⃣</b><span>Hubungannya apa?</span></div>
+      <div class="qa-row"><b>4️⃣</b><span>Apakah semua simbol di jawabanku punya arti?</span></div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,rgba(124,92,191,0.12),rgba(232,98,138,0.1));border:2px solid var(--vio-light);border-radius:20px;padding:1.5rem 1.8rem;margin:1.2rem 0;text-align:center;">
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--vio);margin-bottom:0.8rem;">🎯 Challenge Penutup</div>
+      <div style="font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:900;color:var(--text);line-height:1.6;">Harga sebuah roti = r. Seseorang membeli 5 roti, kemudian mendapat potongan Rp3.000. Nyatakan total pembayaran menggunakan r.</div>
+      <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.6rem;">Jangan buru-buru menjawab di sini — bawa strategi 4 langkah tadi ke Boss Challenge dan Latihan Mandiri!</div>
+    </div>
+
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;">
+      <a href="soal52.html" style="padding:0.8rem 1.8rem;background:linear-gradient(135deg,var(--rose),#c04060);color:#fff;border-radius:99px;font-family:Nunito;font-weight:800;font-size:0.9rem;text-decoration:none;box-shadow:0 4px 14px rgba(232,98,138,0.35);">⚡ Boss Challenge</a>
+      <a href="latihan52.html" style="padding:0.8rem 1.8rem;background:linear-gradient(135deg,var(--mint),#3a9070);color:#fff;border-radius:99px;font-family:Nunito;font-weight:800;font-size:0.9rem;text-decoration:none;box-shadow:0 4px 14px rgba(95,191,160,0.35);">🌙 Latihan Mandiri</a>
+    </div>
+  </div>
+
+  <!-- NAV ROW -->
+  <div class="nav-row">
+    <button class="nav-btn ghost" id="prevBtn" onclick="changeSlide(-1)" disabled>← Sebelumnya</button>
+    <span class="slide-counter" id="slideCounter">1 / 10</span>
+    <button class="nav-btn primary" id="nextBtn" onclick="changeSlide(1)">Selanjutnya →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL = 10;
+  let cur = 1;
+  function buildDots(){
+    const c = document.getElementById('dotsContainer');
+    for(let i=1;i<=TOTAL;i++){
+      const d = document.createElement('div');
+      d.className='dot'+(i===1?' active':'');
+      d.onclick=()=>goTo(i);
+      d.id='dot-'+i;
+      c.appendChild(d);
+    }
+  }
+  function goTo(n){
+    document.getElementById('slide-'+cur).classList.remove('active');
+    document.getElementById('dot-'+cur).classList.remove('active');
+    document.getElementById('dot-'+cur).classList.add('done');
+    cur=n;
+    document.getElementById('slide-'+cur).classList.add('active');
+    document.getElementById('dot-'+cur).classList.remove('done');
+    document.getElementById('dot-'+cur).classList.add('active');
+    document.getElementById('slideCounter').textContent=cur+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===1;
+    document.getElementById('nextBtn').disabled=cur===TOTAL;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function changeSlide(dir){ goTo(Math.min(TOTAL,Math.max(1,cur+dir))); }
+  buildDots();
+</script>
+</body>
+</html>

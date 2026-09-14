@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan · Mandiri · L52 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --peach:#f0956a;--peach-light:#f7c4a8;--peach-bg:rgba(240,149,106,0.1);
+    --acc:#7c5cbf;--acc-light:#b89ee0;--acc-bg:rgba(124,92,191,0.1);
+    --vio:#7c5cbf;--vio-light:#b89ee0;--vio-bg:rgba(124,92,191,0.1);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 90%,rgba(124,92,191,0.07) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--mint);}
+  .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--mint-bg);border:1.5px solid var(--mint-light);color:var(--mint);font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:99px;margin-bottom:1.3rem;}
+  h1{font-family:'Nunito',sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;margin-bottom:0.6rem;line-height:1.3;}
+  h1 span{color:var(--vio);}
+  .intro{color:var(--text-muted);font-size:0.92rem;line-height:1.7;margin-bottom:2rem;}
+
+  .formula-bar{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:0.9rem 1.2rem;margin-bottom:1.5rem;display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center;box-shadow:0 2px 8px var(--shadow);}
+  .formula-bar-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);flex-basis:100%;}
+  .frm{font-family:'Nunito',sans-serif;font-size:0.76rem;font-weight:800;padding:0.3rem 0.7rem;border-radius:99px;}
+  .frm-cari{background:var(--ocean-bg);color:var(--ocean);border:1.5px solid var(--ocean-light);}
+  .frm-id{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .frm-alj{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+  .frm-nalar{background:var(--vio-bg);color:var(--vio);border:1.5px solid var(--vio-light);}
+
+  .prog-bar-wrap{background:var(--border);border-radius:99px;height:8px;margin-bottom:0.4rem;overflow:hidden;}
+  .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--vio),var(--vio-light));border-radius:99px;transition:width 0.4s ease;}
+  .prog-label{display:flex;justify-content:space-between;font-size:0.72rem;font-weight:700;color:var(--text-muted);margin-bottom:1.5rem;}
+
+  .q-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 3px 12px var(--shadow);display:none;animation:fadeUp 0.35s ease;}
+  .q-card.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .tag{display:inline-block;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.2rem 0.7rem;border-radius:99px;margin-bottom:0.9rem;}
+  .tag-cari{background:var(--ocean-bg);color:var(--ocean);border:1.5px solid var(--ocean-light);}
+  .tag-id{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .tag-alj{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+  .tag-nalar{background:var(--vio-bg);color:var(--vio);border:1.5px solid var(--vio-light);}
+
+  .q-text{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;margin-bottom:1rem;line-height:1.5;}
+
+  .hint-toggle{background:var(--acc-bg);border:1.5px solid var(--acc-light);color:var(--vio);padding:0.4rem 1rem;border-radius:99px;font-family:'Nunito',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;margin-bottom:1rem;display:inline-block;transition:all 0.2s;}
+  .hint-toggle:hover{background:var(--vio);color:#fff;}
+  .hint-box{background:var(--acc-bg);border:1.5px solid var(--acc-light);border-radius:12px;padding:0.7rem 1rem;margin-bottom:0.9rem;font-size:0.85rem;color:var(--text-mid);display:none;line-height:1.6;}
+  .hint-box.show{display:block;}
+
+  .opts{display:flex;flex-direction:column;gap:0.65rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-size:0.88rem;font-family:'Quicksand',sans-serif;font-weight:600;text-align:left;transition:all 0.18s;}
+  .opt-btn:hover{border-color:var(--acc-light);background:var(--acc-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:12px;font-size:0.88rem;font-weight:700;display:none;line-height:1.5;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--mint-bg);color:var(--mint);border:1.5px solid var(--mint-light);}
+  .feedback.no{background:var(--rose-bg);color:var(--rose);border:1.5px solid var(--rose-light);}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--acc-light);color:var(--vio);}
+  .btn-primary{background:linear-gradient(135deg,var(--vio),#5c3f9f);color:#fff;box-shadow:0 4px 14px rgba(124,92,191,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn:disabled{opacity:0.3;cursor:not-allowed;transform:none!important;}
+
+  .finish-screen{display:none;text-align:center;padding:2rem 0;}
+  .finish-screen.show{display:block;}
+  .finish-icon{font-size:4rem;margin-bottom:1rem;display:block;}
+  .finish-title{font-family:'Nunito',sans-serif;font-size:1.8rem;font-weight:900;color:var(--vio);margin-bottom:0.5rem;}
+  .finish-score{font-family:'Nunito',sans-serif;font-size:3.2rem;font-weight:900;color:var(--rose);margin-bottom:0.3rem;}
+  .finish-sub{color:var(--text-muted);margin-bottom:1.8rem;line-height:1.7;font-size:0.9rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson52.html">L52</a><span>›</span>
+  <span class="cur">LATIHAN</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🌙 Latihan Mandiri · Lesson 52</div>
+  <h1>Kunci Variabelnya — Latihan <span>Mandiri</span></h1>
+  <p class="intro">10 soal bertahap: dari mengenali huruf yang sudah dikunci soal, notasi vs ide, jebakan bikin huruf baru, sampai struktur kalimat dua langkah dan dua variabel. Ada petunjuk di tiap soal!</p>
+
+  <div class="formula-bar">
+    <div class="formula-bar-label">📐 Ingat Aturannya</div>
+    <span class="frm frm-cari">Cari huruf yang sudah diberikan soal dulu</span>
+    <span class="frm frm-alj">Konsep benar ≠ notasi benar</span>
+    <span class="frm frm-id">Jangan ganti variabel di tengah soal</span>
+    <span class="frm frm-nalar">Urutan cerita harus terbawa ke bentuk matematika</span>
+  </div>
+
+  <div class="prog-bar-wrap"><div class="prog-bar-fill" id="progFill" style="width:10%"></div></div>
+  <div class="prog-label"><span id="progText">Soal 1 dari 10</span><span id="scoreText">Skor: 0</span></div>
+
+  <!--
+    ANSWER KEY & VERIFICATION:
+    Q1: Umur Budi=b, Andi 3th lebih tua -> b+3                                correct=idx0
+    Q2: Lebar=l, panjang=2xlebar+5 -> 2l+5                                    correct=idx0
+    Q3: Harga buku=h, 4 buku diskon 5000 -> 4h-5000                           correct=idx0
+    Q4: lebar=w, panjang 4cm lebih -> w+4                                     correct=idx0
+    Q5: bilangan=x, dikurangi3 lalu x2 -> 2(x-3)                              correct=idx0
+    Q6: umur Rani=r, ayah 3x umur Rani -> 3r                                  correct=idx0
+    Q7: harga pensil=p, beli 6 pensil -> 6p                                   correct=idx0
+    Q8: umur Dina=d, Rina 4th lebih muda -> d-4                               correct=idx0
+    Q9: bilangan=n, dikali3 lalu tambah7 -> 3n+7                              correct=idx0
+    Q10: panjang=p,lebar=l,p=l+3, keliling pakai l -> 2(l+3)+2l               correct=idx0
+  -->
+
+  <!-- Q1 -->
+  <div class="q-card active" id="q-1">
+    <span class="tag tag-cari">🔐 Kunci Variabel</span>
+    <div class="q-text">Umur Budi = b. Umur Andi 3 tahun lebih tua dari Budi. Nyatakan umur Andi.</div>
+    <button class="hint-toggle" onclick="toggleHint(1)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint-1">Soal sudah memberi kode b untuk umur Budi. Jangan bikin huruf baru seperti a — huruf a belum pernah didefinisikan.</div>
+    <div class="opts" id="opts-1">
+      <button class="opt-btn" onclick="answer(1,0,0)">b + 3</button>
+      <button class="opt-btn" onclick="answer(1,1,0)">a + 3</button>
+      <button class="opt-btn" onclick="answer(1,2,0)">3b</button>
+      <button class="opt-btn" onclick="answer(1,3,0)">b - 3</button>
+    </div>
+    <div class="feedback" id="fb-1"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" disabled>← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-1" onclick="goTo(2)" disabled>Soal Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="q-2">
+    <span class="tag tag-cari">🔐 Kunci Variabel</span>
+    <div class="q-text">Lebar persegi panjang = l. Panjang = dua kali lebar + 5. Nyatakan panjang.</div>
+    <button class="hint-toggle" onclick="toggleHint(2)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint-2">Kode yang diberikan soal adalah l. "Dua kali lebar" berarti 2 dikali l.</div>
+    <div class="opts" id="opts-2">
+      <button class="opt-btn" onclick="answer(2,0,0)">2l + 5</button>
+      <button class="opt-btn" onclick="answer(2,1,0)">2p + 5</button>
+      <button class="opt-btn" onclick="answer(2,2,0)">l + 5</button>
+      <button class="opt-btn" onclick="answer(2,3,0)">5l + 2</button>
+    </div>
+    <div class="feedback" id="fb-2"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(1)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-2" onclick="goTo(3)" disabled>Soal Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="q-3">
+    <span class="tag tag-alj">🟡 Notasi vs Ide</span>
+    <div class="q-text">Harga satu buku adalah h. Rani membeli 4 buku dan mendapat diskon Rp5.000. Nyatakan total pembayaran Rani.</div>
+    <button class="hint-toggle" onclick="toggleHint(3)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint-3">Caranya: 4 dikali harga, lalu dikurangi diskon. Tapi ingat, variabel harga adalah h, bukan huruf lain.</div>
+    <div class="opts" id="opts-3">
+      <button class="opt-btn" onclick="answer(3,0,0)">4h - 5000</button>
+      <button class="opt-btn" onclick="answer(3,1,0)">4x - 5000</button>
+      <button class="opt-btn" onclick="answer(3,2,0)">h4 - 5000</button>
+      <button class="opt-btn" onclick="answer(3,3,0)">4h + 5000</button>
+    </div>
+    <div class="feedback" id="fb-3"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(2)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-3" onclick="goTo(4)" disabled>Soal Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="q-4">
+    <span class="tag tag-alj">🪤 Jangan Ganti Kode</span>
+    <div class="q-text">Panjang sebuah persegi panjang 4 cm lebih dari lebarnya. Jika lebar = w, nyatakan panjang.</div>
+    <button class="hint-toggle" onclick="toggleHint(4)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint-4">Huruf w sudah menjadi informasi dasar dari soal. Kalau diminta bentuk berdasarkan w, jawabannya langsung pakai w.</div>
+    <div class="opts" id="opts-4">
+      <button class="opt-btn" onclick="answer(4,0,0)">w + 4</button>
+      <button class="opt-btn" onclick="answer(4,1,0)">p = w + 4</button>
+      <button class="opt-btn" onclick="answer(4,2,0)">p + 4</button>
+      <button class="opt-btn" onclick="answer(4,3,0)">4w</button>
+    </div>
+    <div class="feedback" id="fb-4"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(3)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-4" onclick="goTo(5)" disabled>Soal Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="q-5">
+    <span class="tag tag-id">🧱 Struktur Kalimat</span>
+    <div class="q-text">Sebuah bilangan dikurangi 3, lalu hasilnya dikali 2. Jika bilangan = x, nyatakan hasil akhirnya.</div>
+    <button class="hint-toggle" onclick="toggleHint(5)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint-5">"Hasilnya dikali 2" berarti SELURUH (x - 3) yang dikalikan 2, bukan cuma x saja.</div>
+    <div class="opts" id="opts-5">
+      <button class="opt-btn" onclick="answer(5,0,0)">2(x - 3)</button>
+      <button class="opt-btn" onclick="answer(5,1,0)">2x - 3</button>
+      <button class="opt-btn" onclick="answer(5,2,0)">x - 6</button>
+      <button class="opt-btn" onclick="answer(5,3,0)">x - 3 × 2</button>
+    </div>
+    <div class="feedback" id="fb-5"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(4)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-5" onclick="goTo(6)" disabled>Soal Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card" id="q-6">
+    <span class="tag tag-cari">🗝️ Baca Kode</span>
+    <div class="q-text">Umur Rani = r. Umur ayah 3 kali umur Rani. Nyatakan umur ayah.</div>
+    <button class="hint-toggle" onclick="toggleHint(6)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint-6">STEP 1: kode yang diberikan = r. STEP 2: hubungannya "3 kali umur Rani".</div>
+    <div class="opts" id="opts-6">
+      <button class="opt-btn" onclick="answer(6,0,0)">3r</button>
+      <button class="opt-btn" onclick="answer(6,1,0)">r + 3</button>
+      <button class="opt-btn" onclick="answer(6,2,0)">3a</button>
+      <button class="opt-btn" onclick="answer(6,3,0)">r/3</button>
+    </div>
+    <div class="feedback" id="fb-6"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(5)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-6" onclick="goTo(7)" disabled>Soal Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card" id="q-7">
+    <span class="tag tag-cari">🔐 Kunci Variabel</span>
+    <div class="q-text">Harga sebuah pensil = p. Dito membeli 6 pensil. Nyatakan total harga yang dibayar Dito.</div>
+    <button class="hint-toggle" onclick="toggleHint(7)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint-7">Tanyakan dulu: huruf mana yang diberikan soal? Baru cari operasinya.</div>
+    <div class="opts" id="opts-7">
+      <button class="opt-btn" onclick="answer(7,0,0)">6p</button>
+      <button class="opt-btn" onclick="answer(7,1,0)">p + 6</button>
+      <button class="opt-btn" onclick="answer(7,2,0)">6x</button>
+      <button class="opt-btn" onclick="answer(7,3,0)">p - 6</button>
+    </div>
+    <div class="feedback" id="fb-7"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(6)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-7" onclick="goTo(8)" disabled>Soal Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card" id="q-8">
+    <span class="tag tag-cari">🔐 Kunci Variabel</span>
+    <div class="q-text">Umur Dina = d. Umur Rina 4 tahun lebih muda dari Dina. Nyatakan umur Rina.</div>
+    <button class="hint-toggle" onclick="toggleHint(8)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint-8">"Lebih muda" artinya dikurangi. Kodenya tetap d, bukan huruf baru.</div>
+    <div class="opts" id="opts-8">
+      <button class="opt-btn" onclick="answer(8,0,0)">d - 4</button>
+      <button class="opt-btn" onclick="answer(8,1,0)">d + 4</button>
+      <button class="opt-btn" onclick="answer(8,2,0)">4 - d</button>
+      <button class="opt-btn" onclick="answer(8,3,0)">r - 4</button>
+    </div>
+    <div class="feedback" id="fb-8"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(7)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-8" onclick="goTo(9)" disabled>Soal Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card" id="q-9">
+    <span class="tag tag-id">🧱 Struktur Kalimat</span>
+    <div class="q-text">Sebuah bilangan = n. Bilangan tersebut dikali 3, lalu ditambah 7. Nyatakan hasil akhirnya.</div>
+    <button class="hint-toggle" onclick="toggleHint(9)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint-9">Ikuti urutan cerita: dikali 3 dulu (3n), baru ditambah 7.</div>
+    <div class="opts" id="opts-9">
+      <button class="opt-btn" onclick="answer(9,0,0)">3n + 7</button>
+      <button class="opt-btn" onclick="answer(9,1,0)">n3 + 7</button>
+      <button class="opt-btn" onclick="answer(9,2,0)">3(n + 7)</button>
+      <button class="opt-btn" onclick="answer(9,3,0)">7n + 3</button>
+    </div>
+    <div class="feedback" id="fb-9"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(8)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-9" onclick="goTo(10)" disabled>Soal Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card" id="q-10">
+    <span class="tag tag-nalar">🧠 Dua Variabel</span>
+    <div class="q-text">Panjang = p, lebar = l. Panjang 3 cm lebih dari lebar. Nyatakan keliling persegi panjang hanya menggunakan l.</div>
+    <button class="hint-toggle" onclick="toggleHint(10)">💡 Petunjuk</button>
+    <div class="hint-box" id="hint-10">Keliling = 2p + 2l. Karena p = l + 3, ganti p dengan (l + 3).</div>
+    <div class="opts" id="opts-10">
+      <button class="opt-btn" onclick="answer(10,0,0)">2(l + 3) + 2l</button>
+      <button class="opt-btn" onclick="answer(10,1,0)">2p + 2l</button>
+      <button class="opt-btn" onclick="answer(10,2,0)">4l + 3</button>
+      <button class="opt-btn" onclick="answer(10,3,0)">2l + 3</button>
+    </div>
+    <div class="feedback" id="fb-10"></div>
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="goTo(9)">← Sebelumnya</button>
+      <button class="btn btn-primary" id="next-10" onclick="showFinish()" disabled>Lihat Hasil 🏆</button>
+    </div>
+  </div>
+
+  <!-- Finish -->
+  <div class="finish-screen" id="finishScreen">
+    <span class="finish-icon" id="finishIcon">🏆</span>
+    <div class="finish-title">Latihan Selesai!</div>
+    <div class="finish-score" id="finalScore">0/10</div>
+    <p class="finish-sub" id="finalMsg">Hebat!</p>
+    <div class="finish-btns">
+      <button class="btn btn-primary" onclick="restart()" style="background:linear-gradient(135deg,var(--vio),#5c3f9f);color:#fff;box-shadow:0 4px 14px rgba(124,92,191,0.3);">🔄 Ulangi Latihan</button>
+      <a href="soal52.html" class="btn" style="background:linear-gradient(135deg,var(--rose),#c04060);color:#fff;box-shadow:0 4px 14px rgba(232,98,138,0.35);">⚡ Coba Boss Challenge</a>
+      <a href="lesson52.html" class="btn btn-ghost">← Lesson 52</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const TOTAL=10;
+let cur=1, score=0;
+
+/*
+  FEEDBACK VERIFICATION:
+  Q1: Umur Budi=b, Andi 3th lebih tua -> b+3 ✓
+  Q2: Lebar=l, panjang=2xlebar+5 -> 2l+5 ✓
+  Q3: Harga buku=h, 4 buku diskon5000 -> 4h-5000 ✓
+  Q4: lebar=w, panjang 4cm lebih -> w+4 ✓
+  Q5: bilangan=x, dikurangi3 lalu x2 -> 2(x-3) ✓
+  Q6: umur Rani=r, ayah 3x umur Rani -> 3r ✓
+  Q7: harga pensil=p, beli 6 pensil -> 6p ✓
+  Q8: umur Dina=d, Rina 4th lebih muda -> d-4 ✓
+  Q9: bilangan=n, dikali3 lalu tambah7 -> 3n+7 ✓
+  Q10: panjang=p,lebar=l,p=l+3, keliling pakai l -> 2(l+3)+2l ✓
+*/
+const feedbacks = {
+  1: {ok:'✅ Benar! Kode yang diberikan soal adalah b, jadi umur Andi = b + 3 ✓',
+      no:'❌ Soal sudah memberi kode b untuk umur Budi — jangan bikin huruf baru seperti a. Umur Andi = b + 3'},
+  2: {ok:'✅ Benar! Kode yang diberikan adalah l, jadi panjang = 2l + 5 ✓',
+      no:'❌ Kode yang diberikan soal adalah l, bukan huruf lain. Panjang = 2l + 5'},
+  3: {ok:'✅ Benar! Idenya "4 dikali harga dikurangi diskon" sudah tepat, dan variabelnya tetap h ✓',
+      no:'❌ Caranya boleh benar, tapi variabelnya harus tetap h sesuai soal (bukan x). Jawabannya 4h - 5000'},
+  4: {ok:'✅ Benar! Huruf w sudah jadi informasi dasar, jadi panjang = w + 4 ✓',
+      no:'❌ Soal sudah memberi kode w — tidak perlu bikin huruf baru seperti p. Panjang = w + 4'},
+  5: {ok:'✅ Benar! "Hasilnya dikali 2" berarti seluruh (x - 3) yang dikalikan 2: 2(x - 3) ✓',
+      no:'❌ Ingat urutannya: kurangi dulu 3 (x - 3), baru SELURUHNYA dikalikan 2: 2(x - 3)'},
+  6: {ok:'✅ Benar! Kodenya r, "3 kali umur Rani" berarti 3r ✓',
+      no:'❌ Kode yang diberikan soal adalah r. "3 kali umur Rani" artinya 3r, bukan huruf lain'},
+  7: {ok:'✅ Benar! Kodenya p, harga 6 pensil = 6p ✓',
+      no:'❌ Cari dulu huruf yang diberikan soal (p), baru kalikan dengan jumlah pensil: 6p'},
+  8: {ok:'✅ Benar! "Lebih muda" berarti dikurangi, jadi umur Rina = d - 4 ✓',
+      no:'❌ Kodenya tetap d (bukan huruf baru). "Lebih muda 4 tahun" berarti d - 4'},
+  9: {ok:'✅ Benar! Ikuti urutan cerita: dikali 3 dulu, baru ditambah 7 → 3n + 7 ✓',
+      no:'❌ Urutan cerita harus terbawa: "dikali 3" dulu (3n), baru "ditambah 7" → 3n + 7'},
+  10:{ok:'✅ Benar! Karena p = l + 3, ganti p pada 2p + 2l menjadi 2(l + 3) + 2l ✓',
+      no:'❌ Keliling = 2p + 2l, tapi p harus diganti dengan (l + 3) karena diminta hanya pakai l: 2(l + 3) + 2l'}
+};
+
+function toggleHint(n){
+  const h=document.getElementById('hint-'+n);
+  h.classList.toggle('show');
+}
+
+function answer(qNum, chosen, correct){
+  const opts=document.querySelectorAll(`#opts-${qNum} .opt-btn`);
+  opts.forEach(o=>o.disabled=true);
+  const fb=document.getElementById('fb-'+qNum);
+  if(chosen===correct){
+    opts[chosen].classList.add('correct');
+    score++;
+    fb.textContent=feedbacks[qNum].ok;
+    fb.className='feedback ok show';
+  } else {
+    opts[chosen].classList.add('wrong');
+    opts[correct].classList.add('correct');
+    fb.textContent=feedbacks[qNum].no;
+    fb.className='feedback no show';
+  }
+  document.getElementById('next-'+qNum).disabled=false;
+  document.getElementById('scoreText').textContent='Skor: '+score;
+}
+
+function goTo(n){
+  document.getElementById('q-'+cur).classList.remove('active');
+  cur=n;
+  document.getElementById('q-'+cur).classList.add('active');
+  const pct=((cur-1)/TOTAL*100)+10;
+  document.getElementById('progFill').style.width=Math.min(pct,100)+'%';
+  document.getElementById('progText').textContent='Soal '+cur+' dari '+TOTAL;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showFinish(){
+  document.getElementById('q-10').classList.remove('active');
+  document.getElementById('progFill').style.width='100%';
+  const fs=document.getElementById('finishScreen');
+  fs.classList.add('show');
+  document.getElementById('finalScore').textContent=score+'/10';
+  const msgs=['Tetap semangat! Baca kembali cara mencari huruf yang dikunci soal ya 💪','Sudah mulai paham! Latihan lagi untuk lebih mantap 🙌','Bagus! Kamu sudah memahami dasar menjaga kode variabel 🔥','Keren banget! Hampir sempurna ✨','Sempurna! Tidak ada kode yang bisa menipumu lagi! 🏆'];
+  const idx=Math.min(Math.floor(score/2),4);
+  document.getElementById('finalMsg').textContent=msgs[idx];
+  document.getElementById('finishIcon').textContent=['😊','🙂','😄','🌟','🏆'][idx];
+}
+
+function restart(){
+  score=0;cur=1;
+  document.getElementById('finishScreen').classList.remove('show');
+  document.getElementById('progFill').style.width='10%';
+  document.getElementById('progText').textContent='Soal 1 dari 10';
+  document.getElementById('scoreText').textContent='Skor: 0';
+  for(let i=1;i<=TOTAL;i++){
+    document.getElementById('q-'+i).classList.remove('active');
+    const opts=document.querySelectorAll(`#opts-${i} .opt-btn`);
+    opts.forEach(o=>{o.disabled=false;o.classList.remove('correct','wrong');});
+    const fb=document.getElementById('fb-'+i);
+    fb.className='feedback';fb.textContent='';
+    document.getElementById('next-'+i).disabled=true;
+    const hint=document.getElementById('hint-'+i);
+    if(hint)hint.classList.remove('show');
+  }
+  document.getElementById('q-1').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
