@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Faktor, Kelipatan, KPK & FPB · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;
+    --violet:#7c3aed;--violet-bg:rgba(124,58,237,0.1);--violet-light:#a78bfa;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 70% 20%,rgba(74,144,184,0.06) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--steel-light);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--amber);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.4);color:var(--amber);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.3rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:0.6rem;line-height:1.3;letter-spacing:1px;}
+  h1 span{color:var(--amber);}
+  .intro{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:8px;height:8px;border-radius:2px;background:var(--border2);transition:all 0.3s;cursor:pointer;}
+  .dot.active{background:var(--amber);box-shadow:0 0 8px rgba(240,168,48,0.5);transform:scaleX(1.5);}
+  .dot.done{background:#8c5a2d;}
+
+  .slide{display:none;animation:fadeUp 0.35s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),transparent);}
+  .card-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.violet{color:var(--violet-light);}
+  .card-label.steel{color:var(--steel-light);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.7rem;line-height:1.4;letter-spacing:0.5px;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+
+  .hl{border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-violet{background:var(--violet-bg);border:1px solid rgba(124,58,237,0.35);}
+  .hl-steel{background:var(--steel-bg);border:1px solid rgba(74,144,184,0.35);}
+  .hl-amber{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);}
+  .hl-green{background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);}
+  .hl-violet strong{color:var(--violet-light);}
+  .hl-steel strong{color:var(--steel-light);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+
+  .callout{display:flex;gap:0.8rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 1rem;margin:1rem 0;font-size:0.87rem;color:var(--text-mid);}
+  .callout-icon{font-size:1.2rem;flex-shrink:0;}
+
+  .tip-list{list-style:none;margin:0.8rem 0;}
+  .tip-list li{display:flex;gap:0.6rem;align-items:flex-start;font-size:0.88rem;color:var(--text-mid);margin-bottom:0.5rem;line-height:1.55;}
+  .tip-list li::before{content:'→';color:var(--amber);font-weight:700;flex-shrink:0;}
+
+  .nav-btns{display:flex;gap:0.8rem;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--amber-light),#c9820f);color:#08131c;font-weight:800;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(240,168,48,0.35);}
+  .btn:disabled{opacity:0.4;cursor:default;}
+
+  .finish{text-align:center;padding:2.5rem 1.8rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;animation:bounce 1s ease-in-out infinite alternate;}
+  @keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+  .finish-title{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--amber);letter-spacing:3px;margin-bottom:0.6rem;}
+  .finish-desc{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);color:var(--amber);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  /* roadmap grid (slide 1) */
+  .road-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.6rem;margin:1.2rem 0;}
+  @media(max-width:420px){.road-grid{grid-template-columns:1fr;}}
+  .road-item{display:flex;align-items:center;gap:0.6rem;background:var(--track);border:1px solid var(--border2);border-radius:8px;padding:0.6rem 0.8rem;font-size:0.85rem;color:var(--text-mid);}
+  .road-item .rn{font-family:'Rajdhani',sans-serif;font-weight:800;color:var(--amber);font-size:0.8rem;flex-shrink:0;}
+
+  /* mini formula box */
+  .formula-box{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 1.1rem;margin:0.7rem 0;font-family:'Rajdhani',sans-serif;}
+  .formula-title{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--steel-light);margin-bottom:0.5rem;}
+  .formula-eq{font-size:0.98rem;font-weight:700;color:var(--text);line-height:1.9;}
+  .formula-eq .op{color:var(--amber);}
+
+  /* topic block */
+  .topic-block{margin-bottom:1.2rem;}
+  .topic-head{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.85rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem;}
+  .topic-head.c1{color:var(--steel-light);}
+  .topic-head.c2{color:var(--violet-light);}
+  .topic-head.c3{color:var(--amber);}
+  .topic-head.c4{color:var(--green);}
+
+  /* number chain (kelipatan pattern) */
+  .num-chain{display:flex;flex-wrap:wrap;align-items:center;gap:0.45rem;margin:0.9rem 0;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1rem;}
+  .num-chip{background:var(--track);border:2px solid var(--border2);border-radius:8px;padding:0.5rem 0.85rem;color:var(--text);min-width:2.2rem;text-align:center;}
+  .num-chip.hi{border-color:var(--amber);color:var(--amber-light);background:var(--amber-bg);}
+  .num-chip.dots{border:none;background:none;color:var(--text-muted);padding:0.5rem 0.2rem;}
+  .num-arrow{color:var(--amber);font-size:0.8rem;}
+
+  /* comparison table */
+  .cmp-table{width:100%;border-collapse:collapse;margin:1rem 0;font-family:'Rajdhani',sans-serif;}
+  .cmp-table th,.cmp-table td{border:1px solid var(--border2);padding:0.65rem 0.8rem;font-size:0.85rem;text-align:left;}
+  .cmp-table th{background:var(--steel-bg);color:var(--steel-light);font-weight:700;letter-spacing:0.5px;}
+  .cmp-table td{color:var(--text-mid);}
+  .cmp-table td strong{color:var(--text);}
+  .cmp-table tr:nth-child(even) td{background:var(--track);}
+
+  /* set circles (persekutuan) */
+  .set-row{display:flex;justify-content:center;margin:1rem 0 0.6rem;}
+  .set-caption{text-align:center;font-family:'Rajdhani',sans-serif;font-size:0.72rem;color:var(--text-muted);letter-spacing:0.5px;margin-bottom:1rem;}
+
+  /* mental map (slide 8) */
+  .map-flow{display:flex;flex-direction:column;gap:0.5rem;margin:1.1rem 0;}
+  .map-step{background:var(--track);border:1px solid var(--border2);border-left:3px solid var(--amber);border-radius:8px;padding:0.75rem 1rem;}
+  .map-step .mt{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.9rem;letter-spacing:1px;color:var(--text);}
+  .map-step .ms{font-size:0.82rem;color:var(--text-mid);margin-top:0.2rem;}
+  .map-step.c1{border-left-color:var(--steel);}
+  .map-step.c2{border-left-color:var(--violet);}
+  .map-step.c3{border-left-color:var(--green);}
+  .map-step.c4{border-left-color:var(--amber);}
+  .map-arrow{text-align:center;color:var(--text-muted);font-size:0.8rem;}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson31.html">LESSON 31</a><span>/</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🔢 Materi · Lesson 31</div>
+  <h1>Faktor, Kelipatan, <span>KPK &amp; FPB</span></h1>
+  <p class="intro">Suatu bilangan bisa "membagi habis" bilangan lain, atau muncul kembali dalam pola kelipatan tertentu. Yuk kita pahami keduanya lewat pola angka!</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- SLIDE 1: PEMBUKA -->
+    <div class="slide">
+      <div class="card" style="text-align:center;">
+        <div class="card-label amber">🔢 Slide 1 · Pembuka</div>
+        <h2 style="font-size:1.5rem;">FAKTOR, KELIPATAN, KPK &amp; FPB</h2>
+        <p style="margin-top:0.3rem;">Mengenal Pola di Balik Bilangan</p>
+
+        <div class="road-grid">
+          <div class="road-item"><span class="rn">1</span> 🔎 Faktor</div>
+          <div class="road-item"><span class="rn">2</span> 📈 Kelipatan</div>
+          <div class="road-item"><span class="rn">3</span> ⚖️ Faktor vs Kelipatan</div>
+          <div class="road-item"><span class="rn">4</span> 🤝 FPB</div>
+          <div class="road-item"><span class="rn">5</span> 🔁 KPK</div>
+          <div class="road-item"><span class="rn">6</span> 🧭 Kapan Dipakai?</div>
+        </div>
+
+        <div class="hl hl-amber">
+          <strong>Ada dua hal yang bisa terjadi pada sebuah bilangan:</strong><br>
+          <span style="font-size:0.88rem;">ia bisa "membagi habis" bilangan lain, atau ia bisa "muncul lagi" dalam pola kelipatan tertentu.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" disabled>← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: FAKTOR -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">🔎 Slide 2 · Faktor</div>
+        <h2>🔎 Faktor</h2>
+        <p><strong style="color:var(--text)">Faktor</strong> adalah bilangan yang dapat membagi suatu bilangan sampai habis (tanpa sisa).</p>
+
+        <div class="hl hl-steel">
+          <strong>Contoh: Faktor dari 12</strong><br>
+          <span style="font-size:0.88rem;">1, 2, 3, 4, 6, 12</span>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-title">Kenapa bilangan itu semua faktor dari 12?</div>
+          <div class="formula-eq">1 <span class="op">×</span> 12 <span class="op">=</span> 12</div>
+          <div class="formula-eq">2 <span class="op">×</span> 6 <span class="op">=</span> 12</div>
+          <div class="formula-eq">3 <span class="op">×</span> 4 <span class="op">=</span> 12</div>
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>Faktor itu seperti bilangan yang <strong style="color:var(--steel-light)">"masuk pas"</strong> ke dalam suatu bilangan — hasil baginya bulat, tidak ada sisa sama sekali.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: KELIPATAN -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">📈 Slide 3 · Kelipatan</div>
+        <h2>📈 Kelipatan</h2>
+        <p><strong style="color:var(--text)">Kelipatan</strong> diperoleh dengan mengalikan suatu bilangan dengan 1, 2, 3, 4, dan seterusnya — tanpa berhenti.</p>
+
+        <div class="hl hl-violet">
+          <strong>Contoh: Kelipatan dari 4</strong>
+        </div>
+
+        <div class="num-chain">
+          <div class="num-chip hi">4</div><span class="num-arrow">→</span>
+          <div class="num-chip hi">8</div><span class="num-arrow">→</span>
+          <div class="num-chip hi">12</div><span class="num-arrow">→</span>
+          <div class="num-chip hi">16</div><span class="num-arrow">→</span>
+          <div class="num-chip hi">20</div><span class="num-arrow">→</span>
+          <div class="num-chip hi">24</div>
+          <div class="num-chip dots">...</div>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-eq">4 <span class="op">×</span> 1 <span class="op">=</span> 4</div>
+          <div class="formula-eq">4 <span class="op">×</span> 2 <span class="op">=</span> 8</div>
+          <div class="formula-eq">4 <span class="op">×</span> 3 <span class="op">=</span> 12</div>
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>Kelipatan itu <strong style="color:var(--violet-light)">jumlahnya tidak terbatas</strong> — polanya terus berlanjut selama kita mau menghitung.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: FAKTOR VS KELIPATAN -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">⚖️ Slide 4 · Faktor vs Kelipatan</div>
+        <h2>⚖️ Faktor vs Kelipatan</h2>
+        <p>Dua istilah ini sering tertukar. Yuk bandingkan pakai angka yang sama: 12 dan 4.</p>
+
+        <table class="cmp-table">
+          <tr><th>Faktor</th><th>Kelipatan</th></tr>
+          <tr><td><strong>Membagi habis</strong> suatu bilangan</td><td><strong>Hasil perkalian</strong> suatu bilangan dengan bilangan lain</td></tr>
+          <tr><td>Faktor dari 12: 1, 2, 3, 4, 6, 12</td><td>Kelipatan dari 4: 4, 8, 12, 16, ...</td></tr>
+          <tr><td>Jumlahnya <strong>terbatas</strong></td><td>Jumlahnya <strong>tidak terbatas</strong></td></tr>
+        </table>
+
+        <div class="hl hl-amber">
+          <strong>Perhatikan:</strong> 4 adalah <strong>faktor</strong> dari 12 (karena 4 membagi habis 12), sekaligus 12 adalah <strong>kelipatan</strong> dari 4 (karena 4 × 3 = 12). Keduanya saling terkait, tapi artinya berbeda!
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: FPB -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">🤝 Slide 5 · FPB</div>
+        <h2>🤝 FPB</h2>
+        <p><strong style="color:var(--green)">FPB = Faktor Persekutuan Terbesar.</strong> Ide utamanya: cari faktor yang dimiliki bersama oleh dua bilangan, lalu pilih yang paling besar.</p>
+
+        <div class="hl hl-green">
+          <strong>Contoh: FPB dari 12 dan 18</strong>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-title">Faktor 12</div>
+          <div class="formula-eq">1, 2, 3, 4, 6, 12</div>
+        </div>
+        <div class="formula-box">
+          <div class="formula-title">Faktor 18</div>
+          <div class="formula-eq">1, 2, 3, 6, 9, 18</div>
+        </div>
+        <div class="formula-box" style="border-color:rgba(72,200,112,0.45);">
+          <div class="formula-title" style="color:var(--green);">Faktor Persekutuan (sama-sama dimiliki)</div>
+          <div class="formula-eq">1, 2, 3, <span class="op">6</span></div>
+          <div class="formula-eq" style="color:var(--green);">FPB = 6 (yang paling besar)</div>
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>Cari dulu faktor yang <strong style="color:var(--green)">sama-sama dimiliki</strong> kedua bilangan, baru pilih yang <strong style="color:var(--green)">paling besar</strong>.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: KPK -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">🔁 Slide 6 · KPK</div>
+        <h2>🔁 KPK</h2>
+        <p><strong style="color:var(--violet-light)">KPK = Kelipatan Persekutuan Terkecil.</strong> Ide utamanya: cari kelipatan yang sama dari dua bilangan, lalu pilih yang paling kecil.</p>
+
+        <div class="hl hl-violet">
+          <strong>Contoh: KPK dari 4 dan 6</strong>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-title">Kelipatan 4</div>
+          <div class="formula-eq">4, 8, <span class="op">12</span>, 16, 20, ...</div>
+        </div>
+        <div class="formula-box">
+          <div class="formula-title">Kelipatan 6</div>
+          <div class="formula-eq">6, <span class="op">12</span>, 18, 24, ...</div>
+        </div>
+        <div class="formula-box" style="border-color:rgba(124,58,237,0.45);">
+          <div class="formula-title" style="color:var(--violet-light);">Kelipatan Persekutuan Pertama</div>
+          <div class="formula-eq" style="color:var(--violet-light);">KPK = 12 (kelipatan sama yang paling kecil)</div>
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>Cari kelipatan yang <strong style="color:var(--violet-light)">muncul di kedua daftar</strong>, lalu pilih yang <strong style="color:var(--violet-light)">paling kecil</strong>.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: KAPAN MENGGUNAKAN FPB ATAU KPK -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🧭 Slide 7 · Kapan Dipakai?</div>
+        <h2>🧭 Kapan Menggunakan FPB atau KPK?</h2>
+
+        <div class="topic-block">
+          <div class="topic-head c4">🤝 Pakai FPB kalau...</div>
+          <ul class="tip-list">
+            <li>Membagi sesuatu menjadi beberapa kelompok yang sama besar</li>
+            <li>Membagi sebanyak mungkin tanpa ada sisa</li>
+            <li>Mencari ukuran kelompok terbesar yang mungkin</li>
+          </ul>
+          <div class="hl hl-green" style="margin-top:0.6rem;">
+            <span style="font-size:0.86rem;"><strong>Contoh konteks:</strong> Bu Guru punya 12 pensil dan 18 penghapus, ingin dibagi ke beberapa kantong dengan isi sama banyak, sebanyak mungkin kantong. → Pakai <strong style="color:var(--green)">FPB</strong>.</span>
+          </div>
+        </div>
+
+        <div class="topic-block" style="margin-bottom:0;">
+          <div class="topic-head c2">🔁 Pakai KPK kalau...</div>
+          <ul class="tip-list">
+            <li>Dua kejadian berulang yang ingin bertemu lagi bersamaan</li>
+            <li>Mencari waktu atau kejadian yang terjadi bersamaan</li>
+            <li>Mencari kelipatan sama yang paling kecil</li>
+          </ul>
+          <div class="hl hl-violet" style="margin-top:0.6rem;">
+            <span style="font-size:0.86rem;"><strong>Contoh konteks:</strong> Lampu A menyala tiap 4 detik, lampu B tiap 6 detik. Kapan keduanya menyala bersamaan lagi? → Pakai <strong style="color:var(--violet-light)">KPK</strong>.</span>
+          </div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: RINGKASAN -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🗺️ Slide 8 · Ringkasan</div>
+        <h2>🗺️ Peta Konsep Singkat</h2>
+
+        <div class="map-flow">
+          <div class="map-step c1"><div class="mt">FAKTOR</div><div class="ms">↓ membagi habis</div></div>
+          <div class="map-step c2"><div class="mt">KELIPATAN</div><div class="ms">↓ hasil perkalian berulang</div></div>
+          <div class="map-step c3"><div class="mt">FPB</div><div class="ms">↓ faktor bersama TERBESAR</div></div>
+          <div class="map-step c4"><div class="mt">KPK</div><div class="ms">↓ kelipatan bersama TERKECIL</div></div>
+        </div>
+
+        <div class="hl hl-amber">
+          <strong>Kunci utamanya:</strong><br>
+          <span style="font-size:0.9rem;">Pahami dulu apakah masalahnya tentang <strong style="color:var(--amber)">MEMBAGI</strong> atau <strong style="color:var(--amber)">BERTEMU KEMBALI</strong>.</span>
+        </div>
+      </div>
+
+      <div class="finish">
+        <span class="finish-icon">🔢</span>
+        <div class="finish-title">SIAP LATIHAN!</div>
+        <div class="finish-desc">Kamu sudah paham konsep faktor, kelipatan, FPB, dan KPK. Sekarang waktunya coba latihan soal!</div>
+        <div class="xp">+100 XP</div>
+        <div class="finish-btns">
+          <a href="latihan31.html" class="btn btn-primary">🧮 Mulai Latihan</a>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-ghost" disabled>Selesai ✓</button>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+</div>
+
+<script>
+  /* ===== Slide navigation ===== */
+  const TOTAL = 8;
+  let cur = 0;
+
+  const dotsEl = document.getElementById('dots');
+  for(let i=0;i<TOTAL;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots(){
+    document.querySelectorAll('.dot').forEach((d,i)=>{
+      d.className = 'dot' + (i===cur?' active':i<cur?' done':'');
+    });
+  }
+
+  function goTo(n){
+    document.querySelectorAll('.slide')[cur].classList.remove('active');
+    cur = n;
+    document.querySelectorAll('.slide')[cur].classList.add('active');
+    updateDots();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function nextSlide(){ if(cur<TOTAL-1) goTo(cur+1); }
+  function prevSlide(){ if(cur>0) goTo(cur-1); }
+
+  document.querySelectorAll('.slide')[0].classList.add('active');
+</script>
+</body>
+</html>
