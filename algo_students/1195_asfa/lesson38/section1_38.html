@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 38 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--cyan:#22d3ee;--red:#ef4444;--emerald:#34d399;--amber:#fbbf24;--rose:#fb7185;--violet:#a78bfa;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(34,211,238,0.06) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(251,191,36,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--cyan);}
+  .wrapper{max-width:760px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--amber));border-radius:99px;transition:width 0.4s ease;}
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title sup{font-size:0.6em;}
+  .slide-title .hv{color:var(--violet);}
+  .slide-title .hc{color:var(--cyan);}
+  .slide-title .he{color:var(--emerald);}
+  .slide-title .ha{color:var(--amber);}
+  .slide-title .hr{color:var(--rose);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+  .slide-sub strong{color:var(--cyan);}
+  .slide-sub sup{font-size:0.7em;}
+
+  .callout{background:rgba(34,211,238,0.05);border-left:3px solid var(--cyan);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--cyan);}
+  .callout sup{font-size:0.7em;}
+  .callout.violet{background:rgba(167,139,250,0.05);border-color:var(--violet);}
+  .callout.violet strong{color:var(--violet);}
+  .callout.emerald{background:rgba(52,211,153,0.05);border-color:var(--emerald);}
+  .callout.emerald strong{color:var(--emerald);}
+  .callout.amber{background:rgba(251,191,36,0.06);border-color:var(--amber);}
+  .callout.amber strong{color:var(--amber);}
+  .callout.rose{background:rgba(251,113,133,0.06);border-color:var(--rose);}
+  .callout.rose strong{color:var(--rose);}
+
+  .diagram-box{background:#12121c;border:1.5px solid var(--border);border-radius:14px;padding:1rem;margin:1.2rem 0;display:flex;justify-content:center;flex-wrap:wrap;gap:0.8rem;}
+  .diagram-note{text-align:center;font-size:0.75rem;color:var(--muted);margin-top:-0.6rem;margin-bottom:1rem;font-style:italic;}
+
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(34,211,238,0.12);border:1px solid rgba(34,211,238,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;color:var(--cyan);flex-shrink:0;}
+  .step-num.e{background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,0.4);color:var(--emerald);}
+  .step-num.a{background:rgba(251,191,36,0.12);border-color:rgba(251,191,36,0.4);color:var(--amber);}
+  .step-num.c{background:rgba(34,211,238,0.12);border-color:rgba(34,211,238,0.4);color:var(--cyan);}
+  .step-num.r{background:rgba(251,113,133,0.12);border-color:rgba(251,113,133,0.4);color:var(--rose);}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .reveal-btn{background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.35);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(34,211,238,0.15);}
+  .reveal-btn:disabled{opacity:0.35;cursor:default;}
+  .reveal-box{background:rgba(34,211,238,0.05);border:1px solid rgba(34,211,238,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+  .reveal-box .rule-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--cyan);margin-bottom:0.4rem;}
+  .reveal-box .rule-text sup{font-size:0.62em;}
+  .reveal-box .rule-sub{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+  .reveal-box .rule-sub sup{font-size:0.7em;}
+
+  .formula-hero{text-align:center;padding:1.4rem;background:rgba(251,191,36,0.06);border:1.5px solid rgba(251,191,36,0.3);border-radius:18px;margin:1.2rem 0;}
+  .formula-text{font-family:'Orbitron',monospace;font-size:1.15rem;font-weight:900;color:var(--amber);}
+  .formula-text sup{font-size:0.6em;}
+  .formula-sub{display:flex;gap:1rem;justify-content:center;margin-top:0.8rem;flex-wrap:wrap;}
+  .formula-sub span{font-size:0.78rem;font-weight:700;color:var(--muted);background:#12121c;border:1px solid var(--border);padding:0.3rem 0.8rem;border-radius:99px;}
+
+  .pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:1.2rem 0;}
+  @media(max-width:480px){.pick-grid{grid-template-columns:1fr;}}
+  .pick-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
+  @media(max-width:560px){.pick-grid.cols3{grid-template-columns:1fr;}}
+  .pick-btn{width:100%;background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.7rem;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.88rem;transition:all 0.2s;line-height:1.4;}
+  .pick-btn sup{font-size:0.7em;}
+  .pick-btn:hover:not(:disabled){border-color:var(--cyan);}
+  .pick-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .pick-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .pick-btn.neutral{border-color:var(--cyan);background:rgba(34,211,238,0.08);color:var(--cyan);}
+  .pick-fb{font-size:0.82rem;color:var(--muted);margin-top:0.6rem;line-height:1.6;text-align:center;min-height:20px;}
+  .pick-fb sup{font-size:0.7em;}
+
+  .summary-card{background:var(--card);border:1px solid rgba(34,211,238,0.3);border-radius:16px;padding:1.5rem 2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:2px;color:var(--cyan);margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .sum-ico{flex-shrink:0;font-size:1rem;line-height:1.6;}
+  .sum-txt{flex:1;min-width:0;}
+  .sum-txt sup{font-size:0.68em;vertical-align:super;line-height:0;}
+  .sum-txt .dim{color:var(--muted);}
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;text-decoration:none;display:inline-block;transition:all 0.2s;}
+  .da-primary{background:linear-gradient(135deg,var(--cyan),#0891b2);color:#000;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);}
+  .da-secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+
+  .big-quote{background:rgba(34,211,238,0.06);border:1.5px solid rgba(34,211,238,0.3);border-radius:18px;padding:1.6rem;text-align:center;margin:1.2rem 0;}
+  .big-quote-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--cyan);line-height:1.8;}
+  .big-quote-text em{color:var(--amber);font-style:normal;}
+  .big-quote-text sup{font-size:0.65em;}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--cyan),#0891b2);border:none;color:#000;font-weight:800;}
+  .nav-btn:hover:not(.next){border-color:var(--cyan);color:var(--cyan);}
+
+  /* --- lesson38-specific --- */
+  .expr-box{background:#12121c;border:1.5px solid var(--border);border-radius:14px;padding:1.2rem;margin:1.2rem 0;text-align:center;font-family:'Orbitron',monospace;font-size:clamp(0.85rem,3.4vw,1.15rem);font-weight:900;color:var(--cyan);line-height:2;letter-spacing:1px;word-break:break-word;}
+  .expr-box sup{font-size:0.6em;}
+  .expr-box .dim{color:var(--muted);font-weight:700;}
+  .expr-box .hi{color:var(--amber);}
+  .expr-box .hi2{color:var(--violet);}
+  .expr-box .gone{color:var(--muted);opacity:0.45;text-decoration:line-through;text-decoration-color:var(--rose);text-decoration-thickness:2px;}
+  .expr-line{margin:0.35rem 0;}
+  .expr-line.muted{font-size:0.82em;color:var(--muted);}
+
+  .pt-wrap{margin:1.2rem 0;}
+  .pt-grid{display:grid;grid-template-columns:1.1fr 2.2fr 1fr;gap:4px;min-width:280px;}
+  .pt-cell{background:#12121c;border:1px solid var(--border);border-radius:8px;padding:0.55rem 0.4rem;text-align:center;font-family:'Orbitron',monospace;font-size:0.72rem;color:var(--text);display:flex;align-items:center;justify-content:center;line-height:1.4;word-break:break-word;}
+  .pt-cell sup{font-size:0.62em;}
+  .pt-cell.hdr{background:transparent;border:none;color:var(--cyan);font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;}
+  .pt-cell.val{color:var(--amber);font-weight:900;}
+  .pt-cell.ghost{color:var(--muted);opacity:0.35;}
+  .pt-cell.fresh{border-color:var(--cyan);background:rgba(34,211,238,0.08);}
+  .pt-cell.neg{color:var(--rose);}
+  .pt-arrow{text-align:center;font-size:0.75rem;color:var(--violet);margin:0.5rem 0;font-family:'Orbitron',monospace;letter-spacing:1px;}
+
+  .form-btn-row{display:flex;gap:0.6rem;justify-content:center;flex-wrap:wrap;margin:1rem 0;}
+  .form-btn{background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.55rem 1.1rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.8rem;transition:all 0.2s;}
+  .form-btn sup{font-size:0.62em;}
+  .form-btn:hover{border-color:var(--cyan);}
+  .form-btn.active{border-color:var(--amber);background:rgba(251,191,36,0.12);color:var(--amber);}
+  .stat-row{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;margin-top:0.8rem;}
+  .stat-chip{background:#12121c;border:1px solid var(--border);border-radius:10px;padding:0.5rem 1rem;font-family:'Orbitron',monospace;font-size:0.78rem;color:var(--cyan);}
+  .stat-chip b{color:var(--amber);}
+  .stat-chip sup{font-size:0.65em;}
+
+  .boss-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.2rem;margin-bottom:1rem;}
+  .boss-q{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:900;color:var(--amber);margin-bottom:0.4rem;}
+  .boss-q sup{font-size:0.62em;}
+  .boss-ask{font-size:0.86rem;color:var(--muted);line-height:1.6;margin-bottom:0.7rem;font-style:italic;}
+  .boss-reveal{display:none;font-size:0.86rem;line-height:1.7;color:var(--text);background:rgba(34,211,238,0.05);border-left:3px solid var(--cyan);border-radius:0 10px 10px 0;padding:0.8rem 1rem;}
+  .boss-reveal.show{display:block;animation:fadeIn 0.3s ease;}
+  .boss-reveal sup{font-size:0.7em;}
+  .boss-btn{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.35);color:var(--amber);font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;padding:0.45rem 1.1rem;border-radius:9px;cursor:pointer;transition:all 0.2s;}
+  .boss-btn:hover{background:rgba(251,191,36,0.18);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson38.html">LESSON 38</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+
+  <!-- SLIDE 1: Opening -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title"><span class="hc">Power</span> Pattern 🔢</div>
+      <div class="slide-sub">Satu pertanyaan pembuka yang menjebak banyak orang: <strong>apakah 2<sup>5</sup> berarti 2 × 5?</strong> Tebak dulu sebelum lanjut — jawabanmu nggak akan dinilai benar/salah di sini.</div>
+    </div>
+    <div class="expr-box">
+      <div class="expr-line">2<sup>5</sup> &nbsp;=&nbsp; <span class="dim">?</span></div>
+      <div class="expr-line muted">2 × 5 &nbsp;&nbsp;atau&nbsp;&nbsp; 2 × 2 × 2 × 2 × 2 &nbsp;?</div>
+    </div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS1(this)">2 dikali 5</button>
+      <button class="pick-btn" onclick="pickS1(this)">2 dikali dirinya sendiri 5 kali</button>
+    </div>
+    <div class="pick-fb" id="fbS1"></div>
+    <div class="callout"><strong>Misi hari ini:</strong> Bukan menghafal lima rumus pangkat, tapi membongkar strukturnya sampai kamu bisa <em>menurunkan sendiri</em> setiap sifatnya — dan bisa menjelaskan kenapa sifat itu berlaku.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">🔢</div>
+        <div class="step-body"><div class="stitle">Misi 1: Membaca Struktur</div><div class="sdesc">Kenali basis, eksponen, dan arti sesungguhnya dari a<sup>n</sup>.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num c">📈</div>
+        <div class="step-body"><div class="stitle">Misi 2: Menemukan Pola</div><div class="sdesc">Apa yang terjadi pada nilai ketika eksponen naik atau turun satu langkah?</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num a">✖️➗</div>
+        <div class="step-body"><div class="stitle">Misi 3: Membongkar Sifat</div><div class="sdesc">Turunkan sendiri sifat kali, bagi, pangkat bertingkat, pangkat nol, dan pangkat negatif.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num r">🪤</div>
+        <div class="step-body"><div class="stitle">Boss Fight: Bisa Jelaskan Kenapa?</div><div class="sdesc">Hadapi soal jebakan yang cuma bisa dipecahkan kalau kamu paham strukturnya.</div></div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Misi 1: Baca Strukturnya →</button></div>
+  </div>
+
+  <!-- SLIDE 2: Membaca Sebuah Pangkat -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Membaca Sebuah <span class="hc">Pangkat</span> 🔍</div>
+      <div class="slide-sub">Bentuk a<sup>n</sup> punya dua bagian dengan tugas yang sangat berbeda.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="300" height="160" viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg">
+        <text x="112" y="86" fill="#22d3ee" font-family="Orbitron,monospace" font-size="58" font-weight="900" text-anchor="middle">a</text>
+        <text x="152" y="54" fill="#fbbf24" font-family="Orbitron,monospace" font-size="32" font-weight="900" text-anchor="middle">n</text>
+        <line x1="112" y1="100" x2="112" y2="126" stroke="#22d3ee" stroke-width="1.2" stroke-dasharray="3,3"/>
+        <text x="112" y="140" fill="#22d3ee" font-family="Orbitron,monospace" font-size="9" font-weight="900" text-anchor="middle">BASIS</text>
+        <text x="112" y="152" fill="#64748b" font-size="8" text-anchor="middle">yang dikalikan berulang</text>
+        <line x1="166" y1="46" x2="196" y2="30" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="3,3"/>
+        <text x="240" y="28" fill="#fbbf24" font-family="Orbitron,monospace" font-size="9" font-weight="900" text-anchor="middle">EKSPONEN</text>
+        <text x="240" y="42" fill="#64748b" font-size="8" text-anchor="middle">banyak FAKTOR</text>
+        <text x="240" y="54" fill="#64748b" font-size="8" text-anchor="middle">yang dikalikan</text>
+      </svg>
+    </div>
+    <div class="expr-box">
+      <div class="expr-line">3<sup>2</sup> = 3 × 3 = <span class="hi">9</span></div>
+      <div class="expr-line">3<sup>3</sup> = 3 × 3 × 3 = <span class="hi">27</span></div>
+      <div class="expr-line">5<sup>4</sup> = 5 × 5 × 5 × 5 = <span class="hi">625</span></div>
+    </div>
+    <div class="callout amber"><strong>Kunci utama:</strong> Eksponen menunjukkan <strong>berapa banyak faktor basis</strong> yang dikalikan — BUKAN bilangan yang mengalikan basis.</div>
+    <div class="expr-box">
+      <div class="expr-line">3<sup>3</sup> <span class="dim">≠</span> 3 × 3 &nbsp;&nbsp;<span class="dim">(itu cuma 2 faktor)</span></div>
+      <div class="expr-line">3<sup>3</sup> <span class="dim">=</span> <span class="hi">3 × 3 × 3</span> &nbsp;&nbsp;<span class="dim">(3 faktor)</span></div>
+    </div>
+    <div class="callout"><strong>Cek pemahaman:</strong> Bentuk 7<sup>4</sup> berarti apa?</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS2(this,'a')">7 × 7 × 7 × 7</button>
+      <button class="pick-btn" onclick="pickS2(this,'b')">7 × 4</button>
+      <button class="pick-btn" onclick="pickS2(this,'c')">4 × 4 × 4 × 4 × 4 × 4 × 4</button>
+      <button class="pick-btn" onclick="pickS2(this,'d')">7 + 7 + 7 + 7</button>
+    </div>
+    <div class="pick-fb" id="fbS2"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Lihat Polanya →</button></div>
+  </div>
+
+  <!-- SLIDE 3: Lihat Polanya -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title">Lihat <span class="hv">Polanya</span>, Bukan Hafalannya 📈</div>
+      <div class="slide-sub">Bangun tabel pangkat 2 satu baris demi satu baris, lalu perhatikan apa yang terjadi pada nilainya.</div>
+    </div>
+    <div class="pt-wrap"><div class="pt-grid" id="ptSlide3"></div></div>
+    <button class="reveal-btn" id="btnPt3" onclick="buildPowerTable()">Tambah Baris →</button>
+    <div class="callout emerald" id="patternBox" style="display:none;"><strong>Pola yang ditemukan:</strong> Setiap eksponen naik 1, nilainya <strong>dikali basis</strong>. Sebaliknya, setiap eksponen turun 1, nilainya <strong>dibagi basis</strong>. Inget pola ini — nanti dia yang menjelaskan pangkat nol dan pangkat negatif!</div>
+    <div class="formula-hero" id="pt3Formula" style="display:none;">
+      <div class="formula-text">naik 1 pangkat = × basis &nbsp;·&nbsp; turun 1 pangkat = ÷ basis</div>
+      <div class="formula-sub"><span>2 → 4 → 8 → 16 → 32</span><span>setiap langkah × 2</span></div>
+    </div>
+    <div class="callout amber" id="pt3Q1" style="display:none;"><strong>Reasoning 1:</strong> Kalau 2<sup>6</sup> = 64, tanpa menghitung dari awal, berapa 2<sup>7</sup>?</div>
+    <div class="pick-grid cols3" id="pt3Grid1" style="display:none;">
+      <button class="pick-btn" onclick="pickS3a(this,'a')">128</button>
+      <button class="pick-btn" onclick="pickS3a(this,'b')">70</button>
+      <button class="pick-btn" onclick="pickS3a(this,'c')">96</button>
+    </div>
+    <div class="pick-fb" id="fbS3a"></div>
+    <div class="callout amber" id="pt3Q2" style="display:none;"><strong>Reasoning 2:</strong> Kalau 5<sup>4</sup> = 625, bagaimana mendapatkan 5<sup>5</sup> tanpa menghitung ulang semuanya?</div>
+    <div class="pick-grid" id="pt3Grid2" style="display:none;">
+      <button class="pick-btn" onclick="pickS3b(this,'a')">625 × 5 = 3.125</button>
+      <button class="pick-btn" onclick="pickS3b(this,'b')">625 + 5 = 630</button>
+      <button class="pick-btn" onclick="pickS3b(this,'c')">625 × 4 = 2.500</button>
+      <button class="pick-btn" onclick="pickS3b(this,'d')">625 ÷ 5 = 125</button>
+    </div>
+    <div class="pick-fb" id="fbS3b"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Perkalian Pangkat →</button></div>
+  </div>
+
+  <!-- SLIDE 4: Perkalian Pangkat Basis Sama -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Perkalian Pangkat, <span class="hc">Basis Sama</span> ✖️</div>
+      <div class="slide-sub">Jangan langsung ke rumus. Kita bongkar dulu bentuk 2<sup>3</sup> × 2<sup>2</sup> sampai kelihatan apa yang sebenarnya terjadi.</div>
+    </div>
+    <div class="expr-box" id="mulBox">
+      <div class="expr-line">2<sup>3</sup> × 2<sup>2</sup></div>
+    </div>
+    <button class="reveal-btn" id="btnMul" onclick="stepMul()">Bongkar Faktornya →</button>
+    <div class="formula-hero" id="mulFormula" style="display:none;">
+      <div class="formula-text">a<sup>m</sup> × a<sup>n</sup> = a<sup>m+n</sup></div>
+      <div class="formula-sub"><span>basis TETAP</span><span>eksponen DIJUMLAHKAN</span></div>
+    </div>
+    <div class="callout emerald" id="mulWhy" style="display:none;"><strong>Kenapa dijumlahkan?</strong> Karena saat dua bentuk pangkat dengan basis sama dikalikan, faktornya tinggal <strong>digabung dalam satu barisan</strong>: 3 faktor + 2 faktor = 5 faktor. Eksponen itu penghitung faktor, jadi wajar dia yang dijumlahkan.</div>
+    <div class="expr-box" id="mulExtra" style="display:none;">
+      <div class="expr-line">3<sup>2</sup> × 3<sup>4</sup> = 3<sup>2+4</sup> = <span class="hi">3<sup>6</sup></span></div>
+    </div>
+    <div class="callout rose" id="mulTrapQ" style="display:none;"><strong>🪤 Jebakan:</strong> Kalau 2<sup>3</sup> × 2<sup>2</sup> = 2<sup>5</sup>, apakah 2<sup>3</sup> × 3<sup>2</sup> = 6<sup>5</sup>?</div>
+    <div class="pick-grid cols3" id="mulTrapGrid" style="display:none;">
+      <button class="pick-btn" onclick="pickS4(this,'a')">Ya, sama saja</button>
+      <button class="pick-btn" onclick="pickS4(this,'b')">Tidak — basisnya beda</button>
+      <button class="pick-btn" onclick="pickS4(this,'c')">Tidak — eksponennya harus dikali</button>
+    </div>
+    <div class="pick-fb" id="fbS4"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Pembagian Pangkat →</button></div>
+  </div>
+
+  <!-- SLIDE 5: Pembagian Pangkat -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title">Pembagian Pangkat, <span class="he">Basis Sama</span> ➗</div>
+      <div class="slide-sub">Bentuk 2<sup>5</sup> ÷ 2<sup>2</sup>. Sekali lagi: bongkar dulu, baru simpulkan.</div>
+    </div>
+    <div class="expr-box" id="divBox">
+      <div class="expr-line">2<sup>5</sup> ÷ 2<sup>2</sup></div>
+    </div>
+    <button class="reveal-btn" id="btnDiv" onclick="stepDiv()">Bongkar &amp; Coret Faktornya →</button>
+    <div class="formula-hero" id="divFormula" style="display:none;">
+      <div class="formula-text">a<sup>m</sup> ÷ a<sup>n</sup> = a<sup>m−n</sup></div>
+      <div class="formula-sub"><span>basis TETAP</span><span>eksponen DIKURANGKAN</span></div>
+    </div>
+    <div class="callout emerald" id="divWhy" style="display:none;"><strong>Kenapa dikurangi?</strong> Bukan karena "aturannya begitu", tapi karena setiap satu faktor di bawah <strong>menghabiskan satu faktor di atas</strong>. 2 faktor habis dicoret, jadi sisa 5 − 2 = 3 faktor.</div>
+    <div class="expr-box" id="divExtra" style="display:none;">
+      <div class="expr-line">5<sup>6</sup> ÷ 5<sup>2</sup> = 5<sup>6−2</sup> = <span class="hi">5<sup>4</sup></span></div>
+      <div class="expr-line">7<sup>5</sup> ÷ 7<sup>3</sup> = 7<sup>5−3</sup> = <span class="hi">7<sup>2</sup></span></div>
+    </div>
+    <div class="callout amber" id="divQ" style="display:none;"><strong>Giliranmu:</strong> Berapa hasil dari 10<sup>8</sup> ÷ 10<sup>3</sup>?</div>
+    <div class="pick-grid cols3" id="divGrid" style="display:none;">
+      <button class="pick-btn" onclick="pickS5(this,'a')">10<sup>5</sup></button>
+      <button class="pick-btn" onclick="pickS5(this,'b')">10<sup>11</sup></button>
+      <button class="pick-btn" onclick="pickS5(this,'c')">10<sup>24</sup></button>
+    </div>
+    <div class="pick-fb" id="fbS5"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Pangkat dari Pangkat →</button></div>
+  </div>
+
+  <!-- SLIDE 6: Pangkat dari Pangkat -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title">Pangkat dari Sebuah <span class="ha">Pangkat</span> 🔁</div>
+      <div class="slide-sub">Bentuk (2<sup>3</sup>)<sup>2</sup>. Kelihatan mirip yang tadi, tapi hasilnya beda jauh. Bongkar lagi!</div>
+    </div>
+    <div class="expr-box" id="powBox">
+      <div class="expr-line">(2<sup>3</sup>)<sup>2</sup></div>
+    </div>
+    <button class="reveal-btn" id="btnPow" onclick="stepPow()">Bongkar Faktornya →</button>
+    <div class="formula-hero" id="powFormula" style="display:none;">
+      <div class="formula-text">(a<sup>m</sup>)<sup>n</sup> = a<sup>m×n</sup></div>
+      <div class="formula-sub"><span>pangkat dipangkatkan</span><span>eksponen DIKALIKAN</span></div>
+    </div>
+    <div class="callout violet" id="powWhy" style="display:none;"><strong>Bandingkan dua sifat ini baik-baik:</strong><br>• a<sup>m</sup> × a<sup>n</sup> → dua barisan faktor <strong>digabung</strong> → eksponen dijumlahkan.<br>• (a<sup>m</sup>)<sup>n</sup> → satu barisan berisi m faktor <strong>diulang sebanyak n kali</strong> → eksponen dikalikan.</div>
+    <div class="callout rose" id="powTrapQ" style="display:none;"><strong>🪤 Jebakan:</strong> Apakah (2<sup>3</sup>)<sup>2</sup> = 2<sup>5</sup>?</div>
+    <div class="pick-grid cols3" id="powTrapGrid" style="display:none;">
+      <button class="pick-btn" onclick="pickS6(this,'a')">Ya, 3 + 2 = 5</button>
+      <button class="pick-btn" onclick="pickS6(this,'b')">Tidak, hasilnya 2<sup>6</sup></button>
+      <button class="pick-btn" onclick="pickS6(this,'c')">Tidak, hasilnya 2<sup>9</sup></button>
+    </div>
+    <div class="pick-fb" id="fbS6"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">Pangkat Nol →</button></div>
+  </div>
+
+  <!-- SLIDE 7: Pangkat Nol -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">Pangkat <span class="he">Nol</span> 0️⃣</div>
+      <div class="slide-sub">Ini bukan aturan yang jatuh dari langit. Turunkan tangganya satu per satu, dan a<sup>0</sup> akan muncul sendiri.</div>
+    </div>
+    <div class="pt-wrap"><div class="pt-grid" id="ptSlide7"></div></div>
+    <div class="pt-arrow">⬇️ setiap turun satu pangkat = dibagi 2</div>
+    <button class="reveal-btn" id="btnLadder" onclick="stepLadder()">Turun Satu Pangkat →</button>
+    <div class="formula-hero" id="zeroFormula" style="display:none;">
+      <div class="formula-text">a<sup>0</sup> = 1 &nbsp;<span style="font-size:0.7em;">(untuk a ≠ 0)</span></div>
+      <div class="formula-sub"><span>2 ÷ 2 = 1</span><span>polanya konsisten, bukan hafalan</span></div>
+    </div>
+    <div class="callout emerald" id="zeroWhy2" style="display:none;"><strong>Cek lewat sifat pembagian:</strong> a<sup>3</sup> ÷ a<sup>3</sup> = a<sup>3−3</sup> = a<sup>0</sup>. Padahal bilangan bukan nol dibagi dirinya sendiri pasti = 1. Dua jalan berbeda, hasilnya ketemu di titik yang sama: <strong>a<sup>0</sup> = 1</strong>.</div>
+    <div class="callout amber" id="zeroQ" style="display:none;"><strong>Pertanyaan tutor:</strong> Menurutmu, kenapa hasilnya bukan 0?</div>
+    <div class="pick-grid" id="zeroGrid" style="display:none;">
+      <button class="pick-btn" onclick="pickS7(this,'a')">Karena tidak ada faktor sama sekali, jadi hasilnya kosong = 0</button>
+      <button class="pick-btn" onclick="pickS7(this,'b')">Karena polanya pembagian, dan 2 ÷ 2 = 1</button>
+    </div>
+    <div class="pick-fb" id="fbS7"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Pangkat Negatif →</button></div>
+  </div>
+
+  <!-- SLIDE 8: Pangkat Negatif -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">Pangkat <span class="hr">Negatif</span>: Bukan Bilangan Negatif ➖</div>
+      <div class="slide-sub">Tangganya belum berhenti di nol. Lanjut turun, dan lihat apa yang muncul di bawahnya.</div>
+    </div>
+    <div class="pt-wrap"><div class="pt-grid" id="ptSlide8"></div></div>
+    <div class="pt-arrow">⬇️ tetap aturan yang sama: dibagi 2</div>
+    <button class="reveal-btn" id="btnLadder2" onclick="stepLadder2()">Lanjut Turun →</button>
+    <div class="callout rose" id="negWarn" style="display:none;"><strong>Perhatikan baik-baik:</strong> hasil 2<sup>−1</sup> dan 2<sup>−2</sup> adalah bilangan <strong>positif</strong> (½ dan ¼), cuma jadi lebih kecil. Pangkat negatif TIDAK membuat hasilnya negatif — dia membuat hasilnya jadi pecahan.</div>
+    <div class="formula-hero" id="negFormula" style="display:none;">
+      <div class="formula-text">a<sup>−n</sup> = 1 / a<sup>n</sup> &nbsp;<span style="font-size:0.7em;">(untuk a ≠ 0)</span></div>
+      <div class="formula-sub"><span>3<sup>−2</sup> = 1/3<sup>2</sup> = 1/9</span></div>
+    </div>
+    <div class="callout amber" id="negTrapQ" style="display:none;"><strong>🪤 Jebakan klasik:</strong> Apakah (−2)<sup>2</sup> dan −2<sup>2</sup> bernilai sama?</div>
+    <div class="pick-grid cols3" id="negTrapGrid" style="display:none;">
+      <button class="pick-btn" onclick="pickS8(this,'a')">Sama, dua-duanya 4</button>
+      <button class="pick-btn" onclick="pickS8(this,'b')">Beda: 4 dan −4</button>
+      <button class="pick-btn" onclick="pickS8(this,'c')">Sama, dua-duanya −4</button>
+    </div>
+    <div class="pick-fb" id="fbS8"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Cheat Sheet →</button></div>
+  </div>
+
+  <!-- SLIDE 9: Cheat Sheet -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">Peta Konsep <span class="ha">Sifat Pangkat</span> 🗺️</div>
+      <div class="slide-sub">Ini bukan daftar rumus untuk dihafal, tapi peta untuk <strong>memilih</strong>. Aturan mainnya cuma satu: lihat strukturnya dulu.</div>
+    </div>
+    <div class="summary-card">
+      <h3>📋 PETA SIFAT PANGKAT</h3>
+      <div class="summary-item"><span class="sum-ico">✖️</span><div class="sum-txt"><strong style="color:var(--cyan)">Basis sama, dikali:</strong>&nbsp; a<sup>m</sup> × a<sup>n</sup> = a<sup>m+n</sup> &nbsp;<span class="dim">(faktor digabung)</span></div></div>
+      <div class="summary-item"><span class="sum-ico">➗</span><div class="sum-txt"><strong style="color:var(--emerald)">Basis sama, dibagi:</strong>&nbsp; a<sup>m</sup> ÷ a<sup>n</sup> = a<sup>m−n</sup> &nbsp;<span class="dim">(faktor saling habis)</span></div></div>
+      <div class="summary-item"><span class="sum-ico">🔁</span><div class="sum-txt"><strong style="color:var(--amber)">Pangkat bertingkat:</strong>&nbsp; (a<sup>m</sup>)<sup>n</sup> = a<sup>m×n</sup> &nbsp;<span class="dim">(barisan faktor diulang)</span></div></div>
+      <div class="summary-item"><span class="sum-ico">0️⃣</span><div class="sum-txt"><strong style="color:var(--violet)">Pangkat nol:</strong>&nbsp; a<sup>0</sup> = 1, untuk a ≠ 0</div></div>
+      <div class="summary-item"><span class="sum-ico">➖</span><div class="sum-txt"><strong style="color:var(--rose)">Pangkat negatif:</strong>&nbsp; a<sup>−n</sup> = 1/a<sup>n</sup>, untuk a ≠ 0</div></div>
+    </div>
+    <div class="big-quote"><div class="big-quote-text">"Lihat <em>struktur</em> dulu,<br>baru pilih sifatnya."</div></div>
+    <div class="callout amber"><strong>Latihan detektor struktur:</strong> Klik tiap bentuk di bawah. Sebelum melihat jawabannya, tebak dulu di kepalamu: sifat mana yang cocok untuk bentuk ini?</div>
+    <div class="form-btn-row">
+      <button class="form-btn" id="formbtn-a" onclick="showForm('a')">7<sup>3</sup> × 7<sup>5</sup></button>
+      <button class="form-btn" id="formbtn-b" onclick="showForm('b')">(5<sup>2</sup>)<sup>4</sup></button>
+      <button class="form-btn" id="formbtn-c" onclick="showForm('c')">9<sup>6</sup> ÷ 9<sup>6</sup></button>
+      <button class="form-btn" id="formbtn-d" onclick="showForm('d')">4<sup>−2</sup></button>
+    </div>
+    <div class="stat-row" id="formStat"><div class="stat-chip">Pilih salah satu bentuk di atas 👆</div></div>
+    <div class="callout violet" id="formInsight" style="display:none;"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Boss Fight →</button></div>
+  </div>
+
+  <!-- SLIDE 10: Boss Fight & Penutup -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Boss Fight: <span class="hr">Bisa Jelaskan Kenapa?</span> 🐉</div>
+      <div class="slide-sub">Empat bentuk terakhir. Kerjakan bareng tutor — dan yang dinilai bukan hasilnya, tapi <strong>alasannya</strong>.</div>
+    </div>
+
+    <div class="boss-item">
+      <div class="boss-q">A. &nbsp; 2<sup>3</sup> × 2<sup>4</sup> = ?</div>
+      <div class="boss-ask">"Kenapa eksponennya dijumlahkan?"</div>
+      <button class="boss-btn" onclick="toggleBoss('bA')">Lihat Pembahasan</button>
+      <div class="boss-reveal" id="bA">Hasilnya 2<sup>7</sup> = 128. Alasannya: 2<sup>3</sup> adalah 3 faktor 2, dan 2<sup>4</sup> adalah 4 faktor 2. Saat dikalikan, semua faktor berbaris jadi satu: 3 + 4 = 7 faktor. Karena eksponen itu penghitung faktor, dialah yang dijumlahkan — bukan basisnya.</div>
+    </div>
+
+    <div class="boss-item">
+      <div class="boss-q">B. &nbsp; (3<sup>2</sup>)<sup>3</sup> = ?</div>
+      <div class="boss-ask">"Kenapa di sini eksponen dikalikan, bukan dijumlahkan?"</div>
+      <button class="boss-btn" onclick="toggleBoss('bB')">Lihat Pembahasan</button>
+      <div class="boss-reveal" id="bB">Hasilnya 3<sup>6</sup> = 729. Bedanya dengan soal A: di sini satu paket berisi 2 faktor 3, dan paket itu <strong>diulang 3 kali</strong> → 2 × 3 = 6 faktor. Kalau dijumlahkan jadi 3<sup>5</sup> = 243, jelas beda jauh. Ini jebakan paling sering di ulangan.</div>
+    </div>
+
+    <div class="boss-item">
+      <div class="boss-q">C. &nbsp; 5<sup>4</sup> ÷ 5<sup>2</sup> = ?</div>
+      <div class="boss-ask">"Apa yang sebenarnya terjadi pada faktor-faktornya?"</div>
+      <button class="boss-btn" onclick="toggleBoss('bC')">Lihat Pembahasan</button>
+      <div class="boss-reveal" id="bC">Hasilnya 5<sup>2</sup> = 25. Tulis sebagai (5×5×5×5)/(5×5). Dua faktor 5 di bawah menghabiskan dua faktor 5 di atas, sisa 2 faktor. Jadi pengurangan eksponen itu <strong>catatan hasil pencoretan</strong>, bukan aturan hafalan.</div>
+    </div>
+
+    <div class="boss-item">
+      <div class="boss-q">D. &nbsp; 2<sup>−3</sup> = ?</div>
+      <div class="boss-ask">"Apa yang berubah ketika eksponen melewati 0?"</div>
+      <button class="boss-btn" onclick="toggleBoss('bD')">Lihat Pembahasan</button>
+      <div class="boss-reveal" id="bD">Hasilnya 1/2<sup>3</sup> = 1/8. Dari 2<sup>3</sup>=8 → 2<sup>2</sup>=4 → 2<sup>1</sup>=2 → 2<sup>0</sup>=1, aturan "dibagi 2" nggak pernah berubah. Lanjut turun: 1/2, 1/4, 1/8. Yang berubah cuma bentuk hasilnya — dari bilangan bulat jadi pecahan. Tandanya tetap positif.</div>
+    </div>
+
+    <div class="summary-card" style="margin-top:2rem;">
+      <h3>🎓 CATATAN AKHIR SESI</h3>
+      <div class="summary-item"><span class="sum-ico">🔢</span><div class="sum-txt">Pangkat adalah perkalian berulang: eksponen menghitung <strong>banyak faktor</strong>, bukan pengali basis.</div></div>
+      <div class="summary-item"><span class="sum-ico">📈</span><div class="sum-txt">Naik 1 pangkat = dikali basis; turun 1 pangkat = dibagi basis. Satu pola ini menjelaskan a<sup>0</sup> dan a<sup>−n</sup> sekaligus.</div></div>
+      <div class="summary-item"><span class="sum-ico">✖️</span><div class="sum-txt">Faktor digabung → eksponen dijumlahkan (a<sup>m</sup> × a<sup>n</sup>), tapi hanya kalau <strong>basisnya sama</strong>.</div></div>
+      <div class="summary-item"><span class="sum-ico">🔁</span><div class="sum-txt">Barisan faktor diulang → eksponen dikalikan ((a<sup>m</sup>)<sup>n</sup>). Jangan tertukar dengan yang di atas.</div></div>
+      <div class="summary-item"><span class="sum-ico">➖</span><div class="sum-txt">Pangkat negatif menghasilkan pecahan positif, dan (−2)<sup>2</sup> ≠ −2<sup>2</sup> karena yang dipangkatkan berbeda.</div></div>
+    </div>
+    <div class="big-quote">
+      <div class="big-quote-text">"Jangan hafal rumusnya dulu.<br>Kenali <em>bentuknya</em> → bongkar <em>polanya</em> → baru gunakan sifatnya."</div>
+    </div>
+    <div class="callout rose"><strong>Preview selanjutnya:</strong> Kalau pangkatnya bukan bilangan bulat, misalnya 9<sup>1/2</sup>, apa artinya? Di situlah bentuk akar mulai masuk. Nantikan lanjutan lane Bilangan! 🔢</div>
+    <div class="done-actions">
+      <a href="quicktest38.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise38.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson38.html" class="da-btn da-secondary">Lesson 38</a>
+    </div>
+  </div>
+
+</div>
+<script>
+let currentSlide=1;
+const TOTAL=10;
+function goSlide(n){
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide=n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width=((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleBoss(id){document.getElementById(id).classList.toggle('show');}
+
+/* ---------- Slide 1: opening guess (neutral) ---------- */
+function pickS1(btn){
+  document.querySelectorAll('#slide1 .pick-btn').forEach(b=>b.disabled=true);
+  btn.classList.add('neutral');
+  document.getElementById('fbS1').innerHTML='🤔 Simpan dulu jawabanmu — di slide berikutnya kita bedah strukturnya sampai kelihatan mana yang benar dan kenapa.';
+}
+
+/* ---------- Slide 2: baca struktur ---------- */
+function pickS2(btn,ans){
+  document.querySelectorAll('#slide2 .pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS2');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Basisnya 7 dan eksponennya 4, jadi ada 4 faktor 7 yang dikalikan. Nilainya 2.401.';}
+  else{
+    btn.classList.add('wrong');
+    document.querySelector('[onclick="pickS2(this,\'a\')"]').classList.add('correct');
+    fb.innerHTML='❌ Belum tepat. Eksponen 4 menghitung <strong>banyak faktor</strong>, jadi 7<sup>4</sup> = 7 × 7 × 7 × 7. Basis dan eksponen nggak boleh tertukar posisinya.';
+  }
+}
+
+/* ---------- Slide 3: build power table ---------- */
+const PT3_ROWS=[
+  ['2<sup>1</sup>','2','2'],
+  ['2<sup>2</sup>','2 × 2','4'],
+  ['2<sup>3</sup>','2 × 2 × 2','8'],
+  ['2<sup>4</sup>','2 × 2 × 2 × 2','16'],
+  ['2<sup>5</sup>','2 × 2 × 2 × 2 × 2','32'],
+];
+let pt3Step=0;
+function renderPt3(){
+  const el=document.getElementById('ptSlide3');
+  el.innerHTML='';
+  ['Pangkat','Bentuk Perkalian','Nilai'].forEach(h=>{
+    const c=document.createElement('div');c.className='pt-cell hdr';c.innerHTML=h;el.appendChild(c);
+  });
+  PT3_ROWS.forEach((r,i)=>{
+    const shown=i<pt3Step;
+    const fresh=(i===pt3Step-1);
+    r.forEach((v,j)=>{
+      const c=document.createElement('div');
+      c.className='pt-cell'+(j===2?' val':'')+(shown?(fresh?' fresh':''):' ghost');
+      c.innerHTML=shown?v:(j===0?v:'?');
+      el.appendChild(c);
+    });
+  });
+}
+renderPt3();
+function buildPowerTable(){
+  if(pt3Step<PT3_ROWS.length){
+    pt3Step++;
+    renderPt3();
+  }
+  if(pt3Step>=PT3_ROWS.length){
+    document.getElementById('btnPt3').disabled=true;
+    document.getElementById('btnPt3').textContent='Tabel Lengkap ✓';
+    document.getElementById('patternBox').style.display='block';
+    document.getElementById('pt3Formula').style.display='block';
+    document.getElementById('pt3Q1').style.display='block';
+    document.getElementById('pt3Grid1').style.display='grid';
+    document.getElementById('pt3Q2').style.display='block';
+    document.getElementById('pt3Grid2').style.display='grid';
+  }
+}
+function pickS3a(btn,ans){
+  document.getElementById('pt3Grid1').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS3a');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Naik satu pangkat = dikali basis: 64 × 2 = 128.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS3a(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Dari 2<sup>6</sup> ke 2<sup>7</sup> cuma nambah SATU faktor 2, jadi 64 × 2 = 128 — bukan ditambah atau dikali angka lain.';}
+}
+function pickS3b(btn,ans){
+  document.getElementById('pt3Grid2').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS3b');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! 5<sup>5</sup> cuma 5<sup>4</sup> dengan satu faktor 5 tambahan: 625 × 5 = 3.125. Nggak perlu hitung ulang dari nol.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS3b(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Yang bertambah adalah satu FAKTOR basis, jadi nilainya dikali 5: 625 × 5 = 3.125.';}
+}
+
+/* ---------- Slide 4: perkalian ---------- */
+const MUL_STEPS=[
+  '<div class="expr-line">2<sup>3</sup> × 2<sup>2</sup></div><div class="expr-line"><span class="hi">(2 × 2 × 2)</span> × <span class="hi2">(2 × 2)</span></div>',
+  '<div class="expr-line">2<sup>3</sup> × 2<sup>2</sup></div><div class="expr-line"><span class="hi">(2 × 2 × 2)</span> × <span class="hi2">(2 × 2)</span></div><div class="expr-line">2 × 2 × 2 × 2 × 2 &nbsp;<span class="dim">← 5 faktor</span></div>',
+  '<div class="expr-line">2<sup>3</sup> × 2<sup>2</sup></div><div class="expr-line"><span class="hi">(2 × 2 × 2)</span> × <span class="hi2">(2 × 2)</span></div><div class="expr-line">2 × 2 × 2 × 2 × 2 &nbsp;<span class="dim">← 5 faktor</span></div><div class="expr-line">= <span class="hi">2<sup>5</sup></span> = 32</div>',
+];
+let mulStep=0;
+function stepMul(){
+  if(mulStep<MUL_STEPS.length){
+    document.getElementById('mulBox').innerHTML=MUL_STEPS[mulStep];
+    mulStep++;
+  }
+  if(mulStep>=MUL_STEPS.length){
+    const b=document.getElementById('btnMul');
+    b.disabled=true;b.textContent='Selesai Dibongkar ✓';
+    document.getElementById('mulFormula').style.display='block';
+    document.getElementById('mulWhy').style.display='block';
+    document.getElementById('mulExtra').style.display='block';
+    document.getElementById('mulTrapQ').style.display='block';
+    document.getElementById('mulTrapGrid').style.display='grid';
+  }
+}
+function pickS4(btn,ans){
+  document.getElementById('mulTrapGrid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS4');
+  if(ans==='b'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Sifat penjumlahan eksponen cuma berlaku kalau <strong>basisnya sama</strong>. 2<sup>3</sup> × 3<sup>2</sup> = 8 × 9 = 72, sedangkan 6<sup>5</sup> = 7.776. Jauh banget bedanya.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS4(this,\'b\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Faktornya nggak bisa digabung karena beda jenis: 2×2×2 dan 3×3 bukan barisan yang sama. Hitung saja: 8 × 9 = 72, sementara 6<sup>5</sup> = 7.776.';}
+}
+
+/* ---------- Slide 5: pembagian ---------- */
+const DIV_STEPS=[
+  '<div class="expr-line">2<sup>5</sup> ÷ 2<sup>2</sup></div><div class="expr-line"><span class="hi">(2 × 2 × 2 × 2 × 2)</span> ÷ <span class="hi2">(2 × 2)</span></div>',
+  '<div class="expr-line">2<sup>5</sup> ÷ 2<sup>2</sup></div><div class="expr-line">(<span class="gone">2 × 2 ×</span> 2 × 2 × 2) ÷ (<span class="gone">2 × 2</span>)</div><div class="expr-line muted">dua faktor di bawah menghabiskan dua faktor di atas</div>',
+  '<div class="expr-line">2<sup>5</sup> ÷ 2<sup>2</sup></div><div class="expr-line">(<span class="gone">2 × 2 ×</span> 2 × 2 × 2) ÷ (<span class="gone">2 × 2</span>)</div><div class="expr-line">sisa: 2 × 2 × 2 = <span class="hi">2<sup>3</sup></span> = 8</div>',
+];
+let divStep=0;
+function stepDiv(){
+  if(divStep<DIV_STEPS.length){
+    document.getElementById('divBox').innerHTML=DIV_STEPS[divStep];
+    divStep++;
+  }
+  if(divStep>=DIV_STEPS.length){
+    const b=document.getElementById('btnDiv');
+    b.disabled=true;b.textContent='Selesai Dicoret ✓';
+    document.getElementById('divFormula').style.display='block';
+    document.getElementById('divWhy').style.display='block';
+    document.getElementById('divExtra').style.display='block';
+    document.getElementById('divQ').style.display='block';
+    document.getElementById('divGrid').style.display='grid';
+  }
+}
+function pickS5(btn,ans){
+  document.getElementById('divGrid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS5');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! 10<sup>8</sup> ÷ 10<sup>3</sup> = 10<sup>8−3</sup> = 10<sup>5</sup> = 100.000.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS5(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Pada pembagian, eksponen DIKURANGKAN: 8 − 3 = 5, jadi hasilnya 10<sup>5</sup>.';}
+}
+
+/* ---------- Slide 6: pangkat dari pangkat ---------- */
+const POW_STEPS=[
+  '<div class="expr-line">(2<sup>3</sup>)<sup>2</sup></div><div class="expr-line"><span class="dim">artinya 2<sup>3</sup> diulang sebanyak 2 kali</span></div><div class="expr-line"><span class="hi">(2 × 2 × 2)</span> × <span class="hi">(2 × 2 × 2)</span></div>',
+  '<div class="expr-line">(2<sup>3</sup>)<sup>2</sup></div><div class="expr-line"><span class="hi">(2 × 2 × 2)</span> × <span class="hi">(2 × 2 × 2)</span></div><div class="expr-line">2 × 2 × 2 × 2 × 2 × 2 &nbsp;<span class="dim">← 6 faktor</span></div>',
+  '<div class="expr-line">(2<sup>3</sup>)<sup>2</sup></div><div class="expr-line"><span class="hi">(2 × 2 × 2)</span> × <span class="hi">(2 × 2 × 2)</span></div><div class="expr-line">2 × 2 × 2 × 2 × 2 × 2 &nbsp;<span class="dim">← 6 faktor</span></div><div class="expr-line">= <span class="hi">2<sup>6</sup></span> = 64 &nbsp;<span class="dim">(3 × 2 = 6)</span></div>',
+];
+let powStep=0;
+function stepPow(){
+  if(powStep<POW_STEPS.length){
+    document.getElementById('powBox').innerHTML=POW_STEPS[powStep];
+    powStep++;
+  }
+  if(powStep>=POW_STEPS.length){
+    const b=document.getElementById('btnPow');
+    b.disabled=true;b.textContent='Selesai Dibongkar ✓';
+    document.getElementById('powFormula').style.display='block';
+    document.getElementById('powWhy').style.display='block';
+    document.getElementById('powTrapQ').style.display='block';
+    document.getElementById('powTrapGrid').style.display='grid';
+  }
+}
+function pickS6(btn,ans){
+  document.getElementById('powTrapGrid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS6');
+  if(ans==='b'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! (2<sup>3</sup>)<sup>2</sup> = 2<sup>6</sup> = 64, sedangkan 2<sup>5</sup> = 32. Bedanya dua kali lipat — itulah kenapa sifatnya harus dipilih sesuai bentuk.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS6(this,\'b\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Di bentuk kurung berpangkat, eksponen DIKALIKAN: 3 × 2 = 6, jadi hasilnya 2<sup>6</sup> = 64.';}
+}
+
+/* ---------- Slide 7: tangga pangkat nol ---------- */
+const LADDER=[
+  ['2<sup>4</sup>','titik mulai','16'],
+  ['2<sup>3</sup>','16 ÷ 2','8'],
+  ['2<sup>2</sup>','8 ÷ 2','4'],
+  ['2<sup>1</sup>','4 ÷ 2','2'],
+  ['2<sup>0</sup>','2 ÷ 2','1'],
+];
+let ladStep=1;
+function renderLadder(){
+  const el=document.getElementById('ptSlide7');
+  el.innerHTML='';
+  ['Pangkat','Proses','Nilai'].forEach(h=>{
+    const c=document.createElement('div');c.className='pt-cell hdr';c.innerHTML=h;el.appendChild(c);
+  });
+  LADDER.forEach((r,i)=>{
+    const shown=i<ladStep;
+    const fresh=(i===ladStep-1);
+    r.forEach((v,j)=>{
+      const c=document.createElement('div');
+      c.className='pt-cell'+(j===2?' val':'')+(shown?(fresh?' fresh':''):' ghost');
+      c.innerHTML=shown?v:(j===0?v:'?');
+      el.appendChild(c);
+    });
+  });
+}
+renderLadder();
+function stepLadder(){
+  if(ladStep<LADDER.length){ladStep++;renderLadder();}
+  if(ladStep>=LADDER.length){
+    const b=document.getElementById('btnLadder');
+    b.disabled=true;b.textContent='Sampai Pangkat Nol ✓';
+    document.getElementById('zeroFormula').style.display='block';
+    document.getElementById('zeroWhy2').style.display='block';
+    document.getElementById('zeroQ').style.display='block';
+    document.getElementById('zeroGrid').style.display='grid';
+  }
+}
+function pickS7(btn,ans){
+  document.getElementById('zeroGrid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS7');
+  if(ans==='b'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Turun satu pangkat selalu berarti DIBAGI basis, dan langkah terakhirnya 2 ÷ 2 = 1. Kalau hasilnya 0, pola pembagian itu jadi rusak.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS7(this,\'b\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. "Tidak ada faktor" bukan berarti nol — pola tangganya adalah pembagian, dan 2 ÷ 2 = 1. Cek juga lewat a<sup>3</sup> ÷ a<sup>3</sup>, hasilnya pasti 1.';}
+}
+
+/* ---------- Slide 8: tangga pangkat negatif ---------- */
+const LADDER2=[
+  ['2<sup>2</sup>','titik mulai','4'],
+  ['2<sup>1</sup>','4 ÷ 2','2'],
+  ['2<sup>0</sup>','2 ÷ 2','1'],
+  ['2<sup>−1</sup>','1 ÷ 2','1/2'],
+  ['2<sup>−2</sup>','½ ÷ 2','1/4'],
+];
+let lad2Step=3;
+function renderLadder2(){
+  const el=document.getElementById('ptSlide8');
+  el.innerHTML='';
+  ['Pangkat','Proses','Nilai'].forEach(h=>{
+    const c=document.createElement('div');c.className='pt-cell hdr';c.innerHTML=h;el.appendChild(c);
+  });
+  LADDER2.forEach((r,i)=>{
+    const shown=i<lad2Step;
+    const fresh=(i===lad2Step-1);
+    const isNeg=i>=3;
+    r.forEach((v,j)=>{
+      const c=document.createElement('div');
+      c.className='pt-cell'+(j===2?(isNeg?' val neg':' val'):'')+(shown?(fresh?' fresh':''):' ghost');
+      c.innerHTML=shown?v:(j===0?v:'?');
+      el.appendChild(c);
+    });
+  });
+}
+renderLadder2();
+function stepLadder2(){
+  if(lad2Step<LADDER2.length){lad2Step++;renderLadder2();}
+  if(lad2Step>=LADDER2.length){
+    const b=document.getElementById('btnLadder2');
+    b.disabled=true;b.textContent='Tangga Lengkap ✓';
+    document.getElementById('negWarn').style.display='block';
+    document.getElementById('negFormula').style.display='block';
+    document.getElementById('negTrapQ').style.display='block';
+    document.getElementById('negTrapGrid').style.display='grid';
+  }
+}
+function pickS8(btn,ans){
+  document.getElementById('negTrapGrid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS8');
+  if(ans==='b'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! (−2)<sup>2</sup> = (−2) × (−2) = 4, karena yang dipangkatkan adalah −2. Sedangkan −2<sup>2</sup> = −(2 × 2) = −4, karena yang dipangkatkan cuma angka 2, tanda minusnya di luar.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS8(this,\'b\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Kuncinya di tanda kurung: (−2)<sup>2</sup> memangkatkan −2 → hasil 4. Tanpa kurung, −2<sup>2</sup> berarti −(2<sup>2</sup>) → hasil −4.';}
+}
+
+/* ---------- Slide 9: detektor struktur ---------- */
+const FORMS={
+  a:{sifat:'Perkalian, basis sama',rumus:'a<sup>m</sup> × a<sup>n</sup> = a<sup>m+n</sup>',hasil:'7<sup>3</sup> × 7<sup>5</sup> = 7<sup>8</sup>',
+     note:'<strong>Penanda struktur:</strong> dua bentuk pangkat DIKALIKAN dengan basis yang sama (7 dan 7). Faktornya tinggal digabung → eksponen dijumlahkan: 3 + 5 = 8.'},
+  b:{sifat:'Pangkat bertingkat',rumus:'(a<sup>m</sup>)<sup>n</sup> = a<sup>m×n</sup>',hasil:'(5<sup>2</sup>)<sup>4</sup> = 5<sup>8</sup>',
+     note:'<strong>Penanda struktur:</strong> ada TANDA KURUNG yang dipangkatkan lagi. Satu paket 2 faktor diulang 4 kali → eksponen dikalikan: 2 × 4 = 8. Kebetulan hasilnya sama-sama pangkat 8 dengan contoh sebelumnya, tapi jalannya beda total.'},
+  c:{sifat:'Pembagian → pangkat nol',rumus:'a<sup>m</sup> ÷ a<sup>n</sup> = a<sup>m−n</sup>',hasil:'9<sup>6</sup> ÷ 9<sup>6</sup> = 9<sup>0</sup> = 1',
+     note:'<strong>Penanda struktur:</strong> dibagi, basis sama → eksponen dikurangkan: 6 − 6 = 0. Dan memang masuk akal: bilangan dibagi dirinya sendiri hasilnya 1.'},
+  d:{sifat:'Pangkat negatif',rumus:'a<sup>−n</sup> = 1/a<sup>n</sup>',hasil:'4<sup>−2</sup> = 1/4<sup>2</sup> = 1/16',
+     note:'<strong>Penanda struktur:</strong> eksponennya negatif → ubah jadi pecahan, JANGAN jadi bilangan negatif. Hasilnya 1/16, bukan −16.'},
+};
+function showForm(key){
+  document.querySelectorAll('#slide9 .form-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('formbtn-'+key).classList.add('active');
+  const f=FORMS[key];
+  document.getElementById('formStat').innerHTML=
+    `<div class="stat-chip">Sifat: <b>${f.sifat}</b></div><div class="stat-chip">${f.rumus}</div><div class="stat-chip">${f.hasil}</div>`;
+  const box=document.getElementById('formInsight');
+  box.style.display='block';
+  box.innerHTML=f.note;
+}
+</script>
+</body>
+</html>
