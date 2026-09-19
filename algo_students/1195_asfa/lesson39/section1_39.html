@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 39 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--cyan:#22d3ee;--red:#ef4444;--emerald:#34d399;--amber:#fbbf24;--rose:#fb7185;--violet:#a78bfa;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(34,211,238,0.06) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(251,191,36,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--cyan);}
+  .wrapper{max-width:760px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--amber));border-radius:99px;transition:width 0.4s ease;}
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title sup{font-size:0.6em;}
+  .slide-title .hv{color:var(--violet);}
+  .slide-title .hc{color:var(--cyan);}
+  .slide-title .he{color:var(--emerald);}
+  .slide-title .ha{color:var(--amber);}
+  .slide-title .hr{color:var(--rose);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+  .slide-sub strong{color:var(--cyan);}
+  .slide-sub sup{font-size:0.7em;}
+
+  .callout{background:rgba(34,211,238,0.05);border-left:3px solid var(--cyan);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--cyan);}
+  .callout sup{font-size:0.7em;}
+  .callout.violet{background:rgba(167,139,250,0.05);border-color:var(--violet);}
+  .callout.violet strong{color:var(--violet);}
+  .callout.emerald{background:rgba(52,211,153,0.05);border-color:var(--emerald);}
+  .callout.emerald strong{color:var(--emerald);}
+  .callout.amber{background:rgba(251,191,36,0.06);border-color:var(--amber);}
+  .callout.amber strong{color:var(--amber);}
+  .callout.rose{background:rgba(251,113,133,0.06);border-color:var(--rose);}
+  .callout.rose strong{color:var(--rose);}
+
+  .diagram-box{background:#12121c;border:1.5px solid var(--border);border-radius:14px;padding:1rem;margin:1.2rem 0;display:flex;justify-content:center;flex-wrap:wrap;gap:0.8rem;}
+  .diagram-note{text-align:center;font-size:0.75rem;color:var(--muted);margin-top:-0.6rem;margin-bottom:1rem;font-style:italic;}
+
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(34,211,238,0.12);border:1px solid rgba(34,211,238,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;color:var(--cyan);flex-shrink:0;}
+  .step-num.e{background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,0.4);color:var(--emerald);}
+  .step-num.a{background:rgba(251,191,36,0.12);border-color:rgba(251,191,36,0.4);color:var(--amber);}
+  .step-num.c{background:rgba(34,211,238,0.12);border-color:rgba(34,211,238,0.4);color:var(--cyan);}
+  .step-num.r{background:rgba(251,113,133,0.12);border-color:rgba(251,113,133,0.4);color:var(--rose);}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .reveal-btn{background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.35);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(34,211,238,0.15);}
+  .reveal-btn:disabled{opacity:0.35;cursor:default;}
+  .reveal-box{background:rgba(34,211,238,0.05);border:1px solid rgba(34,211,238,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+  .reveal-box .rule-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--cyan);margin-bottom:0.4rem;}
+  .reveal-box .rule-text sup{font-size:0.62em;}
+  .reveal-box .rule-sub{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+  .reveal-box .rule-sub sup{font-size:0.7em;}
+
+  .formula-hero{text-align:center;padding:1.4rem;background:rgba(251,191,36,0.06);border:1.5px solid rgba(251,191,36,0.3);border-radius:18px;margin:1.2rem 0;}
+  .formula-text{font-family:'Orbitron',monospace;font-size:1.15rem;font-weight:900;color:var(--amber);}
+  .formula-text sup{font-size:0.6em;}
+  .formula-sub{display:flex;gap:1rem;justify-content:center;margin-top:0.8rem;flex-wrap:wrap;}
+  .formula-sub span{font-size:0.78rem;font-weight:700;color:var(--muted);background:#12121c;border:1px solid var(--border);padding:0.3rem 0.8rem;border-radius:99px;}
+
+  .pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:1.2rem 0;}
+  @media(max-width:480px){.pick-grid{grid-template-columns:1fr;}}
+  .pick-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
+  @media(max-width:560px){.pick-grid.cols3{grid-template-columns:1fr;}}
+  .pick-btn{width:100%;background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.7rem;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.88rem;transition:all 0.2s;line-height:1.4;}
+  .pick-btn sup{font-size:0.7em;}
+  .pick-btn:hover:not(:disabled){border-color:var(--cyan);}
+  .pick-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .pick-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .pick-btn.neutral{border-color:var(--cyan);background:rgba(34,211,238,0.08);color:var(--cyan);}
+  .pick-fb{font-size:0.82rem;color:var(--muted);margin-top:0.6rem;line-height:1.6;text-align:center;min-height:20px;}
+  .pick-fb sup{font-size:0.7em;}
+
+  .summary-card{background:var(--card);border:1px solid rgba(34,211,238,0.3);border-radius:16px;padding:1.5rem 2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:2px;color:var(--cyan);margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .sum-ico{flex-shrink:0;font-size:1rem;line-height:1.6;}
+  .sum-txt{flex:1;min-width:0;}
+  .sum-txt sup{font-size:0.68em;vertical-align:super;line-height:0;}
+  .sum-txt .dim{color:var(--muted);}
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;text-decoration:none;display:inline-block;transition:all 0.2s;}
+  .da-primary{background:linear-gradient(135deg,var(--cyan),#0891b2);color:#000;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);}
+  .da-secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+
+  .big-quote{background:rgba(34,211,238,0.06);border:1.5px solid rgba(34,211,238,0.3);border-radius:18px;padding:1.6rem;text-align:center;margin:1.2rem 0;}
+  .big-quote-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--cyan);line-height:1.8;}
+  .big-quote-text em{color:var(--amber);font-style:normal;}
+  .big-quote-text sup{font-size:0.65em;}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--cyan),#0891b2);border:none;color:#000;font-weight:800;}
+  .nav-btn:hover:not(.next){border-color:var(--cyan);color:var(--cyan);}
+
+  /* --- lesson39-specific --- */
+  .expr-box{background:#12121c;border:1.5px solid var(--border);border-radius:14px;padding:1.2rem;margin:1.2rem 0;text-align:center;font-family:'Orbitron',monospace;font-size:clamp(0.85rem,3.4vw,1.15rem);font-weight:900;color:var(--cyan);line-height:2;letter-spacing:1px;word-break:break-word;}
+  .expr-box sup{font-size:0.6em;}
+  .expr-box .dim{color:var(--muted);font-weight:700;}
+  .expr-box .hi{color:var(--amber);}
+  .expr-box .hi2{color:var(--violet);}
+  .expr-box .gone{color:var(--muted);opacity:0.45;text-decoration:line-through;text-decoration-color:var(--rose);text-decoration-thickness:2px;}
+  .expr-line{margin:0.35rem 0;}
+  .expr-line.muted{font-size:0.82em;color:var(--muted);}
+
+  .mini-table{width:100%;border-collapse:separate;border-spacing:0;background:#12121c;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.2rem 0;font-size:0.85rem;}
+  .mini-table th{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1.5px;color:var(--cyan);background:rgba(34,211,238,0.07);padding:0.6rem;text-align:center;text-transform:uppercase;}
+  .mini-table td{padding:0.5rem;text-align:center;border-top:1px solid var(--border);font-family:'Orbitron',monospace;}
+  .mini-table td.val{color:var(--amber);font-weight:900;}
+  .mini-table sup{font-size:0.7em;}
+
+  .form-btn-row{display:flex;gap:0.6rem;justify-content:center;flex-wrap:wrap;margin:1rem 0;}
+  .form-btn{background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.55rem 1.1rem;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.8rem;transition:all 0.2s;}
+  .form-btn sup{font-size:0.62em;}
+  .form-btn:hover{border-color:var(--cyan);}
+  .form-btn.active{border-color:var(--amber);background:rgba(251,191,36,0.12);color:var(--amber);}
+  .stat-row{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;margin-top:0.8rem;}
+  .stat-chip{background:#12121c;border:1px solid var(--border);border-radius:10px;padding:0.5rem 1rem;font-family:'Orbitron',monospace;font-size:0.78rem;color:var(--cyan);}
+  .stat-chip b{color:var(--amber);}
+  .stat-chip sup{font-size:0.65em;}
+
+  .boss-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.2rem;margin-bottom:1rem;}
+  .boss-q{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:900;color:var(--amber);margin-bottom:0.4rem;}
+  .boss-q sup{font-size:0.62em;}
+  .boss-ask{font-size:0.86rem;color:var(--muted);line-height:1.6;margin-bottom:0.7rem;font-style:italic;}
+  .boss-reveal{display:none;font-size:0.86rem;line-height:1.7;color:var(--text);background:rgba(34,211,238,0.05);border-left:3px solid var(--cyan);border-radius:0 10px 10px 0;padding:0.8rem 1rem;}
+  .boss-reveal.show{display:block;animation:fadeIn 0.3s ease;}
+  .boss-reveal sup{font-size:0.7em;}
+  .boss-btn{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.35);color:var(--amber);font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;padding:0.45rem 1.1rem;border-radius:9px;cursor:pointer;transition:all 0.2s;}
+  .boss-btn:hover{background:rgba(251,191,36,0.18);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson39.html">LESSON 39</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+
+  <!-- SLIDE 1: Opening -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title"><span class="hc">Bentuk</span> Akar 🔄</div>
+      <div class="slide-sub">Kalau pangkat bisa <strong>maju</strong>, apakah kita bisa <strong>mundur</strong>? Kamu sudah tahu 5² = 25. Pertanyaannya sekarang dibalik.</div>
+    </div>
+    <div class="expr-box">
+      <div class="expr-line">5<sup>2</sup> &nbsp;=&nbsp; 25</div>
+      <div class="expr-line muted">Kalau yang diketahui 25, bagaimana kita balik dapat 5?</div>
+    </div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS1(this)">Kira-kira bilangannya 5</button>
+      <button class="pick-btn" onclick="pickS1(this)">Kira-kira bilangannya 12,5</button>
+    </div>
+    <div class="pick-fb" id="fbS1"></div>
+    <div class="callout"><strong>Misi hari ini:</strong> Operasi yang membalik pangkat dua ini punya nama — <strong>akar kuadrat (√)</strong>. Kita nggak akan langsung hafal caranya, tapi bongkar dulu artinya sampai kelihatan kenapa √25 = 5.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">🔄</div>
+        <div class="step-body"><div class="stitle">Misi 1: Memahami Arti √</div><div class="sdesc">Akar kuadrat sebagai operasi kebalikan dari pangkat dua.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num c">🔢</div>
+        <div class="step-body"><div class="stitle">Misi 2: Kuadrat Sempurna &amp; Estimasi</div><div class="sdesc">Mengenali pola kuadrat sempurna dan menaksir posisi akar yang bukan bilangan bulat.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num a">✂️</div>
+        <div class="step-body"><div class="stitle">Misi 3: Menyederhanakan Bentuk Akar</div><div class="sdesc">Membongkar bilangan jadi faktor kuadrat sempurna × sisanya.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num r">🪤</div>
+        <div class="step-body"><div class="stitle">Boss Fight: Bisa Jelaskan Kenapa?</div><div class="sdesc">Hadapi jebakan klasik seputar akar dan tanda negatif.</div></div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Misi 1: Arti √ →</button></div>
+  </div>
+
+  <!-- SLIDE 2: Apa Sebenarnya Arti √25 -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Apa Sebenarnya Arti <span class="hc">√25</span>? 🔍</div>
+      <div class="slide-sub">Jangan langsung hafal definisi formalnya. Coba pikirkan dulu maknanya.</div>
+    </div>
+    <div class="diagram-box">
+      <svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
+        <text x="60" y="60" fill="#22d3ee" font-family="Orbitron,monospace" font-size="26" font-weight="900" text-anchor="middle">5</text>
+        <path d="M82 55 L150 55" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#a1)"/>
+        <text x="116" y="45" fill="#fbbf24" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">×5</text>
+        <text x="180" y="60" fill="#fbbf24" font-family="Orbitron,monospace" font-size="26" font-weight="900" text-anchor="middle">25</text>
+        <path d="M180 82 L60 110" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#a2)"/>
+        <text x="120" y="88" fill="#a78bfa" font-family="Orbitron,monospace" font-size="8" text-anchor="middle">√ (kebalikan)</text>
+        <text x="60" y="132" fill="#22d3ee" font-family="Orbitron,monospace" font-size="9" text-anchor="middle">balik ke 5</text>
+        <defs><marker id="a1" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#fbbf24"/></marker>
+        <marker id="a2" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#a78bfa"/></marker></defs>
+      </svg>
+    </div>
+    <div class="expr-box"><div class="expr-line">√25 = ?</div></div>
+    <div class="callout emerald"><strong>Pertanyaannya:</strong> Bilangan berapa yang jika dikalikan dengan dirinya sendiri menghasilkan 25? Karena 5 × 5 = 25, maka √25 = 5.</div>
+    <div class="expr-box">
+      <div class="expr-line">√36 = 6 &nbsp;<span class="dim">karena 6² = 36</span></div>
+      <div class="expr-line">√81 = 9 &nbsp;<span class="dim">karena 9² = 81</span></div>
+    </div>
+    <div class="callout amber"><strong>Giliranmu:</strong> Berapa nilai √64?</div>
+    <div class="pick-grid cols3" id="s2Grid">
+      <button class="pick-btn" onclick="pickS2(this,'a')">8</button>
+      <button class="pick-btn" onclick="pickS2(this,'b')">32</button>
+      <button class="pick-btn" onclick="pickS2(this,'c')">16</button>
+    </div>
+    <div class="pick-fb" id="fbS2"></div>
+    <div class="callout"><strong>Simpulan:</strong> √a mencari bilangan yang kuadratnya menghasilkan a.</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Kuadrat Sempurna →</button></div>
+  </div>
+
+  <!-- SLIDE 3: Kuadrat Sempurna -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title">Kuadrat Sempurna: <span class="he">Peta Jalan Akar</span> 🗺️</div>
+      <div class="slide-sub">Kalau kamu hafal peta ini, kamu nggak perlu hitung panjang setiap kali ketemu akar.</div>
+    </div>
+    <table class="mini-table">
+      <thead><tr><th>Bilangan</th><th>Kuadrat</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td class="val">1</td></tr>
+        <tr><td>2</td><td class="val">4</td></tr>
+        <tr><td>3</td><td class="val">9</td></tr>
+        <tr><td>4</td><td class="val">16</td></tr>
+        <tr><td>5</td><td class="val">25</td></tr>
+        <tr><td>6</td><td class="val">36</td></tr>
+        <tr><td>7</td><td class="val">49</td></tr>
+        <tr><td>8</td><td class="val">64</td></tr>
+        <tr><td>9</td><td class="val">81</td></tr>
+        <tr><td>10</td><td class="val">100</td></tr>
+      </tbody>
+    </table>
+    <div class="callout violet"><strong>Reasoning:</strong> Kalau √49 = 7, bagaimana kita tahu itu tanpa menghitung panjang? Cukup ingat peta di atas — bukan menghafal satu-satu, tapi mengenali polanya: 7 × 7 = 49.</div>
+    <div class="expr-box"><div class="expr-line">√50 = ?</div></div>
+    <div class="callout amber"><strong>50 bukan kuadrat sempurna.</strong> Apakah berarti kita tidak bisa bilang apa-apa soal √50? Tentu bisa — kita bisa mengestimasi posisinya. Menurutmu √50 ada di mana?</div>
+    <div class="pick-grid" id="s3Grid">
+      <button class="pick-btn" onclick="pickS3(this,'a')">Di antara √49 (=7) dan √64 (=8), jadi 7 &lt; √50 &lt; 8</button>
+      <button class="pick-btn" onclick="pickS3(this,'b')">Di antara √36 (=6) dan √49 (=7), jadi 6 &lt; √50 &lt; 7</button>
+    </div>
+    <div class="pick-fb" id="fbS3"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Akar &amp; Tanda Negatif →</button></div>
+  </div>
+
+  <!-- SLIDE 4: Akar dan Tanda Negatif -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Akar dan <span class="hr">Tanda Negatif</span> ➖</div>
+      <div class="slide-sub">Ini jebakan konseptual yang paling sering bikin bingung. Perhatikan baik-baik.</div>
+    </div>
+    <div class="expr-box">
+      <div class="expr-line">3<sup>2</sup> = 9</div>
+      <div class="expr-line">(−3)<sup>2</sup> = 9</div>
+      <div class="expr-line muted">dua bilangan berbeda, kuadratnya sama</div>
+    </div>
+    <div class="callout emerald"><strong>Tapi:</strong> Simbol akar kuadrat √9 secara konvensi cuma menghasilkan <strong>akar utama / non-negatif</strong>, yaitu 3. Simbol √ bukan mesin yang mengembalikan dua jawaban sekaligus.</div>
+    <div class="expr-box">
+      <div class="expr-line">√9 &nbsp;→&nbsp; <span class="hi">3</span> &nbsp;<span class="dim">(satu jawaban)</span></div>
+      <div class="expr-line">x<sup>2</sup> = 9 &nbsp;→&nbsp; <span class="hi2">x = 3 atau x = −3</span> &nbsp;<span class="dim">(dua jawaban)</span></div>
+    </div>
+    <div class="callout amber"><strong>Pertanyaan tutor:</strong> Kenapa √9 bukan ±3?</div>
+    <div class="pick-grid" id="s4Grid">
+      <button class="pick-btn" onclick="pickS4(this,'a')">Karena simbol √ itu perintah "cari SATU nilai akar utama (positif)", beda dengan menyelesaikan persamaan x² = 9</button>
+      <button class="pick-btn" onclick="pickS4(this,'b')">Karena bilangan negatif tidak boleh dikuadratkan</button>
+    </div>
+    <div class="pick-fb" id="fbS4"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Saat Akar Tak Langsung Bisa →</button></div>
+  </div>
+
+  <!-- SLIDE 5: Saat Akar Tidak Bisa Langsung Dihitung -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title">Saat Akar Tidak Bisa <span class="ha">Langsung Dihitung</span> ✂️</div>
+      <div class="slide-sub">√36 = 6, gampang. Tapi bagaimana dengan √72? 72 bukan kuadrat sempurna — apa kita menyerah?</div>
+    </div>
+    <div class="expr-box" id="rootBox"><div class="expr-line">√72 = ?</div></div>
+    <button class="reveal-btn" id="btnRoot" onclick="stepRoot()">Bongkar Faktornya →</button>
+    <div class="formula-hero" id="rootFormula" style="display:none;">
+      <div class="formula-text">√72 = 6√2</div>
+      <div class="formula-sub"><span>72 = 36 × 2</span><span>√36 dikeluarkan, √2 tetap di dalam</span></div>
+    </div>
+    <div class="callout emerald" id="rootWhy" style="display:none;"><strong>Ide utamanya:</strong> Cari faktor <strong>kuadrat sempurna</strong> yang bersembunyi di dalam bilangan itu. 72 = 36 × 2, dan 36 adalah kuadrat sempurna (6²). Bagian itulah yang bisa "dikeluarkan" dari akar.</div>
+    <div class="callout amber" id="rootQ" style="display:none;"><strong>Giliranmu:</strong> Dengan cara yang sama, sederhanakan √48. (48 = 16 × 3)</div>
+    <div class="pick-grid cols3" id="rootGrid" style="display:none;">
+      <button class="pick-btn" onclick="pickS5(this,'a')">4√3</button>
+      <button class="pick-btn" onclick="pickS5(this,'b')">16√3</button>
+      <button class="pick-btn" onclick="pickS5(this,'c')">2√12</button>
+    </div>
+    <div class="pick-fb" id="fbS5"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Kenapa Bisa Dipisah? →</button></div>
+  </div>
+
+  <!-- SLIDE 6: Mengapa √(ab) bisa dipisah -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title">Mengapa <span class="hv">√(ab)</span> Bisa Dipisah? 🧩</div>
+      <div class="slide-sub">Jangan cuma dikasih rumus. Lihat lagi langkah √72 yang barusan kita bongkar.</div>
+    </div>
+    <div class="expr-box">
+      <div class="expr-line">√72 = √(36 × 2)</div>
+      <div class="expr-line">√(36 × 2) = <span class="hi">√36</span> × <span class="hi2">√2</span> = 6√2</div>
+    </div>
+    <div class="formula-hero">
+      <div class="formula-text">√(a × b) = √a × √b</div>
+      <div class="formula-sub"><span>untuk a, b ≥ 0</span></div>
+    </div>
+    <div class="callout"><strong>Contoh lain:</strong></div>
+    <div class="expr-box">
+      <div class="expr-line">√48 = √(16 × 3) = 4√3</div>
+      <div class="expr-line">√75 = √(25 × 3) = 5√3</div>
+    </div>
+    <div class="callout rose"><strong>🪤 Pertanyaan reasoning:</strong> Kenapa untuk √72 kita memilih 72 = 36 × 2, bukan 72 = 2 × 36 dibaca terbalik jadi "2 dikeluarkan, 36 di dalam"?</div>
+    <div class="pick-grid" id="s6Grid">
+      <button class="pick-btn" onclick="pickS6(this,'a')">Karena yang bisa "dikeluarkan" dari akar cuma faktor yang BENTUKNYA kuadrat sempurna (36 = 6²), bukan sembarang faktor</button>
+      <button class="pick-btn" onclick="pickS6(this,'b')">Karena urutan perkalian menentukan mana yang dikeluarkan</button>
+    </div>
+    <div class="pick-fb" id="fbS6"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">Strategi 3-Langkah →</button></div>
+  </div>
+
+  <!-- SLIDE 7: Strategi Membongkar Bentuk Akar -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">Strategi <span class="he">Membongkar</span> Bentuk Akar 🛠️</div>
+      <div class="slide-sub">Bukan latihan panjang — fokus ke algoritma berpikirnya.</div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><div class="stitle">Cari faktor kuadrat sempurna TERBESAR</div><div class="sdesc">Contoh: 72 = 36 × 2 (36 adalah faktor kuadrat sempurna terbesar dari 72)</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num c">2</div>
+        <div class="step-body"><div class="stitle">Pisahkan akarnya</div><div class="sdesc">√72 = √36 × √2</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num a">3</div>
+        <div class="step-body"><div class="stitle">Keluarkan akar sempurna</div><div class="sdesc">= 6√2</div></div>
+      </div>
+    </div>
+    <div class="expr-box">
+      <div class="expr-line">√18 = √(9×2) = 3√2</div>
+      <div class="expr-line">√32 = √(16×2) = 4√2</div>
+      <div class="expr-line">√200 = √(100×2) = 10√2</div>
+    </div>
+    <div class="callout amber"><strong>Giliranmu:</strong> Pakai 3 langkah di atas, sederhanakan √98. (Petunjuk: 98 = 49 × 2)</div>
+    <div class="pick-grid cols3" id="s7Grid">
+      <button class="pick-btn" onclick="pickS7(this,'a')">7√2</button>
+      <button class="pick-btn" onclick="pickS7(this,'b')">49√2</button>
+      <button class="pick-btn" onclick="pickS7(this,'c')">2√49</button>
+    </div>
+    <div class="pick-fb" id="fbS7"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Trap Zone →</button></div>
+  </div>
+
+  <!-- SLIDE 8: Trap Zone -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">Trap Zone 🚨</div>
+      <div class="slide-sub">Tiga kesalahan konseptual yang paling sering muncul soal akar.</div>
+    </div>
+
+    <div class="callout rose"><strong>Trap 1:</strong> Apakah √(9 + 16) = √9 + √16?</div>
+    <div class="expr-box">
+      <div class="expr-line">Kiri: √25 = 5</div>
+      <div class="expr-line">Kanan: 3 + 4 = 7</div>
+    </div>
+    <div class="pick-grid" id="s8aGrid">
+      <button class="pick-btn" onclick="pickS8a(this,'a')">Salah — 5 ≠ 7, jadi √(a+b) ≠ √a + √b</button>
+      <button class="pick-btn" onclick="pickS8a(this,'b')">Benar — dua-duanya sama saja</button>
+    </div>
+    <div class="pick-fb" id="fbS8a"></div>
+
+    <div class="callout rose" style="margin-top:1.5rem;"><strong>Trap 2:</strong> Apakah √72 = 36√2?</div>
+    <div class="pick-grid" id="s8bGrid">
+      <button class="pick-btn" onclick="pickS8b(this,'a')">Tidak — yang dikeluarkan adalah √36 = 6, bukan 36 itu sendiri</button>
+      <button class="pick-btn" onclick="pickS8b(this,'b')">Benar — karena 72 = 36 × 2</button>
+    </div>
+    <div class="pick-fb" id="fbS8b"></div>
+
+    <div class="callout rose" style="margin-top:1.5rem;"><strong>Trap 3:</strong> Apakah √(−9) = −3?</div>
+    <div class="pick-grid" id="s8cGrid">
+      <button class="pick-btn" onclick="pickS8c(this,'a')">Tidak ada nilai real — karena (−3)² = 9, bukan −9</button>
+      <button class="pick-btn" onclick="pickS8c(this,'b')">Benar, hasilnya −3</button>
+    </div>
+    <div class="pick-fb" id="fbS8c"></div>
+
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Pola Bentuk yang Dibongkar →</button></div>
+  </div>
+
+  <!-- SLIDE 9: Bentuk Akar sebagai Bentuk yang Bisa Dibongkar -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">Bentuk Akar: <span class="ha">Bisa Dibongkar</span> 🧱</div>
+      <div class="slide-sub">Klik tiap bentuk. Sebelum lihat jawabannya, tebak dulu di kepalamu.</div>
+    </div>
+    <div class="form-btn-row">
+      <button class="form-btn" id="formbtn-a" onclick="showForm('a')">√12</button>
+      <button class="form-btn" id="formbtn-b" onclick="showForm('b')">√20</button>
+      <button class="form-btn" id="formbtn-c" onclick="showForm('c')">√27</button>
+      <button class="form-btn" id="formbtn-d" onclick="showForm('d')">√45</button>
+      <button class="form-btn" id="formbtn-e" onclick="showForm('e')">√80</button>
+    </div>
+    <div class="stat-row" id="formStat"><div class="stat-chip">Pilih salah satu bentuk di atas 👆</div></div>
+    <div class="callout violet" id="formInsight" style="display:none;"></div>
+    <div class="callout amber"><strong>Apa pola yang kamu lihat?</strong> Bilangan di luar akar selalu berasal dari faktor kuadrat sempurna yang dikeluarkan.</div>
+    <div class="expr-box"><div class="expr-line">√180 = ?</div></div>
+    <div class="callout"><strong>Reasoning:</strong> Kuadrat sempurna terbesar yang jadi faktor 180 apa? (Petunjuk: 180 = 36 × 5)</div>
+    <div class="pick-grid" id="s9Grid">
+      <button class="pick-btn" onclick="pickS9(this,'a')">6√5</button>
+      <button class="pick-btn" onclick="pickS9(this,'b')">36√5</button>
+    </div>
+    <div class="pick-fb" id="fbS9"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Boss Fight →</button></div>
+  </div>
+
+  <!-- SLIDE 10: Boss Fight & Penutup -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Boss Fight: <span class="hr">Explain, Don't Just Answer</span> 🐉</div>
+      <div class="slide-sub">Empat pertanyaan diskusi. Kerjakan bareng tutor — yang dinilai bukan angkanya, tapi <strong>alasannya</strong>.</div>
+    </div>
+
+    <div class="boss-item">
+      <div class="boss-q">A. &nbsp; √98 = ?</div>
+      <div class="boss-ask">"Faktor kuadrat sempurna apa yang paling berguna di sini?"</div>
+      <button class="boss-btn" onclick="toggleBoss('bA')">Lihat Pembahasan</button>
+      <div class="boss-reveal" id="bA">98 = 49 × 2, dan 49 adalah kuadrat sempurna terbesar yang membagi 98. Jadi √98 = √49 × √2 = 7√2. Faktor kuadrat sempurna yang lebih kecil (misal 1) sah secara matematika tapi tidak menyederhanakan apa-apa — makanya kita cari yang TERBESAR.</div>
+    </div>
+
+    <div class="boss-item">
+      <div class="boss-q">B. &nbsp; Mengapa √50 = 5√2, tetapi √50 ≠ 25√2?</div>
+      <div class="boss-ask">"Apa yang sebenarnya dikeluarkan dari dalam akar?"</div>
+      <button class="boss-btn" onclick="toggleBoss('bB')">Lihat Pembahasan</button>
+      <div class="boss-reveal" id="bB">50 = 25 × 2. Yang dikeluarkan dari akar bukan angka 25 itu sendiri, melainkan √25 = 5. Jadi hasilnya 5√2, bukan 25√2. Ini jebakan yang sama seperti Trap 2 — orang sering lupa mengakarkan dulu si kuadrat sempurnanya sebelum dikeluarkan.</div>
+    </div>
+
+    <div class="boss-item">
+      <div class="boss-q">C. &nbsp; Benarkah √(16 + 9) = √16 + √9?</div>
+      <div class="boss-ask">"Jelaskan kenapa, jangan cuma jawab benar/salah."</div>
+      <button class="boss-btn" onclick="toggleBoss('bC')">Lihat Pembahasan</button>
+      <div class="boss-reveal" id="bC">Salah. Kiri: √(16+9) = √25 = 5. Kanan: √16 + √9 = 4 + 3 = 7. Keduanya beda, jadi akar dari sebuah PENJUMLAHAN tidak bisa dipecah jadi jumlah dua akar terpisah. Sifat √(a×b) = √a×√b cuma berlaku untuk PERKALIAN, bukan penjumlahan.</div>
+    </div>
+
+    <div class="boss-item">
+      <div class="boss-q">D. &nbsp; Apa perbedaan √25 dengan x² = 25?</div>
+      <div class="boss-ask">"Kenapa satu jawaban tunggal, satu lagi dua jawaban?"</div>
+      <button class="boss-btn" onclick="toggleBoss('bD')">Lihat Pembahasan</button>
+      <div class="boss-reveal" id="bD">√25 adalah SIMBOL yang menurut konvensi hanya menghasilkan akar utama (non-negatif): √25 = 5. Sedangkan x² = 25 adalah PERSAMAAN yang mencari semua bilangan yang kuadratnya 25 — ada dua: x = 5 atau x = −5. Simbol akar dan persamaan kuadrat itu dua hal berbeda, walau saling berkaitan.</div>
+    </div>
+
+    <div class="summary-card" style="margin-top:2rem;">
+      <h3>🎓 CATATAN AKHIR SESI</h3>
+      <div class="summary-item"><span class="sum-ico">🔄</span><div class="sum-txt">√a mencari bilangan yang <strong>kuadratnya</strong> menghasilkan a — akar adalah kebalikan pangkat dua.</div></div>
+      <div class="summary-item"><span class="sum-ico">🔢</span><div class="sum-txt">Kenali kuadrat sempurna (1,4,9,16,25,...) untuk mengestimasi posisi akar yang bukan bilangan bulat.</div></div>
+      <div class="summary-item"><span class="sum-ico">➖</span><div class="sum-txt">√9 = 3 (satu jawaban, akar utama), beda dengan x² = 9 → x = ±3 (dua jawaban).</div></div>
+      <div class="summary-item"><span class="sum-ico">✂️</span><div class="sum-txt">Sederhanakan akar dengan mencari <strong>faktor kuadrat sempurna terbesar</strong>, lalu keluarkan akarnya: √72 = 6√2.</div></div>
+      <div class="summary-item"><span class="sum-ico">🪤</span><div class="sum-txt">√(a+b) ≠ √a+√b, dan akar dari bilangan negatif tidak punya nilai real.</div></div>
+    </div>
+    <div class="big-quote">
+      <div class="big-quote-text">"Akar bukan sekadar mencari angka.<br>Kita sedang <em>membalik proses pangkat</em> dan membongkar bilangan jadi bagian yang lebih sederhana."</div>
+    </div>
+    <div class="done-actions">
+      <a href="quicktest39.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise39.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson39.html" class="da-btn da-secondary">Lesson 39</a>
+    </div>
+  </div>
+
+</div>
+<script>
+let currentSlide=1;
+const TOTAL=10;
+function goSlide(n){
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide=n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width=((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleBoss(id){document.getElementById(id).classList.toggle('show');}
+
+/* ---------- Slide 1: opening guess (neutral) ---------- */
+function pickS1(btn){
+  document.querySelectorAll('#slide1 .pick-btn').forEach(b=>b.disabled=true);
+  btn.classList.add('neutral');
+  document.getElementById('fbS1').innerHTML='🤔 Simpan dulu jawabanmu — slide berikutnya kita bongkar maknanya sampai kelihatan kenapa jawabannya begitu.';
+}
+
+/* ---------- Slide 2: makna akar ---------- */
+function pickS2(btn,ans){
+  document.getElementById('s2Grid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS2');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! 8 × 8 = 64, jadi √64 = 8.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS2(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Cari bilangan yang jika dikalikan dirinya sendiri = 64. Jawabannya 8, karena 8 × 8 = 64.';}
+}
+
+/* ---------- Slide 3: estimasi √50 ---------- */
+function pickS3(btn,ans){
+  document.getElementById('s3Grid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS3');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! 49 &lt; 50 &lt; 64, jadi √49 &lt; √50 &lt; √64, artinya 7 &lt; √50 &lt; 8.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS3(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. 50 lebih besar dari 49 (bukan lebih kecil), jadi posisinya tepat di atas √49, yaitu di antara 7 dan 8.';}
+}
+
+/* ---------- Slide 4: √9 vs x²=9 ---------- */
+function pickS4(btn,ans){
+  document.getElementById('s4Grid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS4');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Simbol √ menurut konvensi hanya menghasilkan akar utama (non-negatif). Kalau ingin semua kemungkinan bilangan yang dikuadratkan jadi 9, itu pertanyaan berbeda: menyelesaikan x² = 9.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS4(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Bilangan negatif BISA dikuadratkan (contoh (−3)² = 9). Yang membatasi hasil √9 jadi satu nilai adalah konvensi simbol akar itu sendiri, bukan larangan mengkuadratkan.';}
+}
+
+/* ---------- Slide 5: bongkar √72 ---------- */
+const ROOT_STEPS=[
+  '<div class="expr-line">√72</div><div class="expr-line">72 = <span class="hi">36</span> × <span class="hi2">2</span></div>',
+  '<div class="expr-line">√72 = √(<span class="hi">36</span> × <span class="hi2">2</span>)</div><div class="expr-line">= √<span class="hi">36</span> × √<span class="hi2">2</span></div>',
+  '<div class="expr-line">√72 = √<span class="hi">36</span> × √<span class="hi2">2</span></div><div class="expr-line">= <span class="hi">6</span>√<span class="hi2">2</span></div>',
+];
+let rootStep=0;
+function stepRoot(){
+  if(rootStep<ROOT_STEPS.length){
+    document.getElementById('rootBox').innerHTML=ROOT_STEPS[rootStep];
+    rootStep++;
+  }
+  if(rootStep>=ROOT_STEPS.length){
+    const b=document.getElementById('btnRoot');
+    b.disabled=true;b.textContent='Selesai Dibongkar ✓';
+    document.getElementById('rootFormula').style.display='block';
+    document.getElementById('rootWhy').style.display='block';
+    document.getElementById('rootQ').style.display='block';
+    document.getElementById('rootGrid').style.display='grid';
+  }
+}
+function pickS5(btn,ans){
+  document.getElementById('rootGrid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS5');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! 48 = 16 × 3, dan √16 = 4, jadi √48 = 4√3.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS5(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Yang dikeluarkan dari akar adalah √16 = 4 (bukan 16 itu sendiri), sisanya tetap 3 di dalam akar: √48 = 4√3.';}
+}
+
+/* ---------- Slide 6: kenapa pilih 36 bukan sembarang faktor ---------- */
+function pickS6(btn,ans){
+  document.getElementById('s6Grid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS6');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! √(a×b) = √a × √b berlaku untuk faktor APAPUN, tapi kita cuma bisa "mengeluarkan" faktor itu keluar tanda akar dengan bersih kalau faktor itu kuadrat sempurna (hasilnya bilangan bulat). 36 = 6² memenuhi syarat itu, sedangkan 2 tidak.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS6(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Urutan penulisan perkalian tidak masalah (36 × 2 sama saja dengan 2 × 36). Yang menentukan mana yang "keluar" adalah apakah faktornya kuadrat sempurna atau bukan.';}
+}
+
+/* ---------- Slide 7: sederhanakan √98 ---------- */
+function pickS7(btn,ans){
+  document.getElementById('s7Grid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS7');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! 98 = 49 × 2, √49 = 7, jadi √98 = 7√2.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS7(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Yang dikeluarkan adalah √49 = 7 (bukan 49-nya langsung), jadi hasilnya 7√2.';}
+}
+
+/* ---------- Slide 8: tiga trap ---------- */
+function pickS8a(btn,ans){
+  document.getElementById('s8aGrid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS8a');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! √(9+16) = √25 = 5, sedangkan √9+√16 = 3+4 = 7. Beda, jadi akar dari penjumlahan TIDAK bisa dipecah jadi jumlah akar.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS8a(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Hitung dua sisinya: kiri = 5, kanan = 7. Jelas beda.';}
+}
+function pickS8b(btn,ans){
+  document.getElementById('s8bGrid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS8b');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! √72 = 6√2, bukan 36√2. Yang dikeluarkan dari akar adalah √36 = 6, bukan angka 36 itu sendiri.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS8b(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Memang 72 = 36 × 2, tapi yang keluar dari akar adalah √36 = 6, bukan 36 utuh. Hasil yang benar 6√2.';}
+}
+function pickS8c(btn,ans){
+  document.getElementById('s8cGrid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS8c');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! (−3)² = 9, bukan −9. Tidak ada bilangan real yang kuadratnya menghasilkan bilangan negatif, jadi √(−9) tidak punya nilai real.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS8c(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Coba cek: (−3)² = 9 (positif), bukan −9. Karena itu tidak ada bilangan real yang kuadratnya −9.';}
+}
+
+/* ---------- Slide 9: pattern gallery ---------- */
+const FORMS={
+  a:{soal:'√12',hasil:'2√3',ket:'12 = 4 × 3, √4 = 2'},
+  b:{soal:'√20',hasil:'2√5',ket:'20 = 4 × 5, √4 = 2'},
+  c:{soal:'√27',hasil:'3√3',ket:'27 = 9 × 3, √9 = 3'},
+  d:{soal:'√45',hasil:'3√5',ket:'45 = 9 × 5, √9 = 3'},
+  e:{soal:'√80',hasil:'4√5',ket:'80 = 16 × 5, √16 = 4'},
+};
+function showForm(key){
+  document.querySelectorAll('#slide9 .form-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('formbtn-'+key).classList.add('active');
+  const f=FORMS[key];
+  document.getElementById('formStat').innerHTML=
+    `<div class="stat-chip">${f.soal} = <b>${f.hasil}</b></div><div class="stat-chip">${f.ket}</div>`;
+  const box=document.getElementById('formInsight');
+  box.style.display='block';
+  box.innerHTML=`Faktor kuadrat sempurna dari ${f.soal.replace('√','')} dikeluarkan sebagai akarnya, sisanya tetap di dalam tanda akar.`;
+}
+
+/* ---------- Slide 9b: √180 ---------- */
+function pickS9(btn,ans){
+  document.getElementById('s9Grid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS9');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! 180 = 36 × 5, √36 = 6, jadi √180 = 6√5.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS9(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Yang dikeluarkan dari akar adalah √36 = 6 (bukan 36-nya langsung), jadi hasilnya 6√5.';}
+}
+</script>
+</body>
+</html>
