@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 1 · Lesson 40 · Asfa</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--card:#1a1a28;--border:#2a2a40;--neon:#00f5c4;--accent:#f59e0b;--text:#e2e8f0;--muted:#64748b;--cyan:#22d3ee;--red:#ef4444;--emerald:#34d399;--amber:#fbbf24;--rose:#fb7185;--violet:#a78bfa;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 20%,rgba(34,211,238,0.06) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(251,191,36,0.05) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:1px;}
+  nav a{color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--neon);}
+  nav span{color:var(--border);}
+  nav .current{color:var(--cyan);}
+  .wrapper{max-width:760px;margin:0 auto;padding:3rem 1.5rem 6rem;position:relative;z-index:1;}
+  .slide{display:none;animation:fadeIn 0.4s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .progress-bar{background:var(--border);border-radius:99px;height:4px;margin-bottom:2rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--amber));border-radius:99px;transition:width 0.4s ease;}
+  .slide-header{text-align:center;margin-bottom:2.5rem;}
+  .slide-num{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:0.8rem;}
+  .slide-title{font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);line-height:1.3;margin-bottom:0.8rem;}
+  .slide-title sup{font-size:0.6em;}
+  .slide-title .hv{color:var(--violet);}
+  .slide-title .hc{color:var(--cyan);}
+  .slide-title .he{color:var(--emerald);}
+  .slide-title .ha{color:var(--amber);}
+  .slide-title .hr{color:var(--rose);}
+  .slide-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+  .slide-sub strong{color:var(--cyan);}
+  .slide-sub sup{font-size:0.7em;}
+
+  .callout{background:rgba(34,211,238,0.05);border-left:3px solid var(--cyan);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;line-height:1.7;}
+  .callout strong{color:var(--cyan);}
+  .callout sup{font-size:0.7em;}
+  .callout.violet{background:rgba(167,139,250,0.05);border-color:var(--violet);}
+  .callout.violet strong{color:var(--violet);}
+  .callout.emerald{background:rgba(52,211,153,0.05);border-color:var(--emerald);}
+  .callout.emerald strong{color:var(--emerald);}
+  .callout.amber{background:rgba(251,191,36,0.06);border-color:var(--amber);}
+  .callout.amber strong{color:var(--amber);}
+  .callout.rose{background:rgba(251,113,133,0.06);border-color:var(--rose);}
+  .callout.rose strong{color:var(--rose);}
+
+  .diagram-box{background:#12121c;border:1.5px solid var(--border);border-radius:14px;padding:1rem;margin:1.2rem 0;display:flex;justify-content:center;flex-wrap:wrap;gap:0.8rem;}
+  .diagram-note{text-align:center;font-size:0.75rem;color:var(--muted);margin-top:-0.6rem;margin-bottom:1rem;font-style:italic;}
+
+  .steps{margin:1.5rem 0;}
+  .step{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;}
+  .step-num{width:32px;height:32px;background:rgba(34,211,238,0.12);border:1px solid rgba(34,211,238,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;color:var(--cyan);flex-shrink:0;}
+  .step-num.e{background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,0.4);color:var(--emerald);}
+  .step-num.a{background:rgba(251,191,36,0.12);border-color:rgba(251,191,36,0.4);color:var(--amber);}
+  .step-num.c{background:rgba(34,211,238,0.12);border-color:rgba(34,211,238,0.4);color:var(--cyan);}
+  .step-num.r{background:rgba(251,113,133,0.12);border-color:rgba(251,113,133,0.4);color:var(--rose);}
+  .step-body .stitle{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;}
+  .step-body .sdesc{font-size:0.85rem;color:var(--muted);line-height:1.6;}
+
+  .reveal-btn{background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.35);color:var(--cyan);font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;padding:0.6rem 1.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;margin:0.5rem auto;display:block;}
+  .reveal-btn:hover{background:rgba(34,211,238,0.15);}
+  .reveal-btn:disabled{opacity:0.35;cursor:default;}
+  .reveal-box{background:rgba(34,211,238,0.05);border:1px solid rgba(34,211,238,0.3);border-radius:12px;padding:1.2rem;margin-top:1rem;display:none;}
+  .reveal-box.show{display:block;animation:fadeIn 0.3s ease;}
+
+  .formula-hero{text-align:center;padding:1.4rem;background:rgba(251,191,36,0.06);border:1.5px solid rgba(251,191,36,0.3);border-radius:18px;margin:1.2rem 0;}
+  .formula-text{font-family:'Orbitron',monospace;font-size:1.15rem;font-weight:900;color:var(--amber);}
+  .formula-text sup{font-size:0.6em;}
+  .formula-sub{display:flex;gap:1rem;justify-content:center;margin-top:0.8rem;flex-wrap:wrap;}
+  .formula-sub span{font-size:0.78rem;font-weight:700;color:var(--muted);background:#12121c;border:1px solid var(--border);padding:0.3rem 0.8rem;border-radius:99px;}
+
+  .pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:1.2rem 0;}
+  @media(max-width:480px){.pick-grid{grid-template-columns:1fr;}}
+  .pick-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
+  @media(max-width:560px){.pick-grid.cols3{grid-template-columns:1fr;}}
+  .pick-btn{width:100%;background:#12121c;border:1px solid var(--border);color:var(--text);padding:0.7rem;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.88rem;transition:all 0.2s;line-height:1.4;}
+  .pick-btn sup{font-size:0.7em;}
+  .pick-btn:hover:not(:disabled){border-color:var(--cyan);}
+  .pick-btn.correct{border-color:var(--neon);background:rgba(0,245,196,0.1);color:var(--neon);}
+  .pick-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.1);color:var(--red);}
+  .pick-btn.neutral{border-color:var(--cyan);background:rgba(34,211,238,0.08);color:var(--cyan);}
+  .pick-fb{font-size:0.82rem;color:var(--muted);margin-top:0.6rem;line-height:1.6;text-align:center;min-height:20px;}
+  .pick-fb sup{font-size:0.7em;}
+
+  .summary-card{background:var(--card);border:1px solid rgba(34,211,238,0.3);border-radius:16px;padding:1.5rem 2rem;margin-bottom:1.5rem;}
+  .summary-card h3{font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:2px;color:var(--cyan);margin-bottom:1.2rem;}
+  .summary-item{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.8rem;font-size:0.9rem;line-height:1.6;}
+  .sum-ico{flex-shrink:0;font-size:1rem;line-height:1.6;}
+  .sum-txt{flex:1;min-width:0;}
+  .done-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+  .da-btn{padding:0.75rem 1.8rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.78rem;letter-spacing:2px;text-decoration:none;display:inline-block;transition:all 0.2s;}
+  .da-primary{background:linear-gradient(135deg,var(--cyan),#0891b2);color:#000;font-weight:800;}
+  .da-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .da-primary:hover{transform:translateY(-2px);}
+  .da-secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+
+  .big-quote{background:rgba(34,211,238,0.06);border:1.5px solid rgba(34,211,238,0.3);border-radius:18px;padding:1.6rem;text-align:center;margin:1.2rem 0;}
+  .big-quote-text{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--cyan);line-height:1.8;}
+  .big-quote-text em{color:var(--amber);font-style:normal;}
+
+  .nav-btns{display:flex;gap:1rem;justify-content:space-between;margin-top:2.5rem;}
+  .nav-btn{padding:0.7rem 1.6rem;border-radius:12px;font-family:'Orbitron',monospace;font-size:0.75rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:var(--card);color:var(--text);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--cyan),#0891b2);border:none;color:#000;font-weight:800;}
+  .nav-btn:hover:not(.next){border-color:var(--cyan);color:var(--cyan);}
+
+  /* --- lesson40-specific --- */
+  .expr-box{background:#12121c;border:1.5px solid var(--border);border-radius:14px;padding:1.2rem;margin:1.2rem 0;text-align:center;font-family:'Orbitron',monospace;font-size:clamp(0.85rem,3.4vw,1.15rem);font-weight:900;color:var(--cyan);line-height:2;letter-spacing:1px;word-break:break-word;}
+  .expr-box sup{font-size:0.6em;}
+  .expr-box .dim{color:var(--muted);font-weight:700;}
+  .expr-box .hi{color:var(--amber);}
+  .expr-box .hi2{color:var(--violet);}
+  .expr-line{margin:0.35rem 0;}
+  .expr-line.muted{font-size:0.82em;color:var(--muted);}
+
+  .algebra-compare{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem;background:#12121c;border:1.5px solid var(--border);border-radius:14px;padding:1.2rem;margin:1.2rem 0;}
+  @media(max-width:480px){.algebra-compare{grid-template-columns:1fr;text-align:center;}}
+  .algebra-compare .side{text-align:center;}
+  .algebra-compare .side-lbl{font-size:0.65rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+  .algebra-compare .side-expr{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;}
+  .algebra-compare .side-expr.left{color:var(--violet);}
+  .algebra-compare .side-expr.right{color:var(--cyan);}
+  .algebra-compare .mid{font-size:1.4rem;color:var(--muted);}
+
+  .flow-steps{display:flex;flex-direction:column;gap:0.6rem;margin:1.2rem 0;}
+  .flow-step{background:#12121c;border:1px solid var(--border);border-radius:10px;padding:0.7rem 1rem;font-family:'Orbitron',monospace;font-size:0.85rem;text-align:center;color:var(--text);}
+  .flow-step .arrow-down{text-align:center;color:var(--muted);font-size:0.9rem;margin:-0.15rem 0;}
+
+  .decision-tree{background:#12121c;border:1.5px solid var(--border);border-radius:16px;padding:1.4rem;margin:1.2rem 0;}
+  .dt-root{text-align:center;font-family:'Orbitron',monospace;font-weight:900;color:var(--amber);font-size:0.95rem;margin-bottom:0.8rem;padding-bottom:0.8rem;border-bottom:1px dashed var(--border);}
+  .dt-branch{display:flex;gap:0.8rem;align-items:flex-start;margin-bottom:0.7rem;}
+  .dt-branch .dt-op{font-family:'Orbitron',monospace;font-weight:900;color:var(--cyan);flex-shrink:0;width:2.4rem;}
+  .dt-branch .dt-desc{font-size:0.85rem;color:var(--text);line-height:1.5;}
+  .dt-branch .dt-desc b{color:var(--emerald);}
+
+  .boss-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.2rem;margin-bottom:1rem;}
+  .boss-q{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:900;color:var(--amber);margin-bottom:0.4rem;}
+  .boss-q sup{font-size:0.62em;}
+  .boss-ask{font-size:0.86rem;color:var(--muted);line-height:1.6;margin-bottom:0.7rem;font-style:italic;}
+  .boss-reveal{display:none;font-size:0.86rem;line-height:1.7;color:var(--text);background:rgba(34,211,238,0.05);border-left:3px solid var(--cyan);border-radius:0 10px 10px 0;padding:0.8rem 1rem;}
+  .boss-reveal.show{display:block;animation:fadeIn 0.3s ease;}
+  .boss-btn{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.35);color:var(--amber);font-family:'Orbitron',monospace;font-size:0.68rem;letter-spacing:2px;padding:0.45rem 1.1rem;border-radius:9px;cursor:pointer;transition:all 0.2s;}
+  .boss-btn:hover{background:rgba(251,191,36,0.18);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">MATH ARENA</a>
+  <span>›</span>
+  <a href="../asfa_1195.html">ASFA</a>
+  <span>›</span>
+  <a href="lesson40.html">LESSON 40</a>
+  <span>›</span>
+  <span class="current">SECTION 1</span>
+</nav>
+<div class="wrapper">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+
+  <!-- SLIDE 1: Opening -->
+  <div class="slide active" id="slide1">
+    <div class="slide-header">
+      <div class="slide-num">Slide 1 / 10</div>
+      <div class="slide-title">Operasi <span class="hc">Bentuk Akar</span> 🧩</div>
+      <div class="slide-sub">Kamu sudah bisa menyederhanakan bentuk akar. Tapi bisakah dua bentuk akar <strong>dijumlahkan</strong>?</div>
+    </div>
+    <div class="expr-box"><div class="expr-line">√2 + √3 = ?</div></div>
+    <div class="callout"><strong>Jangan langsung dijawab.</strong> Bandingkan dulu dengan aljabar yang sudah kamu kuasai:</div>
+    <div class="expr-box"><div class="expr-line">2x + 3x = 5x</div></div>
+    <div class="callout amber"><strong>Pertanyaan tutor:</strong> Kalau x bisa dianggap sebagai "bagian yang sama", apakah √2 dan √3 juga merupakan bagian yang sama?</div>
+    <div class="pick-grid">
+      <button class="pick-btn" onclick="pickS1(this)">Menurutku sama, jadi bisa langsung dijumlahkan</button>
+      <button class="pick-btn" onclick="pickS1(this)">Menurutku belum tentu — perlu dicek dulu</button>
+    </div>
+    <div class="pick-fb" id="fbS1"></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">🧩</div>
+        <div class="step-body"><div class="stitle">Misi 1: Akar sebagai "Suku Sejenis"</div><div class="sdesc">Kapan dua bentuk akar boleh digabung.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num c">✖️➗</div>
+        <div class="step-body"><div class="stitle">Misi 2: Perkalian &amp; Pembagian</div><div class="sdesc">Ternyata aturannya beda dari penjumlahan.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num a">🔁</div>
+        <div class="step-body"><div class="stitle">Misi 3: Rasionalisasi Penyebut</div><div class="sdesc">Menghilangkan akar dari bawah pecahan.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num r">🪤</div>
+        <div class="step-body"><div class="stitle">Boss Fight: Bisa Jelaskan Kenapa?</div><div class="sdesc">Jebakan klasik seputar operasi akar.</div></div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="nav-btn next" onclick="goSlide(2)">Misi 1: Suku Sejenis →</button></div>
+  </div>
+
+  <!-- SLIDE 2: Akar Seperti Variabel -->
+  <div class="slide" id="slide2">
+    <div class="slide-header">
+      <div class="slide-num">Slide 2 / 10</div>
+      <div class="slide-title">Akar Seperti <span class="hv">"Variabel"</span> 🔡</div>
+      <div class="slide-sub">Ingat lagi konsep suku sejenis dari aljabar.</div>
+    </div>
+    <div class="algebra-compare">
+      <div class="side"><div class="side-lbl">Aljabar</div><div class="side-expr left">2x + 5x = 7x</div></div>
+      <div class="mid">↔</div>
+      <div class="side"><div class="side-lbl">Bentuk Akar</div><div class="side-expr right">2√3 + 5√3 = ?</div></div>
+    </div>
+    <div class="callout emerald"><strong>Analogi:</strong> Anggap x ↔ √3. Karena bagian "variabel"-nya sama, koefisiennya boleh dijumlahkan: 2√3 + 5√3 = 7√3.</div>
+    <div class="callout amber"><strong>Aturannya:</strong> Yang menentukan bisa-tidaknya dijumlahkan adalah bagian akarnya harus SAMA.</div>
+    <div class="expr-box">
+      <div class="expr-line">2√3 + 5√3 &nbsp;<span class="dim">✅ bisa digabung</span></div>
+      <div class="expr-line">2√3 + 5√2 &nbsp;<span class="dim">❌ tidak bisa jadi satu suku</span></div>
+    </div>
+    <div class="callout"><strong>Catatan penting:</strong> 2√3 + 5√2 bukan berarti "tidak bisa dihitung sama sekali" — dia tetap punya nilai, cuma tidak bisa digabung jadi satu suku sejenis. Sama seperti 2x + 5y tidak bisa jadi 7(xy) atau semacamnya.</div>
+    <div class="callout violet"><strong>Giliranmu:</strong> Manakah yang BISA digabung jadi satu suku?</div>
+    <div class="pick-grid" id="s2Grid">
+      <button class="pick-btn" onclick="pickS2(this,'a')">4√5 + 6√5</button>
+      <button class="pick-btn" onclick="pickS2(this,'b')">4√5 + 6√7</button>
+    </div>
+    <div class="pick-fb" id="fbS2"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(1)">← Kembali</button><button class="nav-btn next" onclick="goSlide(3)">Sederhanakan Dulu →</button></div>
+  </div>
+
+  <!-- SLIDE 3: Sederhanakan Dulu, Baru Gabungkan -->
+  <div class="slide" id="slide3">
+    <div class="slide-header">
+      <div class="slide-num">Slide 3 / 10</div>
+      <div class="slide-title">Sederhanakan Dulu, <span class="he">Baru Gabungkan</span> ✂️</div>
+      <div class="slide-sub">Ini konsep paling penting di lesson ini.</div>
+    </div>
+    <div class="expr-box"><div class="expr-line">√12 + √27 = ?</div></div>
+    <div class="callout amber"><strong>Sekilas</strong> bentuk akarnya kelihatan berbeda (12 ≠ 27). Tapi jangan buru-buru menyimpulkan tidak bisa digabung.</div>
+    <div class="flow-steps">
+      <div class="flow-step">√12 = 2√3 &nbsp;&nbsp;|&nbsp;&nbsp; √27 = 3√3</div>
+      <div class="arrow-down">↓ bagian akarnya sekarang SAMA (√3)</div>
+      <div class="flow-step">2√3 + 3√3</div>
+      <div class="arrow-down">↓</div>
+      <div class="flow-step" style="color:var(--neon);font-weight:900;">= 5√3</div>
+    </div>
+    <div class="callout emerald"><strong>Strategi:</strong> Sederhanakan → Cek kesamaan bagian akar → Baru operasikan.</div>
+    <div class="callout rose"><strong>🪤 Pertanyaan reasoning:</strong> Kenapa kita tidak langsung bilang "12 dan 27 beda, jadi √12 dan √27 tidak bisa dijumlahkan"?</div>
+    <div class="pick-grid" id="s3Grid">
+      <button class="pick-btn" onclick="pickS3(this,'a')">Karena bentuk AWALnya beda, tapi setelah disederhanakan bagian akarnya bisa jadi SAMA (12→2√3, 27→3√3, sama-sama √3)</button>
+      <button class="pick-btn" onclick="pickS3(this,'b')">Karena 12 dan 27 sama-sama kelipatan 3, jadi otomatis bisa dijumlahkan tanpa disederhanakan</button>
+    </div>
+    <div class="pick-fb" id="fbS3"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(2)">← Kembali</button><button class="nav-btn next" onclick="goSlide(4)">Penjumlahan &amp; Pengurangan →</button></div>
+  </div>
+
+  <!-- SLIDE 4: Penjumlahan & Pengurangan -->
+  <div class="slide" id="slide4">
+    <div class="slide-header">
+      <div class="slide-num">Slide 4 / 10</div>
+      <div class="slide-title">Penjumlahan &amp; <span class="hc">Pengurangan</span> ➕➖</div>
+      <div class="slide-sub">Pola umumnya persis seperti suku sejenis aljabar.</div>
+    </div>
+    <div class="formula-hero">
+      <div class="formula-text">a√n + b√n = (a+b)√n</div>
+      <div class="formula-text" style="margin-top:0.4rem;">a√n − b√n = (a−b)√n</div>
+    </div>
+    <div class="expr-box">
+      <div class="expr-line">3√5 + 2√5 = 5√5</div>
+      <div class="expr-line">7√2 − 3√2 = 4√2</div>
+    </div>
+    <div class="callout"><strong>Kalau belum sejenis:</strong> sederhanakan dulu.</div>
+    <div class="expr-box">
+      <div class="expr-line">√50 − √8</div>
+      <div class="expr-line">= 5√2 − 2√2</div>
+      <div class="expr-line" style="color:var(--neon);">= 3√2</div>
+    </div>
+    <div class="callout rose"><strong>🪤 Trap:</strong> √5 + √5 = 2√5 (benar, sejenis). Tapi √5 + √2 ≠ √7 (bagian akarnya beda, tidak bisa dijumlahkan jadi satu akar).</div>
+    <div class="callout amber"><strong>Giliranmu:</strong> Sederhanakan dulu, lalu operasikan: √75 − √27. (75 = 25×3, 27 = 9×3)</div>
+    <div class="pick-grid cols3" id="s4Grid">
+      <button class="pick-btn" onclick="pickS4(this,'a')">2√3</button>
+      <button class="pick-btn" onclick="pickS4(this,'b')">√48</button>
+      <button class="pick-btn" onclick="pickS4(this,'c')">8√3</button>
+    </div>
+    <div class="pick-fb" id="fbS4"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(3)">← Kembali</button><button class="nav-btn next" onclick="goSlide(5)">Perkalian →</button></div>
+  </div>
+
+  <!-- SLIDE 5: Perkalian -->
+  <div class="slide" id="slide5">
+    <div class="slide-header">
+      <div class="slide-num">Slide 5 / 10</div>
+      <div class="slide-title">Perkalian: <span class="ha">Di Sini Justru Berbeda</span> ✖️</div>
+      <div class="slide-sub">Aturan yang berlaku di penjumlahan TIDAK berlaku di sini.</div>
+    </div>
+    <div class="expr-box"><div class="expr-line">√2 × √3 = √6</div></div>
+    <div class="callout emerald"><strong>Bandingkan dengan penjumlahan:</strong> √2 + √3 → tidak bisa digabung. Tapi √2 × √3 → langsung jadi √6!</div>
+    <div class="formula-hero">
+      <div class="formula-text">(a√m)(b√n) = ab√(mn)</div>
+    </div>
+    <div class="expr-box">
+      <div class="expr-line">2√3 × 4√5</div>
+      <div class="expr-line">= (2×4) × √(3×5)</div>
+      <div class="expr-line" style="color:var(--neon);">= 8√15</div>
+    </div>
+    <div class="callout amber"><strong>Kadang hasilnya bisa disederhanakan lagi:</strong></div>
+    <div class="expr-box">
+      <div class="expr-line">√6 × √24 = √144 = 12</div>
+    </div>
+    <div class="callout"><strong>Tekankan:</strong> Pada perkalian, akar TIDAK HARUS sejenis — kalikan saja koefisiennya, lalu kalikan bagian dalam akarnya.</div>
+    <div class="callout violet"><strong>Giliranmu:</strong> Berapa hasil dari 3√2 × 2√8?</div>
+    <div class="pick-grid cols3" id="s5Grid">
+      <button class="pick-btn" onclick="pickS5(this,'a')">24</button>
+      <button class="pick-btn" onclick="pickS5(this,'b')">6√16</button>
+      <button class="pick-btn" onclick="pickS5(this,'c')">6√10</button>
+    </div>
+    <div class="pick-fb" id="fbS5"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(4)">← Kembali</button><button class="nav-btn next" onclick="goSlide(6)">Pembagian →</button></div>
+  </div>
+
+  <!-- SLIDE 6: Pembagian -->
+  <div class="slide" id="slide6">
+    <div class="slide-header">
+      <div class="slide-num">Slide 6 / 10</div>
+      <div class="slide-title">Pembagian <span class="hc">Bentuk Akar</span> ➗</div>
+      <div class="slide-sub">Idenya mirip perkalian, tapi dibalik.</div>
+    </div>
+    <div class="expr-box">
+      <div class="expr-line">√12 ÷ √3</div>
+      <div class="expr-line">= √(12÷3)</div>
+      <div class="expr-line">= √4 = 2</div>
+    </div>
+    <div class="callout emerald"><strong>Kalau ada koefisien:</strong> bagi koefisien dengan koefisien, bagi akar dengan akar — terpisah.</div>
+    <div class="expr-box">
+      <div class="expr-line">6√10 ÷ 3√2</div>
+      <div class="expr-line">= (6÷3) × √(10÷2)</div>
+      <div class="expr-line" style="color:var(--neon);">= 2√5</div>
+    </div>
+    <div class="callout amber"><strong>Pertanyaan tutor:</strong> Kenapa pada pembagian kita bisa menggabungkan dua akar jadi satu akar, seperti √12 ÷ √3 = √4?</div>
+    <div class="pick-grid" id="s6Grid">
+      <button class="pick-btn" onclick="pickS6(this,'a')">Karena sifat √a ÷ √b = √(a÷b) berlaku untuk a,b ≥ 0 dan b ≠ 0 — kebalikan dari √(a×b) = √a × √b</button>
+      <button class="pick-btn" onclick="pickS6(this,'b')">Karena semua bentuk akar boleh digabung asal ada tanda bagi</button>
+    </div>
+    <div class="pick-fb" id="fbS6"></div>
+    <div class="callout"><strong>Contoh lain:</strong> √50 ÷ √2 = √25 = 5.</div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(5)">← Kembali</button><button class="nav-btn next" onclick="goSlide(7)">The Big Trap →</button></div>
+  </div>
+
+  <!-- SLIDE 7: The Big Trap -->
+  <div class="slide" id="slide7">
+    <div class="slide-header">
+      <div class="slide-num">Slide 7 / 10</div>
+      <div class="slide-title">The Big Trap <span class="hr">🚨</span></div>
+      <div class="slide-sub">√a + √b ≠ √(a+b) — ini kesalahan paling sering muncul.</div>
+    </div>
+    <div class="expr-box">
+      <div class="expr-line">√9 + √16 = 3 + 4 = 7</div>
+      <div class="expr-line">√(9+16) = √25 = 5</div>
+      <div class="expr-line" style="color:var(--rose);">7 ≠ 5 → √9+√16 ≠ √(9+16)</div>
+    </div>
+    <div class="callout rose"><strong>Bandingkan dengan perkalian:</strong> √9 × √16 = √(9×16) = √144 = 12. Di sini sifat perkalian akar BOLEH dipakai.</div>
+    <div class="expr-box">
+      <div class="expr-line" style="color:var(--emerald);">Penjumlahan akar: TIDAK bisa sembarang masuk ke dalam satu akar</div>
+      <div class="expr-line" style="color:var(--cyan);">Perkalian akar: BISA pakai sifat √a × √b = √(ab)</div>
+    </div>
+    <div class="callout amber"><strong>Giliranmu:</strong> Manakah pernyataan yang BENAR?</div>
+    <div class="pick-grid" id="s7Grid">
+      <button class="pick-btn" onclick="pickS7(this,'a')">√4 × √9 = √36 = 6 (perkalian boleh digabung)</button>
+      <button class="pick-btn" onclick="pickS7(this,'b')">√4 + √9 = √13 (penjumlahan boleh digabung)</button>
+    </div>
+    <div class="pick-fb" id="fbS7"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(6)">← Kembali</button><button class="nav-btn next" onclick="goSlide(8)">Rasionalisasi →</button></div>
+  </div>
+
+  <!-- SLIDE 8: Rasionalisasi Penyebut -->
+  <div class="slide" id="slide8">
+    <div class="slide-header">
+      <div class="slide-num">Slide 8 / 10</div>
+      <div class="slide-title">Rasionalisasi Penyebut: <span class="hv">Kenapa Ada √ di Bawah?</span> 🔁</div>
+      <div class="slide-sub">Perkenalan ringan — bukan kasus rumit dulu.</div>
+    </div>
+    <div class="expr-box"><div class="expr-line">1 ÷ √2</div></div>
+    <div class="callout amber"><strong>Pertanyaan:</strong> Apakah bentuk ini masih bisa dibuat lebih sederhana? Penyebutnya masih ada akarnya.</div>
+    <div class="expr-box">
+      <div class="expr-line">1/√2 × √2/√2</div>
+      <div class="expr-line" style="color:var(--neon);">= √2/2</div>
+    </div>
+    <div class="callout emerald"><strong>Idenya:</strong> Kita mengalikan dengan √2/√2 — bentuk yang NILAINYA 1 — sehingga nilai pecahan tidak berubah, tapi akar di penyebut hilang.</div>
+    <div class="expr-box"><div class="expr-line">3 ÷ √5 = 3√5/5</div></div>
+    <div class="callout"><strong>Catatan:</strong> Untuk sekarang kita hanya bahas penyebut satu suku (√n). Kasus penyebut dua suku seperti 1/(2+√3) dibahas di lesson lain.</div>
+    <div class="callout violet"><strong>Giliranmu:</strong> Bentuk rasional dari 4 ÷ √3 adalah?</div>
+    <div class="pick-grid" id="s8Grid">
+      <button class="pick-btn" onclick="pickS8(this,'a')">4√3/3</button>
+      <button class="pick-btn" onclick="pickS8(this,'b')">4/3</button>
+    </div>
+    <div class="pick-fb" id="fbS8"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(7)">← Kembali</button><button class="nav-btn next" onclick="goSlide(9)">Strategy Map →</button></div>
+  </div>
+
+  <!-- SLIDE 9: Strategy Map -->
+  <div class="slide" id="slide9">
+    <div class="slide-header">
+      <div class="slide-num">Slide 9 / 10</div>
+      <div class="slide-title">Strategy <span class="he">Map</span> 🗺️</div>
+      <div class="slide-sub">Satu peta berpikir untuk semua jenis operasi bentuk akar.</div>
+    </div>
+    <div class="decision-tree">
+      <div class="dt-root">Ketemu operasi bentuk akar?</div>
+      <div class="dt-branch"><div class="dt-op">①</div><div class="dt-desc"><b>Sederhanakan dulu</b> setiap bentuk akar yang ada.</div></div>
+      <div class="dt-branch"><div class="dt-op">②</div><div class="dt-desc">Lihat operasinya:</div></div>
+      <div class="dt-branch"><div class="dt-op">+ / −</div><div class="dt-desc">→ cari akar yang <b>sama</b>, lalu jumlahkan/kurangkan koefisiennya.</div></div>
+      <div class="dt-branch"><div class="dt-op">×</div><div class="dt-desc">→ kalikan koefisien, <b>kalikan</b> bagian akarnya juga.</div></div>
+      <div class="dt-branch"><div class="dt-op">÷</div><div class="dt-desc">→ bagi koefisien, <b>bagi</b> bagian akarnya, sederhanakan hasilnya.</div></div>
+      <div class="dt-branch"><div class="dt-op">📐</div><div class="dt-desc">Ada akar di penyebut? → pertimbangkan <b>rasionalisasi</b>.</div></div>
+    </div>
+    <div class="big-quote">
+      <div class="big-quote-text">"Sederhanakan dulu,<br>baru lihat apa yang bisa <em>digabung</em>."</div>
+    </div>
+    <div class="callout amber"><strong>Giliranmu:</strong> Untuk soal √8 + √32, langkah PERTAMA yang harus dilakukan adalah?</div>
+    <div class="pick-grid" id="s9Grid">
+      <button class="pick-btn" onclick="pickS9(this,'a')">Sederhanakan dulu: √8=2√2, √32=4√2 — baru dijumlahkan jadi 6√2</button>
+      <button class="pick-btn" onclick="pickS9(this,'b')">Langsung dijumlahkan jadi √40</button>
+    </div>
+    <div class="pick-fb" id="fbS9"></div>
+    <div class="nav-btns"><button class="nav-btn" onclick="goSlide(8)">← Kembali</button><button class="nav-btn next" onclick="goSlide(10)">Boss Fight →</button></div>
+  </div>
+
+  <!-- SLIDE 10: Boss Fight & Penutup -->
+  <div class="slide" id="slide10">
+    <div class="slide-header">
+      <div class="slide-num">Slide 10 / 10</div>
+      <div class="slide-title">Boss Fight: <span class="hr">Explain Your Move</span> 🐉</div>
+      <div class="slide-sub">Empat ekspresi untuk dibahas bareng tutor — yang dinilai bukan angkanya, tapi <strong>alasannya</strong>.</div>
+    </div>
+
+    <div class="boss-item">
+      <div class="boss-q">A. &nbsp; √12 + √27</div>
+      <div class="boss-ask">"Kenapa ternyata bisa dijumlahkan?"</div>
+      <button class="boss-btn" onclick="toggleBoss('bA')">Lihat Pembahasan</button>
+      <div class="boss-reveal" id="bA">Meskipun 12 ≠ 27, setelah disederhanakan √12 = 2√3 dan √27 = 3√3 — bagian akarnya jadi SAMA (√3). Jadi bisa digabung: 2√3+3√3 = 5√3. Bentuk yang tampak beda di permukaan bisa jadi sejenis setelah disederhanakan.</div>
+    </div>
+
+    <div class="boss-item">
+      <div class="boss-q">B. &nbsp; 2√3 + 5√2</div>
+      <div class="boss-ask">"Kenapa tidak bisa menjadi 7√5?"</div>
+      <button class="boss-btn" onclick="toggleBoss('bB')">Lihat Pembahasan</button>
+      <div class="boss-reveal" id="bB">√3 dan √2 sudah bentuk paling sederhana, dan bagian akarnya BEDA. Beda seperti 2x+5y tidak bisa jadi 7(xy) — tidak ada aturan yang membolehkan menjumlahkan koefisien dari dua "suku" yang berbeda. 2√3+5√2 tetap dua suku terpisah.</div>
+    </div>
+
+    <div class="boss-item">
+      <div class="boss-q">C. &nbsp; √6 × √24</div>
+      <div class="boss-ask">"Kenapa di sini kita boleh menggabungkan akar?"</div>
+      <button class="boss-btn" onclick="toggleBoss('bC')">Lihat Pembahasan</button>
+      <div class="boss-reveal" id="bC">Karena sifat √a × √b = √(ab) berlaku untuk PERKALIAN, bukan penjumlahan. √6 × √24 = √144 = 12. Akar yang dikalikan tidak perlu sejenis dulu — beda dengan penjumlahan yang mengharuskan bagian akarnya sama.</div>
+    </div>
+
+    <div class="boss-item">
+      <div class="boss-q">D. &nbsp; √50 ÷ √2</div>
+      <div class="boss-ask">"Apa cara paling cepat menyelesaikannya?"</div>
+      <button class="boss-btn" onclick="toggleBoss('bD')">Lihat Pembahasan</button>
+      <div class="boss-reveal" id="bD">Gabungkan langsung jadi satu akar dulu: √50 ÷ √2 = √(50÷2) = √25 = 5. Jauh lebih cepat daripada menyederhanakan √50 = 5√2 dulu baru membagi dengan √2.</div>
+    </div>
+
+    <div class="summary-card" style="margin-top:2rem;">
+      <h3>🎓 CATATAN AKHIR SESI</h3>
+      <div class="summary-item"><span class="sum-ico">🧩</span><div class="sum-txt">Bentuk akar bisa dijumlahkan/dikurangkan HANYA kalau bagian akarnya sama — persis seperti suku sejenis di aljabar.</div></div>
+      <div class="summary-item"><span class="sum-ico">✂️</span><div class="sum-txt">Sederhanakan dulu sebelum operasi — bentuk yang tampak beda bisa jadi sejenis (√12+√27 = 5√3).</div></div>
+      <div class="summary-item"><span class="sum-ico">✖️➗</span><div class="sum-txt">Pada perkalian &amp; pembagian, akar TIDAK harus sejenis: (a√m)(b√n)=ab√(mn), √a÷√b=√(a÷b).</div></div>
+      <div class="summary-item"><span class="sum-ico">🪤</span><div class="sum-txt">√a+√b ≠ √(a+b) — jebakan paling klasik. Tapi √a×√b = √(ab) memang berlaku.</div></div>
+      <div class="summary-item"><span class="sum-ico">🔁</span><div class="sum-txt">Rasionalisasi: kalikan pecahan dengan bentuk bernilai 1 (misal √n/√n) untuk menghilangkan akar di penyebut.</div></div>
+    </div>
+    <div class="big-quote">
+      <div class="big-quote-text">"Operasi bentuk akar bukan kumpulan rumus baru.<br>Kita hanya perlu memahami <em>struktur</em> setiap operasi."</div>
+    </div>
+    <div class="done-actions">
+      <a href="quicktest40.html" class="da-btn da-primary">Quick Test ⚡</a>
+      <a href="exercise40.html" class="da-btn da-secondary">Exercise 🏋️</a>
+      <a href="lesson40.html" class="da-btn da-secondary">Lesson 40</a>
+    </div>
+  </div>
+
+</div>
+<script>
+let currentSlide=1;
+const TOTAL=10;
+function goSlide(n){
+  document.getElementById('slide'+currentSlide).classList.remove('active');
+  currentSlide=n;
+  document.getElementById('slide'+n).classList.add('active');
+  document.getElementById('progressFill').style.width=((n/TOTAL)*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleBoss(id){document.getElementById(id).classList.toggle('show');}
+
+/* ---------- Slide 1: opening guess (neutral) ---------- */
+function pickS1(btn){
+  document.querySelectorAll('#slide1 .pick-btn').forEach(b=>b.disabled=true);
+  btn.classList.add('neutral');
+  document.getElementById('fbS1').innerHTML='🤔 Simpan dulu jawabanmu — slide berikutnya kita bongkar alasannya.';
+}
+
+/* ---------- Slide 2: suku sejenis ---------- */
+function pickS2(btn,ans){
+  document.getElementById('s2Grid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS2');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Bagian akarnya sama (√5), jadi bisa digabung: 4√5+6√5=10√5.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS2(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. 4√5+6√7 punya bagian akar berbeda (√5 ≠ √7), jadi TIDAK bisa jadi satu suku.';}
+}
+
+/* ---------- Slide 3: sederhanakan dulu ---------- */
+function pickS3(btn,ans){
+  document.getElementById('s3Grid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS3');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Bentuk AWAL boleh beda, yang penting bagian akar SETELAH disederhanakan.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS3(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Bukan soal kelipatan 3 — yang menentukan adalah bagian akarnya SETELAH disederhanakan harus sama persis.';}
+}
+
+/* ---------- Slide 4: penjumlahan/pengurangan ---------- */
+function pickS4(btn,ans){
+  document.getElementById('s4Grid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS4');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! √75=5√3, √27=3√3, jadi √75−√27 = 5√3−3√3 = 2√3.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS4(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Sederhanakan dulu: √75=5√3 dan √27=3√3, baru dikurangkan: 5√3−3√3=2√3.';}
+}
+
+/* ---------- Slide 5: perkalian ---------- */
+function pickS5(btn,ans){
+  document.getElementById('s5Grid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS5');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! 3√2 × 2√8 = 6×√16 = 6×4 = 24.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS5(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. (3×2)×√(2×8) = 6×√16 = 6×4 = 24. Jangan lupa √16 masih bisa dihitung jadi 4.';}
+}
+
+/* ---------- Slide 6: pembagian ---------- */
+function pickS6(btn,ans){
+  document.getElementById('s6Grid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS6');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Sifat pembagian akar adalah kebalikan dari sifat perkalian akar, berlaku untuk a,b≥0 dan b≠0.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS6(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Bukan "semua boleh digabung" — ada syaratnya (a,b≥0, b≠0), dan ini berlaku karena hubungannya dengan sifat perkalian akar.';}
+}
+
+/* ---------- Slide 7: big trap ---------- */
+function pickS7(btn,ans){
+  document.getElementById('s7Grid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS7');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! √4×√9=√36=6 itu benar karena sifat perkalian akar memang berlaku.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS7(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. √4+√9 = 2+3 = 5, BUKAN √13 (≈3,6). Penjumlahan akar tidak bisa digabung jadi satu akar.';}
+}
+
+/* ---------- Slide 8: rasionalisasi ---------- */
+function pickS8(btn,ans){
+  document.getElementById('s8Grid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS8');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! 4/√3 × √3/√3 = 4√3/3.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS8(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. Mengalikan √3/√3 mengubah PEMBILANG juga (jadi 4√3), bukan cuma menghilangkan akar di penyebut begitu saja.';}
+}
+
+/* ---------- Slide 9: strategy map ---------- */
+function pickS9(btn,ans){
+  document.getElementById('s9Grid').querySelectorAll('.pick-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fbS9');
+  if(ans==='a'){btn.classList.add('correct');fb.innerHTML='✅ Tepat! Langkah pertama selalu sederhanakan dulu, baru cek kesamaan sebelum operasi.';}
+  else{btn.classList.add('wrong');document.querySelector('[onclick="pickS9(this,\'a\')"]').classList.add('correct');fb.innerHTML='❌ Belum tepat. √8+√32 ≠ √40 — penjumlahan akar tidak bisa langsung digabung jadi satu akar. Sederhanakan dulu: 2√2+4√2=6√2.';}
+}
+</script>
+</body>
+</html>
