@@ -75,7 +75,7 @@ table{width:100%;border-collapse:collapse;margin:.9rem 0;font-family:Nunito,sans
 <div class="wrap">
   <div class="bdg">⚡ Boss Challenge · Lesson 57</div>
   <h1>Boss <span>Challenge</span></h1>
-  <p class="intro">5 soal campuran, 40 detik per soal. Ingat: cari perfect-square factor, pecah akarnya, dan berhenti hanya kalau sudah tidak ada pasangan tersisa.</p>
+  <p class="intro">10 soal campuran, 40 detik per soal. Ingat: cari perfect-square factor, pecah akarnya, dan berhenti hanya kalau sudah tidak ada pasangan tersisa.</p>
   <div id="app"></div>
 </div>
 <script>
@@ -112,13 +112,18 @@ function Quiz(c){
 </script>
 <script>
 /* Kunci: opsi pertama (o[0]) selalu jawaban benar; urutan diacak otomatis. */
-Quiz({title:'Challenge',timer:40,pts:20,
+Quiz({title:'Challenge',timer:40,pts:10,
 qs:[
 {t:'Kenali Perfect Square',q:'Manakah yang merupakan perfect square?',o:['64','27','45','75'],f:'64 = 8², jadi √64 = 8 (bilangan bulat). 27, 45, dan 75 tidak bisa ditulis sebagai n².'},
 {t:'Sederhanakan',q:'√20 = ...?',o:['2√5','4√5','5√2','10√2'],f:'20 = 4 × 5, jadi √20 = √4 × √5 = 2√5.'},
 {t:'Sederhanakan',q:'√75 = ...?',o:['5√3','3√5','25√3','15√5'],f:'75 = 25 × 3, jadi √75 = 5√3. Pilih perfect square yang terbesar (25, bukan 1 atau 5).'},
 {t:'Kapan Berhenti?',q:'Bentuk paling sederhana dari √72 adalah ...?',o:['6√2','3√8','2√18','9√2'],f:'72 = 36 × 2, jadi 6√2. Bentuk 3√8 dan 2√18 nilainya sama, tapi isi akarnya (8 dan 18) masih punya perfect-square factor.'},
-{t:'Boss: Error Detective',q:'Rina menulis √48 = 2√12. Pernyataan yang tepat?',o:['Nilainya benar, tapi belum sederhana karena 12 masih punya faktor 4','Sudah paling sederhana karena 12 bukan perfect square','Nilainya salah, seharusnya 4√12','Nilainya salah karena 48 tidak punya faktor 4'],f:'√48 = √(4 × 12) = 2√12 memang benar, tapi 12 = 4 × 3 sehingga lanjut: 2 × 2√3 = 4√3.'}
+{t:'Sederhanakan',q:'√28 = ...?',o:['2√7','4√7','7√2','14√2'],f:'28 = 4 × 7, jadi √28 = √4 × √7 = 2√7.'},
+{t:'Sederhanakan',q:'√98 = ...?',o:['7√2','2√7','49√2','14√7'],f:'98 = 49 × 2, jadi √98 = 7√2.'},
+{t:'Error Detective',q:'Manakah pernyataan yang SALAH?',o:['√27 = 9√3','√24 = 2√6','√45 = 3√5','√80 = 4√5'],f:'√27 = √(9 × 3) = 3√3, bukan 9√3. Cek: (9√3)² = 243, bukan 27.'},
+{t:'Bekerja Mundur',q:'6√2 = √□. Berapa □?',o:['72','12','36','62'],f:'6√2 = √36 × √2 = √72.'},
+{t:'Boss: Error Detective',q:'Rina menulis √48 = 2√12. Pernyataan yang tepat?',o:['Nilainya benar, tapi belum sederhana karena 12 masih punya faktor 4','Sudah paling sederhana karena 12 bukan perfect square','Nilainya salah, seharusnya 4√12','Nilainya salah karena 48 tidak punya faktor 4'],f:'√48 = √(4 × 12) = 2√12 memang benar, tapi 12 = 4 × 3 sehingga lanjut: 2 × 2√3 = 4√3.'},
+{t:'Boss: Sederhanakan',q:'Manakah bentuk paling sederhana dari √200?',o:['10√2','5√8','2√50','20√5'],f:'200 = 100 × 2, jadi 10√2. Bentuk 5√8 dan 2√50 nilainya sama tapi isi akarnya masih punya perfect-square factor.'}
 ],
 msgs:['Terus berlatih! Ulangi materi: cari perfect-square factor dulu 💪','Lumayan! Sedikit lagi 🙌','Bagus! Kamu sudah paham ide dasarnya 🔥','Keren, hampir sempurna ✨','Sempurna! Akar tidak sempurna sudah kamu taklukkan 🏆'],
 links:[['🌙 Latihan Mandiri','latihan57.html'],['← Lesson 57','lesson57.html']]});

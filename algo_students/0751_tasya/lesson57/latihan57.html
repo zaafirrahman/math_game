@@ -75,7 +75,7 @@ table{width:100%;border-collapse:collapse;margin:.9rem 0;font-family:Nunito,sans
 <div class="wrap">
   <div class="bdg">🌙 Latihan Mandiri · Lesson 57</div>
   <h1>Menyederhanakan Akar — Latihan <span>Mandiri</span></h1>
-  <p class="intro">10 soal bertahap dengan petunjuk di tiap soal. Alur pikir: angka → faktor → perfect-square factor → pecah akar → keluarkan → cek apakah masih bisa disederhanakan.</p>
+  <p class="intro">20 soal bertahap dengan petunjuk di tiap soal. Alur pikir: angka → faktor → perfect-square factor → pecah akar → keluarkan → cek apakah masih bisa disederhanakan.</p>
   <div id="app"></div>
 </div>
 <script>
@@ -122,6 +122,16 @@ qs:[
 {t:'Kapan Berhenti?',q:'Manakah yang sudah paling sederhana?',o:['4√3','2√12','3√8','2√18'],h:'Cek isi akarnya: masih ada perfect-square factor (selain 1)?',f:'12, 8, dan 18 masing-masing masih punya faktor 4, 4, dan 9. Isi akar 3 tidak.'},
 {t:'Error Detective',q:'Adi menulis √45 = 3√5. Budi menulis √45 = 5√3. Siapa yang benar?',o:['Adi, karena 45 = 9 × 5','Budi, karena 45 = 5 × 9','Keduanya benar','Keduanya salah'],h:'Kuadratkan hasilnya: (3√5)² dan (5√3)² sama dengan berapa?',f:'(3√5)² = 9 × 5 = 45 ✓, sedangkan (5√3)² = 25 × 3 = 75 ✗.'},
 {t:'Factor Tree',q:'108 = 2 × 2 × 3 × 3 × 3. Jadi √108 = ...?',o:['6√3','3√6','2√27','36√3'],h:'Pasangkan faktor kembar: (2 × 2) dan (3 × 3), sisa satu 3.',f:'Pasangan 2×2 keluar jadi 2, pasangan 3×3 keluar jadi 3, sisa √3: 2 × 3 × √3 = 6√3.'},
+{t:'Sederhanakan',q:'√8 = ...?',o:['2√2','4√2','2√4','8√2'],h:'8 = 4 × 2.',f:'√8 = √4 × √2 = 2√2.'},
+{t:'Sederhanakan',q:'√27 = ...?',o:['3√3','9√3','3√9','27√3'],h:'Perfect square apa yang membagi 27?',f:'27 = 9 × 3, jadi √27 = 3√3.'},
+{t:'Pilih Faktor Terbaik',q:'√32 = ...? (bentuk paling sederhana)',o:['4√2','2√8','16√2','8√2'],h:'Cari perfect square terbesar yang membagi 32.',f:'32 = 16 × 2, jadi 4√2. Kalau pakai 4 × 8 hasilnya 2√8, dan 8 masih punya faktor 4.'},
+{t:'Sederhanakan',q:'√63 = ...?',o:['3√7','7√3','9√7','21√3'],h:'63 = 9 × 7.',f:'√63 = √9 × √7 = 3√7.'},
+{t:'Sederhanakan',q:'√125 = ...?',o:['5√5','25√5','5√25','125√5'],h:'125 = 25 × 5.',f:'√125 = √25 × √5 = 5√5.'},
+{t:'Bekerja Mundur',q:'3√5 = √□. Berapa □?',o:['45','15','35','8'],h:'Tulis 3 sebagai √9, lalu gabungkan.',f:'3√5 = √9 × √5 = √45.'},
+{t:'Konsep',q:'1 adalah perfect square. Kenapa pasangan 1 × 12 tidak membantu menyederhanakan √12?',o:['Karena √(1 × 12) = √1 × √12 = 1 × √12, bentuknya tetap √12','Karena 1 bukan bilangan','Karena √1 = 0','Karena 1 × 12 ≠ 12'],h:'Hitung √1 × √12.',f:'Faktor 1 keluar sebagai 1, jadi tidak ada yang berubah. Kita perlu perfect square yang lebih besar dari 1.'},
+{t:'Error Detective',q:'Sari menulis √50 = 25√2. Apa kesalahannya?',o:['Yang keluar dari akar seharusnya √25 = 5, bukan 25','Seharusnya 50 = 10 × 5','Sudah benar','Seharusnya √50 = 2√25'],h:'Kuadratkan 25√2. Apakah hasilnya 50?',f:'√(25 × 2) = √25 × √2 = 5√2. Kalau 25√2 dikuadratkan hasilnya 1250.'},
+{t:'Factor Tree',q:'180 = 2 × 2 × 3 × 3 × 5. Jadi √180 = ...?',o:['6√5','5√6','3√10','36√5'],h:'Pasangan 2×2 dan 3×3 keluar, sisa 5.',f:'Pasangan 2×2 keluar jadi 2, pasangan 3×3 keluar jadi 3: 2 × 3 × √5 = 6√5.'},
+{t:'Boss Question',q:'√150 = ...? (bentuk paling sederhana)',o:['5√6','6√5','25√6','15√10'],h:'150 = 25 × 6. Apakah 6 masih punya perfect-square factor?',f:'√150 = √25 × √6 = 5√6. Isi akar 6 = 2 × 3, tidak ada pasangan, jadi berhenti.'},
 {t:'Gabungan dengan x² = a',q:'Jika x² = 12, nilai x adalah ...?',o:['±2√3','2√3','±6','±3√2'],h:'Ingat: persamaan x² = a punya dua solusi (±). Sederhanakan √12.',f:'Persamaan → dua solusi: x = ±√12 = ±2√3.'},
 {t:'Boss Question',q:'Manakah bentuk paling sederhana dari √200?',o:['10√2','5√8','2√50','20√5'],h:'Cari perfect-square factor terbesar dari 200.',f:'200 = 100 × 2, jadi √200 = 10√2. Bentuk 5√8 dan 2√50 nilainya sama tapi belum sederhana.'}
 ],
