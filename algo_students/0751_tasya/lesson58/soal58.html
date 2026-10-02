@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soal · Boss Challenge · L58 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fdf6fb;--card:#fff;--bd:#f0d6ea;--bd2:#e8c8e0;--rose:#e8628a;--rl:#f5a0bc;--rb:rgba(232,98,138,.08);--mint:#5fbfa0;--ml:#a8dfd0;--mb:rgba(95,191,160,.1);--ocean:#4a9fd4;--ol:#a0cfee;--ob:rgba(74,159,212,.08);--gold:#e8a020;--gl:#f5d080;--gb:rgba(232,160,32,.09);--vio:#7c5cbf;--vl:#b89ee0;--vb:rgba(124,92,191,.1);--tx:#3d2b3d;--tm:#7a5c78;--tu:#b898b4;--sh:rgba(180,100,150,.1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'Quicksand',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 80% 10%,rgba(124,92,191,.09),transparent 50%),radial-gradient(ellipse at 15% 90%,rgba(232,98,138,.06),transparent 50%);pointer-events:none}
+nav{padding:1rem 2rem;display:flex;gap:.5rem;border-bottom:2px solid var(--bd);background:rgba(253,246,251,.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:.76rem;font-weight:700}
+nav a{color:var(--tu);text-decoration:none}nav a:hover{color:var(--rose)}nav span{color:var(--bd2)}nav .cur{color:var(--vio)}
+.wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1}
+.bdg{display:inline-block;background:var(--vb);border:1.5px solid var(--vl);color:var(--vio);font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:.28rem .9rem;border-radius:99px;margin-bottom:1.2rem}
+h1{font-family:Nunito,sans-serif;font-size:clamp(1.3rem,4vw,1.85rem);font-weight:900;line-height:1.3;margin-bottom:.6rem}h1 span{color:var(--vio)}
+.intro{color:var(--tu);font-size:.92rem;line-height:1.7;margin-bottom:1.8rem}
+.card{background:var(--card);border:2px solid var(--bd);border-radius:20px;padding:1.6rem;margin-bottom:1rem;box-shadow:0 3px 12px var(--sh)}
+.lb{font-size:.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:.8rem}
+.c-o{color:var(--ocean)}.c-m{color:var(--mint)}.c-r{color:var(--rose)}.c-v{color:var(--vio)}.c-g{color:var(--gold)}
+.card h2{font-family:Nunito,sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:.6rem;line-height:1.4}
+.card p,.tm{color:var(--tm);font-size:.9rem;line-height:1.7}
+.eq{border-radius:14px;padding:1.1rem 1.3rem;margin:.7rem 0;text-align:center;font-family:Nunito,sans-serif;font-weight:900;line-height:1.7;font-size:1.05rem;border:1.5px solid}
+.eq.big{font-size:1.9rem}.eq.d{border-style:dashed}
+.eq.o{background:var(--ob);border-color:var(--ol)}.eq.m{background:var(--mb);border-color:var(--ml)}.eq.r{background:var(--rb);border-color:var(--rl)}.eq.v{background:var(--vb);border-color:var(--vl)}.eq.g{background:var(--gb);border-color:var(--gl)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.8rem 0}
+.two .eq{margin:0;font-size:.95rem}.ch{display:inline-block;padding:.15rem .6rem;margin:.15rem;border-radius:9px;background:#fff;border:1.5px solid var(--bd2);font-family:Nunito,sans-serif;font-weight:900}
+.ch.g{background:var(--mb);border-color:var(--mint);color:#2f8f72}.ch.r{background:var(--rb);border-color:var(--rose);color:#c04060}
+.dq,.co,.tb{border-radius:14px;padding:1rem 1.2rem;margin:.9rem 0;font-size:.88rem;line-height:1.65;color:var(--tm)}
+.dq{background:rgba(232,98,138,.06);border:1.5px solid var(--rl)}.co{background:var(--vb);border:1.5px solid var(--vl)}.co.w{background:var(--rb);border-color:var(--rl)}.co.t{background:var(--mb);border-color:var(--ml)}
+.dq b.h,.tb b.h{display:block;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:.4rem}.tb b.h{color:var(--vio)}
+.co strong{color:var(--tx)}.tb{background:var(--vb);border:1.5px solid var(--vl)}
+textarea{width:100%;border:1.5px solid var(--vl);border-radius:10px;padding:.6rem .8rem;font:.85rem Quicksand,sans-serif;color:var(--tx);background:#fff;resize:vertical;min-height:56px;outline:none}
+.an{border:2px dashed var(--bd2);border-radius:14px;min-height:130px;margin:.9rem 0;padding:.6rem .9rem;font-size:.66rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--tu)}
+.rv{background:var(--vb);border:1.5px solid var(--vl);color:var(--vio);padding:.5rem 1.2rem;border-radius:99px;font:800 .8rem Nunito,sans-serif;cursor:pointer;margin:.7rem 0}.rv:hover{background:var(--vio);color:#fff}
+.rc{display:none}.rc.show{display:block;animation:up .3s ease}
+.fh{text-align:center;padding:1.4rem;background:linear-gradient(135deg,var(--vb),rgba(232,98,138,.08));border:2px solid var(--vl);border-radius:20px;margin:1rem 0;font:900 1.25rem/1.6 Nunito,sans-serif}
+.fh small{display:block;font:600 .82rem Quicksand,sans-serif;color:var(--tu);margin-top:.5rem}
+.ar{text-align:center;color:var(--tu);margin:.3rem 0;font-size:1.1rem}
+table{width:100%;border-collapse:collapse;margin:.9rem 0;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem}th{background:var(--vb);color:var(--vio);padding:.55rem;border:1.5px solid var(--vl)}td{padding:.5rem;text-align:center;border:1.5px solid var(--bd);color:var(--tm)}td.f{background:var(--vb);color:var(--vio)}
+.sc{border:2px solid var(--bd);border-radius:14px;padding:.8rem 1.1rem;margin-bottom:.7rem;background:#fafafa;font:800 .95rem Nunito,sans-serif}.sc small{display:block;font:600 .8rem Quicksand,sans-serif;color:var(--tm);margin-top:.2rem}
+.sc.ok{border-color:var(--mint);background:var(--mb)}
+.dots{display:flex;gap:.5rem;justify-content:center;margin-bottom:1.6rem;flex-wrap:wrap}.dot{width:9px;height:9px;border-radius:50%;background:var(--bd2);cursor:pointer}.dot.a{background:var(--vio);box-shadow:0 0 0 3px rgba(124,92,191,.25)}.dot.d{background:var(--vl)}
+.slide{display:none;animation:up .38s ease}.slide.a{display:block}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.nr{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:1rem}
+.btn{padding:.75rem 1.6rem;border-radius:99px;border:2px solid transparent;font:800 .85rem Nunito,sans-serif;cursor:pointer;text-decoration:none;display:inline-block;transition:.2s}
+.btn.gh{background:transparent;border-color:var(--bd2);color:var(--tu)}.btn.p{background:linear-gradient(135deg,var(--vio),#5c3f9f);color:#fff;box-shadow:0 4px 14px rgba(124,92,191,.35)}.btn.r{background:linear-gradient(135deg,var(--rose),#c04060);color:#fff}.btn.m{background:linear-gradient(135deg,var(--mint),#3a9070);color:#fff}
+.btn:hover{transform:translateY(-2px)}.btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.ct{font:700 .85rem Nunito,sans-serif;color:var(--tu)}
+/* lesson hub page */
+.hero{text-align:center;padding:2.5rem 0 1rem}.hero .intro{max-width:500px;margin:0 auto 1.6rem}
+.pill{display:inline-block;background:var(--vb);border:1.5px solid var(--vl);color:var(--vio);font-size:.78rem;font-weight:700;padding:.4rem 1.2rem;border-radius:99px;margin-bottom:1.6rem}
+.obj{text-align:left;max-width:560px;margin:1.5rem auto 2rem}.obj div{display:flex;gap:.8rem;margin-bottom:.55rem;font-size:.88rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+.sec{background:var(--card);border:2px solid var(--bd);border-radius:18px;padding:1.4rem;text-decoration:none;color:inherit;box-shadow:0 3px 10px var(--sh);transition:.2s}.sec:hover{transform:translateY(-3px);border-color:var(--vl)}
+.sec i{font-size:2rem;display:block;margin:.4rem 0}.sec b{font-family:Nunito,sans-serif;font-size:.95rem;display:block;margin-bottom:.4rem}.sec span{font-size:.8rem;color:var(--tu);line-height:1.6}
+/* quiz */
+.prog{background:var(--bd);border-radius:99px;height:8px;overflow:hidden;margin-bottom:.4rem}.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--vio),var(--vl));transition:width .4s}
+.ph{display:flex;justify-content:space-between;font-size:.74rem;font-weight:700;color:var(--tu);margin-bottom:1.2rem}#tm{color:var(--vio)}#tm.lo{color:var(--rose)}
+.tg{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:.2rem .7rem;border-radius:99px;margin-bottom:.9rem;background:var(--vb);color:var(--vio);border:1.5px solid var(--vl)}
+.qt{font:800 1rem/1.5 Nunito,sans-serif;margin-bottom:1rem}.opts{display:flex;flex-direction:column;gap:.65rem}
+.opt{background:#fafafa;border:2px solid var(--bd2);color:var(--tx);padding:.8rem 1rem;border-radius:13px;cursor:pointer;font:700 .92rem Nunito,sans-serif;text-align:left}.opt:hover:not(:disabled){border-color:var(--vl);background:var(--vb)}
+.opt.ok{border-color:var(--mint);background:var(--mb);color:#2f8f72}.opt.no{border-color:var(--rose);background:var(--rb);color:var(--rose)}
+.hint{display:none;background:var(--vb);border:1.5px solid var(--vl);border-radius:12px;padding:.7rem 1rem;margin-bottom:.9rem;font-size:.85rem;color:var(--tm);line-height:1.6}
+.fb{display:none;margin-top:.9rem;padding:.8rem 1rem;border-radius:12px;font-size:.87rem;font-weight:700;line-height:1.55}.fb.ok{display:block;background:var(--mb);color:#2f8f72;border:1.5px solid var(--ml)}.fb.no{display:block;background:var(--rb);color:#c04060;border:1.5px solid var(--rl)}
+.nb{display:none;margin-top:1rem}.fin{text-align:center;padding:2rem 0}.fin .s{font:900 3.2rem Nunito,sans-serif;color:var(--rose)}.fin h2{font:900 1.8rem Nunito,sans-serif;color:var(--vio)}.fin p{color:var(--tu);margin:.5rem 0 1.6rem;line-height:1.7}.fin .btn{margin:.3rem}
+@media(max-width:480px){.two{grid-template-columns:1fr}}
+
+/* L58 additions: stacked fractional exponents + root/power colour code */
+.ex{display:inline-flex;flex-direction:column;align-items:center;font-size:.58em;line-height:1.05;position:relative;top:-.72em;margin:0 .08em 0 .1em;vertical-align:baseline;font-weight:900}
+.ex i{font-style:normal;padding:0 .14em}.ex i:first-child{border-bottom:.12em solid currentColor}.ex.s i{border:0}
+.nu{color:var(--rose)}.de{color:var(--ocean)}
+.ch.b{background:var(--ob);border-color:var(--ocean);color:#3178a0}
+td.big{font-size:1.15rem}td.blank{height:2.6rem;background:#fff}
+.eq .ar{font-size:.8rem;font-weight:700;margin:.15rem 0}.eq.xl{font-size:2.6rem;padding:1.4rem}
+</style>
+</head>
+<body>
+<nav><a href="../../../index.html">ARENA</a><span>›</span><a href="../tasya_0751.html">TASYA</a><span>›</span><a href="lesson58.html">L58</a><span>›</span><span class="cur">BOSS CHALLENGE</span></nav>
+<div class="wrap">
+  <div class="bdg">⚡ Boss Challenge · Lesson 58</div>
+  <h1>Boss <span>Challenge</span></h1>
+  <p class="intro">10 soal campuran, 40 detik per soal. Ingat: penyebut = akar, pembilang = pangkat — dan pangkat pecahan bukan perkalian biasa.</p>
+  <div id="app"></div>
+</div>
+<script>
+/* Engine kuis L58. Di data, opsi pertama (o[0]) = jawaban benar; urutan diacak tiap ditampilkan. Notasi a^(m/n) otomatis dirender sebagai pangkat pecahan bertumpuk. */
+function Quiz(c){
+  const A=document.getElementById('app'),N=c.qs.length,P=c.pts||1;let i=0,s=0,t,done;
+  const sh=a=>{a=a.slice();for(let j=a.length-1;j>0;j--){const k=Math.floor(Math.random()*(j+1));[a[j],a[k]]=[a[k],a[j]]}return a};
+  const X=z=>z.replace(/\^\((\w+)\/(\w+)\)/g,'<span class="ex"><i>$1</i><i>$2</i></span>').replace(/\^\(([^()]+)\)/g,'<span class="ex s"><i>$1</i></span>');
+  function show(){
+    done=false;clearInterval(t);const q=c.qs[i];
+    A.innerHTML=`<div class="prog"><i style="width:${i/N*100}%"></i></div><div class="ph"><span>Soal ${i+1} dari ${N}</span>${c.timer?'<span id="tm"></span>':''}<span>Skor: ${s}</span></div>
+    <div class="card"><span class="tg">${q.t}</span><div class="qt">${X(q.q)}</div>${q.h?`<button class="rv" id="hb">💡 Petunjuk</button><div class="hint" id="hn">${X(q.h)}</div>`:''}
+    <div class="opts">${sh(q.o).map(x=>`<button class="opt" data-c="${x===q.o[0]?1:0}">${X(x)}</button>`).join('')}</div><div class="fb" id="fb"></div>
+    <button class="btn p nb" id="nb">${i<N-1?'Soal Berikutnya →':'Lihat Hasil 🏆'}</button></div>`;
+    if(q.h)document.getElementById('hb').onclick=()=>{document.getElementById('hn').style.display='block'};
+    A.querySelectorAll('.opt').forEach(b=>b.onclick=()=>ans(b));
+    document.getElementById('nb').onclick=()=>{i++;i<N?show():end()};
+    if(c.timer){let l=c.timer;const tm=document.getElementById('tm');tm.textContent='⏱ '+l;t=setInterval(()=>{l--;tm.textContent='⏱ '+l;if(l<=10)tm.className='lo';if(l<=0)ans(null)},1000)}
+  }
+  function ans(b){
+    if(done)return;done=true;clearInterval(t);const q=c.qs[i],fb=document.getElementById('fb');
+    A.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.dataset.c==='1')x.classList.add('ok')});
+    const good=!!b&&b.dataset.c==='1';if(b&&!good)b.classList.add('no');if(good)s+=P;
+    fb.className='fb '+(good?'ok':'no');fb.innerHTML=(good?'✅ Benar! ':b?'❌ Belum tepat. ':'⏰ Waktu habis! ')+X(q.f);
+    document.getElementById('nb').style.display='inline-block';
+  }
+  function end(){
+    const r=Math.min(4,Math.floor(s/(N*P)*5));
+    A.innerHTML=`<div class="fin"><div style="font-size:3.5rem">${['😊','🙂','😄','🌟','🏆'][r]}</div><h2>${c.title} selesai!</h2><div class="s">${s}/${N*P}</div><p>${c.msgs[r]}</p>
+    <button class="btn p" id="rs">🔄 Ulangi</button>${c.links.map(l=>`<a class="btn gh" href="${l[1]}">${l[0]}</a>`).join('')}</div>`;
+    document.getElementById('rs').onclick=()=>{i=0;s=0;show()};
+  }
+  show();
+}
+</script>
+<script>
+/* Kunci: opsi pertama (o[0]) selalu jawaban benar; urutan diacak otomatis. */
+Quiz({title:'Challenge',timer:40,pts:10,
+qs:[
+{t:'Akar ke Pangkat',q:'√7 jika ditulis sebagai pangkat pecahan menjadi ...?',o:['7^(1/2)','7²','2^(1/7)','7^(-2)'],f:'Akar kuadrat berarti penyebut 2: √7 = 7^(1/2).'},
+{t:'Pangkat ke Akar',q:'Bentuk 5^(1/4) dibaca sebagai ...?',o:['⁴√5','⁵√4','5 ÷ 4','5⁴'],f:'Penyebut 4 menunjukkan akar pangkat 4: 5^(1/4) = ⁴√5. Pangkat pecahan bukan pembagian biasa.'},
+{t:'Hitung',q:'Nilai 25^(1/2) = ...?',o:['5','12,5','50','625'],f:'25^(1/2) = √25 = 5. Angka 12,5 muncul kalau 25 dibagi 2 — itu salah baca.'},
+{t:'Hitung',q:'Nilai 27^(1/3) = ...?',o:['3','9','81','1/9'],f:'27^(1/3) = ∛27 = 3, karena 3³ = 27.'},
+{t:'Makna Penyebut',q:'Pada a^(m/n), bagian mana yang menunjukkan jenis akarnya?',o:['Penyebut (n)','Pembilang (m)','Bilangan pokok (a)','Pembilang dan penyebut sekaligus'],f:'Penyebut = indeks akar, pembilang = pangkat.'},
+{t:'Bekerja Mundur',q:'⁵√(3²) = 3^(?). Berapa pangkatnya?',o:['2/5','5/2','2 × 5','1/10'],f:'Akar pangkat 5 → penyebut 5, pangkat 2 → pembilang 2. Jadi 3^(2/5).'},
+{t:'Hitung',q:'Nilai 8^(2/3) = ...?',o:['4','2','16','6'],f:'∛8 = 2, lalu 2² = 4. Kalau berhenti di 2, kamu lupa memangkatkan; 16 muncul kalau 8 × 2.'},
+{t:'Hitung',q:'Nilai 16^(3/2) = ...?',o:['64','24','48','4096'],f:'(√16)³ = 4³ = 64. Jalur lain: √(16³) = √4096 = 64. Hasilnya sama.'},
+{t:'Error Detective',q:'Manakah pernyataan yang SALAH?',o:['9^(3/2) = 18','8^(1/3) = 2','4^(3/2) = 8','16^(1/4) = 2'],f:'9^(3/2) = (√9)³ = 3³ = 27, bukan 18. Cek lainnya: ∛8 = 2, (√4)³ = 8, ⁴√16 = 2.'},
+{t:'Boss: Representasi',q:'Manakah yang TIDAK sama dengan 32^(2/5)?',o:['(√32)⁵','(⁵√32)²','⁵√(32²)','4'],f:'32^(2/5): penyebut 5 → akar pangkat 5, pembilang 2 → kuadrat. Jadi (⁵√32)² = 2² = 4 = ⁵√1024. Bentuk (√32)⁵ menukar peran 2 dan 5.'}
+],
+msgs:['Terus berlatih! Ulangi materi: penyebut = akar, pembilang = pangkat 💪','Lumayan! Sedikit lagi 🙌','Bagus! Kamu sudah paham ide dasarnya 🔥','Keren, hampir sempurna ✨','Sempurna! Pangkat pecahan sudah kamu taklukkan 🏆'],
+links:[['🌙 Latihan Mandiri','latihan58.html'],['← Lesson 58','lesson58.html']]});
+</script>
+</body>
+</html>
