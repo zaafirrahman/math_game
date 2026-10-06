@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkpoint · Pangkat & Akar · L59 · Tasya</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#fdf6fb;--card:#ffffff;--border:#f0d6ea;--border2:#e8c8e0;
+    --rose:#e8628a;--rose-light:#f5a0bc;--rose-bg:rgba(232,98,138,0.08);
+    --mint:#5fbfa0;--mint-light:#a8dfd0;--mint-bg:rgba(95,191,160,0.08);
+    --ocean:#4a9fd4;--ocean-light:#a0cfee;--ocean-bg:rgba(74,159,212,0.08);
+    --gold:#e8a020;--gold-light:#f5d080;--gold-bg:rgba(232,160,32,0.08);
+    --peach:#f0956a;--peach-light:#f7c4a8;--peach-bg:rgba(240,149,106,0.1);
+    --vio:#7c5cbf;--vio-light:#b89ee0;--vio-bg:rgba(124,92,191,0.1);
+    --text:#3d2b3d;--text-mid:#7a5c78;--text-muted:#b898b4;
+    --shadow:rgba(180,100,150,0.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 90%,rgba(232,160,32,0.07) 0%,transparent 50%),radial-gradient(ellipse at 80% 10%,rgba(232,98,138,0.06) 0%,transparent 50%);pointer-events:none;}
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:2px solid var(--border);background:rgba(253,246,251,0.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;font-size:0.76rem;font-weight:700;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--rose);}
+  nav span{color:var(--border2);}
+  nav .current{color:var(--mint);}
+  .wrapper{max-width:640px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  #intro{text-align:center;}
+  .cp-icon{font-size:5rem;display:block;margin-bottom:1.3rem;}
+  .cp-title{font-family:'Nunito',sans-serif;font-size:clamp(1.4rem,5vw,2rem);font-weight:900;color:var(--text);margin-bottom:0.8rem;}
+  .cp-title span{color:var(--gold);}
+  .cp-sub{color:var(--text-muted);line-height:1.7;margin-bottom:1.6rem;font-size:0.92rem;}
+  .rules-box{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:1.3rem 1.5rem;margin-bottom:1.6rem;text-align:left;box-shadow:0 3px 12px var(--shadow);}
+  .rules-box .r-item{font-size:0.87rem;color:var(--text);margin-bottom:0.7rem;display:flex;gap:0.6rem;line-height:1.5;}
+  .rules-box .r-item:last-child{margin-bottom:0;}
+  .info-cards{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:2rem;}
+  .info-card{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:1.2rem;text-align:center;box-shadow:0 3px 12px var(--shadow);}
+  .info-val{font-family:'Nunito',sans-serif;font-size:1.8rem;font-weight:900;color:var(--gold);margin-bottom:0.2rem;}
+  .info-lbl{font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  sup{font-size:0.7em;line-height:0;}
+  .btn{padding:0.85rem 2.4rem;border-radius:99px;border:none;font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:800;letter-spacing:1px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-primary{background:linear-gradient(135deg,var(--gold),#c07818);color:#fff;box-shadow:0 4px 14px rgba(232,160,32,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(232,160,32,0.35);}
+  .btn-ghost{background:transparent;border:2px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--gold-light);color:var(--gold);}
+  #game{display:none;}
+  .hud{display:flex;justify-content:center;margin-bottom:1.3rem;}
+  .hud-item{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:0.7rem 1.6rem;text-align:center;box-shadow:0 3px 12px var(--shadow);}
+  .hud-val{font-family:'Nunito',sans-serif;font-size:1.25rem;font-weight:800;color:var(--gold);}
+  .hud-lbl{font-size:0.6rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-top:0.1rem;font-weight:700;}
+  .progress-track{height:8px;background:var(--border);border-radius:99px;margin-bottom:1.6rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:99px;transition:width 0.3s ease;}
+  .q-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:1.2rem;box-shadow:0 3px 12px var(--shadow);}
+  .q-text{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.98rem;line-height:1.55;margin-bottom:1.3rem;}
+  .opts{display:flex;flex-direction:column;gap:0.65rem;}
+  .opt-btn{background:#fafafa;border:2px solid var(--border2);color:var(--text);padding:0.85rem 1.1rem;border-radius:14px;cursor:pointer;font-family:'Quicksand',sans-serif;font-size:0.9rem;font-weight:600;transition:all 0.18s;text-align:left;}
+  .opt-btn:hover:not(:disabled){border-color:var(--gold-light);background:var(--gold-bg);}
+  .opt-btn.correct{border-color:var(--mint);background:var(--mint-bg);color:var(--mint);}
+  .opt-btn.wrong{border-color:var(--rose);background:var(--rose-bg);color:var(--rose);}
+  .opt-btn:disabled{cursor:default;}
+  #result{display:none;text-align:center;}
+  .result-icon{font-size:4rem;margin-bottom:1rem;display:block;}
+  .result-title{font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900;color:var(--rose);margin-bottom:0.6rem;}
+  .result-sub{color:var(--text-muted);font-size:0.9rem;margin-bottom:2.2rem;line-height:1.7;}
+  .cat-bars{text-align:left;margin-bottom:2.2rem;}
+  .cat-row{margin-bottom:1.1rem;}
+  .cat-row-top{display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:0.4rem;}
+  .cat-row-top .cname{font-weight:700;color:var(--text);}
+  .cat-row-top .cval{font-family:'Nunito',sans-serif;font-weight:800;color:var(--text-muted);}
+  .cat-bar-track{height:14px;background:var(--border);border-radius:99px;overflow:hidden;}
+  .cat-bar-fill{height:100%;border-radius:99px;transition:width 0.6s ease;}
+  .result-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .downloaded-note{font-size:0.8rem;color:var(--mint);margin-top:0.9rem;min-height:18px;font-weight:700;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html">ARENA</a><span>›</span>
+  <a href="../tasya_0751.html">TASYA</a><span>›</span>
+  <a href="lesson59.html">L59</a><span>›</span>
+  <span class="current">CHECKPOINT</span>
+</nav>
+<div class="wrapper">
+  <div id="intro">
+    <span class="cp-icon">🌱</span>
+    <div class="cp-title">Pangkat & Akar <span>Checkpoint</span></div>
+    <div class="cp-sub">40 soal campuran dari semua topik pangkat dan akar yang pernah kamu pelajari — dari pangkat, pangkat nol & negatif, akar, bentuk akar, sampai pangkat pecahan. Ini bukan buat cari nilai tinggi — ini buat lihat bagian mana yang masih perlu diperkuat.</div>
+    <div class="rules-box">
+      <div class="r-item">🚫 <span>Tidak ada bantuan atau pembahasan selama checkpoint berlangsung</span></div>
+      <div class="r-item">⏱️ <span>Tidak ada timer — kerjakan santai, fokus ke jawaban yang paling kamu yakini</span></div>
+      <div class="r-item">🔀 <span>Urutan soal acak, tidak dikelompokkan per topik</span></div>
+      <div class="r-item">✅ <span>Setelah pilih jawaban, langsung lanjut ke soal berikutnya</span></div>
+    </div>
+    <div class="info-cards">
+      <div class="info-card"><div class="info-val">40</div><div class="info-lbl">Soal</div></div>
+      <div class="info-card"><div class="info-val">1x</div><div class="info-lbl">Kerjakan</div></div>
+    </div>
+    <button class="btn btn-primary" onclick="startGame()">MULAI 🚀</button>
+  </div>
+  <div id="game">
+    <div class="hud">
+      <div class="hud-item"><div class="hud-val" id="qV">1/40</div><div class="hud-lbl">Soal</div></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progFill" style="width:2.5%"></div></div>
+    <div class="q-card">
+      <div class="q-text" id="qText"></div>
+      <div class="opts" id="optsDiv"></div>
+    </div>
+  </div>
+  <div id="result">
+    <span class="result-icon">🌱</span>
+    <div class="result-title">Checkpoint Selesai!</div>
+    <div class="result-sub">Ini profil penguasaan konsep pangkat dan akar kamu sejauh ini. Hasilnya udah otomatis kesimpan — tinggal download dan kirim ke tutor kamu ya.</div>
+    <div class="cat-bars" id="catBars"></div>
+    <div class="result-actions">
+      <button class="btn btn-primary" onclick="downloadResult()">DOWNLOAD HASIL</button>
+      <a href="lesson59.html" class="btn btn-ghost">Kembali ke Lesson 59</a>
+    </div>
+    <div class="downloaded-note" id="downloadedNote"></div>
+  </div>
+</div>
+<script>
+// ===== QUESTION BANK =====
+const QUESTIONS = [
+// --- A. Pangkat & Sifat-sifatnya ---
+{id:'A1',category:'A_pangkat',difficulty:'mudah',text:'Nilai dari 3^4 adalah...',
+ options:[{value:'81',tag:'correct'},{value:'12',tag:'basis_dikali_eksponen'},{value:'64',tag:'tertukar_basis_eksponen'},{value:'7',tag:'basis_dijumlah_eksponen'}]},
+{id:'A2',category:'A_pangkat',difficulty:'mudah',text:'2^3 × 2^4 = ...',
+ options:[{value:'2^7',tag:'correct'},{value:'2^12',tag:'eksponen_dikali_saat_perkalian'},{value:'4^7',tag:'basis_dikali_saat_perkalian'},{value:'2^1',tag:'eksponen_dikurangi_saat_perkalian'}]},
+{id:'A3',category:'A_pangkat',difficulty:'mudah',text:'5^6 / 5^2 = ...',
+ options:[{value:'5^4',tag:'correct'},{value:'5^8',tag:'eksponen_dijumlah_saat_pembagian'},{value:'5^3',tag:'eksponen_dibagi_saat_pembagian'},{value:'1^4',tag:'basis_dibagi_saat_pembagian'}]},
+{id:'A4',category:'A_pangkat',difficulty:'sedang',text:'(3^2)^3 = ...',
+ options:[{value:'3^6',tag:'correct'},{value:'3^5',tag:'eksponen_dijumlah_saat_pangkat_dari_pangkat'},{value:'3^8',tag:'eksponen_dipangkatkan_saat_pangkat_dari_pangkat'},{value:'9^6',tag:'basis_digabung_salah'}]},
+{id:'A5',category:'A_pangkat',difficulty:'sedang',text:'Sederhanakan (3^4 × 3^2) / 3^3.',
+ options:[{value:'3^3',tag:'correct'},{value:'3^2',tag:'eksponen_dibagi_saat_pembagian'},{value:'3^5',tag:'salah_tanda_operasi_eksponen'},{value:'3^9',tag:'semua_eksponen_dijumlah'}]},
+{id:'A6',category:'A_pangkat',difficulty:'sedang',text:'Bentuk paling sederhana dari 2^3 × 4^2 adalah...',
+ options:[{value:'2^7',tag:'correct'},{value:'2^6',tag:'eksponen_dikali_saat_perkalian'},{value:'2^5',tag:'basis_tidak_disamakan'},{value:'8^5',tag:'basis_dikali_saat_perkalian'}]},
+{id:'A7',category:'A_pangkat',difficulty:'sulit',text:'Jika 3^(x+2) = 3^5 × 3^2, maka nilai x adalah...',
+ options:[{value:'5',tag:'correct'},{value:'7',tag:'lupa_kurangi_konstanta_eksponen'},{value:'3',tag:'salah_tanda_saat_pindah_ruas'},{value:'10',tag:'eksponen_dikali_saat_perkalian'}]},
+{id:'A8',category:'A_pangkat',difficulty:'sulit',text:'Sederhanakan (x^3)^2 × x^4 / x^5.',
+ options:[{value:'x^5',tag:'correct'},{value:'x^4',tag:'eksponen_dijumlah_saat_pangkat_dari_pangkat'},{value:'x^15',tag:'semua_eksponen_dijumlah'},{value:'x^(-3)',tag:'salah_urutan_operasi_eksponen'}]},
+// --- B. Pangkat Nol & Negatif ---
+{id:'B1',category:'B_nol_negatif',difficulty:'mudah',text:'Nilai dari 7^0 adalah...',
+ options:[{value:'1',tag:'correct'},{value:'0',tag:'pangkat_nol_jadi_nol'},{value:'7',tag:'pangkat_nol_jadi_basis'},{value:'-1',tag:'pangkat_nol_jadi_negatif'}]},
+{id:'B2',category:'B_nol_negatif',difficulty:'mudah',text:'3^(-2) = ...',
+ options:[{value:'1/9',tag:'correct'},{value:'-9',tag:'pangkat_negatif_jadi_nilai_negatif'},{value:'-6',tag:'basis_dikali_eksponen_negatif'},{value:'9',tag:'abai_tanda_pangkat_negatif'}]},
+{id:'B3',category:'B_nol_negatif',difficulty:'sedang',text:'Nilai dari 5^(-1) + 5^0 adalah...',
+ options:[{value:'6/5',tag:'correct'},{value:'1/5',tag:'pangkat_nol_jadi_nol'},{value:'-4',tag:'pangkat_negatif_jadi_nilai_negatif'},{value:'6',tag:'abai_tanda_pangkat_negatif'}]},
+{id:'B4',category:'B_nol_negatif',difficulty:'sedang',text:'(1/2)^(-3) = ...',
+ options:[{value:'8',tag:'correct'},{value:'1/8',tag:'abai_tanda_pangkat_negatif'},{value:'-8',tag:'pangkat_negatif_jadi_nilai_negatif'},{value:'-1/8',tag:'pangkat_negatif_jadi_nilai_negatif'}]},
+{id:'B5',category:'B_nol_negatif',difficulty:'sedang',text:'Bilangan 1/25 dapat ditulis sebagai...',
+ options:[{value:'5^(-2)',tag:'correct'},{value:'5^2',tag:'abai_tanda_pangkat_negatif'},{value:'(1/5)^(-2)',tag:'kebalikan_dilakukan_dua_kali'},{value:'2^(-5)',tag:'tertukar_basis_eksponen'}]},
+{id:'B6',category:'B_nol_negatif',difficulty:'sedang',text:'2^(-3) × 2^5 = ...',
+ options:[{value:'2^2',tag:'correct'},{value:'2^(-2)',tag:'salah_tanda_hasil_eksponen'},{value:'2^8',tag:'abai_tanda_pangkat_negatif'},{value:'2^(-15)',tag:'eksponen_dikali_saat_perkalian'}]},
+{id:'B7',category:'B_nol_negatif',difficulty:'sulit',text:'Nilai dari 2^(-1) + 2^(-2) adalah...',
+ options:[{value:'3/4',tag:'correct'},{value:'1/8',tag:'eksponen_dijumlah_saat_penjumlahan'},{value:'-6',tag:'pangkat_negatif_jadi_nilai_negatif'},{value:'6',tag:'abai_tanda_pangkat_negatif'}]},
+{id:'B8',category:'B_nol_negatif',difficulty:'sulit',text:'Jika 2^x = 1/16, maka nilai x adalah...',
+ options:[{value:'-4',tag:'correct'},{value:'4',tag:'abai_tanda_pangkat_negatif'},{value:'-8',tag:'basis_dikali_eksponen_negatif'},{value:'16',tag:'penyebut_dianggap_eksponen'}]},
+// --- C. Akar & Kebalikan Pangkat ---
+{id:'C1',category:'C_akar',difficulty:'mudah',text:'√49 = ...',
+ options:[{value:'7',tag:'correct'},{value:'24,5',tag:'akar_jadi_dibagi_dua'},{value:'-7',tag:'akar_dianggap_negatif'},{value:'±7',tag:'plus_minus_di_notasi_akar'}]},
+{id:'C2',category:'C_akar',difficulty:'mudah',text:'∛27 = ...',
+ options:[{value:'3',tag:'correct'},{value:'9',tag:'akar_jadi_dibagi_indeks'},{value:'13,5',tag:'akar_jadi_dibagi_dua'},{value:'81',tag:'akar_jadi_dikali_indeks'}]},
+{id:'C3',category:'C_akar',difficulty:'sedang',text:'Jika x^2 = 36, maka x = ...',
+ options:[{value:'6 atau -6',tag:'correct'},{value:'6',tag:'lupa_dua_solusi_persamaan_kuadrat'},{value:'-6',tag:'lupa_solusi_positif'},{value:'18',tag:'akar_jadi_dibagi_dua'}]},
+{id:'C4',category:'C_akar',difficulty:'sedang',text:'⁴√81 = ...',
+ options:[{value:'3',tag:'correct'},{value:'9',tag:'indeks_akar_dianggap_dua'},{value:'20,25',tag:'akar_jadi_dibagi_indeks'},{value:'27',tag:'akar_jadi_dibagi_tiga'}]},
+{id:'C5',category:'C_akar',difficulty:'sedang',text:'Nilai dari √49 + ∛8 adalah...',
+ options:[{value:'9',tag:'correct'},{value:'5',tag:'salah_operasi_penggabungan'},{value:'11',tag:'akar_jadi_dibagi_dua'},{value:'15',tag:'akar_pangkat_tiga_diabaikan'}]},
+{id:'C6',category:'C_akar',difficulty:'sedang',text:'Jika ∛x = 4, maka x = ...',
+ options:[{value:'64',tag:'correct'},{value:'81',tag:'tertukar_basis_eksponen'},{value:'12',tag:'akar_jadi_dikali_indeks'},{value:'16',tag:'indeks_akar_dianggap_dua'}]},
+{id:'C7',category:'C_akar',difficulty:'sulit',text:'Pasangan pernyataan manakah yang benar?',
+ options:[{value:'√16 = 4, tetapi x^2 = 16 → x = 4 atau -4',tag:'correct'},{value:'√16 = 4 atau -4, dan x^2 = 16 → x = 4 atau -4',tag:'plus_minus_di_notasi_akar'},{value:'√16 = 4, dan x^2 = 16 → x = 4',tag:'lupa_dua_solusi_persamaan_kuadrat'},{value:'√16 = 4 atau -4, tetapi x^2 = 16 → x = 4',tag:'tertukar_konsep_akar_dan_persamaan'}]},
+{id:'C8',category:'C_akar',difficulty:'sulit',text:'Jika √(x + 4) = 5, maka x = ...',
+ options:[{value:'21',tag:'correct'},{value:'1',tag:'lupa_kuadratkan_kedua_ruas'},{value:'29',tag:'salah_tanda_saat_pindah_ruas'},{value:'9',tag:'lupa_kuadratkan_kedua_ruas'}]},
+// --- D. Bentuk Akar ---
+{id:'D1',category:'D_bentuk_akar',difficulty:'mudah',text:'Bentuk paling sederhana dari √12 adalah...',
+ options:[{value:'2√3',tag:'correct'},{value:'3√2',tag:'tertukar_angka_luar_dalam'},{value:'4√3',tag:'faktor_keluar_tidak_diakarkan'},{value:'3√4',tag:'salah_pemisahan_faktor'}]},
+{id:'D2',category:'D_bentuk_akar',difficulty:'mudah',text:'Bentuk paling sederhana dari √45 adalah...',
+ options:[{value:'3√5',tag:'correct'},{value:'9√5',tag:'faktor_keluar_tidak_diakarkan'},{value:'5√3',tag:'tertukar_angka_luar_dalam'},{value:'15',tag:'akar_diabaikan'}]},
+{id:'D3',category:'D_bentuk_akar',difficulty:'sedang',text:'Bentuk paling sederhana dari √98 adalah...',
+ options:[{value:'7√2',tag:'correct'},{value:'49√2',tag:'faktor_keluar_tidak_diakarkan'},{value:'2√7',tag:'tertukar_angka_luar_dalam'},{value:'14',tag:'akar_diabaikan'}]},
+{id:'D4',category:'D_bentuk_akar',difficulty:'sedang',text:'√8 × √2 = ...',
+ options:[{value:'4',tag:'correct'},{value:'√10',tag:'akar_dijumlah_saat_perkalian'},{value:'16',tag:'lupa_akar_hasil_perkalian'},{value:'2√2',tag:'hanya_satu_akar_disederhanakan'}]},
+{id:'D5',category:'D_bentuk_akar',difficulty:'sedang',text:'3√2 + 5√2 = ...',
+ options:[{value:'8√2',tag:'correct'},{value:'15√2',tag:'koefisien_dikali_saat_penjumlahan'},{value:'8√4',tag:'bentuk_akar_ikut_dijumlah'},{value:'8',tag:'akar_diabaikan'}]},
+{id:'D6',category:'D_bentuk_akar',difficulty:'sedang',text:'√27 + √12 = ...',
+ options:[{value:'5√3',tag:'correct'},{value:'√39',tag:'akar_dijumlah_langsung'},{value:'5√6',tag:'bentuk_akar_ikut_dijumlah'},{value:'6√3',tag:'salah_pemisahan_faktor'}]},
+{id:'D7',category:'D_bentuk_akar',difficulty:'sulit',text:'Bentuk paling sederhana dari √200 adalah...',
+ options:[{value:'10√2',tag:'correct'},{value:'5√8',tag:'belum_paling_sederhana'},{value:'2√50',tag:'belum_paling_sederhana'},{value:'100√2',tag:'faktor_keluar_tidak_diakarkan'}]},
+{id:'D8',category:'D_bentuk_akar',difficulty:'sulit',text:'√6 × √15 = ...',
+ options:[{value:'3√10',tag:'correct'},{value:'9√10',tag:'faktor_keluar_tidak_diakarkan'},{value:'10√3',tag:'tertukar_angka_luar_dalam'},{value:'√21',tag:'akar_dijumlah_saat_perkalian'}]},
+// --- E. Pangkat Pecahan ---
+{id:'E1',category:'E_pecahan',difficulty:'mudah',text:'25^(1/2) = ...',
+ options:[{value:'5',tag:'correct'},{value:'12,5',tag:'pangkat_pecahan_jadi_pembagian'},{value:'625',tag:'pangkat_pecahan_jadi_kuadrat'},{value:'1/25',tag:'pangkat_pecahan_jadi_kebalikan'}]},
+{id:'E2',category:'E_pecahan',difficulty:'mudah',text:'27^(1/3) = ...',
+ options:[{value:'3',tag:'correct'},{value:'9',tag:'pangkat_pecahan_jadi_pembagian'},{value:'81',tag:'pangkat_pecahan_jadi_perkalian'},{value:'1/27',tag:'pangkat_pecahan_jadi_kebalikan'}]},
+{id:'E3',category:'E_pecahan',difficulty:'mudah',text:'Bentuk √7 jika ditulis sebagai pangkat pecahan adalah...',
+ options:[{value:'7^(1/2)',tag:'correct'},{value:'7^2',tag:'akar_jadi_kuadrat'},{value:'2^(1/7)',tag:'tertukar_basis_indeks'},{value:'7^(-2)',tag:'akar_jadi_pangkat_negatif'}]},
+{id:'E4',category:'E_pecahan',difficulty:'sedang',text:'27^(2/3) = ...',
+ options:[{value:'9',tag:'correct'},{value:'6',tag:'akar_dikali_pembilang'},{value:'18',tag:'pangkat_pecahan_jadi_perkalian'},{value:'243',tag:'pembilang_dipangkat_penyebut_pembagi'}]},
+{id:'E5',category:'E_pecahan',difficulty:'sedang',text:'16^(3/4) = ...',
+ options:[{value:'8',tag:'correct'},{value:'12',tag:'pangkat_pecahan_jadi_perkalian'},{value:'6',tag:'akar_dikali_pembilang'},{value:'1024',tag:'pembilang_dipangkat_penyebut_pembagi'}]},
+{id:'E6',category:'E_pecahan',difficulty:'sedang',text:'Bentuk ∛(5^2) sama dengan...',
+ options:[{value:'5^(2/3)',tag:'correct'},{value:'5^(3/2)',tag:'tertukar_pembilang_penyebut'},{value:'5^6',tag:'indeks_dikali_pangkat'},{value:'5^5',tag:'indeks_dijumlah_pangkat'}]},
+{id:'E7',category:'E_pecahan',difficulty:'sulit',text:'x^(1/2) × x^(1/2) = ...',
+ options:[{value:'x',tag:'correct'},{value:'x^(1/4)',tag:'eksponen_dikali_saat_perkalian'},{value:'x^(1/2)',tag:'eksponen_tidak_dijumlah'},{value:'x^2',tag:'penjumlahan_pecahan_salah'}]},
+{id:'E8',category:'E_pecahan',difficulty:'sulit',text:'8^(2/3) × 4^(1/2) = ...',
+ options:[{value:'8',tag:'correct'},{value:'6',tag:'dijumlah_bukan_dikali'},{value:'16',tag:'akar_satu_suku_diabaikan'},{value:'32',tag:'kedua_akar_diabaikan'}]},
+];
+
+const CATEGORY_META = {
+  A_pangkat:{label:'Pangkat & Sifat-sifatnya', color:'#5fbfa0'},
+  B_nol_negatif:{label:'Pangkat Nol & Negatif', color:'#4a9fd4'},
+  C_akar:{label:'Akar & Kebalikan Pangkat', color:'#7c5cbf'},
+  D_bentuk_akar:{label:'Bentuk Akar', color:'#e8a020'},
+  E_pecahan:{label:'Pangkat Pecahan', color:'#e8628a'},
+};
+
+let sessionOrder = [];
+let cur = 0;
+let answered = false;
+let curOptions = [];
+let categoryScores = {};
+let wrongAnswers = [];
+let tagFrequency = {};
+
+function fmt(s){
+  return s.replace(/\^\(([^)]+)\)/g,(m,e)=>'<sup>'+e.replace(/-/g,'−')+'</sup>')
+          .replace(/\^(\d+)/g,'<sup>$1</sup>');
+}
+
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
+
+function startGame(){
+  sessionOrder = shuffle(QUESTIONS);
+  cur = 0;
+  categoryScores = {};
+  Object.keys(CATEGORY_META).forEach(c=>{
+    const total = QUESTIONS.filter(q=>q.category===c).length;
+    categoryScores[c] = {correct:0, total};
+  });
+  wrongAnswers = [];
+  tagFrequency = {};
+  document.getElementById('intro').style.display='none';
+  document.getElementById('game').style.display='block';
+  showQ();
+}
+
+function showQ(){
+  if(cur>=sessionOrder.length){endGame();return;}
+  answered=false;
+  const q = sessionOrder[cur];
+  document.getElementById('qV').textContent=(cur+1)+'/'+sessionOrder.length;
+  document.getElementById('progFill').style.width=(((cur+1)/sessionOrder.length)*100)+'%';
+  document.getElementById('qText').innerHTML=fmt(q.text);
+  curOptions = shuffle(q.options);
+  const od = document.getElementById('optsDiv');
+  od.innerHTML='';
+  curOptions.forEach((opt,i)=>{
+    const b=document.createElement('button');
+    b.className='opt-btn';
+    b.innerHTML=fmt(opt.value);
+    b.onclick=()=>pick(i);
+    od.appendChild(b);
+  });
+}
+
+function pick(i){
+  if(answered) return;
+  answered=true;
+  const q = sessionOrder[cur];
+  const opt = curOptions[i];
+  const isCorrect = opt.tag === 'correct';
+  const btns = document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>b.disabled=true);
+  btns[i].classList.add(isCorrect?'correct':'wrong');
+
+  if(isCorrect){
+    categoryScores[q.category].correct++;
+  } else {
+    const correctOpt = q.options.find(o=>o.tag==='correct');
+    wrongAnswers.push({
+      qid:q.id,
+      category:q.category,
+      difficulty:q.difficulty,
+      chosenTag:opt.tag,
+      chosenValue:opt.value,
+      correctValue:correctOpt.value
+    });
+    tagFrequency[opt.tag] = (tagFrequency[opt.tag]||0)+1;
+  }
+
+  setTimeout(()=>{cur++; showQ();}, 650);
+}
+
+function endGame(){
+  document.getElementById('game').style.display='none';
+  document.getElementById('result').style.display='block';
+  const cb = document.getElementById('catBars');
+  cb.innerHTML='';
+  Object.keys(CATEGORY_META).forEach(c=>{
+    const meta = CATEGORY_META[c];
+    const sc = categoryScores[c];
+    const pct = (sc.correct/sc.total)*100;
+    const row = document.createElement('div');
+    row.className='cat-row';
+    row.innerHTML = `
+      <div class="cat-row-top"><span class="cname">${meta.label}</span><span class="cval">${sc.correct}/${sc.total}</span></div>
+      <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${pct}%;background:${meta.color}"></div></div>
+    `;
+    cb.appendChild(row);
+  });
+  saveResult();
+}
+
+function buildResultObject(){
+  return {
+    student: 'tasya',
+    checkpointId: 'powers-roots-ckpt1',
+    completedAt: new Date().toISOString(),
+    categoryScores,
+    wrongAnswers,
+    tagFrequency
+  };
+}
+
+function saveResult(){
+  try{
+    localStorage.setItem('tasya_powers_roots_checkpoint1', JSON.stringify(buildResultObject()));
+  }catch(e){}
+}
+
+function downloadResult(){
+  const data = buildResultObject();
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'tasya_powers_roots_checkpoint1_'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  document.getElementById('downloadedNote').textContent = '✅ File tersimpan ke folder Download. Kirim ke tutor kamu ya!';
+}
+</script>
+</body>
+</html>
