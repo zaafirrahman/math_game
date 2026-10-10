@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Pola Bilangan · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;--red-bg:rgba(232,80,64,0.08);
+    --violet:#7c3aed;--violet-bg:rgba(124,58,237,0.1);--violet-light:#a78bfa;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 70% 20%,rgba(74,144,184,0.06) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--steel-light);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--amber);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.4);color:var(--amber);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.3rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:0.6rem;line-height:1.3;letter-spacing:1px;}
+  h1 span{color:var(--amber);}
+  .intro{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:8px;height:8px;border-radius:2px;background:var(--border2);transition:all 0.3s;cursor:pointer;}
+  .dot.active{background:var(--amber);box-shadow:0 0 8px rgba(240,168,48,0.5);transform:scaleX(1.5);}
+  .dot.done{background:#8c5a2d;}
+
+  .slide{display:none;animation:fadeUp 0.35s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),transparent);}
+  .card-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.violet{color:var(--violet-light);}
+  .card-label.steel{color:var(--steel-light);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.7rem;line-height:1.4;letter-spacing:0.5px;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+  .card p strong{color:var(--text);}
+
+  .hl{border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-violet{background:var(--violet-bg);border:1px solid rgba(124,58,237,0.35);}
+  .hl-steel{background:var(--steel-bg);border:1px solid rgba(74,144,184,0.35);}
+  .hl-amber{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);}
+  .hl-green{background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);}
+  .hl-red{background:var(--red-bg);border:1px solid rgba(232,80,64,0.3);}
+  .hl-violet strong{color:var(--violet-light);}
+  .hl-steel strong{color:var(--steel-light);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+  .hl-red strong{color:var(--red);}
+
+  .callout{display:flex;gap:0.8rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 1rem;margin:1rem 0;font-size:0.87rem;color:var(--text-mid);line-height:1.6;}
+  .callout-icon{font-size:1.2rem;flex-shrink:0;}
+
+  .tip-list{list-style:none;margin:0.8rem 0;}
+  .tip-list li{display:flex;gap:0.6rem;align-items:flex-start;font-size:0.88rem;color:var(--text-mid);margin-bottom:0.5rem;line-height:1.55;}
+  .tip-list li::before{content:'→';color:var(--amber);font-weight:700;flex-shrink:0;}
+
+  .nav-btns{display:flex;gap:0.8rem;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--amber-light),#c9820f);color:#08131c;font-weight:800;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(240,168,48,0.35);}
+  .btn:disabled{opacity:0.4;cursor:default;}
+
+  .finish{text-align:center;padding:2.5rem 1.8rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;animation:bounce 1s ease-in-out infinite alternate;}
+  @keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+  .finish-title{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--amber);letter-spacing:3px;margin-bottom:0.6rem;}
+  .finish-desc{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);color:var(--amber);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  /* ===== number-sequence diagram (rendered by JS) ===== */
+  .seq-wrap{display:flex;justify-content:center;margin:0.9rem 0 0.4rem;}
+  .seq-svg{width:100%;height:auto;overflow:visible;}
+  .seq-svg .sb{fill:var(--track);stroke:var(--border2);stroke-width:2;}
+  .seq-svg .sb.q{fill:var(--amber-bg);stroke:var(--amber);stroke-dasharray:5 4;}
+  .seq-svg .sb.ans{fill:var(--green-bg);stroke:var(--green);}
+  .seq-svg text{font-family:'Rajdhani',sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;}
+  .seq-svg .sn{font-size:22px;fill:var(--text);}
+  .seq-svg .sn.q{fill:var(--amber);}
+  .seq-svg .sn.ans{fill:var(--green-light);}
+  .seq-svg .sl{font-size:17px;}
+  .seq-svg .arc{fill:none;stroke-width:2.2;}
+  .seq-svg .c-amber{stroke:var(--amber);} .seq-svg text.c-amber{fill:var(--amber);stroke:none;}
+  .seq-svg .c-red{stroke:var(--red);} .seq-svg text.c-red{fill:var(--red);stroke:none;}
+  .seq-svg .c-violet{stroke:var(--violet-light);} .seq-svg text.c-violet{fill:var(--violet-light);stroke:none;}
+  .seq-svg .c-steel{stroke:var(--steel-light);} .seq-svg text.c-steel{fill:var(--steel-light);stroke:none;}
+  .seq-svg .ah-amber{fill:var(--amber);} .seq-svg .ah-red{fill:var(--red);}
+  .seq-svg .ah-violet{fill:var(--violet-light);} .seq-svg .ah-steel{fill:var(--steel-light);}
+  .seq-cap{text-align:center;font-family:'Rajdhani',sans-serif;font-size:0.76rem;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:0.5rem;}
+
+  /* equation lines */
+  .eq{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1.2rem;text-align:center;letter-spacing:1px;color:var(--text);margin:0.35rem 0;}
+  .eq .op{color:var(--text-muted);padding:0 0.15rem;}
+  .eq .ok{color:var(--green-light);}
+  .eq .am{color:var(--amber);}
+  .eq .vi{color:var(--violet-light);}
+  .eq.sm{font-size:1rem;}
+
+  /* pair-check chips */
+  .chk-row{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin:0.8rem 0 0.4rem;}
+  .chk{background:var(--track);border:1px solid rgba(72,200,112,0.5);border-radius:8px;padding:0.4rem 0.8rem;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.95rem;color:var(--text);}
+  .chk b{color:var(--green);margin-left:0.35rem;}
+  .chk.bad{border-color:rgba(232,80,64,0.5);}
+  .chk.bad b{color:var(--red);}
+
+  /* thinking steps */
+  .think-steps{display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0;}
+  .think-step{display:flex;gap:0.7rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:8px;padding:0.7rem 0.9rem;font-size:0.85rem;color:var(--text-mid);line-height:1.55;}
+  .think-step .tq{font-family:'Rajdhani',sans-serif;font-weight:800;color:var(--amber);flex-shrink:0;min-width:1.1rem;}
+  .think-step strong{color:var(--text);}
+
+  /* quote */
+  .quote{border-left:3px solid var(--amber);background:var(--amber-bg);border-radius:0 8px 8px 0;padding:0.9rem 1.1rem;margin:1rem 0;font-size:0.95rem;line-height:1.65;color:var(--amber-light);font-weight:700;}
+
+  /* flow */
+  .flow{display:flex;flex-direction:column;align-items:center;gap:0.3rem;margin:1.1rem 0;}
+  .flow-box{width:100%;max-width:400px;text-align:center;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.7rem 1rem;font-size:0.88rem;color:var(--text);line-height:1.5;}
+  .flow-box.key{border-color:var(--amber);background:var(--amber-bg);font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1rem;letter-spacing:1.5px;color:var(--amber-light);}
+  .flow-box.end{border-color:rgba(72,200,112,0.5);background:var(--green-bg);}
+  .flow-box.end strong{color:var(--green);}
+  .flow-arrow{color:var(--text-muted);font-size:1.1rem;line-height:1;}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson34.html">LESSON 34</a><span>/</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🔍 Materi · Lesson 34</div>
+  <h1>Pola Bilangan: <span>Menemukan Aturan</span> di Balik Angka</h1>
+  <p class="intro">Angka dalam sebuah urutan tidak muncul sembarangan. Selalu ada aturan yang mengaturnya. Tugas kita: menemukan aturan itu, bukan menebak.</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- SLIDE 1: APA ITU POLA BILANGAN -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🔍 Slide 1 · Pola Bilangan</div>
+        <h2>Apa Itu Pola Bilangan?</h2>
+        <p><strong>Pola bilangan</strong> adalah susunan angka yang mengikuti <strong>aturan tertentu</strong>. Kalau aturannya ketemu, kita bisa tahu angka berikutnya tanpa menebak.</p>
+
+        <div id="s1a" class="seq-wrap"></div>
+        <div class="seq-cap">Setiap langkah, angka bertambah 2</div>
+
+        <div class="eq"><span class="op">Angka berikutnya:</span> 10 <span class="op">+</span> 2 <span class="op">=</span> <span class="ok">12</span></div>
+
+        <div class="quote">"Untuk menemukan angka berikutnya, kita harus menemukan aturan yang digunakan."</div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" disabled>← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: BERTAMBAH DAN BERKURANG -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">➕ Slide 2 · Bertambah &amp; Berkurang</div>
+        <h2>Pola Bertambah dan Berkurang</h2>
+        <p>Cara paling dasar: setiap langkah, angka <strong>ditambah</strong> atau <strong>dikurangi</strong> dengan bilangan yang sama. Panah di antara angka menunjukkan perubahannya.</p>
+
+        <div id="s2a" class="seq-wrap"></div>
+        <div class="eq sm">17 <span class="op">+</span> 4 <span class="op">=</span> <span class="ok">21</span></div>
+
+        <div id="s2b" class="seq-wrap" style="margin-top:1.2rem;"></div>
+        <div class="eq sm">15 <span class="op">−</span> 5 <span class="op">=</span> <span class="ok">10</span></div>
+
+        <div class="hl hl-amber">
+          <strong>Periksa setiap pasangan angka yang berdekatan.</strong><br>
+          <div class="chk-row">
+            <span class="chk">9 − 5 = 4<b>✓</b></span>
+            <span class="chk">13 − 9 = 4<b>✓</b></span>
+            <span class="chk">17 − 13 = 4<b>✓</b></span>
+          </div>
+          <span style="font-size:0.86rem;">Jangan hanya melihat angka pertama dan terakhir. Aturan harus cocok di <strong>setiap langkah</strong>.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: PERKALIAN DAN PEMBAGIAN -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">✖️ Slide 3 · Perkalian &amp; Pembagian</div>
+        <h2>Pola Perkalian dan Pembagian</h2>
+        <p>Pola tidak selalu memakai tambah atau kurang. Kadang setiap angka <strong>dikalikan</strong> atau <strong>dibagi</strong> dengan bilangan yang sama.</p>
+
+        <div id="s3a" class="seq-wrap"></div>
+        <div class="seq-cap">Aturan: dikalikan 2 setiap langkah</div>
+
+        <div class="eq sm">3 <span class="op">×</span> 2 <span class="op">=</span> 6</div>
+        <div class="eq sm">6 <span class="op">×</span> 2 <span class="op">=</span> 12</div>
+        <div class="eq sm">12 <span class="op">×</span> 2 <span class="op">=</span> 24</div>
+        <div class="eq sm">24 <span class="op">×</span> 2 <span class="op">=</span> <span class="ok">48</span> <span class="op">← angka berikutnya</span></div>
+
+        <div class="hl hl-violet">
+          <strong>Perhatikan lompatannya:</strong> 3 → 6 → 12 → 24 naik +3, +6, +12, ... Pola perkalian membuat angka <strong>makin cepat membesar</strong>.<br>
+          <span style="font-size:0.86rem;">Kebalikannya juga ada: 80 → 40 → 20 → 10, setiap langkah dibagi 2, sehingga angka makin kecil.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: CARA SISTEMATIS -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">🧭 Slide 4 · Cara Sistematis</div>
+        <h2>Cara Sistematis Menemukan Pola</h2>
+        <p>Supaya tidak bingung, ikuti langkah berpikir ini setiap kali ketemu pola baru:</p>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">1</span><span><strong>Amati</strong> urutan angkanya.</span></div>
+          <div class="think-step"><span class="tq">2</span><span><strong>Periksa selisih</strong> antara angka yang berdekatan.</span></div>
+          <div class="think-step"><span class="tq">3</span><span>Kalau selisihnya tidak tetap, periksa kemungkinan <strong>perkalian atau pembagian</strong>.</span></div>
+          <div class="think-step"><span class="tq">4</span><span>Cari aturan yang <strong>konsisten</strong> pada seluruh urutan.</span></div>
+          <div class="think-step"><span class="tq">5</span><span><strong>Gunakan aturan itu</strong> untuk menentukan angka berikutnya.</span></div>
+        </div>
+
+        <div class="hl hl-steel">
+          <strong>Coba pada pola 4, 7, 10, 13, ...</strong>
+          <div id="s4a" class="seq-wrap"></div>
+          <div class="chk-row">
+            <span class="chk">7 − 4 = 3<b>✓</b></span>
+            <span class="chk">10 − 7 = 3<b>✓</b></span>
+            <span class="chk">13 − 10 = 3<b>✓</b></span>
+          </div>
+          <span style="font-size:0.86rem;">Selisihnya selalu +3, jadi aturan yang sama berlaku di setiap langkah. Angka berikutnya: 13 + 3 = <strong>16</strong>.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: SELISIH BERTINGKAT -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📈 Slide 5 · Selisih Tidak Sama</div>
+        <h2>Bagaimana Jika Selisihnya Tidak Sama?</h2>
+        <p>Kalau selisihnya berubah-ubah, jangan langsung bilang "tidak ada aturan". Coba periksa: <strong>apakah selisihnya sendiri membentuk pola?</strong></p>
+
+        <div id="s5a" class="seq-wrap"></div>
+        <div class="seq-cap">Selisihnya: +3, +4, +5, +6 ... terus naik</div>
+
+        <div class="hl hl-amber">
+          <strong>Perhatikan deretan selisihnya:</strong>
+          <div id="s5b" class="seq-wrap"></div>
+          <span style="font-size:0.86rem;">Selisihnya naik 1 setiap langkah, jadi selisih berikutnya adalah 7.</span>
+        </div>
+
+        <div class="eq sm">20 <span class="op">+</span> 7 <span class="op">=</span> <span class="ok">27</span></div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>Angka bertambah dengan selisih yang <strong style="color:var(--amber)">juga berubah secara teratur</strong>. Saat selisihnya tidak tetap, periksa dulu apakah perubahannya membentuk pola lain.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: DUA OPERASI -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">🔀 Slide 6 · Dua Operasi</div>
+        <h2>Pola dengan Dua Operasi</h2>
+        <p>Ada pola yang tidak cukup dijelaskan satu operasi saja. Setiap langkah bisa memakai <strong>dua operasi sekaligus</strong>.</p>
+
+        <div id="s6a" class="seq-wrap"></div>
+        <div class="seq-cap">Aturan: kalikan 2, lalu tambah 1</div>
+
+        <div class="hl hl-red">
+          <strong>Kenapa bukan satu operasi saja?</strong>
+          <ul class="tip-list" style="margin-bottom:0;">
+            <li>Hanya ditambah? Selisihnya 3, 6, 12. Tidak tetap.</li>
+            <li>Hanya dikali 2? 2 × 2 = 4, padahal angkanya 5.</li>
+          </ul>
+        </div>
+
+        <div class="eq sm">2 <span class="op">×</span> 2 <span class="op">+</span> 1 <span class="op">=</span> 5</div>
+        <div class="eq sm">5 <span class="op">×</span> 2 <span class="op">+</span> 1 <span class="op">=</span> 11</div>
+        <div class="eq sm">11 <span class="op">×</span> 2 <span class="op">+</span> 1 <span class="op">=</span> 23</div>
+        <div class="eq sm">23 <span class="op">×</span> 2 <span class="op">+</span> 1 <span class="op">=</span> <span class="ok">47</span> <span class="op">← angka berikutnya</span></div>
+
+        <div class="callout">
+          <span class="callout-icon">⚠️</span>
+          <span>Aturannya harus <strong style="color:var(--violet-light)">konsisten di setiap perpindahan angka</strong>. Dan tidak semua pola harus memakai satu operasi sederhana.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: JANGAN TERJEBAK MENEBAK -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🎯 Slide 7 · Alasan</div>
+        <h2>Jangan Terjebak Menebak</h2>
+        <p>Kalau informasinya sedikit, sebuah urutan bisa terlihat punya <strong>beberapa kemungkinan pola</strong>. Karena itu kita pilih aturan yang paling <strong>cocok dengan seluruh angka</strong> yang diberikan.</p>
+
+        <div id="s7a" class="seq-wrap"></div>
+
+        <div class="hl hl-red">
+          <strong>Tebakan yang menggoda: ×2</strong><br>
+          <div class="chk-row">
+            <span class="chk">3 × 2 = 6<b>✓</b></span>
+            <span class="chk bad">6 × 2 = 12, bukan 9<b>✗</b></span>
+          </div>
+          <span style="font-size:0.86rem;">Aturan ×2 hanya cocok untuk sepasang angka, jadi tidak dipakai.</span>
+        </div>
+
+        <div class="hl hl-green">
+          <strong>Aturan +3 cocok di semua pasangan</strong>
+          <div class="chk-row">
+            <span class="chk">6 − 3 = 3<b>✓</b></span>
+            <span class="chk">9 − 6 = 3<b>✓</b></span>
+            <span class="chk">12 − 9 = 3<b>✓</b></span>
+          </div>
+          <span style="font-size:0.86rem;"><strong>Contoh alasan yang baik:</strong> "Angka berikutnya 15, karena setiap langkah ditambah 3, dan 12 + 3 = 15."</span>
+        </div>
+
+        <div class="quote">"Jawaban yang baik bukan hanya angka yang benar, tetapi juga alasan yang mendukungnya."</div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: RINGKASAN -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📝 Slide 8 · Ringkasan Strategi</div>
+        <h2>Ringkasan Strategi</h2>
+
+        <div class="flow">
+          <div class="flow-box key">POLA BILANGAN</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Amati angka</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Periksa selisih</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Periksa perkalian atau pembagian</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Periksa perubahan bertingkat atau dua operasi jika diperlukan</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Pastikan aturan konsisten</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box end"><strong>Tentukan angka berikutnya dan jelaskan alasannya</strong></div>
+        </div>
+
+        <div class="quote" style="text-align:center;border-left:none;border-radius:8px;">Jangan menebak angkanya. Temukan aturannya!</div>
+      </div>
+
+      <div class="finish">
+        <span class="finish-icon">🔍</span>
+        <div class="finish-title">KONSEP SUDAH SIAP!</div>
+        <div class="finish-desc">Kamu sudah tahu cara menemukan aturan di balik angka. Saatnya dicoba di latihan.</div>
+        <div class="xp">+100 XP</div>
+        <div class="finish-btns">
+          <a href="latihan34.html" class="btn btn-primary">🧮 Mulai Latihan</a>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-ghost" disabled>Selesai ✓</button>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+</div>
+
+<script>
+  /* ===== Number-sequence diagram builder =====
+     items : array of strings (the numbers)
+     ops   : array of labels, one per arrow (length = items.length - 1)
+     o.col : color key (amber | red | violet | steel)
+     o.st  : optional per-item state array: '' | 'q' (unknown) | 'ans' (found) */
+  let _sid = 0;
+  function seq(id, items, ops, o){
+    o = o || {};
+    const col = o.col || 'amber';
+    const BW = 50, BH = 40, GAP = 40, STEP = BW + GAP;
+    const n = items.length;
+    const W = n*BW + (n-1)*GAP;
+    const by = 50, H = by + BH + 4;
+    const mk = 'ah' + (++_sid);
+    let s = `<svg class="seq-svg" viewBox="0 0 ${W} ${H}" style="max-width:${Math.round(W*1.2)}px" role="img" aria-label="${o.aria||'Pola bilangan'}">`;
+    s += `<defs><marker id="${mk}" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-${col}" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
+    for(let i=0;i<n-1;i++){
+      const x1 = i*STEP + BW/2, x2 = (i+1)*STEP + BW/2, mx = (x1+x2)/2;
+      s += `<path class="arc c-${col}" d="M${x1},${by-4} Q${mx},${by-48} ${x2},${by-5}" marker-end="url(#${mk})"/>`;
+      s += `<text class="sl c-${col}" x="${mx}" y="${by-36}">${ops[i]}</text>`;
+    }
+    for(let i=0;i<n;i++){
+      const st = (o.st && o.st[i]) || '';
+      const x = i*STEP;
+      s += `<rect class="sb ${st}" x="${x}" y="${by}" width="${BW}" height="${BH}" rx="9"/>`;
+      s += `<text class="sn ${st}" x="${x+BW/2}" y="${by+BH/2+1}">${items[i]}</text>`;
+    }
+    s += `</svg>`;
+    document.getElementById(id).innerHTML = s;
+  }
+
+  seq('s1a', ['2','4','6','8','10','?'], ['+2','+2','+2','+2','+2'], {col:'amber', st:['','','','','','q'], aria:'Pola 2, 4, 6, 8, 10, bertambah 2 setiap langkah'});
+  seq('s2a', ['5','9','13','17','?'], ['+4','+4','+4','+4'], {col:'amber', st:['','','','','q'], aria:'Pola 5, 9, 13, 17, bertambah 4 setiap langkah'});
+  seq('s2b', ['30','25','20','15','?'], ['−5','−5','−5','−5'], {col:'red', st:['','','','','q'], aria:'Pola 30, 25, 20, 15, berkurang 5 setiap langkah'});
+  seq('s3a', ['3','6','12','24','?'], ['×2','×2','×2','×2'], {col:'violet', st:['','','','','q'], aria:'Pola 3, 6, 12, 24, dikalikan 2 setiap langkah'});
+  seq('s4a', ['4','7','10','13','?'], ['+3','+3','+3','+3'], {col:'amber', st:['','','','','q'], aria:'Pola 4, 7, 10, 13, bertambah 3 setiap langkah'});
+  seq('s5a', ['2','5','9','14','20','?'], ['+3','+4','+5','+6','+7'], {col:'amber', st:['','','','','','q'], aria:'Pola 2, 5, 9, 14, 20 dengan selisih 3, 4, 5, 6'});
+  seq('s5b', ['3','4','5','6','7'], ['+1','+1','+1','+1'], {col:'steel', st:['','','','','ans'], aria:'Deretan selisih 3, 4, 5, 6, 7 naik 1 setiap langkah'});
+  seq('s6a', ['2','5','11','23','?'], ['×2 +1','×2 +1','×2 +1','×2 +1'], {col:'violet', st:['','','','','q'], aria:'Pola 2, 5, 11, 23, dengan aturan kali 2 lalu tambah 1'});
+  seq('s7a', ['3','6','9','12','?'], ['+3','+3','+3','+3'], {col:'amber', st:['','','','','q'], aria:'Pola 3, 6, 9, 12, bertambah 3 setiap langkah'});
+
+  /* ===== Slide navigation ===== */
+  const TOTAL = 8;
+  let cur = 0;
+
+  const dotsEl = document.getElementById('dots');
+  for(let i=0;i<TOTAL;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots(){
+    document.querySelectorAll('.dot').forEach((d,i)=>{
+      d.className = 'dot' + (i===cur?' active':i<cur?' done':'');
+    });
+  }
+
+  function goTo(n){
+    document.querySelectorAll('.slide')[cur].classList.remove('active');
+    cur = n;
+    document.querySelectorAll('.slide')[cur].classList.add('active');
+    updateDots();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function nextSlide(){ if(cur<TOTAL-1) goTo(cur+1); }
+  function prevSlide(){ if(cur>0) goTo(cur-1); }
+
+  document.querySelectorAll('.slide')[0].classList.add('active');
+</script>
+</body>
+</html>
