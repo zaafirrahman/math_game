@@ -119,10 +119,10 @@
   <div id="intro">
     <span class="home-icon">🧩</span>
     <div class="home-title">LATIHAN SOAL</div>
-    <p class="home-sub">10 soal cerita multi-langkah. Ingat: temukan <strong style="color:var(--green)">apa yang diketahui dan ditanyakan</strong>, susun <strong style="color:var(--violet-light)">urutan langkahnya</strong>, hitung satu per satu, lalu <strong style="color:var(--amber)">periksa kewajaran</strong> jawabanmu. Jangan buru-buru menghitung!</p>
+    <p class="home-sub">5 soal cerita multi-langkah. Ingat: temukan <strong style="color:var(--green)">apa yang diketahui dan ditanyakan</strong>, susun <strong style="color:var(--violet-light)">urutan langkahnya</strong>, hitung satu per satu, lalu <strong style="color:var(--amber)">periksa kewajaran</strong> jawabanmu. Jangan buru-buru menghitung!</p>
     <div class="info-row">
-      <div class="info-chip"><span>4</span> Pemahaman</div>
-      <div class="info-chip"><span>6</span> Isian Angka</div>
+      <div class="info-chip"><span>2</span> Pemahaman</div>
+      <div class="info-chip"><span>3</span> Isian Angka</div>
     </div>
     <button class="start-btn" onclick="startQuiz()">MULAI LATIHAN 🧮</button>
   </div>
@@ -132,7 +132,7 @@
     <div class="progress-wrap">
       <div class="progress-top">
         <span class="progress-label">Progress</span>
-        <span class="progress-val" id="progVal">1/10</span>
+        <span class="progress-val" id="progVal">1/5</span>
       </div>
       <div class="progress-bg"><div class="progress-bar" id="progBar" style="width:0%"></div></div>
     </div>
@@ -166,35 +166,15 @@ function valEqual(a,b,tol){
 // type "fillin"     : isian jawaban (angka)
 // type "textchoice" : pilih jawaban berupa teks
 const QS = [
-  // 1 Informasi & apa yang dicari dulu
   { type:'textchoice', tag:'🔎 Membaca Informasi · Soal 1', text:'Rina membeli 3 pulpen seharga Rp4.000 per pulpen dan 2 buku seharga Rp9.000 per buku. Ia membayar dengan uang Rp50.000. Berapa kembaliannya? Apa yang sebaiknya dicari lebih dahulu?', options:['Total harga semua pulpen dan semua buku','Selisih harga satu pulpen dan satu buku','Harga satu pulpen saja'], answer:'Total harga semua pulpen dan semua buku', note:'Kembalian = uang bayar − total belanja. Jadi total belanja dicari dulu: 3 × 4.000 + 2 × 9.000 = 12.000 + 18.000 = 30.000. Kembaliannya 50.000 − 30.000 = Rp20.000.' },
 
-  // 2 Dua langkah dasar
   { type:'fillin', tag:'🧩 Urutan Langkah · Soal 2', text:'Raka memiliki uang Rp75.000. Ia membeli 2 buku seharga Rp15.000 per buku dan sebuah penggaris seharga Rp8.000. Berapa rupiah sisa uang Raka?', hint:'cth: 20000', answer:'37000', note:'Total belanja = 2 × 15.000 + 8.000 = 30.000 + 8.000 = 38.000. Sisa uang = 75.000 − 38.000 = Rp37.000.' },
 
-  // 3 Persen dan diskon
   { type:'fillin', tag:'🏷️ Persen & Diskon · Soal 3', text:'Sebuah tas seharga Rp150.000 mendapat diskon 20%. Berapa rupiah harga yang harus dibayar?', hint:'cth: 100000', answer:'120000', note:'Diskon = 20% × 150.000 = 30.000. Harga yang dibayar = 150.000 − 30.000 = Rp120.000.' },
 
-  // 4 Nilai diskon vs harga bayar
-  { type:'textchoice', tag:'🏷️ Persen & Diskon · Soal 4', text:'Sebuah jaket seharga Rp300.000 mendapat diskon 10%. Dina menghitung 10% × Rp300.000 = Rp30.000. Angka Rp30.000 itu menyatakan apa?', options:['Harga jaket setelah diskon','Besar potongan harga (nilai diskon)','Harga awal jaket'], answer:'Besar potongan harga (nilai diskon)', note:'Rp30.000 adalah nilai diskonnya. Harga yang dibayar masih harus dicari: 300.000 − 30.000 = Rp270.000.' },
+  { type:'fillin', tag:'🍰 Pecahan · Soal 4', text:'Sebuah drum berisi 80 liter minyak. Sebanyak 1/4 dari minyak dipakai pada pagi hari, lalu 15 liter dipakai pada sore hari. Berapa liter minyak yang tersisa?', hint:'cth: 30', answer:'45', note:'Pagi: 1/4 × 80 = 20 liter. Total dipakai = 20 + 15 = 35 liter. Sisa = 80 − 35 = 45 liter.' },
 
-  // 5 Pecahan dari jumlah keseluruhan
-  { type:'fillin', tag:'🍰 Pecahan · Soal 5', text:'Sebuah drum berisi 80 liter minyak. Sebanyak 1/4 dari minyak dipakai pada pagi hari, lalu 15 liter dipakai pada sore hari. Berapa liter minyak yang tersisa?', hint:'cth: 30', answer:'45', note:'Pagi: 1/4 × 80 = 20 liter. Total dipakai = 20 + 15 = 35 liter. Sisa = 80 − 35 = 45 liter.' },
-
-  // 6 Pecahan merujuk jumlah awal
-  { type:'textchoice', tag:'🍰 Pecahan · Soal 6', text:'Sebuah pita panjangnya 72 cm. Sebanyak 1/4 bagian dipotong untuk hadiah, kemudian 10 cm dipotong lagi untuk hiasan. Berapa cm sisa pita? Langkah pertama yang tepat adalah...', options:['Menghitung 1/4 dari 72 cm','Mengurangi 72 dengan 10, lalu mengambil 1/4 dari hasilnya','Menghitung 1/4 dari 10 cm'], answer:'Menghitung 1/4 dari 72 cm', note:'Pecahan 1/4 merujuk pada panjang pita awal (72 cm). 1/4 × 72 = 18 cm. Total terpotong = 18 + 10 = 28 cm, jadi sisa = 72 − 28 = 44 cm.' },
-
-  // 7 Persen dan jumlah barang
-  { type:'fillin', tag:'🏷️ Persen & Jumlah · Soal 7', text:'Sebuah toko memiliki 40 buku. Sebanyak 25% buku terjual pada hari Senin, lalu 12 buku terjual pada hari Selasa. Berapa buku yang belum terjual?', hint:'cth: 20', answer:'18', note:'Senin: 25% × 40 = 10 buku. Total terjual = 10 + 12 = 22 buku. Belum terjual = 40 − 22 = 18 buku.' },
-
-  // 8 Satuan: jarak, waktu, kecepatan
-  { type:'fillin', tag:'🧭 Memilih Strategi · Soal 8', text:'Sebuah mobil berjalan selama 2 jam dengan kecepatan 60 km/jam, kemudian selama 1 jam dengan kecepatan 40 km/jam. Berapa km jarak total yang ditempuh?', hint:'cth: 100', answer:'160', note:'Jarak tiap bagian dicari dulu: 2 × 60 = 120 km dan 1 × 40 = 40 km. Jarak total = 120 + 40 = 160 km.' },
-
-  // 9 Kewajaran jawaban
-  { type:'textchoice', tag:'✅ Cek Kewajaran · Soal 9', text:'Sinta memiliki uang Rp80.000. Ia berbelanja Rp35.000 dan Rp25.000. Sinta menjawab bahwa sisa uangnya Rp140.000. Mengapa jawaban itu tidak masuk akal?', options:['Karena sisa uang tidak mungkin lebih besar dari uang awal','Karena jawaban sisa uang harus selalu bilangan genap','Karena Sinta berbelanja dua kali'], answer:'Karena sisa uang tidak mungkin lebih besar dari uang awal', note:'Sinta menjumlahkan semuanya (80.000 + 35.000 + 25.000 = 140.000). Seharusnya total belanja 60.000 dikurangkan dari uang awal: 80.000 − 60.000 = Rp20.000.' },
-
-  // 10 Desimal dan perkalian
-  { type:'fillin', tag:'🧭 Memilih Strategi · Soal 10', text:'Bu Ani membeli 2,5 kg jeruk dengan harga Rp20.000 per kg. Ia membayar dengan uang Rp100.000. Berapa rupiah kembalian Bu Ani?', hint:'cth: 30000', answer:'50000', note:'Harga jeruk = 2,5 × 20.000 = 50.000. Kembalian = 100.000 − 50.000 = Rp50.000.' }
+  { type:'textchoice', tag:'✅ Cek Kewajaran · Soal 5', text:'Sinta memiliki uang Rp80.000. Ia berbelanja Rp35.000 dan Rp25.000. Sinta menjawab bahwa sisa uangnya Rp140.000. Mengapa jawaban itu tidak masuk akal?', options:['Karena sisa uang tidak mungkin lebih besar dari uang awal','Karena jawaban sisa uang harus selalu bilangan genap','Karena Sinta berbelanja dua kali'], answer:'Karena sisa uang tidak mungkin lebih besar dari uang awal', note:'Sinta menjumlahkan semuanya (80.000 + 35.000 + 25.000 = 140.000). Seharusnya total belanja 60.000 dikurangkan dari uang awal: 80.000 − 60.000 = Rp20.000.' }
 ];
 
 let cur=0, score=0, results=[], solved=false, hadMiss=false;
