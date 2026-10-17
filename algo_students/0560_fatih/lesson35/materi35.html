@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Soal Cerita Multi-Langkah · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;--red-bg:rgba(232,80,64,0.08);
+    --violet:#7c3aed;--violet-bg:rgba(124,58,237,0.1);--violet-light:#a78bfa;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 70% 20%,rgba(74,144,184,0.06) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--steel-light);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--amber);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.4);color:var(--amber);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.3rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:0.6rem;line-height:1.3;letter-spacing:1px;}
+  h1 span{color:var(--amber);}
+  .intro{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:8px;height:8px;border-radius:2px;background:var(--border2);transition:all 0.3s;cursor:pointer;}
+  .dot.active{background:var(--amber);box-shadow:0 0 8px rgba(240,168,48,0.5);transform:scaleX(1.5);}
+  .dot.done{background:#8c5a2d;}
+
+  .slide{display:none;animation:fadeUp 0.35s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),transparent);}
+  .card-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.violet{color:var(--violet-light);}
+  .card-label.steel{color:var(--steel-light);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.7rem;line-height:1.4;letter-spacing:0.5px;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+  .card p strong{color:var(--text);}
+
+  .hl{border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-violet{background:var(--violet-bg);border:1px solid rgba(124,58,237,0.35);}
+  .hl-steel{background:var(--steel-bg);border:1px solid rgba(74,144,184,0.35);}
+  .hl-amber{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);}
+  .hl-green{background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);}
+  .hl-red{background:var(--red-bg);border:1px solid rgba(232,80,64,0.3);}
+  .hl-violet strong{color:var(--violet-light);}
+  .hl-steel strong{color:var(--steel-light);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+  .hl-red strong{color:var(--red);}
+
+  .callout{display:flex;gap:0.8rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 1rem;margin:1rem 0;font-size:0.87rem;color:var(--text-mid);line-height:1.6;}
+  .callout-icon{font-size:1.2rem;flex-shrink:0;}
+
+  .tip-list{list-style:none;margin:0.8rem 0;}
+  .tip-list li{display:flex;gap:0.6rem;align-items:flex-start;font-size:0.88rem;color:var(--text-mid);margin-bottom:0.5rem;line-height:1.55;}
+  .tip-list li::before{content:'→';color:var(--amber);font-weight:700;flex-shrink:0;}
+
+  .nav-btns{display:flex;gap:0.8rem;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--amber-light),#c9820f);color:#08131c;font-weight:800;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(240,168,48,0.35);}
+  .btn:disabled{opacity:0.4;cursor:default;}
+
+  .finish{text-align:center;padding:2.5rem 1.8rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;animation:bounce 1s ease-in-out infinite alternate;}
+  @keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+  .finish-title{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--amber);letter-spacing:3px;margin-bottom:0.6rem;}
+  .finish-desc{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);color:var(--amber);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  /* ===== number-sequence diagram (rendered by JS) ===== */
+  .seq-wrap{display:flex;justify-content:center;margin:0.9rem 0 0.4rem;}
+  .seq-svg{width:100%;height:auto;overflow:visible;}
+  .seq-svg .sb{fill:var(--track);stroke:var(--border2);stroke-width:2;}
+  .seq-svg .sb.q{fill:var(--amber-bg);stroke:var(--amber);stroke-dasharray:5 4;}
+  .seq-svg .sb.ans{fill:var(--green-bg);stroke:var(--green);}
+  .seq-svg text{font-family:'Rajdhani',sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;}
+  .seq-svg .sn{font-size:22px;fill:var(--text);}
+  .seq-svg .sn.q{fill:var(--amber);}
+  .seq-svg .sn.ans{fill:var(--green-light);}
+  .seq-svg .sl{font-size:17px;}
+  .seq-svg .arc{fill:none;stroke-width:2.2;}
+  .seq-svg .c-amber{stroke:var(--amber);} .seq-svg text.c-amber{fill:var(--amber);stroke:none;}
+  .seq-svg .c-red{stroke:var(--red);} .seq-svg text.c-red{fill:var(--red);stroke:none;}
+  .seq-svg .c-violet{stroke:var(--violet-light);} .seq-svg text.c-violet{fill:var(--violet-light);stroke:none;}
+  .seq-svg .c-steel{stroke:var(--steel-light);} .seq-svg text.c-steel{fill:var(--steel-light);stroke:none;}
+  .seq-svg .ah-amber{fill:var(--amber);} .seq-svg .ah-red{fill:var(--red);}
+  .seq-svg .ah-violet{fill:var(--violet-light);} .seq-svg .ah-steel{fill:var(--steel-light);}
+  .seq-cap{text-align:center;font-family:'Rajdhani',sans-serif;font-size:0.76rem;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:0.5rem;}
+
+  /* equation lines */
+  .eq{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1.2rem;text-align:center;letter-spacing:1px;color:var(--text);margin:0.35rem 0;}
+  .eq .op{color:var(--text-muted);padding:0 0.15rem;}
+  .eq .ok{color:var(--green-light);}
+  .eq .am{color:var(--amber);}
+  .eq .vi{color:var(--violet-light);}
+  .eq.sm{font-size:1rem;}
+
+  /* pair-check chips */
+  .chk-row{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin:0.8rem 0 0.4rem;}
+  .chk{background:var(--track);border:1px solid rgba(72,200,112,0.5);border-radius:8px;padding:0.4rem 0.8rem;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.95rem;color:var(--text);}
+  .chk b{color:var(--green);margin-left:0.35rem;}
+  .chk.bad{border-color:rgba(232,80,64,0.5);}
+  .chk.bad b{color:var(--red);}
+
+  /* thinking steps */
+  .think-steps{display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0;}
+  .think-step{display:flex;gap:0.7rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:8px;padding:0.7rem 0.9rem;font-size:0.85rem;color:var(--text-mid);line-height:1.55;}
+  .think-step .tq{font-family:'Rajdhani',sans-serif;font-weight:800;color:var(--amber);flex-shrink:0;min-width:1.1rem;}
+  .think-step strong{color:var(--text);}
+
+  /* quote */
+  .quote{border-left:3px solid var(--amber);background:var(--amber-bg);border-radius:0 8px 8px 0;padding:0.9rem 1.1rem;margin:1rem 0;font-size:0.95rem;line-height:1.65;color:var(--amber-light);font-weight:700;}
+
+  /* flow */
+  .flow{display:flex;flex-direction:column;align-items:center;gap:0.3rem;margin:1.1rem 0;}
+  .flow-box{width:100%;max-width:400px;text-align:center;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.7rem 1rem;font-size:0.88rem;color:var(--text);line-height:1.5;}
+  .flow-box.key{border-color:var(--amber);background:var(--amber-bg);font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1rem;letter-spacing:1.5px;color:var(--amber-light);}
+  .flow-box.end{border-color:rgba(72,200,112,0.5);background:var(--green-bg);}
+  .flow-box.end strong{color:var(--green);}
+  .flow-arrow{color:var(--text-muted);font-size:1.1rem;line-height:1;}
+
+  /* ===== lesson 35: chain, bar diagram ===== */
+  .chain{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0.4rem;margin:1rem 0;}
+  .cbox{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.55rem 0.8rem;text-align:center;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.95rem;color:var(--text);line-height:1.3;}
+  .cbox small{display:block;font-family:'Nunito',sans-serif;font-weight:600;font-size:0.68rem;color:var(--text-muted);}
+  .cbox.am{border-color:var(--amber);background:var(--amber-bg);color:var(--amber-light);}
+  .cbox.gr{border-color:rgba(72,200,112,0.5);background:var(--green-bg);color:var(--green-light);}
+  .carrow{color:var(--amber);font-size:1.2rem;font-weight:800;}
+  .bar-wrap{display:flex;justify-content:center;margin:0.9rem 0 0.4rem;}
+  .bar-svg{width:100%;max-width:520px;height:auto;overflow:visible;}
+  .bar-svg text{font-family:'Rajdhani',sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;}
+  .bar-svg .bn{font-size:11px;fill:var(--text-mid);}
+  .bar-svg .bv{font-size:13px;fill:var(--text);}
+  .bar-svg .bt{font-size:12px;fill:var(--text-muted);letter-spacing:0.5px;}
+  .bar-svg .brace{stroke:var(--border2);stroke-width:2;fill:none;}
+  .bar-svg .bs-steel{fill:var(--steel-bg);stroke:var(--steel);stroke-width:2;}
+  .bar-svg .bs-amber{fill:var(--amber-bg);stroke:var(--amber);stroke-width:2;}
+  .bar-svg .bs-green{fill:var(--green-bg);stroke:var(--green);stroke-width:2;}
+  .bar-svg .bs-violet{fill:var(--violet-bg);stroke:var(--violet-light);stroke-width:2;}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson35.html">LESSON 35</a><span>/</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🧩 Materi · Lesson 35</div>
+  <h1>Soal Cerita Multi-Langkah: <span>Berpikir</span> Sebelum Menghitung</h1>
+  <p class="intro">Soal cerita bukan soal menebak operasi. Pahami situasinya, susun langkahnya, baru hitung.</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🧩 Slide 1 · Pembuka</div>
+        <h2>Satu Cerita, Beberapa Langkah</h2>
+        <p>Beberapa masalah sehari-hari <strong>tidak bisa diselesaikan dengan satu operasi saja</strong>. Contohnya: seseorang membeli beberapa barang, mendapat diskon, lalu menghitung berapa yang harus dibayar.</p>
+
+        <div class="hl hl-steel"><strong>Contoh cerita:</strong> Bu Ani membeli 2 kaos dengan harga Rp50.000 per kaos, lalu mendapat diskon 10%. Berapa yang harus dibayar?</div>
+
+        <div class="chain">
+          <div class="cbox">Harga 2 kaos<small>kejadian ①</small></div><span class="carrow">→</span>
+          <div class="cbox">Nilai diskon<small>kejadian ②</small></div><span class="carrow">→</span>
+          <div class="cbox am">Total pembayaran<small>kejadian ③</small></div>
+        </div>
+        <div class="seq-cap">Ada tiga kejadian berurutan, jadi satu operasi saja tidak cukup</div>
+
+        <div class="quote">"Memahami urutan kejadian sama pentingnya dengan menghitung dengan benar."</div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" disabled>← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">🔎 Slide 2 · Memahami Informasi</div>
+        <h2>Memahami Informasi dalam Soal</h2>
+        <p>Sebelum menghitung, temukan tiga hal ini:</p>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">1</span><span><strong>Apa yang diketahui?</strong></span></div>
+          <div class="think-step"><span class="tq">2</span><span><strong>Apa yang ditanyakan?</strong></span></div>
+          <div class="think-step"><span class="tq">3</span><span><strong>Informasi mana yang diperlukan</strong> untuk menjawabnya?</span></div>
+        </div>
+
+        <div class="hl hl-steel"><strong>Contoh:</strong> Dina memiliki uang Rp100.000. Ia membeli buku seharga Rp28.000 dan alat tulis seharga Rp17.000. Berapa sisa uang Dina?</div>
+
+        <div class="hl hl-amber">
+          <strong>Diketahui:</strong> uang awal Rp100.000, buku Rp28.000, alat tulis Rp17.000.<br>
+          <strong>Ditanyakan:</strong> sisa uang Dina.
+        </div>
+
+        <div id="b2" class="bar-wrap"></div>
+
+        <p><strong>Hubungan antarbesaran:</strong></p>
+        <div class="eq sm"><span class="am">Total belanja</span> <span class="op">=</span> harga buku <span class="op">+</span> harga alat tulis</div>
+        <div class="eq sm"><span class="am">Sisa uang</span> <span class="op">=</span> uang awal <span class="op">−</span> total belanja</div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>Jangan menghafal "kata ini selalu berarti operasi itu". <strong style="color:var(--amber)">Bayangkan situasinya</strong>: uang keluar untuk belanja, jadi yang tersisa adalah uang awal dikurangi yang sudah keluar.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">🧭 Slide 3 · Urutan Operasi</div>
+        <h2>Menyusun Urutan Operasi</h2>
+        <p>Masih cerita Dina. Kita kerjakan satu langkah dulu, lalu hasilnya dipakai untuk langkah berikutnya.</p>
+
+        <div class="chain">
+          <div class="cbox">Harga barang<small>Rp28.000 dan Rp17.000</small></div><span class="carrow">→</span>
+          <div class="cbox am">Total belanja<small>hasil langkah 1</small></div><span class="carrow">→</span>
+          <div class="cbox gr">Sisa uang<small>jawaban</small></div>
+        </div>
+
+        <div class="hl hl-amber">
+          <strong>Langkah 1 — total belanja</strong>
+          <div class="eq sm">Rp28.000 <span class="op">+</span> Rp17.000 <span class="op">=</span> <span class="am">Rp45.000</span></div>
+        </div>
+        <div class="hl hl-green">
+          <strong>Langkah 2 — sisa uang</strong>
+          <div class="eq sm">Rp100.000 <span class="op">−</span> <span class="am">Rp45.000</span> <span class="op">=</span> <span class="ok">Rp55.000</span></div>
+          <span style="font-size:0.86rem;"><strong>Jawaban:</strong> Sisa uang Dina adalah Rp55.000.</span>
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">🔗</span>
+          <span><strong style="color:var(--amber)">Hasil langkah pertama dipakai untuk menyelesaikan langkah kedua.</strong> Itulah ciri soal multi-langkah.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">🏷️ Slide 4 · Persen dan Operasi Hitung</div>
+        <h2>Menggabungkan Persen dan Operasi Hitung</h2>
+        <p>Sepatu seharga Rp200.000 mendapat diskon 20%. Berapa harga yang harus dibayar?</p>
+
+        <div id="b4" class="bar-wrap"></div>
+        <div class="seq-cap">Harga awal dibagi menjadi bagian diskon dan bagian yang dibayar</div>
+
+        <div class="hl hl-violet">
+          <strong>Langkah 1 — menghitung diskon</strong>
+          <div class="eq sm">20% <span class="op">×</span> Rp200.000 <span class="op">=</span> <span class="vi">Rp40.000</span></div>
+        </div>
+        <div class="hl hl-green">
+          <strong>Langkah 2 — harga setelah diskon</strong>
+          <div class="eq sm">Rp200.000 <span class="op">−</span> Rp40.000 <span class="op">=</span> <span class="ok">Rp160.000</span></div>
+        </div>
+
+        <div class="hl hl-red">
+          <strong>Jangan samakan keduanya!</strong>
+          <ul class="tip-list" style="margin-bottom:0;">
+            <li>Rp40.000 adalah <strong>nilai diskon</strong> (potongan harganya).</li>
+            <li>Rp160.000 adalah <strong>harga yang harus dibayar</strong>.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🍰 Slide 5 · Pecahan dan Jumlah Keseluruhan</div>
+        <h2>Menggabungkan Pecahan dan Jumlah Keseluruhan</h2>
+        <p>Sebuah tangki berisi 60 liter air. Sebanyak 1/3 dari air digunakan pada pagi hari, lalu 12 liter digunakan pada sore hari. Berapa liter air yang tersisa?</p>
+
+        <div id="b5" class="bar-wrap"></div>
+
+        <div class="hl hl-amber">
+          <strong>Langkah 1 — air yang dipakai pagi hari</strong>
+          <div class="eq sm">1/3 <span class="op">×</span> 60 <span class="op">=</span> <span class="am">20 liter</span></div>
+        </div>
+        <div class="hl hl-amber">
+          <strong>Langkah 2 — total air yang dipakai</strong>
+          <div class="eq sm">20 <span class="op">+</span> 12 <span class="op">=</span> <span class="am">32 liter</span></div>
+        </div>
+        <div class="hl hl-green">
+          <strong>Langkah 3 — air yang tersisa</strong>
+          <div class="eq sm">60 <span class="op">−</span> 32 <span class="op">=</span> <span class="ok">28 liter</span></div>
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">⚠️</span>
+          <span>Pecahan 1/3 di soal merujuk pada <strong style="color:var(--amber)">jumlah air awal (60 liter)</strong>, bukan jumlah yang tersisa setelah pemakaian pertama.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">🧭 Slide 6 · Memilih Strategi</div>
+        <h2>Memilih Strategi, Bukan Sekadar Kata Kunci</h2>
+        <p>Soal yang berbeda bisa butuh kombinasi operasi yang berbeda, <strong>meskipun kata-katanya mirip</strong>. Kuncinya ada pada situasi dan pertanyaannya.</p>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">1</span><span><strong>Bayangkan</strong> situasi dalam soal.</span></div>
+          <div class="think-step"><span class="tq">2</span><span>Tentukan <strong>apa yang harus dicari terlebih dahulu</strong>.</span></div>
+          <div class="think-step"><span class="tq">3</span><span><strong>Hubungkan</strong> hasil langkah pertama dengan pertanyaan akhir.</span></div>
+          <div class="think-step"><span class="tq">4</span><span>Baru <strong>tentukan operasi</strong> yang diperlukan.</span></div>
+        </div>
+
+        <div class="flow">
+          <div class="flow-box">Informasi soal</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Besaran yang dicari terlebih dahulu</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Hasil antara</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box end"><strong>Jawaban akhir</strong></div>
+        </div>
+
+        <div class="hl hl-steel">
+          <strong>Cerita sama, pertanyaan beda:</strong> Baju seharga Rp80.000 diskon 25%.
+          <ul class="tip-list" style="margin-bottom:0;">
+            <li><strong>Berapa uang yang dihemat?</strong> Cukup satu langkah: 25% × Rp80.000 = Rp20.000.</li>
+            <li><strong>Berapa harga yang dibayar?</strong> Dua langkah: Rp80.000 − Rp20.000 = Rp60.000.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">✅ Slide 7 · Memeriksa Kewajaran</div>
+        <h2>Memeriksa Kewajaran Jawaban</h2>
+        <p>Kembali ke cerita Dina: uang awal Rp100.000, total belanja Rp45.000, sisa uang Rp55.000. Apakah jawaban ini masuk akal?</p>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">1</span><span><strong>Apakah total belanja lebih kecil daripada uang awal?</strong> Ya, Rp45.000 lebih kecil dari Rp100.000.</span></div>
+          <div class="think-step"><span class="tq">2</span><span><strong>Apakah sisa uang masuk akal?</strong> Ya, sisa tidak mungkin lebih besar dari uang awal.</span></div>
+          <div class="think-step"><span class="tq">3</span><span><strong>Apakah satuannya sudah sesuai?</strong> Ya, jawabannya dalam rupiah.</span></div>
+          <div class="think-step"><span class="tq">4</span><span><strong>Apakah hasil akhir menjawab pertanyaan yang sebenarnya?</strong> Ya, yang ditanyakan sisa uang, bukan total belanja.</span></div>
+        </div>
+
+        <div class="hl hl-green">
+          <strong>Satu cara mengecek lagi:</strong>
+          <div class="chk-row"><span class="chk">Rp55.000 + Rp45.000 = Rp100.000<b>✓</b></span></div>
+          <span style="font-size:0.86rem;">Sisa uang ditambah belanja harus kembali ke uang awal.</span>
+        </div>
+
+        <div class="hl hl-red">
+          <strong>Hati-hati: hitungan bisa benar, tapi jawabannya salah konteks.</strong>
+          <ul class="tip-list" style="margin-bottom:0;">
+            <li>Rp145.000 hasil dari Rp100.000 + Rp45.000. Tidak masuk akal, karena sisa uang tidak mungkin lebih besar dari uang awal.</li>
+            <li>Rp45.000 itu total belanja, bukan sisa uang. Jawabannya tidak menjawab pertanyaan.</li>
+          </ul>
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>Perhitungan yang benar tetap perlu <strong style="color:var(--amber)">diperiksa konteksnya</strong>.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📝 Slide 8 · Ringkasan Strategi</div>
+        <h2>Ringkasan Strategi Penyelesaian</h2>
+
+        <div class="flow">
+          <div class="flow-box key">BACA CERITA</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Identifikasi informasi</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Tentukan apa yang ditanyakan</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Susun urutan penyelesaian</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Hitung langkah demi langkah</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box end"><strong>Periksa kewajaran jawaban</strong></div>
+        </div>
+
+        <div class="quote" style="text-align:center;border-left:none;border-radius:8px;">"Jangan buru-buru menghitung. Pahami masalahnya, susun strateginya, lalu selesaikan langkah demi langkah."</div>
+      </div>
+
+      <div class="finish">
+        <span class="finish-icon">🧩</span>
+        <div class="finish-title">KONSEP SUDAH SIAP!</div>
+        <div class="finish-desc">Kamu sudah tahu cara berpikir sebelum menghitung. Saatnya dicoba di latihan.</div>
+        <div class="xp">+100 XP</div>
+        <div class="finish-btns">
+          <a href="latihan35.html" class="btn btn-primary">🧮 Mulai Latihan</a>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-ghost" disabled>Selesai ✓</button>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+</div>
+
+<script>
+  /* ===== Bar diagram builder =====
+     segs : [{n:'name', v:number, t:'text shown', c:'steel|amber|green|violet'}]
+     total: whole amount, topLabel: caption above the bar */
+  function bar(id, segs, total, topLabel){
+    const W = 420, by = 30, BH = 46, H = by + BH + 4;
+    let s = `<svg class="bar-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${topLabel}">`;
+    s += `<path class="brace" d="M1,${by-6} L1,${by-12} L${W-1},${by-12} L${W-1},${by-6}"/>`;
+    s += `<text class="bt" x="${W/2}" y="${by-22}">${topLabel}</text>`;
+    let x = 0;
+    segs.forEach(g=>{
+      const w = g.v/total*W;
+      s += `<rect class="bs-${g.c}" x="${x+1}" y="${by}" width="${w-2}" height="${BH}" rx="8"/>`;
+      s += `<text class="bn" x="${x+w/2}" y="${by+15}">${g.n}</text>`;
+      s += `<text class="bv" x="${x+w/2}" y="${by+32}">${g.t}</text>`;
+      x += w;
+    });
+    s += `</svg>`;
+    document.getElementById(id).innerHTML = s;
+  }
+
+  bar('b2', [{n:'Buku',v:28,t:'Rp28.000',c:'steel'},{n:'Alat tulis',v:17,t:'Rp17.000',c:'amber'},{n:'Sisa uang',v:55,t:'?',c:'green'}], 100, 'Uang awal Rp100.000');
+  bar('b4', [{n:'Diskon 20%',v:20,t:'Rp40.000',c:'violet'},{n:'Dibayar',v:80,t:'Rp160.000',c:'green'}], 100, 'Harga awal Rp200.000');
+  bar('b5', [{n:'Pagi',v:20,t:'20 L',c:'steel'},{n:'Sore',v:12,t:'12 L',c:'amber'},{n:'Tersisa',v:28,t:'28 L',c:'green'}], 60, 'Isi tangki 60 liter');
+
+  /* ===== Slide navigation ===== */
+  const TOTAL = 8;
+  let cur = 0;
+
+  const dotsEl = document.getElementById('dots');
+  for(let i=0;i<TOTAL;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots(){
+    document.querySelectorAll('.dot').forEach((d,i)=>{
+      d.className = 'dot' + (i===cur?' active':i<cur?' done':'');
+    });
+  }
+
+  function goTo(n){
+    document.querySelectorAll('.slide')[cur].classList.remove('active');
+    cur = n;
+    document.querySelectorAll('.slide')[cur].classList.add('active');
+    updateDots();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function nextSlide(){ if(cur<TOTAL-1) goTo(cur+1); }
+  function prevSlide(){ if(cur>0) goTo(cur-1); }
+
+  document.querySelectorAll('.slide')[0].classList.add('active');
+</script>
+</body>
+</html>
