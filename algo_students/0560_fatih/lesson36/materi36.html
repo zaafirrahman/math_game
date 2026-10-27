@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Penalaran Geometri · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;--red-bg:rgba(232,80,64,0.08);
+    --violet:#7c3aed;--violet-bg:rgba(124,58,237,0.1);--violet-light:#a78bfa;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 70% 20%,rgba(74,144,184,0.06) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--steel-light);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--amber);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.4);color:var(--amber);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.3rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:0.6rem;line-height:1.3;letter-spacing:1px;}
+  h1 span{color:var(--amber);}
+  .intro{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:8px;height:8px;border-radius:2px;background:var(--border2);transition:all 0.3s;cursor:pointer;}
+  .dot.active{background:var(--amber);box-shadow:0 0 8px rgba(240,168,48,0.5);transform:scaleX(1.5);}
+  .dot.done{background:#8c5a2d;}
+
+  .slide{display:none;animation:fadeUp 0.35s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),transparent);}
+  .card-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.violet{color:var(--violet-light);}
+  .card-label.steel{color:var(--steel-light);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.7rem;line-height:1.4;letter-spacing:0.5px;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+  .card p strong{color:var(--text);}
+
+  .hl{border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-violet{background:var(--violet-bg);border:1px solid rgba(124,58,237,0.35);}
+  .hl-steel{background:var(--steel-bg);border:1px solid rgba(74,144,184,0.35);}
+  .hl-amber{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);}
+  .hl-green{background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);}
+  .hl-red{background:var(--red-bg);border:1px solid rgba(232,80,64,0.3);}
+  .hl-violet strong{color:var(--violet-light);}
+  .hl-steel strong{color:var(--steel-light);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+  .hl-red strong{color:var(--red);}
+
+  .callout{display:flex;gap:0.8rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 1rem;margin:1rem 0;font-size:0.87rem;color:var(--text-mid);line-height:1.6;}
+  .callout-icon{font-size:1.2rem;flex-shrink:0;}
+
+  .tip-list{list-style:none;margin:0.8rem 0;}
+  .tip-list li{display:flex;gap:0.6rem;align-items:flex-start;font-size:0.88rem;color:var(--text-mid);margin-bottom:0.5rem;line-height:1.55;}
+  .tip-list li::before{content:'→';color:var(--amber);font-weight:700;flex-shrink:0;}
+
+  .nav-btns{display:flex;gap:0.8rem;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--amber-light),#c9820f);color:#08131c;font-weight:800;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(240,168,48,0.35);}
+  .btn:disabled{opacity:0.4;cursor:default;}
+
+  .finish{text-align:center;padding:2.5rem 1.8rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;animation:bounce 1s ease-in-out infinite alternate;}
+  @keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+  .finish-title{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--amber);letter-spacing:3px;margin-bottom:0.6rem;}
+  .finish-desc{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);color:var(--amber);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  /* ===== number-sequence diagram (rendered by JS) ===== */
+  .seq-wrap{display:flex;justify-content:center;margin:0.9rem 0 0.4rem;}
+  .seq-svg{width:100%;height:auto;overflow:visible;}
+  .seq-svg .sb{fill:var(--track);stroke:var(--border2);stroke-width:2;}
+  .seq-svg .sb.q{fill:var(--amber-bg);stroke:var(--amber);stroke-dasharray:5 4;}
+  .seq-svg .sb.ans{fill:var(--green-bg);stroke:var(--green);}
+  .seq-svg text{font-family:'Rajdhani',sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;}
+  .seq-svg .sn{font-size:22px;fill:var(--text);}
+  .seq-svg .sn.q{fill:var(--amber);}
+  .seq-svg .sn.ans{fill:var(--green-light);}
+  .seq-svg .sl{font-size:17px;}
+  .seq-svg .arc{fill:none;stroke-width:2.2;}
+  .seq-svg .c-amber{stroke:var(--amber);} .seq-svg text.c-amber{fill:var(--amber);stroke:none;}
+  .seq-svg .c-red{stroke:var(--red);} .seq-svg text.c-red{fill:var(--red);stroke:none;}
+  .seq-svg .c-violet{stroke:var(--violet-light);} .seq-svg text.c-violet{fill:var(--violet-light);stroke:none;}
+  .seq-svg .c-steel{stroke:var(--steel-light);} .seq-svg text.c-steel{fill:var(--steel-light);stroke:none;}
+  .seq-svg .ah-amber{fill:var(--amber);} .seq-svg .ah-red{fill:var(--red);}
+  .seq-svg .ah-violet{fill:var(--violet-light);} .seq-svg .ah-steel{fill:var(--steel-light);}
+  .seq-cap{text-align:center;font-family:'Rajdhani',sans-serif;font-size:0.76rem;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:0.5rem;}
+
+  /* equation lines */
+  .eq{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1.2rem;text-align:center;letter-spacing:1px;color:var(--text);margin:0.35rem 0;}
+  .eq .op{color:var(--text-muted);padding:0 0.15rem;}
+  .eq .ok{color:var(--green-light);}
+  .eq .am{color:var(--amber);}
+  .eq .vi{color:var(--violet-light);}
+  .eq.sm{font-size:1rem;}
+
+  /* pair-check chips */
+  .chk-row{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin:0.8rem 0 0.4rem;}
+  .chk{background:var(--track);border:1px solid rgba(72,200,112,0.5);border-radius:8px;padding:0.4rem 0.8rem;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.95rem;color:var(--text);}
+  .chk b{color:var(--green);margin-left:0.35rem;}
+  .chk.bad{border-color:rgba(232,80,64,0.5);}
+  .chk.bad b{color:var(--red);}
+
+  /* thinking steps */
+  .think-steps{display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0;}
+  .think-step{display:flex;gap:0.7rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:8px;padding:0.7rem 0.9rem;font-size:0.85rem;color:var(--text-mid);line-height:1.55;}
+  .think-step .tq{font-family:'Rajdhani',sans-serif;font-weight:800;color:var(--amber);flex-shrink:0;min-width:1.1rem;}
+  .think-step strong{color:var(--text);}
+
+  /* quote */
+  .quote{border-left:3px solid var(--amber);background:var(--amber-bg);border-radius:0 8px 8px 0;padding:0.9rem 1.1rem;margin:1rem 0;font-size:0.95rem;line-height:1.65;color:var(--amber-light);font-weight:700;}
+
+  /* flow */
+  .flow{display:flex;flex-direction:column;align-items:center;gap:0.3rem;margin:1.1rem 0;}
+  .flow-box{width:100%;max-width:400px;text-align:center;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.7rem 1rem;font-size:0.88rem;color:var(--text);line-height:1.5;}
+  .flow-box.key{border-color:var(--amber);background:var(--amber-bg);font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1rem;letter-spacing:1.5px;color:var(--amber-light);}
+  .flow-box.end{border-color:rgba(72,200,112,0.5);background:var(--green-bg);}
+  .flow-box.end strong{color:var(--green);}
+  .flow-arrow{color:var(--text-muted);font-size:1.1rem;line-height:1;}
+
+  /* ===== lesson 36: geometry diagrams ===== */
+  .geo-wrap{display:flex;justify-content:center;margin:0.9rem 0 0.4rem;}
+  .geo-svg{width:100%;max-width:340px;height:auto;overflow:visible;}
+  .geo-svg text{font-family:'Rajdhani',sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;}
+  .geo-svg .gd{font-size:15px;fill:var(--text);}
+  .geo-svg .gd.am{fill:var(--amber);}
+  .geo-svg .gi{font-size:16px;fill:var(--text);}
+  .geo-svg .gi.big{font-size:20px;}
+  .geo-svg .gs{font-size:11px;fill:var(--text-muted);font-weight:700;letter-spacing:0.5px;}
+  .g-steel{fill:rgba(74,144,184,0.22);stroke:#4a90b8;stroke-width:2.5;stroke-linejoin:round;}
+  .g-amber{fill:rgba(240,168,48,0.2);stroke:#f0a830;stroke-width:2.5;stroke-linejoin:round;}
+  .g-green{fill:rgba(72,200,112,0.18);stroke:#48c870;stroke-width:2.5;stroke-linejoin:round;}
+  .g-cut{fill:rgba(124,58,237,0.14);stroke:#a78bfa;stroke-width:2.5;stroke-dasharray:6 4;stroke-linejoin:round;}
+  .g-out{fill:none;stroke:#f0a830;stroke-width:4.5;stroke-linejoin:round;}
+  .g-aux{stroke:#586878;stroke-width:2;stroke-dasharray:5 4;}
+  .g-tick{stroke:#f0a830;stroke-width:2.5;}
+  .legend{display:flex;flex-wrap:wrap;gap:0.4rem 1.1rem;justify-content:center;font-size:0.78rem;color:var(--text-mid);margin:0.3rem 0 0.8rem;}
+  .lg{display:flex;align-items:center;gap:0.4rem;}
+  .sw{width:14px;height:14px;border-radius:3px;border:2px solid;display:inline-block;}
+  .sw.steel{border-color:#4a90b8;background:rgba(74,144,184,0.22);}
+  .sw.amber{border-color:#f0a830;background:rgba(240,168,48,0.2);}
+  .sw.cut{border-color:#a78bfa;background:rgba(124,58,237,0.14);border-style:dashed;}
+  .sw.line{border:none;height:4px;width:18px;background:#f0a830;border-radius:2px;}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+  @media (max-width:540px){.two{grid-template-columns:1fr;}}
+  .strat{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 0.8rem 0.8rem;}
+  .strat-t{font-family:'Rajdhani',sans-serif;font-size:0.8rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;text-align:center;margin-bottom:0.2rem;}
+  .strat-t.a{color:var(--violet-light);} .strat-t.b{color:var(--amber);}
+  .strat .geo-svg{max-width:250px;}
+  .strat .eq{font-size:0.98rem;}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson36.html">LESSON 36</a><span>/</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📐 Materi · Lesson 36</div>
+  <h1>Penalaran Geometri: <span>Melihat Bentuk</span> dengan Cara Berbeda</h1>
+  <p class="intro">Bangun yang terlihat rumit bisa dipecah jadi bentuk sederhana. Pahami strukturnya dulu, baru pilih cara menghitung.</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- SLIDE 1 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📐 Slide 1 · Pembuka</div>
+        <h2>Satu Bentuk, Banyak Strategi</h2>
+        <p>Bangun di bawah terlihat rumit karena bukan persegi panjang biasa. Tapi sebenarnya ia <strong>tersusun dari dua persegi panjang</strong>, bentuk yang sudah kamu kenal.</p>
+
+        <div id="g1" class="geo-wrap"></div>
+        <div class="legend">
+          <span class="lg"><span class="sw steel"></span>Persegi panjang A</span>
+          <span class="lg"><span class="sw amber"></span>Persegi panjang B</span>
+        </div>
+
+        <div class="hl hl-amber"><strong>Pertanyaan pemantik:</strong><br>“Bagaimana cara menghitung luas bentuk ini tanpa menghafal rumus baru?”</div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>Strategi pertama bukan menghitung, tapi <strong style="color:var(--amber)">memahami struktur bangun</strong>: bentuk ini terdiri dari apa saja?</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" disabled>← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">✂️ Slide 2 · Memecah Bangun Gabungan</div>
+        <h2>Persegi Panjang Utuh, Dikurangi Bagian yang Hilang</h2>
+        <p>Bangun L ini juga bisa dilihat sebagai <strong>persegi panjang 8 cm × 6 cm</strong> yang sudut kanan atasnya dipotong sebesar <strong>3 cm × 2 cm</strong>.</p>
+
+        <div id="g2" class="geo-wrap"></div>
+        <div class="legend">
+          <span class="lg"><span class="sw steel"></span>Bagian bangun</span>
+          <span class="lg"><span class="sw cut"></span>Bagian yang dipotong</span>
+        </div>
+
+        <div class="eq sm">Luas persegi panjang utuh <span class="op">=</span> 8 <span class="op">×</span> 6 <span class="op">=</span> 48 cm²</div>
+        <div class="eq sm">Luas bagian yang dipotong <span class="op">=</span> 3 <span class="op">×</span> 2 <span class="op">=</span> 6 cm²</div>
+        <div class="eq"><span class="ok">(8 × 6) − (3 × 2) = 48 − 6 = 42 cm²</span></div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>Kita <strong style="color:var(--amber)">tidak harus menghitung tiap bagian satu per satu</strong>. Dengan cara ini cukup dua perkalian dan satu pengurangan.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">⚖️ Slide 3 · Dua Strategi</div>
+        <h2>Dua Strategi, Jawaban Sama</h2>
+        <p>Bangun L yang sama bisa diselesaikan dengan dua cara berbeda.</p>
+
+        <div class="two">
+          <div class="strat">
+            <div class="strat-t a">Strategi A · Kurangi</div>
+            <div id="g3a" class="geo-wrap"></div>
+            <div class="eq sm">(8 × 6) − (3 × 2)</div>
+            <div class="eq sm">= 48 − 6 = <span class="ok">42 cm²</span></div>
+          </div>
+          <div class="strat">
+            <div class="strat-t b">Strategi B · Pecah</div>
+            <div id="g3b" class="geo-wrap"></div>
+            <div class="eq sm">Bawah: 8 × 4 = <span class="am">32</span></div>
+            <div class="eq sm">Atas kiri: 5 × 2 = <span class="am">10</span></div>
+            <div class="eq sm">32 + 10 = <span class="ok">42 cm²</span></div>
+          </div>
+        </div>
+
+        <div class="hl hl-amber">
+          <strong>Sisi yang ditemukan di Strategi B:</strong> lebar bagian atas kiri = 8 − 3 = 5 cm, dan tinggi bagian bawah = 6 − 2 = 4 cm. Keduanya tidak diberi di gambar, tapi bisa dicari dari ukuran lain.
+        </div>
+
+        <div class="hl hl-green">
+          <strong>Strategi berbeda bisa menghasilkan jawaban yang sama</strong>, selama cara membagi bentuknya dan hitungannya benar.
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📏 Slide 4 · Luas Bukan Keliling</div>
+        <h2>Luas dan Keliling Mengukur Hal yang Berbeda</h2>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">▦</span><span><strong>Luas</strong> mengukur <strong>bagian dalam</strong> bangun (satuan cm²).</span></div>
+          <div class="think-step"><span class="tq">▭</span><span><strong>Keliling</strong> mengukur <strong>panjang seluruh batas luar</strong> bangun (satuan cm).</span></div>
+        </div>
+
+        <div id="g4" class="geo-wrap"></div>
+        <div class="legend">
+          <span class="lg"><span class="sw line"></span>Batas luar (keliling)</span>
+          <span class="lg"><span class="sw steel"></span>Isi bangun (luas)</span>
+        </div>
+
+        <p><strong>Jumlahkan hanya sisi yang berada di batas luar:</strong></p>
+        <div class="chk-row">
+          <span class="chk">8</span><span class="chk">4</span><span class="chk">3</span><span class="chk">2</span><span class="chk">5</span><span class="chk">6</span>
+        </div>
+        <div class="eq"><span class="ok">8 + 4 + 3 + 2 + 5 + 6 = 28 cm</span></div>
+        <div class="eq sm">Keliling bangun L = <span class="ok">28 cm</span></div>
+
+        <div class="hl hl-red">
+          <strong>Hati-hati dengan dua kesalahan ini:</strong>
+          <ul class="tip-list" style="margin-bottom:0;">
+            <li>Luas tidak didapat dari menjumlahkan panjang sisi. Hasil 28 cm adalah panjang, bukan 42 cm² yang menyatakan isi.</li>
+            <li>Garis bantu di dalam bukan bagian keliling. Kalau dua potongan dihitung kelilingnya sendiri-sendiri (24 + 14 = 38), garis bantu sepanjang 5 cm terhitung dua kali, sehingga lebih 10 cm dari 28.</li>
+          </ul>
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">🔎</span>
+          <span>Menarik: keliling bangun L (28 cm) sama dengan keliling persegi panjang utuh 8 × 6, yaitu 2 × (8 + 6) = 28. Sisi atas <strong style="color:var(--amber)">5 + 3 = 8</strong> dan sisi kanan <strong style="color:var(--amber)">2 + 4 = 6</strong>.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">🔍 Slide 5 · Sisi yang Belum Diketahui</div>
+        <h2>Menemukan Sisi yang Belum Diketahui</h2>
+        <p>Ukuran yang belum diketahui bisa ditemukan dari <strong>hubungan antara sisi dan luas</strong>, bukan dari menebak gambar.</p>
+
+        <div class="hl hl-steel"><strong>Contoh:</strong> Sebuah persegi panjang punya panjang 12 cm dan luas 84 cm². Berapa lebarnya?</div>
+
+        <div id="g5" class="geo-wrap"></div>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">1</span><span><strong>Hubungannya:</strong> Luas = panjang × lebar</span></div>
+          <div class="think-step"><span class="tq">2</span><span><strong>Masukkan yang diketahui:</strong> 84 = 12 × lebar</span></div>
+          <div class="think-step"><span class="tq">3</span><span><strong>Balik hubungannya:</strong> lebar = luas ÷ panjang</span></div>
+        </div>
+
+        <div class="eq sm">Lebar <span class="op">=</span> 84 <span class="op">÷</span> 12</div>
+        <div class="eq"><span class="ok">Lebar = 7 cm</span></div>
+
+        <div class="hl hl-green">
+          <strong>Periksa:</strong>
+          <div class="chk-row"><span class="chk">12 × 7 = 84<b>✓</b></span></div>
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>Gunakan <strong style="color:var(--amber)">informasi yang diketahui</strong> untuk menemukan ukuran yang belum diketahui. Gambar tidak selalu digambar sesuai skala, jadi jangan menebak dari tampilannya.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">🔍 Slide 6 · Keliling dengan Sisi yang Hilang</div>
+        <h2>Sisi yang Belum Diberi Label</h2>
+        <p>Pada gambar ini hanya dua sisi yang diberi ukuran. Dua sisi lainnya ditandai <strong>?</strong>. Apakah keliling tetap bisa dihitung?</p>
+
+        <div id="g6" class="geo-wrap"></div>
+        <div class="seq-cap">Satu garis kecil pada sisi atas dan bawah artinya kedua sisi itu sama panjang. Dua garis kecil pada sisi kiri dan kanan juga artinya sama panjang.</div>
+
+        <div class="hl hl-violet">
+          <strong>Prinsipnya:</strong> pada persegi panjang, <strong>sisi yang berhadapan sama panjang</strong>.
+        </div>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">1</span><span>Sisi bawah berhadapan dengan sisi atas (10 cm), jadi sisi bawah = <strong>10 cm</strong>.</span></div>
+          <div class="think-step"><span class="tq">2</span><span>Sisi kanan berhadapan dengan sisi kiri (6 cm), jadi sisi kanan = <strong>6 cm</strong>.</span></div>
+          <div class="think-step"><span class="tq">3</span><span>Setelah keempat sisi diketahui, baru hitung kelilingnya.</span></div>
+        </div>
+
+        <div class="eq sm">10 <span class="op">+</span> 6 <span class="op">+</span> 10 <span class="op">+</span> 6 <span class="op">=</span> 32 cm</div>
+        <div class="eq"><span class="ok">2 × (10 + 6) = 32 cm</span></div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>Rumus <strong style="color:var(--amber)">2 × (panjang + lebar)</strong> bekerja karena setiap ukuran muncul dua kali. Temukan dulu sisi yang hilang, baru hitung keliling.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">🧭 Slide 7 · Memilih Strategi</div>
+        <h2>Tiga Pertanyaan Sebelum Menghitung</h2>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">1</span><span><strong>Apakah bentuknya bisa dipecah</strong> menjadi bangun sederhana?</span></div>
+          <div class="think-step"><span class="tq">2</span><span><strong>Apakah lebih mudah menghitung seluruh bentuk</strong> lalu mengurangi bagian yang hilang?</span></div>
+          <div class="think-step"><span class="tq">3</span><span><strong>Apakah ada panjang sisi yang bisa ditemukan</strong> dari hubungan antarsisi?</span></div>
+        </div>
+
+        <div class="hl hl-steel"><strong>Contoh:</strong> Bangun L di bawah berukuran 6 cm × 5 cm, dengan sudut kanan atas dipotong 3 cm × 2 cm. Berapa luasnya?</div>
+
+        <div class="two">
+          <div class="strat">
+            <div class="strat-t a">Cara 1 · Kurangi</div>
+            <div id="g7a" class="geo-wrap"></div>
+            <div class="eq sm">(6 × 5) − (3 × 2)</div>
+            <div class="eq sm">= 30 − 6 = <span class="ok">24 cm²</span></div>
+          </div>
+          <div class="strat">
+            <div class="strat-t b">Cara 2 · Pecah</div>
+            <div id="g7b" class="geo-wrap"></div>
+            <div class="eq sm">Kiri: 3 × 5 = <span class="am">15</span></div>
+            <div class="eq sm">Kanan bawah: 3 × 3 = <span class="am">9</span></div>
+            <div class="eq sm">15 + 9 = <span class="ok">24 cm²</span></div>
+          </div>
+        </div>
+
+        <div class="hl hl-amber">
+          <strong>Cara memilih:</strong> Cara 1 menjawab pertanyaan 2, karena bagian yang hilang hanya satu. Cara 2 memakai pertanyaan 1 dan 3: bentuk dipecah, lalu tinggi bagian kanan bawah ditemukan dari 5 − 2 = 3 cm.
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>Dua-duanya benar dan hasilnya sama. Pilih cara yang <strong style="color:var(--amber)">paling jelas bagimu</strong>, bukan yang paling banyak hitungannya.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 8 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📝 Slide 8 · Ringkasan Strategi</div>
+        <h2>Ringkasan Strategi Geometri</h2>
+
+        <div class="flow">
+          <div class="flow-box key">LIHAT STRUKTUR BANGUN</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Pecah atau lengkapi bentuk</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Identifikasi ukuran yang diketahui</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Temukan ukuran yang belum diketahui</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Pilih strategi luas atau keliling</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box end"><strong>Hitung dan periksa jawaban</strong></div>
+        </div>
+
+        <div class="quote" style="text-align:center;border-left:none;border-radius:8px;">“Jangan langsung menghitung. Lihat bentuknya, temukan hubungannya, lalu pilih strategi terbaik.”</div>
+      </div>
+
+      <div class="finish">
+        <span class="finish-icon">📐</span>
+        <div class="finish-title">KONSEP SUDAH SIAP!</div>
+        <div class="finish-desc">Kamu sudah tahu cara melihat bentuk dengan lebih cerdas. Saatnya dicoba di latihan.</div>
+        <div class="xp">+100 XP</div>
+        <div class="finish-btns">
+          <a href="latihan36.html" class="btn btn-primary">🧮 Mulai Latihan</a>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-ghost" disabled>Selesai ✓</button>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+</div>
+
+<script>
+  /* ===== Geometry diagram builder =====
+     Semua koordinat dalam cm, origin di pojok kiri-atas bangun, y ke bawah.
+     S = piksel per cm, sehingga gambar proporsional dengan ukuran sebenarnya. */
+  function geo(id, cw, ch, S, aria, fn){
+    const pad = 40, W = cw*S + pad*2, Ht = ch*S + pad*2;
+    const X = v => +(pad + v*S).toFixed(2), Y = v => +(pad + v*S).toFixed(2);
+    const H = {
+      R:(x,y,w,h,c)=>`<rect class="${c}" x="${X(x)}" y="${Y(y)}" width="${w*S}" height="${h*S}" rx="2"/>`,
+      P:(pts,c)=>`<polygon class="${c}" points="${pts.map(p=>X(p[0])+','+Y(p[1])).join(' ')}"/>`,
+      L:(x1,y1,x2,y2,c)=>`<line class="${c}" x1="${X(x1)}" y1="${Y(y1)}" x2="${X(x2)}" y2="${Y(y2)}"/>`,
+      T:(x,y,t,c)=>`<text class="${c||'gd'}" x="${X(x)}" y="${Y(y)}">${t}</text>`
+    };
+    document.getElementById(id).innerHTML =
+      `<svg class="geo-svg" viewBox="0 0 ${W} ${Ht}" role="img" aria-label="${aria}">${fn(H)}</svg>`;
+  }
+
+  /* titik sudut bangun L: persegi panjang w×h dengan sudut kanan-atas dipotong cw×chh */
+  const Lpts = (w,h,cw,chh) => [[0,0],[w-cw,0],[w-cw,chh],[w,chh],[w,h],[0,h]];
+
+  /* Slide 1: dua persegi panjang A (bawah 8×4) dan B (kiri atas 5×2) */
+  geo('g1',8,6,30,'Bangun L tersusun dari dua persegi panjang: A berukuran 8 kali 4 dan B berukuran 5 kali 2',H=>
+    H.R(0,2,8,4,'g-steel')+H.R(0,0,5,2,'g-amber')+
+    H.T(4,4,'A','gi big')+H.T(2.5,1,'B','gi big')+
+    H.T(4,6.6,'8 cm')+H.T(-0.8,3,'6 cm')+H.T(6.5,-0.6,'3 cm')+H.T(8.8,1,'2 cm'));
+
+  /* Slide 2: persegi panjang 8×6 dikurangi bagian 3×2 */
+  geo('g2',8,6,30,'Persegi panjang 8 kali 6 dengan sudut kanan atas 3 kali 2 dipotong',H=>
+    H.P(Lpts(8,6,3,2),'g-steel')+H.R(5,0,3,2,'g-cut')+
+    H.T(6.5,1,'3 × 2','gs')+H.T(3,4,'8 × 6 = 48','gi')+
+    H.T(4,6.6,'8 cm')+H.T(-0.8,3,'6 cm')+H.T(6.5,-0.6,'3 cm')+H.T(8.8,1,'2 cm'));
+
+  /* Slide 3A: strategi kurangi */
+  geo('g3a',8,6,24,'Strategi A: persegi panjang 8 kali 6 dikurangi bagian 3 kali 2',H=>
+    H.P(Lpts(8,6,3,2),'g-steel')+H.R(5,0,3,2,'g-cut')+
+    H.T(6.5,1,'3×2','gs')+
+    H.T(4,6.7,'8 cm')+H.T(-0.9,3,'6 cm')+H.T(6.5,-0.7,'3 cm')+H.T(9,1,'2 cm'));
+
+  /* Slide 3B: strategi pecah (bawah 8×4, kiri atas 5×2) */
+  geo('g3b',8,6,24,'Strategi B: bagian bawah 8 kali 4 dan bagian kiri atas 5 kali 2',H=>
+    H.R(0,2,8,4,'g-steel')+H.R(0,0,5,2,'g-amber')+
+    H.T(4,4,'8 × 4','gi')+H.T(2.5,1,'5 × 2','gi')+
+    H.T(4,6.7,'8 cm')+H.T(-0.9,4,'4 cm','gd am')+H.T(2.5,-0.7,'5 cm','gd am')+H.T(-0.9,1,'2 cm'));
+
+  /* Slide 4: keliling = batas luar; luas = isi */
+  geo('g4',8,6,30,'Bangun L dengan sisi luar 8, 4, 3, 2, 5 dan 6 sentimeter',H=>
+    H.P(Lpts(8,6,3,2),'g-steel')+H.R(5,0,3,2,'g-cut')+
+    H.L(0,2,5,2,'g-aux')+H.T(2.5,1.5,'garis bantu','gs')+
+    H.T(4,4.2,'LUAS 42 cm²','gi')+
+    H.P(Lpts(8,6,3,2),'g-out')+
+    H.T(4,6.6,'8 cm')+H.T(-0.8,3,'6 cm')+H.T(2.5,-0.6,'5 cm')+
+    H.T(5.75,0.6,'2 cm')+H.T(6.55,1.5,'3 cm')+H.T(8.8,4,'4 cm'));
+
+  /* Slide 5: persegi panjang 12 × 7 (proporsional) */
+  geo('g5',12,7,20,'Persegi panjang dengan panjang 12 sentimeter, lebar belum diketahui, luas 84 sentimeter persegi',H=>
+    H.R(0,0,12,7,'g-steel')+
+    H.T(6,3.5,'Luas = 84 cm²','gi big')+
+    H.T(6,-0.7,'12 cm')+H.T(12.8,3.5,'? cm','gd am'));
+
+  /* Slide 6: persegi panjang 10 × 6 dengan tanda sisi sama panjang */
+  geo('g6',10,6,26,'Persegi panjang dengan sisi atas 10 sentimeter dan sisi kiri 6 sentimeter, sisi bawah dan kanan bertanda tanya',H=>
+    H.R(0,0,10,6,'g-steel')+
+    /* satu tanda: sisi atas dan bawah; dua tanda: sisi kiri dan kanan */
+    H.L(5,-0.2,5,0.2,'g-tick')+H.L(5,5.8,5,6.2,'g-tick')+
+    H.L(-0.2,2.8,0.2,2.8,'g-tick')+H.L(-0.2,3.2,0.2,3.2,'g-tick')+
+    H.L(9.8,2.8,10.2,2.8,'g-tick')+H.L(9.8,3.2,10.2,3.2,'g-tick')+
+    H.T(5,-0.75,'10 cm')+H.T(-1.15,3,'6 cm')+
+    H.T(5,6.75,'? cm','gd am')+H.T(11.2,3,'? cm','gd am'));
+
+  /* Slide 7: bangun L 6×5 dengan potongan 3×2 */
+  geo('g7a',6,5,24,'Cara 1: persegi panjang 6 kali 5 dikurangi bagian 3 kali 2',H=>
+    H.P(Lpts(6,5,3,2),'g-steel')+H.R(3,0,3,2,'g-cut')+
+    H.T(4.5,1,'3×2','gs')+H.T(2,3.5,'6 × 5','gi')+
+    H.T(3,5.7,'6 cm')+H.T(-0.9,2.5,'5 cm')+H.T(4.5,-0.7,'3 cm')+H.T(6.9,1,'2 cm'));
+
+  geo('g7b',6,5,24,'Cara 2: bagian kiri 3 kali 5 dan bagian kanan bawah 3 kali 3',H=>
+    H.R(0,0,3,5,'g-steel')+H.R(3,2,3,3,'g-amber')+
+    H.T(1.5,2.5,'3 × 5','gi')+H.T(4.5,3.5,'3 × 3','gi')+
+    H.T(3,5.7,'6 cm')+H.T(-0.9,2.5,'5 cm')+H.T(1.5,-0.7,'3 cm')+H.T(6.9,3.5,'3 cm','gd am')+H.T(3.6,1,'2 cm'));
+
+  /* ===== Slide navigation ===== */
+  const TOTAL = 8;
+  let cur = 0;
+
+  const dotsEl = document.getElementById('dots');
+  for(let i=0;i<TOTAL;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots(){
+    document.querySelectorAll('.dot').forEach((d,i)=>{
+      d.className = 'dot' + (i===cur?' active':i<cur?' done':'');
+    });
+  }
+
+  function goTo(n){
+    document.querySelectorAll('.slide')[cur].classList.remove('active');
+    cur = n;
+    document.querySelectorAll('.slide')[cur].classList.add('active');
+    updateDots();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function nextSlide(){ if(cur<TOTAL-1) goTo(cur+1); }
+  function prevSlide(){ if(cur>0) goTo(cur-1); }
+
+  document.querySelectorAll('.slide')[0].classList.add('active');
+</script>
+</body>
+</html>
