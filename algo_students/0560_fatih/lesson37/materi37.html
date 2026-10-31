@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Interpretasi Data · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;--red-bg:rgba(232,80,64,0.08);
+    --violet:#7c3aed;--violet-bg:rgba(124,58,237,0.1);--violet-light:#a78bfa;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 70% 20%,rgba(74,144,184,0.06) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--steel-light);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--amber);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.4);color:var(--amber);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.3rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:0.6rem;line-height:1.3;letter-spacing:1px;}
+  h1 span{color:var(--amber);}
+  .intro{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:8px;height:8px;border-radius:2px;background:var(--border2);transition:all 0.3s;cursor:pointer;}
+  .dot.active{background:var(--amber);box-shadow:0 0 8px rgba(240,168,48,0.5);transform:scaleX(1.5);}
+  .dot.done{background:#8c5a2d;}
+
+  .slide{display:none;animation:fadeUp 0.35s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),transparent);}
+  .card-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.violet{color:var(--violet-light);}
+  .card-label.steel{color:var(--steel-light);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.7rem;line-height:1.4;letter-spacing:0.5px;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+  .card p strong{color:var(--text);}
+
+  .hl{border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-violet{background:var(--violet-bg);border:1px solid rgba(124,58,237,0.35);}
+  .hl-steel{background:var(--steel-bg);border:1px solid rgba(74,144,184,0.35);}
+  .hl-amber{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);}
+  .hl-green{background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);}
+  .hl-red{background:var(--red-bg);border:1px solid rgba(232,80,64,0.3);}
+  .hl-violet strong{color:var(--violet-light);}
+  .hl-steel strong{color:var(--steel-light);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+  .hl-red strong{color:var(--red);}
+
+  .callout{display:flex;gap:0.8rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 1rem;margin:1rem 0;font-size:0.87rem;color:var(--text-mid);line-height:1.6;}
+  .callout-icon{font-size:1.2rem;flex-shrink:0;}
+
+  .tip-list{list-style:none;margin:0.8rem 0;}
+  .tip-list li{display:flex;gap:0.6rem;align-items:flex-start;font-size:0.88rem;color:var(--text-mid);margin-bottom:0.5rem;line-height:1.55;}
+  .tip-list li::before{content:'→';color:var(--amber);font-weight:700;flex-shrink:0;}
+
+  .nav-btns{display:flex;gap:0.8rem;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--amber-light),#c9820f);color:#08131c;font-weight:800;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(240,168,48,0.35);}
+  .btn:disabled{opacity:0.4;cursor:default;}
+
+  .finish{text-align:center;padding:2.5rem 1.8rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;animation:bounce 1s ease-in-out infinite alternate;}
+  @keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+  .finish-title{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--amber);letter-spacing:3px;margin-bottom:0.6rem;}
+  .finish-desc{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);color:var(--amber);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  /* ===== number-sequence diagram (rendered by JS) ===== */
+  .seq-wrap{display:flex;justify-content:center;margin:0.9rem 0 0.4rem;}
+  .seq-svg{width:100%;height:auto;overflow:visible;}
+  .seq-svg .sb{fill:var(--track);stroke:var(--border2);stroke-width:2;}
+  .seq-svg .sb.q{fill:var(--amber-bg);stroke:var(--amber);stroke-dasharray:5 4;}
+  .seq-svg .sb.ans{fill:var(--green-bg);stroke:var(--green);}
+  .seq-svg text{font-family:'Rajdhani',sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;}
+  .seq-svg .sn{font-size:22px;fill:var(--text);}
+  .seq-svg .sn.q{fill:var(--amber);}
+  .seq-svg .sn.ans{fill:var(--green-light);}
+  .seq-svg .sl{font-size:17px;}
+  .seq-svg .arc{fill:none;stroke-width:2.2;}
+  .seq-svg .c-amber{stroke:var(--amber);} .seq-svg text.c-amber{fill:var(--amber);stroke:none;}
+  .seq-svg .c-red{stroke:var(--red);} .seq-svg text.c-red{fill:var(--red);stroke:none;}
+  .seq-svg .c-violet{stroke:var(--violet-light);} .seq-svg text.c-violet{fill:var(--violet-light);stroke:none;}
+  .seq-svg .c-steel{stroke:var(--steel-light);} .seq-svg text.c-steel{fill:var(--steel-light);stroke:none;}
+  .seq-svg .ah-amber{fill:var(--amber);} .seq-svg .ah-red{fill:var(--red);}
+  .seq-svg .ah-violet{fill:var(--violet-light);} .seq-svg .ah-steel{fill:var(--steel-light);}
+  .seq-cap{text-align:center;font-family:'Rajdhani',sans-serif;font-size:0.76rem;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:0.5rem;}
+
+  /* equation lines */
+  .eq{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1.2rem;text-align:center;letter-spacing:1px;color:var(--text);margin:0.35rem 0;}
+  .eq .op{color:var(--text-muted);padding:0 0.15rem;}
+  .eq .ok{color:var(--green-light);}
+  .eq .am{color:var(--amber);}
+  .eq .vi{color:var(--violet-light);}
+  .eq.sm{font-size:1rem;}
+
+  /* pair-check chips */
+  .chk-row{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin:0.8rem 0 0.4rem;}
+  .chk{background:var(--track);border:1px solid rgba(72,200,112,0.5);border-radius:8px;padding:0.4rem 0.8rem;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.95rem;color:var(--text);}
+  .chk b{color:var(--green);margin-left:0.35rem;}
+  .chk.bad{border-color:rgba(232,80,64,0.5);}
+  .chk.bad b{color:var(--red);}
+
+  /* thinking steps */
+  .think-steps{display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0;}
+  .think-step{display:flex;gap:0.7rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:8px;padding:0.7rem 0.9rem;font-size:0.85rem;color:var(--text-mid);line-height:1.55;}
+  .think-step .tq{font-family:'Rajdhani',sans-serif;font-weight:800;color:var(--amber);flex-shrink:0;min-width:1.1rem;}
+  .think-step strong{color:var(--text);}
+
+  /* quote */
+  .quote{border-left:3px solid var(--amber);background:var(--amber-bg);border-radius:0 8px 8px 0;padding:0.9rem 1.1rem;margin:1rem 0;font-size:0.95rem;line-height:1.65;color:var(--amber-light);font-weight:700;}
+
+  /* flow */
+  .flow{display:flex;flex-direction:column;align-items:center;gap:0.3rem;margin:1.1rem 0;}
+  .flow-box{width:100%;max-width:400px;text-align:center;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.7rem 1rem;font-size:0.88rem;color:var(--text);line-height:1.5;}
+  .flow-box.key{border-color:var(--amber);background:var(--amber-bg);font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1rem;letter-spacing:1.5px;color:var(--amber-light);}
+  .flow-box.end{border-color:rgba(72,200,112,0.5);background:var(--green-bg);}
+  .flow-box.end strong{color:var(--green);}
+  .flow-arrow{color:var(--text-muted);font-size:1.1rem;line-height:1;}
+
+  /* ===== lesson 36: geometry diagrams ===== */
+  .geo-wrap{display:flex;justify-content:center;margin:0.9rem 0 0.4rem;}
+  .geo-svg{width:100%;max-width:340px;height:auto;overflow:visible;}
+  .geo-svg text{font-family:'Rajdhani',sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;}
+  .geo-svg .gd{font-size:15px;fill:var(--text);}
+  .geo-svg .gd.am{fill:var(--amber);}
+  .geo-svg .gi{font-size:16px;fill:var(--text);}
+  .geo-svg .gi.big{font-size:20px;}
+  .geo-svg .gs{font-size:11px;fill:var(--text-muted);font-weight:700;letter-spacing:0.5px;}
+  .g-steel{fill:rgba(74,144,184,0.22);stroke:#4a90b8;stroke-width:2.5;stroke-linejoin:round;}
+  .g-amber{fill:rgba(240,168,48,0.2);stroke:#f0a830;stroke-width:2.5;stroke-linejoin:round;}
+  .g-green{fill:rgba(72,200,112,0.18);stroke:#48c870;stroke-width:2.5;stroke-linejoin:round;}
+  .g-cut{fill:rgba(124,58,237,0.14);stroke:#a78bfa;stroke-width:2.5;stroke-dasharray:6 4;stroke-linejoin:round;}
+  .g-out{fill:none;stroke:#f0a830;stroke-width:4.5;stroke-linejoin:round;}
+  .g-aux{stroke:#586878;stroke-width:2;stroke-dasharray:5 4;}
+  .g-tick{stroke:#f0a830;stroke-width:2.5;}
+  .legend{display:flex;flex-wrap:wrap;gap:0.4rem 1.1rem;justify-content:center;font-size:0.78rem;color:var(--text-mid);margin:0.3rem 0 0.8rem;}
+  .lg{display:flex;align-items:center;gap:0.4rem;}
+  .sw{width:14px;height:14px;border-radius:3px;border:2px solid;display:inline-block;}
+  .sw.steel{border-color:#4a90b8;background:rgba(74,144,184,0.22);}
+  .sw.amber{border-color:#f0a830;background:rgba(240,168,48,0.2);}
+  .sw.cut{border-color:#a78bfa;background:rgba(124,58,237,0.14);border-style:dashed;}
+  .sw.line{border:none;height:4px;width:18px;background:#f0a830;border-radius:2px;}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+  @media (max-width:540px){.two{grid-template-columns:1fr;}}
+  .strat{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 0.8rem 0.8rem;}
+  .strat-t{font-family:'Rajdhani',sans-serif;font-size:0.8rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;text-align:center;margin-bottom:0.2rem;}
+  .strat-t.a{color:var(--violet-light);} .strat-t.b{color:var(--amber);}
+  .strat .geo-svg{max-width:250px;}
+  .strat .eq{font-size:0.98rem;}
+
+  /* ===== lesson 37: data charts & tables ===== */
+  .ch-svg{width:100%;max-width:400px;height:auto;overflow:visible;}
+  .ch-svg text{font-family:'Rajdhani',sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;}
+  .ch-svg .ax{font-size:12px;fill:#9ab0c0;}
+  .ch-svg .ax.l{text-anchor:end;}
+  .ch-svg .vl{font-size:14px;fill:#dce8f0;}
+  .ch-svg .at{font-size:11px;fill:#586878;letter-spacing:1px;}
+  .ch-svg .gr{stroke:#2a3a4a;stroke-width:1;}
+  .ch-svg .axl{stroke:#344858;stroke-width:2;}
+  .ch-svg .b-st{fill:rgba(74,144,184,0.5);stroke:#4a90b8;stroke-width:2;}
+  .ch-svg .b-am{fill:rgba(240,168,48,0.45);stroke:#f0a830;stroke-width:2;}
+  .ch-svg .ln{fill:none;stroke:#7ab8d8;stroke-width:3;stroke-linejoin:round;stroke-linecap:round;}
+  .ch-svg .dt-st{fill:#1c2533;stroke:#7ab8d8;stroke-width:3;}
+  .ch-svg .dt-am{fill:#f0a830;stroke:#f8c870;stroke-width:3;}
+  .ch-svg .wf{fill:#263545;stroke:#344858;stroke-width:1.5;}
+  .ch-svg .wf.on{fill:rgba(240,168,48,0.55);stroke:#f0a830;}
+
+  .dt{border-collapse:separate;border-spacing:0;margin:0.4rem auto;min-width:230px;border:1px solid #344858;border-radius:10px;overflow:hidden;font-family:'Rajdhani',sans-serif;}
+  .dt caption{caption-side:top;font-size:0.78rem;color:#586878;letter-spacing:0.5px;padding-bottom:0.5rem;font-weight:700;}
+  .dt th{background:#263545;color:#f0a830;font-size:0.78rem;letter-spacing:1.5px;text-transform:uppercase;padding:0.55rem 0.7rem;text-align:center;font-weight:700;}
+  .dt th:first-child,.dt td:first-child{text-align:left;}
+  .dt th.der{color:#48c870;}
+  .dt td{padding:0.5rem 0.7rem;border-top:1px solid #2a3a4a;font-weight:700;font-size:1.02rem;color:#dce8f0;text-align:center;}
+  .dt td:first-child{color:#9ab0c0;}
+  .dt td.der{color:#80e0a0;}
+  .dt tr.sum td{background:rgba(240,168,48,0.1);color:#f8c870;}
+  .dt-wrap{display:block;overflow-x:auto;margin:0.8rem 0;}
+  .dt-wrap .dt{margin:0.4rem auto;}
+  @media (max-width:480px){.dt th{font-size:0.7rem;letter-spacing:0.5px;padding:0.5rem 0.45rem;}.dt td{padding:0.45rem 0.45rem;font-size:0.95rem;}}
+
+  .cg-row{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin:0.7rem 0;}
+  .cg{background:#263545;border:1px solid #344858;border-radius:8px;padding:0.35rem 0.75rem;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.9rem;color:#dce8f0;}
+  .cg b{margin-left:0.4rem;}
+  .cg.up b{color:#48c870;} .cg.dn b{color:#e85040;}
+
+  .picto{display:flex;flex-direction:column;gap:0.35rem;margin:0.9rem auto;max-width:360px;}
+  .picto-r{display:flex;align-items:center;gap:0.7rem;background:#263545;border:1px solid #344858;border-radius:8px;padding:0.4rem 0.8rem;}
+  .picto-n{font-family:'Rajdhani',sans-serif;font-weight:800;color:#dce8f0;width:3.2rem;font-size:0.95rem;}
+  .picto-b{font-size:1.05rem;letter-spacing:1px;line-height:1.3;}
+
+  .fk{border-radius:10px;padding:0.8rem 1rem;margin:0.6rem 0;border:1px solid;}
+  .fk-t{font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.25rem;}
+  .fk-q{font-size:0.92rem;color:#dce8f0;line-height:1.55;font-weight:700;}
+  .fk-w{font-size:0.8rem;color:#9ab0c0;margin-top:0.35rem;line-height:1.55;}
+  .fk.f{background:rgba(74,144,184,0.1);border-color:rgba(74,144,184,0.4);} .fk.f .fk-t{color:#7ab8d8;}
+  .fk.k{background:rgba(72,200,112,0.1);border-color:rgba(72,200,112,0.4);} .fk.k .fk-t{color:#48c870;}
+  .fk.a{background:rgba(232,80,64,0.08);border-color:rgba(232,80,64,0.35);} .fk.a .fk-t{color:#e85040;}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson37.html">LESSON 37</a><span>/</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">📊 Materi · Lesson 37</div>
+  <h1>Interpretasi Data: <span>Apa yang Bisa Kita Temukan</span> dari Angka?</h1>
+  <p class="intro">Membaca data bukan hanya melihat angka. Kita cari informasinya, bandingkan, hitung, lalu tarik kesimpulan yang ada buktinya.</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- SLIDE 1 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📊 Slide 1 · Pembuka</div>
+        <h2>Data Menyimpan Informasi</h2>
+        <p><strong>Data</strong> adalah kumpulan informasi yang membantu kita memahami suatu keadaan dan mengambil kesimpulan. Contohnya: buku yang dibaca lima siswa dalam satu bulan.</p>
+
+        <div class="picto">
+          <div class="picto-r"><span class="picto-n">Andi</span><span class="picto-b">📖📖📖📖📖</span></div>
+          <div class="picto-r"><span class="picto-n">Budi</span><span class="picto-b">📖📖📖📖📖📖📖📖</span></div>
+          <div class="picto-r"><span class="picto-n">Citra</span><span class="picto-b">📖📖📖📖📖📖</span></div>
+          <div class="picto-r"><span class="picto-n">Dinda</span><span class="picto-b">📖📖📖</span></div>
+          <div class="picto-r"><span class="picto-n">Eka</span><span class="picto-b">📖📖📖📖📖📖📖📖</span></div>
+        </div>
+        <div class="seq-cap">1 gambar 📖 = 1 buku</div>
+
+        <div class="hl hl-amber"><strong>Pertanyaan pemantik:</strong>
+          <ul class="tip-list" style="margin-bottom:0;">
+            <li>Siapa yang membaca buku paling banyak?</li>
+            <li>Berapa jumlah buku yang dibaca seluruh siswa?</li>
+            <li>Apa informasi menarik yang bisa kita temukan?</li>
+          </ul>
+        </div>
+
+        <div class="quote" style="text-align:center;border-left:none;border-radius:8px;">“Membaca data bukan hanya melihat angka, tetapi memahami informasi di balik angka.”</div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" disabled>← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">📋 Slide 2 · Membaca dan Mengolah Tabel</div>
+        <h2>Tabel: Dari Angka ke Informasi</h2>
+        <p>Data yang sama bisa ditulis dalam tabel. <strong>Baca dulu judul kolom dan satuannya</strong>: kolom ini berisi jumlah apa?</p>
+
+        <div class="dt-wrap" id="t2"></div>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">↑</span><span><strong>Nilai tertinggi:</strong> 8 buku, yaitu Budi <strong>dan</strong> Eka. Jawabannya bukan satu orang, karena nilainya sama.</span></div>
+          <div class="think-step"><span class="tq">↓</span><span><strong>Nilai terendah:</strong> 3 buku, yaitu Dinda.</span></div>
+          <div class="think-step"><span class="tq">⚖</span><span><strong>Membandingkan dua nilai:</strong> Citra (6) membaca 1 buku lebih banyak daripada Andi (5).</span></div>
+        </div>
+
+        <div class="eq sm">Selisih tertinggi dan terendah <span class="op">=</span> 8 <span class="op">−</span> 3 <span class="op">=</span> <span class="ok">5 buku</span></div>
+        <div class="eq sm">Jumlah keseluruhan <span class="op">=</span> 5 + 8 + 6 + 3 + 8 <span class="op">=</span> <span class="ok">30 buku</span></div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span><strong style="color:var(--amber)">Selisih</strong> dicari dengan pengurangan, <strong style="color:var(--amber)">jumlah keseluruhan</strong> dengan penjumlahan. Tulis juga satuannya: <strong style="color:var(--amber)">buku</strong>.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">📊 Slide 3 · Diagram Batang</div>
+        <h2>Tinggi Batang = Besar Data</h2>
+        <p>Jumlah pengunjung perpustakaan selama lima hari. <strong>Sumbu mendatar</strong> menunjukkan hari, <strong>sumbu tegak</strong> menunjukkan jumlah pengunjung.</p>
+
+        <div id="c3" class="geo-wrap"></div>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">↑</span><span><strong>Terbanyak:</strong> batang tertinggi, yaitu <strong>Kamis</strong> (40 orang).</span></div>
+          <div class="think-step"><span class="tq">↓</span><span><strong>Paling sedikit:</strong> batang terendah, yaitu <strong>Senin</strong> (20 orang).</span></div>
+          <div class="think-step"><span class="tq">⚖</span><span><strong>Selisih:</strong> 40 − 20 = <strong>20 orang</strong>.</span></div>
+        </div>
+
+        <p><strong>Perubahan dari satu hari ke hari berikutnya:</strong></p>
+        <div class="cg-row">
+          <span class="cg up">Sen→Sel<b>+10</b></span>
+          <span class="cg dn">Sel→Rab<b>−5</b></span>
+          <span class="cg up">Rab→Kam<b>+15</b></span>
+          <span class="cg dn">Kam→Jum<b>−5</b></span>
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">🔎</span>
+          <span>Kenaikan terbesar terjadi dari <strong style="color:var(--amber)">Rabu ke Kamis (+15)</strong>. Baca tinggi batang sampai sumbu tegak, jangan hanya menebak dari tampilannya.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">📈 Slide 4 · Diagram Garis</div>
+        <h2>Diagram Garis Menunjukkan Perubahan</h2>
+        <p>Suhu selama lima hari. Setiap <strong>titik</strong> adalah satu data, dan <strong>garis penghubung</strong> memperlihatkan arah perubahannya.</p>
+
+        <div id="c4" class="geo-wrap"></div>
+
+        <div class="cg-row">
+          <span class="cg up">Sen→Sel<b>+2°C</b></span>
+          <span class="cg dn">Sel→Rab<b>−1°C</b></span>
+          <span class="cg up">Rab→Kam<b>+3°C</b></span>
+          <span class="cg dn">Kam→Jum<b>−1°C</b></span>
+        </div>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">1</span><span><strong>Garis naik</strong> berarti suhu meningkat, <strong>garis turun</strong> berarti suhu menurun.</span></div>
+          <div class="think-step"><span class="tq">2</span><span><strong>Perubahan terbesar:</strong> Rabu ke Kamis, naik 3°C (29°C menjadi 32°C).</span></div>
+          <div class="think-step"><span class="tq">3</span><span><strong>Kecenderungan:</strong> suhu sempat turun dua kali, tetapi secara keseluruhan <strong>naik</strong> dari 28°C (Senin) ke 31°C (Jumat).</span></div>
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">⚠️</span>
+          <span>Perhatikan skala: sumbu tegak pada diagram ini mulai dari <strong style="color:var(--amber)">27</strong>, bukan 0, supaya perubahan kecil terlihat jelas. Diagram garis cocok untuk melihat <strong style="color:var(--amber)">perubahan dari waktu ke waktu</strong>.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">💯 Slide 5 · Pecahan dan Persentase</div>
+        <h2>Bagian dari Keseluruhan Data</h2>
+        <p>Dalam sebuah kelompok ada <strong>40 siswa</strong>. Sebanyak <strong>10 siswa</strong> memilih sepak bola sebagai olahraga favorit.</p>
+
+        <div id="w5" class="geo-wrap"></div>
+        <div class="legend">
+          <span class="lg"><span class="sw amber"></span>10 siswa pilih sepak bola</span>
+          <span class="lg"><span class="sw" style="border-color:#344858;background:#263545"></span>30 siswa pilih yang lain</span>
+        </div>
+
+        <div class="two">
+          <div class="strat">
+            <div class="strat-t b">Pecahan</div>
+            <div class="eq sm">10/40 <span class="op">=</span> <span class="ok">1/4</span></div>
+            <div class="seq-cap">dibagi 10 di atas dan di bawah</div>
+          </div>
+          <div class="strat">
+            <div class="strat-t a">Persentase</div>
+            <div class="eq sm">1/4 × 100% <span class="op">=</span> <span class="ok">25%</span></div>
+            <div class="seq-cap">25 dari setiap 100</div>
+          </div>
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>Pecahan dan persentase sama-sama menunjukkan <strong style="color:var(--amber)">bagian dari keseluruhan</strong>. Yang lain: 30/40 = 3/4 = 75%, dan 25% + 75% = 100%.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">⚖️ Slide 6 · Membandingkan dan Menggabungkan</div>
+        <h2>Satu Jawaban, Beberapa Informasi</h2>
+        <p>Penjualan buah selama dua hari. Kolom <span style="color:var(--green-light)">hijau</span> dan baris <span style="color:var(--amber)">kuning</span> adalah hasil hitungan kita.</p>
+
+        <div class="dt-wrap" id="t6"></div>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">1</span><span><strong>Total tiap buah:</strong> gabungkan Senin dan Selasa. Apel 12 + 15 = 27, Jeruk 18 + 14 = 32, Mangga 10 + 16 = 26.</span></div>
+          <div class="think-step"><span class="tq">2</span><span><strong>Perubahan tiap buah:</strong> Selasa dikurangi Senin. Apel +3, Jeruk −4, Mangga +6.</span></div>
+          <div class="think-step"><span class="tq">3</span><span><strong>Total seluruh buah:</strong> 40 + 45 = <strong>85</strong>, sama dengan 27 + 32 + 26 = 85.</span></div>
+        </div>
+
+        <div class="hl hl-green"><strong>Peningkatan terbesar:</strong> Mangga (+6). Jeruk justru turun 4, walaupun total penjualannya paling banyak (32).</div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>Terkadang jawabannya tidak langsung terlihat. Kita perlu <strong style="color:var(--amber)">menggabungkan beberapa informasi</strong> dari tabel. Hati-hati: <strong style="color:var(--amber)">terbanyak</strong> tidak selalu sama dengan <strong style="color:var(--amber)">peningkatan terbesar</strong>.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">🧠 Slide 7 · Menarik Kesimpulan</div>
+        <h2>Fakta, Kesimpulan, atau Asumsi?</h2>
+        <p>Kita pakai lagi data pengunjung perpustakaan.</p>
+
+        <div id="c7" class="geo-wrap"></div>
+
+        <div class="fk f">
+          <div class="fk-t">Fakta</div>
+          <div class="fk-q">Kamis memiliki jumlah pengunjung terbanyak, yaitu 40 orang.</div>
+          <div class="fk-w">Terlihat langsung pada data.</div>
+        </div>
+        <div class="fk k">
+          <div class="fk-t">Kesimpulan yang didukung data</div>
+          <div class="fk-q">Jumlah pengunjung meningkat dari Rabu ke Kamis.</div>
+          <div class="fk-w">Buktinya: Rabu 25 orang, Kamis 40 orang.</div>
+        </div>
+        <div class="fk a">
+          <div class="fk-t">Asumsi yang tidak didukung data</div>
+          <div class="fk-q">Semua siswa lebih suka datang ke perpustakaan pada hari Kamis.</div>
+          <div class="fk-w">Data hanya mencatat banyaknya pengunjung. Tidak ada informasi tentang semua siswa atau tentang apa yang mereka sukai.</div>
+        </div>
+
+        <div class="hl hl-amber"><strong>Cara menguji:</strong> tanyakan, “Bagian data mana yang menjadi buktinya?” Kalau tidak bisa ditunjuk, itu baru dugaan.</div>
+
+        <div class="quote" style="text-align:center;border-left:none;border-radius:8px;">“Kesimpulan harus didasarkan pada data, bukan sekadar dugaan.”</div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 8 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">📝 Slide 8 · Ringkasan Strategi</div>
+        <h2>Ringkasan Strategi Interpretasi Data</h2>
+
+        <div class="flow">
+          <div class="flow-box key">BACA JUDUL DAN LABEL</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Pahami data</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Bandingkan nilai</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Hitung jika diperlukan</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Cari hubungan antarinformasi</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box end"><strong>Tarik kesimpulan berdasarkan bukti</strong></div>
+        </div>
+
+        <div class="quote" style="text-align:center;border-left:none;border-radius:8px;">“Data tidak hanya memberikan angka. Data membantu kita menemukan informasi dan membuat kesimpulan.”</div>
+      </div>
+
+      <div class="finish">
+        <span class="finish-icon">📊</span>
+        <div class="finish-title">KONSEP SUDAH SIAP!</div>
+        <div class="finish-desc">Kamu sudah tahu cara membaca data dan menarik kesimpulan dengan bukti. Saatnya dicoba di latihan.</div>
+        <div class="xp">+100 XP</div>
+        <div class="finish-btns">
+          <a href="latihan37.html" class="btn btn-primary">🧮 Mulai Latihan</a>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-ghost" disabled>Selesai ✓</button>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+</div>
+<script>
+
+/* ===================== CHARTS & TABLES ===================== */
+function chart(o){
+  const W=o.W||360, H=o.H||250, ml=50, mr=18, mt=28, mb=(o.xt?56:42);
+  const pw=W-ml-mr, ph=H-mt-mb, n=o.data.length;
+  const y0=o.ymin||0, y1=o.ymax, st=o.step;
+  const Y=v=>+(mt+ph-(v-y0)/(y1-y0)*ph).toFixed(1);
+  const slot=pw/n, cx=i=>+(ml+slot*i+slot/2).toFixed(1);
+  const hl=o.hl||[];
+  let s='';
+  for(let v=y0; v<=y1+1e-9; v+=st){
+    s+=`<line class="gr" x1="${ml}" y1="${Y(v)}" x2="${W-mr}" y2="${Y(v)}"/>`+
+       `<text class="ax l" x="${ml-8}" y="${Y(v)}">${v}</text>`;
+  }
+  s+=`<line class="axl" x1="${ml}" y1="${mt}" x2="${ml}" y2="${Y(y0)}"/><line class="axl" x1="${ml}" y1="${Y(y0)}" x2="${W-mr}" y2="${Y(y0)}"/>`;
+  if(o.type==='bar'){
+    const bw=Math.min(slot*0.58,54);
+    o.data.forEach((d,i)=>{
+      const top=Y(d[1]);
+      s+=`<rect class="${hl.includes(i)?'b-am':'b-st'}" x="${(cx(i)-bw/2).toFixed(1)}" y="${top}" width="${bw.toFixed(1)}" height="${(Y(y0)-top).toFixed(1)}" rx="3"/>`;
+      if(o.vals) s+=`<text class="vl" x="${cx(i)}" y="${top-11}">${d[1]}${o.unit||''}</text>`;
+    });
+  } else {
+    s+=`<polyline class="ln" points="${o.data.map((d,i)=>cx(i)+','+Y(d[1])).join(' ')}"/>`;
+    o.data.forEach((d,i)=>{
+      s+=`<circle class="${hl.includes(i)?'dt-am':'dt-st'}" cx="${cx(i)}" cy="${Y(d[1])}" r="6"/>`;
+      if(o.vals) s+=`<text class="vl" x="${cx(i)}" y="${Y(d[1])-17}">${d[1]}${o.unit||''}</text>`;
+    });
+  }
+  o.data.forEach((d,i)=>{ s+=`<text class="ax" x="${cx(i)}" y="${Y(y0)+17}">${d[0]}</text>`; });
+  if(o.xt) s+=`<text class="at" x="${ml+pw/2}" y="${H-10}">${o.xt}</text>`;
+  if(o.yt) s+=`<text class="at" transform="translate(13 ${mt+ph/2}) rotate(-90)">${o.yt}</text>`;
+  return `<svg class="ch-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria}">${s}</svg>`;
+}
+
+function waffle(total, cols, hi, aria){
+  const c=22, g=5, rows=Math.ceil(total/cols);
+  const W=cols*(c+g)+g, H=rows*(c+g)+g;
+  let s='';
+  for(let i=0;i<total;i++){
+    const r=Math.floor(i/cols), k=i%cols;
+    s+=`<circle class="wf${i<hi?' on':''}" cx="${g+k*(c+g)+c/2}" cy="${g+r*(c+g)+c/2}" r="${c/2}"/>`;
+  }
+  return `<svg class="ch-svg" style="max-width:340px" viewBox="0 0 ${W} ${H}" role="img" aria-label="${aria}">${s}</svg>`;
+}
+
+function dtable(h, rows, o){
+  o=o||{};
+  const der=o.der||[], sum=o.sum||[];
+  const hs=h.map((x,i)=>`<th${der.includes(i)?' class="der"':''}>${x}</th>`).join('');
+  const rs=rows.map((r,ri)=>`<tr${sum.includes(ri)?' class="sum"':''}>`+r.map((c,i)=>`<td${der.includes(i)?' class="der"':''}>${c}</td>`).join('')+'</tr>').join('');
+  return `<table class="dt">${o.cap?`<caption>${o.cap}</caption>`:''}<thead><tr>${hs}</tr></thead><tbody>${rs}</tbody></table>`;
+}
+function put(id, html){ document.getElementById(id).innerHTML = html; }
+
+  /* ===== Data & diagram ===== */
+  put('t2', dtable(['Siswa','Jumlah Buku (buku)'],
+    [['Andi',5],['Budi',8],['Citra',6],['Dinda',3],['Eka',8]],
+    {cap:'Buku yang dibaca dalam satu bulan'}));
+
+  put('c3', chart({type:'bar', data:[['Senin',20],['Selasa',30],['Rabu',25],['Kamis',40],['Jumat',35]],
+    ymax:40, step:5, vals:true, hl:[3], xt:'Hari', yt:'Jumlah pengunjung',
+    aria:'Diagram batang pengunjung perpustakaan: Senin 20, Selasa 30, Rabu 25, Kamis 40, Jumat 35'}));
+
+  put('c4', chart({type:'line', data:[['Senin',28],['Selasa',30],['Rabu',29],['Kamis',32],['Jumat',31]],
+    ymin:27, ymax:33, step:1, vals:true, unit:'°', hl:[3], xt:'Hari', yt:'Suhu (°C)',
+    aria:'Diagram garis suhu: Senin 28, Selasa 30, Rabu 29, Kamis 32, Jumat 31 derajat Celsius'}));
+
+  put('w5', waffle(40, 10, 10, '40 lingkaran, 10 di antaranya berwarna kuning mewakili siswa yang memilih sepak bola'));
+
+  put('t6', dtable(['Buah','Senin','Selasa','Total','Perubahan'],
+    [['Apel',12,15,27,'+3'],['Jeruk',18,14,32,'−4'],['Mangga',10,16,26,'+6'],['Total',40,45,85,'']],
+    {cap:'Penjualan buah (buah per hari)', der:[3,4], sum:[3]}));
+
+  put('c7', chart({type:'bar', data:[['Sen',20],['Sel',30],['Rab',25],['Kam',40],['Jum',35]],
+    ymax:40, step:10, vals:true, hl:[3], W:340, H:210, yt:'Pengunjung',
+    aria:'Diagram batang pengunjung perpustakaan, Kamis tertinggi dengan 40 orang'}));
+
+  /* ===== Slide navigation ===== */
+  const TOTAL = 8;
+  let cur = 0;
+
+  const dotsEl = document.getElementById('dots');
+  for(let i=0;i<TOTAL;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots(){
+    document.querySelectorAll('.dot').forEach((d,i)=>{
+      d.className = 'dot' + (i===cur?' active':i<cur?' done':'');
+    });
+  }
+
+  function goTo(n){
+    document.querySelectorAll('.slide')[cur].classList.remove('active');
+    cur = n;
+    document.querySelectorAll('.slide')[cur].classList.add('active');
+    updateDots();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function nextSlide(){ if(cur<TOTAL-1) goTo(cur+1); }
+  function prevSlide(){ if(cur>0) goTo(cur-1); }
+
+  document.querySelectorAll('.slide')[0].classList.add('active');
+</script>
+</body>
+</html>
