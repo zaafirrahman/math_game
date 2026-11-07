@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Mixed Reasoning Checkpoint · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;--red-bg:rgba(232,80,64,0.08);
+    --violet:#7c3aed;--violet-bg:rgba(124,58,237,0.1);--violet-light:#a78bfa;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 70% 20%,rgba(74,144,184,0.06) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--steel-light);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--amber);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.4);color:var(--amber);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.3rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:0.6rem;line-height:1.3;letter-spacing:1px;}
+  h1 span{color:var(--amber);}
+  .intro{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:8px;height:8px;border-radius:2px;background:var(--border2);transition:all 0.3s;cursor:pointer;}
+  .dot.active{background:var(--amber);box-shadow:0 0 8px rgba(240,168,48,0.5);transform:scaleX(1.5);}
+  .dot.done{background:#8c5a2d;}
+
+  .slide{display:none;animation:fadeUp 0.35s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),transparent);}
+  .card-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.violet{color:var(--violet-light);}
+  .card-label.steel{color:var(--steel-light);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.7rem;line-height:1.4;letter-spacing:0.5px;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+  .card p strong{color:var(--text);}
+
+  .hl{border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-violet{background:var(--violet-bg);border:1px solid rgba(124,58,237,0.35);}
+  .hl-steel{background:var(--steel-bg);border:1px solid rgba(74,144,184,0.35);}
+  .hl-amber{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);}
+  .hl-green{background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);}
+  .hl-red{background:var(--red-bg);border:1px solid rgba(232,80,64,0.3);}
+  .hl-violet strong{color:var(--violet-light);}
+  .hl-steel strong{color:var(--steel-light);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+  .hl-red strong{color:var(--red);}
+
+  .callout{display:flex;gap:0.8rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 1rem;margin:1rem 0;font-size:0.87rem;color:var(--text-mid);line-height:1.6;}
+  .callout-icon{font-size:1.2rem;flex-shrink:0;}
+
+  .tip-list{list-style:none;margin:0.8rem 0;}
+  .tip-list li{display:flex;gap:0.6rem;align-items:flex-start;font-size:0.88rem;color:var(--text-mid);margin-bottom:0.5rem;line-height:1.55;}
+  .tip-list li::before{content:'→';color:var(--amber);font-weight:700;flex-shrink:0;}
+
+  .nav-btns{display:flex;gap:0.8rem;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--amber-light),#c9820f);color:#08131c;font-weight:800;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(240,168,48,0.35);}
+  .btn:disabled{opacity:0.4;cursor:default;}
+
+  .finish{text-align:center;padding:2.5rem 1.8rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;animation:bounce 1s ease-in-out infinite alternate;}
+  @keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+  .finish-title{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--amber);letter-spacing:3px;margin-bottom:0.6rem;}
+  .finish-desc{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);color:var(--amber);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  /* ===== number-sequence diagram (rendered by JS) ===== */
+  .seq-wrap{display:flex;justify-content:center;margin:0.9rem 0 0.4rem;}
+  .seq-svg{width:100%;height:auto;overflow:visible;}
+  .seq-svg .sb{fill:var(--track);stroke:var(--border2);stroke-width:2;}
+  .seq-svg .sb.q{fill:var(--amber-bg);stroke:var(--amber);stroke-dasharray:5 4;}
+  .seq-svg .sb.ans{fill:var(--green-bg);stroke:var(--green);}
+  .seq-svg text{font-family:'Rajdhani',sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;}
+  .seq-svg .sn{font-size:22px;fill:var(--text);}
+  .seq-svg .sn.q{fill:var(--amber);}
+  .seq-svg .sn.ans{fill:var(--green-light);}
+  .seq-svg .sl{font-size:17px;}
+  .seq-svg .arc{fill:none;stroke-width:2.2;}
+  .seq-svg .c-amber{stroke:var(--amber);} .seq-svg text.c-amber{fill:var(--amber);stroke:none;}
+  .seq-svg .c-red{stroke:var(--red);} .seq-svg text.c-red{fill:var(--red);stroke:none;}
+  .seq-svg .c-violet{stroke:var(--violet-light);} .seq-svg text.c-violet{fill:var(--violet-light);stroke:none;}
+  .seq-svg .c-steel{stroke:var(--steel-light);} .seq-svg text.c-steel{fill:var(--steel-light);stroke:none;}
+  .seq-svg .ah-amber{fill:var(--amber);} .seq-svg .ah-red{fill:var(--red);}
+  .seq-svg .ah-violet{fill:var(--violet-light);} .seq-svg .ah-steel{fill:var(--steel-light);}
+  .seq-cap{text-align:center;font-family:'Rajdhani',sans-serif;font-size:0.76rem;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:0.5rem;}
+
+  /* equation lines */
+  .eq{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1.2rem;text-align:center;letter-spacing:1px;color:var(--text);margin:0.35rem 0;}
+  .eq .op{color:var(--text-muted);padding:0 0.15rem;}
+  .eq .ok{color:var(--green-light);}
+  .eq .am{color:var(--amber);}
+  .eq .vi{color:var(--violet-light);}
+  .eq.sm{font-size:1rem;}
+
+  /* pair-check chips */
+  .chk-row{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin:0.8rem 0 0.4rem;}
+  .chk{background:var(--track);border:1px solid rgba(72,200,112,0.5);border-radius:8px;padding:0.4rem 0.8rem;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.95rem;color:var(--text);}
+  .chk b{color:var(--green);margin-left:0.35rem;}
+  .chk.bad{border-color:rgba(232,80,64,0.5);}
+  .chk.bad b{color:var(--red);}
+
+  /* thinking steps */
+  .think-steps{display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0;}
+  .think-step{display:flex;gap:0.7rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:8px;padding:0.7rem 0.9rem;font-size:0.85rem;color:var(--text-mid);line-height:1.55;}
+  .think-step .tq{font-family:'Rajdhani',sans-serif;font-weight:800;color:var(--amber);flex-shrink:0;min-width:1.1rem;}
+  .think-step strong{color:var(--text);}
+
+  /* quote */
+  .quote{border-left:3px solid var(--amber);background:var(--amber-bg);border-radius:0 8px 8px 0;padding:0.9rem 1.1rem;margin:1rem 0;font-size:0.95rem;line-height:1.65;color:var(--amber-light);font-weight:700;}
+
+  /* flow */
+  .flow{display:flex;flex-direction:column;align-items:center;gap:0.3rem;margin:1.1rem 0;}
+  .flow-box{width:100%;max-width:400px;text-align:center;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.7rem 1rem;font-size:0.88rem;color:var(--text);line-height:1.5;}
+  .flow-box.key{border-color:var(--amber);background:var(--amber-bg);font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1rem;letter-spacing:1.5px;color:var(--amber-light);}
+  .flow-box.end{border-color:rgba(72,200,112,0.5);background:var(--green-bg);}
+  .flow-box.end strong{color:var(--green);}
+  .flow-arrow{color:var(--text-muted);font-size:1.1rem;line-height:1;}
+
+  /* ===== lesson 36: geometry diagrams ===== */
+  .geo-wrap{display:flex;justify-content:center;margin:0.9rem 0 0.4rem;}
+  .geo-svg{width:100%;max-width:340px;height:auto;overflow:visible;}
+  .geo-svg text{font-family:'Rajdhani',sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;}
+  .geo-svg .gd{font-size:15px;fill:var(--text);}
+  .geo-svg .gd.am{fill:var(--amber);}
+  .geo-svg .gi{font-size:16px;fill:var(--text);}
+  .geo-svg .gi.big{font-size:20px;}
+  .geo-svg .gs{font-size:11px;fill:var(--text-muted);font-weight:700;letter-spacing:0.5px;}
+  .g-steel{fill:rgba(74,144,184,0.22);stroke:#4a90b8;stroke-width:2.5;stroke-linejoin:round;}
+  .g-amber{fill:rgba(240,168,48,0.2);stroke:#f0a830;stroke-width:2.5;stroke-linejoin:round;}
+  .g-green{fill:rgba(72,200,112,0.18);stroke:#48c870;stroke-width:2.5;stroke-linejoin:round;}
+  .g-cut{fill:rgba(124,58,237,0.14);stroke:#a78bfa;stroke-width:2.5;stroke-dasharray:6 4;stroke-linejoin:round;}
+  .g-out{fill:none;stroke:#f0a830;stroke-width:4.5;stroke-linejoin:round;}
+  .g-aux{stroke:#586878;stroke-width:2;stroke-dasharray:5 4;}
+  .g-tick{stroke:#f0a830;stroke-width:2.5;}
+  .legend{display:flex;flex-wrap:wrap;gap:0.4rem 1.1rem;justify-content:center;font-size:0.78rem;color:var(--text-mid);margin:0.3rem 0 0.8rem;}
+  .lg{display:flex;align-items:center;gap:0.4rem;}
+  .sw{width:14px;height:14px;border-radius:3px;border:2px solid;display:inline-block;}
+  .sw.steel{border-color:#4a90b8;background:rgba(74,144,184,0.22);}
+  .sw.amber{border-color:#f0a830;background:rgba(240,168,48,0.2);}
+  .sw.cut{border-color:#a78bfa;background:rgba(124,58,237,0.14);border-style:dashed;}
+  .sw.line{border:none;height:4px;width:18px;background:#f0a830;border-radius:2px;}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+  @media (max-width:540px){.two{grid-template-columns:1fr;}}
+  .strat{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 0.8rem 0.8rem;}
+  .strat-t{font-family:'Rajdhani',sans-serif;font-size:0.8rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;text-align:center;margin-bottom:0.2rem;}
+  .strat-t.a{color:var(--violet-light);} .strat-t.b{color:var(--amber);}
+  .strat .geo-svg{max-width:250px;}
+  .strat .eq{font-size:0.98rem;}
+
+  /* ===== lesson 37: data charts & tables ===== */
+  .ch-svg{width:100%;max-width:400px;height:auto;overflow:visible;}
+  .ch-svg text{font-family:'Rajdhani',sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;}
+  .ch-svg .ax{font-size:12px;fill:#9ab0c0;}
+  .ch-svg .ax.l{text-anchor:end;}
+  .ch-svg .vl{font-size:14px;fill:#dce8f0;}
+  .ch-svg .at{font-size:11px;fill:#586878;letter-spacing:1px;}
+  .ch-svg .gr{stroke:#2a3a4a;stroke-width:1;}
+  .ch-svg .axl{stroke:#344858;stroke-width:2;}
+  .ch-svg .b-st{fill:rgba(74,144,184,0.5);stroke:#4a90b8;stroke-width:2;}
+  .ch-svg .b-am{fill:rgba(240,168,48,0.45);stroke:#f0a830;stroke-width:2;}
+  .ch-svg .ln{fill:none;stroke:#7ab8d8;stroke-width:3;stroke-linejoin:round;stroke-linecap:round;}
+  .ch-svg .dt-st{fill:#1c2533;stroke:#7ab8d8;stroke-width:3;}
+  .ch-svg .dt-am{fill:#f0a830;stroke:#f8c870;stroke-width:3;}
+  .ch-svg .wf{fill:#263545;stroke:#344858;stroke-width:1.5;}
+  .ch-svg .wf.on{fill:rgba(240,168,48,0.55);stroke:#f0a830;}
+
+  .dt{border-collapse:separate;border-spacing:0;margin:0.4rem auto;min-width:230px;border:1px solid #344858;border-radius:10px;overflow:hidden;font-family:'Rajdhani',sans-serif;}
+  .dt caption{caption-side:top;font-size:0.78rem;color:#586878;letter-spacing:0.5px;padding-bottom:0.5rem;font-weight:700;}
+  .dt th{background:#263545;color:#f0a830;font-size:0.78rem;letter-spacing:1.5px;text-transform:uppercase;padding:0.55rem 0.7rem;text-align:center;font-weight:700;}
+  .dt th:first-child,.dt td:first-child{text-align:left;}
+  .dt th.der{color:#48c870;}
+  .dt td{padding:0.5rem 0.7rem;border-top:1px solid #2a3a4a;font-weight:700;font-size:1.02rem;color:#dce8f0;text-align:center;}
+  .dt td:first-child{color:#9ab0c0;}
+  .dt td.der{color:#80e0a0;}
+  .dt tr.sum td{background:rgba(240,168,48,0.1);color:#f8c870;}
+  .dt-wrap{display:block;overflow-x:auto;margin:0.8rem 0;}
+  .dt-wrap .dt{margin:0.4rem auto;}
+  @media (max-width:480px){.dt th{font-size:0.7rem;letter-spacing:0.5px;padding:0.5rem 0.45rem;}.dt td{padding:0.45rem 0.45rem;font-size:0.95rem;}}
+
+  .cg-row{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin:0.7rem 0;}
+  .cg{background:#263545;border:1px solid #344858;border-radius:8px;padding:0.35rem 0.75rem;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.9rem;color:#dce8f0;}
+  .cg b{margin-left:0.4rem;}
+  .cg.up b{color:#48c870;} .cg.dn b{color:#e85040;}
+
+  .picto{display:flex;flex-direction:column;gap:0.35rem;margin:0.9rem auto;max-width:360px;}
+  .picto-r{display:flex;align-items:center;gap:0.7rem;background:#263545;border:1px solid #344858;border-radius:8px;padding:0.4rem 0.8rem;}
+  .picto-n{font-family:'Rajdhani',sans-serif;font-weight:800;color:#dce8f0;width:3.2rem;font-size:0.95rem;}
+  .picto-b{font-size:1.05rem;letter-spacing:1px;line-height:1.3;}
+
+  .fk{border-radius:10px;padding:0.8rem 1rem;margin:0.6rem 0;border:1px solid;}
+  .fk-t{font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.25rem;}
+  .fk-q{font-size:0.92rem;color:#dce8f0;line-height:1.55;font-weight:700;}
+  .fk-w{font-size:0.8rem;color:#9ab0c0;margin-top:0.35rem;line-height:1.55;}
+  .fk.f{background:rgba(74,144,184,0.1);border-color:rgba(74,144,184,0.4);} .fk.f .fk-t{color:#7ab8d8;}
+  .fk.k{background:rgba(72,200,112,0.1);border-color:rgba(72,200,112,0.4);} .fk.k .fk-t{color:#48c870;}
+  .fk.a{background:rgba(232,80,64,0.08);border-color:rgba(232,80,64,0.35);} .fk.a .fk-t{color:#e85040;}
+
+  /* ===== lesson 38: checkpoint ===== */
+  .route{display:flex;align-items:flex-start;justify-content:center;margin:1.4rem 0 1.1rem;}
+  .stn{width:80px;text-align:center;flex-shrink:0;}
+  .stn-dot{width:58px;height:58px;border-radius:50%;border:3px solid var(--amber);background:var(--amber-bg);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 0.5rem;box-shadow:0 0 14px rgba(240,168,48,0.25);}
+  .stn:nth-child(3) .stn-dot{border-color:var(--violet-light);background:var(--violet-bg);box-shadow:0 0 14px rgba(124,58,237,0.3);}
+  .stn:nth-child(5) .stn-dot{border-color:var(--green);background:var(--green-bg);box-shadow:0 0 14px rgba(72,200,112,0.25);}
+  .stn-t{font-family:'Rajdhani',sans-serif;font-weight:800;letter-spacing:2px;font-size:0.95rem;color:var(--text);}
+  .stn-d{font-size:0.74rem;color:var(--text-muted);line-height:1.4;margin-top:0.15rem;}
+  .rail-seg{flex:1;min-width:18px;height:4px;margin-top:27px;border-radius:2px;background:repeating-linear-gradient(90deg,var(--steel) 0,var(--steel) 10px,transparent 10px,transparent 16px);}
+  .geo-svg .g-amber{fill:rgba(240,168,48,0.2);stroke:#f0a830;stroke-width:2.5;stroke-linejoin:round;}
+
+  .ck{display:flex;gap:0.8rem;align-items:center;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.7rem 0.9rem;margin-bottom:0.45rem;cursor:pointer;transition:all 0.15s;user-select:none;}
+  .ck:hover{border-color:var(--amber);}
+  .ck-box{width:26px;height:26px;border-radius:7px;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:transparent;font-weight:900;font-size:0.95rem;transition:all 0.15s;}
+  .ck.on{border-color:rgba(72,200,112,0.5);background:var(--green-bg);}
+  .ck.on .ck-box{border-color:var(--green);background:rgba(72,200,112,0.2);color:var(--green);}
+  .ck-n{font-family:'Rajdhani',sans-serif;font-weight:800;color:var(--amber);flex-shrink:0;width:1rem;}
+  .ck-q{font-size:0.9rem;color:var(--text);font-weight:700;line-height:1.5;}
+  .motto{text-align:center;margin:1.2rem 0 0.4rem;padding:1.1rem 1rem;border:1px solid var(--border2);border-radius:12px;background:linear-gradient(180deg,rgba(240,168,48,0.07),transparent);}
+  .motto div{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1.15rem;letter-spacing:1.5px;line-height:1.7;}
+  .motto .m1{color:var(--amber);} .motto .m2{color:var(--violet-light);} .motto .m3{color:var(--green);}
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson38.html">LESSON 38</a><span>/</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">🧭 Materi · Lesson 38</div>
+  <h1>Mixed Reasoning Checkpoint: <span>Think, Plan, Solve!</span></h1>
+  <p class="intro">Ini bukan teori panjang, melainkan pengingat strategi sebelum checkpoint gabungan. Pahami soalnya, pilih strateginya sendiri, lalu periksa jawabanmu.</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- SLIDE 1 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🧭 Slide 1 · Opening</div>
+        <h2>Think, Plan, Solve!</h2>
+        <p>Checkpoint adalah <strong>perjalanan</strong> melewati tiga stasiun. Di setiap soal, kamu singgah di ketiganya.</p>
+
+        <div class="route">
+          <div class="stn"><div class="stn-dot">🧠</div><div class="stn-t">THINK</div><div class="stn-d">Pahami soalnya</div></div>
+          <div class="rail-seg"></div>
+          <div class="stn"><div class="stn-dot">🗺️</div><div class="stn-t">PLAN</div><div class="stn-d">Pilih strategi</div></div>
+          <div class="rail-seg"></div>
+          <div class="stn"><div class="stn-dot">✅</div><div class="stn-t">SOLVE</div><div class="stn-d">Kerjakan &amp; periksa</div></div>
+        </div>
+
+        <div class="hl hl-amber"><strong>Yang diuji:</strong> bukan hanya jawaban akhirnya, tetapi juga <strong>proses berpikirmu</strong>: memahami masalah, memilih strategi, dan memeriksa kewajaran jawaban.</div>
+
+        <div class="callout">
+          <span class="callout-icon">🎲</span>
+          <span>Soalnya <strong style="color:var(--amber)">beragam dan tidak diberi label</strong>. Kamu sendiri yang menentukan jenis soalnya dan strategi yang paling cocok.</span>
+        </div>
+
+        <div class="quote" style="text-align:center;border-left:none;border-radius:8px;">“Jawaban yang benar itu bagus. Tahu alasan di baliknya jauh lebih hebat.”</div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" disabled>← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🔢 Slide 2 · Numerical Reasoning</div>
+        <h2>Cari Aturannya, Jangan Menebak</h2>
+        <p>Untuk pola dan hubungan bilangan, lihat <strong>bagaimana angka berubah</strong> dari satu suku ke suku berikutnya.</p>
+
+        <div id="s2" class="seq-wrap"></div>
+        <div class="seq-cap">selisih antarsuku: 3 → 5 → 7 → 9, naik 2 setiap langkah</div>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">👀</span><span><strong>Amati perubahan</strong> antarangka: naik, turun, atau tetap?</span></div>
+          <div class="think-step"><span class="tq">➕</span><span><strong>Periksa operasinya:</strong> tambah, kurang, kali, atau bagi.</span></div>
+          <div class="think-step"><span class="tq">🪜</span><span><strong>Waspadai pola bertingkat:</strong> selisihnya sendiri bisa berubah, atau ada dua operasi sekaligus.</span></div>
+          <div class="think-step"><span class="tq">🚫</span><span><strong>Jangan langsung menebak.</strong> Cari aturan yang konsisten.</span></div>
+        </div>
+
+        <div class="seq-cap">Contoh menguji dugaan “selalu ditambah 3”:</div>
+        <div class="chk-row">
+          <span class="chk">2 → 5 <b>+3 ✓</b></span>
+          <span class="chk bad">5 → 10 <b>bukan +3 ✗</b></span>
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>Aturan yang benar harus cocok untuk <strong style="color:var(--amber)">semua</strong> pasangan suku, bukan hanya dua yang pertama.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">🧩 Slide 3 · Multi-Step Problem Solving</div>
+        <h2>Soal Cerita: Satu Langkah Demi Satu</h2>
+        <p>Soal cerita jarang selesai dalam satu hitungan. Susun <strong>urutannya</strong> dulu.</p>
+
+        <div class="flow">
+          <div class="flow-box key">BACA SAMPAI PAHAM KONTEKSNYA</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Tandai yang <strong>diketahui</strong> dan yang <strong>ditanyakan</strong></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Tentukan urutan operasi</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Kerjakan bertahap</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box end"><strong>Periksa kembali hasilnya</strong></div>
+        </div>
+
+        <div class="seq-cap">Alat yang sering dipakai:</div>
+        <div class="cg-row">
+          <span class="cg">Pecahan <b style="color:#f0a830">½</b></span>
+          <span class="cg">Desimal <b style="color:#f0a830">0,5</b></span>
+          <span class="cg">Persen <b style="color:#f0a830">50%</b></span>
+          <span class="cg">Perbandingan <b style="color:#f0a830">3 : 5</b></span>
+          <span class="cg">Operasi <b style="color:#f0a830">+ − × ÷</b></span>
+        </div>
+
+        <div class="hl hl-green"><strong>Awas:</strong> hasil antara belum tentu jawaban akhir. Sebelum menulis jawaban, baca lagi kalimat tanyanya dan perhatikan <strong>satuannya</strong>.</div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">📐 Slide 4 · Geometric Reasoning</div>
+        <h2>Pecah atau Lengkapi</h2>
+        <p>Bangun gabungan tersusun dari bentuk sederhana. Pilih cara yang <strong>paling hemat langkah</strong>.</p>
+
+        <div class="two">
+          <div class="strat">
+            <div class="strat-t a">Pecah</div>
+            <div id="g4a" class="geo-wrap"></div>
+            <div class="eq sm">12×5 <span class="op">+</span> 6×5</div>
+            <div class="seq-cap">jumlahkan bagian-bagiannya</div>
+          </div>
+          <div class="strat">
+            <div class="strat-t b">Lengkapi</div>
+            <div id="g4b" class="geo-wrap"></div>
+            <div class="eq sm">12×10 <span class="op">−</span> 6×5</div>
+            <div class="seq-cap">kurangi bagian yang ditambahkan</div>
+          </div>
+        </div>
+
+        <div class="two">
+          <div class="strat">
+            <div class="strat-t a">Luas</div>
+            <div class="seq-cap" style="line-height:1.55">isi bangun<br>satuan <strong style="color:var(--text)">cm²</strong></div>
+          </div>
+          <div class="strat">
+            <div class="strat-t b">Keliling</div>
+            <div class="seq-cap" style="line-height:1.55">panjang garis tepi<br>satuan <strong style="color:var(--text)">cm</strong></div>
+          </div>
+        </div>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">🔍</span><span><strong>Sisi belum diketahui?</strong> Sisi yang sejajar saling melengkapi, misalnya 12 − 6 = 6.</span></div>
+          <div class="think-step"><span class="tq">⚡</span><span><strong>Pilih yang paling efisien.</strong> Untuk keliling bangun L, cukup hitung keliling persegi panjang pembungkusnya.</span></div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">📊 Slide 5 · Data Interpretation</div>
+        <h2>Baca Dulu, Baru Simpulkan</h2>
+        <p>Sebelum menghitung, baca <strong>judul, label, dan satuan</strong> pada tabel atau diagram.</p>
+
+        <div id="c5" class="geo-wrap"></div>
+
+        <div class="seq-cap">Kata kunci pada pertanyaan:</div>
+        <div class="cg-row">
+          <span class="cg">Jumlah <b style="color:#48c870">+</b></span>
+          <span class="cg">Selisih <b style="color:#48c870">−</b></span>
+          <span class="cg">Pecahan <b style="color:#48c870">bagian ÷ total</b></span>
+          <span class="cg">Persen <b style="color:#48c870">× 100%</b></span>
+        </div>
+
+        <div class="fk k">
+          <div class="fk-t">Didukung data</div>
+          <div class="fk-q">Kelas 6D mengumpulkan sampah plastik terbanyak, yaitu 20 kg.</div>
+        </div>
+        <div class="fk a">
+          <div class="fk-t">Hanya dugaan</div>
+          <div class="fk-q">Kelas 6D paling peduli lingkungan.</div>
+          <div class="fk-w">Data hanya mencatat berat sampah, bukan seberapa peduli siswanya.</div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">✅ Slide 6 · Your Problem-Solving Checklist</div>
+        <h2>Checklist untuk Setiap Soal</h2>
+        <p style="margin-bottom:0.9rem">Ketuk kotaknya untuk mencentang. Gunakan urutan ini saat checkpoint.</p>
+
+        <div class="ck" onclick="toggleCk(this)"><span class="ck-box">✓</span><span class="ck-n">1</span><span class="ck-q">Apa yang sebenarnya ditanyakan?</span></div>
+        <div class="ck" onclick="toggleCk(this)"><span class="ck-box">✓</span><span class="ck-n">2</span><span class="ck-q">Informasi apa yang tersedia?</span></div>
+        <div class="ck" onclick="toggleCk(this)"><span class="ck-box">✓</span><span class="ck-n">3</span><span class="ck-q">Strategi apa yang paling sesuai?</span></div>
+        <div class="ck" onclick="toggleCk(this)"><span class="ck-box">✓</span><span class="ck-n">4</span><span class="ck-q">Apakah langkah penyelesaian sudah benar?</span></div>
+        <div class="ck" onclick="toggleCk(this)"><span class="ck-box">✓</span><span class="ck-n">5</span><span class="ck-q">Apakah jawaban masuk akal?</span></div>
+        <div class="ck" onclick="toggleCk(this)"><span class="ck-box">✓</span><span class="ck-n">6</span><span class="ck-q">Bisakah aku menjelaskan alasan di balik jawabanku?</span></div>
+
+        <div class="motto">
+          <div class="m1">Understand the problem.</div>
+          <div class="m2">Choose your strategy.</div>
+          <div class="m3">Solve independently.</div>
+        </div>
+      </div>
+
+      <div class="finish">
+        <span class="finish-icon">🧭</span>
+        <div class="finish-title">SIAP UNTUK CHECKPOINT!</div>
+        <div class="finish-desc">Kamu sudah punya peta berpikirnya. Saatnya mencoba soal campuran di latihan.</div>
+        <div class="xp">+100 XP</div>
+        <div class="finish-btns">
+          <a href="latihan38.html" class="btn btn-primary">🧮 Mulai Latihan</a>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-ghost" disabled>Selesai ✓</button>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+</div>
+<script>
+
+/* ===================== CHARTS & TABLES ===================== */
+function chart(o){
+  const W=o.W||360, H=o.H||250, ml=50, mr=18, mt=28, mb=(o.xt?56:42);
+  const pw=W-ml-mr, ph=H-mt-mb, n=o.data.length;
+  const y0=o.ymin||0, y1=o.ymax, st=o.step;
+  const Y=v=>+(mt+ph-(v-y0)/(y1-y0)*ph).toFixed(1);
+  const slot=pw/n, cx=i=>+(ml+slot*i+slot/2).toFixed(1);
+  const hl=o.hl||[];
+  let s='';
+  for(let v=y0; v<=y1+1e-9; v+=st){
+    s+=`<line class="gr" x1="${ml}" y1="${Y(v)}" x2="${W-mr}" y2="${Y(v)}"/>`+
+       `<text class="ax l" x="${ml-8}" y="${Y(v)}">${v}</text>`;
+  }
+  s+=`<line class="axl" x1="${ml}" y1="${mt}" x2="${ml}" y2="${Y(y0)}"/><line class="axl" x1="${ml}" y1="${Y(y0)}" x2="${W-mr}" y2="${Y(y0)}"/>`;
+  if(o.type==='bar'){
+    const bw=Math.min(slot*0.58,54);
+    o.data.forEach((d,i)=>{
+      const top=Y(d[1]);
+      s+=`<rect class="${hl.includes(i)?'b-am':'b-st'}" x="${(cx(i)-bw/2).toFixed(1)}" y="${top}" width="${bw.toFixed(1)}" height="${(Y(y0)-top).toFixed(1)}" rx="3"/>`;
+      if(o.vals) s+=`<text class="vl" x="${cx(i)}" y="${top-11}">${d[1]}${o.unit||''}</text>`;
+    });
+  } else {
+    s+=`<polyline class="ln" points="${o.data.map((d,i)=>cx(i)+','+Y(d[1])).join(' ')}"/>`;
+    o.data.forEach((d,i)=>{
+      s+=`<circle class="${hl.includes(i)?'dt-am':'dt-st'}" cx="${cx(i)}" cy="${Y(d[1])}" r="6"/>`;
+      if(o.vals) s+=`<text class="vl" x="${cx(i)}" y="${Y(d[1])-17}">${d[1]}${o.unit||''}</text>`;
+    });
+  }
+  o.data.forEach((d,i)=>{ s+=`<text class="ax" x="${cx(i)}" y="${Y(y0)+17}">${d[0]}</text>`; });
+  if(o.xt) s+=`<text class="at" x="${ml+pw/2}" y="${H-10}">${o.xt}</text>`;
+  if(o.yt) s+=`<text class="at" transform="translate(13 ${mt+ph/2}) rotate(-90)">${o.yt}</text>`;
+  return `<svg class="ch-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria}">${s}</svg>`;
+}
+
+function waffle(total, cols, hi, aria){
+  const c=22, g=5, rows=Math.ceil(total/cols);
+  const W=cols*(c+g)+g, H=rows*(c+g)+g;
+  let s='';
+  for(let i=0;i<total;i++){
+    const r=Math.floor(i/cols), k=i%cols;
+    s+=`<circle class="wf${i<hi?' on':''}" cx="${g+k*(c+g)+c/2}" cy="${g+r*(c+g)+c/2}" r="${c/2}"/>`;
+  }
+  return `<svg class="ch-svg" style="max-width:340px" viewBox="0 0 ${W} ${H}" role="img" aria-label="${aria}">${s}</svg>`;
+}
+
+function dtable(h, rows, o){
+  o=o||{};
+  const der=o.der||[], sum=o.sum||[];
+  const hs=h.map((x,i)=>`<th${der.includes(i)?' class="der"':''}>${x}</th>`).join('');
+  const rs=rows.map((r,ri)=>`<tr${sum.includes(ri)?' class="sum"':''}>`+r.map((c,i)=>`<td${der.includes(i)?' class="der"':''}>${c}</td>`).join('')+'</tr>').join('');
+  return `<table class="dt">${o.cap?`<caption>${o.cap}</caption>`:''}<thead><tr>${hs}</tr></thead><tbody>${rs}</tbody></table>`;
+}
+function put(id, html){ document.getElementById(id).innerHTML = html; }
+
+  
+function seqSvg(vals, steps, color, aria){
+  const n=vals.length, bw=52, gap=14, W=20+n*bw+(n-1)*gap, y=46, bh=42;
+  let s='';
+  vals.forEach((v,i)=>{
+    const x=10+i*(bw+gap);
+    s+=`<rect class="sb" x="${x}" y="${y}" width="${bw}" height="${bh}" rx="8"/><text class="sn" x="${x+bw/2}" y="${y+bh/2}">${v}</text>`;
+    if(i<n-1){
+      const a=x+bw/2, b=a+bw+gap, m=(a+b)/2;
+      s+=`<path class="arc c-${color}" d="M${a} ${y-4} Q${m} ${y-44} ${b} ${y-4}"/>`+
+         `<polygon class="ah-${color}" points="${b-5},${y-13} ${b+5},${y-13} ${b},${y-3}"/>`+
+         `<text class="sl c-${color}" x="${m}" y="${y-36}">${steps[i]}</text>`;
+    }
+  });
+  return `<svg class="seq-svg" style="max-width:${W+40}px" viewBox="0 0 ${W} ${y+bh+8}" role="img" aria-label="${aria}">${s}</svg>`;
+}
+
+function geo(o){
+  const P=o.pts.map(p=>[o.ox+p[0]*o.s, o.oy+p[1]*o.s]);
+  let h=`<polygon class="${o.cls||'g-steel'}" points="${P.map(p=>p.join(',')).join(' ')}"/>`;
+  (o.extra||[]).forEach(x=>{ h+=x; });
+  (o.labels||[]).forEach(l=>{ h+=`<text class="gd${l[3]?' '+l[3]:''}" x="${l[1]}" y="${l[2]}">${l[0]}</text>`; });
+  return `<svg class="geo-svg" viewBox="0 0 ${o.W} ${o.H}" role="img" aria-label="${o.aria}">${h}</svg>`;
+}
+
+/* ===== Slide 2: pola bertingkat ===== */
+put('s2', seqSvg([2,5,10,17,26],['+3','+5','+7','+9'],'amber','Barisan 2, 5, 10, 17, 26 dengan selisih 3, 5, 7, 9'));
+
+/* ===== Slide 4: pecah vs lengkapi (bangun L: 12 x 10, bagian kanan bawah 6 x 5 kosong) ===== */
+put('g4a', geo({s:9, ox:34, oy:24, W:170, H:135,
+  pts:[[0,0],[12,0],[12,5],[0,5]], cls:'g-steel',
+  extra:['<polygon class="g-amber" points="34,69 88,69 88,114 34,114"/>',
+         '<line class="g-aux" x1="34" y1="69" x2="142" y2="69"/>'],
+  labels:[['12',88,10],['5',153,46],['10',16,69],['6',61,128],['12×5',88,46],['6×5',61,91,'am']],
+  aria:'Bangun L dipecah menjadi dua persegi panjang: 12 kali 5 dan 6 kali 5'}));
+put('g4b', geo({s:9, ox:34, oy:24, W:170, H:135,
+  pts:[[0,0],[12,0],[12,10],[0,10]], cls:'g-steel',
+  extra:['<polygon class="g-cut" points="88,69 142,69 142,114 88,114"/>'],
+  labels:[['12',88,10],['10',16,69],['12×10',61,46],['6×5',115,91,'am']],
+  aria:'Bangun L dilengkapi menjadi persegi panjang 12 kali 10, lalu bagian 6 kali 5 dikurangi'}));
+
+/* ===== Slide 5: data ===== */
+put('c5', chart({type:'bar', data:[['6A',12],['6B',18],['6C',15],['6D',20]],
+  ymax:25, step:5, vals:true, hl:[3], W:340, H:210, xt:'Kelas', yt:'Sampah plastik (kg)',
+  aria:'Diagram batang sampah plastik yang terkumpul: kelas 6A 12 kg, 6B 18 kg, 6C 15 kg, 6D 20 kg'}));
+
+function toggleCk(el){ el.classList.toggle('on'); }
+
+/* ===== Slide navigation ===== */
+  const TOTAL = 6;
+  let cur = 0;
+
+  const dotsEl = document.getElementById('dots');
+  for(let i=0;i<TOTAL;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots(){
+    document.querySelectorAll('.dot').forEach((d,i)=>{
+      d.className = 'dot' + (i===cur?' active':i<cur?' done':'');
+    });
+  }
+
+  function goTo(n){
+    document.querySelectorAll('.slide')[cur].classList.remove('active');
+    cur = n;
+    document.querySelectorAll('.slide')[cur].classList.add('active');
+    updateDots();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function nextSlide(){ if(cur<TOTAL-1) goTo(cur+1); }
+  function prevSlide(){ if(cur>0) goTo(cur-1); }
+
+  document.querySelectorAll('.slide')[0].classList.add('active');
+</script>
+</body>
+</html>
