@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi · Perbandingan dan Skala · Fatih</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/logo1.svg">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;--card:#1c2533;--border:#2a3a4a;--border2:#344858;
+    --steel:#4a90b8;--steel-light:#7ab8d8;--steel-bg:rgba(74,144,184,0.1);
+    --amber:#f0a830;--amber-light:#f8c870;--amber-bg:rgba(240,168,48,0.1);
+    --green:#48c870;--green-bg:rgba(72,200,112,0.1);--green-light:#80e0a0;
+    --red:#e85040;--red-bg:rgba(232,80,64,0.08);
+    --violet:#7c3aed;--violet-bg:rgba(124,58,237,0.1);--violet-light:#a78bfa;
+    --text:#dce8f0;--text-mid:#9ab0c0;--text-muted:#586878;
+    --shadow:rgba(0,0,0,0.4);--track:#263545;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 70% 20%,rgba(74,144,184,0.06) 0%,transparent 55%);pointer-events:none;}
+
+  nav{padding:1rem 2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);background:rgba(15,20,25,0.9);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;font-family:'Rajdhani',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:1px;}
+  nav a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  nav a:hover{color:var(--steel-light);}
+  nav span{color:var(--border2);}
+  nav .cur{color:var(--amber);}
+
+  .track-strip{position:fixed;bottom:0;left:0;right:0;height:24px;background:var(--track);z-index:5;border-top:2px solid var(--border2);overflow:hidden;}
+  .sleepers{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,var(--border) 18px,var(--border) 24px);animation:roll 3s linear infinite;}
+  @keyframes roll{from{background-position:0 0;}to{background-position:-42px 0;}}
+  .track-rail{position:absolute;left:0;right:0;height:3px;background:var(--border2);}
+  .track-rail:first-of-type{top:7px;}.track-rail:last-of-type{top:14px;}
+
+  .wrap{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 5rem;position:relative;z-index:1;}
+  .sec-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.4);color:var(--amber);font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:0.28rem 0.9rem;border-radius:4px;margin-bottom:1.3rem;}
+  h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:0.6rem;line-height:1.3;letter-spacing:1px;}
+  h1 span{color:var(--amber);}
+  .intro{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem;}
+
+  .dots{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.8rem;flex-wrap:wrap;}
+  .dot{width:8px;height:8px;border-radius:2px;background:var(--border2);transition:all 0.3s;cursor:pointer;}
+  .dot.active{background:var(--amber);box-shadow:0 0 8px rgba(240,168,48,0.5);transform:scaleX(1.5);}
+  .dot.done{background:#8c5a2d;}
+
+  .slide{display:none;animation:fadeUp 0.35s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;margin-bottom:1.1rem;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),transparent);}
+  .card-label{font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.9rem;}
+  .card-label.violet{color:var(--violet-light);}
+  .card-label.steel{color:var(--steel-light);}
+  .card-label.amber{color:var(--amber);}
+  .card-label.green{color:var(--green);}
+  .card h2{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.7rem;line-height:1.4;letter-spacing:0.5px;}
+  .card p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;}
+  .card p strong{color:var(--text);}
+
+  .hl{border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:0.88rem;line-height:1.6;}
+  .hl-violet{background:var(--violet-bg);border:1px solid rgba(124,58,237,0.35);}
+  .hl-steel{background:var(--steel-bg);border:1px solid rgba(74,144,184,0.35);}
+  .hl-amber{background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);}
+  .hl-green{background:var(--green-bg);border:1px solid rgba(72,200,112,0.35);}
+  .hl-red{background:var(--red-bg);border:1px solid rgba(232,80,64,0.3);}
+  .hl-violet strong{color:var(--violet-light);}
+  .hl-steel strong{color:var(--steel-light);}
+  .hl-amber strong{color:var(--amber);}
+  .hl-green strong{color:var(--green);}
+  .hl-red strong{color:var(--red);}
+
+  .callout{display:flex;gap:0.8rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 1rem;margin:1rem 0;font-size:0.87rem;color:var(--text-mid);line-height:1.6;}
+  .callout-icon{font-size:1.2rem;flex-shrink:0;}
+
+  .tip-list{list-style:none;margin:0.8rem 0;}
+  .tip-list li{display:flex;gap:0.6rem;align-items:flex-start;font-size:0.88rem;color:var(--text-mid);margin-bottom:0.5rem;line-height:1.55;}
+  .tip-list li::before{content:'→';color:var(--amber);font-weight:700;flex-shrink:0;}
+
+  .nav-btns{display:flex;gap:0.8rem;margin-top:1.5rem;}
+  .btn{padding:0.75rem 1.6rem;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:1px;}
+  .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-muted);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-primary{background:linear-gradient(135deg,var(--amber-light),#c9820f);color:#08131c;font-weight:800;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(240,168,48,0.35);}
+  .btn:disabled{opacity:0.4;cursor:default;}
+
+  .finish{text-align:center;padding:2.5rem 1.8rem;}
+  .finish-icon{font-size:4rem;display:block;margin-bottom:1rem;animation:bounce 1s ease-in-out infinite alternate;}
+  @keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+  .finish-title{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--amber);letter-spacing:3px;margin-bottom:0.6rem;}
+  .finish-desc{color:var(--text-muted);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;}
+  .xp{display:inline-block;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.35);color:var(--amber);padding:0.35rem 1.1rem;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:2px;margin-bottom:1.5rem;}
+  .finish-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+  /* ===== number-sequence diagram (rendered by JS) ===== */
+  .seq-wrap{display:flex;justify-content:center;margin:0.9rem 0 0.4rem;}
+  .seq-svg{width:100%;height:auto;overflow:visible;}
+  .seq-svg .sb{fill:var(--track);stroke:var(--border2);stroke-width:2;}
+  .seq-svg .sb.q{fill:var(--amber-bg);stroke:var(--amber);stroke-dasharray:5 4;}
+  .seq-svg .sb.ans{fill:var(--green-bg);stroke:var(--green);}
+  .seq-svg text{font-family:'Rajdhani',sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;}
+  .seq-svg .sn{font-size:22px;fill:var(--text);}
+  .seq-svg .sn.q{fill:var(--amber);}
+  .seq-svg .sn.ans{fill:var(--green-light);}
+  .seq-svg .sl{font-size:17px;}
+  .seq-svg .arc{fill:none;stroke-width:2.2;}
+  .seq-svg .c-amber{stroke:var(--amber);} .seq-svg text.c-amber{fill:var(--amber);stroke:none;}
+  .seq-svg .c-red{stroke:var(--red);} .seq-svg text.c-red{fill:var(--red);stroke:none;}
+  .seq-svg .c-violet{stroke:var(--violet-light);} .seq-svg text.c-violet{fill:var(--violet-light);stroke:none;}
+  .seq-svg .c-steel{stroke:var(--steel-light);} .seq-svg text.c-steel{fill:var(--steel-light);stroke:none;}
+  .seq-svg .ah-amber{fill:var(--amber);} .seq-svg .ah-red{fill:var(--red);}
+  .seq-svg .ah-violet{fill:var(--violet-light);} .seq-svg .ah-steel{fill:var(--steel-light);}
+  .seq-cap{text-align:center;font-family:'Rajdhani',sans-serif;font-size:0.76rem;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:0.5rem;}
+
+  /* equation lines */
+  .eq{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1.2rem;text-align:center;letter-spacing:1px;color:var(--text);margin:0.35rem 0;}
+  .eq .op{color:var(--text-muted);padding:0 0.15rem;}
+  .eq .ok{color:var(--green-light);}
+  .eq .am{color:var(--amber);}
+  .eq .vi{color:var(--violet-light);}
+  .eq.sm{font-size:1rem;}
+
+  /* pair-check chips */
+  .chk-row{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin:0.8rem 0 0.4rem;}
+  .chk{background:var(--track);border:1px solid rgba(72,200,112,0.5);border-radius:8px;padding:0.4rem 0.8rem;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.95rem;color:var(--text);}
+  .chk b{color:var(--green);margin-left:0.35rem;}
+  .chk.bad{border-color:rgba(232,80,64,0.5);}
+  .chk.bad b{color:var(--red);}
+
+  /* thinking steps */
+  .think-steps{display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0;}
+  .think-step{display:flex;gap:0.7rem;align-items:flex-start;background:var(--track);border:1px solid var(--border2);border-radius:8px;padding:0.7rem 0.9rem;font-size:0.85rem;color:var(--text-mid);line-height:1.55;}
+  .think-step .tq{font-family:'Rajdhani',sans-serif;font-weight:800;color:var(--amber);flex-shrink:0;min-width:1.1rem;}
+  .think-step strong{color:var(--text);}
+
+  /* quote */
+  .quote{border-left:3px solid var(--amber);background:var(--amber-bg);border-radius:0 8px 8px 0;padding:0.9rem 1.1rem;margin:1rem 0;font-size:0.95rem;line-height:1.65;color:var(--amber-light);font-weight:700;}
+
+  /* flow */
+  .flow{display:flex;flex-direction:column;align-items:center;gap:0.3rem;margin:1.1rem 0;}
+  .flow-box{width:100%;max-width:400px;text-align:center;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.7rem 1rem;font-size:0.88rem;color:var(--text);line-height:1.5;}
+  .flow-box.key{border-color:var(--amber);background:var(--amber-bg);font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1rem;letter-spacing:1.5px;color:var(--amber-light);}
+  .flow-box.end{border-color:rgba(72,200,112,0.5);background:var(--green-bg);}
+  .flow-box.end strong{color:var(--green);}
+  .flow-arrow{color:var(--text-muted);font-size:1.1rem;line-height:1;}
+
+  /* ===== lesson 36: geometry diagrams ===== */
+  .geo-wrap{display:flex;justify-content:center;margin:0.9rem 0 0.4rem;}
+  .geo-svg{width:100%;max-width:340px;height:auto;overflow:visible;}
+  .geo-svg text{font-family:'Rajdhani',sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;}
+  .geo-svg .gd{font-size:15px;fill:var(--text);}
+  .geo-svg .gd.am{fill:var(--amber);}
+  .geo-svg .gi{font-size:16px;fill:var(--text);}
+  .geo-svg .gi.big{font-size:20px;}
+  .geo-svg .gs{font-size:11px;fill:var(--text-muted);font-weight:700;letter-spacing:0.5px;}
+  .g-steel{fill:rgba(74,144,184,0.22);stroke:#4a90b8;stroke-width:2.5;stroke-linejoin:round;}
+  .g-amber{fill:rgba(240,168,48,0.2);stroke:#f0a830;stroke-width:2.5;stroke-linejoin:round;}
+  .g-green{fill:rgba(72,200,112,0.18);stroke:#48c870;stroke-width:2.5;stroke-linejoin:round;}
+  .g-cut{fill:rgba(124,58,237,0.14);stroke:#a78bfa;stroke-width:2.5;stroke-dasharray:6 4;stroke-linejoin:round;}
+  .g-out{fill:none;stroke:#f0a830;stroke-width:4.5;stroke-linejoin:round;}
+  .g-aux{stroke:#586878;stroke-width:2;stroke-dasharray:5 4;}
+  .g-tick{stroke:#f0a830;stroke-width:2.5;}
+  .legend{display:flex;flex-wrap:wrap;gap:0.4rem 1.1rem;justify-content:center;font-size:0.78rem;color:var(--text-mid);margin:0.3rem 0 0.8rem;}
+  .lg{display:flex;align-items:center;gap:0.4rem;}
+  .sw{width:14px;height:14px;border-radius:3px;border:2px solid;display:inline-block;}
+  .sw.steel{border-color:#4a90b8;background:rgba(74,144,184,0.22);}
+  .sw.amber{border-color:#f0a830;background:rgba(240,168,48,0.2);}
+  .sw.cut{border-color:#a78bfa;background:rgba(124,58,237,0.14);border-style:dashed;}
+  .sw.line{border:none;height:4px;width:18px;background:#f0a830;border-radius:2px;}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+  @media (max-width:540px){.two{grid-template-columns:1fr;}}
+  .strat{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.9rem 0.8rem 0.8rem;}
+  .strat-t{font-family:'Rajdhani',sans-serif;font-size:0.8rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;text-align:center;margin-bottom:0.2rem;}
+  .strat-t.a{color:var(--violet-light);} .strat-t.b{color:var(--amber);}
+  .strat .geo-svg{max-width:250px;}
+  .strat .eq{font-size:0.98rem;}
+
+  /* ===== lesson 37: data charts & tables ===== */
+  .ch-svg{width:100%;max-width:400px;height:auto;overflow:visible;}
+  .ch-svg text{font-family:'Rajdhani',sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central;}
+  .ch-svg .ax{font-size:12px;fill:#9ab0c0;}
+  .ch-svg .ax.l{text-anchor:end;}
+  .ch-svg .vl{font-size:14px;fill:#dce8f0;}
+  .ch-svg .at{font-size:11px;fill:#586878;letter-spacing:1px;}
+  .ch-svg .gr{stroke:#2a3a4a;stroke-width:1;}
+  .ch-svg .axl{stroke:#344858;stroke-width:2;}
+  .ch-svg .b-st{fill:rgba(74,144,184,0.5);stroke:#4a90b8;stroke-width:2;}
+  .ch-svg .b-am{fill:rgba(240,168,48,0.45);stroke:#f0a830;stroke-width:2;}
+  .ch-svg .ln{fill:none;stroke:#7ab8d8;stroke-width:3;stroke-linejoin:round;stroke-linecap:round;}
+  .ch-svg .dt-st{fill:#1c2533;stroke:#7ab8d8;stroke-width:3;}
+  .ch-svg .dt-am{fill:#f0a830;stroke:#f8c870;stroke-width:3;}
+  .ch-svg .wf{fill:#263545;stroke:#344858;stroke-width:1.5;}
+  .ch-svg .wf.on{fill:rgba(240,168,48,0.55);stroke:#f0a830;}
+
+  .dt{border-collapse:separate;border-spacing:0;margin:0.4rem auto;min-width:230px;border:1px solid #344858;border-radius:10px;overflow:hidden;font-family:'Rajdhani',sans-serif;}
+  .dt caption{caption-side:top;font-size:0.78rem;color:#586878;letter-spacing:0.5px;padding-bottom:0.5rem;font-weight:700;}
+  .dt th{background:#263545;color:#f0a830;font-size:0.78rem;letter-spacing:1.5px;text-transform:uppercase;padding:0.55rem 0.7rem;text-align:center;font-weight:700;}
+  .dt th:first-child,.dt td:first-child{text-align:left;}
+  .dt th.der{color:#48c870;}
+  .dt td{padding:0.5rem 0.7rem;border-top:1px solid #2a3a4a;font-weight:700;font-size:1.02rem;color:#dce8f0;text-align:center;}
+  .dt td:first-child{color:#9ab0c0;}
+  .dt td.der{color:#80e0a0;}
+  .dt tr.sum td{background:rgba(240,168,48,0.1);color:#f8c870;}
+  .dt-wrap{display:block;overflow-x:auto;margin:0.8rem 0;}
+  .dt-wrap .dt{margin:0.4rem auto;}
+  @media (max-width:480px){.dt th{font-size:0.7rem;letter-spacing:0.5px;padding:0.5rem 0.45rem;}.dt td{padding:0.45rem 0.45rem;font-size:0.95rem;}}
+
+  .cg-row{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin:0.7rem 0;}
+  .cg{background:#263545;border:1px solid #344858;border-radius:8px;padding:0.35rem 0.75rem;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.9rem;color:#dce8f0;}
+  .cg b{margin-left:0.4rem;}
+  .cg.up b{color:#48c870;} .cg.dn b{color:#e85040;}
+
+  .picto{display:flex;flex-direction:column;gap:0.35rem;margin:0.9rem auto;max-width:360px;}
+  .picto-r{display:flex;align-items:center;gap:0.7rem;background:#263545;border:1px solid #344858;border-radius:8px;padding:0.4rem 0.8rem;}
+  .picto-n{font-family:'Rajdhani',sans-serif;font-weight:800;color:#dce8f0;width:3.2rem;font-size:0.95rem;}
+  .picto-b{font-size:1.05rem;letter-spacing:1px;line-height:1.3;}
+
+  .fk{border-radius:10px;padding:0.8rem 1rem;margin:0.6rem 0;border:1px solid;}
+  .fk-t{font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.25rem;}
+  .fk-q{font-size:0.92rem;color:#dce8f0;line-height:1.55;font-weight:700;}
+  .fk-w{font-size:0.8rem;color:#9ab0c0;margin-top:0.35rem;line-height:1.55;}
+  .fk.f{background:rgba(74,144,184,0.1);border-color:rgba(74,144,184,0.4);} .fk.f .fk-t{color:#7ab8d8;}
+  .fk.k{background:rgba(72,200,112,0.1);border-color:rgba(72,200,112,0.4);} .fk.k .fk-t{color:#48c870;}
+  .fk.a{background:rgba(232,80,64,0.08);border-color:rgba(232,80,64,0.35);} .fk.a .fk-t{color:#e85040;}
+
+  /* ===== lesson 38: checkpoint ===== */
+  .route{display:flex;align-items:flex-start;justify-content:center;margin:1.4rem 0 1.1rem;}
+  .stn{width:80px;text-align:center;flex-shrink:0;}
+  .stn-dot{width:58px;height:58px;border-radius:50%;border:3px solid var(--amber);background:var(--amber-bg);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 0.5rem;box-shadow:0 0 14px rgba(240,168,48,0.25);}
+  .stn:nth-child(3) .stn-dot{border-color:var(--violet-light);background:var(--violet-bg);box-shadow:0 0 14px rgba(124,58,237,0.3);}
+  .stn:nth-child(5) .stn-dot{border-color:var(--green);background:var(--green-bg);box-shadow:0 0 14px rgba(72,200,112,0.25);}
+  .stn-t{font-family:'Rajdhani',sans-serif;font-weight:800;letter-spacing:2px;font-size:0.95rem;color:var(--text);}
+  .stn-d{font-size:0.74rem;color:var(--text-muted);line-height:1.4;margin-top:0.15rem;}
+  .rail-seg{flex:1;min-width:18px;height:4px;margin-top:27px;border-radius:2px;background:repeating-linear-gradient(90deg,var(--steel) 0,var(--steel) 10px,transparent 10px,transparent 16px);}
+  .geo-svg .g-amber{fill:rgba(240,168,48,0.2);stroke:#f0a830;stroke-width:2.5;stroke-linejoin:round;}
+
+  .ck{display:flex;gap:0.8rem;align-items:center;background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.7rem 0.9rem;margin-bottom:0.45rem;cursor:pointer;transition:all 0.15s;user-select:none;}
+  .ck:hover{border-color:var(--amber);}
+  .ck-box{width:26px;height:26px;border-radius:7px;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:transparent;font-weight:900;font-size:0.95rem;transition:all 0.15s;}
+  .ck.on{border-color:rgba(72,200,112,0.5);background:var(--green-bg);}
+  .ck.on .ck-box{border-color:var(--green);background:rgba(72,200,112,0.2);color:var(--green);}
+  .ck-n{font-family:'Rajdhani',sans-serif;font-weight:800;color:var(--amber);flex-shrink:0;width:1rem;}
+  .ck-q{font-size:0.9rem;color:var(--text);font-weight:700;line-height:1.5;}
+  .motto{text-align:center;margin:1.2rem 0 0.4rem;padding:1.1rem 1rem;border:1px solid var(--border2);border-radius:12px;background:linear-gradient(180deg,rgba(240,168,48,0.07),transparent);}
+  .motto div{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1.15rem;letter-spacing:1.5px;line-height:1.7;}
+  .motto .m1{color:var(--amber);} .motto .m2{color:var(--violet-light);} .motto .m3{color:var(--green);}
+
+  /* ===== lesson 39: perbandingan & skala ===== */
+  .fruit-box{display:flex;justify-content:center;gap:0.9rem;flex-wrap:wrap;margin:1.1rem 0 0.6rem;}
+  .fb{background:var(--track);border:2px solid;border-radius:12px;padding:0.6rem 1rem;text-align:center;min-width:120px;}
+  .fb.r{border-color:rgba(232,80,64,0.6);} .fb.g{border-color:rgba(72,200,112,0.6);}
+  .fb .em{font-size:1.9rem;letter-spacing:2px;line-height:1.35;display:block;}
+  .fb .nm{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.82rem;letter-spacing:1.5px;margin-top:0.2rem;}
+  .fb.r .nm{color:var(--red);} .fb.g .nm{color:var(--green);}
+  .ratio-big{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1.5rem;text-align:center;letter-spacing:2px;margin:0.6rem 0 0.1rem;color:var(--text);}
+  .ratio-big .rd{color:var(--red);} .ratio-big .rg{color:var(--green);} .ratio-big .op{color:var(--text-muted);padding:0 0.2rem;}
+
+  .bm{display:flex;gap:3px;margin:0.5rem 0 0;}
+  .bm .b{flex:1 1 0;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;border:2px solid;}
+  .bm .b.r{background:rgba(232,80,64,0.25);border-color:#e85040;}
+  .bm .b.g{background:rgba(72,200,112,0.22);border-color:#48c870;}
+  .brk-row{display:flex;gap:3px;margin-top:4px;}
+  .brk{border:2px solid;border-top:none;border-radius:0 0 8px 8px;padding:0.25rem 0.3rem 0.3rem;text-align:center;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.82rem;letter-spacing:0.5px;}
+  .brk.r{border-color:#e85040;color:#f4a090;flex:2 1 0;} .brk.g{border-color:#48c870;color:#80e0a0;flex:3 1 0;}
+  .brk.a{border-color:#f0a830;color:#f8c870;flex:1 1 100%;}
+
+  .grp-row{display:flex;align-items:center;gap:0.8rem;margin:0.5rem 0;}
+  .grp-lab{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:1.05rem;min-width:3.7rem;color:var(--amber);}
+  .grp-set{display:flex;gap:0.45rem;flex-wrap:wrap;}
+  .grp{background:var(--track);border:1px dashed var(--border2);border-radius:8px;padding:0.2rem 0.5rem;font-size:1rem;letter-spacing:1px;line-height:1.45;white-space:nowrap;}
+
+  @media (max-width:480px){.grp{font-size:0.8rem;padding:0.15rem 0.35rem;letter-spacing:0;}.grp-lab{min-width:3.1rem;font-size:0.95rem;}.grp-row{gap:0.5rem;}.grp-set{gap:0.3rem;}}
+  .rx{margin:1rem 0;}
+  .rx-h,.rx-row,.rx-mul{display:grid;grid-template-columns:1fr auto 1fr;gap:0.5rem;align-items:center;}
+  .rx-h{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.72rem;letter-spacing:2px;color:var(--text-muted);text-align:center;margin-bottom:0.4rem;}
+  .rx-c{background:var(--track);border:1px solid var(--border2);border-radius:10px;padding:0.55rem 0.4rem;text-align:center;font-size:1.25rem;line-height:1.35;}
+  .rx-c small{display:block;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.82rem;letter-spacing:1px;color:var(--text-mid);margin-top:0.15rem;}
+  .rx-c.ans{border-color:rgba(72,200,112,0.55);background:var(--green-bg);}
+  .rx-c.ans small{color:var(--green);}
+  .rx-ar{color:var(--text-muted);font-size:1.2rem;}
+  .rx-mul{margin:0.35rem 0;}
+  .rx-mul .x{justify-self:center;background:var(--amber-bg);border:1px solid rgba(240,168,48,0.45);color:var(--amber);border-radius:99px;padding:0.15rem 0.8rem;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:0.95rem;letter-spacing:1px;}
+  .rx-mul .sp{width:1.2rem;}
+
+</style>
+</head>
+<body>
+<div class="track-strip"><div class="sleepers"></div><div class="track-rail"></div><div class="track-rail"></div></div>
+
+<nav>
+  <a href="../../../index.html">MATH ARENA</a><span>/</span>
+  <a href="../fatih_0560.html">FATIH</a><span>/</span>
+  <a href="lesson39.html">LESSON 39</a><span>/</span>
+  <span class="cur">MATERI</span>
+</nav>
+
+<div class="wrap">
+  <div class="sec-badge">⚖️ Materi · Lesson 39</div>
+  <h1>Memahami <span>Perbandingan dan Skala</span> dalam Kehidupan Sehari-hari</h1>
+  <p class="intro">Kita mulai dari benda yang bisa dibayangkan, baru kemudian ke angka. Perhatikan hubungan antara dua kuantitas, bukan hanya angkanya.</p>
+
+  <div class="dots" id="dots"></div>
+  <div id="slides">
+
+    <!-- SLIDE 1 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">⚖️ Slide 1 · Apa Itu Perbandingan?</div>
+        <h2>Membandingkan Dua Kuantitas</h2>
+        <p>Perbandingan adalah cara <strong>membandingkan dua kuantitas</strong>. Perhatikan isi keranjang ini:</p>
+
+        <div class="fruit-box">
+          <div class="fb r"><span class="em">🍎🍎</span><div class="nm">2 APEL MERAH</div></div>
+          <div class="fb g"><span class="em">🍏🍏🍏</span><div class="nm">3 APEL HIJAU</div></div>
+        </div>
+        <div class="ratio-big"><span class="rd">merah</span><span class="op">:</span><span class="rg">hijau</span> <span class="op">=</span> <span class="rd">2</span><span class="op">:</span><span class="rg">3</span></div>
+        <div class="seq-cap">dibaca “dua banding tiga”</div>
+
+        <div class="hl hl-amber"><strong>Urutan itu penting!</strong> Yang disebut lebih dulu, angkanya ditulis lebih dulu.</div>
+
+        <div class="two">
+          <div class="strat">
+            <div class="strat-t" style="color:var(--red)">Merah terhadap hijau</div>
+            <div class="eq"><span style="color:var(--red)">2</span> <span class="op">:</span> <span style="color:var(--green-light)">3</span></div>
+            <div class="seq-cap">🍎🍎 : 🍏🍏🍏</div>
+          </div>
+          <div class="strat">
+            <div class="strat-t" style="color:var(--green)">Hijau terhadap merah</div>
+            <div class="eq"><span style="color:var(--green-light)">3</span> <span class="op">:</span> <span style="color:var(--red)">2</span></div>
+            <div class="seq-cap">🍏🍏🍏 : 🍎🍎</div>
+          </div>
+        </div>
+        <div class="callout">
+          <span class="callout-icon">⚠️</span>
+          <span><strong style="color:var(--amber)">2 : 3</strong> dan <strong style="color:var(--amber)">3 : 2</strong> adalah dua perbandingan yang berbeda.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" disabled>← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">📏 Slide 2 · Memahami Bentuk Perbandingan</div>
+        <h2>Membaca dan Menulis a : b</h2>
+        <p>Perbandingan ditulis dengan tanda “:”. Bentuk <strong>a : b</strong> dibaca “a banding b”. Model batang membantu kita melihatnya.</p>
+
+        <div class="bm"><div class="b r">🍎</div><div class="b r">🍎</div><div class="b g">🍏</div><div class="b g">🍏</div><div class="b g">🍏</div></div>
+        <div class="brk-row"><div class="brk r">merah: 2</div><div class="brk g">hijau: 3</div></div>
+        <div class="brk-row"><div class="brk a">semua: 5</div></div>
+
+        <div class="two">
+          <div class="strat">
+            <div class="strat-t a">Bagian : Bagian</div>
+            <div class="eq sm"><span style="color:var(--red)">merah</span> : <span style="color:var(--green-light)">hijau</span></div>
+            <div class="eq"><span style="color:var(--red)">2</span> : <span style="color:var(--green-light)">3</span></div>
+            <div class="seq-cap">sesama bagian</div>
+          </div>
+          <div class="strat">
+            <div class="strat-t b">Bagian : Keseluruhan</div>
+            <div class="eq sm"><span style="color:var(--red)">merah</span> : semua</div>
+            <div class="eq"><span style="color:var(--red)">2</span> : <span class="am">5</span></div>
+            <div class="seq-cap">hijau : semua = 3 : 5</div>
+          </div>
+        </div>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">🤔</span><span><strong>Tanya dulu:</strong> dibandingkan dengan apa? Dengan bagian yang lain, atau dengan seluruhnya?</span></div>
+          <div class="think-step"><span class="tq">🧮</span><span><strong>Keseluruhan</strong> didapat dengan menjumlahkan bagian-bagiannya: 2 + 3 = 5.</span></div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">🟰 Slide 3 · Perbandingan Senilai</div>
+        <h2>Kelompoknya Digandakan, Hubungannya Tetap</h2>
+        <p>Perbandingan yang <strong>senilai</strong> punya hubungan yang sama, walaupun jumlahnya berbeda.</p>
+
+        <div class="grp-row"><span class="grp-lab">2 : 3</span><div class="grp-set"><span class="grp">🍎🍎🍏🍏🍏</span></div></div>
+        <div class="grp-row"><span class="grp-lab">4 : 6</span><div class="grp-set"><span class="grp">🍎🍎🍏🍏🍏</span><span class="grp">🍎🍎🍏🍏🍏</span></div></div>
+        <div class="grp-row"><span class="grp-lab">6 : 9</span><div class="grp-set"><span class="grp">🍎🍎🍏🍏🍏</span><span class="grp">🍎🍎🍏🍏🍏</span><span class="grp">🍎🍎🍏🍏🍏</span></div></div>
+        <div class="seq-cap">setiap kelompok: 2 merah dan 3 hijau</div>
+
+        <div class="chk-row">
+          <span class="chk">2 : 3 → 4 : 6 <b>×2 ✓</b></span>
+          <span class="chk">2 : 3 → 6 : 9 <b>×3 ✓</b></span>
+        </div>
+        <div class="hl hl-violet"><strong>Kuncinya:</strong> kedua bilangan dikalikan dengan <strong>faktor yang sama</strong>, sehingga 2 : 3 = 4 : 6 = 6 : 9.</div>
+        <div class="hl hl-amber"><strong>Yang berubah dan yang tetap:</strong> jumlahnya berubah (5, lalu 10, lalu 15), tetapi hubungannya tetap: setiap 2 merah ditemani 3 hijau.</div>
+
+        <div class="seq-cap">Bagaimana dengan 4 : 5?</div>
+        <div class="chk-row">
+          <span class="chk bad">2 : 3 → 4 : 5 <b>bukan senilai ✗</b></span>
+        </div>
+        <div class="callout">
+          <span class="callout-icon">💡</span>
+          <span>2 menjadi 4 berarti dikali 2, tetapi 3 menjadi 5 <strong style="color:var(--amber)">bukan</strong> dikali 2. Faktornya tidak sama.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label green">📋 Slide 4 · Tabel Perbandingan</div>
+        <h2>Tabel Membantu Melihat Hubungan</h2>
+        <p>Setiap <strong>2 gelas sirup</strong> membutuhkan <strong>3 gelas air</strong>. Tabel menunjukkan apa yang terjadi jika resepnya digandakan.</p>
+
+        <div id="t4"></div>
+
+        <div class="seq-cap">Contoh mencari nilai yang belum diketahui: berapa gelas air untuk 10 gelas sirup?</div>
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">🔍</span><span><strong>Lihat pola di tabel:</strong> sirup bertambah 2, air bertambah 3.</span></div>
+          <div class="think-step"><span class="tq">➕</span><span><strong>Lanjutkan tabel:</strong> setelah 8 sirup dan 12 air, tambah satu resep lagi. Sirup menjadi 10, air menjadi 12 + 3 = 15.</span></div>
+          <div class="think-step"><span class="tq">✅</span><span><strong>Periksa:</strong> 10 sirup = 2 × 5, maka air = 3 × 5 = 15. Cocok!</span></div>
+        </div>
+        <div class="hl hl-green"><strong>Hubungan tetap:</strong> setiap baris pada tabel adalah perbandingan yang senilai dengan 2 : 3.</div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🍳 Slide 5 · Perbandingan dalam Kehidupan Sehari-hari</div>
+        <h2>Menggandakan Resep</h2>
+        <p>Sebuah resep memakai <strong>3 sendok</strong> bahan untuk <strong>2 porsi</strong>. Berapa sendok yang dibutuhkan untuk <strong>4 porsi</strong>?</p>
+
+        <div class="rx">
+          <div class="rx-h"><span>🍽️ PORSI</span><span></span><span>🥄 BAHAN</span></div>
+          <div class="rx-row">
+            <div class="rx-c">🍽️🍽️<small>2 porsi</small></div><div class="rx-ar">→</div><div class="rx-c">🥄🥄🥄<small>3 sendok</small></div>
+          </div>
+          <div class="rx-mul"><span class="x">↓ ×2</span><span class="sp"></span><span class="x">↓ ×2</span></div>
+          <div class="rx-row">
+            <div class="rx-c">🍽️🍽️🍽️🍽️<small>4 porsi</small></div><div class="rx-ar">→</div><div class="rx-c ans">🥄🥄🥄🥄🥄🥄<small>? sendok</small></div>
+          </div>
+        </div>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">1</span><span><strong>Bandingkan porsinya:</strong> 4 porsi adalah 2 porsi dikali 2.</span></div>
+          <div class="think-step"><span class="tq">2</span><span><strong>Samakan perlakuannya:</strong> porsi menjadi 2 kali lipat, maka bahan juga 2 kali lipat.</span></div>
+          <div class="think-step"><span class="tq">3</span><span><strong>Hitung:</strong> 3 sendok × 2 = <strong style="color:var(--green)">6 sendok</strong>.</span></div>
+        </div>
+        <div class="callout">
+          <span class="callout-icon">🔎</span>
+          <span>Periksa hubungannya: 2 porsi : 3 sendok = 4 porsi : 6 sendok. Perbandingannya <strong style="color:var(--amber)">tetap senilai</strong>.</span>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label steel">🗺️ Slide 6 · Memahami Skala</div>
+        <h2>Skala: Gambar Mewakili Ukuran Sebenarnya</h2>
+        <p><strong>Skala</strong> adalah perbandingan ukuran pada gambar atau peta terhadap ukuran sebenarnya. Skala <strong>1 : 100</strong> berarti 1 cm pada gambar mewakili 100 cm sebenarnya.</p>
+
+        <div class="geo-wrap">
+          <svg class="geo-svg" style="max-width:320px" viewBox="0 0 300 170" role="img" aria-label="Denah ruangan berukuran 5 cm kali 3 cm. Setiap kotak 1 cm mewakili 100 cm sebenarnya">
+            <rect class="g-steel" x="70" y="34" width="160" height="96"/>
+            <g stroke="#344858" stroke-width="1.5">
+              <line x1="102" y1="34" x2="102" y2="130"/><line x1="134" y1="34" x2="134" y2="130"/><line x1="166" y1="34" x2="166" y2="130"/><line x1="198" y1="34" x2="198" y2="130"/>
+              <line x1="70" y1="66" x2="230" y2="66"/><line x1="70" y1="98" x2="230" y2="98"/>
+            </g>
+            <rect class="g-amber" x="70" y="34" width="32" height="32"/>
+            <text class="gd am" style="font-size:12px" x="86" y="50">1 cm</text>
+            <text class="gd" x="150" y="16">5 cm</text>
+            <text class="gd" x="40" y="82">3 cm</text>
+            <text class="gs" x="150" y="152">DENAH (GAMBAR)</text>
+          </svg>
+        </div>
+
+        <div class="cg-row">
+          <span class="cg">Skala <b style="color:#f0a830">1 : 100</b></span>
+          <span class="cg">1 cm gambar <b style="color:#f0a830">= 100 cm sebenarnya</b></span>
+        </div>
+
+        <div class="eq sm">5 cm <span class="op">×</span> 100 <span class="op">=</span> <span class="am">500 cm</span> <span class="op">=</span> <span class="ok">5 m</span></div>
+        <div class="eq sm">3 cm <span class="op">×</span> 100 <span class="op">=</span> <span class="am">300 cm</span> <span class="op">=</span> <span class="ok">3 m</span></div>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">✖️</span><span><strong>Kalikan:</strong> ukuran pada gambar dikali angka kedua pada skala.</span></div>
+          <div class="think-step"><span class="tq">📏</span><span><strong>Samakan satuan:</strong> hasilnya dalam cm. Karena 100 cm = 1 m, maka 500 cm = 5 m.</span></div>
+        </div>
+        <div class="hl hl-green"><strong>Ukuran sebenarnya ruangan:</strong> 5 m × 3 m.</div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label violet">🔍 Slide 7 · Memperbesar dan Memperkecil Ukuran</div>
+        <h2>Berubah Sebanding, Bentuk Tetap</h2>
+        <p>Persegi panjang 3 cm × 2 cm diperbesar dengan <strong>faktor 2</strong>. Bandingkan dua cara berikut:</p>
+
+        <div class="two">
+          <div class="strat">
+            <div class="strat-t" style="color:var(--green)">Sebanding ✓</div>
+            <div class="geo-wrap">
+              <svg class="geo-svg" viewBox="0 28 210 76" role="img" aria-label="Persegi panjang 3 kali 2 diperbesar faktor 2 menjadi 6 kali 4, bentuknya tetap">
+                <rect class="g-steel" x="10" y="66" width="42" height="28"/>
+                <text class="gd" style="font-size:12px" x="31" y="80">3 × 2</text>
+                <line x1="58" y1="80" x2="94" y2="80" stroke="#f0a830" stroke-width="2.5"/><polygon points="94,75 103,80 94,85" fill="#f0a830"/>
+                <text class="gd am" x="78" y="68">×2</text>
+                <rect class="g-amber" x="108" y="38" width="84" height="56"/>
+                <text class="gd" style="font-size:12px" x="150" y="66">6 × 4</text>
+              </svg>
+            </div>
+            <div class="seq-cap">panjang dan lebar sama-sama ×2</div>
+          </div>
+          <div class="strat">
+            <div class="strat-t" style="color:var(--red)">Tidak sebanding ✗</div>
+            <div class="geo-wrap">
+              <svg class="geo-svg" viewBox="0 28 210 76" role="img" aria-label="Persegi panjang 3 kali 2 hanya panjangnya dikali 2 menjadi 6 kali 2, bentuknya menjadi gepeng">
+                <rect class="g-steel" x="10" y="66" width="42" height="28"/>
+                <text class="gd" style="font-size:12px" x="31" y="80">3 × 2</text>
+                <line x1="58" y1="80" x2="94" y2="80" stroke="#f0a830" stroke-width="2.5"/><polygon points="94,75 103,80 94,85" fill="#f0a830"/>
+                <text class="gd am" x="78" y="68">×2</text>
+                <rect class="g-cut" x="108" y="66" width="84" height="28"/>
+                <text class="gd" style="font-size:12px" x="150" y="80">6 × 2</text>
+              </svg>
+            </div>
+            <div class="seq-cap">hanya panjang ×2, bentuknya jadi gepeng</div>
+          </div>
+        </div>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">🔼</span><span><strong>Memperbesar:</strong> kalikan kedua ukuran dengan faktor yang sama. 3 : 2 menjadi 6 : 4.</span></div>
+          <div class="think-step"><span class="tq">🔽</span><span><strong>Memperkecil:</strong> bagi kedua ukuran dengan faktor yang sama. 6 : 9 dibagi 3 menjadi 2 : 3.</span></div>
+        </div>
+
+        <div class="seq-cap">Contoh penerapan:</div>
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">🖼️</span><span><strong>Gambar:</strong> foto 4 × 6 cm diperbesar 2 kali menjadi 8 × 12 cm.</span></div>
+          <div class="think-step"><span class="tq">🍳</span><span><strong>Resep:</strong> 2 porsi diperbesar 2 kali menjadi 4 porsi, maka semua bahan ikut dikali 2.</span></div>
+          <div class="think-step"><span class="tq">🗺️</span><span><strong>Denah:</strong> skala 1 : 100 membuat panjang dan lebar sama-sama dikali 100.</span></div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-primary" onclick="nextSlide()">Selanjutnya →</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 8 -->
+    <div class="slide">
+      <div class="card">
+        <div class="card-label amber">🏁 Slide 8 · Rangkuman: Memahami Hubungan Perbandingan</div>
+        <h2>Yang Sudah Kita Pelajari</h2>
+
+        <div class="think-steps">
+          <div class="think-step"><span class="tq">⚖️</span><span><strong>Perbandingan</strong> digunakan untuk membandingkan dua kuantitas.</span></div>
+          <div class="think-step"><span class="tq">🟰</span><span><strong>Perbandingan senilai</strong> memiliki hubungan yang sama, karena kedua bilangan dikali (atau dibagi) faktor yang sama.</span></div>
+          <div class="think-step"><span class="tq">📋</span><span><strong>Tabel perbandingan</strong> membantu menemukan hubungan antar-kuantitas.</span></div>
+          <div class="think-step"><span class="tq">🍳</span><span><strong>Perbandingan</strong> dapat dipakai menyelesaikan persoalan sehari-hari, misalnya resep.</span></div>
+          <div class="think-step"><span class="tq">🗺️</span><span><strong>Skala</strong> menghubungkan ukuran gambar dengan ukuran sebenarnya.</span></div>
+        </div>
+
+        <div class="quote" style="text-align:center;border-left:none;border-radius:8px;">“Jangan hanya menghitung angkanya, pahami juga hubungan di antara keduanya!”</div>
+      </div>
+
+      <div class="finish">
+        <span class="finish-icon">⚖️</span>
+        <div class="finish-title">SIAP BERLATIH!</div>
+        <div class="finish-desc">Kamu sudah mengenal perbandingan, perbandingan senilai, tabel, dan skala. Saatnya mencoba soal di latihan.</div>
+        <div class="xp">+100 XP</div>
+        <div class="finish-btns">
+          <a href="latihan39.html" class="btn btn-primary">🧮 Mulai Latihan</a>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="prevSlide()">← Sebelumnya</button>
+        <button class="btn btn-ghost" disabled>Selesai ✓</button>
+      </div>
+    </div>
+
+  </div><!-- /slides -->
+</div>
+<script>
+function dtable(h, rows, o){
+  o=o||{};
+  const der=o.der||[], sum=o.sum||[];
+  const hs=h.map((x,i)=>`<th${der.includes(i)?' class="der"':''}>${x}</th>`).join('');
+  const rs=rows.map((r,ri)=>`<tr${sum.includes(ri)?' class="sum"':''}>`+r.map((c,i)=>`<td${der.includes(i)?' class="der"':''}>${c}</td>`).join('')+'</tr>').join('');
+  return `<table class="dt">${o.cap?`<caption>${o.cap}</caption>`:''}<thead><tr>${hs}</tr></thead><tbody>${rs}</tbody></table>`;
+}
+function put(id, html){ document.getElementById(id).innerHTML = html; }
+
+/* ===== Slide 4: tabel sirup & air ===== */
+put('t4', '<div class="dt-wrap">'+dtable(['🥤 Gelas Sirup','💧 Gelas Air','Resep'],
+  [[2,3,'×1'],[4,6,'×2'],[6,9,'×3'],[8,12,'×4']],{der:[2],cap:'Satu resep = 2 sirup + 3 air'})+'</div>');
+
+/* ===== Slide navigation ===== */
+  const TOTAL = 8;
+  let cur = 0;
+
+  const dotsEl = document.getElementById('dots');
+  for(let i=0;i<TOTAL;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots(){
+    document.querySelectorAll('.dot').forEach((d,i)=>{
+      d.className = 'dot' + (i===cur?' active':i<cur?' done':'');
+    });
+  }
+
+  function goTo(n){
+    document.querySelectorAll('.slide')[cur].classList.remove('active');
+    cur = n;
+    document.querySelectorAll('.slide')[cur].classList.add('active');
+    updateDots();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function nextSlide(){ if(cur<TOTAL-1) goTo(cur+1); }
+  function prevSlide(){ if(cur>0) goTo(cur-1); }
+
+  document.querySelectorAll('.slide')[0].classList.add('active');
+</script>
+</body>
+</html>
